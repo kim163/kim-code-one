@@ -1,0 +1,255 @@
+@media (max-width: 1130px){
+  #img-parallax-1 {
+    background-size: auto 150%;
+  }
+}
+
+@media only screen and (max-width: 799px) {
+  #img-parallax-1 {
+    background-size: auto 120%;
+    margin-top: 0px !important;
+  }
+  #hero {
+    margin-top: 0px;
+    padding-top: 0px;
+  }
+  #hero h1 {
+    margin-top: 80px;
+    font-size: 40px;
+    line-height: 51px;
+  }
+  #hero h2{
+    font-size: 22px;
+  }
+  .navbar{
+    display:none;
+  }
+  .m-nav-container{
+    display: block !important; 
+  }
+  .foot-part{
+    padding: 67px 0 83px;
+  }
+  .foot-part a,.foot-part p{
+    float: none;
+    text-align: center;
+  }
+  div.foot-part p{
+    font-size: 16px;
+    padding: 16px 0 0 0;
+  }
+  .foot-part .col-5{
+    text-align: center;
+  }
+  form .form-control {
+    height: 40px;
+    line-height: 40px;
+    font-size: 18px;
+  }
+  form button[type="submit"] {
+    height: 40px;
+    line-height: 40px;
+    font-size: 22px;
+  }
+  .section h1{
+    font-size: 24px;
+    font-weight: bold;
+    line-height: 1.58;
+    letter-spacing: 0.5px;
+  }
+  .section p,.help-content-part li .faq-cont{
+    font-size: 18px;
+    line-height: 2.11;
+    letter-spacing: 0.5px;
+  }
+  .section h3{
+    font-size: 22px;
+  }
+  .section h4 {
+    font-size: 20px;
+  }
+  .superiority-part h2,.section h2{
+    font-size: 22px;
+    font-weight: bold;
+    line-height: 1.58;
+    letter-spacing: 0.5px;
+  }
+  .android-icon, .ios-icon{
+     width: 20px;
+  }
+  .btn{
+    padding: 5px 12px 5px 12px;
+    font-size: 18px;
+    margin: 0 5px 10px 0;
+  }
+  .white-paperbtn{
+    margin: 0 0 10px 0;
+  }
+  .download-btngroup{
+    text-align: center;
+  }
+  .superiority-part p{
+    margin: 0;
+  }
+  .mobile-center{
+    text-align: center;
+  }
+  .superiority-part {
+    padding: 81px 0 71px 0;
+  }
+  .efficient-world {
+    padding: 8px 0 80px;
+  }
+  .asset-management {
+    padding: 81px 0 49px;
+  }
+  .white-paper-part{
+    padding: 0 0 67px;
+  }
+  .white-paper-part h1{
+    margin: 73px 0 0;
+  }
+  .subscribe-part {
+    padding: 65px 0 140px;
+  }
+
+
+  /* about */
+  .section .pubanner-title,.contact-banner-part h1{
+    font-size: 30px;
+    font-weight: 400;
+    line-height: 1.58;
+  }
+  .about-memorabilia-part .row{
+    padding: 73px 0 81px;
+  }
+  .about-memorabilia-part p{
+    padding-right: 0;
+  }
+  .introduce-customer-part .row{
+    padding: 0;
+  }
+  .introduce-customer-part .row .col-13:nth-child(2){
+    border-right: 1px solid #E9E9E9;
+  }
+  .about-memorabilia-part .col-5 {
+    text-align: center;
+  }
+  .introduce-customer-part .container {
+    padding: 52px 0 89px;
+  }
+
+  /* contact */
+  .contact-banner-part .contact-infopart{
+    padding: 0;
+    margin-top: 57px;
+  }
+  .contact-banner-part h1{
+    margin: 215px 0 0;
+  }
+
+  /* help */
+  .help-content-part .row{
+    padding: 58px 0 81px;
+  }
+
+  /* white-paper */
+  .whitepa-video-part .row {
+    padding: 40px 0 75px;
+  }
+  .whitepa-video-part h1{
+     margin: 33px 0 34px;
+  }
+  .operate-rules-part{
+     min-height: 911px;
+  }
+  .operate-rules-part .row{
+     padding: 25px 0 0;
+  }
+  .operate-rules-part .row:first-child {
+    padding: 57px 0 0;
+  }
+  .uet-anc-part h2{
+    margin: 83px 0 38px;
+  }
+  .section .big-font {
+    font-size: 30px;
+  }
+  .uet-anc-part .first > div {
+    min-height: auto; 
+    border-right: 1px solid #CACACA;
+  }
+  .uet-anc-part .seconde .col-14{
+    min-height: auto; 
+    border-right: 1px solid #CACACA;
+  }
+  .uet-anc-part .row{
+    padding: 0;
+  }
+  .uet-anc-part .seconde .col-15{
+    margin-bottom: 89px;
+    padding: 0 7.5% 15px 6.2%;
+  }
+  .section .big-number{
+    font-size: 50px;
+  }
+  .issue-shares-part h1 {
+    margin: 82px 0 41px;
+  }
+  .issue-shares-part .row {
+    padding: 0;
+  }
+  .fee-calculation-part .row {
+    padding: 56px 0 80px;
+  }
+  .market-prediction-part .revenue-section .col-4{
+    width: 100%;
+    min-height: auto;
+    padding-bottom: 40px;
+  }
+  .application-portal-part .row {
+    padding: 58px 0 0;
+  }
+  .market-prediction-part .market-prediction {
+    padding: 42px 0 0;
+  }
+  .market-prediction-part .row {
+    padding: 57px 0 0;
+  }
+  .read-whitepap-part .row {
+    padding: 0 ;
+  }
+}
+
+@media only screen and (max-width: 680px) {
+   form .form-control {
+      border-radius: 35px;
+      padding: 0 82px 0 2.5%;
+   }
+   form button[type="submit"] {
+      position: absolute;
+      top: 0;
+      right: 0;
+      padding: 0 20px 0 16px;
+   }
+}
+
+@media only screen and (min-width: 800px) {
+  .navbar{
+    display:block !important;
+  }
+}
+
+@media (max-width: 375px){
+  #img-parallax-1 {
+    background-size: auto 100%;
+    padding-top: 50px;
+  }
+}
+
+/* Make fonts thicker for larger screen sizes */
+@media (min-width: 2480px){
+  *, p {
+    font-weight: 400;
+  }
+}
