@@ -23,4 +23,8 @@ $( document ).ready(function() {
      $('#juanVideo').get(0).play();
   });
 
+  $('div.j-issueShaItem').mouseenter(function() {
+     $(this).addClass('active').siblings().removeClass('active');
+  });
+
 });
