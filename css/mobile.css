@@ -58,7 +58,7 @@
     line-height: 50px;
     font-size: 22px;
   }
-  .section h1,.issue-shares-part .issue-shares-item.active h3{
+  .section h1,.issue-shares-part .issue-shares-item.active h3,.market-prediction-part .revenue-section h1{
     font-size: 24px;
     font-weight: bold;
     line-height: 1.58;
@@ -76,7 +76,7 @@
   .section h4 {
     font-size: 20px;
   }
-  .superiority-part h2,.section h2{
+  .superiority-part h2,.section h2,.section .normtitle,.market-prediction-part .revenue-section h2{
     font-size: 22px;
     font-weight: bold;
     line-height: 1.58;
@@ -227,7 +227,8 @@
   .market-prediction-part .revenue-section .col-4{
     width: 100%;
     min-height: initial;
-    padding-bottom: 40px;
+    margin: 0.5rem 0;
+    padding:0 10% 40px;
   }
   .application-portal-part{
     min-height: initial;
@@ -238,11 +239,11 @@
   .application-portal-part h4{
     line-height: 40px;
   }
-  .market-prediction-part .market-prediction {
-    padding: 42px 0 0;
+  .market-prediction-part div.market-prediction {
+    padding: 57px 0 0;
   }
   .market-prediction-part .row {
-    padding: 57px 0 0;
+    padding: 20px 0 0;
   }
   .read-whitepap-part .row {
     padding: 0 ;

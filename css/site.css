@@ -209,6 +209,9 @@ img {
   font-size: 100px;
   font-weight: 400;
 }
+.section .normtitle{
+  font-size: 32px;
+}
 .section .pubanner-title{
   font-size: 55px;
   line-height: 90px;
