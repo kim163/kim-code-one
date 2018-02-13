@@ -73,7 +73,7 @@
         origin: "bottom",
         distance: "10px",
         easing: "ease-in",
-        delay: 2 * config.animeDelay
+        delay: 1 * config.animeDelay
     });
     window.anime.reveal(".p-gradually-block3", {
         scale: 1,
@@ -81,7 +81,7 @@
         origin: "bottom",
         distance: "10px",
         easing: "ease-in",
-        delay: 4 * config.animeDelay
+        delay: 2 * config.animeDelay
     });
      window.anime.reveal(".p-gradually-block4", {
         scale: 1,
@@ -89,7 +89,7 @@
         origin: "bottom",
         distance: "10px",
         easing: "ease-in",
-        delay: 6 * config.animeDelay
+        delay: 3 * config.animeDelay
     });
     window.anime.reveal(".p-gradually-block5", {
         scale: 1,
@@ -97,7 +97,7 @@
         origin: "bottom",
         distance: "10px",
         easing: "ease-in",
-        delay: 8 * config.animeDelay
+        delay: 4 * config.animeDelay
     });
     window.anime.reveal(".p-gradually-block6", {
         scale: 1,
@@ -105,7 +105,7 @@
         origin: "bottom",
         distance: "10px",
         easing: "ease-in",
-        delay: 10 * config.animeDelay
+        delay: 5 * config.animeDelay
     });
      window.anime.reveal(".p-gradually-block7", {
         scale: 1,
@@ -113,7 +113,7 @@
         origin: "bottom",
         distance: "10px",
         easing: "ease-in",
-        delay: 12 * config.animeDelay
+        delay: 6 * config.animeDelay
     });
     window.anime.reveal(".p-gradually-block8", {
         scale: 1,
@@ -121,7 +121,7 @@
         origin: "bottom",
         distance: "10px",
         easing: "ease-in",
-        delay: 14 * config.animeDelay
+        delay: 7 * config.animeDelay
     });
     window.anime.reveal(".p-gradually-block9", {
         scale: 1,
@@ -129,7 +129,7 @@
         origin: "bottom",
         distance: "10px",
         easing: "ease-in",
-        delay: 16 * config.animeDelay
+        delay: 8 * config.animeDelay
     });
      window.anime.reveal(".p-gradually-block10", {
         scale: 1,
@@ -137,7 +137,7 @@
         origin: "bottom",
         distance: "10px",
         easing: "ease-in",
-        delay: 18 * config.animeDelay
+        delay: 9 * config.animeDelay
     });
      window.anime.reveal(".p-gradually-block11", {
         scale: 1,
@@ -145,7 +145,7 @@
         origin: "bottom",
         distance: "10px",
         easing: "ease-in",
-        delay: 20 * config.animeDelay
+        delay: 10 * config.animeDelay
     });
     window.anime.reveal(".p-gradually-block12", {
         scale: 1,
@@ -153,7 +153,7 @@
         origin: "bottom",
         distance: "10px",
         easing: "ease-in",
-        delay: 22 * config.animeDelay
+        delay: 11 * config.animeDelay
     });
     window.anime.reveal(".p-gradually-block13", {
         scale: 1,
@@ -161,7 +161,7 @@
         origin: "bottom",
         distance: "10px",
         easing: "ease-in",
-        delay: 24 * config.animeDelay
+        delay: 12 * config.animeDelay
     });
     window.anime.reveal(".p-gradually-block14", {
         scale: 1,
@@ -169,7 +169,7 @@
         origin: "bottom",
         distance: "10px",
         easing: "ease-in",
-        delay: 26 * config.animeDelay
+        delay: 13 * config.animeDelay
     });
 
     /* content */
