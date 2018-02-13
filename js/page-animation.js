@@ -11,7 +11,7 @@
     /* banner */
     window.anime.reveal(".p-godown-bigtitle", {
         scale: 1.05,
-        duration: 3 * config.animeDuration,
+        duration: 2 * config.animeDuration,
         origin: "top",
         distance : "24px",
         easing: "ease-in",
@@ -19,19 +19,19 @@
     });
     window.anime.reveal(".p-goup-bigtitle", {
         scale: 1,
-        duration: 3 * config.animeDuration,
+        duration: 2 * config.animeDuration,
         origin   : "bottom",
         distance : "64px",
         easing: "ease-in",
-        delay: 7 * config.animeDelay
+        delay: 6 * config.animeDelay
     });
     window.anime.reveal(".p-goup-bigtitle2", {
         scale: 1,
-        duration: 3 * config.animeDuration,
+        duration: 2 * config.animeDuration,
         origin   : "bottom",
         distance : "64px",
         easing: "ease-in",
-        delay: 4 * config.animeDelay
+        delay: 3 * config.animeDelay
     });
     window.anime.reveal(".p-goup-btngroup", {
         scale: 1.2,
@@ -39,7 +39,7 @@
         origin   : "bottom",
         distance : "32px",
         easing: "ease-in",
-        delay: 9 * config.animeDelay
+        delay: 8 * config.animeDelay
     });
     window.anime.reveal(".p-goup-btngroup2", {
         scale: 1.2,
@@ -55,7 +55,15 @@
         origin: "bottom",
         distance: "50px",
         easing: "ease-in",
-        delay: 4 * config.animeDelay
+        delay: 3 * config.animeDelay
+    });
+    window.anime.reveal(".p-goup-bigimg2", {
+        scale: 1,
+        duration: 2 * config.animeDuration,
+        origin: "bottom",
+        distance: "50px",
+        easing: "ease-in",
+        delay: 6 * config.animeDelay
     });
 
     /* block gradually */
@@ -187,7 +195,7 @@
         origin: "bottom",
         distance: "30px",
         easing: "ease-in",
-        delay: 6 * config.animeDelay
+        delay: 5 * config.animeDelay
     });
 
     window.anime.reveal(".p-goup-subtitle", {
@@ -212,7 +220,7 @@
         origin: "bottom",
         distance: "30px",
         easing: "ease-in",
-        delay: 6 * config.animeDelay
+        delay: 5 * config.animeDelay
     });
     window.anime.reveal(".p-goup-tipstitle2", {
         scale: 1,
@@ -220,7 +228,7 @@
         origin: "bottom",
         distance: "30px",
         easing: "ease-in",
-        delay: 10 * config.animeDelay
+        delay: 7 * config.animeDelay
     });
     window.anime.reveal(".p-left-img", {
         scale: 1,
@@ -244,7 +252,7 @@
         origin: "right",
         distance: "50px",
         easing: "ease-in",
-        delay: 8 * config.animeDelay
+        delay: 6 * config.animeDelay
     });
 
   }
