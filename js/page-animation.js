@@ -23,7 +23,7 @@
         origin   : "bottom",
         distance : "64px",
         easing: "ease-in",
-        delay: 6 * config.animeDelay
+        delay: 5 * config.animeDelay
     });
     window.anime.reveal(".p-goup-bigtitle2", {
         scale: 1,
@@ -39,7 +39,7 @@
         origin   : "bottom",
         distance : "32px",
         easing: "ease-in",
-        delay: 8 * config.animeDelay
+        delay: 7 * config.animeDelay
     });
     window.anime.reveal(".p-goup-btngroup2", {
         scale: 1.2,
