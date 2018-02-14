@@ -273,6 +273,23 @@ img {
   font-weight: 100;
   margin: 0 0 50px;
 }
+/* Earth rotates */
+.backimgAnime {
+  -webkit-animation:goround-data 100s linear infinite;
+  animation:goround-data 100s linear infinite
+}
+@-webkit-keyframes goround-data {
+  to {
+  -webkit-transform:rotate(1turn);
+  transform:rotate(1turn)
+   }
+}
+@keyframes goround-data {
+  to {
+  -webkit-transform:rotate(1turn);
+  transform:rotate(1turn)
+   }
+}
 
 .foot-part{
   padding: 67px 1.8% 166px;
@@ -325,7 +342,7 @@ form .form-control:focus {
   background-color: white;
 }
 /* Submit Buttons */
-form button[type="submit"] {
+form button[type="button"] {
   padding: 0 40px 0 31px;
   height: 70px;
   line-height: 70px;
@@ -335,6 +352,7 @@ form button[type="submit"] {
   font-size: 30px;
   color: #ffffff;
   cursor: pointer;
+  outline:none;
   user-select: none;
   white-space: nowrap;
   text-decoration: none !important;

@@ -53,7 +53,7 @@
     line-height: 50px;
     font-size: 18px;
   }
-  form button[type="submit"] {
+  form button[type="button"] {
     height: 50px;
     line-height: 50px;
     font-size: 22px;
@@ -264,7 +264,7 @@
       border-radius: 35px;
       padding: 0 82px 0 2.5%;
    }
-   form button[type="submit"] {
+   form button[type="button"] {
       position: absolute;
       top: 0;
       right: 0;
