@@ -27,4 +27,55 @@ $( document ).ready(function() {
      $(this).addClass('active').siblings().removeClass('active');
   });
 
+  $('.j-submitBtn').click(function(){
+     if(!$(this).hasClass('disable')){
+       var email = $.trim($('.j-email').val()),
+           regex = /^(\w)+(\.\w+)*@(\w)+((\.\w+)+)$/,  // email regex
+           tipsCon = $('.j-tipsInform'),
+           tipsText = '',
+           isError = 1;  // 0 error , 1  success
+
+       if(email == ''){
+         isError = 0;
+         tipsText = '* 请输入邮箱地址';
+       }else if (!regex.test(email)) {
+         isError = 0;
+         tipsText = '* 邮箱地址输入错误';
+       }
+
+       if(isError == 0){
+         tipsCon.removeClass('tips-success').addClass('tips-error');
+         tipsCon.html(tipsText);
+         return false;
+       }
+
+       tipsCon.html('');
+       $('.j-submitBtn').addClass('disable');
+       var data = {
+                'apiUser': '9AnPRO',
+                'apiKey':  'H2aXme67BNVxwRbc',
+                'to': email,
+                'from': 'service@9anpro.com',
+                'fromName': '9AnPRO',
+                'replyTo': '',
+                'subject': '9An',
+                'html': '欢迎光临久安，遇9就安',
+                'cc': '',
+                'bcc': '',
+                'file1': '',
+                'file2': ''
+       };
+       $.post('http://api.sendcloud.net/apiv2/mail/send', data, function (result) {
+           $('.j-submitBtn').removeClass('disable');
+           if(result.statusCode == 200){
+              tipsCon.removeClass('tips-error').addClass('tips-success');
+              tipsCon.html('* 邮件订阅成功');
+           }else{
+              tipsCon.removeClass('tips-success').addClass('tips-error');
+              tipsCon.html(result.message);
+           }
+       });
+     }
+  });
+
 });

@@ -1,3 +1,7 @@
+/* IMPORT FONTS iconfont  ,  project  9-juan */
+@import url('https://at.alicdn.com/t/font_571184_b9zf6jvb6e0zfr.css');
+.iconfont{vertical-align: middle;font-size:inherit;}
+
 /* ROOT FONT STYLES */
 * {
   line-height: 1.5;
@@ -261,7 +265,7 @@ img {
   margin: 16px 0 30px;
 }
 .subscribe-part{
-  padding: 65px 0 281px;
+  padding: 65px 0 221px;
 }
 .subscribe-part h1{
   color: #363636;
@@ -273,6 +277,19 @@ img {
   font-weight: 100;
   margin: 0 0 50px;
 }
+.tips-information{
+  font-size: 20px;
+  margin-top: 30px;
+  font-weight: 400;
+  min-height: 30px;
+}
+.tips-success{
+  color: #1ce41c;
+}
+.tips-error{
+  color: #eb0d1d;
+}
+
 /* Earth rotates */
 .backimgAnime {
   -webkit-animation:goround-data 100s linear infinite;
@@ -369,6 +386,10 @@ form button[type="button"] {
   box-shadow: 0 5px 10px #DCE4FF;
   -moz-box-shadow: 0 5px 10px #DCE4FF;
   -webkit-box-shadow: 0 5px 10px #DCE4FF;
+}
+form button.disable {
+  opacity: .6;
+  cursor: not-allowed;
 }
 /* Banner Messages */
 .banner-message {

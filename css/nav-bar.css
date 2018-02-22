@@ -52,7 +52,7 @@ a.lang-en{
 @media only screen and (min-width: 800px) and (max-width: 1020px) {
   .navbar .link-part .col-2{
     width: auto;
-    margin: 26px 6px 0;
+    margin: 15px 6px 0;
   }
 }
 

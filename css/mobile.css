@@ -35,7 +35,7 @@
     display: block !important;
   }
   .foot-part{
-    padding: 67px 0 83px;
+    padding: 67px 0 72px;
   }
   .foot-part a,.foot-part p{
     float: none;
@@ -122,9 +122,11 @@
     letter-spacing: 0.3px;
   }
   .subscribe-part {
-    padding: 65px 0 140px;
+    padding: 65px 0 110px;
   }
-
+  .tips-information{
+    font-size: 16px;
+  }
 
   /* about */
   .section .pubanner-title,.contact-banner-part h1{
@@ -211,6 +213,10 @@
   }
   .section .big-number{
     font-size: 50px;
+  }
+  .issue-shares-part {
+    background: url(../images/whitepaper/issue-shares-bg.jpg) no-repeat center center;
+    background-size: cover;
   }
   .issue-shares-part h1 {
     margin: 82px 0 41px;

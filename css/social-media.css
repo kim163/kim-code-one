@@ -1,23 +1,13 @@
 /* SOCIAL MEDIA ICONS */
 .icon-sm {
   display:inline-block;
-  width:37px;
-  height:37px;
   position: relative;
-  -webkit-transition: all 200ms ease-in;
-  -webkit-transform: scale(1);
-  -ms-transition: all 200ms ease-in;
-  -ms-transform: scale(1);
-  -moz-transition: all 200ms ease-in;
-  -moz-transform: scale(1);
-  transition: all 200ms ease-in;
-  transform: scale(1);
-  margin: 22px 0 0 32px;
+  margin: 10px 0 0 32px;
 }
 .icon-sm:first-child{
-  margin: 22px 0 0 0;
+  margin: 10px 0 0 0;
 }
-.icon-sm:hover , .contact-logo img:hover{
+.icon-sm a:hover, .contact-logo img:hover{
   z-index: 2;
   -webkit-transition: all 200ms ease-in;
   -webkit-transform: scale(1.25);
@@ -28,28 +18,25 @@
   transition: all 200ms ease-in;
   transform: scale(1.25);
 }
-.icon-sm.facebook{
-  background: url(../images/facebook-icon.png) no-repeat center center;
-  background-size: cover;
-}
-.icon-sm.telegram{
-  background: url(../images/telegram-icon.png) no-repeat center center;
-  background-size: cover;
-}
-.icon-sm.wechat{
-  background: url(../images/wechat-icon.png) no-repeat center center;
-  background-size: cover;
-}
-.icon-sm.skype{
-  background: url(../images/skype-icon.png) no-repeat center center;
-  background-size: cover;
-}
 .icon-sm a {
-  color: white;
+  font-size: 37px;
+  color: transparent;
   float: none;
-  width: 100%;
-  height: 100%;
+  -webkit-transition: all 200ms ease-in;
+  -webkit-transform: scale(1);
+  -ms-transition: all 200ms ease-in;
+  -ms-transform: scale(1);
+  -moz-transition: all 200ms ease-in;
+  -moz-transform: scale(1);
+  transition: all 200ms ease-in;
+  transform: scale(1);
 }
 .icon-sm a:hover {
   text-decoration: none;
+}
+.icon-sm a i{
+  color: #E8E8E8;
+}
+.icon-sm.wechat a{
+  font-size: 35px;
 }
