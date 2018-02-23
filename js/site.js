@@ -59,7 +59,7 @@ $( document ).ready(function() {
                 'fromName': '久安钱包',
                 'replyTo': '',
                 'subject': '欢迎订阅久安钱包',
-                'html': '您好！<br/><br/>欢迎订阅久安钱包 我们将会定期推送最新资讯<br/><br/><p><img alt="" src="https://www.9security.com/images/juan-code.jpg" style="float: left; width: 200px; height: 203px;" /></p>',
+                'html': '您好！<br/><br/>欢迎订阅久安钱包 我们将会定期推送最新资讯<br/><br/><p><img alt="" src="https://www.9security.com/images/juan-code.jpg" style=" width: 200px; height: 203px;" /></p>',
                 'cc': '',
                 'bcc': '',
                 'file1': 'https://www.9security.com/images/juan-code.jpg',
