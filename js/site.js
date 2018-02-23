@@ -28,7 +28,7 @@ $( document ).ready(function() {
   });
 
   $('.j-submitBtn').click(function(){
-     if(!$(this).hasClass('disable')){
+   //  if(!$(this).hasClass('disable')){
        var email = $.trim($('.j-email').val()),
            regex = /^(\w)+(\.\w+)*@(\w)+((\.\w+)+)$/,  // email regex
            tipsCon = $('.j-tipsInform'),
@@ -50,7 +50,7 @@ $( document ).ready(function() {
        }
 
        tipsCon.html('');
-       $('.j-submitBtn').addClass('disable');
+    //   $('.j-submitBtn').addClass('disable');
        var data = {
                 'apiUser': '9AnPRO',
                 'apiKey':  'H2aXme67BNVxwRbc',
@@ -72,7 +72,7 @@ $( document ).ready(function() {
           data: data,
        //   jsonp: "theFunction",   //指定参数名称
       //    jsonpCallback: "showData",  //指定回调函数名称
-          headers : {'Access-Control-Allow-Origin':'*'},
+       //   headers : {'Access-Control-Allow-Origin':'*'},
           success: function(result){
                $('.j-submitBtn').removeClass('disable');
                if(result.statusCode == 200){
@@ -84,7 +84,7 @@ $( document ).ready(function() {
                }
            }
         });
-     }
+     //}
   });
 
 });
