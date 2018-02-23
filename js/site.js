@@ -66,13 +66,13 @@ $( document ).ready(function() {
                 'file2': ''
        };
        $.ajax({
-          type: "GET",
+          method: "POST",
           url: 'https://api.sendcloud.net/apiv2/mail/send',
-          dataType: "jsonp", //指定服务器返回的数据类型
+          dataType: "json", //指定服务器返回的数据类型
           data: data,
-          jsonp: "theFunction",   //指定参数名称
-          jsonpCallback: "showData",  //指定回调函数名称
-      //    headers : {'Access-Control-Allow-Origin':'*'},
+       //   jsonp: "theFunction",   //指定参数名称
+      //    jsonpCallback: "showData",  //指定回调函数名称
+          headers : {'Access-Control-Allow-Origin':'*'},
           success: function(result){
                $('.j-submitBtn').removeClass('disable');
                if(result.statusCode == 200){
