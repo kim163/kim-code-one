@@ -65,16 +65,23 @@ $( document ).ready(function() {
                 'file1': 'https://www.9security.com/images/juan-code.jpg',
                 'file2': ''
        };
-       $.post('http://api.sendcloud.net/apiv2/mail/send', data, function (result) {
-           $('.j-submitBtn').removeClass('disable');
-           if(result.statusCode == 200){
-              tipsCon.removeClass('tips-error').addClass('tips-success');
-              tipsCon.html('* 邮件订阅成功');
-           }else{
-              tipsCon.removeClass('tips-success').addClass('tips-error');
-              tipsCon.html(result.message);
+       $.ajax({
+          method: "POST",
+          url: 'http://api.sendcloud.net/apiv2/mail/send',
+          dataType: "json",
+          data: data,
+          headers : {'Access-Control-Allow-Origin':'*'},
+          success: function(result){
+               $('.j-submitBtn').removeClass('disable');
+               if(result.statusCode == 200){
+                  tipsCon.removeClass('tips-error').addClass('tips-success');
+                  tipsCon.html('* 邮件订阅成功');
+               }else{
+                  tipsCon.removeClass('tips-success').addClass('tips-error');
+                  tipsCon.html(result.message);
+               }
            }
-       });
+        });
      }
   });
 
