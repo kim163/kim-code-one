@@ -59,13 +59,13 @@ $( document ).ready(function() {
                 'fromName': '久安钱包',
                 'replyTo': '',
                 'subject': '欢迎订阅久安钱包',
-                'html': '您好！<br/><br/>欢迎订阅久安钱包 我们将会定期推送最新资讯<br/><br/><img src="https://www.9security.com/images/juan-code.jpg"  alt="9An" />',
+                'html': '您好！<br/><br/>欢迎订阅久安钱包 我们将会定期推送最新资讯<br/><br/><img src="/images/juan-code.jpg"  alt="9An" />',
                 'cc': '',
                 'bcc': '',
                 'file1': 'https://www.9security.com/images/juan-code.jpg',
                 'file2': ''
        };
-       $.post('https://sendcloud.sohu.com/apiv2/mail/send', data, function (result) {
+       $.post('http://api.sendcloud.net/apiv2/mail/send', data, function (result) {
            $('.j-submitBtn').removeClass('disable');
            if(result.statusCode == 200){
               tipsCon.removeClass('tips-error').addClass('tips-success');
