@@ -65,7 +65,7 @@ $( document ).ready(function() {
                 'file1': '',
                 'file2': ''
        };
-       $.post('http://api.sendcloud.net/apiv2/mail/send', data, function (result) {
+       $.post('https://api.sendcloud.net/apiv2/mail/send', data, function (result) {
            $('.j-submitBtn').removeClass('disable');
            if(result.statusCode == 200){
               tipsCon.removeClass('tips-error').addClass('tips-success');
