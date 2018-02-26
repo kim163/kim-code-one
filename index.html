@@ -230,7 +230,7 @@
     <div class="col-12 center subscribe-part">
       <h1 class="p-goup-title">邮件订阅</h1>
       <p class="p-goup-subtitle">不会有任何垃圾邮件。你的邮箱地址只会用于钱包，并且你可轻易的在任何时候取消订阅</p>
-      <form class="form-inline j-emailSubForm" action="https://api.sendcloud.net/apiv2/mail/send" method="post" enctype="multipart/form-data">
+      <form class="form-inline j-emailSubForm" action="https://api.sendcloud.net/apiv2/mail/send" method="post" enctype="multipart/form-data" target="emailSubFrame">
         <div class="form-group posit-rel p-goup-btngroup2">
               <input type="hidden" name="apiUser" value="9AnPRO" >
               <input type="hidden" name="apiKey" value="H2aXme67BNVxwRbc" >
@@ -247,6 +247,7 @@
               <button type="button" class="submit-bluebtn j-submitBtn" >确定</button>
         </div>
       </form>
+      <iframe name="emailSubFrame" class="hide"></iframe>
       <div class="tips-information j-tipsInform"></div>
    </div>
   </div>
@@ -283,8 +284,7 @@
 
   <script type="text/javascript" src="js/scrollreveal.min.js"></script>
   <script type="text/javascript" src="js/page-animation.js?v=1"></script>
-  <script type="text/javascript" src="js/jquery.form.min.js"></script>
-  <script type="text/javascript" src="js/site.js"></script>
+  <script type="text/javascript" src="js/site.js?v=1"></script>
 
   </body>
 </html>

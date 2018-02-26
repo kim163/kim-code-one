@@ -28,7 +28,6 @@ $( document ).ready(function() {
   });
 
   $('.j-submitBtn').click(function(){
-    if(!$(this).hasClass('disable')){
        var email = $.trim($('.j-email').val()),
            regex = /^(\w)+(\.\w+)*@(\w)+((\.\w+)+)$/,  // email regex
            tipsCon = $('.j-tipsInform'),
@@ -50,12 +49,11 @@ $( document ).ready(function() {
        }
 
        tipsCon.html('');
-       $('.j-emailSubForm').ajaxSubmit(function(){
-           $('.j-submitBtn').removeClass('disable');
-           tipsCon.removeClass('tips-error').addClass('tips-success');
-           tipsCon.html('* 邮件订阅成功');
-       });
-     }
+       $('.j-emailSubForm').submit();
+       setTimeout(function(){
+          tipsCon.removeClass('tips-error').addClass('tips-success');
+          tipsCon.html('* 欢迎订阅久安钱包，邮件已发您邮箱，请注意查收');
+       },200);
   });
 
 });
