@@ -36,10 +36,10 @@ $( document ).ready(function() {
 
        if(email == ''){
          isError = 0;
-         tipsText = '* 请输入邮箱地址';
+         tipsText = '* 请您输入正确的邮箱地址';
        }else if (!regex.test(email)) {
          isError = 0;
-         tipsText = '* 邮箱地址输入错误';
+         tipsText = '* 您输入的邮箱地址错误';
        }
 
        if(isError == 0){
@@ -52,7 +52,7 @@ $( document ).ready(function() {
        $('.j-emailSubForm').submit();
        setTimeout(function(){
           tipsCon.removeClass('tips-error').addClass('tips-success');
-          tipsCon.html('* 欢迎订阅久安钱包，邮件已发您邮箱，请注意查收');
+          tipsCon.html('* 恭喜您成功订阅久安钱包，邮件已发您邮箱，请注意查收');
        },200);
   });
 
