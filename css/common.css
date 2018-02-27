@@ -102,10 +102,27 @@
 }
 .contact-banner-part .contact-infopart{
 	margin-top: 114px;
-    padding: 0 8%;
+   padding: 0 8%;
 }
 .contact-banner-part .contact-logo{
-	height: 62px;
+  height: 62px;
+  line-height: 1;
+}
+.contact-banner-part .contact-logo i{
+  color: #FFFFFF;
+  line-height: 1;
+}
+.contact-banner-part .icon-phone{
+  font-size: 58px;
+}
+.contact-banner-part .icon-skype{
+  font-size: 56px;
+}
+.contact-banner-part .icon-email{
+  font-size: 62px;
+}
+.contact-banner-part .contact-infopart h3{
+  font-weight: 400;
 }
 
 /* help */

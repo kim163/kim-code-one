@@ -7,7 +7,7 @@
 .icon-sm:first-child{
   margin: 10px 0 0 0;
 }
-.icon-sm a:hover, .contact-logo img:hover{
+.icon-sm a:hover, .contact-logo:hover{
   z-index: 2;
   -webkit-transition: all 200ms ease-in;
   -webkit-transform: scale(1.25);
