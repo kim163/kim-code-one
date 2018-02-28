@@ -149,6 +149,9 @@
   margin: 0;
   font-weight: 400;
 }
+.help-content-part li a{
+  color: #b6b6b6;
+}
 .help-content-part .triangle-icon{
   width: 9px;
   height: 14px;
@@ -164,8 +167,8 @@
 .help-content-part .triangle-icon.down{
   -webkit-transform:rotate(90deg);
   -moz-transform:rotate(90deg);
-  -ms-transform:rotate(90deg); 
-  -o-transform:rotate(90deg); 
+  -ms-transform:rotate(90deg);
+  -o-transform:rotate(90deg);
   transform:rotate(90deg);
 }
 .help-content-part li .faq-cont{
