@@ -65,6 +65,14 @@
         easing: "ease-in",
         delay: 6 * config.animeDelay
     });
+     window.anime.reveal(".p-goup-bigimg3", {
+        scale: 1,
+        duration: 2 * config.animeDuration,
+        origin: "bottom",
+        distance: "50px",
+        easing: "ease-in",
+        delay: 8.5 * config.animeDelay
+    });
 
     /* block gradually */
    window.anime.reveal(".p-gradually-block1", {

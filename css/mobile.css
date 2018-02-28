@@ -18,18 +18,26 @@
   }
   #hero h1 {
     margin-top: 130px;
-    font-size: 36px;
+    font-size: 34px;
     line-height: 51px;
-    letter-spacing: 1.2px;
-    margin-bottom: 21px;
+    letter-spacing: -0.4px;
+    margin-bottom: 11px;
   }
   #hero h2{
     font-size: 22px;
     font-weight: 400;
-    line-height: 40px;
+    line-height: 37px;
   }
   #hero .col-5{
     margin-bottom: 89px;
+  }
+  .index-download-conleft{
+     margin-right: 0;
+     float: none;
+  }
+  .index-download-coderight{
+     padding-top: 15px;
+     float: none;
   }
   .navbar{
     display:none;
@@ -67,11 +75,14 @@
     line-height: 1.58;
     letter-spacing: 0.5px;
   }
-  .section p,.help-content-part li .faq-cont{
+  .section p,.help-content-part li .faq-cont, .index-download-coderight p{
     font-size: 18px;
     line-height: 2.11;
     letter-spacing: 0.5px;
     font-weight: 400;
+  }
+  .index-download-coderight p{
+    margin-bottom: 0;
   }
   .section h3{
     font-size: 22px;
@@ -125,7 +136,7 @@
     letter-spacing: 0.3px;
   }
   .subscribe-part {
-    padding: 65px 0 80px;
+    padding: 65px 0 60px;
   }
   .tips-information{
     font-size: 16px;
@@ -271,7 +282,7 @@
 @media only screen and (max-width: 680px) {
    form .form-control {
       border-radius: 35px;
-      padding: 0 82px 0 2.5%;
+      padding: 0 82px 0 4%;
    }
    form button[type="button"] {
       position: absolute;

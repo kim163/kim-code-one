@@ -171,6 +171,18 @@ img {
   text-align: center;
   font-size: 20px;
 }
+.index-download-conleft{
+  margin-right: 50px;
+  float: left;
+}
+.index-download-coderight{
+  padding-top: 20px;
+  float: left;
+}
+.index-download-coderight p{
+  margin-top: 7px;
+  font-size: 20px;
+}
 
 .section {
   width: 100%;
@@ -265,7 +277,7 @@ img {
   margin: 16px 0 30px;
 }
 .subscribe-part{
-  padding: 65px 0 221px;
+  padding: 65px 0 201px;
 }
 .subscribe-part h1{
   color: #363636;
@@ -279,15 +291,18 @@ img {
 }
 .tips-information{
   font-size: 18px;
-  margin-top: 30px;
+  margin-top: 20px;
   font-weight: 400;
-  min-height: 30px;
+  min-height: 60px;
 }
 .tips-success{
   color: #7091ff;
 }
 .tips-error{
   color: #eb0d1d;
+}
+.borradu-10{
+  border-radius: 10px;
 }
 
 /* Earth rotates */
