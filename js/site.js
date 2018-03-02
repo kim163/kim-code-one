@@ -1,4 +1,29 @@
 $( document ).ready(function() {
+    var language = "";
+
+    if (!sessionStorage.getItem('language-sel')) {
+        language = $.i18n.normaliseLanguageCode({"language" : ""});
+        sessionStorage.setItem('language-sel',language);
+    } else {
+        language = sessionStorage.getItem('language-sel');
+        $.i18n.normaliseLanguageCode({"language": language});
+    }
+    langBtnText();      // 更新按钮文字
+    loadBundles(language);
+
+    $('.j-languageSel').click(function () {
+        var language = sessionStorage.getItem('language-sel');
+        if(language == 'en'){
+            $('.j-languageSel').text('ENGLISH');
+            loadBundles('zh');
+            sessionStorage.setItem('language-sel','zh');
+        }else{
+            $('.j-languageSel').text('中文');
+            loadBundles('en');
+            sessionStorage.setItem('language-sel','en');
+        }
+    });
+
   // Define HTML elements to load content into
   var mobileNavBar = $('.m-nav-container');
   var desktopNavbar = $('.navbar');
@@ -57,3 +82,34 @@ $( document ).ready(function() {
   });
 
 });
+
+function updateHtml() {
+    try {
+        //初始化页面元素
+        $('[data-i18n-placeholder]').each(function () {
+            $(this).attr('placeholder', $.i18n.prop($(this).data('i18n-placeholder')));
+        });
+        $('[data-i18n-text]').each(function () {
+            $(this).text($.i18n.prop($(this).data('i18n-text')));
+        });
+        $('[data-i18n-value]').each(function () {
+            $(this).val($.i18n.prop($(this).data('i18n-value')));
+        });
+        $('[data-i18n-html]').each(function () {
+            $(this).html($.i18n.prop($(this).data('i18n-html')));
+        });
+    }
+    catch(ex){
+        console.log(ex);
+    }
+}
+
+function langBtnText() {
+    var $langSel = $('.j-languageSel'),
+        language = sessionStorage.getItem('language-sel');
+    if(language == 'zh' || language == 'zh_CN'){
+        $langSel.text('ENGLISH');
+    }else {
+        $langSel.text('中文');
+    }
+}

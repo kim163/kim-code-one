@@ -47,7 +47,7 @@
     <a class="nav-item" href="help.html">帮助中心</a>
     <a class="nav-item" href="white-paper.html">白皮书</a>
     <a class="nav-item" href="contact.html">联系我们</a>
-    <a class="nav-item" href="#">ENGLISH</a>
+    <a class="nav-item j-languageSel" href="javascript:void(0);">ENGLISH</a>
   </div>
 </div>
 
@@ -75,7 +75,7 @@
         <a href="contact.html">联系我们</a>
       </div>
       <div class="lang-icons">
-        <a href="#" class="lang-en">ENGLISH</a>
+        <a href="javascript:void(0);" class="lang-en j-languageSel">ENGLISH</a>
       </div>
     </div>
   </div>
@@ -101,10 +101,10 @@
     <div class="container" id="hero" style="overflow: visible">
     <div class="row">
       <div class="col-7 f-white">
-        <h1 class="mobile-center p-godown-bigtitle">打造可信去中心化钱包</h1>
+        <h1 class="mobile-center p-godown-bigtitle" data-i18n-html="indexBigTitle"></h1>
 
         <div class="index-download-conleft">
-          <h2 class="mobile-center p-goup-bigtitle">创造简单实用、点对点交易<br> APP可以在安卓、苹果移动设备上下载运行 </h2>
+          <h2 class="mobile-center p-goup-bigtitle" data-i18n-html="indexSubTitle"></h2>
           <div class="download-btngroup p-goup-btngroup">
               <a href="https://9anapp.com/app/9anapp.html" class="btn" target="_blank"><i class="android-icon"></i> 安卓下载</a>
               <a href="https://9anapp.com/app/9anapp.html" class="btn" target="_blank"><i class="ios-icon"></i> IOS下载</a>
@@ -112,7 +112,7 @@
         </div>
         <div class="index-download-coderight p-goup-bigimg3">
            <img src="images/index-code.jpg" alt="" class="width-100 borradu-10">
-           <p class="mobile-center">扫描二维码下载APP</p>
+           <p class="mobile-center" data-i18n-html="indexScanCode"></p>
         </div>
 
       </div>
@@ -288,9 +288,25 @@
   </div>
 </div>
 
-  <script type="text/javascript" src="js/scrollreveal.min.js"></script>
-  <script type="text/javascript" src="js/page-animation.js?v=1"></script>
-  <script type="text/javascript" src="js/site.js?v=2"></script>
+   <script type="text/javascript" src="js/scrollreveal.min.js"></script>
+   <script type="text/javascript" src="js/page-animation.js?v=1"></script>
+   <script type="text/javascript" src="js/jquery.i18n.properties.js" ></script>
+   <script type="text/javascript" src="js/site.js?v=2"></script>
+   <script type="text/javascript">
+       function loadBundles(language) {
+           jQuery.i18n.properties({
+               name:'strings',
+               path:'i18n/index/',
+               mode:'both',
+               language:language,
+               cache: true,
+               encoding: 'UTF-8',
+               callback: function() {
+                   updateHtml();
+               }
+           });
+       }
+   </script>
 
   </body>
 </html>

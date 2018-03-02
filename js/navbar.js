@@ -5,18 +5,6 @@ $( document ).ready(function() {
   var ScreenWidth = screen.width;
   var hrefLocation = window.location.href.split('/')[3];
 
-  // Smooth Scrolling from Nav Links
-  function scrollNav() {
-    $('.navbar a, .mobile-nav-bar a').click(function(){
-      var scroll_element = $(this).attr('anchor')
-      var nav_height = parseInt($('.navbar').css('height').replace('px', ''));
-      $('html, body').stop().animate({
-          scrollTop: $(scroll_element).offset().top - nav_height
-      }, 600);
-      return false;
-    });
-  } scrollNav();
-
   // Hide Header on on scroll down
   var didScroll;
   var lastScrollTop = 0;
