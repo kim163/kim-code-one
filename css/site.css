@@ -157,6 +157,9 @@ img {
 .download-btngroup{
   margin: 45px auto 10px;
 }
+.download-btngroup i{
+  font-style: normal;
+}
 .superiority-part{
   padding: 113px 0 128px 0;
 }

@@ -11,6 +11,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <link rel="apple-touch-icon" href="images/logo-blue.png">
   <meta name="theme-color" content="#ffffff">
+  <meta name="google" value="notranslate">
   <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon"/>
 
   <!-- Site CSS -->
@@ -27,66 +28,65 @@
   <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
   <script type="text/javascript" src="js/modernizr.js"></script>
   <!-- JS -->
-  <script type="text/javascript" src="js/site.js"></script>
   <script type="text/javascript" src="js/navbar.js"></script>
 
 </head>
   <body>
 
-    <!-- Mobile Nav Menu -->
+<!-- Mobile Nav Menu -->
 <div class="m-nav-container">
   <input id="toggle" type="checkbox">
   <label class="toggle-container" for="toggle"><span class="button button-toggle"></span></label>
   <div class="m-nav-title">
-    <img src="images/ja-logo.png" alt="ju an" class="width-100">
+      <img src="images/ja-logo.png" alt="ju an" class="width-100">
   </div>
   <div class="mobile-nav-bar">
-    <a class="nav-item" href="index.html">首 页</a>
-    <a class="nav-item" href="about.html">关于久安钱包</a>
-    <a class="nav-item" href="help.html">帮助中心</a>
-    <a class="nav-item" href="white-paper.html">白皮书</a>
-    <a class="nav-item" href="contact.html">联系我们</a>
-    <a class="nav-item" href="#">ENGLISH</a>
+      <a class="nav-item" href="index.html" data-i18n-html="navHome"></a>
+      <a class="nav-item" href="about.html" data-i18n-html="navAbout"></a>
+      <a class="nav-item" href="help.html" data-i18n-html="navHelp"></a>
+      <a class="nav-item" href="white-paper.html" data-i18n-html="navWhitepaper"></a>
+      <a class="nav-item" href="contact.html" data-i18n-html="navContactus"></a>
+      <a class="nav-item j-languageSel" href="javascript:void(0);" data-i18n-html="languageSel"></a>
   </div>
 </div>
 
 <!-- Desktop Nav Menu -->
 <div class="navbar nav-start">
- <div class="container">
-  <div class="row cfx">
-    <div class="logo">
-      <a class="nav-logo-link" href="index.html" anchor="#home"></a>
+    <div class="container">
+        <div class="row cfx">
+            <div class="logo">
+                <a class="nav-logo-link" href="index.html"></a>
+            </div>
+            <div class="link-part">
+                <div class="col-2">
+                    <a href="index.html" data-i18n-html="navHome"></a>
+                </div>
+                <div class="col-2">
+                    <a href="about.html" data-i18n-html="navAbout"></a>
+                </div>
+                <div class="col-2">
+                    <a href="help.html" data-i18n-html="navHelp"></a>
+                </div>
+                <div class="col-2">
+                    <a href="white-paper.html" data-i18n-html="navWhitepaper"></a>
+                </div>
+                <div class="col-2">
+                    <a href="contact.html" data-i18n-html="navContactus"></a>
+                </div>
+                <div class="lang-icons">
+                    <a href="javascript:void(0);" class="lang-en j-languageSel" data-i18n-html="languageSel"></a>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="link-part">
-      <div class="col-2">
-        <a href="index.html">首 页</a>
-      </div>
-      <div class="col-2">
-        <a href="about.html">关于久安钱包</a>
-      </div>
-      <div class="col-2">
-        <a href="help.html">帮助中心</a>
-      </div>
-      <div class="col-2">
-        <a href="white-paper.html">白皮书</a>
-      </div>
-      <div class="col-2">
-        <a href="contact.html">联系我们</a>
-      </div>
-      <div class="lang-icons">
-        <a href="#" class="lang-en">ENGLISH</a>
-      </div>
-    </div>
-  </div>
-  </div>
 </div>
 
 <div class="section whitepa-banner-part">
   <div class="container f-white">
     <div class="row">
       <div class="col-12 left">
-          <h1 class="pubanner-title p-godown-bigtitle">久安白皮书</h1>
-          <h4 class="pubanner-subtitle p-goup-bigtitle2">久安是新博彩世界里去中心化的资产发布入口，基于链的更安全的协议层 Token，及智能合约 交易过程更加安全和便捷 </h4>
+          <h1 class="pubanner-title p-godown-bigtitle" data-i18n-html="whpaBigTitle"></h1>
+          <h4 class="pubanner-subtitle p-goup-bigtitle2" data-i18n-html="whpaSubTitle"></h4>
        </div>
     </div>
   </div>
@@ -96,7 +96,7 @@
   <div class="container">
     <div class="row">
       <div class="col-12 center">
-          <h1 class="p-goup-title2">关于久安钱包视频</h1>
+          <h1 class="p-goup-title2" data-i18n-html="whpaIntroVideoTitle"></h1>
 
           <div class="video-part p-goup-bigimg2">
             <div class="video-cover" id="j-videoCover1">
@@ -116,17 +116,17 @@
   <div class="container f-white">
     <div class="row">
       <div class="col-12 center">
-          <h2 class="p-goup-title">久安立志于为新的商业资产发行和交易创建运行规则</h2>
-          <h4 class="p-goup-subtitle">久安是新博彩世界里去中心化的资产发布入口，通过基于链的更安全的协议层 Token，及智能合约，更安全更快速的发布数字资产，并使交易过程更加安全和便捷。</h4>
+          <h2 class="p-goup-title" data-i18n-html="whpaCreateRuleTitle"></h2>
+          <h4 class="p-goup-subtitle" data-i18n-html="whpaCreateRuleSubTitle"></h4>
           <img src="images/whitepaper/operate-rules.png" alt="" class="width-100 p-goup-bigimg">
        </div>
     </div>
     <div class="row p-goup-tipstitle1">
       <div class="col-6">
-        <h4> UET(Universal Equivalent Token) 锚定特定一般等价物的代币，将在整个博彩世界中作为货币进行流通。</h4>
+        <h4 data-i18n-html="whpaCreateRuleUet"></h4>
       </div>
       <div class="col-6">
-         <h4> ANC(Ancoin) 基于ERC20协议的代币，按持有比例获得分红奖励。</h4>
+         <h4 data-i18n-html="whpaCreateRuleAnc"></h4>
       </div>
     </div>
   </div>
@@ -134,15 +134,13 @@
 
 <div class="section uet-anc-part">
   <div class="container">
-    <h2 class="center p-goup-title">久安中存在两种代币，一种是UET,另一种是久安自身的代币ANC</h2>
+    <h2 class="center p-goup-title" data-i18n-html="whpaUetAncTitle"></h2>
     <div class="row first p-goup-subtitle">
        <div class="col-14 center">
           <h1 class="big-font">UET</h1>
        </div>
        <div class="col-15">
-         <h4>
-           一种是锚定特定一般等价物的代币，UET(Universal Equivalent Token)，它将在整个博彩世界中作为货币进行流通
-         </h4>
+         <h4 data-i18n-html="whpaUetPartCont"></h4>
        </div>
     </div>
     <div class="row seconde p-goup-tipstitle">
@@ -150,16 +148,10 @@
            <h1 class="big-font f-white">ANC</h1>
        </div>
        <div class="col-15">
-           <h4>
-             ANC 是久安基金会发行的基于ERC20 协议的代币。ANC 不是投资品，不具有任何证券属性ANC 可能会有如下用途:
-           </h4>
-          <p> 1.通过持有 ANC，成为久安基金会的股东。<br>
-所有在私募阶段购得 ANC，超过总发行量 2%的个人或者机构，将自动成为久安基金会的股东, 在私募结束以后，拥有超过总发行量 5%的个人或者机构，将自动成为久安基金会的股东</p>
-<p>2.ANC 关联 UET 钱包地址，将每日获得 UET 的分红奖励。<br>
-久安基金会将每日结算获得的 UET 手续费，然后根据持有 ANC 的比例，发放给所有 ANC 关联 UET 的钱包地址。</p>
-<p>3.通过持有 ANC 获得 UET 的发行购买权。<br>
-当市场上的 UET 不足够满足整个市场的流动性时，久安基金会将再次发售UET。根据持有 ANC 的数量多少，ANC 持有者获得 UET 的优先购买权。</p>
-
+           <h4 data-i18n-html="whpaAncPartTitle"></h4>
+           <p data-i18n-html="whpaAncPartContOne"></p>
+           <p data-i18n-html="whpaAncPartContTwo"></p>
+           <p data-i18n-html="whpaAncPartContThree"></p>
        </div>
     </div>
   </div>
@@ -167,21 +159,21 @@
 
 <div class="section issue-shares-part">
   <div class="container f-white">
-    <h1 class="center p-goup-title">久安基金会将发行有限 <i class="big-number"> 21,000,000 </i>个ANC</h1>
+    <h1 class="center p-goup-title" data-i18n-html="whpaIssueAncTitle"></h1>
     <div class="row">
        <div class="col-16 issue-shares-item j-issueShaItem left active p-left-img">
-          <h3>ANC 的分配如下:</h3>
-<p class="first-p"> 一、8,400,000 个 ANC(40%)，进行私募发行。在私募阶段，购买超过 420,000 个ANC(2%)的个人或者机构，将成为安币的股东。</p>
-<p> 二、6,300,000 个 ANC(30%)，基金会和早期团队持有（禁售）。在私募结束后，开始逐月解禁，每月解禁 1%，需 30 个月全部结束禁售。</p>
-<p> 三、6,300,000 个 ANC(30%)，作为维护久安基金会和整个项目的运营成本，并包括新项目的研发。其中，新项目研发盈利所得，计入久安基金会，其中一部分用来奖励给 ANC 的持有者。</p>
+          <h3 data-i18n-html="whpaAncAssignedTitle"></h3>
+          <p class="first-p" data-i18n-html="whpaAncAssignedOne"></p>
+          <p data-i18n-html="whpaAncAssignedTwo"></p>
+          <p data-i18n-html="whpaAncAssignedThree"></p>
        </div>
        <div class="col-17 issue-shares-item j-issueShaItem p-right-img">
-          <h3>私募所得的收入，将用于以下几个方面：</h3>
-<p class="first-p">一、团队建设：30%。这笔预算将用于加强技术团队，优化现有技术设计和 研发新技术的支出。</p>
-<p>二、硬件采购：10%。这笔预算将用于采购公有云或分布式云提供的计算能力，以支援初期的开发与发展。</p>
-<p>三、运营管理：20%。这笔预算将用于在相关的法律、安全、会计、人事等运营管理方面的一系列开支。</p>
-<p>四、市场推广：30%。这笔预算将用于推广。包括：流量购买、交换，业务推广，社区建立。</p>
-<p>五、其他偶然性开支：10%。这笔预算将用于不可预见的偶然性开支。</p>
+          <h3 data-i18n-html="whpaPrivateEquityTitle"></h3>
+          <p class="first-p" data-i18n-html="whpaPrivateEquityOne"></p>
+          <p data-i18n-html="whpaPrivateEquityTwo"></p>
+          <p data-i18n-html="whpaPrivateEquityThree"></p>
+          <p data-i18n-html="whpaPrivateEquityFour"></p>
+          <p data-i18n-html="whpaPrivateEquityFive"></p>
        </div>
     </div>
   </div>
@@ -191,15 +183,10 @@
   <div class="container">
     <div class="row center">
       <div class="col-12">
-          <h1 class="p-goup-title">UET 手续费计算原则</h1>
-          <h4 class="p-goup-subtitle">
-            久安基金会设计了 UET 手续费规则，让 ANC 持有者享有适当的权益。手续费设计原则如下：<br>
-所有 ANC 钱包地址，在被生成的时候，会自动生成一个与之关联的 UET 钱包地址。<br>
-所有 UET 钱包地址，在接收 UET 的时候，会被收取转入额度的 1%，作为手续费。手续费直接转入久安基金会中。
-          </h4>
+           <h1 class="p-goup-title" data-i18n-html="whpaUetFeesCalTitle"></h1>
+           <h4 class="p-goup-subtitle" data-i18n-html="whpaUetFeesCalSubTitle"></h4>
            <img src="images/whitepaper/fee-calculation-one.png" alt="" class="width-100 p-left-img">
-           <h4 class="seconde p-goup-tipstitle1">UET 转账额度，是以 100 个为单位，最小转账为 100 个 UET。<br>
-所有手续费每日 0 点结算，12 点开始分发给每个 ANC 关联的 UET 钱包地址。</h4>
+           <h4 class="seconde p-goup-tipstitle1" data-i18n-html="whpaUetFeesCalTipsTitle"></h4>
            <img src="images/whitepaper/fee-calculation-two.png" alt="" class="width-100 p-right-img2">
        </div>
     </div>
@@ -210,10 +197,8 @@
   <div class="container f-white">
     <div class="row">
       <div class="col-12 center">
-          <h1 class="p-goup-title">久安钱包应用入口</h1>
-          <h4 class="p-goup-subtitle">
-            在久安钱包中，用户可以方便的获取 UET，也可以即时将 UET 换成其他的代币。而这些交易，全部都是 C2C模式进行的。由于 UET 是锚定一般等价物的代币，所以在交易过程中没有其他虚拟代币的“限价交易“模式，这极大的方便了用户之间的交易。此外，我们还会与各个大型平台商对接，用户可以直接在第三方的平台上进行 UET 交易。将带领用户进入 UET 联通的世界，从此将关注重点放在游戏的体验上，而不需要为代币担心。
-          </h4>
+          <h1 class="p-goup-title" data-i18n-html="whpaApplicatEntraTitle"></h1>
+          <h4 class="p-goup-subtitle" data-i18n-html="whpaApplicatEntraSubTitle"></h4>
           <img src="images/whitepaper/application-portal.png" alt="" class="width-100 p-goup-bigimg">
        </div>
     </div>
@@ -224,33 +209,30 @@
   <div class="container center">
     <div class="row market-prediction">
       <div class="col-12">
-          <h1 class="p-goup-title">市场预测</h1>
-          <h2 class="normtitle p-goup-subtitle">根据久安基金在博彩的经验，估算一年的商业价值，预测如下<br>预计博彩每天交易额500,000,000元（5亿） </h2>
+          <h1 class="p-goup-title" data-i18n-html="whpaMarketPredictTitle"></h1>
+          <h2 class="normtitle p-goup-subtitle" data-i18n-html="whpaMarketPredictSubTitle"></h2>
        </div>
     </div>
     <div class="row revenue-section">
       <div class="col-4 active p-gradually-block4">
         <div class="market-logo time-icon"> </div>
-        <h1>每日交易手续费</h1>
-        <h2>500000000x1% =5000000(5百万)</h2>
+        <h1 data-i18n-html="whpaMarketPredictOneTi"></h1>
+        <h2 data-i18n-html="whpaMarketPredictOneCo"></h2>
       </div>
       <div class="col-4 p-gradually-block5">
         <div class="market-logo calendar-icon"> </div>
-        <h1>一年总手续费</h1>
-        <h2>500000000x365 =1825000000(18.25亿)</h2>
+        <h1 data-i18n-html="whpaMarketPredictTwoTi"></h1>
+        <h2 data-i18n-html="whpaMarketPredictTwoCo"></h2>
       </div>
       <div class="col-4 p-gradually-block6">
         <div class="market-logo money-icon"> </div>
-        <h1>一年每个ANC收益</h1>
-        <h2>1825000000/21000000 =86.9元</h2>
+        <h1 data-i18n-html="whpaMarketPredictThreeTi"></h1>
+        <h2 data-i18n-html="whpaMarketPredictThreeCo"></h2>
       </div>
     </div>
     <div class="row">
       <div class="col-12">
-          <h4 class="p-goup-tipstitle2">UET初次发行，发行量为50000000000个(500亿)，仅面向ANC股东，发行所有的法币，全部指定放在银行账户接受ANC股东监管。
-当市面上UET不能满足整个市场流动性时，久安基金会将再次发售UET，任何发行申请，必须久安基金董事至少三个支持，方可执行。
-久安基金董事会由五人组成。
-</h4>
+          <h4 class="p-goup-tipstitle2" data-i18n-html="whpaMarketPredictTipsTitle"></h4>
        </div>
     </div>
 
@@ -261,8 +243,8 @@
   <div class="container f-white">
     <div class="row">
       <div class="col-12 center">
-          <h1 class="p-goup-title">阅读白皮书PDF&nbsp;&nbsp;开启数字资产未来 </h1>
-          <a href="pdfs/juan-foundation.pdf" target="_blank" class="btn more-whitepap-btn p-goup-btngroup2">点击阅读更多>></a>
+          <h1 class="p-goup-title" data-i18n-html="whpaReadPdfTitle"></h1>
+          <a href="pdfs/juan-foundation.pdf" target="_blank" class="btn more-whitepap-btn p-goup-btngroup2" data-i18n-html="whpaReadPdfMoreBtn"></a>
        </div>
     </div>
   </div>
@@ -272,12 +254,10 @@
   <div class="container center f-white">
     <div class="row foot-part">
      <div class="col-7 left">
-       <a class="p-goup-title" href="index.html" anchor="#home">
+       <a class="p-goup-title" href="index.html">
          <img src="images/logo.png" alt="">
        </a>
-       <p class="p-goup-subtitle">
-         国内早期区块链从业者 <br> 团队落地瑞士，专注数字资产钱包，智能合约方向
-       </p>
+       <p class="p-goup-subtitle" data-i18n-html="footIntro"></p>
      </div>
       <div class="col-5 right">
         <div class="icon-sm facebook p-gradually-block3">
@@ -297,6 +277,8 @@
   </div>
 </div>
 
+  <script type="text/javascript" src="js/jquery.i18n.properties.js" ></script>
+  <script type="text/javascript" src="js/site.js?v=2"></script>
   <script type="text/javascript" src="js/scrollreveal.min.js"></script>
   <script type="text/javascript" src="js/page-animation.js"></script>
 

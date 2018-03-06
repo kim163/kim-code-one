@@ -12,6 +12,7 @@
   <link rel="apple-touch-icon" href="images/logo-blue.png">
   <meta name="theme-color" content="#ffffff">
   <meta http-equiv="Access-Control-Allow-Origin" content="*" />
+  <meta name="google" value="notranslate">
   <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon"/>
 
   <!-- Site CSS -->
@@ -42,12 +43,12 @@
     <img src="images/ja-logo.png" alt="ju an" class="width-100">
   </div>
   <div class="mobile-nav-bar">
-    <a class="nav-item" href="index.html">首 页</a>
-    <a class="nav-item" href="about.html">关于久安钱包</a>
-    <a class="nav-item" href="help.html">帮助中心</a>
-    <a class="nav-item" href="white-paper.html">白皮书</a>
-    <a class="nav-item" href="contact.html">联系我们</a>
-    <a class="nav-item j-languageSel" href="javascript:void(0);">ENGLISH</a>
+    <a class="nav-item" href="index.html" data-i18n-html="navHome"></a>
+    <a class="nav-item" href="about.html" data-i18n-html="navAbout"></a>
+    <a class="nav-item" href="help.html" data-i18n-html="navHelp"></a>
+    <a class="nav-item" href="white-paper.html" data-i18n-html="navWhitepaper"></a>
+    <a class="nav-item" href="contact.html" data-i18n-html="navContactus"></a>
+    <a class="nav-item j-languageSel" href="javascript:void(0);" data-i18n-html="languageSel"></a>
   </div>
 </div>
 
@@ -56,26 +57,26 @@
  <div class="container">
   <div class="row cfx">
     <div class="logo">
-      <a class="nav-logo-link" href="index.html" anchor="#home"></a>
+      <a class="nav-logo-link" href="index.html"></a>
     </div>
     <div class="link-part">
       <div class="col-2">
-        <a href="index.html">首 页</a>
+        <a href="index.html" data-i18n-html="navHome"></a>
       </div>
       <div class="col-2">
-        <a href="about.html">关于久安钱包</a>
+        <a href="about.html" data-i18n-html="navAbout"></a>
       </div>
       <div class="col-2">
-        <a href="help.html">帮助中心</a>
+        <a href="help.html" data-i18n-html="navHelp"></a>
       </div>
       <div class="col-2">
-        <a href="white-paper.html">白皮书</a>
+        <a href="white-paper.html" data-i18n-html="navWhitepaper"></a>
       </div>
       <div class="col-2">
-        <a href="contact.html">联系我们</a>
+        <a href="contact.html" data-i18n-html="navContactus"></a>
       </div>
       <div class="lang-icons">
-        <a href="javascript:void(0);" class="lang-en j-languageSel">ENGLISH</a>
+        <a href="javascript:void(0);" class="lang-en j-languageSel" data-i18n-html="languageSel"></a>
       </div>
     </div>
   </div>
@@ -106,8 +107,8 @@
         <div class="index-download-conleft">
           <h2 class="mobile-center p-goup-bigtitle" data-i18n-html="indexSubTitle"></h2>
           <div class="download-btngroup p-goup-btngroup">
-              <a href="https://9anapp.com/app/9anapp.html" class="btn" target="_blank"><i class="android-icon"></i> 安卓下载</a>
-              <a href="https://9anapp.com/app/9anapp.html" class="btn" target="_blank"><i class="ios-icon"></i> IOS下载</a>
+              <a href="https://9anapp.com/app/9anapp.html" class="btn" target="_blank"><i class="android-icon"></i> <i data-i18n-text="indexAndroidDown"></i></a>
+              <a href="https://9anapp.com/app/9anapp.html" class="btn" target="_blank"><i class="ios-icon"></i> <i data-i18n-text="indexIosDown"></i></a>
           </div>
         </div>
         <div class="index-download-coderight p-goup-bigimg3">
@@ -137,11 +138,9 @@
              <img src="images/fast-trading.png" height="132" >
           </div>
           <div class="title center">
-            <h2>快速交易</h2>
+            <h2 data-i18n-html="indexSuperFastTitle"></h2>
           </div>
-          <p>
-            9安钱包是一个不涉及第三方的P2P交易平台，交易过程方便快捷、更方便
-          </p>
+          <p data-i18n-html="indexSuperFastText"></p>
       </div>
 
       <div class="col-4 p-gradually-block2">
@@ -149,11 +148,9 @@
               <img src="images/safe-reliable.png" height="132">
           </div>
           <div class="title center">
-            <h2>安全可靠</h2>
+            <h2 data-i18n-html="indexSuperSafeTitle"></h2>
           </div>
-          <p >
-            冷存储、SSL、多重加密等银行级别安全技术，五年金融安全经验的安全团队
-          </p>
+          <p data-i18n-html="indexSuperSafeText"></p>
       </div>
 
       <div class="col-4 p-gradually-block3">
@@ -161,11 +158,9 @@
              <img src="images/smart-contract.png" height="132" >
           </div>
           <div class="title center">
-            <h2>智能合约</h2>
+            <h2 data-i18n-html="indexSuperSmartTitle"></h2>
           </div>
-          <p>
-            保证了合同条款的强制执行力；将智能合约与区块链相结合，使得合约的条款一旦设定，就没有第三方可以篡改
-          </p>
+          <p data-i18n-html="indexSuperSmartText"></p>
       </div>
 
     </div>
@@ -176,13 +171,9 @@
   <div class="container f-white center">
     <div class="row efficient-world">
       <div class="col-6 left">
-          <h1 class="mobile-center p-goup-title">迈向更加公平，高效的世界</h1>
-          <p class="p-goup-subtitle">
-            通过区块链技术来实现组织结构的创建和维护。我们希望让人们轻松安全地支付，掌控自己的数字资产
-          </p>
-          <h3 class="p-goup-tipstitle">
-            通过钱包，我们正在实现无国界，无许可，更高效的支付
-          </h3>
+          <h1 class="mobile-center p-goup-title" data-i18n-html="indexEfficWorldTitle"></h1>
+          <p class="p-goup-subtitle" data-i18n-html="indexEfficWorldSubTitle"></p>
+          <h3 class="p-goup-tipstitle" data-i18n-html="indexEfficWorldTipsTitle"></h3>
       </div>
 
       <div class="col-6 display-flex p-right-img">
@@ -200,13 +191,9 @@
         <img src="images/asset-management.png" alt="" class="width-100" >
       </div>
       <div class="col-5 left">
-          <h1 class="mobile-center p-goup-title">资产管理</h1>
-          <p class="p-goup-subtitle">
-            私钥本地安全保存，资产一目了然;  支持多种钱包类型，轻松导入导出;  助记词备份防丢，多重签名防盗
-          </p>
-          <h4 class="p-goup-tipstitle">
-            通过钱包，我们正在实现无国界，无许可，更高效的支付
-          </h4>
+          <h1 class="mobile-center p-goup-title" data-i18n-html="indexAssetTitle"></h1>
+          <p class="p-goup-subtitle" data-i18n-html="indexAssetSubTitle"></p>
+          <h4 class="p-goup-tipstitle" data-i18n-html="indexAssetTipsTitle"></h4>
       </div>
     </div>
   </div>
@@ -216,11 +203,9 @@
   <div class="container">
     <div class="row white-paper-part">
       <div class="col-6  mobile-center">
-        <h1 class="p-goup-title">阅读白皮书  开启数字资产未来</h1>
-        <p class="left p-goup-subtitle">
-          通过区块链技术来实现组织结构的创建和维护。我们希望让人们轻松安全地支付，掌控自己的数字资产
-        </p>
-        <a href="white-paper.html" class="btn white-paperbtn p-goup-btngroup2">阅读白皮书</a>
+        <h1 class="p-goup-title" data-i18n-html="indexWhpaperTitle"></h1>
+        <p class="left p-goup-subtitle" data-i18n-html="indexWhpaperSubTitle"></p>
+        <a href="white-paper.html" class="btn white-paperbtn p-goup-btngroup2" data-i18n-html="indexWhpaperBtn"></a>
       </div>
 
       <div class="col-6 display-flex p-right-img">
@@ -234,23 +219,23 @@
 <div class="section ">
   <div class="container">
     <div class="col-12 center subscribe-part">
-      <h1 class="p-goup-title">邮件订阅</h1>
-      <p class="p-goup-subtitle">不会有任何垃圾邮件。你的邮箱地址只会用于钱包，并且你可轻易的在任何时候取消订阅</p>
+      <h1 class="p-goup-title" data-i18n-html="indexEmailTitle"></h1>
+      <p class="p-goup-subtitle" data-i18n-html="indexEmailSubTitle"></p>
       <form class="form-inline j-emailSubForm" action="https://api.sendcloud.net/apiv2/mail/send" method="post" enctype="multipart/form-data" target="emailSubFrame">
         <div class="form-group posit-rel p-goup-btngroup2">
               <input type="hidden" name="apiUser" value="9AnPRO" >
               <input type="hidden" name="apiKey" value="H2aXme67BNVxwRbc" >
-              <input type="email" name="to" class="form-control j-email" placeholder="请输入邮箱地址" >
+              <input type="email" name="to" class="form-control j-email" placeholder="" data-i18n-placeholder="indexEmailHolder" >
               <input type="hidden" name="from" value="service@9anpro.com" >
-              <input type="hidden" name="fromName" value="久安钱包" >
+              <input type="hidden" name="fromName" value="" data-i18n-value="indexEmailFromName">
               <input type="hidden" name="replyTo" value="" >
-              <input type="hidden" name="subject" value="欢迎订阅久安钱包" >
-              <input type="hidden" name="html" value="您好！<br/><br/>欢迎订阅久安钱包 我们将会定期推送最新资讯<br/><br/><img alt='9An' src='https://www.9security.com/images/juan-code.jpg' style=' width: 200px; height: 203px;' />" >
+              <input type="hidden" name="subject" value="" data-i18n-value="indexEmailSubject">
+              <input type="hidden" name="html" data-i18n-value="indexEmailHtml" value="" >
               <input type="hidden" name="cc" value="" >
               <input type="hidden" name="bcc" value="" >
               <input type="hidden" name="file1" value="" >
               <input type="hidden" name="file2" value="" >
-              <button type="button" class="submit-bluebtn j-submitBtn" >订阅</button>
+              <button type="button" class="submit-bluebtn j-submitBtn" data-i18n-text="indexEmailBtn"></button>
         </div>
       </form>
       <iframe name="emailSubFrame" class="hide"></iframe>
@@ -263,12 +248,10 @@
   <div class="container center f-white">
     <div class="row foot-part">
      <div class="col-7 left">
-       <a class="p-goup-title" href="index.html" anchor="#home">
+       <a class="p-goup-title" href="index.html">
          <img src="images/logo.png" alt="">
        </a>
-       <p class="p-goup-subtitle">
-         国内早期区块链从业者 <br> 团队落地瑞士，专注数字资产钱包，智能合约方向
-       </p>
+       <p class="p-goup-subtitle" data-i18n-html="footIntro"></p>
      </div>
       <div class="col-5 right">
         <div class="icon-sm facebook p-gradually-block3">
@@ -288,25 +271,10 @@
   </div>
 </div>
 
-   <script type="text/javascript" src="js/scrollreveal.min.js"></script>
-   <script type="text/javascript" src="js/page-animation.js?v=1"></script>
    <script type="text/javascript" src="js/jquery.i18n.properties.js" ></script>
    <script type="text/javascript" src="js/site.js?v=2"></script>
-   <script type="text/javascript">
-       function loadBundles(language) {
-           jQuery.i18n.properties({
-               name:'strings',
-               path:'i18n/index/',
-               mode:'both',
-               language:language,
-               cache: true,
-               encoding: 'UTF-8',
-               callback: function() {
-                   updateHtml();
-               }
-           });
-       }
-   </script>
+   <script type="text/javascript" src="js/scrollreveal.min.js"></script>
+   <script type="text/javascript" src="js/page-animation.js?v=1"></script>
 
   </body>
 </html>

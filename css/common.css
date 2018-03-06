@@ -149,6 +149,10 @@
   margin: 0;
   font-weight: 400;
 }
+.help-content-part li h3 i{
+  font-style: normal;
+  font-weight: 400;
+}
 .help-content-part li a{
   color: #b6b6b6;
 }

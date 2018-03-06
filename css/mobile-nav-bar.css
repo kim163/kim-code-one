@@ -200,7 +200,7 @@
   content: '';
   top: 50%;
   left: 0;
-  width: 38%;
+  width: 18px;
   height: 2px;
   background-color: #14171a;
   transform: translateY(-50%) scaleY(5);
