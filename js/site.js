@@ -10,6 +10,7 @@ $( document ).ready(function() {
         $.i18n.normaliseLanguageCode({"language": language});
     }
     loadBundles(language);
+    updateSpeElem();
 
     $('.j-languageSel').click(function () {
         var language = sessionStorage.getItem('language-sel');
@@ -26,6 +27,7 @@ $( document ).ready(function() {
                 $('.j-email').css('padding','0 130px 0 4%');
             }
         }
+        updateSpeElem();
     });
 
   // Define HTML elements to load content into
@@ -96,7 +98,7 @@ $( document ).ready(function() {
            if(language.indexOf('zh') !== -1){
                tipsCon.html('* 恭喜您成功订阅久安钱包，邮件已发您邮箱，请注意查收');
            }else {
-               tipsCon.html('* Congratulations, you have successfully subscribed to the JOAN wallet. The email was sent to you,please kindly check it');
+               tipsCon.html('* Congratulations, you have successfully subscribed to the JUAN wallet. The email was sent to you,please kindly check it');
            }
        },200);
   });
@@ -155,5 +157,16 @@ function updateHtml() {
     }
     catch(ex){
         console.log(ex);
+    }
+}
+
+function updateSpeElem() {
+    var  language = sessionStorage.getItem('language-sel');
+    if(language.indexOf('zh') !== -1){
+        $('.j-whpaIssueAncRow').css('min-height','initial');
+        $("title").html('久安钱包');
+    }else {
+       $('.j-whpaIssueAncRow').css('min-height','965px');
+       $("title").html('JUAN wallet');
     }
 }

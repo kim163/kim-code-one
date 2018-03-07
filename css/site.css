@@ -153,6 +153,7 @@ img {
   line-height: 47px;
   letter-spacing: 1px;
   font-weight: 100;
+  max-width: 600px;
 }
 .download-btngroup{
   margin: 45px auto 10px;
@@ -280,7 +281,7 @@ img {
   margin: 16px 0 30px;
 }
 .subscribe-part{
-  padding: 65px 0 201px;
+  padding: 65px 0 141px;
 }
 .subscribe-part h1{
   color: #363636;
@@ -296,7 +297,7 @@ img {
   font-size: 18px;
   margin-top: 20px;
   font-weight: 400;
-  min-height: 60px;
+  min-height: 120px;
 }
 .tips-success{
   color: #7091ff;

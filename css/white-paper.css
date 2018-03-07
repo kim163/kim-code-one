@@ -102,7 +102,7 @@
     min-height: 216px;
 }
 .uet-anc-part .seconde > div{
-    min-height: 490px;
+	min-height: 527px;
 }
 .uet-anc-part .first{
 	margin-bottom: 13px;
@@ -183,7 +183,7 @@
 }
 .issue-shares-part .issue-shares-item{
 	margin-top: 32px;
-    padding: 0 3% 54px 4%;
+    padding: 0 1% 54px 1%;
     width: 46.5%;
 }
 .issue-shares-part .issue-shares-item h3{
@@ -191,6 +191,7 @@
     border-bottom: 1px solid #DDDDDD;
     color: #616161;
     margin: 0;
+	line-height: 1.1;
 }
 .issue-shares-part p {
 	font-size: 24px;
