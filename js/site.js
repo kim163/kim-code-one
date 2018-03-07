@@ -10,7 +10,7 @@ $( document ).ready(function() {
         $.i18n.normaliseLanguageCode({"language": language});
     }
     loadBundles(language);
-    updateSpeElem();
+    updateSpeElem(language);
 
     $('.j-languageSel').click(function () {
         var language = sessionStorage.getItem('language-sel');
@@ -27,7 +27,7 @@ $( document ).ready(function() {
                 $('.j-email').css('padding','0 130px 0 4%');
             }
         }
-        updateSpeElem();
+        updateSpeElem(language);
     });
 
   // Define HTML elements to load content into
@@ -160,8 +160,7 @@ function updateHtml() {
     }
 }
 
-function updateSpeElem() {
-    var  language = sessionStorage.getItem('language-sel');
+function updateSpeElem(language) {
     if(language.indexOf('zh') !== -1){
         $('.j-whpaIssueAncRow').css('min-height','initial');
         $("title").html('久安钱包');
