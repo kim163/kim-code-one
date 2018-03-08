@@ -238,10 +238,16 @@ img {
   margin: 215px 0 0;
   font-weight: 400;
 }
+.section .enmobile-pubanner-title{
+  margin: 160px 0 0;
+}
 .section .pubanner-subtitle{
   line-height: 42px;
   margin: 0;
   max-width: 740px;
+}
+.enmobile-lineheg{
+  line-height: 36px !important;
 }
 .efficient-world{
   padding: 67px 0 65px;

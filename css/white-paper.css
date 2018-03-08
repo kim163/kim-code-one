@@ -70,6 +70,9 @@
 	max-width: 470px;
     margin: auto;
 }
+.operate-rules-part .operate-description{
+	margin-bottom: 80px;
+}
 .uet-anc-part{
 	min-height: 1100px;
 	background: #FFFFFF url(../images/whitepaper/uet-anc-bg.jpg) no-repeat center bottom;
@@ -148,7 +151,7 @@
   box-shadow: 1px 6px 4px rgba(0,0,0,0.5);
   -moz-box-shadow: 1px 6px 4px rgba(0,0,0,0.5);
   -webkit-box-shadow: 1px 6px 4px rgba(0,0,0,0.5);
-  padding-bottom: 116px;
+  padding-bottom: 80px;
   position: relative;
   z-index: 2;
   margin: 0.5rem 0;
@@ -250,7 +253,7 @@
 	color: #5d5d5d;
 	min-height: 506px;
 	word-wrap:break-word;
-	padding: 0 3.9% 2%;
+	padding: 0 3% 2%;
 }
 .market-prediction-part .revenue-section .col-4.active,.market-prediction-part .revenue-section .col-4:hover{
 	color: #ffffff;

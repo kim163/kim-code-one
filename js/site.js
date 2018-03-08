@@ -2,6 +2,8 @@ $( document ).ready(function() {
     var language = "",
         userAgent = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
+    console.log('start: ' + sessionStorage.getItem('language-sel'));
+
     if (!sessionStorage.getItem('language-sel')) {
         language = $.i18n.normaliseLanguageCode({"language" : ""});
         sessionStorage.setItem('language-sel',language);
@@ -16,18 +18,19 @@ $( document ).ready(function() {
         var language = sessionStorage.getItem('language-sel');
         if(language.indexOf('en') !== -1){
             loadBundles('zh');
+            updateSpeElem('zh');
             sessionStorage.setItem('language-sel','zh');
             if(userAgent){
                 $('.j-email').css('padding','0 82px 0 4%');
             }
         }else{
             loadBundles('en');
+            updateSpeElem('en');
             sessionStorage.setItem('language-sel','en');
             if(userAgent){
                 $('.j-email').css('padding','0 130px 0 4%');
             }
         }
-        updateSpeElem(language);
     });
 
   // Define HTML elements to load content into
@@ -142,6 +145,10 @@ function loadBundles(language) {
 function updateHtml() {
     try {
         //初始化页面元素
+        $('[data-i18n-attrsrc]').each(function () {
+            $(this).attr('src', $.i18n.prop($(this).data('i18n-attrsrc')));
+        });
+        $('.j-mobileNavLogo').show( "slow" );
         $('[data-i18n-html]').each(function () {
             $(this).html($.i18n.prop($(this).data('i18n-html')));
         });
@@ -161,11 +168,30 @@ function updateHtml() {
 }
 
 function updateSpeElem(language) {
+    var  userAgent = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
     if(language.indexOf('zh') !== -1){
         $('.j-whpaIssueAncRow').css('min-height','initial');
         $("title").html('久安钱包');
+        if(userAgent){
+            $('[data-enmobile-bigtitle]').each(function () {
+                $(this).removeClass('enmobile-pubanner-title');
+            });
+            $('[data-enmobile-lineheg]').each(function () {
+                $(this).removeClass('enmobile-lineheg');
+            });
+        }
     }else {
        $('.j-whpaIssueAncRow').css('min-height','965px');
-       $("title").html('JUAN wallet');
+       $("title").html('JUAN Wallet');
+       if(userAgent){
+           $('[data-enmobile-bigtitle]').each(function () {
+               $(this).addClass('enmobile-pubanner-title');
+           });
+           $('[data-enmobile-lineheg]').each(function () {
+               $(this).addClass('enmobile-lineheg');
+           });
+
+       }
     }
 }
