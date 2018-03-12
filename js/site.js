@@ -107,7 +107,6 @@ $( document ).ready(function() {
 });
 
 document.addEventListener("touchstart", function (event) {
-    event.preventDefault();
     var $target = $(event.target);
     if(!$target.is('div.m-nav-container')){
         $('#toggle').prop("checked", false);
@@ -119,7 +118,6 @@ document.getElementsByClassName('m-nav-container')[0].addEventListener("touchsta
 }, false);
 
 document.addEventListener("touchmove", function (event) {
-    event.preventDefault();
     var $target = $(event.target);
     if(!$target.is('div.m-nav-container')){
         $('#toggle').prop("checked", false);
