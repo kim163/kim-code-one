@@ -106,7 +106,7 @@ $( document ).ready(function() {
 
   $(document).click(function(event) {
       var $target = $(event.target);
-      if(!$target.hasClass('.m-nav-container')){
+      if(!$target.is('div.m-nav-container')){
          $('#toggle').prop( "checked", false );
       }
   });
