@@ -104,18 +104,31 @@ $( document ).ready(function() {
        },200);
   });
 
-  $(document).click(function(event) {
-      var $target = $(event.target);
-      if(!$target.is('div.m-nav-container')){
-         $('#toggle').prop( "checked", false );
-      }
-  });
-
-  $('.m-nav-container').click(function(event){
-      event.stopPropagation();
-  });
-
 });
+
+document.addEventListener("touchstart", function (event) {
+    event.preventDefault();
+    var $target = $(event.target);
+    if(!$target.is('div.m-nav-container')){
+        $('#toggle').prop("checked", false);
+    }
+}, false);
+
+document.getElementsByClassName('m-nav-container')[0].addEventListener("touchstart", function () {
+    event.stopPropagation();
+}, false);
+
+document.addEventListener("touchmove", function (event) {
+    event.preventDefault();
+    var $target = $(event.target);
+    if(!$target.is('div.m-nav-container')){
+        $('#toggle').prop("checked", false);
+    }
+}, false);
+
+document.getElementsByClassName('m-nav-container')[0].addEventListener("touchmove", function () {
+    event.stopPropagation();
+}, false);
 
 function loadBundles(language) {
     var pathname = window.location.pathname,
