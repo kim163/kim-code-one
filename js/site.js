@@ -2,31 +2,29 @@ $( document ).ready(function() {
     var language = "",
         userAgent = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
-    console.log('start: ' + sessionStorage.getItem('language-sel'));
-
-    if (!sessionStorage.getItem('language-sel')) {
+    if (!localStorage.getItem('language-sel')) {
         language = $.i18n.normaliseLanguageCode({"language" : ""});
-        sessionStorage.setItem('language-sel',language);
+        localStorage.setItem('language-sel',language);
     } else {
-        language = sessionStorage.getItem('language-sel');
+        language = localStorage.getItem('language-sel');
         $.i18n.normaliseLanguageCode({"language": language});
     }
     loadBundles(language);
     updateSpeElem(language);
 
     $('.j-languageSel').click(function () {
-        var language = sessionStorage.getItem('language-sel');
+        var language = localStorage.getItem('language-sel');
         if(language.indexOf('en') !== -1){
             loadBundles('zh');
             updateSpeElem('zh');
-            sessionStorage.setItem('language-sel','zh');
+            localStorage.setItem('language-sel','zh');
             if(userAgent){
                 $('.j-email').css('padding','0 82px 0 4%');
             }
         }else{
             loadBundles('en');
             updateSpeElem('en');
-            sessionStorage.setItem('language-sel','en');
+            localStorage.setItem('language-sel','en');
             if(userAgent){
                 $('.j-email').css('padding','0 130px 0 4%');
             }
@@ -41,7 +39,7 @@ $( document ).ready(function() {
     // Hide Desktop Nav
     desktopNavbar.hide();
     mobileNavBar.show();
-    if(sessionStorage.getItem('language-sel').indexOf('en') !== -1){
+    if(localStorage.getItem('language-sel').indexOf('en') !== -1){
         $('.j-email').css('padding','0 130px 0 4%');
     }
   } else {
@@ -70,7 +68,7 @@ $( document ).ready(function() {
            tipsCon = $('.j-tipsInform'),
            tipsText = '',
            isError = 1,  // 0 error , 1  success
-           language = sessionStorage.getItem('language-sel');
+           language = localStorage.getItem('language-sel');
 
        if(email == ''){
          isError = 0;
@@ -104,6 +102,17 @@ $( document ).ready(function() {
                tipsCon.html('* Congratulations, you have successfully subscribed to the JUAN wallet. The email was sent to you,please kindly check it');
            }
        },200);
+  });
+
+  $(document).click(function(event) {
+      var $target = $(event.target);
+      if(!$target.hasClass('.m-nav-container')){
+         $('#toggle').prop( "checked", false );
+      }
+  });
+
+  $('.m-nav-container').click(function(event){
+      event.stopPropagation();
   });
 
 });
