@@ -107,17 +107,22 @@ $( document ).ready(function() {
 });
 
 document.addEventListener("touchstart", function (event) {
-    var $target = $(event.target);
-    if(!$target.is('div.m-nav-container')){
-        $('#toggle').prop("checked", false);
-    }
+    touchScreen(event);
 }, false);
 
 document.getElementsByClassName('m-nav-container')[0].addEventListener("touchstart", function () {
     event.stopPropagation();
 }, false);
 
-document.addEventListener("touchmove", function (event) {
+function touchScreen(event) {
+    var $target = $(event.target),
+        $toggle = $('#toggle');
+    if(!$target.is('div.m-nav-container') && $toggle.is(':checked') ){
+        $toggle.prop("checked", false);
+    }
+}
+
+/*document.addEventListener("touchmove", function (event) {
     var $target = $(event.target);
     if(!$target.is('div.m-nav-container')){
         $('#toggle').prop("checked", false);
@@ -126,7 +131,7 @@ document.addEventListener("touchmove", function (event) {
 
 document.getElementsByClassName('m-nav-container')[0].addEventListener("touchmove", function () {
     event.stopPropagation();
-}, false);
+}, false);*/
 
 function loadBundles(language) {
     var pathname = window.location.pathname,
