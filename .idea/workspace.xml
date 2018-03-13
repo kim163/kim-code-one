@@ -2,7 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="47b73418-2301-41cc-be48-d96c46c3d11a" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/js/site.js" afterPath="$PROJECT_DIR$/js/site.js" />
+      <change beforePath="$PROJECT_DIR$/i18n/help/strings.properties" afterPath="$PROJECT_DIR$/i18n/help/strings.properties" />
+      <change beforePath="$PROJECT_DIR$/i18n/help/strings_en.properties" afterPath="$PROJECT_DIR$/i18n/help/strings_en.properties" />
+      <change beforePath="$PROJECT_DIR$/i18n/help/strings_zh.properties" afterPath="$PROJECT_DIR$/i18n/help/strings_zh.properties" />
+      <change beforePath="$PROJECT_DIR$/i18n/help/strings_zh_CN.properties" afterPath="$PROJECT_DIR$/i18n/help/strings_zh_CN.properties" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -44,8 +47,6 @@
         <option value="$PROJECT_DIR$/i18n/about/strings_zh.properties" />
         <option value="$PROJECT_DIR$/i18n/contact/strings_en.properties" />
         <option value="$PROJECT_DIR$/i18n/contact/strings_zh.properties" />
-        <option value="$PROJECT_DIR$/i18n/help/strings_en.properties" />
-        <option value="$PROJECT_DIR$/i18n/help/strings_zh.properties" />
         <option value="$PROJECT_DIR$/i18n/white-paper/strings_en.properties" />
         <option value="$PROJECT_DIR$/i18n/white-paper/strings_zh.properties" />
         <option value="$PROJECT_DIR$/about.html" />
@@ -57,6 +58,10 @@
         <option value="$PROJECT_DIR$/index.html" />
         <option value="$PROJECT_DIR$/css/mobile-nav-bar.css" />
         <option value="$PROJECT_DIR$/js/site.js" />
+        <option value="$PROJECT_DIR$/i18n/help/strings.properties" />
+        <option value="$PROJECT_DIR$/i18n/help/strings_en.properties" />
+        <option value="$PROJECT_DIR$/i18n/help/strings_zh.properties" />
+        <option value="$PROJECT_DIR$/i18n/help/strings_zh_CN.properties" />
       </list>
     </option>
   </component>
@@ -66,7 +71,7 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="2273" />
     <option name="y" value="-24" />
     <option name="width" value="1400" />
@@ -112,7 +117,8 @@
             <path>
               <item name="juan-git" type="b2602c69:ProjectViewProjectNode" />
               <item name="juan-git" type="462c0819:PsiDirectoryNode" />
-              <item name="js" type="462c0819:PsiDirectoryNode" />
+              <item name="i18n" type="462c0819:PsiDirectoryNode" />
+              <item name="help" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -158,15 +164,15 @@
       <workItem from="1520216179768" duration="56000" />
       <workItem from="1520216255088" duration="21000" />
       <workItem from="1520216303213" duration="79321000" />
-      <workItem from="1520825267692" duration="21081000" />
+      <workItem from="1520825267692" duration="21777000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="121476000" />
+    <option name="totallyTimeSpent" value="122172000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1912" y="-8" width="1936" height="1056" extended-state="7" />
+    <frame x="1912" y="-8" width="1936" height="1056" extended-state="6" />
     <layout>
       <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.11770833" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -307,20 +313,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/i18n/help/strings_zh_CN.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-648">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/i18n/help/strings.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/i18n/white-paper/strings_zh_CN.properties">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1134">
@@ -399,20 +391,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/i18n/contact/strings_zh.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="7" column="34" lean-forward="false" selection-start-line="7" selection-start-column="34" selection-end-line="7" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/i18n/help/strings_en.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="7" column="37" lean-forward="false" selection-start-line="7" selection-start-column="37" selection-end-line="7" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/i18n/help/strings_zh.properties">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="189">
           <caret line="7" column="34" lean-forward="false" selection-start-line="7" selection-start-column="34" selection-end-line="7" selection-end-column="34" />
@@ -499,6 +477,38 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1025">
           <caret line="64" column="44" lean-forward="true" selection-start-line="64" selection-start-column="44" selection-end-line="64" selection-end-column="44" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/i18n/help/strings.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="740">
+          <caret line="65" column="65" lean-forward="false" selection-start-line="65" selection-start-column="65" selection-end-line="65" selection-end-column="65" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/i18n/help/strings_en.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="783">
+          <caret line="65" column="65" lean-forward="false" selection-start-line="65" selection-start-column="65" selection-end-line="65" selection-end-column="65" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/i18n/help/strings_zh.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="740">
+          <caret line="54" column="58" lean-forward="false" selection-start-line="54" selection-start-column="58" selection-end-line="54" selection-end-column="58" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/i18n/help/strings_zh_CN.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="810">
+          <caret line="54" column="58" lean-forward="false" selection-start-line="54" selection-start-column="58" selection-end-line="54" selection-end-column="58" />
           <folding />
         </state>
       </provider>
