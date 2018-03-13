@@ -62,7 +62,13 @@ $( document ).ready(function() {
      $(this).addClass('active').siblings().removeClass('active');
   });
 
-  $('.j-submitBtn').click(function(){
+  $('input.j-email').keyup(function(event) {
+     if (event.keyCode == 13) {
+         $('button.j-submitBtn').trigger( "click" );
+     }
+  });
+
+  $('button.j-submitBtn').click(function(){
        var email = $.trim($('.j-email').val()),
            regex = /^(\w)+(\.\w+)*@(\w)+((\.\w+)+)$/,  // email regex
            tipsCon = $('.j-tipsInform'),
@@ -121,17 +127,6 @@ function touchScreen(event) {
         $toggle.prop("checked", false);
     }
 }
-
-/*document.addEventListener("touchmove", function (event) {
-    var $target = $(event.target);
-    if(!$target.is('div.m-nav-container')){
-        $('#toggle').prop("checked", false);
-    }
-}, false);
-
-document.getElementsByClassName('m-nav-container')[0].addEventListener("touchmove", function () {
-    event.stopPropagation();
-}, false);*/
 
 function loadBundles(language) {
     var pathname = window.location.pathname,
