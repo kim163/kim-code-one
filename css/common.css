@@ -123,6 +123,7 @@
 }
 .contact-banner-part .contact-infopart h3{
   font-weight: 400;
+  word-wrap: break-word;
 }
 
 /* help */

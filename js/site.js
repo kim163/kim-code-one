@@ -193,6 +193,9 @@ function updateSpeElem(language) {
     if(language.indexOf('zh') !== -1){
         $('.j-whpaIssueAncRow').css('min-height','initial');
         $("title").html('久安钱包');
+        $('[data-enmobile-bigtitle]').each(function () {
+            $(this).removeClass('pubanner-title-en');
+        });
         if(userAgent){
             $('[data-enmobile-bigtitle]').each(function () {
                 $(this).removeClass('enmobile-pubanner-title');
@@ -204,6 +207,9 @@ function updateSpeElem(language) {
     }else {
        $('.j-whpaIssueAncRow').css('min-height','965px');
        $("title").html('JUAN Wallet');
+       $('[data-enmobile-bigtitle]').each(function () {
+            $(this).addClass('pubanner-title-en');
+       });
        if(userAgent){
            $('[data-enmobile-bigtitle]').each(function () {
                $(this).addClass('enmobile-pubanner-title');
