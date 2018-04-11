@@ -302,9 +302,10 @@ img {
 }
 .tips-information{
   font-size: 18px;
-  margin-top: 20px;
+  margin: 20px auto 0;
   font-weight: 400;
   min-height: 120px;
+  max-width: 656px;
 }
 .tips-success{
   color: #7091ff;
