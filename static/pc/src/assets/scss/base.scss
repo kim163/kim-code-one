@@ -1,0 +1,357 @@
+
+body, div, ul, li, dl, dt, dd, ol, p, h1, h2, h3, h4, h5, h6, span, em, i, p, input, select, i, em, span,th,td,table {
+  margin: 0;
+  padding: 0;
+  font-style: normal;
+  box-sizing: border-box;
+}
+
+input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
+  background: none
+}
+
+img {
+  border: none;
+  vertical-align: middle;
+}
+
+a, a:hover {
+  outline: none;
+  text-decoration: none;
+  color: inherit;
+}
+
+body {
+  width: 100%;
+  font: normal 12px/1 "Microsoft Yahei", "arial", "Microsoft JhengHei", "HeiTi", "SimHei"
+}
+
+body, input, button, textarea, select {
+  -webkit-font-smoothing: antialiased
+}
+
+input {
+  border: none;
+}
+
+input[type="submit"], input[type="button"], button {
+  border: none;
+  background: none;
+}
+
+ul, ol {
+  list-style: none
+}
+
+.txt-center {
+  text-align: center;
+}
+
+.clear {
+  clear: both
+}
+
+.hidden {
+  display: none !important
+}
+
+.show {
+  display: block !important
+}
+
+.hide {
+  display: none
+}
+
+.fl {
+  float: left !important
+}
+
+.fr {
+  float: right !important
+}
+
+.cfx {
+  clear: both;
+  zoom: 1
+}
+
+.cfx:after {
+  display: block;
+  visibility: hidden;
+  clear: both;
+  overflow: hidden;
+  height: 0;
+  content: '.'
+}
+
+/* #滚动条
+=========*/
+::-webkit-scrollbar{ width: 8px; height: 8px;}
+
+::-webkit-scrollbar-track-piece{ margin: -2px; background-color: #eee;}
+
+::-webkit-scrollbar-thumb{ min-width: 150px; min-height: 150px; border-radius: 10px; background: #aaa;}
+
+::-webkit-scrollbar-thumb:vertical:hover{ background: #555;}
+
+::-webkit-scrollbar-thumb:horizontal:hover{ background: #555;}
+
+.content-warp {
+  width: 1100px;
+  margin: 0 auto;
+  display: block;
+  position: relative;
+}
+
+.cl-red {
+  color: #ff1e1e !important;
+}
+
+.cl-yelow {
+  color: #ffd924 !important;
+}
+
+.cl-bigred {
+  color: #e5210d;
+}
+
+body {
+  background: #f0f0f0;
+}
+
+.content{ background: url(~images/base/content.jpg) no-repeat center -9px;  padding-bottom:74px;}
+.user-conter {
+  width: 875px;
+  float: right;
+  background: #fff;
+}
+.modal {
+  position: fixed;
+  z-index: 999 !important;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  outline: 0;
+}
+.style_f {
+  display: block;
+  background: #fff;
+  margin-top: 20px;
+  text-align: left;
+  overflow: hidden;
+  border-bottom: solid 1px #1e327e;
+  .style_i {
+    float: left;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 0 22px;
+    display: block;
+    line-height: 37px;
+    text-align: center;
+    color: #1e327e;
+    text-decoration: none;
+    font-weight: 400;
+    &.active, &:hover {
+      background: #1e327e;
+      color: #fff;
+    }
+  }
+}
+
+.form-rowbox {
+  .inputbox {
+    width: 550px;
+    min-height: 45px;
+    margin: 0 auto 12px;
+    clear: both;
+    position: relative;
+    line-height: 45px;
+    .label {
+      font-size: 16px;
+      color: #666666;
+      float: left;
+      height: 45px;
+      line-height: 45px;
+      min-width: 112px;
+      text-align: right;
+    }
+    .select-group {
+      width:450px;
+      margin-left: -10px;
+      display: inline-block;
+      vertical-align: middle;
+      a:hover, a.active {
+        background: #1e327e;
+        color: #fff;
+        border: 1px solid #1e327e;
+      }
+      &.depositmenu a {
+        width: auto !important;
+        padding: 4px 8px !important;
+      }
+      a {
+        width: 52px;
+        border: 1px solid #999;
+        font-weight: bold;
+        height: 31px;
+        text-align: center;
+        line-height: 31px;
+        font-size: 14px;
+        display: inline-block;
+        color: #999;
+        float: left;
+        margin-left: 11px;
+        margin-bottom:10px;
+      }
+    }
+    select, input,.input {
+      outline: none;
+      background: #f8f8f8;
+      background-size: 23px 13px;
+      width: 420px;
+      padding: 5px;
+      font-size: 14px;
+      line-height: 43 \0;
+      border-radius: 4px;
+      border: solid 1px #cacaca;
+      height: 46px;
+      color: #333;
+      line-height: 34px;
+      text-indent: 10px;
+    }
+
+  }
+  .formbtn {
+    cursor: pointer;
+    letter-spacing: 4px;
+    width: 320px;
+    height: 40px;
+    line-height: 40px;
+    display: block;
+    font-size: 16px;
+    background: #1e327e;
+    border-radius: 4px;
+    color: #fff;
+    text-align: center;
+    margin: 24px auto 0px;
+    font-weight: bold;
+    &[disabled]{
+      background: #ccc;
+      cursor: not-allowed;
+    }
+  }
+}
+
+.form-box {
+  @extend .cfx;
+  .row-group {
+    @extend .cfx;
+    padding: 14px 0 5px 0;
+  }
+  .inputbox {
+    display: inline-block;
+    margin: 5px 16px 5px 0;
+    //float: left;
+    line-height: 32px;
+    font-size: 12px !important;
+    .label, label {
+      line-height: 30px;
+      font-size: 16px;
+      float: left;
+      font-weight: bold;
+    }
+    input, select, .input {
+      display: inline-block;
+      float: left;
+      width: 158px !important;
+      background: #fff;
+      vertical-align: top !important;
+      border: solid 1px #bfbfbf;
+      height: 32px;
+      font-size: 12px;
+      color: #313131;
+      border-radius: 4px;
+      padding:0 8px;
+    }
+  }
+  .btn-box {
+    padding: 15px 0 0 128px;
+  }
+  .btn {
+    background: #1e327e;
+    cursor: pointer;
+    display: inline-block;
+    vertical-align: top;
+    padding: 3px 25px;
+    border-radius: 3px;
+    color: #fff;
+    line-height: 24px;
+    font-size: 14px;
+    margin-top: 6px;
+    transition: all .1s;
+  }
+}
+
+.agent-content {
+  width: 780px;
+  float: right;
+  background: #fff;
+  .style_f {
+    margin: 0;
+  }
+  .data-wrap {
+    padding: 5px 20px 20px 20px;
+  }
+  .data-info {
+    margin-top: 20px;
+    padding: 10px 0;
+  }
+  .bottom-tip {
+    padding: 10px 10px 30px 10px;
+    margin: 20px auto 0 auto;
+    clear: both;
+    line-height: 1.5;
+    font-size: 14px;
+    color: #6c6c6c;
+    border-top: solid 1px #bfbfbf;
+  }
+
+}
+
+.deposit-form {
+  width: 650px;
+  padding: 20px 0 20px 0;
+  margin: 0 auto;
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    td {
+      height: 30px;
+      padding: 5px 10px;
+      border: solid 1px #e5e5e5;
+      border-left: none;
+      border-right: none;
+      &.txt {
+        width: 116px;
+        text-align: right;
+        padding-right: 20px;
+        border-right: solid 1px #e5e5e5;
+        font-size: 12px;
+
+      }
+      input, .input, select {
+        border: solid 1px #bfbfbf;
+        width: 208px;
+        padding: 0 5px;
+        height: 22px;
+        line-height: 22px;
+        font-size: 12px;
+        color: #313131;
+      }
+    }
+  }
+}
