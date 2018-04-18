@@ -1,4 +1,4 @@
-# juan vues
+# juan project vues
 
 # 1.先安装nodejs，推荐安装 8 以上版本，node.js官网有下载。（并设置好nodejs的环境变量，新的安装包默认好像不用设置）
 
