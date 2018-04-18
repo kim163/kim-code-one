@@ -9,11 +9,12 @@ npm install
 # 3.本地运行开发服务（用于本地开发，先进入pc或者mobile目录） at localhost:8099
 npm run dev
 
+# 4.打包部署到测试环境或者线上
 # 方式1：打包生成发布到测试环境或者线上（手动部署，先进入pc或者mobile目录）
 npm run build
 
 # 方式2：打包生成发布到测试环境或者线上（推荐）
-> 运行脚本 <br><br>
+> 运行脚本，然后在里面选择部署 test 或者 online <br><br>
 > &nbsp;&nbsp;  Mac 版：<br>
 > &nbsp;&nbsp;&nbsp;&nbsp;  build.sh <br><br>
 > &nbsp;&nbsp;  Win 版：<br>
