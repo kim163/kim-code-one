@@ -28,12 +28,12 @@ export default [
   {
     path: "/index",
     name: "index",
-    redirect:"./static/index.html"
+    component: index
   },
   {
     path: "/",
     name: "aindex",
-    redirect:"./static/index.html"
+    redirect:"/index"
   },
   {
     path: "/notice",

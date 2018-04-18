@@ -6,7 +6,7 @@
 1. 首先进入到pc或者mobile目录下面安装所需要的依赖
 npm install
 
-# 3.本地运行开发服务（用于本地开发，先进入pc或者mobile目录） at localhost:8099
+# 3.本地运行开发服务（用于本地开发，先进入pc或者mobile目录） at localhost:9999
 npm run dev
 
 # 4.打包部署到测试环境或者线上
