@@ -22,8 +22,8 @@ module.exports = {
         changeOrigin:true
       }
     },
-    useEslint: true,
-    showEslintErrorsInOverlay: true,
+    useEslint: false,
+    showEslintErrorsInOverlay: false,
     cssSourceMap: false,
     autoOpenBrowser:true
   }
