@@ -18,7 +18,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       "**/*.php":{
-        target:"http://202.95.237.38:81",
+        target:"https://dc-jiuan.com",
         changeOrigin:true
       }
     },

@@ -21,12 +21,12 @@ export let SETTING = {
   dtAndroidQr: "http://down.dreamtech.asia/LEYGJ/android.html",//dt安卓版下载地址二维码
   //pt
   ptpc: "https://www.staticsources.com/app/pt/SetupCasino.exe",//pt电脑版下载地址
-  ptMobile: "https://www.staticsources.com/app/pt/app.html",//pt手机版下载地址
+  ptMobile: "https://www.staticsources.com/app/pt/app.html999 juan",//pt手机版下载地址
   ptMobileQr: "",//pt手机版下载地址二维码
   //ebet
   ebetMobile:"https://www.ebetapp.com/leyu", //ebet手机
   //ag
-  agMobile:"http://agmbet.com",//ag手机
+  agMobile:"http://agmbet.com ju an",//ag手机
   ag:"http://hunter2.agmjs.com/",
 //游戏连接地址
   href_ag:"/gameAginReal.php",

@@ -1,5 +1,9 @@
 <template>
   <div class="down-page">
+    <v-header></v-header>
+    <nav-menu></nav-menu>
+
+    <div class="down-banner"></div>
     <div class="content app-download">
       <div class="content-warp">
         <div class="tab-ment">
@@ -141,11 +145,17 @@
         </div>
       </div>
     </div>
+
+    <v-footer ></v-footer>
   </div>
 </template>
 <script>
   import  {generateQRCode} from "api/show"
   import  {SETTING} from "@/assets/data"
+  import vHeader from 'components/header'
+  import navMenu from 'components/nav'
+  import vFooter from 'components/footer'
+
   export default {
     name: "",
     data() {
@@ -168,11 +178,17 @@
     },
     activated() {
     },
-    components: {}
+    components: {
+      vHeader,navMenu,vFooter
+    }
   }
 </script>
 <style lang="scss" spcoed>
-  .down-page{background:url(./images/phone-banner.jpg) top center no-repeat; padding-top: 257px; }
+  .down-page{ }
+  .down-banner{
+    background:url(./images/phone-banner.jpg) center top no-repeat;
+    height: 257px;
+  }
   .content {
     padding-bottom: 75px;
     .content-warp {

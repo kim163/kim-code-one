@@ -64,7 +64,7 @@
             this.$store.commit("SET_AUTH",res.data.role);
 
             if(res.data.role==AUTH_NAME.USER){
-               this.$router.replace({path:'/user/finance/deposit' });
+               this.$router.replace({path:'/user/message' });
             }
 
           }else{
