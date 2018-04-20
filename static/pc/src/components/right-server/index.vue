@@ -21,13 +21,11 @@
         <i class="iconfont icon-xiazai"></i>
         下载客户端
       </router-link>
-      <back-call v-model="showBackCall"></back-call>
     </div>
   </transition>
 </template>
 <script>
   import {SETTING} from "@/assets/data"
-  import backCall from "components/back-Call"
 
   export default {
     name: "",
@@ -47,7 +45,7 @@
     },
     activated() {
     },
-    components: {backCall}
+    components: { }
   }
 </script>
 <style lang="scss" spcoed>

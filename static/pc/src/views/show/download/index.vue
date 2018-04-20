@@ -172,13 +172,13 @@
   }
 </script>
 <style lang="scss" spcoed>
-  .down-page{background:url(~images/banner/phone-banner.jpg) top center no-repeat; padding-top: 257px; }
+  .down-page{background:url(./images/phone-banner.jpg) top center no-repeat; padding-top: 257px; }
   .content {
     padding-bottom: 75px;
     .content-warp {
       width: 1140px;
       margin: 0 auto;
-      background: url(~images/download/bg.jpg) no-repeat #fff;
+      background: url(./images/bg.jpg) no-repeat #fff;
       box-shadow: 0px 2px 4px #dde2e7;
       min-height: 948px;
 
@@ -248,14 +248,14 @@
             font-weight: bold;
             margin-bottom: 15px;
             &.i1 {
-              background: url(~images/download/01.png) no-repeat left top;
+              background: url(./images/01.png) no-repeat left top;
               line-height: 45px;
             }
             &.i2 {
-              background: url(~images/download/02.png) no-repeat left top;
+              background: url(./images/02.png) no-repeat left top;
             }
             &.i3 {
-              background: url(~images/download/03.png) no-repeat left top;
+              background: url(./images/03.png) no-repeat left top;
             }
           }
           p {

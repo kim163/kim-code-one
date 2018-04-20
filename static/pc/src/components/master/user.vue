@@ -28,7 +28,7 @@
 </script>
 <style>
   .user-page{
-    background: url("~images/top.jpg") top center no-repeat;
+    background: url('./images/top.jpg') top center no-repeat;
     padding-top: 260px;
   }
 </style>

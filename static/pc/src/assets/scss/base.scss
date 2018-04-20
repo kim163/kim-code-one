@@ -23,7 +23,9 @@ a, a:hover {
 
 body {
   width: 100%;
-  font: normal 12px/1 "Microsoft Yahei", "arial", "Microsoft JhengHei", "HeiTi", "SimHei"
+  background: #FFFFFF;
+  font-size: 100%;
+  font-family: 'Microsoft Yahei', sans-serif;
 }
 
 body, input, button, textarea, select {
@@ -115,11 +117,6 @@ ul, ol {
 .cl-bigred {
   color: #e5210d;
 }
-
-body {
-  background: #f0f0f0;
-}
-
 .content{ background: url(~images/base/content.jpg) no-repeat center -9px;  padding-bottom:74px;}
 .user-conter {
   width: 875px;
@@ -293,65 +290,5 @@ body {
     font-size: 14px;
     margin-top: 6px;
     transition: all .1s;
-  }
-}
-
-.agent-content {
-  width: 780px;
-  float: right;
-  background: #fff;
-  .style_f {
-    margin: 0;
-  }
-  .data-wrap {
-    padding: 5px 20px 20px 20px;
-  }
-  .data-info {
-    margin-top: 20px;
-    padding: 10px 0;
-  }
-  .bottom-tip {
-    padding: 10px 10px 30px 10px;
-    margin: 20px auto 0 auto;
-    clear: both;
-    line-height: 1.5;
-    font-size: 14px;
-    color: #6c6c6c;
-    border-top: solid 1px #bfbfbf;
-  }
-
-}
-
-.deposit-form {
-  width: 650px;
-  padding: 20px 0 20px 0;
-  margin: 0 auto;
-  table {
-    border-collapse: collapse;
-    width: 100%;
-    td {
-      height: 30px;
-      padding: 5px 10px;
-      border: solid 1px #e5e5e5;
-      border-left: none;
-      border-right: none;
-      &.txt {
-        width: 116px;
-        text-align: right;
-        padding-right: 20px;
-        border-right: solid 1px #e5e5e5;
-        font-size: 12px;
-
-      }
-      input, .input, select {
-        border: solid 1px #bfbfbf;
-        width: 208px;
-        padding: 0 5px;
-        height: 22px;
-        line-height: 22px;
-        font-size: 12px;
-        color: #313131;
-      }
-    }
   }
 }

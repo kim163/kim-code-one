@@ -2,7 +2,7 @@ import Vue from 'vue'; //引入vue
 import Vuex from 'vuex'; //引入vue
 import router from '@/router'; //引入vue
 import {ajaxGetSessionPersonalData} from 'api/user'; //mutations
-import {checkWithdrawPwd} from 'api/payment'; //mutations
+import {checkWithdrawPwd} from 'api/user'; //mutations
 import {logOut} from 'api/authService'; //mutations
 import * as types from './types'; //引入vue
 import {$localStorage,$sessionStorage} from '@/util/storage';
