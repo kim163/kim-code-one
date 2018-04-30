@@ -43,7 +43,7 @@
             <p>
               使用手机二维码扫描软件扫码下载（请不要微信扫描哦）
             </p>
-            <img width="140" v-lazy="generateQRCode(SETTING.dtIos,140)">
+            <img width="140" >
             <p>
               下载方法【2】
             </p>
@@ -60,7 +60,7 @@
             <p>
               使用手机二维码扫描软件扫码下载（请不要微信扫描哦）
             </p>
-            <img width="140"  v-lazy="generateQRCode(SETTING.dtAndroid,140)">
+            <img width="140" >
             <p>
               下载方法【2】
             </p>
@@ -79,7 +79,7 @@
             <p>
               使用手机二维码扫描软件扫码下载（请不要微信扫描哦）
             </p>
-            <img width="140" ref="imgs" v-lazy="generateQRCode(SETTING.ptMobile,140)">
+            <img width="140" ref="imgs" >
 
             <p>
               下载方法【2】
@@ -112,7 +112,7 @@
             <p>
               使用手机二维码扫描软件扫码下载（请不要微信扫描哦）
             </p>
-            <img width="140" ref="imgs" v-lazy="generateQRCode(SETTING.ebetMobile,140)">
+            <img width="140" ref="imgs" >
 
             <p>
               下载方法【2】
@@ -132,7 +132,7 @@
             <p>
               使用手机二维码扫描软件扫码下载（请不要微信扫描哦）
             </p>
-            <img width="140" ref="imgs" v-lazy="generateQRCode(SETTING.agMobile,140)">
+            <img width="140" ref="imgs" >
 
             <p>
               下载方法【2】
@@ -150,7 +150,7 @@
   </div>
 </template>
 <script>
-  import  {generateQRCode} from "api/show"
+ /* import  {generateQRCode} from "api/show"*/
   import  {SETTING} from "@/assets/data"
   import vHeader from 'components/header'
   import navMenu from 'components/nav'
@@ -169,12 +169,12 @@
     computed: {},
     watch: {},
     methods: {
-      generateQRCode(url,size){
+     /* generateQRCode(url,size){
         return   generateQRCode(url,size)
-      }
+      }*/
     },
     created() {
-      this.generateQRCode("text")
+    //  this.generateQRCode("text")
     },
     activated() {
     },

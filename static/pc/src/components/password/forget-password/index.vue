@@ -38,8 +38,8 @@
           <div class="form-group">
             <i class="iconfont icon-yanzhengma"></i>
             <input type="text" class="ps-input ps-input2" v-model="email.code" placeholder="验证码" maxlength="4">
-            <a href="javascript:;" class="captcha-code icon_popup">
-              <img @click="getimg" :src="authImg"></a>
+            <a href="javascript:;" class="captcha-code icon_popup"></a>
+
           </div>
           <input type="submit" class="submit" @click.prevent="getbackPwdByEmail" value="提交">
         </div>
@@ -48,9 +48,9 @@
   </div>
 </template>
 <script>
-  import {getbackPwdByDx_dc, getbackPwdByEmail} from "api/show";
+ // import {getbackPwdByDx_dc, getbackPwdByEmail} from "api/show";
   import vTouclick from "components/touclick"
-  import {getAuthImg} from 'api/authService';
+//  import {getAuthImg} from 'api/authService';
   import cover from 'base/cover/cover';
   import  {SETTING} from "@/assets/data"
   import  check from "@/util/RegExp"
@@ -82,13 +82,11 @@
     },
     watch:{
       type(val){
-        if(val=="邮箱找回")this.getimg();
+       // if(val=="邮箱找回")this.getimg();
       }
     },
     methods: {
-      getimg(e) {
-        this.authImg = getAuthImg();
-      },
+
       verify() {
         if (this.phone.name == '') toast("请输入游戏账户");
         else if (!check.phone.test(this.phone.phone)) toast("手机号码格式不正确");
@@ -100,7 +98,7 @@
         this.phone.token=this.phone.check_key = obj.token;
         this.phone.check_address = obj.checkAddress;
         this.phone.sid = obj.sid;
-        getbackPwdByDx_dc(this.phone).then(res => {
+       /* getbackPwdByDx_dc(this.phone).then(res => {
           this.showVerify = false;
           tc.destory();
           toast(res.message);
@@ -119,7 +117,7 @@
 
         }).catch(err => {
           toast("请求验证失败");
-        })
+        })*/
       },
       getbackPwdByEmail() {
         if (this.email.name == "") toast("请输入游戏账户");
@@ -127,11 +125,11 @@
         else if (!check.email.test(this.email.yxdz)) toast("邮箱格式不正确");
         else if(this.email.code== "") toast("请输入验证码");
         else {
-          getbackPwdByEmail(this.email).then(res => {
+          /*getbackPwdByEmail(this.email).then(res => {
             toast(res.message)
           }).catch(err=>{
             toast("找回失败,请重新尝试")
-          })
+          })*/
         }
       }
     },

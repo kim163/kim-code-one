@@ -1,5 +1,3 @@
-
-
 export const SET_USERDATA = 'SET_USERDATA'//设置
 export const INIT_INFO = 'INIT_INFO'//初始化选择
 export const SET_AUTH = 'SET_AUTH'//设置权限
@@ -10,6 +8,8 @@ export const UPDATE_USERDATA = 'UPDATE_USERDATA' //更新用户信息
 
 export const SET_FOOTER = 'SET_FOOTER' //设置底部是否显示
 export const SHOW_LOGIN = 'SHOW_LOGIN' //显示登录
+
+export const SET_LANGUAGE='SET_LANGUAGE'//设置语言
 
 export const SET_PAYPWD = 'SET_PAYPWD' //设置支付密码
 export const GET_PAYPWD = 'GET_PAYPWD' //设置支付密码

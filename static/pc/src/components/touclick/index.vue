@@ -4,7 +4,7 @@
 </template>
 <script>
   //  import touclicks from 'touclick'
-  import {getTouClickFlag} from "api/show"
+//  import {getTouClickFlag} from "api/show"
   export default {
     data() {
       return {
@@ -46,7 +46,7 @@
     },
     created() {
       if (!document.querySelector('#touclick')) {
-        getTouClickFlag().then(res => {
+       /* getTouClickFlag().then(res => {
           if (res.success) {
             if (res.data == "1") {
               this.isOpenTouclick = true;
@@ -61,7 +61,7 @@
               this.isOpenTouclick = false;
             }
           }
-        });
+        });*/
       }else{
         this.isOpenTouclick = true;
       }

@@ -1,60 +1,110 @@
 <template>
-  <div class="login-form">
-    <p><label>用户名:</label> <input name="jsdy_account" @keyup.enter="login" v-model="data.account" type="text"></p>
-    <p><label>密码:</label> <input @keyup.enter="login" name="jsdy_password" v-model="data.password" type="password"></p>
-    <p class="identifying-code"><label @click="getimg" style="left: 0;">
-      <img v-lazy="ImgCode" style="vertical-align: top"       height="23" width="80" alt=""> </label>
-      <input @keyup.enter="login" v-model="data.imageCode"   type="text"></p>
-    <div @click.enter="login"  class="btn">立刻登陆</div>
-    <a href="javascript:void(0);"  class="btn btn-register" @click="showRig=true">免费注册</a>
-    <vRigester v-model="showRig"></vRigester>
+  <div>
+  <div class="modal fade in" v-show="value">
+    <div class="modal-dialog popup">
+      <div type="button" class="close" @click="$emit('input',false)">
+        <i class="iconfont icon-close" style="font-size:40px;"></i>
+      </div>
+      <div class="pop-content">
+        <h2 class="tips">{{$t('login.title')}}</h2>
+        <ul class="pop-tab">
+          <li v-for="item in loginType" @click="loginItem=item.value" :class="{active:loginItem==item.value}" :key="item.value">
+            <a href="javascript:void(0);">{{item.name}}</a>
+          </li>
+        </ul>
+        <div class="form-box">
+          <div class="form-group" v-show="loginItem=='account'">
+            <label>{{$t('login.username')}}</label>
+            <input name="jsdy_account" @keyup.enter="login" v-model="data.account" type="text" class="ps-input ps-input1" :placeholder="$t('login.usernamePhd')">
+          </div>
+          <div class="form-group" v-show="loginItem=='phone'">
+            <label>{{$t('login.mobileNum')}}</label>
+            <input type="text" class="ps-input ps-input1" v-model="data.phone"
+                   :placeholder="$t('login.mobileNumPhd')" maxlength="11">
+          </div>
+          <div class="form-group" v-show="loginItem=='email'">
+            <label>{{$t('login.emailadd')}}</label>
+            <input name="" @keyup.enter="login" v-model="data.email" type="text" class="ps-input ps-input1" :placeholder="$t('login.emailaddPhd')">
+          </div>
+          <div class="form-group">
+            <label>{{$t('login.password')}}</label>
+            <input ref="pwd" @keyup.enter="login" name="jsdy_password" v-model="data.password" type="password" class="ps-input ps-input1" :placeholder="$t('login.passwordPhd')">
+            <!--<eyes :dom="$refs.pwd"></eyes>-->
+
+          </div>
+
+          <span class="validate"></span>
+          <input type="button" class="submit" @click.enter="login" id="submit_user" :value="$t('login.logIn')">
+          <div>
+            <a href="javascript:void(0);" class="forget-btn" @click="openFindPWD">{{$t('login.forgotpwd')}}</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <forget-password v-show="showPass"  @hide="showPass=false"></forget-password>
   </div>
 </template>
 <script>
-  import  {getAuthImg,login}  from "api/authService"
-
+  import { show } from 'api'
+  import forgetPassword from "components/password/forget-password"
   import {$localStorage, $sessionStorage} from '@/util/storage';
   import {AUTH_NAME} from "@/store/types"//权限名称
-  import vRigester  from 'components/auth/rigester'
+
   import {mapGetters,mapActions,mapMutations} from 'vuex'
+
   export default {
     data(){
       return {
+        loginType:[
+          {name: this.$t('login.accloginTitle'), value: "account"},
+          {name: this.$t('login.mobloginTitle'), value: "phone"},
+          {name: this.$t('login.emailloginTitle'), value: "email"}
+        ],
+        loginItem: 'account',
+        showPass:false,
         showRig:false,
         ImgCode:"",
         isAgent:false,
         data:{
+          nodeId: process.env.NODE_ID,
           account:"",
-          password:"",
-          imageCode:"",
-          isRemember:false
+          phone:"",
+          email:"",
+          password:""
         }
       }
     },
+    props: {
+      value: Boolean
+    },
     watch:{
-      showRig(val){
-        !val&&this.getimg();
-      }
+
     },
     props:{
       value:Boolean
     },
     methods:{
       ...mapMutations(["SHOW_LOGIN"]),
-      getimg(){
-        this.ImgCode=getAuthImg()
+      openFindPWD(findType){
+        this.showPass=true;
+        this.$emit('input',false);
       },
       reset(msg){
         this.data.imageCode=""
-        this.getimg()
+
         toast(msg);
       },
       login() {
-        if(!this.check())return;
-        login(this.data).then(res =>{
+      //  if(!this.check())return;
+        alert(this.$t('login.accloginTitle'));
+        console.log('login request data: ' ,JSON.stringify( this.data));
+        console.dir(this.data);
+        show.login(this.data).then(res =>{
+          console.log('login res: ' + res);
           if(res.success){
             this.SHOW_LOGIN(false)
-            this.data.imageCode='';
             if(this.data.isRemember){
               $localStorage.set("isRememberAccount",this.data.account);
             }else{
@@ -86,10 +136,27 @@
       },
     },
     created(){
-      this.getimg()
+
     },
-    components:{vRigester}
+    components:{
+      forgetPassword
+    }
   };
 </script>
-<style>
+<style lang="scss" scoped>
+  .pop-tab li{
+    width: 33%;
+    float: left;
+  }
+  .pop-tab li.active a{
+    border-bottom: 1px solid #87B5FF;
+  }
+  .pop-tab a{
+    color: #282828;
+  }
+  .forget-btn{
+     font-size: 18px;
+     color: #4c74ed !important;
+  }
+
 </style>

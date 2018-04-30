@@ -99,6 +99,38 @@ ul, ol {
 
 ::-webkit-scrollbar-thumb:horizontal:hover{ background: #555;}
 
+.section {
+  width: 100%;
+  height: auto;
+  min-height: 250px;
+  overflow: hidden;
+}
+.section h1{
+  font-size: 48px;
+}
+.section h2{
+  font-size: 36px;
+}
+.section h3{
+  font-size: 30px;
+}
+.section h4{
+  font-size: 24px;
+}
+.section p{
+  font-size: 20px;
+}
+.section .big-font{
+  font-size: 60px;
+}
+.f-white {
+  color: rgba(255,255,255,1) !important;
+}
+.f-white a {
+  color: white;
+  text-decoration: underline;
+}
+
 .content-warp {
   width: 1100px;
   margin: 0 auto;

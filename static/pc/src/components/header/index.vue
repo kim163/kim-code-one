@@ -1,16 +1,16 @@
 <template>
   <div class="header ">
-    <div class="content-warp cfx">
-      <div class="fl">
-        <!--<a href="javascript:void(0);" class="cl-red">下载专区</a>|-->
-        <a href="javascript:void(0);" @click="setIndex" class="cl-yelow">设为首页</a>
-        <!--<a href="javascript:void(0);">快速存款通道</a>-->
-        <!--<a href="javascript:void(0);">手机APP安装</a>-->
-      </div>
-      <div class="fr">
-        <v-login v-if="!islogin" ></v-login>
+     <div v-if="!islogin">
+       <div class="col-2">
+          <a href="javascript:void(0);" @click="showLoginDialog=true">{{$t('navbar.login')}}</a>
+       </div>
+       <div class="col-2">
+         <a href="javascript:void(0);" @click="showRegisterDialog=true">{{$t('navbar.register')}}</a>
+       </div>
+     </div>
+
         <span v-if="islogin" class="islogin-info">
-          
+
           Hi,{{userData.loginname}}&nbsp;&nbsp;&nbsp;<span v-show='isUser'> 主账户余额：{{userData.accountMoney}}
           <i class="iconfont icon-shuaxin" style="cursor:pointer;" @click="getGameMoney('MAIN',$event)"></i>
 
@@ -20,69 +20,47 @@
            <router-link class="btn-other" v-if="isUser" :to="{name:'user'}">用户中心</router-link>
             <router-link class="btn-other" v-else :to="{name:'agent'}">代理中心</router-link>
           <a href="javascript:void(0);" @click="$store.dispatch('LOGIN_OUT')" class="btn-other">退出</a>
-          <a href="javascript:void(0);" v-if='isUser' @click="doSignRecord"  class="btn-other">签到</a>
+        <!--  <a href="javascript:void(0);" v-if='isUser' @click="doSignRecord"  class="btn-other">签到</a>-->
         </span>
-        <a href="javascript:void(0);" v-if="!islogin" @click="showPass=true" class="cl-yelow free-try-play">忘记密码？</a>
-        <a :href="SETTING.live800" target="_blank"  class="cl-red server free-try-play">
-          <i class="iconfont icon-kefu"></i>
-          24小时在线客服</a>
-      </div>
-    </div>
-    <forget-password v-show="showPass"  @hide="showPass=false"></forget-password>
+    <v-login v-if="!islogin" v-model="showLoginDialog" ></v-login>
+    <v-register v-if="!islogin" v-model="showRegisterDialog"></v-register>
   </div>
 </template>
 <script>
   import {mapGetters, mapActions, mapMutations} from 'vuex'
-  import {getNewAnnouncement} from "api/show"
-  import forgetPassword from "components/password/forget-password"
+ // import {getNewAnnouncement} from "api/show"
   import vLogin from "components/auth/login"
-  import {doSignRecord, getGameMoney} from "api/user"
+  import vRegister  from "components/auth/register"
+ // import {doSignRecord, getGameMoney} from "api/user"
   import {SETTING} from "@/assets/data"
 
   export default {
     data() {
       return {
         SETTING,
-          showPass:false
+        showLoginDialog: false,
+        showRegisterDialog: false
       };
     },
     methods: {
       ...mapActions(["UPDATE_USERDATA", "LOGIN_OUT"]),
       ...mapMutations(["SHOW_LOGIN"]),
-      setIndex(e){
-        let obj=e.target,
-          url=window.location.hostname
-        try{
-          obj.style.behavior='url(#default#homepage)';
-          obj.setHomePage(url);
-        }catch(e){
-          if(window.netscape){
-            try{
-              netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-            }catch(e){
-              alert("抱歉，此操作被浏览器拒绝！\n\n请在浏览器地址栏输入“about:config”并回车然后将[signed.applets.codebase_principal_support]设置为'true'");
-            }
-          }else{
-            alert("抱歉，您所使用的浏览器无法完成此操作。\n\n您需要手动将【"+url+"】设置为首页。");
-          }
-        }
-      },
-      doSignRecord() {
+     /* doSignRecord() {
         doSignRecord().then(res => {
           toast(res.message)
         })
-      },
+      },*/
       getGameMoney(val,e) {
         let dom=e.currentTarget
         dom.addClass("xuanzhuan")
-        getGameMoney({gameCode: val}).then(res => {
+       /* getGameMoney({gameCode: val}).then(res => {
           if (res.success) {
             this.userData.accountMoney =res.data;
           }
           setTimeout(()=>{
             dom.removeClass("xuanzhuan")
           },500)
-        })
+        })*/
       }
     },
     computed: {
@@ -92,7 +70,7 @@
       this.UPDATE_USERDATA();
     },
     components: {
-      vLogin, forgetPassword
+      vLogin, vRegister
     }
 
   };
@@ -104,11 +82,7 @@
       animation:rotate11 2s linear infinite ;
       display: inline-block;
     }
-    height: 55px;
-    background: #010016;
-    color: #a4a3a7;
-    font-size: 14px;
-    line-height: 53px;
+    display: inline-block;
     .fl > a {
       margin: 0 15px;
     }

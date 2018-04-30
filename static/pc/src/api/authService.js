@@ -1,4 +1,4 @@
-import ajax from './index'; //引入vue
+import ajax from './index1'; //引入vue
 let checkLogin = "/user/ajaxGetSessionPersonalData.php";
 /*** 检查登录*/
 let $login = "/index/login.php";

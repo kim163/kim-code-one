@@ -1,4 +1,4 @@
-import ajax from 'api/index'
+import ajax from 'api/index1'
 let $queryCreditlogs = "/mobi/queryCreditlogs.php";//额度记录查询
 let $ajaxGetSessionPersonalData = "/user/ajaxGetSessionPersonalData.php";
 /***获取短信码*/

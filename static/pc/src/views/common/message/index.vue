@@ -29,7 +29,7 @@
   </div>
 </template>
 <script>
-  import {getMessageByUser, readMsg} from "api/show";
+ // import {getMessageByUser, readMsg} from "api/show";
   import pagingBy from "components/paging-by";
   import loadding from "components/loadding";
   export default {
@@ -53,26 +53,26 @@
           this.$set(this.viewList, "x-" + item.id, !this.viewList["x-" + item.id]);
           return;
         }
-        readMsg({msgID: item.id}).then((data) => {
+       /* readMsg({msgID: item.id}).then((data) => {
           this.$set(this.viewList, item.id, data.data.content.replace(/\r\n/g, "<br />").replace(/\n/g, "<br />"));
           this.$nextTick(() => {
             this.$refs[item.id][0].style.height = this.$refs[item.id][0].css("height");
             this.$set(this.viewList, "x-" + item.id, true);
           });
-        });
+        });*/
       },
       search(index) {
         if(!isNaN(index)) {
           this.searchData.pageIndex = index;
         }
-        getMessageByUser(this.searchData).then(res => {
+        /*getMessageByUser(this.searchData).then(res => {
           this.showLoadding = false
           if (res.success) {
             this.data = res.data;
           } else {
             toast(res.message);
           }
-        })
+        })*/
       }
     },
     created() {

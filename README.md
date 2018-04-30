@@ -9,7 +9,11 @@ npm install
 # 3.本地运行开发服务（用于本地开发，先进入pc或者mobile目录） at localhost:9999
 npm run dev
 
-# 4.打包部署到测试环境或者线上
+# 4.开发技巧
+1. Vue-cli 项目调试神器 chrome 浏览器插件  vue-devtools
+2. 查看某个对象值，可以 console 打印输出。例如：console.log('login request data: ' ,JSON.stringify( this.data));
+
+# 5.打包部署到测试环境或者线上
 # 方式1：打包生成发布到测试环境或者线上（手动部署，先进入pc或者mobile目录）
 npm run build
 
@@ -26,3 +30,8 @@ npm run build
 如有发现遗漏，请自行添加到忽略文件中。
 
 2. 编码规范遵循 Eslint 。
+
+3. Git 上面版本命名比如 V8.0.0 ,遵循“大版本.次要版本.小版本”的格式规定。
+小版本：解决了 Bug 或者一些较小的更改，增加最后一位数字，比如 8.0.1
+次要版本：增加了新特性，同时不会影响之前的版本，增加中间一位数字，比如 8.1.0
+大版本：大改版，无法兼容之前的，增加第一位数字，比如 9.0.0

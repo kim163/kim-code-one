@@ -10,8 +10,8 @@ dist_dir="${base_dir}/static/dist/"
 user_dir=$(eval echo ~${SUDO_USER})
 
 # rsync 地址
-rsync_dir="leo@206.161.250.6::lystatic";
-rsync_test_dir="leo@202.95.237.38::lystatic";
+rsync_dir="leo@47.52.202.233::9an-homepage";
+rsync_test_dir="leo@47.52.202.233::9an-homepage";
 
 run_sh="rsync -auvz --progress --delete  --password-file=${user_dir}/rsync.pwd ${dist_dir}  ${rsync_dir}  --exclude=*svn*  --exclude=*.jar --exclude=*.jsp --exclude=*.class --exclude=*classes* --exclude=/WEB-INF --exclude=/payment --exclude=/META-INF --exclude=/commons --exclude=/tpl --exclude=/tpl --exclude=/node_modules"
 

@@ -141,7 +141,6 @@
     width: 300px;
     margin: 0 auto;
     .form-group {
-      height: 34px;
       line-height: 34px;
       position: relative;
       margin-bottom: 14px;

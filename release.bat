@@ -1,8 +1,8 @@
 @echo off
 
 :: rsync 指向
-set rsync_target=leo@206.161.250.6::lystatic
-set rsync_target_test=leo@202.95.237.38::lystatic
+set rsync_target=leo@47.52.202.233::9an-homepage
+set rsync_target_test=leo@47.52.202.233::9an-homepage
 
 :: 当前路径
 set cur_dir=%~dp0

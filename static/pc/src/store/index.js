@@ -14,26 +14,21 @@ export default new Vuex.Store({
     isSetPayPwd:null, //是否设置支付密码
     showLogin:false, //登录弹窗
     userData:{
-      wechat:"",//微信
-      qq:"",//true string
       loginname:"",// true string
       accountName:"",//t true string 姓名，通过该字段是否有值可判断是否已设置过用户信息
       phone:"",//true string//手机号码
       level:0,//true string 用户等级
-      email:"",// false string 邮件
       accountMoney:0,// true string 主账户余额
       role:"",//true string 角色
-      birthday:"",//false string 生日
-      levelNumber:"",//true number 等级（数字）
-      deputyCredit:"",//true number 副账户余额
       phoneValidStatus:"",//true string 手机号是否验证
       mobileNum:"",//true string 手机号
-      referWebsite:"",//
-      liveAccount:0,//对应其他佣金
-      slotAccount:0,//对应老虎机佣金
-    }
+    },
+    language: $localStorage.get('language-sel') || 'en'
   },
   getters:{
+    language( state,getters){
+      return state.language;
+    },
     showFooter(state,getters){
       Vue.nextTick(()=>{
         document.querySelector("body").style.paddingBottom=(state.showFooter?"":"0");
@@ -80,6 +75,10 @@ export default new Vuex.Store({
     }
   },
   mutations:{
+    [types.SET_LANGUAGE](state, language){
+      state.language = language;
+      $localStorage.set('language-sel', language);
+    },
     [types.SET_FOOTER](state,val){
       state.showFooter=val
     },
@@ -119,27 +118,21 @@ export default new Vuex.Store({
 
   },
   actions:{
+    [types.SET_LANGUAGE]({ commit }, language){
+      commit('SET_LANGUAGE', language)
+    },
     [types.INIT_INFO]({commit},val){ //初始化所有信息 相当于推出
       commit(types.REMOVE_AUTH);
       commit(types.SET_PAYPWD,null)
       commit(types.SET_USERDATA,{
-        qq:"",//true string
         loginname:"",// true string
         accountName:"",//t true string 姓名，通过该字段是否有值可判断是否已设置过用户信息
-        phone:"",//true string
-        wechat:"",//微信
+        phone:"",//true string//手机号码
         level:0,//true string 用户等级
-        email:"",// false string
-        accountMoney:0,// true string
+        accountMoney:0,// true string 主账户余额
         role:"",//true string 角色
-        birthday:"",//false string 生日
-        levelNumber:"",//true number 等级（数字）
-        deputyCredit:"",//true number 副账户余额
-        phoneValidStatus:"0",//true string 手机号是否验证
+        phoneValidStatus:"",//true string 手机号是否验证
         mobileNum:"",//true string 手机号
-        referWebsite:"",//
-        liveAccount:0,//对应其他佣金
-        slotAccount:0,//对应老虎机佣金
       })
     },
     [types.LOGIN_OUT]({commit,dispatch},val){ //退出登录
