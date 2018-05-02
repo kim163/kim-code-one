@@ -211,7 +211,6 @@
       font-size: 24px;
       cursor: pointer;
       line-height: 34px;
-      height: 100% !important;
       color: #f66;
     }
   }

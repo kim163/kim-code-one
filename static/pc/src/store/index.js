@@ -25,7 +25,7 @@ export default new Vuex.Store({
     },
     language: $localStorage.get('language-sel') || 'en'
   },
-  getters:{
+  getters:{     // 用来从 store 获取 Vue 组件数据
     language( state,getters){
       return state.language;
     },
@@ -68,13 +68,13 @@ export default new Vuex.Store({
         return true;
       }
       if(state.authList.length>0){  //sessionStorage
-        $sessionStorage&&$sessionStorage.set(types.IS_LOGIN,true)
+        $sessionStorage&&$sessionStorage.set(types.IS_LOGIN,true);
         return true;
       }
       return false;
     }
   },
-  mutations:{
+  mutations:{         // 事件处理器用来驱动状态的变化
     [types.SET_LANGUAGE](state, language){
       state.language = language;
       $localStorage.set('language-sel', language);
@@ -117,7 +117,7 @@ export default new Vuex.Store({
     },
 
   },
-  actions:{
+  actions:{    // 可以给组件使用的函数，以此用来驱动事件处理器 mutations
     [types.SET_LANGUAGE]({ commit }, language){
       commit('SET_LANGUAGE', language)
     },
@@ -158,7 +158,6 @@ export default new Vuex.Store({
     [types.UPDATE_USERDATA]({commit,dispatch},val){ //获取 初始化信息
       return ajaxGetSessionPersonalData().then(res =>{
         if(res.success){
-          dispatch(types.GET_PAYPWD)
           commit(types.SET_USERDATA,res.data);
           commit(types.SET_AUTH,res.data.role);
         }

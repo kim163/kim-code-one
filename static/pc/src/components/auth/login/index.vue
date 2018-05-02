@@ -9,28 +9,30 @@
         <h2 class="tips">{{$t('login.title')}}</h2>
         <ul class="pop-tab">
           <li v-for="item in loginType" @click="loginItem=item.value" :class="{active:loginItem==item.value}" :key="item.value">
-            <a href="javascript:void(0);">{{item.name}}</a>
+            <a href="javascript:void(0);">{{generateTitle(item.name)}}</a>
           </li>
         </ul>
         <div class="form-box">
           <div class="form-group" v-show="loginItem=='account'">
             <label>{{$t('login.username')}}</label>
-            <input name="jsdy_account" @keyup.enter="login" v-model="data.account" type="text" class="ps-input ps-input1" :placeholder="$t('login.usernamePhd')">
+            <input name="account" @keyup.enter="login" v-model="data.account" type="text" class="ps-input ps-input1" :placeholder="$t('login.usernamePhd')">
           </div>
           <div class="form-group" v-show="loginItem=='phone'">
             <label>{{$t('login.mobileNum')}}</label>
+            <select class="ps-input ps-input1" v-model="data.areaCode">
+                <option v-for="areacd in areaCodeData" :value="areacd.value" :key="areacd.value" > {{areacd.name}} </option>
+            </select>
             <input type="text" class="ps-input ps-input1" v-model="data.phone"
-                   :placeholder="$t('login.mobileNumPhd')" maxlength="11">
+                   :placeholder="$t('login.mobileNumPhd')" maxlength="11" name="phone">
           </div>
           <div class="form-group" v-show="loginItem=='email'">
             <label>{{$t('login.emailadd')}}</label>
-            <input name="" @keyup.enter="login" v-model="data.email" type="text" class="ps-input ps-input1" :placeholder="$t('login.emailaddPhd')">
+            <input name="email" @keyup.enter="login" v-model="data.email" type="text" class="ps-input ps-input1" :placeholder="$t('login.emailaddPhd')">
           </div>
           <div class="form-group">
             <label>{{$t('login.password')}}</label>
-            <input ref="pwd" @keyup.enter="login" name="jsdy_password" v-model="data.password" type="password" class="ps-input ps-input1" :placeholder="$t('login.passwordPhd')">
-            <!--<eyes :dom="$refs.pwd"></eyes>-->
-
+            <input ref="pwd" @keyup.enter="login" name="password" v-model="data.password" type="password" class="ps-input ps-input1" :placeholder="$t('login.passwordPhd')">
+            <eyes :dom="$refs.pwd"></eyes>
           </div>
 
           <span class="validate"></span>
@@ -49,8 +51,10 @@
 <script>
   import { show } from 'api'
   import forgetPassword from "components/password/forget-password"
-  import {$localStorage, $sessionStorage} from '@/util/storage';
+  import eyes from "components/eyes"
+  import {$localStorage, $sessionStorage} from '@/util/storage'
   import {AUTH_NAME} from "@/store/types"//权限名称
+  import { generateTitle } from '@/util/i18n'
 
   import {mapGetters,mapActions,mapMutations} from 'vuex'
 
@@ -58,11 +62,15 @@
     data(){
       return {
         loginType:[
-          {name: this.$t('login.accloginTitle'), value: "account"},
-          {name: this.$t('login.mobloginTitle'), value: "phone"},
-          {name: this.$t('login.emailloginTitle'), value: "email"}
+          {name: "login.accloginTitle", value: "account"},
+          {name: "login.mobloginTitle", value: "phone"},
+          {name: "login.emailloginTitle", value: "email"}
         ],
         loginItem: 'account',
+        areaCodeData: [
+          {name:"+63", value: "+63" },
+          {name:"+86", value: "+86" }
+        ],
         showPass:false,
         showRig:false,
         ImgCode:"",
@@ -71,9 +79,11 @@
           nodeId: process.env.NODE_ID,
           account:"",
           phone:"",
+          areaCode:"+63",
           email:"",
           password:""
-        }
+        },
+        requestda: {}
       }
     },
     props: {
@@ -86,6 +96,7 @@
       value:Boolean
     },
     methods:{
+      generateTitle,
       ...mapMutations(["SHOW_LOGIN"]),
       openFindPWD(findType){
         this.showPass=true;
@@ -98,31 +109,35 @@
       },
       login() {
       //  if(!this.check())return;
-        alert(this.$t('login.accloginTitle'));
-        console.log('login request data: ' ,JSON.stringify( this.data));
-        console.dir(this.data);
-        show.login(this.data).then(res =>{
-          console.log('login res: ' + res);
-          if(res.success){
-            this.SHOW_LOGIN(false)
-            if(this.data.isRemember){
-              $localStorage.set("isRememberAccount",this.data.account);
-            }else{
-              $localStorage.remove("isRememberAccount");
-            }
-            this.$store.dispatch("UPDATE_USERDATA");
-            this.$store.commit("SET_AUTH",res.data.role);
-
-            if(res.data.role==AUTH_NAME.USER){
-               this.$router.replace({path:'/user/message' });
-            }
-
-          }else{
-            this.reset(res.message)
+       if(this.loginItem=='phone'){
+          this.requestda = {
+            nodeId: this.data.nodeId,
+            type:4,
+            areaCode: this.data.areaCode,
+            phone: this.data.phone,
+            password: this.data.password
           }
-        }).catch(error =>{
-          this.reset("请求失败")
-        });
+       }
+
+        if(this.loginItem=='phone' || this.loginItem=='email') {
+          show.login(this.requestda).then(res => {
+            console.log('login res: ', res);
+            if (res.code == 10000) {
+              this.$emit('input',false);
+              this.SHOW_LOGIN(false);
+
+              let {rquest} = this.$route.query;
+              let {roleData} = res.data;
+              this.$store.dispatch("UPDATE_USERDATA");
+
+              this.$router.push({path:rquest});
+            } else {
+              this.reset(res.message)
+            }
+          }).catch(error => {
+            this.reset("请求失败")
+          });
+        }
       },
       check() {
         if(this.data.account=="")
@@ -139,7 +154,7 @@
 
     },
     components:{
-      forgetPassword
+      forgetPassword, eyes
     }
   };
 </script>

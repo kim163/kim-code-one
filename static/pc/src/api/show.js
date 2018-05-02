@@ -1,6 +1,6 @@
 import { service } from "@/util"
 
-let numversion = '/api/v1/';
+let numversion = '/api/v1/';   // 版本信息
 // 账户
 export const login = jsonData => service({url: numversion+`user/chain/login2`, method: 'post', data: jsonData});  // 登录：手机登录/邮箱登录
 export const implicitLogin = jsonData => service({url: numversion+`user/chain/implicitLogin`, method: 'post', data: jsonData});  // 隐式登录

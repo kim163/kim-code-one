@@ -35,11 +35,13 @@
 <style spcoed>
   span.pubeyes {
     position: absolute;
-    top: 0;
+    top: 40px !important;
     right: 5%;
     font-size: 24px;
     cursor: pointer;
-    height: 100% !important;
+    height: 20px !important;
     color: #f66;
+    width: 20px;
+    background: #13A1CA;
   }
 </style>

@@ -4,6 +4,11 @@ $( document ).ready(function() {
 
     if (!localStorage.getItem('language-sel')) {
         language = $.i18n.normaliseLanguageCode({"language" : ""});
+        if(language.indexOf("zh") != -1){
+           language = "zh";
+        }else if(language.indexOf("en") != -1){
+          language = "en";
+        }
         localStorage.setItem('language-sel',language);
     } else {
         language = localStorage.getItem('language-sel');

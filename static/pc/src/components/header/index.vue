@@ -67,7 +67,7 @@
       ...mapGetters(["userData", "islogin", "isAgent", 'isUser', 'showLogin'])
     },
     created() {
-      this.UPDATE_USERDATA();
+     // this.UPDATE_USERDATA();
     },
     components: {
       vLogin, vRegister
