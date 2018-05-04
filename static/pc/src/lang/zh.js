@@ -31,6 +31,13 @@ export default {
   footer: {
     description: '国内早期区块链从业者 <br/> 团队落地瑞士，专注数字资产钱包，智能合约方向'
   },
+  transactionHome: {
+    buyUet: '买入UET',
+    saleUet: '卖出UET',
+    postPendOrd: '发布挂单',
+    orderRecord: '订单记录',
+
+  },
   table: {
 
   }

@@ -31,6 +31,13 @@ export default {
   footer: {
     description: 'Early domestic block chain practitioners<br/>Team landing Switzerland, focus on digital assets wallet, smart contract direction'
   },
+  transactionHome: {
+    buyUet: 'Buy UET',
+    saleUet: 'Sell UET',
+    postPendOrd: 'Post pending orders',
+    orderRecord: 'Order record',
+
+  },
   table: {
 
   }

@@ -76,7 +76,6 @@
         ImgCode:"",
         isAgent:false,
         data:{
-          nodeId: process.env.NODE_ID,
           account:"",
           phone:"",
           areaCode:"+63",
@@ -111,7 +110,6 @@
       //  if(!this.check())return;
        if(this.loginItem=='phone'){
           this.requestda = {
-            nodeId: this.data.nodeId,
             type:4,
             areaCode: this.data.areaCode,
             phone: this.data.phone,

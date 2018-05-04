@@ -16,14 +16,14 @@ service.interceptors.request.use(config => {
   if (config.data.multipart) {
     config.headers['content-type'] = 'multipart/form-data'
   } else {
-    /*if (store.getters.userInfo && store.getters.userInfo.nodeId) {
-      config.data.nodeId = store.getters.userInfo.nodeId
-    }*/
-    config.data = {'requestData': aesutil.encrypt(JSON.stringify(config.data))}
+    config.data = {
+      nodeId: process.env.NODE_ID,
+      requestData: aesutil.encrypt(JSON.stringify(config.data))
+    }
   }
-  config.headers['Access-Control-Allow-Origin'] = process.env.APP_ORIGIN
+  // config.headers['Access-Control-Allow-Origin'] = process.env.APP_ORIGIN
   config.headers['Authorization'] = `Bearer ${store.getters.tokenInfo ? store.getters.tokenInfo.accessToken : ''}`
-  store.dispatch('toggleLoading', true)
+  $load.open("Loading...");
   return config
 }, error => {
   // Do something with request error
@@ -34,14 +34,14 @@ service.interceptors.request.use(config => {
 // respone拦截器
 service.interceptors.response.use(
   response => {
-    store.dispatch('toggleLoading', false)
+    $load.close();
     if (response && response.data && response.data.code && response.data.code !== 10000) {
       if (response.data.code === 15016) {
         window.localStorage.removeItem('tokenInfo')
         store.dispatch('updateTokenInfo', null)
         store.dispatch('updateUserInfo', null)
         store.dispatch('updateRolePermission', null)
-        router.push({path: '/'})
+     //   router.push({path: '/'})
       }
       return Promise.reject(response.data.message)
     } else {

@@ -142,24 +142,6 @@
   }
 </script>
 <style lang="scss">
-  .modal-dialog {
-    position: relative;
-    width: 700px;
-    margin: 180px auto;
-    padding-bottom: 20px;
-    background: #fff;
-    border-radius: 8px;
-    transition: transform 0.15s ease-out;
-    .close {
-      position: absolute;
-      z-index: 1;
-      top: 10px;
-      right: 10px;
-      cursor: pointer;
-      color: #ccc;
-    }
-  }
-
   .forget-password .pop-content {
     position: relative;
     padding-bottom: 30px;

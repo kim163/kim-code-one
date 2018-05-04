@@ -1,6 +1,6 @@
-let CryptoJS = require('crypto-js')
-let key = CryptoJS.enc.Utf8.parse('smkldospdosldaaa')
-let iv = CryptoJS.enc.Utf8.parse('0000000000000000')
+let CryptoJS = require('crypto-js');
+let key = CryptoJS.enc.Utf8.parse('smkldospdosldaaa');
+let iv = CryptoJS.enc.Utf8.parse('0000000000000000');
 
 export default {
   encrypt: (data) => {

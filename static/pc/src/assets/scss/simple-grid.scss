@@ -80,7 +80,9 @@
 .col-11,
 .col-12,
 .col-16,
-.col-17 {
+.col-17,
+.col-18,
+.col-19{
   width: 100%;
 }
 .col-13{
@@ -220,6 +222,12 @@
   }
   .col-17{
     width: 46.5%;
+  }
+  .col-18{
+    width: 72%;
+  }
+  .col-19{
+    width: 28%;
   }
 
   .hidden-sm {
