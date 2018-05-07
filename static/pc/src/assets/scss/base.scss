@@ -359,8 +359,12 @@ ul, ol {
     line-height: 34px;
     color: #f66;
   }
-}
 
+}
+span.icon-close,i.icon-close{
+  color: #619eff;
+  font-size:24px;
+}
 .popup .icon_popup {
   position: absolute;
   display: block;
