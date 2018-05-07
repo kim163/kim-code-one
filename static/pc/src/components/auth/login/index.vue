@@ -91,9 +91,6 @@
     watch:{
 
     },
-    props:{
-      value:Boolean
-    },
     methods:{
       generateTitle,
       ...mapMutations(["SHOW_LOGIN"]),
