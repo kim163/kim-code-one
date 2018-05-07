@@ -28,6 +28,27 @@ export default {
     forgotpwd: 'Forget password',
 
   },
+  register: {
+    title: 'Create your Jiuan wallet',
+    hasAccount:'Existing account',
+    loginNow:'Login Now',
+    phoneReg: 'Phone registration',
+    emailReg: 'Email registration',
+    inputPhoneNum: 'Please enter your phone number',
+    inputEmail: 'Please enter your email address',
+    inputPlaceholder0: 'Please enter your email address',
+    inputPlaceholder1: 'Please enter the phone number',
+    inputPlaceholder2: 'Please enter verification code',
+    inputPlaceholder3: 'Please enter your password',
+    inputPlaceholder4: 'Please enter your login password again',
+    readAgreenment: 'I have read and agree',
+    agreenment: 'Terms of Service',
+    password: 'Password',
+    AgainPassword: 'Confirm password',
+    register: 'Sign up now',
+    Code: 'Verification code',
+    sendCode: 'Send verification code',
+  },
   footer: {
     description: 'Early domestic block chain practitioners<br/>Team landing Switzerland, focus on digital assets wallet, smart contract direction'
   },

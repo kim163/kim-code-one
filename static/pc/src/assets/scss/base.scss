@@ -1,4 +1,3 @@
-
 body, div, ul, li, dl, dt, dd, ol, p, h1, h2, h3, h4, h5, h6, span, em, i, p, input, select, i, em, span,th,td,table {
   margin: 0;
   padding: 0;
@@ -23,7 +22,7 @@ a, a:hover {
 
 body {
   width: 100%;
-  background: #FFFFFF;
+  background: #fff;
   font-size: 100%;
   font-family: 'Microsoft Yahei', sans-serif;
 }
@@ -87,6 +86,7 @@ ul, ol {
   content: '.'
 }
 
+
 /* #滚动条
 =========*/
 ::-webkit-scrollbar{ width: 8px; height: 8px;}
@@ -145,6 +145,39 @@ ul, ol {
 .cl-yelow {
   color: #ffd924 !important;
 }
+.cl-blue{
+  color:#94bdff !important;
+}
+::-webkit-input-placeholder {
+  color: #afafaf;
+}
+
+:-moz-placeholder {
+  color: #afafaf;
+}
+
+::-moz-placeholder {
+  color: #afafaf;
+}
+
+:-ms-input-placeholder {
+  color: #afafaf;
+}
+.cl-blue::-webkit-input-placeholder {
+  color: #94bdff;
+}
+
+.cl-blue:-moz-placeholder {
+  color: #94bdff;
+}
+
+.cl-blue::-moz-placeholder {
+  color: #94bdff;
+}
+
+.cl-blue:-ms-input-placeholder {
+  color: #94bdff;
+}
 
 .cl-bigred {
   color: #e5210d;
@@ -186,7 +219,7 @@ ul, ol {
 .popup .pop-content {
   position: relative;
   padding-bottom: 30px;
-  padding-top: 54px;
+  padding-top: 40px;
   h2 {
     font-size: 24px;
     color: #282828;
@@ -194,15 +227,52 @@ ul, ol {
     text-align: center;
     font-weight: normal;
   }
+  .alert-title{
+    text-align: left;
+    font-size:24px;
+    font-weight:normal;
+    padding:0 50px;
+    color:#6b6b6b;
+  }
+  .smalltxt{
+    font-size:15px;
+    color:#c2c2c2;
+  }
+  .a-login{
+    display:inline-block;
+    color:#4c74ed;
+  }
+  .tab-box{
+    margin:0 50px;
+    color:#6b6b6b;
+    border-bottom:1px solid #ddd;
+    .s{
+      display:inline-block;
+      height:55px;
+      padding:0 10px;
+      line-height: 55px;
+      margin-right:50px;
+      cursor: pointer;
+      &.active{
+        border-bottom:3px solid #87b5ff;
+      }
+    }
+  }
+
+  .form-subtitle{
+    text-align: left;
+    height:40px;
+    line-height: 40px;
+    padding:5px 0;
+  }
 }
 
 .popup .form-box {
-  width: 300px;
-  margin: 0 auto;
+  padding:0 50px;
   .form-group {
-    line-height: 34px;
+    line-height: 54px;
     position: relative;
-    margin-bottom: 14px;
+    margin-bottom:6px;
     width: 100%;
   }
   .validate {
@@ -219,7 +289,6 @@ ul, ol {
   }
   .captcha-code {
     width: 90px;
-    height: 34px;
     float: left;
     display: block;
     position: relative;
@@ -231,28 +300,46 @@ ul, ol {
       vertical-align: top;
     }
   }
+  .form-input{
+    height: 50px;
+    border: 1px solid #ccc;
+    .captcha-code{
+      float:right;
+      color:#555;
+      line-height: 49px;
+      height: 49px;
+    }
+  }
+  .select-country{
+    float: left;
+    width: 87px;
+    height: 49px;
+    line-height: 49px;
+    padding-left: 20px;
+    border-right: 1px solid #e0e0e0;
+    color:#666;
+    cursor: pointer;
+  }
   .ps-input {
     width: 300px;
-    height: 34px;
+    height: 50px;
     border: 0;
     background: 0 0;
-    border-bottom: 1px solid #ccc;
     outline: 0;
-    line-height: 34px;
+    line-height: 50px;
     font-size: 16px;
     color: #333;
-    padding: 0 20px 0 30px;
+    padding: 0 20px;
   }
   .ps-input2 {
     width: 210px;
     float: left;
-    height: 34px;
-    border-bottom: 1px solid #ccc;
+    height: 50px;
     outline: 0;
-    line-height: 34px;
+    line-height: 50px;
     font-size: 16px;
     color: #333;
-    padding: 0 20px 0 30px;
+    padding: 0 20px;
   }
   i.iconfont {
     position: absolute;
@@ -288,7 +375,6 @@ ul, ol {
   cursor: pointer;
   font-size: 16px;
   color: #fff;
-  text-align: center;
   display: block;
   border-radius: 4px;
 }
@@ -407,6 +493,9 @@ ul, ol {
     @extend .cfx;
     padding: 14px 0 5px 0;
   }
+  .smalltxt{
+    font-size:12px;
+  }
   .inputbox {
     display: inline-block;
     margin: 5px 16px 5px 0;
@@ -426,7 +515,7 @@ ul, ol {
       background: #fff;
       vertical-align: top !important;
       border: solid 1px #bfbfbf;
-      height: 32px;
+      height: 55px;
       font-size: 12px;
       color: #313131;
       border-radius: 4px;
@@ -437,16 +526,30 @@ ul, ol {
     padding: 15px 0 0 128px;
   }
   .btn {
-    background: #1e327e;
-    cursor: pointer;
     display: inline-block;
-    vertical-align: top;
+    height:55px;
+    line-height: 55px;
     padding: 3px 25px;
+    margin-top: 6px;
+    font-size: 18px;
+    background: #1e327e;
+    //background-image: linear-gradient(90deg, #94bdff 50%, #619eff);
+    //background-image: -webkit-linear-gradient(180deg, #94bdff 50%, #619eff);
+    background-image: linear-gradient(90deg, #619eff 18%, #94bdff);
+    background-image: -webkit-linear-gradient(180deg, #619eff  18%, #94bdff);
+    border:0;
+    cursor: pointer;
+    vertical-align: top;
     border-radius: 3px;
     color: #fff;
-    line-height: 24px;
-    font-size: 14px;
-    margin-top: 6px;
-    transition: all .1s;
+    transition: all .3s;
+    &:hover{
+      //background-image: linear-gradient(180deg, #619eff 50%, #94bdff);
+      //background-image: -webkit-linear-gradient(290deg, #619eff  50%, #94bdff);
+      background-image: linear-gradient(90deg, #94bdff 18%, #619eff);
+      background-image: -webkit-linear-gradient(180deg, #94bdff 18%, #619eff);
+    }
   }
+  .btn-block{width:100%;}
+
 }
