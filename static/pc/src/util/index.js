@@ -1,5 +1,5 @@
-import service from './service.js'
-import aesutil from './aesutil.js'
+import service from './service'
+import aesutil from './aesutil'
 
 export {
   service,

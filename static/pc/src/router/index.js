@@ -1,10 +1,9 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import maps from './map';
-import filters from './hook/beforEach';
+// import filters from './hook/beforEach';
 
 Vue.use(VueRouter);
-
 
 let error404 = (resolve) => resolve(require('views/error/404'));
 let error403 = (resolve) => resolve(require('views/error/403'));
@@ -41,5 +40,5 @@ const router = new VueRouter({
     }
   ])
 });
-router.beforeEach(filters);
+// router.beforeEach(filters);
 export default router;

@@ -1,5 +1,5 @@
-import * as show from './show.js'
-import * as transaction from './transaction.js'
+import * as show from './show'
+import * as transaction from './transaction'
 
 export {
   show,

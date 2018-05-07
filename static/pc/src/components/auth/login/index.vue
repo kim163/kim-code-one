@@ -53,7 +53,6 @@
   import forgetPassword from "components/password/forget-password"
   import eyes from "components/eyes"
   import {$localStorage, $sessionStorage} from '@/util/storage'
-  import {AUTH_NAME} from "@/store/types"//权限名称
   import { generateTitle } from '@/util/i18n'
 
   import {mapGetters,mapActions,mapMutations} from 'vuex'
@@ -77,10 +76,10 @@
         isAgent:false,
         data:{
           account:"",
-          phone:"",
+          phone:"9950180120",
           areaCode:"+63",
           email:"",
-          password:""
+          password:"a123456"
         },
         requestda: {}
       }
@@ -90,9 +89,6 @@
     },
     watch:{
 
-    },
-    props:{
-      value:Boolean
     },
     methods:{
       generateTitle,
@@ -125,15 +121,15 @@
               this.SHOW_LOGIN(false);
 
               let {rquest} = this.$route.query;
-              let {roleData} = res.data;
-              this.$store.dispatch("UPDATE_USERDATA");
+              $localStorage.set('tokenInfo', JSON.stringify(res.data.tokenVo));
+              this.$store.dispatch('UPDATE_USERDATA');
 
               this.$router.push({path:rquest});
             } else {
               this.reset(res.message)
             }
           }).catch(error => {
-            this.reset("请求失败")
+            this.reset("请求失败");
           });
         }
       },
@@ -149,6 +145,9 @@
       },
     },
     created(){
+
+    },
+    computed: {
 
     },
     components:{

@@ -10,28 +10,17 @@
      </div>
 
         <span v-if="islogin" class="islogin-info">
-
-          Hi,{{userData.loginname}}&nbsp;&nbsp;&nbsp;<span v-show='isUser'> 主账户余额：{{userData.accountMoney}}
-          <i class="iconfont icon-shuaxin" style="cursor:pointer;" @click="getGameMoney('MAIN',$event)"></i>
-
-              <router-link :to="{name:'user_deposit'}" class="cl-red server header-fast-btn">存款</router-link>
-              <router-link :to="{name:'user_drawmoney'}" class="cl-red server header-fast-btn">取款</router-link>
-          </span>
-           <router-link class="btn-other" v-if="isUser" :to="{name:'user'}">用户中心</router-link>
-            <router-link class="btn-other" v-else :to="{name:'agent'}">代理中心</router-link>
+          Hi,{{userData.name}}
           <a href="javascript:void(0);" @click="$store.dispatch('LOGIN_OUT')" class="btn-other">退出</a>
-        <!--  <a href="javascript:void(0);" v-if='isUser' @click="doSignRecord"  class="btn-other">签到</a>-->
         </span>
     <v-login v-if="!islogin" v-model="showLoginDialog" ></v-login>
     <v-register v-if="!islogin" v-model="showRegisterDialog"></v-register>
   </div>
 </template>
 <script>
-  import {mapGetters, mapActions, mapMutations} from 'vuex'
- // import {getNewAnnouncement} from "api/show"
+  import {mapGetters,mapActions,mapMutations} from 'vuex'
   import vLogin from "components/auth/login"
   import vRegister  from "components/auth/register"
- // import {doSignRecord, getGameMoney} from "api/user"
   import {SETTING} from "@/assets/data"
 
   export default {
@@ -43,31 +32,16 @@
       };
     },
     methods: {
-      ...mapActions(["UPDATE_USERDATA", "LOGIN_OUT"]),
-      ...mapMutations(["SHOW_LOGIN"]),
-     /* doSignRecord() {
-        doSignRecord().then(res => {
-          toast(res.message)
-        })
-      },*/
-      getGameMoney(val,e) {
-        let dom=e.currentTarget
-        dom.addClass("xuanzhuan")
-       /* getGameMoney({gameCode: val}).then(res => {
-          if (res.success) {
-            this.userData.accountMoney =res.data;
-          }
-          setTimeout(()=>{
-            dom.removeClass("xuanzhuan")
-          },500)
-        })*/
-      }
+      ...mapActions(["UPDATE_USERDATA", "LOGIN_OUT"])
+    },
+    watch: {
+
     },
     computed: {
-      ...mapGetters(["userData", "islogin", "isAgent", 'isUser', 'showLogin'])
+      ...mapGetters(["userData", "islogin"])
     },
     created() {
-     // this.UPDATE_USERDATA();
+      this.UPDATE_USERDATA();
     },
     components: {
       vLogin, vRegister
