@@ -15,10 +15,13 @@
           <div class="form-group" v-if="registerItem=='phone'">
             <p class="form-subtitle">{{$t('register.inputPhoneNum')}}</p>
             <div class="form-input">
-              <label class="select-country" id="select-country" country_id="+86">
-                中国 +86
-                <a href="javascript:void(0) " class="arrow"></a>
-              </label>
+              <!--<label class="select-country" id="select-country" country_id="+86" @click="getJsonInfo">-->
+                <!--中国 +86-->
+                <!--<a href="javascript:void(0) " class="arrow"></a>-->
+              <!--</label>-->
+              <select class="select-country"  v-model="data.areaCode">
+                <option v-for="areacd in areaCodeData" :value="areacd.value" :key="areacd.value" > {{areacd.name}} </option>
+              </select>
               <input type="text" class="ps-input cl-blue fl" v-model="data.phone" :placeholder="$t('register.inputPlaceholder1')" maxlength="20" />
             </div>
 
@@ -35,7 +38,7 @@
             <div class="form-input">
             <input ref="pwd" type="text" autocomplete="off" class="ps-input fl inpt-pwd"
                    v-model="data.imageCode" :placeholder="$t('register.inputPlaceholder2')" maxlength="16" />
-              <a href="javascript:;" @click="getCaptcha" class="captcha-code">
+              <a href="javascript:;" @click.prevent="getCaptcha" class="captcha-code">
                 {{$t('register.sendCode')}}</a>
             <!--<eyes :dom="$refs.pwd"></eyes>-->
             </div>
@@ -78,6 +81,7 @@
 <script>
   import { show } from 'api'
   import { generateTitle } from '@/util/i18n'
+  import axios from 'axios'
 
   export default {
     props: {
@@ -90,13 +94,19 @@
           {name: "register.emailReg", value: "email"}
         ],
         registerItem: 'email',
+        areaCodeData: [
+          {name:"+63", value: "+63" },
+          {name:"+86", value: "+86" }
+        ],
         data: {
           phone: "", //true string
           email: "", //true string
           imageCode: "", //true string
           password: "", //true string
           confirmPassword: "",// true string
-        }
+          areaCode:"+63"
+        },
+        requestdata: {}
       }
     },
     methods: {
@@ -110,24 +120,46 @@
               toast("手机号不允许为空");
           }
 
-        if (!this.data.imageCode || this.data.imageCode=='')
-          toast("验证码不能为空");
-        else if (!this.data.password || this.data.password=='')
-          toast("请输入密码");
-        else if (!this.data.confirmPassword || this.data.confirmPassword=='')
-          toast("请输入确认密码");
-        else {
-          return true;
-        }
+          if (!this.data.imageCode || this.data.imageCode==''){
+            toast("验证码不能为空");
+          }else{
+            if (!this.data.password || this.data.password=='')
+              toast("请输入密码");
+            else if (!this.data.confirmPassword || this.data.confirmPassword=='')
+              toast("请输入确认密码");
+            else {
+              return true;
+          }
+
+          }
       },
       register() {
+        if(this.registerItem =='email'){
+          this.requestdata={
+            email: this.data.email,
+            emailMgs: this.data.imageCode, //true string
+            password: this.data.password, //true string
+          }
+        }else{
+          this.requestdata={
+            phone: this.data.phone,
+            areaCode:this.data.areaCode,
+            phoneMgs: this.data.imageCode, //true string
+            password: this.data.password, //true string
+          }
+        }
         if (!this.checked()) return;
-        register(this.data).then((res) => {
+        show.register(this.requestdata).then((res) => {
           //this.getimg()
           if (res.success) {
-            this.$emit('input', false)
-            this.$store.dispatch("UPDATE_USERDATA");
-            this.$router.replace({path: "/user", query: {account: this.data.account}});
+            if(res.code == '1000'){
+              this.$emit('input', false)
+              this.$store.dispatch("UPDATE_USERDATA");
+              this.$router.replace({path: "/index", query: {account: this.data.account}});
+            }else{
+              toast(res.message);
+            }
+
           } else {
             toast(res.message);
           }
@@ -136,9 +168,66 @@
         });
       },
       getCaptcha(e) {
-        // 发送验证码  判断是否输入手机号
+        // 发送验证码  判断是否输入手机号或者邮箱号
         //this.authImg = getAuthImg();
+        if(this.registerItem =='email'){
+          if (!this.data.email || this.data.email==''){
+            toast("邮箱地址不允许为空");
+          }else{
+            this.requestdata={
+              email: this.data.email, //true string
+              type: "1", //true string
+            }
+
+            show.sendEmailCode(this.requestdata).then((res) => {
+              if (res.success) {
+                toast(res.message);
+              } else {
+                toast(res.message);
+              }
+            }).catch(err => {
+
+            });
+
+          }
+        }else{
+          if (!this.data.phone || this.data.phone==''){
+            toast("手机号不允许为空");
+          }else{
+            this.requestdata={
+              phone: this.data.phone,
+              type: "1",
+              areaCode:this.data.areaCode
+            }
+
+            show.sendCode(this.requestdata).then((res) => {
+
+              if (res.success) {
+                console.log(res);
+                toast(res.message);
+              } else {
+                console.log(res);
+                toast(res.message);
+              }
+            }).catch(err => {
+              alert(err);
+              toast(err.message);
+            });
+          }
+        }
+      },
+      getJsonInfo()  {
+        // 国家
+//        this.$http({
+//          method: 'get',
+//          url: '/country',
+//          data: {
+////            name: 'xiaoming',
+////            info: '12'
+//          }
+//        })
       }
+
     },
     components: {
       //eyes

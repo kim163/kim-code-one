@@ -28,3 +28,16 @@ export const register = jsonData => service({
   data: jsonData
 });  //注册用户
 
+
+export const sendCode = jsonData => service({
+  url: numversion + `mgs/send `,
+  method: 'post',
+  data: jsonData
+});  //注册用户
+
+export const sendEmailCode = jsonData => service({
+  url: numversion + `email/send `,
+  method: 'post',
+  data: jsonData
+});  //注册用户
+

@@ -3,13 +3,13 @@
   <div class="modal fade in" v-show="value">
     <div class="modal-dialog popup">
       <div type="button" class="close" @click="$emit('input',false)">
-        <i class="iconfont icon-close" style="font-size:40px;"></i>
+        <i class="iconfont icon-close"></i>
       </div>
       <div class="pop-content">
         <h2 class="tips">{{$t('login.title')}}</h2>
-        <ul class="pop-tab">
-          <li v-for="item in loginType" @click="loginItem=item.value" :class="{active:loginItem==item.value}" :key="item.value">
-            <a href="javascript:void(0);">{{generateTitle(item.name)}}</a>
+        <ul class="pop-tab tab-box">
+          <li v-for="item in loginType" @click="loginItem=item.value" class="s" :class="{active:loginItem==item.value}" :key="item.value">
+            {{generateTitle(item.name)}}
           </li>
         </ul>
         <div class="form-box">
@@ -36,7 +36,7 @@
           </div>
 
           <span class="validate"></span>
-          <input type="button" class="submit" @click.enter="login" id="submit_user" :value="$t('login.logIn')">
+          <input type="button" class="submit btn btn-block" @click.enter="login" id="submit_user" :value="$t('login.logIn')">
           <div>
             <a href="javascript:void(0);" class="forget-btn" @click="openFindPWD">{{$t('login.forgotpwd')}}</a>
           </div>
@@ -156,16 +156,7 @@
   };
 </script>
 <style lang="scss" scoped>
-  .pop-tab li{
-    width: 33%;
-    float: left;
-  }
-  .pop-tab li.active a{
-    border-bottom: 1px solid #87B5FF;
-  }
-  .pop-tab a{
-    color: #282828;
-  }
+
   .forget-btn{
      font-size: 18px;
      color: #4c74ed !important;
