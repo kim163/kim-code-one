@@ -1,7 +1,7 @@
 <template>
-  <div class="modal fade in" v-show="showPostpd">
+  <div class="modal fade in">
     <div class="modal-dialog popup">
-      <div type="button" class="close" @click="showPostpd=false">
+      <div type="button" class="close" @click="$emit('hide',false)">
         <i class="iconfont icon-close"></i>
       </div>
 
@@ -17,7 +17,7 @@
   export default {
     data() {
       return {
-        showPostpd: true
+
       }
     },
     methods: {},
