@@ -59,7 +59,19 @@ export default {
     orderRecord: '订单记录',
 
   },
+  transactionRecord: {
+    tranProgress: '交易中',
+    tranComplete: '交易完成',
+    appealRecord: '申诉记录',
+
+  },
   table: {
+    sellers: '卖家',
+    tranCountOrRate: '交易笔数|完成率',
+    unitPrice: '单价',
+    quantity: '数量',
+    payMethod: '支付方式',
+    operating: '操作'
 
   }
 }

@@ -1,27 +1,33 @@
 <template>
+  <div>
   <div class="section transact-menu">
     <div class="container">
       <div class="row">
         <router-link v-for="(item,i) in transactMenuData" class="item-info" :to="item.to" :key="i">
           {{generateTitle(item.name)}}
         </router-link>
+        <a href="javascript:void(0);" class="item-info" @click="isShowPostPend=true"> {{$t('transactionHome.postPendOrd')}} </a>
+        <router-link :to="{name: 'tranRecord'}" class="item-info" >{{$t('transactionHome.orderRecord')}}</router-link>
       </div>
     </div>
   </div>
+
+   <post-pendord v-if="isShowPostPend"></post-pendord>
+  </div>
 </template>
 <script>
+  import postPendord from 'components/trancomp/post-pendord'
   import { generateTitle } from '@/util/i18n'
   let transactMenuData = [
     {name:'transactionHome.buyUet', value: 'buyUet', to: {name: 'transaction'} },
-    {name:'transactionHome.saleUet', value: 'saleUet', to: {name: 'index'} },
-    {name:'transactionHome.postPendOrd', value: 'postPendOrd', to: {name: 'index'} },
-    {name:'transactionHome.orderRecord', value: 'orderRecord', to: {name: 'index'} }
+    {name:'transactionHome.saleUet', value: 'saleUet', to: {name: 'transell'} }
   ]
 
   export default {
     data() {
       return {
-        transactMenuData: transactMenuData
+        transactMenuData: transactMenuData,
+        isShowPostPend: false
       }
     },
     methods: {
@@ -34,6 +40,7 @@
     activated() {
     },
     components: {
+      postPendord
     }
   };
 </script>

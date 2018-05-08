@@ -1,5 +1,5 @@
 <template>
-  <div class="navbar nav-start">
+  <div :class="['navbar',{'nav-start':!isScrollTop}]">
     <div class="container">
       <div class="row cfx">
         <div class="logo">
@@ -35,12 +35,13 @@
   </div>
 </template>
 <script>
-  import  {SETTING} from "@/assets/data"
+  import {SETTING} from "@/assets/data"
   import vHeader from 'components/header'
   export default {
     name: "",
     data() {
       return {
+        isScrollTop: false,
         SETTING
       }
     },
@@ -55,9 +56,21 @@
       handleSetLanguage() {
         this.$i18n.locale === 'zh' ? this.$i18n.locale = 'en' : this.$i18n.locale = 'zh';
         this.$store.dispatch("SET_LANGUAGE", this.$i18n.locale);
+      },
+
+      handleScroll () {
+        let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+        if(scrollTop > 0){
+           this.isScrollTop = true;
+        }else{
+          this.isScrollTop = false;
+        }
       }
     },
     created() {
+    },
+    mounted () {
+      window.addEventListener('scroll', this.handleScroll);
     },
     activated() {
     },
@@ -130,7 +143,7 @@
   .nav-start {
     padding: 10px 0;
     transition: all 0.2s ease-in-out;
-    background-color: rgba(255,255,255,0);
+    background: #5087FF;
     box-shadow: 1px 1px 4px rgba(0,0,0,0);
     -moz-box-shadow: 1px 1px 4px rgba(0,0,0,0);
     -webkit-box-shadow: 1px 1px 4px rgba(0,0,0,0);

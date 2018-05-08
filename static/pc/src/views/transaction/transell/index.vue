@@ -1,15 +1,14 @@
 <template>
-  <div class="transaction-main">
+  <div class="transell-main">
     <nav-menu></nav-menu>
     <head-nav></head-nav>
-    <transact-menu v-if="islogin"></transact-menu>
-    <guide-page v-if="!islogin"></guide-page>
+    <transact-menu></transact-menu>
 
-    <div class="section transaction-content" v-if="islogin">
+    <div class="section transaction-content">
       <div class="container">
         <div class="row">
           <div class="col-18 fl">
-               <tranbuy-list></tranbuy-list>
+
           </div>
 
           <div class="col-19 fr">
@@ -27,10 +26,6 @@
   import vFooter from 'components/footer';
   import headNav from './components/head-nav';
   import transactMenu from 'components/transact-menu';
-  import guidePage from './components/guide-page';
-  import tranbuyList from './components/tranbuy-list';
-
-  import {mapGetters,mapActions,mapMutations} from 'vuex'
 
   export default {
     data() {
@@ -48,15 +43,15 @@
 
     },
     computed: {
-      ...mapGetters([ "islogin" ])
+
     },
     components: {
-      navMenu, vFooter, headNav, transactMenu, guidePage, tranbuyList
+      navMenu, vFooter, headNav, transactMenu
     }
   };
 </script>
 <style lang="scss">
-  .transaction-main {
+  .transell-main{
      padding-top: 100px;
      .transaction-content{
        margin-bottom: 30px;

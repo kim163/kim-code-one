@@ -59,7 +59,19 @@ export default {
     orderRecord: 'Order record',
 
   },
+  transactionRecord: {
+    tranProgress: 'Transaction processing',
+    tranComplete: 'Transaction complete',
+    appealRecord: 'Appeal record',
+
+  },
   table: {
+    sellers: 'Sellers',
+    tranCountOrRate: 'Number of transactions | Complete rate',
+    unitPrice: 'Unit price',
+    quantity: 'Quantity',
+    payMethod: 'Payment method',
+    operating: 'Operating'
 
   }
 }
