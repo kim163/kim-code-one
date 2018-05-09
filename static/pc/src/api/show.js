@@ -30,14 +30,26 @@ export const register = jsonData => service({
 
 
 export const sendCode = jsonData => service({
-  url: numversion + `mgs/send `,
+  url: numversion + `mgs/send`,
   method: 'post',
   data: jsonData
-});  //注册用户
+});  //发送验证码-手机
 
 export const sendEmailCode = jsonData => service({
-  url: numversion + `email/send `,
+  url: numversion + `email/send`,
   method: 'post',
   data: jsonData
-});  //注册用户
+});  //发送验证码-邮箱
+
+export const getUserInfo = jsonData => service({
+  url: numversion + `account/cash/getUserDetail`,
+  method: 'post',
+  data: jsonData
+});  //获取用户信息
+
+export const getBankInfo = jsonData => service({
+  url: numversion + `account/cash/getBankList`,
+  method: 'post',
+  data: jsonData
+});  //获取银行卡
 

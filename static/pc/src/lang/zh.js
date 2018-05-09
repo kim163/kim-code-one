@@ -73,5 +73,11 @@ export default {
     payMethod: '支付方式',
     operating: '操作'
 
+  },
+  postPend:{
+    postTitle:'发布挂单',
+    buyer:'买入挂单',
+    seller:'卖出挂单'
   }
+
 }

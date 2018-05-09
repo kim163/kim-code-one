@@ -155,7 +155,7 @@
             if(res.code == '1000'){
               this.$emit('input', false)
               this.$store.dispatch("UPDATE_USERDATA");
-              this.$router.replace({path: "/index", query: {account: this.data.account}});
+              console.log(JSON.stringify(res.data))
             }else{
               toast(res.message);
             }

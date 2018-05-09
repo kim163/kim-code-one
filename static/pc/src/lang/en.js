@@ -73,5 +73,10 @@ export default {
     payMethod: 'Payment method',
     operating: 'Operating'
 
+  },
+  postPend:{
+    postTitle:'Post pending orders',
+    buyer:'Buy pending orders',
+    seller:'Sell ​​pending orders'
   }
 }
