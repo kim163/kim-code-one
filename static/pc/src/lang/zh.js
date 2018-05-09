@@ -57,6 +57,9 @@ export default {
     saleUet: '卖出UET',
     postPendOrd: '发布挂单',
     orderRecord: '订单记录',
+    assetManage: '资产管理',
+    userWalletAss: '我的钱包资产',
+    recentOrders: '最近订单',
 
   },
   transactionRecord: {

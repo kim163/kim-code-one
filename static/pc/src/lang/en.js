@@ -57,6 +57,9 @@ export default {
     saleUet: 'Sell UET',
     postPendOrd: 'Post pending orders',
     orderRecord: 'Order record',
+    assetManage: 'Asset management',
+    userWalletAss: 'My wallet assets',
+    recentOrders: 'Recent orders',
 
   },
   transactionRecord: {

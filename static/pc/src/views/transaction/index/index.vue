@@ -1,7 +1,7 @@
 <template>
   <div class="transaction-main">
     <nav-menu></nav-menu>
-    <head-nav></head-nav>
+    <tran-headnav></tran-headnav>
     <transact-menu v-if="islogin"></transact-menu>
     <guide-page v-if="!islogin"></guide-page>
 
@@ -13,7 +13,9 @@
           </div>
 
           <div class="col-19 fr">
-
+            <h1 class="asset-title"> {{$t('transactionHome.assetManage')}} </h1>
+            <user-walletass></user-walletass>
+            <recent-orders></recent-orders>
           </div>
         </div>
       </div>
@@ -25,10 +27,13 @@
 <script>
   import navMenu from 'components/nav';
   import vFooter from 'components/footer';
-  import headNav from './components/head-nav';
+  import tranHeadnav from 'components/master/tran-headnav';
   import transactMenu from 'components/transact-menu';
   import guidePage from './components/guide-page';
   import tranbuyList from './components/tranbuy-list';
+
+  import userWalletass from 'components/trancomp/user-walletass';
+  import recentOrders from 'components/trancomp/recent-orders';
 
   import {mapGetters,mapActions,mapMutations} from 'vuex'
 
@@ -51,7 +56,7 @@
       ...mapGetters([ "islogin" ])
     },
     components: {
-      navMenu, vFooter, headNav, transactMenu, guidePage, tranbuyList
+      navMenu, vFooter, tranHeadnav, transactMenu, guidePage, tranbuyList, userWalletass, recentOrders
     }
   };
 </script>
@@ -63,7 +68,13 @@
        .col-18,.col-19{
          margin: 0;
        }
-
+       .asset-title{
+          line-height: 60px;
+          font-size: 20px;
+          color: #333333;
+          padding-left: 19px;
+         font-weight: normal;
+       }
      }
 
   }
