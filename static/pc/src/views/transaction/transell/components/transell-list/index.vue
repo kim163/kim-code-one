@@ -48,9 +48,9 @@
     methods: {
       generateTitle,
 
-      searchTranBuyList(index) {
-        transaction.getOrderxPageForHallSell(this.reqData).then(res => {
-          console.log('买入UET get OrderxPageForHallSell data:', res);
+      searchTranSellList(index) {
+        transaction.getOrderxPage(this.reqData).then(res => {
+          console.log('卖出UET OrderxPage data:', res);
           this.dataList = res;
         }).catch(error => {
           this.reset(res.message);
@@ -58,7 +58,7 @@
       }
     },
     created() {
-      this.searchTranBuyList();
+      this.searchTranSellList();
     },
     mounted() {
     },

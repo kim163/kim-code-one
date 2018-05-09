@@ -110,6 +110,7 @@ export default new Vuex.Store({
 
       return show.implicitLogin({}).then(res =>{
         if(res.code == 10000){
+          console.log('implicitLogin res:', res);
           commit(types.SET_USERDATA,res.data);
           dispatch(types.CHECK_ONLINE, true);
         }

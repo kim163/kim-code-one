@@ -657,3 +657,25 @@ span.icon-close,i.icon-close{
     color: #fff;
   }
 }
+
+// transaction
+.tran-datalist{
+  width: 100%;
+  border: 1px solid #D4D4D4;
+  table{
+    width: 100%;
+    thead{
+      tr{
+        background: #F2F6FF;
+        line-height: 50px;
+      }
+    }
+    tbody{
+      tr{
+        line-height: 110px;
+        border-bottom: 1px solid #D4D4D4;
+      }
+    }
+  }
+
+}
