@@ -706,3 +706,69 @@ span.icon-close,i.icon-close{
   }
 
 }
+
+
+//order  start
+.tran-content{
+  border-top:0;
+  margin:0 0 30px 0;
+  .btn{
+    display:inline-block;
+    border:1px solid #5087ff;
+    color:#5087ff;
+    border-radius: 4px;
+    height:35px;
+    line-height: 34px;
+    padding:0 20px;
+    margin:10px 0 0 0;
+    cursor: pointer;
+    &:hover{opacity: .8;}
+  }
+  .btn-blue{
+    border:1px solid #5087ff;
+    color:#5087ff;
+  }
+  .btn-orange{
+    border:1px solid #ffa500;
+    color:#ffa500;
+  }
+  .btn-primary{
+    border:1px solid #5087ff;
+    background:#5087ff ;
+    color:#fff;
+  }
+}
+.group-head,.group-body{
+  /*display:table;*/
+  width:100%;
+  overflow: hidden;
+}
+.group-head{
+  background: #f2f6ff;
+  color:#000;
+}
+.group-head .unit,.group-body .unit{
+  /*display:table-cell;*/
+  line-height: 45px;
+  padding:0 10px;
+  text-align: center;
+
+  display:inline-block;
+  float:left;
+  width:14.28%;
+}
+.group-tr{
+  border-bottom: 1px solid #ccc;
+  overflow: hidden;
+  &:last-child{
+    border:0;
+  }
+}
+.group-body .unit{
+  margin:10px 0;
+}
+
+
+
+//order  end
+
