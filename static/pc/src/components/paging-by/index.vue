@@ -1,68 +1,127 @@
 <template>
-  <div class="pagination" v-if="data.totalPages>1">
-    <a href="javascript:void(0);" @click="pageFun(1)">首页</a>&nbsp;
-    <a href="javascript:void(0);"  @click="prev">上一页</a>
-    <div>每页<span>{{data.size}}</span>条记录
-    第<span>{{data.pageNumber}}/{{data.totalPages}}</span>页
-    </div>
-    <a href="javascript:void(0);"  @click="next">下一页</a>&nbsp
-    <a href="javascript:void(0);"  @click="pageFun(data.totalPages)">尾页</a>&nbsp;
-  </div>
+<div class="page-wrap" v-if="data.total>data.limit">
+  <ul v-show="prePage" class="li-page" @click="goPrePage"> « </ul>
+  <ul>
+    <li v-for="i, index in showPageBtn" :key="index" :class="{active: i === currentPage, pointer: i, hover: i && i !== currentPage}"
+        @click="pageOffset(i)">
+      <a v-if="i" class="notPointer">{{i}}</a>
+      <a v-else>···</a>
+    </li>
+  </ul>
+  <ul v-show="nextPage" class="li-page" @click="goNextPage"> » </ul>
+</div>
 </template>
+
 <script>
-  export default {
-    data() {
-      return {pageNumber: 1}
+ export default {
+  data() {
+    return {
+      total: 0,
+      limit: 10
+    }
+  },
+   props: {
+     data: {
+       type: Object,
+       default() {
+         return {
+           total: 0
+         }
+       }
+     }
+   },
+  computed: {
+    prePage () {
+      return  this.currentPage !== 1
     },
-    props: {
-      data: {
-        type: Object,
-        default() {
-          return {
-            totalPages:0
-          }
-        }
-      }
+
+    nextPage () {
+      return this.currentPage < this.totalPage
     },
-    methods: {
-      pageFun(index) {
-        this.$emit("search", index, this.data.size);
-      },
-      prev() {
-        if (this.data.pageNumber == 1) return;
-        this.pageFun(this.data.pageNumber-1);
-      },
-      next() {
-        if (this.data.pageNumber >= this.data.totalPages) return
-        this.pageFun(this.data.pageNumber+1);
-      }
+
+    totalPage () {
+      return Math.ceil(this.data.total / this.data.limit)
+    },
+
+    currentPage () {
+      return Math.ceil(this.data.offset / this.data.limit) + 1
+    },
+
+    showPageBtn () {
+      const pageNum = this.totalPage
+      const index = this.currentPage
+      if (pageNum <= 5) return [...new Array(5)].map((v, i) => i + 1)
+      if (index <= 2) return [1, 2, 3, 0, pageNum]
+      if (index >= pageNum - 1) return [1, 0, pageNum - 2, pageNum - 1, pageNum]
+      if (index === 3) return [1, 2, 3, 4, 0, pageNum]
+      if (index === pageNum - 2) return [1, 0, pageNum - 3, pageNum - 2, pageNum - 1, pageNum]
+      return [1, 0, index - 1, index, index + 1, 0, pageNum]
+    }
+  },
+
+  methods: {
+    pageFun(index) {
+        this.$emit("search", index);
+    },
+    pageOffset (i) {
+      if (i === 0 || i === this.currentPage) return
+      this.pageFun(i);
+    },
+    goPrePage () {
+      this.pageFun(this.currentPage-1);
+    },
+
+    goNextPage () {
+      this.pageFun(this.currentPage+1);
     }
   }
+}
 </script>
-<style scoped="">
-  div.pagination {
-    padding: 20px 0 10px 0;
-    text-align: center;
-  }
-  div.pagination a, div.pagination span {
+<style lang="scss">
+.page-wrap {
+  text-align: center;
+  font-size: 18px;
+  margin-top: 10px;
+
+  ul {
     display: inline-block;
-    color: #313131;
-  }
-  div.pagination a, div.pagination div {
-    display: inline-block;
-    border: solid 1px transparent;
-    margin: 0 10px;
-    height: 16px;
-    line-height: 16px;
-    transition: all .3s;
-    color: #bbb;
-  }
-  div.pagination a.active {
-    background: #13a1ca;
-    border: solid 1px #13a1ca;
+    list-style: none;
+    overflow: hidden;
+
+    li {
+      float: left;
+      color: #1e5a6b;
+      padding: 1px 10px;
+      margin: 0 5px;
+      border-radius: 50%;
+      user-select: none;
+      border: 1px solid transparent;
+    }
   }
 
-  div.pagination a:hover {
-    color: #13a1ca;
+  .pointer {
+    cursor: pointer;
   }
+
+  .hover {
+    &:hover {
+      border-color: #7ba6b3;
+    }
+  }
+
+  .li-page {
+    line-height: 1.5;
+    cursor: pointer;
+    color: #1e5a6b;
+    padding: 1px 10px;
+
+    &:hover {
+      color: #7ba6b3;
+    }
+  }
+
+  .active {
+    border-color: #246c81;
+  }
+}
 </style>

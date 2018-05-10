@@ -17,11 +17,14 @@
             </tr>
         </tbody>
       </table>
+
+    <paging-by :data="dataList.pageInfo" @search="searchDataList"></paging-by>
   </div>
 </template>
 <script>
-  import { transaction } from 'api'
-  import { generateTitle } from '@/util/i18n'
+  import { transaction } from 'api';
+  import { generateTitle } from '@/util/i18n';
+  import pagingBy from "components/paging-by";
 
   let dataHead = [
     {name: "table.sellers", value: "sellers"},
@@ -37,7 +40,8 @@
       return {
         dataHead,
         dataList: {
-          data: []
+          data: [],
+          pageInfo: {}
         },
         reqData: {
           limit:10,
@@ -48,7 +52,11 @@
     methods: {
       generateTitle,
 
-      searchTranBuyList(index) {
+      searchDataList(index) {
+        if(!isNaN(index)) {
+          this.reqData.offset = (index - 1) * this.reqData.limit;
+        }
+
         transaction.getOrderxPageForHallSell(this.reqData).then(res => {
           console.log('买入UET get OrderxPageForHallSell data:', res);
           this.dataList = res;
@@ -58,13 +66,14 @@
       }
     },
     created() {
-      this.searchTranBuyList();
+      this.searchDataList();
     },
     mounted() {
     },
     activated() {
     },
     components: {
+      pagingBy
     }
   };
 </script>
