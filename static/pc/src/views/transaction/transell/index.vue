@@ -12,7 +12,9 @@
           </div>
 
           <div class="col-19 fr">
-
+            <h1 class="asset-title"> {{$t('transactionHome.assetManage')}} </h1>
+            <user-walletass></user-walletass>
+            <recent-orders></recent-orders>
           </div>
         </div>
       </div>
@@ -27,6 +29,9 @@
   import tranHeadnav from 'components/master/tran-headnav';
   import transactMenu from 'components/transact-menu';
   import transellList from './components/transell-list';
+
+  import userWalletass from 'components/trancomp/user-walletass';
+  import recentOrders from 'components/trancomp/recent-orders';
 
   export default {
     data() {
@@ -47,20 +52,32 @@
 
     },
     components: {
-      navMenu, vFooter, tranHeadnav, transactMenu, transellList
+      navMenu, vFooter, tranHeadnav, transactMenu, transellList, userWalletass, recentOrders
     }
   };
 </script>
 <style lang="scss">
   .transell-main{
      padding-top: 100px;
-     .transaction-content{
-       margin-bottom: 30px;
-       .col-18,.col-19{
-         margin: 0;
-       }
-
-     }
+    .transaction-content{
+      margin-bottom: 30px;
+      .row{
+        border: 1px solid #D4D4D4;
+      }
+      .col-18,.col-19{
+        margin: 0;
+      }
+      .col-19{
+        border-left: 1px solid #D4D4D4;
+      }
+      .asset-title{
+        line-height: 60px;
+        font-size: 20px;
+        color: #333333;
+        padding-left: 19px;
+        font-weight: normal;
+      }
+    }
 
   }
 </style>

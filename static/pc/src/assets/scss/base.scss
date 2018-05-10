@@ -661,19 +661,46 @@ span.icon-close,i.icon-close{
 // transaction
 .tran-datalist{
   width: 100%;
-  border: 1px solid #D4D4D4;
   table{
     width: 100%;
+    text-align: center;
+    font-size: 16px;
+    color: #333333;
     thead{
       tr{
         background: #F2F6FF;
         line-height: 50px;
+        th{
+          font-weight: normal;
+        }
       }
     }
     tbody{
       tr{
         line-height: 110px;
         border-bottom: 1px solid #D4D4D4;
+        &:hover{
+          background: #F8F8F8;
+        }
+        &:last-child{
+          border-bottom: none;
+        }
+      }
+      .transaction-btn{
+         width: 120px;
+         height: 38px;
+         line-height: 38px;
+         border: 1px solid #5087FF;
+         border-radius: 5px;
+         text-align: center;
+         font-size: 16px;
+         color: #5087ff;
+         display: inline-block;
+        &.active,&:hover{
+          background: #FF9600;
+          border: 1px solid #FF9600;
+          color: #ffffff;
+        }
       }
     }
   }

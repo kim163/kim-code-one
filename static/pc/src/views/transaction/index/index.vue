@@ -65,8 +65,14 @@
      padding-top: 100px;
      .transaction-content{
        margin-bottom: 30px;
+       .row{
+         border: 1px solid #D4D4D4;
+       }
        .col-18,.col-19{
          margin: 0;
+       }
+       .col-19{
+         border-left: 1px solid #D4D4D4;
        }
        .asset-title{
           line-height: 60px;

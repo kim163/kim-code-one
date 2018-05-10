@@ -13,7 +13,8 @@ export default new Vuex.Store({
       name: '',
       nickname: '',
       amount: '',
-      userId: ''
+      userId: '',
+      accountChainVos: []
     },
     language: $localStorage.get('language-sel') || 'en',
     tokenInfo: null,
@@ -90,7 +91,8 @@ export default new Vuex.Store({
         name: '',
         nickname: '',
         amount: '',
-        userId: ''
+        userId: '',
+        accountChainVos: []
       })
     },
     [types.LOGIN_OUT]({commit,dispatch},val){ //退出登录

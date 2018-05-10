@@ -8,12 +8,14 @@
         </thead>
         <tbody>
             <tr v-for="(item,i) in dataList.data||[]">
-              <td> {{item.creditAccountNameTwin}} </td>
+              <td> {{item.debitName}} </td>
               <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
+              <td>0.01元</td>
+              <td> {{item.debitAmount}} </td>
+              <td> {{item.debitAccountTypeTwin}} </td>
+              <td>
+                <a href="javascript:void(0);" class="transaction-btn">{{$t('transactionHome.buyUet')}}</a>
+              </td>
             </tr>
         </tbody>
       </table>
@@ -45,7 +47,9 @@
         },
         reqData: {
           limit:10,
-          offset:0
+          offset:0,
+          type: 11,
+          status: 41
         }
       }
     },
@@ -56,8 +60,9 @@
         if(!isNaN(index)) {
           this.reqData.offset = (index - 1) * this.reqData.limit;
         }
+        console.log('req:',this.reqData);
 
-        transaction.getOrderxPageForHallSell(this.reqData).then(res => {
+        transaction.getOrderxPage(this.reqData).then(res => {
           console.log('买入UET get OrderxPageForHallSell data:', res);
           this.dataList = res;
         }).catch(error => {

@@ -60,6 +60,7 @@ export default {
     assetManage: 'Asset management',
     userWalletAss: 'My wallet assets',
     recentOrders: 'Recent orders',
+    copyBtn: 'copy',
 
   },
   transactionRecord: {
