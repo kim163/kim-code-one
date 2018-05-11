@@ -9,8 +9,8 @@
        </div>
      </div>
 
-        <span v-if="islogin" class="islogin-info">
-          Hi,{{userData.name}}
+        <span v-if="islogin" class="islogin-info login-user">
+          {{userData.name}}
           <a href="javascript:void(0);" @click="$store.dispatch('LOGIN_OUT')" class="btn-other">退出</a>
         </span>
     <v-login v-if="!islogin" v-model="showLoginDialog" ></v-login>
@@ -61,7 +61,14 @@
       margin: 0 15px;
     }
     .islogin-info{
-      color: #09edff;
+      /*color: #09edff;*/
+      background: url('~images/user.png') no-repeat;
+      padding-left:45px;
+      height:40px;
+      line-height: 40px;
+      display:inline-block;
+      color:#333;
+      margin-top:6px;
     }
     .login-form {
       line-height: 27px;
@@ -131,9 +138,10 @@
       border: solid 1px #fff;
       color: #fff;
       display: inline-block;
+      height:26px;
+      line-height: 26px;
       position: relative;
-      display: inline;
-      padding: 2px 24px;
+      padding: 0 14px;
       font-size: 14px;
       margin-left: 10px;
       text-align: center;
@@ -151,6 +159,38 @@
     .header-fast-btn{
         display: inline-block;
         margin: 0 6px;
+    }
+  }
+  .nav-start{
+    .islogin-info{
+      color:#fff;
+    }
+  }
+
+  @media(max-width:1330px) {
+    .navbar .link-part .col-2 {
+      margin: 30px 10px 0;
+    }
+    .header .islogin-info{
+      margin-top: 20px;
+    }
+    .navbar .link-part .col-2 a {
+      font-size: 16px;
+    }
+    .navbar .link-part .lang-icons a{
+      font-size: 15px;
+      padding:4px 10px;
+      border: 2px solid #ffffff;
+      -webkit-border-radius: 35px;
+      -moz-border-radius: 35px;
+      border-radius: 35px;
+      display: block;
+    }
+  }
+  @media(max-width:1072px) {
+
+    .nav-start .nav-logo-link{
+      width:50px;
     }
   }
 </style>
