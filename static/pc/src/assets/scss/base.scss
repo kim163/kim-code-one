@@ -54,6 +54,13 @@ ul, ol {
   text-align: center;
 }
 
+.txt-left{
+  text-align: left;
+}
+.disp-inlblo{
+  display: inline-block;
+}
+
 .clear {
   clear: both
 }
@@ -188,7 +195,7 @@ ul, ol {
 .cl-bigred {
   color: #e5210d;
 }
-.content{ background: url(~images/base/content.jpg) no-repeat center -9px;  padding-bottom:74px;}
+.content{ padding-bottom:74px;}
 .user-conter {
   width: 875px;
   float: right;
@@ -701,6 +708,30 @@ span.icon-close,i.icon-close{
           border: 1px solid #FF9600;
           color: #ffffff;
         }
+      }
+      .avatars-item{
+        width: 70px;
+        height: 70px;
+        line-height: 70px;
+        border-radius: 35px;
+        text-align: center;
+        font-size: 30px;
+        color: #ffffff;
+        display: inline-block;
+        vertical-align: middle;
+        margin:0 18px 0 20px;
+      }
+      .iconfont{
+        font-size: 30px;
+      }
+      .icon-pay-alipay{
+         color: #03A9F3;
+      }
+      .icon-pay-wechat{
+         color: #59B64C;
+      }
+      .icon-pay-bank{
+         color: #B565FF;
       }
     }
   }
