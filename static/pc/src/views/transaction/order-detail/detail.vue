@@ -145,6 +145,14 @@
 
 .detail-box{
   border:1px solid #d4d4d4;
+  input{
+    height:50px;
+    line-height: 50px;
+    border:1px solid #d4d4d4;
+    width:100%;
+    padding:0 20px;
+    font-size:16px;
+  }
   .time-stame{
     font-size:22px;
     padding:10px 0;
@@ -243,16 +251,9 @@
   }
   .red{color:red;}
 }
-input{
-  height:50px;
-  line-height: 50px;
-  border:1px solid #d4d4d4;
-  width:100%;
-  padding:0 20px;
-  font-size:16px;
-}
+
 input[type="button"]{
-&.btn{
+  &.btn{
     display:inline-block;
     border:1px solid #5087ff;
     color:#5087ff;
@@ -268,11 +269,11 @@ input[type="button"]{
     border:1px solid #5087ff;
     color:#5087ff;
   }
-&.btn-orange{
+  &.btn-orange{
     border:1px solid #ffa500;
     color:#ffa500;
   }
-&.btn-normal{
+  &.btn-normal{
     border:1px solid #5087ff;
     background:#5087ff ;
     color:#fff;
