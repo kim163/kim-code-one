@@ -16,3 +16,10 @@ export const getOrderxPage = jsonData => service({
   method: 'post',
   data: jsonData
 });
+
+// 我要挂单--买入挂单
+export const publishToBuy = jsonData => service({
+  url: numversion+`order/chain/publishToBuy`,
+  method: 'post',
+  data: jsonData
+});

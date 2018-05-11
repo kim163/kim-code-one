@@ -40,7 +40,7 @@
                 等待付款 09:45
                 <!--{{order.createtime}}-->
               </span>
-              <span class="unit">  <a class="btn btn-primary">详情</a>  </span>
+              <span class="unit">  <a class="btn btn-primary" href="/orderDetail/id">详情</a>  </span>
             </div>
 
             <paging-by :data="OrderList.pageInfo" @search="getOrderList"></paging-by>
@@ -103,7 +103,7 @@
         }
         transaction.getOrderxPage(this.request).then(res => {
           console.log('订单记录 OrderxPage data:');
-          console.table(res.data);
+          console.log(res.data);
           this.OrderList = res;
         }).catch(error => {
           this.reset(res.message);

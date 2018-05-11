@@ -43,7 +43,7 @@ export default [
     ]
   },
   {
-    path: "/orderDetail",
+    path: "/orderDetail/:id",
     name: 'orderDetail',
     component(resolve){
       // 订单详情页

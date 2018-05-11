@@ -18,7 +18,7 @@
           <a href="/tranRecord" class="item-info">
             订单记录
           </a> &gt;
-          <a href="" class="item-info active">
+          <a href="javascript:;" class="item-info active">
             订单详情
           </a>
         </div>
@@ -68,13 +68,13 @@
               </div>
               <div class="col-33">
                 <div class="order-time">
-                  等待付款   09:25
+                  <p class="text-center time-stame">等待付款   <span class="red">09:25</span></p>
 
-                  <input type="button" class="btn" value="我已付款">
+                  <input type="button" class="btn btn-normal" value="我已付款">
                   <p>请在付款后，点击“我已付款”</p>
-
-                  <input type="button" class="btn" value="取消交易">
-                  <p>
+                  <br/>
+                  <input type="button" class="btn btn-orange" value="取消交易">
+                  <p class="text-center">
                     <span class="red">如果您已向卖家付款，千万不要取消</span><br>
                     取消规则：买方当日连续取消2笔，或累计取消6笔，将限制交易24小时。
                   </p>
@@ -102,24 +102,27 @@
   import tranHeadnav from 'components/master/tran-headnav';
   import { generateTitle } from '@/util/i18n'
 
-  let transactMenuData = [
-    {name:'transactionHome.buyUet', value: 'buyUet', to: {name: 'transaction'} },
-    {name:'transactionHome.saleUet', value: 'saleUet', to: {name: 'transell'} },
-    {name:'transactionHome.saleUet', value: 'saleUet', to: {name: 'transell'} }
-  ]
 
 
   export default {
     data() {
       return {
-        transactMenuData: transactMenuData,
       };
     },
     methods: {
-      generateTitle
+      generateTitle,
+        fetchData(){
+          this.loading = true;
+
+          //拿到查询字段，商品的id后进行http请求
+          var id = this.id;
+
+
+          this.loading = false;
+        }
     },
     created() {
-
+      this.fetchData();
     },
     watch: {
 
@@ -142,32 +145,48 @@
 
 .detail-box{
   border:1px solid #d4d4d4;
+  .time-stame{
+    font-size:22px;
+    padding:10px 0;
+  }
   .col-33{
     display:inline-block;
     width:33%;
     border-right:1px solid #d4d4d4;
     margin:0;
     min-height:427px;
+    min-width:350px;
     &:last-child{
       border:0;
      }
   }
+   p {
+    font-size: 16px;
+     padding:5px 0;
+     line-height: 25px;
+  }
+   .red{color:red;}
   .alipay-box{
     margin:50px;
     .alipay-box-title{
       border:1px solid #d4d4d4;
-      padding:10px;
-      text-align: center;
+      padding:10px 10px 10px 55px;
+      /*text-align: center;*/
+      background: url('~images/i-alipay.png') no-repeat 15px center;
+      background-size: 30px;
+      font-size:16px;
     }
     .alipay-qrcode{
       background: #4aa9e9;
       color:#fff;
       text-align: center;
-      padding:20px 0;
+      padding:18px 0;
       img{
         width:160px;
         height:160px;
-        padding:12px 0;
+        padding:12px;
+        background: url('~images/j.png') no-repeat;
+        margin-bottom:5px;
       }
     }
   }
@@ -189,6 +208,7 @@
   text-align: center;
   background: #5087ff;
   margin:0 20px 0 0;
+  font-size:18px;
 }
 
 .detail-tips{
@@ -231,7 +251,33 @@ input{
   padding:0 20px;
   font-size:16px;
 }
-
+input[type="button"]{
+&.btn{
+    display:inline-block;
+    border:1px solid #5087ff;
+    color:#5087ff;
+    border-radius: 4px;
+    height:50px;
+    line-height: 50px;
+    padding:0 20px;
+    margin:10px 0 0 0;
+    cursor: pointer;
+  &:hover{opacity: .8;}
+  }
+  .btn-blue{
+    border:1px solid #5087ff;
+    color:#5087ff;
+  }
+&.btn-orange{
+    border:1px solid #ffa500;
+    color:#ffa500;
+  }
+&.btn-normal{
+    border:1px solid #5087ff;
+    background:#5087ff ;
+    color:#fff;
+  }
+}
   .item-info{
     color:#333;
   }
@@ -245,5 +291,18 @@ input{
   height: auto;
   border-bottom: 1px solid #D4D4D4;
   padding:50px 0 0 0;
+}
+  .text-center{
+    text-align: center;
+  }
+
+@media(max-width:1330px){
+    .detail-box .col-33{
+      width:50%;
+        border-right:1px solid #d4d4d4;
+      border-bottom:1px solid #d4d4d4;
+        height:430px;
+
+  }
 }
 </style>
