@@ -1,31 +1,37 @@
 <template>
   <div class="tran-datalist">
-      <table>
-        <thead>
-           <tr>
-             <th v-for="(item,i) in dataHead"> {{generateTitle(item.name)}} </th>
-           </tr>
-        </thead>
-        <tbody>
-            <tr v-for="(item,i) in dataList.data||[]">
-              <td class="txt-left"><p class="disp-inlblo" v-html="proUserAvatars(item.debitName)"> </p> {{item.debitName}} </td>
-              <td></td>
-              <td>0.01元</td>
-              <td> {{item.debitAmount}} </td>
-              <td>
-                   <span v-if="item.debitAccountTypeTwin === 1" class="iconfont icon-pay-alipay"></span>
-                   <span v-else-if="item.debitAccountTypeTwin === 2" class="iconfont icon-pay-wechat" ></span>
-                   <span v-else-if="item.debitAccountTypeTwin === 3" class="iconfont icon-pay-bank"></span>
-                   <span v-else>
+      <div class="tranlist-container">
+          <div class="tranlist-head">
+              <p v-for="(item,i) in dataHead" :class="['head-item',item.value]">  {{generateTitle(item.name)}}  </p>
+          </div>
+          <div class="tranlist-body">
+             <div class="tranlist-item" v-for="(item,i) in dataList.data||[]">
+                 <div class="tran-message">
+                   <p class="txt-left item sellers"><span class="disp-inlblo" v-html="proUserAvatars(item.debitName)"> </span> {{item.debitName}} </p>
+                   <p class="item tranCountOrRate">555丨93.23％</p>
+                   <p class="item">0.01元</p>
+                   <p class="item quantity"> {{item.debitAmount}} UET </p>
+                   <p class="item">
+                     <span v-if="item.debitAccountTypeTwin === 1" class="iconfont icon-pay-alipay"></span>
+                     <span v-else-if="item.debitAccountTypeTwin === 2" class="iconfont icon-pay-wechat" ></span>
+                     <span v-else-if="item.debitAccountTypeTwin === 3" class="iconfont icon-pay-bank"></span>
+                     <span v-else>
                       {{item.debitAccountTypeTwin}}
-                   </span>
-              </td>
-              <td>
-                <a href="javascript:void(0);" class="transaction-btn">{{$t('transactionHome.buyUet')}}</a>
-              </td>
-            </tr>
-        </tbody>
-      </table>
+                      </span>
+                   </p>
+                   <p class="item">
+                     <a href="javascript:void(0);" class="transaction-btn" @click="showView(item,i)">{{$t('transactionHome.buyUet')}}</a>
+                   </p>
+                 </div>
+                 <transition name="message">
+                    <div class="tran-contpart" v-show="item.already" :ref="item.id">
+                         <p>  {{item.debitName}} </p>
+                    </div>
+                 </transition>
+             </div>
+
+          </div>
+      </div>
 
     <paging-by :data="dataList.pageInfo" @search="searchDataList"></paging-by>
   </div>
@@ -74,7 +80,7 @@
          let mathRand = parseInt(Math.random()*this.avatarDealw,10);
          let avatarColor = this.SETTING.avatarColor[mathRand];
          let nameFirst = name.substr(0,1);
-         let avaHtml = '<span class="avatars-item" style="background: '+avatarColor+' ">'+nameFirst+'</span>';
+         let avaHtml = '<a class="avatars-item" style="background: '+avatarColor+' ">'+nameFirst+'</a>';
 
          return avaHtml;
       },
@@ -87,9 +93,23 @@
 
         transaction.getOrderxPage(this.reqData).then(res => {
           console.log('买入UET get OrderxPageForHallSell data:', res);
-          this.dataList = res;
+          this.dataList.data = res.data.map(item => {
+            item.already = false;
+            return item;
+          });
+          this.dataList.pageInfo = res.pageInfo;
         }).catch(error => {
           this.reset(res.message);
+        });
+      },
+
+      showView(item, i) {
+        if (this.$refs[item.id][0].style.display == "") {
+          this.$refs[item.id][0].style.display = 'block';
+        }
+
+        this.$nextTick(() => {
+          item.already = !item.already;
         });
       }
     },

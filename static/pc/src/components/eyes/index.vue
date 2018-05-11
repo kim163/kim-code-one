@@ -35,7 +35,7 @@
 <style spcoed>
   span.pubeyes {
     position: absolute;
-    top: 40px !important;
+    top: 20px !important;
     right: 5%;
     font-size: 24px;
     cursor: pointer;
