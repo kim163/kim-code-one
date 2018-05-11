@@ -122,10 +122,14 @@
         })
       },
       publishBuy(){
+        if(this.buyAmount =='' || !this.buyAmount){
+          toast('数量不能为空')
+        }
+        if(this.buyAmount =='' || !this.buyAmount){
+          toast('数量不能为空')
+        }
         transaction.publishToBuy(this.requestdata).then((res) => {
-          if(this.buyAmount =='' || !this.buyAmount){
-            toast('数量不能为空')
-          }
+
           this.requestdata= {
             userId: this.userData.userId,
             accountCashVo: {
