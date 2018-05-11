@@ -61,6 +61,7 @@ export default {
     userWalletAss: 'My wallet assets',
     recentOrders: 'Recent orders',
     copyBtn: 'copy',
+    successCopy: 'Successfully copied',
 
   },
   transactionRecord: {

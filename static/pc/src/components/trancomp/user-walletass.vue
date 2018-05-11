@@ -7,7 +7,7 @@
            <qrcode :value="item.address" v-if="item.address" :options="{ size: 188 }"></qrcode>
         </div>
         <p class="address"> {{item.address}} </p>
-        <a href="" class="copy-btn">{{$t('transactionHome.copyBtn')}}</a>
+        <a href="javascript:void(0);" class="copy-btn" @click="copystr(item.address)" >{{$t('transactionHome.copyBtn')}}</a>
      </div>
 
   </div>
@@ -21,7 +21,12 @@
       return {};
     },
     props: {},
-    methods: {},
+    methods: {
+      copystr(text) {
+        text.$copy();
+        toast(this.$t('transactionHome.successCopy'));
+      }
+    },
     computed: {
       ...mapGetters(["userData"])
     },

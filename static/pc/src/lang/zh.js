@@ -61,6 +61,7 @@ export default {
     userWalletAss: '我的钱包资产',
     recentOrders: '最近订单',
     copyBtn: '复制',
+    successCopy: '复制成功',
 
   },
   transactionRecord: {

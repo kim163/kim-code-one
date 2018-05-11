@@ -8,11 +8,18 @@
         </thead>
         <tbody>
             <tr v-for="(item,i) in dataList.data||[]">
-              <td> {{item.creditName}} </td>
+              <td class="txt-left"><p class="disp-inlblo" v-html="proUserAvatars(item.creditName)"> </p> {{item.creditName}} </td>
               <td></td>
               <td>0.01元</td>
               <td>{{item.creditAmount}}</td>
-              <td>{{item.creditAccountTypeTwin}}</td>
+              <td>
+                <span v-if="item.creditAccountTypeTwin === 1" class="iconfont icon-pay-alipay"></span>
+                <span v-else-if="item.creditAccountTypeTwin === 2" class="iconfont icon-pay-wechat" ></span>
+                <span v-else-if="item.creditAccountTypeTwin === 3" class="iconfont icon-pay-bank"></span>
+                <span v-else>
+                      {{item.creditAccountTypeTwin}}
+                </span>
+              </td>
               <td>
                  <a href="javascript:void(0);" class="transaction-btn">{{$t('transactionHome.saleUet')}}</a>
               </td>
@@ -27,6 +34,7 @@
   import { transaction } from 'api';
   import { generateTitle } from '@/util/i18n';
   import pagingBy from "components/paging-by";
+  import  {SETTING} from "@/assets/data";
 
   let dataHead = [
     {name: "table.sellers", value: "sellers"},
@@ -40,6 +48,7 @@
   export default {
     data() {
       return {
+        SETTING,
         dataHead,
         dataList: {
           data: [],
@@ -53,8 +62,22 @@
         }
       }
     },
+    computed: {
+      avatarDealw(){
+        return this.SETTING.avatarColor.length;
+      }
+    },
     methods: {
       generateTitle,
+
+      proUserAvatars(name){
+        let mathRand = parseInt(Math.random()*this.avatarDealw,10);
+        let avatarColor = this.SETTING.avatarColor[mathRand];
+        let nameFirst = name.substr(0,1);
+        let avaHtml = '<span class="avatars-item" style="background: '+avatarColor+' ">'+nameFirst+'</span>';
+
+        return avaHtml;
+      },
 
       searchTranSellList(index) {
         if(!isNaN(index)) {

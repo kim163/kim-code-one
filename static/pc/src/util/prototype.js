@@ -49,7 +49,6 @@ String.prototype.$copy=function(e){
   document.addEventListener('copy',save);
   document.execCommand('copy');
   document.removeEventListener('copy',save);
-  toast('复制成功');
 }
 //时间格式化
 String.prototype.toDate=function(){
