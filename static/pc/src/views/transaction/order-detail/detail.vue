@@ -290,7 +290,6 @@ input[type="button"]{
   line-height: 56px;
   height: auto;
   border-bottom: 1px solid #D4D4D4;
-  padding:50px 0 0 0;
 }
   .text-center{
     text-align: center;
