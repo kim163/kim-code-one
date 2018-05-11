@@ -61,6 +61,9 @@ ul, ol {
   display: inline-block;
 }
 
+.posit-rel{
+  position: relative;
+}
 .clear {
   clear: both
 }
@@ -668,72 +671,101 @@ span.icon-close,i.icon-close{
 // transaction
 .tran-datalist{
   width: 100%;
-  table{
-    width: 100%;
+  .tranlist-container{
     text-align: center;
     font-size: 16px;
     color: #333333;
-    thead{
-      tr{
-        background: #F2F6FF;
-        line-height: 50px;
-        th{
-          font-weight: normal;
-        }
-      }
-    }
-    tbody{
-      tr{
-        line-height: 110px;
-        border-bottom: 1px solid #D4D4D4;
-        &:hover{
-          background: #F8F8F8;
-        }
-        &:last-child{
-          border-bottom: none;
-        }
-      }
-      .transaction-btn{
-         width: 120px;
-         height: 38px;
-         line-height: 38px;
-         border: 1px solid #5087FF;
-         border-radius: 5px;
-         text-align: center;
-         font-size: 16px;
-         color: #5087ff;
-         display: inline-block;
-        &.active,&:hover{
-          background: #FF9600;
-          border: 1px solid #FF9600;
-          color: #ffffff;
-        }
-      }
-      .avatars-item{
-        width: 70px;
-        height: 70px;
-        line-height: 70px;
-        border-radius: 35px;
-        text-align: center;
-        font-size: 30px;
-        color: #ffffff;
+
+    .tranlist-head{
+      background: #F2F6FF;
+      line-height: 50px;
+      .head-item{
         display: inline-block;
-        vertical-align: middle;
-        margin:0 18px 0 20px;
+        width: 14%;
       }
-      .iconfont{
-        font-size: 30px;
+      p.sellers{
+        width: 25%;
       }
-      .icon-pay-alipay{
-         color: #03A9F3;
-      }
-      .icon-pay-wechat{
-         color: #59B64C;
-      }
-      .icon-pay-bank{
-         color: #B565FF;
+      p.tranCountOrRate{
+        width: 16%;
       }
     }
+    .tranlist-body{
+
+    }
+    .tran-message{
+      line-height: 110px;
+      border-bottom: 1px solid #D4D4D4;
+      &:hover{
+        background: #F8F8F8;
+      }
+      &:last-child{
+        border-bottom: none;
+      }
+      .item{
+        display: inline-block;
+        width: 14%;
+      }
+      p.sellers{
+        width: 25%;
+      }
+      p.tranCountOrRate{
+        width: 16%;
+      }
+      .quantity{
+        color: #ff2a00;
+      }
+    }
+    .message-enter-active, .message-leave-active {
+      transition: all 1s;
+      overflow: hidden;
+    }
+    .tran-contpart{
+       height: 110px;
+       background: #F8F8F8;
+       border-top: 1px solid #D4D4D4;
+    }
+    .transaction-btn{
+      width: 120px;
+      height: 38px;
+      line-height: 38px;
+      border: 1px solid #5087FF;
+      border-radius: 5px;
+      text-align: center;
+      font-size: 16px;
+      color: #5087ff;
+      display: inline-block;
+      &.active,&:hover{
+        background: #FF9600;
+        border: 1px solid #FF9600;
+        color: #ffffff;
+      }
+    }
+    .avatars-item{
+      width: 70px;
+      height: 70px;
+      line-height: 70px;
+      border-radius: 35px;
+      text-align: center;
+      font-size: 30px;
+      color: #ffffff;
+      display: inline-block;
+      vertical-align: middle;
+      margin:0 18px 0 20px;
+    }
+    .iconfont{
+      font-size: 30px;
+    }
+    .icon-pay-alipay{
+      color: #03A9F3;
+    }
+    .icon-pay-wechat{
+      color: #59B64C;
+    }
+    .icon-pay-bank{
+      color: #B565FF;
+    }
+
   }
 
 }

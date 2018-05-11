@@ -50,7 +50,7 @@
     showPageBtn () {
       const pageNum = this.totalPage
       const index = this.currentPage
-      if (pageNum <= 5) return [...new Array(5)].map((v, i) => i + 1)
+      if (pageNum <= 5) return [...new Array(this.totalPage)].map((v, i) => i + 1)
       if (index <= 2) return [1, 2, 3, 0, pageNum]
       if (index >= pageNum - 1) return [1, 0, pageNum - 2, pageNum - 1, pageNum]
       if (index === 3) return [1, 2, 3, 4, 0, pageNum]
@@ -61,6 +61,7 @@
 
   methods: {
     pageFun(index) {
+      console.log('this.data.total',this.data.total);
         this.$emit("search", index);
     },
     pageOffset (i) {

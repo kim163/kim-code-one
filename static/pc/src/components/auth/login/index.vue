@@ -6,33 +6,41 @@
         <i class="iconfont icon-close"></i>
       </div>
       <div class="pop-content">
-        <h2 class="tips">{{$t('login.title')}}</h2>
+        <h2 class="alert-title">{{$t('login.title')}}</h2>
         <ul class="pop-tab tab-box">
           <li v-for="item in loginType" @click="loginItem=item.value" class="s" :class="{active:loginItem==item.value}" :key="item.value">
             {{generateTitle(item.name)}}
           </li>
         </ul>
-        <div class="form-box">
+        <div class="form-box form-box-phone">
           <div class="form-group" v-show="loginItem=='account'">
-            <label>{{$t('login.username')}}</label>
-            <input name="account" @keyup.enter="login" v-model="data.account" type="text" class="ps-input ps-input1" :placeholder="$t('login.usernamePhd')">
-          </div>
+             <label class="form-subtitle">{{$t('login.username')}}</label>
+             <div class="form-input">
+                <input name="account" @keyup.enter="login" v-model="data.account" type="text" class="ps-input ps-input1" :placeholder="$t('login.usernamePhd')">
+             </div>
+            </div>
           <div class="form-group" v-show="loginItem=='phone'">
-            <label>{{$t('login.mobileNum')}}</label>
-            <select class="ps-input ps-input1" v-model="data.areaCode">
-                <option v-for="areacd in areaCodeData" :value="areacd.value" :key="areacd.value" > {{areacd.name}} </option>
-            </select>
-            <input type="text" class="ps-input ps-input1" v-model="data.phone"
+            <label class="form-subtitle">{{$t('login.mobileNum')}}</label>
+            <div class="form-input">
+               <select class="select-country" v-model="data.areaCode">
+                     <option v-for="areacd in areaCodeData" :value="areacd.value" :key="areacd.value" > {{areacd.name}} </option>
+               </select>
+               <input type="text" class="ps-input ps-input1" v-model="data.phone"
                    :placeholder="$t('login.mobileNumPhd')" maxlength="11" name="phone">
+            </div>
           </div>
           <div class="form-group" v-show="loginItem=='email'">
-            <label>{{$t('login.emailadd')}}</label>
-            <input name="email" @keyup.enter="login" v-model="data.email" type="text" class="ps-input ps-input1" :placeholder="$t('login.emailaddPhd')">
+            <label class="form-subtitle">{{$t('login.emailadd')}}</label>
+            <div class="form-input">
+               <input name="email" @keyup.enter="login" v-model="data.email" type="text" class="ps-input ps-input1" :placeholder="$t('login.emailaddPhd')">
+            </div>
           </div>
           <div class="form-group">
-            <label>{{$t('login.password')}}</label>
-            <input ref="pwd" @keyup.enter="login" name="password" v-model="data.password" type="password" class="ps-input ps-input1" :placeholder="$t('login.passwordPhd')">
-            <eyes :dom="$refs.pwd"></eyes>
+            <label class="form-subtitle">{{$t('login.password')}}</label>
+            <div class="form-input posit-rel">
+              <input ref="pwd" @keyup.enter="login" name="password" v-model="data.password" type="password" class="ps-input ps-input1" :placeholder="$t('login.passwordPhd')">
+               <eyes :dom="$refs.pwd"></eyes>
+            </div>
           </div>
 
           <span class="validate"></span>
