@@ -123,10 +123,12 @@
       },
       publishBuy(){
         if(this.buyAmount =='' || !this.buyAmount){
-          toast('数量不能为空')
+          toast('数量不能为空');
+          return;
         }
-        if(this.buyAmount =='' || !this.buyAmount){
-          toast('数量不能为空')
+        if(this.buyType =='' || !this.buyType){
+          toast('支付方式不能为空');
+          return;
         }
         transaction.publishToBuy(this.requestdata).then((res) => {
 

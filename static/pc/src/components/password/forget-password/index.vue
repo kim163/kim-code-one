@@ -2,7 +2,7 @@
   <div class="modal">
     <div class="modal-dialog forget-password">
       <div type="button" class="close" @click="$emit('hide',false)">
-        <i class="iconfont icon-close" style="font-size:40px;"></i>
+        <i class="iconfont icon-close"></i>
       </div>
       <div class="pop-content">
         <ul class="pop-tab">
@@ -232,7 +232,6 @@
     cursor: pointer;
     font-size: 16px;
     color: #fff;
-    text-align: center;
     display: block;
     border-radius: 4px;
   }
@@ -249,7 +248,6 @@
       color: #666;
       padding: 0 6px;
       line-height: 32px;
-      display: inline-block;
       height: 32px;
       margin: 0 15px;
       &.active, &:hover {

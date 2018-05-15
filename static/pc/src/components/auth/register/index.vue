@@ -5,7 +5,7 @@
         <i class="iconfont icon-close"></i>
       </div>
       <div class="pop-content">
-        <h2 class="alert-title">{{$t('register.title')}} <span class="fr smalltxt">{{$t('register.hasAccount')}}？ <a class="a-login" @click="showLoginDialog=true">{{$t('register.loginNow')}}</a></span></h2>
+        <h2 class="alert-title">{{$t('register.title')}} <span class="fr smalltxt">{{$t('register.hasAccount')}}？ <a class="a-login" @click="goLogin" >{{$t('register.loginNow')}}</a></span></h2>
         <div class="tab-box">
           <span v-for="item in registerType" @click="registerItem=item.value" class="s" :class="{active:registerItem==item.value}" :key="item.value">
             {{generateTitle(item.name)}}
@@ -82,6 +82,7 @@
   import { show } from 'api'
   import { generateTitle } from '@/util/i18n'
   import axios from 'axios'
+  import vLogin from "components/auth/login"
 
   export default {
     props: {
@@ -226,7 +227,12 @@
 ////            info: '12'
 //          }
 //        })
-      }
+      },
+      goLogin: function(e){
+        //alert('emit')
+        this.$emit('input',false);
+        this.$emit('showLogin');
+      },
 
     },
     components: {

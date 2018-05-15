@@ -2,7 +2,7 @@
   <div class="header ">
      <div v-if="!islogin">
        <div class="col-2">
-          <a href="javascript:void(0);" @click="showLoginDialog=true">{{$t('navbar.login')}}</a>
+          <a href="javascript:void(0);" @click="showLogin">{{$t('navbar.login')}}</a>
        </div>
        <div class="col-2">
          <a href="javascript:void(0);" @click="showRegisterDialog=true">{{$t('navbar.register')}}</a>
@@ -13,8 +13,9 @@
           {{userData.name}}
           <a href="javascript:void(0);" @click="$store.dispatch('LOGIN_OUT')" class="btn-other">退出</a>
         </span>
-    <v-login v-if="!islogin" v-model="showLoginDialog" ></v-login>
-    <v-register v-if="!islogin" v-model="showRegisterDialog"></v-register>
+    <v-login v-if="!islogin" v-model="showLoginDialog" @show="showLoginDialog=true" v-on:refreshbizlines="showLoginDialog=true"></v-login>
+    <v-register  @showLogin="showLogin" v-if="!islogin" v-model="showRegisterDialog"></v-register>
+
   </div>
 </template>
 <script>
@@ -32,7 +33,16 @@
       };
     },
     methods: {
-      ...mapActions(["UPDATE_USERDATA", "LOGIN_OUT"])
+      ...mapActions(["UPDATE_USERDATA", "LOGIN_OUT"]),
+
+      showLogin: function(e){
+        console.log('事件通讯成功了')
+        if(this.showLoginDialog='false'){
+          this.showLoginDialog='true';
+        }
+
+      },
+
     },
     watch: {
 
