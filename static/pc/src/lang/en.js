@@ -65,6 +65,7 @@ export default {
 
   },
   transactionRecord: {
+    tranPending: 'Transaction Pending',
     tranProgress: 'Transaction processing',
     tranComplete: 'Transaction complete',
     appealRecord: 'Appeal record',

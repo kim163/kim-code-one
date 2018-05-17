@@ -10,17 +10,9 @@
             <span class="unit">交易单价</span>
             <span class="unit">交易金额</span>
             <span class="unit">状态</span>
-            <span class="unit">操作</span>
+            <span class="unit">操作 <span @click="getOrderList">(刷新)</span></span>
           </div>
           <div class="group-body">
-               <!--<span class="unit">-->
-                    <!--<span class="btn btn-border">我方发起申诉</span>-->
-               <!--</span>-->
-            <!--<span class="unit">王大爷</span>-->
-            <!--<span class="unit">20000 UET</span>-->
-            <!--<span class="unit">0.001 CNY</span>-->
-            <!--<span class="unit red">20000 CNY</span>-->
-            <!--<span class="unit">我方胜诉</span>-->
             <!--<span class="unit">  <a class="btn">详情</a>  </span>-->
 
               <div class="group-tr" v-for="order in OrderList">
@@ -36,7 +28,7 @@
                 我方胜诉
               <!--{{order.createtime}}-->
               </span>
-            <span class="unit">  <a class="btn btn-primary">详情</a>  </span>
+            <span class="unit">  <a class="btn btn-primary" :href="'/orderDetail/' + order.id" >详情</a>  </span>
           </div>
             </div>
 
@@ -82,13 +74,14 @@
         this.request={
           limit:100,
           offset:0,
-          credit:userId,
-          debit:userId,
-          status:61
+          userId:userId,
+//          credit:userId,
+//          debit:userId,
+          //status:61
         }
 
-        transaction.getOrderxPage(this.request).then(res => {
-          console.log('订单记录 OrderxPage data:', res.data);
+        transaction.getAppealHistoryPage(this.request).then(res => {
+          console.log('申诉记录 OrderxPage data:', res.data);
           this.OrderList = res.data;
         }).catch(error => {
           this.reset(res.message);

@@ -7,14 +7,14 @@
           <div class="tranlist-body">
              <div class="tranlist-item" v-for="(item,i) in dataList.data||[]">
                  <div class="tran-message">
-                   <p class="txt-left item sellers"><span class="disp-inlblo" v-html="proUserAvatars(item.debitName)"> </span> {{item.debitName}} </p>
-                   <p class="item tranCountOrRate">555丨93.23％</p>
+                   <p class="txt-left item sellers"><span class="disp-inlblo" v-html="proUserAvatars(item.userName)"> </span> {{item.userName}} </p>
+                   <p class="item tranCountOrRate">{{item.tradeTotal}} 丨 {{ ((item.finishedTotal/item.tradeTotal)*100).toFixed(2)}}％</p>
                    <p class="item">0.01元</p>
-                   <p class="item quantity"> {{item.debitAmount}} UET </p>
+                   <p class="item quantity"> {{item.amount}} UET </p>
                    <p class="item">
-                     <span v-if="item.debitAccountTypeTwin === 1" class="iconfont icon-pay-alipay"></span>
-                     <span v-else-if="item.debitAccountTypeTwin === 2" class="iconfont icon-pay-wechat" ></span>
-                     <span v-else-if="item.debitAccountTypeTwin === 3" class="iconfont icon-pay-bank"></span>
+                     <span v-if="item.accountTypeTwin === 1" class="iconfont icon-pay-alipay"></span>
+                     <span v-else-if="item.accountTypeTwin === 2" class="iconfont icon-pay-wechat" ></span>
+                     <span v-else-if="item.accountTypeTwin === 3" class="iconfont icon-pay-bank"></span>
                      <span v-else>
                       {{item.debitAccountTypeTwin}}
                       </span>
@@ -25,7 +25,7 @@
                  </div>
                  <transition name="message">
                     <div class="tran-contpart" v-show="item.already" :ref="item.id">
-                         <p>  {{item.debitName}} </p>
+                         <p>{{item.debitName}} </p>
                     </div>
                  </transition>
              </div>
@@ -64,7 +64,7 @@
           limit:10,
           offset:0,
           type: 11,
-          status: 41
+          //status: 41
         }
       }
     },
@@ -76,23 +76,15 @@
     methods: {
       generateTitle,
 
-      proUserAvatars(name){
-         let mathRand = parseInt(Math.random()*this.avatarDealw,10);
-         let avatarColor = this.SETTING.avatarColor[mathRand];
-         let nameFirst = name.substr(0,1);
-         let avaHtml = '<a class="avatars-item" style="background: '+avatarColor+' ">'+nameFirst+'</a>';
-
-         return avaHtml;
-      },
-
       searchDataList(index) {
         if(!isNaN(index)) {
           this.reqData.offset = (index - 1) * this.reqData.limit;
         }
         console.log('req:',this.reqData);
 
-        transaction.getOrderxPage(this.reqData).then(res => {
-          console.log('买入UET get OrderxPageForHallSell data:', res);
+        transaction.getOrderxPendingPage(this.reqData).then(res => {
+          console.log('买入UET get OrderxPageForHallSell data:');
+          console.log(res);
           this.dataList.data = res.data.map(item => {
             item.already = false;
             return item;
@@ -101,6 +93,20 @@
         }).catch(error => {
           this.reset(res.message);
         });
+      },
+
+      proUserAvatars(name){
+        let mathRand = parseInt(Math.random()*this.avatarDealw,10);
+        let avatarColor = this.SETTING.avatarColor[mathRand];
+        if(name != '' || name != 'undefined' ){
+          //alert(name)
+          let nameFirst = name.substring(0,1);
+          //let nameFirst = name;
+          let avaHtml = '<a class="avatars-item" style="background: '+avatarColor+' ">'+nameFirst+'</a>';
+
+          return avaHtml;
+        }
+
       },
 
       showView(item, i) {

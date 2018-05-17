@@ -98,8 +98,8 @@
         if(!isNaN(index)) {
           this.request.offset = (index - 1) * this.request.limit;
         }
-        transaction.getOrderxPage(this.request).then(res => {
-          console.log('订单记录 OrderxPage data:');
+        transaction.getTransactionPage(this.request).then(res => {
+          console.log('订单记录-已完成 OrderxPage data:');
           console.table(res.data);
           this.OrderList = res  ;
         }).catch(error => {

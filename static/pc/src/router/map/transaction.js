@@ -21,7 +21,7 @@ export default [
     redirect: "/tranRecord/tranProgress",
     children: [
       {
-        path: "OrderxPending", name: "OrderxPending", component(resolve){
+        path: "tranPending", name: "tranPending", component(resolve){
           return resolve(require('views/transaction/order-record/tran-pending'))
         }
       },

@@ -118,7 +118,6 @@
         width: auto;
         text-align:center;
         border-bottom: solid 1px #e5e5e5;
-        text-align: center;
       }
       tr:nth-child(2n+1) {
         background: #f9f9f9;

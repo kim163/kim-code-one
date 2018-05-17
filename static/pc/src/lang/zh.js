@@ -65,6 +65,7 @@ export default {
 
   },
   transactionRecord: {
+    tranPending: '我的挂单',
     tranProgress: '交易中',
     tranComplete: '交易完成',
     appealRecord: '申诉记录',

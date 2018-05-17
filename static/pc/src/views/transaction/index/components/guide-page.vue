@@ -1,9 +1,9 @@
 <template>
   <div class="section guide-page">
     <div class="container">
-      <div class="row txt-center">
-          <h1>您好，请先登录</h1>
-          <img src="./images/user-login.jpg" >
+      <div class="row txt-center nologin">
+          <img src="~images/nologin.png" >
+           <h4>您好，请先登录</h4>
       </div>
     </div>
   </div>
@@ -29,5 +29,8 @@
 .guide-page{
 
 }
+  .nologin{
+    padding:50px 0 100px;
+  }
 
 </style>

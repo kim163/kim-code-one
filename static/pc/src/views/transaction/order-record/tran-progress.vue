@@ -40,7 +40,8 @@
                 等待付款 09:45
                 <!--{{order.createtime}}-->
               </span>
-              <span class="unit">  <a class="btn btn-primary" href="/orderDetail/id">详情</a>  </span>
+              <span class="unit">  <a class="btn btn-primary"  :href="'/orderDetail/' + order.id" >详情</a>  </span>
+              <!--@click="getOrderDetail(order.id,'getOrderDetail')"-->
             </div>
 
             <paging-by :data="OrderList.pageInfo" @search="getOrderList"></paging-by>
@@ -105,6 +106,22 @@
           console.log('订单记录 OrderxPage data:');
           console.log(res.data);
           this.OrderList = res;
+        }).catch(error => {
+          this.reset(res.message);
+        });
+      },
+      getOrderDetail(id){
+        //let userData=this.userData;
+        let orderId=id;
+
+        //var currentTime=(new Date()).valueOf();
+        this.request={
+          orderId:orderId
+        }
+        transaction.getOrderx(this.request).then(res => {
+          console.log('订单详情记录:');
+          console.log(res);
+
         }).catch(error => {
           this.reset(res.message);
         });

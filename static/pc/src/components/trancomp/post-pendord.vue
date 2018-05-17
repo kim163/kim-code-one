@@ -53,13 +53,18 @@
           </div>
           <div  class="form-input-box">
             <span class="left">支付方式：</span>
-            <select class="ps-input" >
+            <select class="ps-input" v-model="buyType">
               <option>请选择您要支付的方式</option>
               <option v-for="item in bankList.data" :value="item.type">
                 <span  v-if="item.type == '1'">支付宝 {{item.account}}</span>
                 <span  v-if="item.type == '2'">微 信 {{item.account}}</span>
                 <span  v-if="item.type == '3'">{{item.bank}}  {{subData(item.account)}}</span>
               </option>
+              <!--<template v-for="item in bankList.data">-->
+                <!--<option  v-if="item.type == '1'" :value="item">支付宝 {{item.account}}</option>-->
+                <!--<option  v-if="item.type == '2'" :value="item">微 信 {{item.account}}</option>-->
+                <!--<option  v-if="item.type == '3'" :value="item">{{item.bank}}  {{subData(item.account)}}</option>-->
+              <!--</template>-->
             </select>
           </div>
 
@@ -97,6 +102,8 @@
         },
         buyAmount:'',
 //        buyAmountCny:''
+        buyType:'',
+        accountCashVo:{}
       }
     },
     computed: {
@@ -126,22 +133,35 @@
           toast('数量不能为空');
           return;
         }
-        if(this.buyType =='' || !this.buyType){
-          toast('支付方式不能为空');
-          return;
-        }
-        transaction.publishToBuy(this.requestdata).then((res) => {
-
-          this.requestdata= {
-            userId: this.userData.userId,
-            accountCashVo: {
-                account: '',
-                bank:'',
-                name:'',
-                type:'',
-                amount:''
-            }
+//        if(this.buyType =='' || !this.buyType){
+//          toast('支付方式不能为空');
+//          return;
+//        }
+        this.requestda={
+          userId: this.userData.userId,
+          accountChainVo:{
+            1:'1'
+          },
+          accountCashVo:{
+            "account" : '622212345252',
+            "bank" : '工商银行',
+            "name" : '谭星云',
+            "type" : '3',
+            "amount" : this.buyAmount
           }
+        }
+        transaction.publishToBuy(this.requestda).then((res) => {
+
+//          this.requestdata= {
+//            userId: this.userData.userId,
+//            accountCashVo: {
+//                account: '',
+//                bank:'',
+//                name:'',
+//                type:'',
+//                amount:''
+//            }
+//          }
 
         }).catch(err => {
 
