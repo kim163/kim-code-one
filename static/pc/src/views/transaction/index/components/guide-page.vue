@@ -3,7 +3,7 @@
     <div class="container">
       <div class="row txt-center nologin">
           <img src="~images/nologin.png" >
-           <h4>您好，请先登录</h4>
+           <p>您好，请先登录</p>
       </div>
     </div>
   </div>
