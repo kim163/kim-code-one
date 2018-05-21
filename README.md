@@ -24,6 +24,8 @@ npm run build
 > &nbsp;&nbsp;  Win 版：<br>
 > &nbsp;&nbsp;&nbsp;&nbsp;  build.bat
 
+# 6. 推荐的开发工具：开发神器 WebStorm
+
 # 注意事项
 1. node_modules，dist 文件不需要提交到 Git 仓库，在本地就好。已经在 .gitignore 文件中设置了忽略，
 还有各种编辑器产生的文件,比如 WebStorm 产生的 .idea 文件，想到的已添加到  .gitignore 忽略文件中,
