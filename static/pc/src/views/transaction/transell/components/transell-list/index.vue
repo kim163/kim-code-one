@@ -8,7 +8,11 @@
              <div class="tranlist-item" v-for="(item,i) in dataList.data||[]">
                  <div class="tran-message">
                    <p class="txt-left item sellers"><span class="disp-inlblo" v-html="proUserAvatars(item.userName)"> </span> {{item.userName}} </p>
-                   <p class="item tranCountOrRate">{{item.tradeTotal}} 丨 {{ ((item.finishedTotal/item.tradeTotal)*100).toFixed(2)}}％</p>
+                   <p class="item tranCountOrRate">
+                     {{item.tradeTotal}} 丨
+                     <span v-if="item.tradeTotal">{{ ((item.finishedTotal/item.tradeTotal)*100).toFixed(2)}}</span>
+                     <span v-if="!item.tradeTotal">0 </span>％
+                   </p>
 
                    <p class="item">0.01元</p>
                    <p class="item quantity"> {{item.amount}} UET </p>
@@ -26,7 +30,21 @@
                  </div>
                  <transition name="message">
                     <div class="tran-contpart" v-show="item.already" :ref="item.id">
-                         <p>  {{item.userName}} </p>
+                      <span class="s">
+                        数量 {{item.amount}} UET<br>
+                        单价 0.01 元
+                      </span>
+                      <span  class="s">总值 {{item.amount}}UET</span>
+                      <span class="input-box">
+                          <input type="text" >CNY
+                      </span>
+                      <span class="input-box">
+                          <input type="text" >UET
+                      </span>
+                      <span class="btns">
+                          <span class="btn btn-primary">下单</span>
+                          <span class="btn-cancel">取消</span>
+                      </span>
                     </div>
                  </transition>
              </div>
@@ -62,7 +80,7 @@
           pageInfo: {}
         },
         reqData: {
-          limit:10,
+          limit:3,
           offset:0,
           type: 12,
           //status: 41

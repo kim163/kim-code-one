@@ -72,6 +72,7 @@
         </div>
 
         <div class="btn-groups">
+          {{buyType}}
           <span class="btn" @click="$emit('hide',false)">取消</span>
           <span class="btn btn-primary" @click="publishBuy">发布</span>
         </div>
@@ -133,6 +134,7 @@
           toast('数量不能为空');
           return;
         }
+        alert(this.buyType)
 //        if(this.buyType =='' || !this.buyType){
 //          toast('支付方式不能为空');
 //          return;
@@ -140,15 +142,15 @@
         this.requestda={
           userId: this.userData.userId,
           accountChainVo:{
-            1:'1'
-          },
-          accountCashVo:{
-            "account" : '622212345252',
-            "bank" : '工商银行',
-            "name" : '谭星云',
-            "type" : '3',
-            "amount" : this.buyAmount
+
           }
+//          accountCashVo:{
+//            "account" : '622212345252',
+//            "bank" : '工商银行',
+//            "name" : '谭星云',
+//            "type" : '3',
+//            "amount" : this.buyAmount
+//          }
         }
         transaction.publishToBuy(this.requestda).then((res) => {
 

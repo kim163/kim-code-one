@@ -92,9 +92,9 @@
     li {
       float: left;
       color: #1e5a6b;
-      padding: 1px 10px;
+      padding: 3px 15px;
       margin: 0 5px;
-      border-radius: 50%;
+      border-radius:8px;
       user-select: none;
       border: 1px solid transparent;
     }
@@ -122,7 +122,8 @@
   }
 
   .active {
-    border-color: #246c81;
+    background: #5087FF;
+    color:#fff;
   }
 }
 </style>
