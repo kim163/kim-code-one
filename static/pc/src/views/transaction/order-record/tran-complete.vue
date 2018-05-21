@@ -92,15 +92,15 @@
           offset:0,
           credit:userId,
           debit:userId,
-          status:41
-//          type:4
+          //status:41
+          types:[11,12]
         }
         if(!isNaN(index)) {
           this.request.offset = (index - 1) * this.request.limit;
         }
         transaction.getTransactionPage(this.request).then(res => {
           console.log('订单记录-已完成 OrderxPage data:');
-          console.table(res.data);
+          console.log(res.data);
           this.OrderList = res  ;
         }).catch(error => {
           this.reset(res.message);

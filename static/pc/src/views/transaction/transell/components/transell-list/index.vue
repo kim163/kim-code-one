@@ -42,7 +42,7 @@
                           <input type="text" >UET
                       </span>
                       <span class="btns">
-                          <span class="btn btn-primary">下单</span>
+                          <span class="btn btn-primary" @click="placeAnOrder(id)">下单</span>
                           <span class="btn btn-cancel gray">取消</span>
                       </span>
                     </div>
@@ -60,6 +60,8 @@
   import { generateTitle } from '@/util/i18n';
   import pagingBy from "components/paging-by";
   import  {SETTING} from "@/assets/data";
+  import {mapGetters,mapActions,mapMutations} from 'vuex'
+
 
   let dataHead = [
     {name: "table.sellers", value: "sellers"},
@@ -88,6 +90,7 @@
       }
     },
     computed: {
+      ...mapGetters(["userData"]),
        avatarDealw(){
          return this.SETTING.avatarColor.length;
        }
@@ -130,7 +133,41 @@
         this.$nextTick(() => {
           item.already = !item.already;
         });
-      }
+      },
+
+      placeAnOrder(){
+        this.buyAmount=100;
+
+        console.log(this.userData)
+        this.requestda={
+          orderId:'5dc977193255441891d2baed13755ec2',
+          userId: this.userData.userId,
+          accountChainVo:{
+            name:this.userData.nickname,
+            address:this.userData.accountChainVos[0].address,
+            assetCode:'UET', //资产编码 默认 UET,登录后资产的编码
+            amount:this.buyAmount //uet的数量
+          },
+          accountCashVo:{
+            "account" : '622212345252',
+            "bank" : '工商银行', //机构名称
+            "name" : '谭星云',
+            "type" : 3,
+            "amount" : this.buyAmount /100
+          }
+        }
+        console.log(this.requestda)
+        transaction.placeAnOrder(this.requestda).then((res) => {
+
+          console.log(res)
+
+
+        }).catch(err => {
+
+        })
+      },
+
+
     },
     created() {
       this.searchDataList();

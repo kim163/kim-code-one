@@ -8,7 +8,7 @@
 
         <span class="back-hall"> 返回交易大厅</span>
         <div class="search-box">
-          <input type="text" class="search-input" placeholder="请输入对方账号、订单号"><span class="search-btn" >搜索</span>
+          <input type="text" class="search-input" placeholder="请输入对方昵称、账号"><span class="search-btn" >搜索</span>
         </div>
 
       </div>

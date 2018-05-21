@@ -1,4 +1,5 @@
 import transaction from './transaction';
+import mobileUrl from './mobile';
 
 let head_userpart = (resolve) => resolve(require('components/header'));
 let index = (resolve) => resolve(require('views/show/index'));//首页
@@ -25,5 +26,6 @@ export default [
     name: "header_user",
     component: head_userpart
   },
-  ...transaction
+  ...transaction,
+  ...mobileUrl
 ]

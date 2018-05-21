@@ -4,7 +4,7 @@
       <div class="row0">
         <div class="tran-content border-box">
           <div class="group-head">
-            <span class="unit">订单类型</span>
+            <!--<span class="unit">订单类型</span>-->
             <span class="unit">对方</span>
             <span class="unit">交易数量</span>
             <span class="unit">交易单价</span>
@@ -16,19 +16,20 @@
             <!--<span class="unit">  <a class="btn">详情</a>  </span>-->
 
               <div class="group-tr" v-for="order in OrderList">
-                 <span class="unit">
-                      <span class="btn btn-border" v-show="order.credit == userData.userId">我方发起申诉</span>
-                      <span class="btn btn-orange" v-show="order.debit == userData.userId">卖方发起申诉</span>
-                 </span>
-            <span class="unit">{{order.creditAccountNameTwin}}</span>
-            <span class="unit"> {{order.creditAmount}}   UET</span>
-            <span class="unit"> 0.01 CNY</span>
-            <span class="unit red">{{order.creditAmountTwin}} CNY</span>
-            <span class="unit">
-                我方胜诉
-              <!--{{order.createtime}}-->
-              </span>
-            <span class="unit">  <a class="btn btn-primary" v-if="order.id" :href="'/orderDetail/' + order.id" >详情</a>  </span>
+                 <!--<span class="unit">-->
+                      <!--<span class="btn btn-border" v-show="order.credit == userData.userId">我方发起申诉</span>-->
+                      <!--<span class="btn btn-orange" v-show="order.debit == userData.userId">卖方发起申诉</span>-->
+                 <!--</span>-->
+                <span class="unit">{{order.creditUserName}}</span>
+                <span class="unit"> {{order.amount}}   UET</span>
+                <span class="unit"> 0.01 CNY</span>
+                <span class="unit red">{{order.amountTwin}} CNY</span>
+                <span class="unit">
+                    <!--我方胜诉-->
+                  {{order.statusText}}
+                  </span>
+                <!--<span class="unit">  <a class="btn btn-primary"  :href="'/orderDetail/' + order.id" >详情</a>  </span>-->
+                <span class="unit">  <a class="btn btn-primary" @click="getOrderDetail($event)"  >详情</a>  </span>
           </div>
             </div>
 
@@ -83,6 +84,29 @@
         transaction.getAppealHistoryPage(this.request).then(res => {
           console.log('申诉记录 OrderxPage data:', res.data);
           this.OrderList = res.data;
+        }).catch(error => {
+          this.reset(res.message);
+        });
+      },
+      getOrderDetail(id,e){
+        //alert(id)
+        //console.log($(event.target)
+        var userData=this.userData;
+        var userId=this.userData.userId;
+        this.request2={
+          limit:10,
+          offset:0,
+          //userId:userId,
+          orderId:'26ee7d6b99934a159a033893e2c878bf',
+          //type:'11'
+//          credit:userId,
+//          debit:userId,
+          //status:61
+        }
+        console.log(this.request2);
+        transaction.getAppealHistoryDetail(this.request2).then(res => {
+          console.log('申诉记录详情 OrderxPage data:', res.data);
+          //this.OrderList = res.data;
         }).catch(error => {
           this.reset(res.message);
         });

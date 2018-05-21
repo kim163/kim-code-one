@@ -36,6 +36,12 @@ export const getOrderxPendingPage = jsonData => service({
   method: 'post',
   data: jsonData
 });
+//  下单
+export const placeAnOrder = jsonData => service({
+  url: numversion+`order/c2c/placeAnOrder`,
+  method: 'post',
+  data: jsonData
+});
 
 // 获取 订单记录- 详情
 export const getOrderx = jsonData => service({
@@ -46,6 +52,18 @@ export const getOrderx = jsonData => service({
 // 获取 订单记录- 获取申诉列表
 export const getAppealHistoryPage = jsonData => service({
   url: numversion+`appeal/getAppealHistoryPage`,
+  method: 'post',
+  data: jsonData
+});
+// 获取 订单记录- 获取申诉列表详情
+export const getAppealHistoryDetail = jsonData => service({
+  url: numversion+`appeal/getAppealDetailHistoryPage`,
+  method: 'post',
+  data: jsonData
+});
+// 获取 订单记录- 获取挂单详情
+export const getOrderxPending = jsonData => service({
+  url: numversion+`order/getOrderxPending`,
   method: 'post',
   data: jsonData
 });

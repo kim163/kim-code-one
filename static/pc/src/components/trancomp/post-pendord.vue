@@ -139,21 +139,28 @@
 //          toast('支付方式不能为空');
 //          return;
 //        }
+        console.log(this.userData)
         this.requestda={
           userId: this.userData.userId,
+          mode:'1',
+          minUnit:this.buyAmount,//等于发布的数量
           accountChainVo:{
-
+            name:this.userData.nickname,
+            address:this.userData.accountChainVos[0].address,
+            assetCode:'UET', //资产编码 默认 UET,登录后资产的编码
+            amount:this.buyAmount //uet的数量
+          },
+          accountCashVo:{
+            "account" : '622212345252',
+            "bank" : '工商银行', //机构名称
+            "name" : '谭星云',
+            "type" : 3,
+            "amount" : this.buyAmount /100
           }
-//          accountCashVo:{
-//            "account" : '622212345252',
-//            "bank" : '工商银行',
-//            "name" : '谭星云',
-//            "type" : '3',
-//            "amount" : this.buyAmount
-//          }
         }
         transaction.publishToBuy(this.requestda).then((res) => {
 
+          console.log(res)
 //          this.requestdata= {
 //            userId: this.userData.userId,
 //            accountCashVo: {

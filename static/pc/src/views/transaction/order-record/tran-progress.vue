@@ -97,7 +97,7 @@
           offset:0,
           credit:userId,
           debit:userId,
-//          type:1
+          types:[11,12]
         }
         if(!isNaN(index)) {
           this.request.offset = (index - 1) * this.request.limit;
