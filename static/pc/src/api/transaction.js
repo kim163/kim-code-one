@@ -26,7 +26,7 @@ export const publishToBuy = jsonData => service({
 
 // 获取 订单记录-交易结束
 export const getTransactionPage = jsonData => service({
-  url: numversion+`order/getTransactionPage`,
+  url: numversion+`transaction/getTransactionPage`,
   method: 'post',
   data: jsonData
 });
