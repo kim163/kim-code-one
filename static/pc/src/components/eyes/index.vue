@@ -1,5 +1,5 @@
 <template>
-  <span class="pubeyes iconfont icon-yanjing" @click="checkpwd">
+  <span class="pubeyes iconfont icon-closeeye" @click="checkpwd">
   </span>
 </template>
 <script>
@@ -13,7 +13,7 @@
         watch: {},
         methods: {
           checkpwd(e){
-            e.currentTarget.classToggle("icon-yanjing icon-yanjing1")
+            e.currentTarget.classToggle("icon-closeeye icon-openeye")
             let dom= e.currentTarget.previousElementSibling;
             if(['text','password'].indexOf(dom.type)>-1){
               dom.type=dom.type=='password'?"text":"password";
@@ -35,13 +35,11 @@
 <style spcoed>
   span.pubeyes {
     position: absolute;
-    top: 20px !important;
-    right: 5%;
+    right: 10px;
     font-size: 24px;
     cursor: pointer;
-    height: 20px !important;
+    line-height: 50px!important;
+    height: 100%!important;
     color: #f66;
-    width: 20px;
-    background: #13A1CA;
   }
 </style>

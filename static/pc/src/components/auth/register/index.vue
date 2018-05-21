@@ -228,7 +228,7 @@
 //          }
 //        })
       },
-      goLogin: function(e){
+      goLogin(e){
         //alert('emit')
         this.$emit('input',false);
         this.$emit('showLogin');

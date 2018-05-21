@@ -35,9 +35,9 @@
     methods: {
       ...mapActions(["UPDATE_USERDATA", "LOGIN_OUT"]),
 
-      showLogin: function(e){
+      showLogin(){
         console.log('事件通讯成功了')
-        if(this.showLoginDialog='false'){
+        if(!this.showLoginDialog){
           this.showLoginDialog='true';
         }
 
