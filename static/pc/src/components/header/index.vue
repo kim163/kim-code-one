@@ -145,8 +145,7 @@
     }
 
     .btn-other {
-      border: solid 1px #fff;
-      color: #fff;
+      border:1px solid #14171a;
       display: inline-block;
       height:26px;
       line-height: 26px;

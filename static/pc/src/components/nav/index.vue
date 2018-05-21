@@ -130,6 +130,10 @@
   .nav-start a.lang-en,.nav-start .lang-icons a:hover{
     border: 2px solid #ffffff;
   }
+  .nav-start a.btn-other{
+    border: 1px solid #ffffff;
+  }
+
   @media only screen and (min-width: 800px) and (max-width: 1020px) {
     .navbar .link-part .col-2{
       width: auto;

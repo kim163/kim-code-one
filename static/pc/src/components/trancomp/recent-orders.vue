@@ -2,44 +2,68 @@
   <div class="recent-orders">
       <h3 class="title"> {{$t('transactionHome.recentOrders')}} </h3>
       <ul>
-         <li  v-for="(item,i) in dataList.data||[]">
-           <div class="fl"> {{ item.debitName }}</div>
-           <div class="fr"> {{ item.debitAmount }} UET</div>
+         <li v-for="(order,i) in OrderList.data||[]">
+           <div class="fl">
+             <p>
+               <span class="btn btn-border" v-show="order.credit == userData.userId">买入</span>
+               <span class="btn btn-orange" v-show="order.debit == userData.userId">卖出</span>
+             </p>
+             <p>
+               {{order.creditAccountNameTwin}}
+             </p>
+             <p>
+               等待付款
+             </p>
+           </div>
+           <div class="fr">
+              <p>09:45</p>
+              <p><span class="amount"> {{order.creditAmount}} </span>  UET</p>
+           </div>
          </li>
       </ul>
   </div>
 </template>
 <script>
   import { transaction } from 'api';
+  import {mapGetters,mapActions,mapMutations} from 'vuex';
   export default {
     data() {
       return {
-        dataList: {
-          data: [],
-          pageInfo: {}
+        OrderList: {
+          data: []
         },
-        reqData: {
-          limit:10,
-          offset:0,
-          type: 11,
-          status: 41
-        }
+        request: {}
       };
     },
     props: {},
     methods: {
-      searchRecentOrd(index){
-        transaction.getOrderxPage(this.reqData).then(res => {
-          console.log('最近订单 OrderxPage data:', res);
-          this.dataList = res;
+      getOrderList(index){
+        let userId=this.userData.userId;
+        this.request={
+          limit: 10,
+          offset:0,
+          credit:userId,
+          debit:userId,
+          types:[11,12]
+        }
+        if(!isNaN(index)) {
+          this.request.offset = (index - 1) * this.request.limit;
+        }
+        transaction.getOrderxPage(this.request).then(res => {
+          console.log('订单记录 OrderxPage data:');
+          console.log(res.data);
+          this.OrderList = res;
         }).catch(error => {
           this.reset(res.message);
         });
       }
+
     },
-    computed: {},
+    computed: {
+      ...mapGetters(["userData","islogin"])
+    },
     created() {
-        this.searchRecentOrd();
+      this.getOrderList();
     },
     components: {}
   };
@@ -64,6 +88,16 @@
       }
       &:hover{
         background: #F8F8F8;
+      }
+      .btn-border{
+        color: #5087ff;
+      }
+      .btn-orange{
+        color: #ff2a00;
+      }
+      .amount{
+        font-size: 24px;
+        color: #000000;
       }
     }
   }
