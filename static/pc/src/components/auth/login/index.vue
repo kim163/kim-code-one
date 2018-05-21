@@ -73,7 +73,7 @@
           {name: "login.mobloginTitle", value: "phone"},
           {name: "login.emailloginTitle", value: "email"}
         ],
-        loginItem: 'account',
+        loginItem: 'phone',
         areaCodeData: [
           {name:"+63", value: "+63" },
           {name:"+86", value: "+86" }
