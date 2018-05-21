@@ -14,6 +14,17 @@
           <!--{{generateTitle(item.name)}}-->
         </li>
       </ul>
+
+      <div v-if="tranItem=='买入UET'">
+        买入UET
+      </div>
+     <div v-if="tranItem=='卖出UET'">
+        卖出UET
+      </div>
+     <div v-if="tranItem=='近期订单'">
+        近期订单
+      </div>
+
     </div>
 
   </div>
