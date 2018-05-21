@@ -130,7 +130,7 @@
   .nav-start a.lang-en,.nav-start .lang-icons a:hover{
     border: 2px solid #ffffff;
   }
-  .nav-start a.btn-other{
+  .nav-start a.btn-other, .nav-start a.btn-other:hover{
     border: 1px solid #ffffff;
   }
 
@@ -177,7 +177,7 @@
   .nav-logo-link:hover, .nav-start .nav-logo-link:hover{
     border-bottom:none;
   }
-  .lang-icons a:hover {
+  .lang-icons a:hover , a.btn-other:hover{
     box-shadow: 1px 1px 4px rgba(0,0,0,0.5);
     -moz-box-shadow: 1px 1px 4px rgba(0,0,0,0.5);
     -webkit-box-shadow: 1px 1px 4px rgba(0,0,0,0.5);
