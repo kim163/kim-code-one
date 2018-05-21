@@ -30,11 +30,11 @@
                  </div>
                  <transition name="message">
                     <div class="tran-contpart" v-show="item.already" :ref="item.id">
-                      <span class="s">
-                        数量 {{item.amount}} UET<br>
-                        单价 0.01 元
+                      <span class="s s1">
+                         <p>数量 {{item.amount}} UET</p>
+                         <p>单价 0.01 元</p>
                       </span>
-                      <span  class="s">总值 {{item.amount}}UET</span>
+                      <span  class="s s2">总值 {{item.amount}}UET</span>
                       <span class="input-box">
                           <input type="text" >CNY
                       </span>
@@ -43,7 +43,7 @@
                       </span>
                       <span class="btns">
                           <span class="btn btn-primary">下单</span>
-                          <span class="btn-cancel">取消</span>
+                          <span class="btn btn-cancel gray">取消</span>
                       </span>
                     </div>
                  </transition>
@@ -145,5 +145,52 @@
   };
 </script>
 <style lang="scss">
+.tran-contpart{
+  padding:20px 0;
+  overflow:hidden;
+  .input-box{
+    display:inline-block;
+    margin-top:12px;
+      input{
+        height:40px;
+        border:1px solid #ddd;
+        padding:0 10px;
+      }
+  }
+
+  .s{
+    display:inline-block;
+    width:19%;
+    float:left;
+
+  }
+  .s1{padding:20px;  width:140px;}
+  .s2{margin-top:20px;}
+  .s1 p{font-size:15px;}
+.btn {
+  display: inline-block;
+  height:40px;
+  line-height: 40px;
+  padding: 0 15px;
+  margin-top: 6px;
+  font-size: 18px;
+  background: orange;
+  border:0;
+  cursor: pointer;
+  vertical-align: top;
+  border-radius: 3px;
+  color: #fff;
+  transition: all .3s;
+  &.blue{
+     background: #5087ff;
+   }
+   &.gray{
+      background: #fff;
+     color:#333;
+    }
+}
+.btn-block{width:100%;}
+}
+
 
 </style>
