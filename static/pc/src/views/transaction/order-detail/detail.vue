@@ -1,7 +1,7 @@
 <template>
   <div class="transell-main">
     <nav-menu></nav-menu>
-    <tran-headnav></tran-headnav>
+    <!--<tran-headnav></tran-headnav>-->
 
     <!--<router-link v-for="(item,i) in transactMenuData" class="item-info" :to="item.to" :key="i">-->
       <!--{{generateTitle(item.name)}}-->
@@ -160,7 +160,7 @@
                     <p>打开{{DetailList.debitAccountMerchantTwin}} [扫一扫] </p>
                   </div>
                 </div>
-                <div class="alipay-box" v-if="DetailList.debitAccountMerchantTwin == '微信'">
+                <div class="alipay-box" v-else-if="DetailList.debitAccountMerchantTwin == '微信'">
                   <p class="alipay-box-title">
                     <i class="i-wechat" v-if="DetailList.debitAccountMerchantTwin == '微信'"></i>
                     {{DetailList.debitAccountNameTwin}}<br> {{DetailList.debitAccountTwin}}</p>

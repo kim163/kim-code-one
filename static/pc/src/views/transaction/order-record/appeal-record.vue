@@ -28,7 +28,7 @@
                 我方胜诉
               <!--{{order.createtime}}-->
               </span>
-            <span class="unit">  <a class="btn btn-primary" :href="'/orderDetail/' + order.id" >详情</a>  </span>
+            <span class="unit">  <a class="btn btn-primary" v-if="order.id" :href="'/orderDetail/' + order.id" >详情</a>  </span>
           </div>
             </div>
 
