@@ -36,13 +36,13 @@
                       </span>
                       <span  class="s s2">总值 {{item.amount}}UET</span>
                       <span class="input-box">
-                          <input type="text" >CNY
+                          <input type="text" v-model="buyAmountUet" > UET
                       </span>
                       <span class="input-box">
-                          <input type="text" >UET
+                          <input type="text" :value="buyAmountCny" readonly>CNY
                       </span>
                       <span class="btns">
-                          <span class="btn btn-primary" @click="placeAnOrder(id)">下单</span>
+                          <span class="btn btn-primary" @click="placeAnOrder(item)">下单</span>
                           <span class="btn btn-cancel gray">取消</span>
                       </span>
                     </div>
@@ -86,14 +86,18 @@
           offset:0,
           type: 12,
           //status: 41
-        }
+        },
+        buyAmountUet:'',
       }
     },
     computed: {
       ...mapGetters(["userData"]),
        avatarDealw(){
          return this.SETTING.avatarColor.length;
-       }
+       },
+      buyAmountCny:function(){
+        return Number(this.buyAmountUet) *0.01;
+      }
     },
     methods: {
       generateTitle,
@@ -135,25 +139,27 @@
         });
       },
 
-      placeAnOrder(){
-        this.buyAmount=100;
-
+      placeAnOrder(item){
+        console.log('this.buyAmountUet:', this.buyAmountUet)
+        console.log(this.buyAmountCny)
+        console.log('item')
+        console.log(item)
         console.log(this.userData)
         this.requestda={
-          orderId:'5dc977193255441891d2baed13755ec2',
+          orderId:item.id,
           userId: this.userData.userId,
           accountChainVo:{
             name:this.userData.nickname,
             address:this.userData.accountChainVos[0].address,
             assetCode:'UET', //资产编码 默认 UET,登录后资产的编码
-            amount:this.buyAmount //uet的数量
+            amount:this.buyAmountUet //uet的数量
           },
           accountCashVo:{
-            "account" : '622212345252',
-            "bank" : '工商银行', //机构名称
-            "name" : '谭星云',
-            "type" : 3,
-            "amount" : this.buyAmount /100
+            account :item.accountTwin,
+            bank : item.accountMerchantTwin, //机构名称
+            name : item.accountNameTwin,
+            type : item.accountTypeTwin,
+            amount : this.buyAmountCny
           }
         }
         console.log(this.requestda)
