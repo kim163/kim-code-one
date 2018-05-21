@@ -240,6 +240,7 @@
     }
   }
 }
+  .cash-main{
 
 .pay-btn{
   display:inline-block;
@@ -250,39 +251,39 @@
   color:#fff;
   font-size:18px;
 }
-  .btn-block{
-    display:block;
-  }
-
-  /* login */
-  .m-login-box{
-    padding:20px;
-  }
-  /* tab */
-  .tab-box{
-    color:#6b6b6b;
-    border-bottom:0;
-  .s{
-    display:inline-block;
-    height:42px;
-    padding:0 10px;
-    line-height: 42px;
-    margin-right:10px;
-    cursor: pointer;
-    background: #D8D8D8;
-    color:#333;
-  &.active{
-     /*border-bottom:3px solid #87b5ff;*/
-     background: #BB9A55;
-    color:#fff;
-   }
-   &:hover,&:link,&:active{
-    opacity: .8;
+    .btn-block{
+      display:block;
     }
-  }
-  }
 
+    /* login */
+    .m-login-box{
+      padding:20px;
+    }
+    /* tab */
+    .tab-box{
+      color:#6b6b6b;
+      border-bottom:0;
+    .s{
+      display:inline-block;
+      height:42px;
+      padding:0 10px;
+      line-height: 42px;
+      margin-right:10px;
+      cursor: pointer;
+      background: #D8D8D8;
+      color:#333;
+    &.active{
+       /*border-bottom:3px solid #87b5ff;*/
+       background: #BB9A55;
+      color:#fff;
+     }
+     &:hover,&:link,&:active{
+      opacity: .8;
+      }
+    }
+    }
 
+  }
   .text-center{
     text-align: center;
   }
