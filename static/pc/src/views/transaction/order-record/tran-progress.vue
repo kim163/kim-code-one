@@ -15,18 +15,6 @@
                 <span class="unit">操作 <span @click="getOrderList">(刷新)</span></span>
             </div>
           <div class="group-body">
-            <!--<div class="group-tr">-->
-                 <!--<span class="unit">-->
-                      <!--<span class="btn btn-orange">卖出</span>-->
-                 <!--</span>-->
-              <!--<span class="unit">王大爷</span>-->
-              <!--<span class="unit">20000 UET</span>-->
-              <!--<span class="unit">0.001 CNY</span>-->
-              <!--<span class="unit red">20000 CNY</span>-->
-              <!--<span class="unit">等待付款 09:45</span>-->
-              <!--<span class="unit">  <a class="btn btn-primary">详情</a>  </span>-->
-            <!--</div>-->
-
             <div class="group-tr" v-for="order in OrderList.data">
                  <span class="unit">
                       <span class="btn btn-border" v-show="order.credit == userData.userId">买入</span>
@@ -37,13 +25,11 @@
               <span class="unit"> 0.01 CNY</span>
               <span class="unit red">{{order.creditAmountTwin}} CNY</span>
               <span class="unit">
-                等待付款
+                 <span v-if="order.status = 45"> 等待付款</span>
+                 <span v-else-if="order.status != 45"> 等待释放UET</span>
                 {{order.intervalTime-order.elapsedTime | formatDateMs}}
-                <!--{{ (order.elapsedTime - order.modifytime)/1000 | formatDateMs}}-->
-                <!--{{order.createtime}}-->
               </span>
               <span class="unit">  <a class="btn btn-primary"  :href="'/orderDetail/' + order.id" >详情</a>  </span>
-              <!--@click="getOrderDetail(order.id,'getOrderDetail')"-->
             </div>
 
             <paging-by :data="OrderList.pageInfo" @search="getOrderList"></paging-by>
@@ -95,7 +81,7 @@
         let userId=this.userData.userId;
         //var currentTime=(new Date()).valueOf();
         this.request={
-          limit:20,
+          limit:10,
           offset:0,
           credit:userId,
           debit:userId,

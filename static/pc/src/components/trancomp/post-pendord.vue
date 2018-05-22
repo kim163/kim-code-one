@@ -29,9 +29,9 @@
           </div>
           <div  class="form-input-box">
             <span class="left">支付方式：</span>
-            <select class="ps-input" >
-              <option>请选择您要支付的方式</option>
-              <option v-for="item in bankList.data" :value="item.type">
+            <select class="ps-input" v-model="buyTypeBuy">
+              <option value="">请选择您要支付的方式</option>
+              <option v-for="item in bankList.data" :value="item">
                 <span  v-if="item.type == '1'">支付宝 {{item.account}}</span>
                 <span  v-if="item.type == '2'">微信 {{item.account}}</span>
                 <span  v-if="item.type == '3'">{{item.bank}} {{subData(item.account)}}</span>
@@ -53,18 +53,13 @@
           </div>
           <div  class="form-input-box">
             <span class="left">支付方式：</span>
-            <select class="ps-input" v-model="buyType">
+            <select class="ps-input" v-model="buyTypeSell">
               <option>请选择您要支付的方式</option>
-              <option v-for="item in bankList.data" :value="item.type">
+              <option v-for="item in bankList.data" :value="item">
                 <span  v-if="item.type == '1'">支付宝 {{item.account}}</span>
                 <span  v-if="item.type == '2'">微 信 {{item.account}}</span>
                 <span  v-if="item.type == '3'">{{item.bank}}  {{subData(item.account)}}</span>
               </option>
-              <!--<template v-for="item in bankList.data">-->
-                <!--<option  v-if="item.type == '1'" :value="item">支付宝 {{item.account}}</option>-->
-                <!--<option  v-if="item.type == '2'" :value="item">微 信 {{item.account}}</option>-->
-                <!--<option  v-if="item.type == '3'" :value="item">{{item.bank}}  {{subData(item.account)}}</option>-->
-              <!--</template>-->
             </select>
           </div>
 
@@ -72,7 +67,8 @@
         </div>
 
         <div class="btn-groups">
-          {{buyType}}
+          {{buyTypeBuy}}
+          {{buyTypeSell}}
           <span class="btn" @click="$emit('hide',false)">取消</span>
           <span class="btn btn-primary" @click="publishBuy">发布</span>
         </div>
@@ -103,7 +99,8 @@
         },
         buyAmount:'',
 //        buyAmountCny:''
-        buyType:'',
+        buyTypeBuy:'',
+        buyTypeSell:'',
         accountCashVo:{}
       }
     },
@@ -134,11 +131,10 @@
           toast('数量不能为空');
           return;
         }
-        alert(this.buyType)
-//        if(this.buyType =='' || !this.buyType){
-//          toast('支付方式不能为空');
-//          return;
-//        }
+        if(this.buyTypeBuy =='' || !this.buyTypeBuy){
+          toast('支付方式不能为空');
+          return;
+        }
         console.log(this.userData)
         this.requestda={
           userId: this.userData.userId,
