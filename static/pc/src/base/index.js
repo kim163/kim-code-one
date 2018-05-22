@@ -1,5 +1,5 @@
 /**
- * Created by Lorne on 2017/5/29.
+ * Created by Anne
  */
 import toast  from "./toast/toast.js"
 import {$alert,$confirm}  from "./msgbox/msgbox.js"
