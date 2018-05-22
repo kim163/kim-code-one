@@ -105,10 +105,12 @@
       proUserAvatars(name){
          let mathRand = parseInt(Math.random()*this.avatarDealw,10);
          let avatarColor = this.SETTING.avatarColor[mathRand];
-         let nameFirst = name.substring(0,1);
-         let avaHtml = '<a class="avatars-item" style="background: '+avatarColor+' ">'+nameFirst+'</a>';
+         if(name != '' || name != 'undefined' ) {
+          let nameFirst = name.substring(0, 1);
+          let avaHtml = '<a class="avatars-item" style="background: ' + avatarColor + ' ">' + nameFirst + '</a>';
 
-         return avaHtml;
+          return avaHtml;
+        }
       },
 
       searchDataList(index) {
@@ -166,10 +168,12 @@
         transaction.placeAnOrder(this.requestda).then((res) => {
 
           console.log(res)
-
+          if (res.code == 10000) {
+            toast("下单成功，请及时支付,10分钟内未完成支付，将自动取消订单");
+          }
 
         }).catch(err => {
-
+          toast(res.message);
         })
       },
 
@@ -188,52 +192,5 @@
   };
 </script>
 <style lang="scss">
-.tran-contpart{
-  padding:20px 0;
-  overflow:hidden;
-  .input-box{
-    display:inline-block;
-    margin-top:12px;
-      input{
-        height:40px;
-        border:1px solid #ddd;
-        padding:0 10px;
-      }
-  }
-
-  .s{
-    display:inline-block;
-    width:19%;
-    float:left;
-
-  }
-  .s1{padding:20px;  width:140px;}
-  .s2{margin-top:20px;}
-  .s1 p{font-size:15px;}
-.btn {
-  display: inline-block;
-  height:40px;
-  line-height: 40px;
-  padding: 0 15px;
-  margin-top: 6px;
-  font-size: 18px;
-  background: orange;
-  border:0;
-  cursor: pointer;
-  vertical-align: top;
-  border-radius: 3px;
-  color: #fff;
-  transition: all .3s;
-  &.blue{
-     background: #5087ff;
-   }
-   &.gray{
-      background: #fff;
-     color:#333;
-    }
-}
-.btn-block{width:100%;}
-}
-
 
 </style>
