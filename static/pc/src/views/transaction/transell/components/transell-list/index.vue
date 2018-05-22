@@ -102,7 +102,6 @@
     },
     methods: {
       generateTitle,
-
       proUserAvatars(name){
          let mathRand = parseInt(Math.random()*this.avatarDealw,10);
          let avatarColor = this.SETTING.avatarColor[mathRand];
