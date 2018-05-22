@@ -9,7 +9,9 @@ export default {
     navHelp: '帮助中心',
     navWhitepaper: '白皮书',
     navContactus: '联系我们',
-    languageSel: 'ENGLISH'
+    languageSel: 'ENGLISH',
+    nickName:'昵称',
+    accountBalance:'账户余额'
   },
   login: {
     title: '欢迎回来',
