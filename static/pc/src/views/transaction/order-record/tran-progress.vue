@@ -37,7 +37,9 @@
               <span class="unit"> 0.01 CNY</span>
               <span class="unit red">{{order.creditAmountTwin}} CNY</span>
               <span class="unit">
-                等待付款 09:45
+                等待付款
+                {{order.intervalTime-order.elapsedTime | formatDateMs}}
+                <!--{{ (order.elapsedTime - order.modifytime)/1000 | formatDateMs}}-->
                 <!--{{order.createtime}}-->
               </span>
               <span class="unit">  <a class="btn btn-primary"  :href="'/orderDetail/' + order.id" >详情</a>  </span>
@@ -143,6 +145,37 @@
     },
     components: {
         pagingBy
+    },
+    filters: {
+      formatDateMs(time) {
+        var date = new Date(time);
+        return formatDate(date, "mm:ss");
+      }
     }
   };
+
+  // 时间格式过滤
+  export function formatDate(date, fmt) {
+    if (/(y+)/.test(fmt)) {
+      fmt = fmt.replace(RegExp.$1, (date.getFullYear() + '').substr(4 - RegExp.$1.length));
+    }
+    let o = {
+      'M+': date.getMonth() + 1,
+      'd+': date.getDate(),
+      'h+': date.getHours(),
+      'm+': date.getMinutes(),
+      's+': date.getSeconds()
+    };
+    for (let k in o) {
+      if (new RegExp(`(${k})`).test(fmt)) {
+        let str = o[k] + '';
+        fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? str : padLeftZero(str));
+      }
+    }
+    return fmt;
+  };
+
+  function padLeftZero(str) {
+    return ('00' + str).substr(str.length);
+  }
 </script>
