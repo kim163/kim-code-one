@@ -82,9 +82,10 @@
           pageInfo: {}
         },
         reqData: {
-          limit:3,
+          limit:10,
           offset:0,
           type: 12,
+          startBalance:0
           //status: 41
         },
         buyAmountUet:'',
@@ -144,7 +145,7 @@
         console.log(this.buyAmountCny)
         console.log('item')
         console.log(item)
-        console.log(this.userData)
+        console.log('test:'+this.userData)
         this.requestda={
           orderId:item.id,
           userId: this.userData.userId,
