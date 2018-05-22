@@ -9,7 +9,9 @@ export default {
     navHelp: 'Help',
     navWhitepaper: 'White paper',
     navContactus: 'Contact us',
-    languageSel: '中文'
+    languageSel: '中文',
+    nickName:'Nickname',
+    accountBalance:'Account Balance'
   },
   login: {
     title: 'Welcome back',
