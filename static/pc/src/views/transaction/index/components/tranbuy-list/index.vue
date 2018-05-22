@@ -8,7 +8,11 @@
              <div class="tranlist-item" v-for="(item,i) in dataList.data||[]">
                  <div class="tran-message">
                    <p class="txt-left item sellers"><span class="disp-inlblo" v-html="proUserAvatars(item.userName)"> </span> {{item.userName}} </p>
-                   <p class="item tranCountOrRate">{{item.tradeTotal}} 丨 {{ ((item.finishedTotal/item.tradeTotal)*100).toFixed(2)}}％</p>
+                   <p class="item tranCountOrRate">
+                     {{item.tradeTotal}} 丨
+                     <span v-if="item.tradeTotal"> {{ ((item.finishedTotal/item.tradeTotal)*100).toFixed(2)}}</span>
+                     <span v-if="!item.tradeTotal">0 </span>％
+                   </p>
                    <p class="item">0.01元</p>
                    <p class="item quantity"> {{item.amount}} UET </p>
                    <p class="item">
@@ -56,6 +60,7 @@
   import { generateTitle } from '@/util/i18n';
   import pagingBy from "components/paging-by";
   import  {SETTING} from "@/assets/data";
+  import {mapGetters,mapActions,mapMutations} from 'vuex';
 
   let dataHead = [
     {name: "table.sellers", value: "sellers"},
@@ -85,6 +90,7 @@
       }
     },
     computed: {
+      ...mapGetters(["userData"]),
        avatarDealw(){
          return this.SETTING.avatarColor.length;
        },
@@ -118,14 +124,11 @@
         let mathRand = parseInt(Math.random()*this.avatarDealw,10);
         let avatarColor = this.SETTING.avatarColor[mathRand];
         if(name != '' || name != 'undefined' ){
-          //alert(name)
           let nameFirst = name.substring(0,1);
-          //let nameFirst = name;
           let avaHtml = '<a class="avatars-item" style="background: '+avatarColor+' ">'+nameFirst+'</a>';
 
           return avaHtml;
         }
-
       },
 
       showView(item, i) {
@@ -164,10 +167,12 @@
         transaction.placeAnOrder(this.requestda).then((res) => {
 
           console.log(res)
-
+          if (res.code == 10000) {
+            toast("下单成功，请及时支付,10分钟内未完成支付，将自动取消订单");
+          }
 
         }).catch(err => {
-
+          toast(res.message);
         })
       },
 
@@ -185,53 +190,6 @@
   };
 </script>
 <style lang="scss">
-  .tran-contpart{
-    padding:20px 0;
-    overflow:hidden;
-  .input-box{
-    display:inline-block;
-    margin-top:12px;
-  input{
-    height:40px;
-    border:1px solid #ddd;
-    padding:0 10px;
-  }
-  }
-
-  .s{
-    display:inline-block;
-    width:19%;
-    float:left;
-
-  }
-  .s1{padding:20px;  width:140px;}
-  .s2{margin-top:20px;}
-  .s1 p{font-size:15px;}
-  .btn {
-    display: inline-block;
-    height:40px;
-    line-height: 40px;
-    padding: 0 15px;
-    margin-top: 6px;
-    font-size: 18px;
-    background: orange;
-    border:0;
-    cursor: pointer;
-    vertical-align: top;
-    border-radius: 3px;
-    color: #fff;
-    transition: all .3s;
-  &.blue{
-     background: #5087ff;
-   }
-  &.gray{
-     background: #fff;
-     color:#333;
-   }
-  }
-  .btn-block{width:100%;}
-  }
-
 
 </style>
 
