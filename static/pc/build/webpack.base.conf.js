@@ -31,7 +31,8 @@ module.exports = {
       'static':resolve('static'),
       'views':resolve('src/views'),
       'components':resolve('src/components'),
-      'images':resolve('src/assets/images')
+      'images':resolve('src/assets/images'),
+      'assets':resolve('src/assets')
     }
   },
   module: {

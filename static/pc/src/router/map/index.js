@@ -12,8 +12,8 @@ export default [
     component: index
   },
   {
-    path: "/mobile",
-    name: "mobile",
+    path: "/mobile/login",
+    name: "mobileLogin",
     component: mobile
   },
   {

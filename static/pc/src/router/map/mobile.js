@@ -4,19 +4,18 @@
 
 export default [
   {
-    path: "/mobile/transell",
-    name: 'transell',
-    component(resolve){
-      // 手机卖出
-      return resolve(require('views/mobile/tradeHall/transell'))
-    }
+    path: "/mobile/index",
+    name: "mAindex",
+    redirect:"/mobile/",
   },
   {
-    path: "/mobile/tranbuy",
-    name: 'tranbuy',
+    path: "/mobile/",
+    name: 'mIndex',
     component(resolve){
-      // 手机买入
-      return resolve(require('views/mobile/tradeHall/tranbuy'))
+      return resolve(require('views/mobile/index'))
+    },
+    meta: {
+      noCache: true //是否不缓存组件
     }
   },
   {
