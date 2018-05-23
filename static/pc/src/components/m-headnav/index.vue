@@ -1,6 +1,6 @@
 <template>
-  <header class="mobile-header">
-    <a @click="doClick" class="back-link"><i class="iconfont icon-left-arrow"></i></a>
+  <header class="mobile-headnav">
+    <a @click="doClick" class="back-link"><i class="iconfont icon-transaction"></i></a>
     <slot></slot>
   </header>
 </template>
@@ -10,17 +10,11 @@
       return {};
     },
     props: {
-      back: {
-        type: Function
-      }
+
     },
     methods: {
       doClick(){
-        if (this.back && typeof this.back == 'function') {
-          this.back();
-        } else {
-          this.$router.back();
-        }
+
       }
     },
     computed: {},
@@ -32,7 +26,7 @@
 <style lang="scss">
   @import "~assets/scss/mixin";
 
-  header.mobile-header{
+  header.mobile-headnav{
     position: relative;
     z-index: 99;
     height: r($header-hg);
@@ -49,10 +43,10 @@
       top:50%;
       transform:translateY(-50%);
       text-align: left;
-      padding-left: r(8);
+      padding-left: r(15);
     }
-    .icon-left-arrow{
-      @include f(18px)
+    .icon-transaction{
+      @include f(20px)
     }
   }
 

@@ -1,11 +1,11 @@
 <template>
   <div class="mtrading-hall">
-      <m-header></m-header>
+      <m-headnav>{{$t('navbar.tradingHall')}}</m-headnav>
       交易大厅
   </div>
 </template>
 <script>
-  import mHeader from 'components/m-header';
+  import mHeadnav from 'components/m-headnav';
 
   export default {
     data() {
@@ -17,7 +17,7 @@
     created() {
     },
     components: {
-      mHeader
+      mHeadnav
     }
   };
 </script>
