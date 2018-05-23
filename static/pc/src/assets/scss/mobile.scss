@@ -1,0 +1,36 @@
+/**
+*** mobile scss
+*** Anne 2018/05/23
+**/
+
+@import "./mixin.scss";
+.mobilenav-tabs{
+  margin:r(21) auto;
+  width: 80%;
+  border-radius: r(5);
+  overflow: hidden;
+  span{
+    display:inline-block;
+    width:50%;
+    height: r(35);
+    line-height: r(35);
+    text-align: center;
+    cursor: pointer;
+    @include  f(15px);
+    color: $font-color;
+    border-radius: 0 r(5) r(5) 0;
+    background: $white;
+    &:first-child{
+      border-radius: r(5) 0 0 r(5);
+      float:left;
+    }
+    &:last-child{
+      float:right;
+    }
+    &.active{
+      background: #86A5F8;
+      color: $white;
+    }
+  }
+}
+
