@@ -1,10 +1,18 @@
 <template>
-    <div>666</div>
+    <div>
+        <div>666</div>
+        <mobile-nav-bar></mobile-nav-bar>
+    </div>
 </template>
 
 <script>
+    import MobileNavBar from 'components/m-navbar'
     export default {
       name: "transaction-record",
+
+      components: {
+        MobileNavBar
+      },
 
       data(){
         return{
