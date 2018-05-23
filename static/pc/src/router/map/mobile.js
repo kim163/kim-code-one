@@ -27,6 +27,13 @@ export default [
       return resolve(require('views/mobile/cashDesk/cash'))
     }
   },
-
+  {
+    path: "/mobile/tranRecord",
+    name: 'mTranRecord',
+    component(resolve){
+      // 手机交易记录
+      return resolve(require('views/mobile/transaction-record'))
+    }
+  },
 
 ]
