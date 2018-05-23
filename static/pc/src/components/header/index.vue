@@ -8,7 +8,7 @@
         <a href="javascript:void(0);" @click="showRegisterDialog=true">{{$t('navbar.register')}}</a>
       </div>
     </div>
-    <template v-if="islogin">
+    <div v-if="islogin">
       <span class="islogin-info login-user" @mouseover="showUserInfo = true" @mouseout="showUserInfo = false">
         {{userData.name}}
         <i class="iconfont icon-jiantou"></i>
@@ -26,11 +26,7 @@
       </span>
       <span class="login-line"></span>
       <a href="javascript:void(0);" @click="$store.dispatch('LOGIN_OUT')" class="btn-other">{{$t('navbar.logOut')}}</a>
-    </template>
-    <!--<span v-if="islogin" class="islogin-info login-user">-->
-    <!--{{userData.name}}-->
-    <!--<a href="javascript:void(0);" @click="$store.dispatch('LOGIN_OUT')" class="btn-other">退出</a>-->
-    <!--</span>-->
+    </div>
     <v-login v-if="!islogin" v-model="showLoginDialog" @show="showLoginDialog=true"
              v-on:refreshbizlines="showLoginDialog=true"></v-login>
     <v-register @showLogin="showLogin" v-if="!islogin" v-model="showRegisterDialog"></v-register>
