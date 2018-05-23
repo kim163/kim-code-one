@@ -141,11 +141,6 @@
         });
       },
       placeAnOrder(item){
-        console.log('this.buyAmountUet:', this.buyAmountUet)
-        console.log(this.buyAmountCny)
-        console.log('item')
-        console.log(item)
-        console.log('test:'+this.userData)
         this.requestda={
           orderId:item.id,
           userId: this.userData.userId,

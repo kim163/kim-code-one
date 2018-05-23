@@ -82,10 +82,23 @@ export default {
     operating: '操作'
 
   },
+  //我的挂单
   postPend:{
     postTitle:'发布挂单',
     buyer:'买入挂单',
-    seller:'卖出挂单'
+    seller:'卖出挂单',
+    balance:'我的UET余额',
+    unit:'单价',
+    allsell:'全部卖出',
+    pendingAmount:'挂单卖出数量',
+    pendingAmountBuy:'挂单买入数量',
+    sumAmount:'总数量',
+    selectPay:'请选择收款方式',
+    minBuy:'买家最低买入数量',
+    minSell:'卖家最低卖入数量',
+    confirm:'确定挂单',
+    buyerRequest:'买家要求',
+    sellerRequest:'卖家要求',
   }
 
 }

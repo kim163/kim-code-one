@@ -155,22 +155,14 @@
           }
         }
         transaction.publishToBuy(this.requestda).then((res) => {
-
           console.log(res)
-//          this.requestdata= {
-//            userId: this.userData.userId,
-//            accountCashVo: {
-//                account: '',
-//                bank:'',
-//                name:'',
-//                type:'',
-//                amount:''
-//            }
-//          }
-
         }).catch(err => {
-
         })
+       transaction.publishToSell(this.requestda).then((res) => {
+          console.log(res)
+        }).catch(err => {
+        })
+
       },
       subData:function(item){
         return (item.substring(item.length-4))

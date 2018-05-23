@@ -23,6 +23,12 @@ export const publishToBuy = jsonData => service({
   method: 'post',
   data: jsonData
 });
+// 我要挂单--卖出挂单
+export const publishToSell = jsonData => service({
+  url: numversion+`order/c2c/publishToSell`,
+  method: 'post',
+  data: jsonData
+});
 
 // 获取 订单记录-交易结束
 export const getTransactionPage = jsonData => service({

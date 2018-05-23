@@ -34,5 +34,13 @@ export default [
       return resolve(require('views/mobile/transaction-record'))
     }
   },
+ {
+    path: "/mobile/pending",
+    name: 'mPending',
+    component(resolve){
+      // 手机交易记录
+      return resolve(require('views/mobile/pending-orders'))
+    }
+  },
 
 ]

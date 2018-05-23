@@ -82,9 +82,22 @@ export default {
     operating: 'Operating'
 
   },
+  //我的挂单
   postPend:{
     postTitle:'Post pending orders',
     buyer:'Buy pending orders',
-    seller:'Sell ​​pending orders'
+    seller:'Sell ​​pending orders',
+    balance:'my UET balance',
+    unit:'unit price',
+    allsell:'Sell ​​all',
+    pendingAmount:'Number of pending orders sold',
+    pendingAmountBuy:'Purchase order quantity',
+    sumAmount:'Total amount',
+    selectPay:'Please select payment method',
+    minBuy:'Minimum purchase amount of buyers',
+    minSell:'Sellers minimum selling amount',
+    confirm:'Confirm pending orders',
+    buyerRequest:'Buyer requirements',
+    sellerRequest:'Seller requirements',
   }
 }
