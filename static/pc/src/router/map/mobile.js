@@ -4,12 +4,12 @@
 
 export default [
   {
-    path: "/mobile/index",
+    path: "/mobile/",
     name: "mAindex",
-    redirect:"/mobile/",
+    redirect:"/mobile/index",
   },
   {
-    path: "/mobile/",
+    path: "/mobile/index",
     name: 'mIndex',
     component(resolve){
       return resolve(require('views/mobile/index'))

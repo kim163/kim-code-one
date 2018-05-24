@@ -17,7 +17,7 @@
           {
             icon: 'icon-transaction',
             name: 'navbar.tradingHall',
-            link: 'mAindex'
+            link: 'mIndex'
           },
           {
             icon: 'icon-tran-buy',

@@ -14,9 +14,9 @@
           <div class="type red-text" v-show="item.debit == userData.userId">{{$t('transactionRecord.sale')}}</div>
           <div class="status-time">
             <div class="status">
-              {{item.status === 45 ? $t('transactionRecord.waitingForPayment') : $t('transactionRecord.transactionRecord') + 'UET'}}
+              {{(item.status === 45 ? $t('transactionRecord.waitingForPayment') : $t('transactionRecord.transactionRecord'))}}
             </div>
-            <div class="time">{{item.intervalTime-order.elapsedTime | formatDateMs}}</div>
+            <div class="time">{{item.intervalTime-item.elapsedTime }}</div>
           </div>
         </div>
         <div class="user-amount">
@@ -97,7 +97,7 @@
 </script>
 
 <style lang="scss" scoped>
-  @import "~assets/scss/mixin";
+  @import "~assets/scss/mobile";
   .tran-record-main {
     width: 100%;
     background: #F5F5F5;
