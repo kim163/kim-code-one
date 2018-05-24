@@ -65,6 +65,7 @@ export default {
     recentOrders: '最近订单',
     copyBtn: '复制',
     successCopy: '复制成功',
+    pengdingOrder: '挂单记录',
 
   },
   transactionRecord: {

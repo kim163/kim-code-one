@@ -27,7 +27,7 @@
             </div>
             <div >
               <p class="s-title">{{$t('postPend.buyerRequest')}}</p>
-              <div  class="input-div"><input class="my-input" placeholder="卖家最低卖出数量"> CNY</div>
+              <div  class="input-div"><input class="my-input" placeholder="$t('postPend.minSell')"> CNY</div>
             </div>
         </div>
         <div class="line-box"></div>
@@ -41,8 +41,8 @@
     <div v-if="pendingItem=='seller'">
       <div class="white-box">
         <div class="balance-box">
-          <p>我的UET余额 252586456.21  UET</p>
-          <p class="c-gray">单价 ¥ 0.01 <a class="c-blue">全部卖出</a></p>
+          <p>{{$t('postPend.balance')}} 252586456.21  UET</p>
+          <p class="c-gray">{{$t('postPend.unit')}} ¥ 0.01 <a class="c-blue">{{$t('postPend.allsell')}}</a></p>
         </div>
         <div class="input-box">
             <div class="input-div"><input class="my-input" placeholder="挂单卖出数量"> UET</div>
