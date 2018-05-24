@@ -67,10 +67,9 @@
         </div>
 
         <div class="btn-groups">
-          {{buyTypeBuy}}
-          {{buyTypeSell}}
           <span class="btn" @click="$emit('hide',false)">取消</span>
-          <span class="btn btn-primary" @click="publishBuy">发布</span>
+          <span class="btn btn-primary" v-if="postItem=='buyer'" @click="publishBuy">发布</span>
+          <span class="btn btn-primary" v-if="postItem=='seller'" @click="publishSell">发布</span>
         </div>
       </div>
     </div>
@@ -101,7 +100,8 @@
 //        buyAmountCny:''
         buyTypeBuy:'',
         buyTypeSell:'',
-        accountCashVo:{}
+        accountCashVo:{},
+        buyTypeBuyBank:''
       }
     },
     computed: {
@@ -116,10 +116,7 @@
         this.requestdata={
           userId: this.userData.userId
         }
-        //alert()
         show.getBankInfo(this.requestdata).then((res) => {
-          //console.log('银行卡列表记录:');
-//          console.log(res.data);
           this.bankList = res;
 
         }).catch(err => {
@@ -135,7 +132,13 @@
           toast('支付方式不能为空');
           return;
         }
-        console.log(this.userData)
+        if(this.buyTypeBuy.type =='1'){
+           this.buyTypeBuyBank='支付宝'
+        }else if(this.buyTypeBuy.type =='2'){
+          this.buyTypeBuyBank='微信'
+        }else{
+          this.buyTypeBuyBank=this.buyTypeBuy.bank
+        }
         this.requestda={
           userId: this.userData.userId,
           mode:'1',
@@ -147,19 +150,71 @@
             amount:this.buyAmount //uet的数量
           },
           accountCashVo:{
-            "account" : '622212345252',
-            "bank" : '工商银行', //机构名称
-            "name" : '谭星云',
-            "type" : 3,
+            "account" : this.buyTypeBuy.account,
+            "bank" : this.buyTypeBuyBank, //机构名称
+            "name" : this.buyTypeBuy.name,
+            "type" : this.buyTypeBuy.type,
             "amount" : this.buyAmount /100
           }
         }
         transaction.publishToBuy(this.requestda).then((res) => {
           console.log(res)
+          if(res.code == '10000'){
+              toast('您已下单成功，请进入列表查询');
+              $emit('hide',false)
+          }else{
+              toast(res.message)
+          }
         }).catch(err => {
         })
-       transaction.publishToSell(this.requestda).then((res) => {
+//       transaction.publishToSell(this.requestda).then((res) => {
+//          console.log(res)
+//        }).catch(err => {
+//        })
+
+      },
+      publishSell(){
+        if(this.buyAmount =='' || !this.buyAmount){
+          toast('数量不能为空');
+          return;
+        }
+        if(this.buyTypeSell =='' || !this.buyTypeSell){
+          toast('支付方式不能为空');
+          return;
+        }
+        if(this.buyTypeSell.type =='1'){
+           this.buyTypeBuyBank='支付宝'
+        }else if(this.buyTypeSell.type =='2'){
+          this.buyTypeBuyBank='微信'
+        }else{
+          this.buyTypeBuyBank=this.buyTypeSell.bank
+        }
+        this.requestda={
+          userId: this.userData.userId,
+          mode:'1',
+          minUnit:this.buyAmount,//等于发布的数量
+          accountChainVo:{
+            name:this.userData.nickname,
+            address:this.userData.accountChainVos[0].address,
+            assetCode:'UET', //资产编码 默认 UET,登录后资产的编码
+            amount:this.buyAmount //uet的数量
+          },
+          accountCashVo:{
+            "account" : this.buyTypeSell.account,
+            "bank" : this.buyTypeBuyBank, //机构名称
+            "name" : this.buyTypeSell.name,
+            "type" : this.buyTypeSell.type,
+            "amount" : this.buyAmount /100
+          }
+        }
+        transaction.publishToSell(this.requestda).then((res) => {
           console.log(res)
+          if(res.code == '10000'){
+              toast('您已下单成功，请进入列表查询');
+              $emit('hide',false)
+          }else{
+              toast(res.message)
+          }
         }).catch(err => {
         })
 

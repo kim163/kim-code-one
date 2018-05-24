@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <transition :name="transitionName">
+      <keep-alive>
         <router-view v-if="!$route.meta.noCache"></router-view>
+      </keep-alive>
     </transition>
     <transition :name="transitionName">
       <router-view v-if="$route.meta.noCache"></router-view>
@@ -22,7 +24,8 @@
         return this.$route.meta.cache ? "" : this.$route.name;
       }
     },
-    created(){
+    created() {
+      this.$store.dispatch("UPDATE_USERDATA");
     },
     watch:{
       "$route"(to,from){

@@ -49,8 +49,6 @@
       };
     },
     methods: {
-      ...mapActions(["UPDATE_USERDATA", "LOGIN_OUT"]),
-
       showLogin() {
         console.log('事件通讯成功了')
         if (!this.showLoginDialog) {
@@ -65,7 +63,6 @@
       ...mapGetters(["userData", "islogin"])
     },
     created() {
-      this.UPDATE_USERDATA();
     },
     components: {
       vLogin, vRegister
