@@ -30,7 +30,7 @@
   };
 </script>
 <style lang="scss">
-  @import "~assets/scss/mixin";
+  @import "~assets/scss/mobile";
 
   header.mobile-header{
     position: relative;

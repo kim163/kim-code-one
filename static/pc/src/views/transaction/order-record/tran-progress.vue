@@ -17,16 +17,16 @@
           <div class="group-body">
             <div class="group-tr" v-for="order in OrderList.data">
                  <span class="unit">
-                      <span class="btn btn-border" v-show="order.credit == userData.userId">买入</span>
-                      <span class="btn btn-orange" v-show="order.debit == userData.userId">卖出</span>
+                      <span class="btn btn-border" v-show="order.credit == userData.userId">{{$t('transactionRecord.buy')}}</span>
+                      <span class="btn btn-orange" v-show="order.debit == userData.userId">{{$t('transactionRecord.sale')}}</span>
                  </span>
               <span class="unit">{{order.creditAccountNameTwin}}</span>
               <span class="unit"> {{order.creditAmount}}   UET</span>
               <span class="unit"> 0.01 CNY</span>
               <span class="unit red">{{order.creditAmountTwin}} CNY</span>
               <span class="unit">
-                 <span v-if="order.status = 45"> 等待付款</span>
-                 <span v-else-if="order.status != 45"> 等待释放UET</span>
+                 <span v-if="order.status = 45"> {{$t('transactionRecord.waitingForPayment')}}</span>
+                 <span v-else-if="order.status != 45"> {{$t('transactionRecord.transactionRecord')}}UET</span>
                 {{order.intervalTime-order.elapsedTime | formatDateMs}}
               </span>
               <span class="unit">  <a class="btn btn-primary"  :href="'/orderDetail/' + order.id" >详情</a>  </span>

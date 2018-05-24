@@ -11,7 +11,8 @@ export default {
     navContactus: '联系我们',
     languageSel: 'ENGLISH',
     nickName:'昵称',
-    accountBalance:'账户余额'
+    accountBalance:'账户余额',
+    transactionRecord:'交易记录',
   },
   login: {
     title: '欢迎回来',
@@ -72,7 +73,10 @@ export default {
     tranProgress: '交易中',
     tranComplete: '交易完成',
     appealRecord: '申诉记录',
-
+    buy:'买入',
+    sale:'卖出',
+    waitingForPayment:'等待付款',
+    waitingForRelease:'等待释放',
   },
   table: {
     sellers: '卖家',

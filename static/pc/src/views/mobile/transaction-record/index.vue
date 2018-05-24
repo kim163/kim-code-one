@@ -1,5 +1,6 @@
 <template>
   <div class="tran-record-main cfx">
+    <m-headnav>{{$t('navbar.transactionRecord')}}</m-headnav>
     <div class="nav-list">
       <div class="nav-item" :class="{active: navIndex === 0}" @click="navIndex = 0">{{$t('transactionRecord.tranProgress')}}</div>
       <div class="nav-item" :class="{active: navIndex === 1}" @click="navIndex = 1">{{$t('transactionRecord.tranComplete')}}</div>
@@ -7,28 +8,32 @@
     </div>
     <div class="amount-balance">{{$t('navbar.accountBalance')}}：{{userData.amount}} UET</div>
     <ul class="tran-list">
-      <router-link tag="li" :to="{name:'cashDesk',query:'111'}" class="tran-item" v-for="(item,index) in 3" :key="index">
+      <router-link tag="li" :to="{name:'cashDesk',query:{ id: 111}}" class="tran-item" v-for="(item,index) in tranList" :key="index">
         <div class="type-status">
-          <div class="type">买入</div>
+          <div class="type bule-text" v-show="item.credit == userData.userId">{{$t('transactionRecord.buy')}}</div>
+          <div class="type red-text" v-show="item.debit == userData.userId">{{$t('transactionRecord.sale')}}</div>
           <div class="status-time">
-            <div class="status">等待付款</div>
-            <div class="time">09:06:03</div>
+            <div class="status">
+              {{(item.status === 45 ? $t('transactionRecord.waitingForPayment') : $t('transactionRecord.transactionRecord'))}}
+            </div>
+            <div class="time">{{item.intervalTime-item.elapsedTime }}</div>
           </div>
         </div>
         <div class="user-amount">
-          <div class="user">马化腾</div>
+          <div class="user">{{item.creditAccountNameTwin}}</div>
           <div class="amount">
-            <span class="text-red">3000</span> UET
+            <span class="text-red">{{item.creditAmount}}</span> UET
           </div>
         </div>
       </router-link>
     </ul>
-    <mobile-nav-bar></mobile-nav-bar>
+    <m-navbar></m-navbar>
   </div>
 </template>
 
 <script>
-  import MobileNavBar from 'components/m-navbar'
+  import mHeadnav from 'components/m-headnav';
+  import mNavbar from 'components/m-navbar'
   import {mapGetters} from 'vuex'
   import {
     getOrderxPage,
@@ -38,7 +43,8 @@
     name: "transaction-record",
 
     components: {
-      MobileNavBar
+      mHeadnav,
+      mNavbar
     },
     computed: {
       ...mapGetters([
@@ -53,6 +59,12 @@
         tranList:[],
       }
     },
+    watch:{
+      navIndex(){
+        this.offset = 0,
+        this.getTranList()
+      }
+    },
     methods: {
       getTranList(){
         const api = this.navIndex === 0 ? getOrderxPage : getTransactionPage
@@ -65,13 +77,17 @@
         }
         api(request).then(res => {
           if(res.code === 10000){
-            this.tranList = res
+            this.tranList = res.data
           }else{
             this.reset(res.message)
           }
         }).catch(error => {
           this.reset("请求失败")
         })
+      },
+      addPageIndex(){
+        this.offset += 1
+        this.getTranList()
       }
     },
     mounted() {
@@ -81,7 +97,7 @@
 </script>
 
 <style lang="scss" scoped>
-  @import "~assets/scss/mixin";
+  @import "~assets/scss/mobile";
   .tran-record-main {
     width: 100%;
     background: #F5F5F5;
@@ -134,6 +150,14 @@
       .type-status{
         display: flex;
         justify-content: space-between;
+        .type{
+          &.red-text{
+            color: #FF0000;
+          }
+          &.blue-text{
+            color: #5087FF;
+          }
+        }
         .status-time{
           display: flex;
           justify-content: center;
