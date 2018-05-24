@@ -7,6 +7,7 @@
           {{generateTitle(item.name)}}
         </router-link>
         <a href="javascript:void(0);" class="item-info" @click="isShowPostPend=true"> {{$t('transactionHome.postPendOrd')}} </a>
+        <router-link :to="{name: 'tranPending'}" class="item-info" >{{$t('transactionHome.pengdingOrder')}}</router-link>
         <router-link :to="{name: 'tranRecord'}" class="item-info" >{{$t('transactionHome.orderRecord')}}</router-link>
       </div>
     </div>

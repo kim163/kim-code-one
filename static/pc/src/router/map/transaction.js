@@ -15,16 +15,18 @@ export default [
     component: transell
   },
   {
+    path: "/tranPending",
+    name: "tranPending",
+    component(resolve){
+    return resolve(require('views/transaction/tran-pending'))
+  }
+  },
+  {
     path: "/tranRecord",
     name: "tranRecord",
     component: tranRecord,
     redirect: "/tranRecord/tranProgress",
     children: [
-      {
-        path: "tranPending", name: "tranPending", component(resolve){
-        return resolve(require('views/transaction/order-record/tran-pending'))
-      }
-      },
       {
         path: "tranProgress", name: "tranProgress", component(resolve){
         return resolve(require('views/transaction/order-record/tran-progress'))

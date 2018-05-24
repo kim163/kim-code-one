@@ -1,5 +1,5 @@
 <template>
-  <div class="transell-main">
+  <div class="transell-main transell-main-box">
     <nav-menu></nav-menu>
     <!--<tran-headnav></tran-headnav>-->
 
@@ -351,8 +351,10 @@
   }
 </script>
 
-<style lang="scss">
-
+<style lang="scss" scoped>
+.transell-main-box{
+  padding-top:100px;
+}
 .detail-content{
   min-height:300px;
   margin:30px 0;

@@ -64,7 +64,7 @@ export default {
     recentOrders: 'Recent orders',
     copyBtn: 'copy',
     successCopy: 'Successfully copied',
-
+    pengdingOrder: 'pengding Order',
   },
   transactionRecord: {
     tranPending: 'Transaction Pending',

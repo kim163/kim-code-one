@@ -18,7 +18,7 @@
 <script>
   import { generateTitle } from '@/util/i18n'
   let tranredNavData = [
-    {name:'transactionRecord.tranPending', value: 'tranPending', to: {name: 'tranPending'} },
+//    {name:'transactionRecord.tranPending', value: 'tranPending', to: {name: 'tranPending'} },
     {name:'transactionRecord.tranProgress', value: 'tranProgress', to: {name: 'tranProgress'} },
     {name:'transactionRecord.tranComplete', value: 'tranComplete', to: {name: 'tranComplete'} },
     {name:'transactionRecord.appealRecord', value: 'appealRecord', to: {name: 'appealRecord'} }

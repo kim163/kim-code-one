@@ -1,5 +1,7 @@
 <template>
-  <div class="modal fade in">
+  <div>
+
+     <div class="modal fade in">
     <div class="modal-dialog popup">
       <div type="button" class="close close-w" @click="$emit('hide',false)">
         <i class="iconfont icon-close"></i>
@@ -8,11 +10,8 @@
       <div class="pop-con">
         <h2 class="alert-title">{{$t('postPend.postTitle')}}</h2>
           <div class="stab-box">
-            <!--<span class="s active">买入挂单</span>-->
-            <!--<span class="s">卖出挂单</span>-->
             <span v-for="item in postType" @click="postItem=item.value" class="s" :class="{active:postItem==item.value}" :key="item.value">
             {{generateTitle(item.name)}}
-            <!--{{item.name}}-->
           </span>
 
           </div>
@@ -73,6 +72,8 @@
         </div>
       </div>
     </div>
+
+  </div>
 
   </div>
 </template>
