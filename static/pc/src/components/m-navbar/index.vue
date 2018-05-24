@@ -2,12 +2,13 @@
   <div class="m-navbar-main">
     <router-link :to="{name: item.link}" class="link-item" tag="div" v-for="item in linkList" :key="item.icon">
       <i class="iconfont" :class="item.icon"></i>
-      <div class="link-name">{{item.name}}</div>
+      <div class="link-name">{{generateTitle(item.name)}}</div>
     </router-link>
   </div>
 </template>
 
 <script>
+  import { generateTitle } from '@/util/i18n'
   export default {
     name: "mobile-navbar",
     data() {
@@ -15,26 +16,29 @@
         linkList: [
           {
             icon: 'icon-transaction',
-            name: '交易大厅',
-            link: ''
+            name: 'navbar.tradingHall',
+            link: 'mAindex'
           },
           {
             icon: 'icon-tran-buy',
-            name: '买入挂单',
-            link: 'tranbuy'
+            name: 'postPend.buyer',
+            link: 'cashDesk'
           },
           {
             icon: 'icon-tran-sell',
-            name: '卖出挂单',
+            name: 'postPend.seller',
             link: 'transell'
           },
           {
             icon: 'icon-tran-record',
-            name: '交易记录',
+            name: 'navbar.transactionRecord',
             link: 'mTranRecord'
           }
         ]
       }
+    },
+    methods: {
+      generateTitle
     }
   }
 </script>

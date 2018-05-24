@@ -11,7 +11,8 @@ export default {
     navContactus: 'Contact us',
     languageSel: '中文',
     nickName:'Nickname',
-    accountBalance:'Account Balance'
+    accountBalance:'Account Balance',
+    transactionRecord:'Transaction Record'
   },
   login: {
     title: 'Welcome back',
@@ -71,7 +72,10 @@ export default {
     tranProgress: 'Transaction processing',
     tranComplete: 'Transaction complete',
     appealRecord: 'Appeal record',
-
+    buy:'Buy',
+    sale:'sell',
+    waitingForPayment:'Waiting For Payment',
+    waitingForRelease:'Waiting For Release',
   },
   table: {
     sellers: 'Sellers',
