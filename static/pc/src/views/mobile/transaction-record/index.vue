@@ -7,33 +7,22 @@
       <router-link tag="div" class="nav-item" :to="{name: 'cashDesk'}">{{$t('transactionRecord.tranPending')}}</router-link>
     </div>
     <div class="amount-balance">{{$t('navbar.accountBalance')}}：{{userData.amount}} UET</div>
-    <ul class="tran-list">
-      <router-link tag="li" :to="{name:'cashDesk',query:{ id: 111}}" class="tran-item" v-for="(item,index) in tranList" :key="index">
-        <div class="type-status">
-          <div class="type bule-text" v-show="item.credit == userData.userId">{{$t('transactionRecord.buy')}}</div>
-          <div class="type red-text" v-show="item.debit == userData.userId">{{$t('transactionRecord.sale')}}</div>
-          <div class="status-time">
-            <div class="status">
-              {{(item.status === 45 ? $t('transactionRecord.waitingForPayment') : $t('transactionRecord.transactionRecord'))}}
-            </div>
-            <div class="time">{{item.intervalTime-item.elapsedTime }}</div>
-          </div>
-        </div>
-        <div class="user-amount">
-          <div class="user">{{item.creditAccountNameTwin}}</div>
-          <div class="amount">
-            <span class="text-red">{{item.creditAmount}}</span> UET
-          </div>
-        </div>
-      </router-link>
-    </ul>
+    <div class="tran-list">
+      <transition name="tran-animate">
+        <transcation-list :data="tranInList" :type="0" v-show="navIndex === 0"></transcation-list>
+      </transition>
+      <transition name="tran-animate">
+        <transcation-list :data="tranOverList" :type="1" v-show="navIndex === 1"></transcation-list>
+      </transition>
+    </div>
     <m-navbar></m-navbar>
   </div>
 </template>
 
 <script>
   import mHeadnav from 'components/m-headnav';
-  import mNavbar from 'components/m-navbar'
+  import mNavbar from 'components/m-navbar';
+  import TranscationList from './transaction-list';
   import {mapGetters} from 'vuex'
   import {
     getOrderxPage,
@@ -44,7 +33,8 @@
 
     components: {
       mHeadnav,
-      mNavbar
+      mNavbar,
+      TranscationList
     },
     computed: {
       ...mapGetters([
@@ -55,13 +45,15 @@
       return {
         navIndex:0,
         limit:10,
-        offset:0,
-        tranList:[],
+        offsetIn:0,//交易中页数
+        tranInList:[],//交易中列表
+        offsetOver:0,//交易完成页数
+        tranOverList:[]//交易完成列表
       }
     },
     watch:{
       navIndex(){
-        this.offset = 0,
+        //this.offset = 0,
         this.getTranList()
       }
     },
@@ -70,14 +62,19 @@
         const api = this.navIndex === 0 ? getOrderxPage : getTransactionPage
         const request = {
           limit:this.limit,
-          offset:this.offset,
+          offset:this.navIndex === 0 ? this.offsetIn : this.offsetOver,
           credit:this.userData.userId,
           debit:this.userData.userId,
           types:[11,12]
         }
         api(request).then(res => {
           if(res.code === 10000){
-            this.tranList = res.data
+            console.log(res)
+            if(this.navIndex === 0){
+              this.tranInList = res.data
+            }else{
+              this.tranOverList = res.data
+            }
           }else{
             this.reset(res.message)
           }
@@ -86,7 +83,11 @@
         })
       },
       addPageIndex(){
-        this.offset += 1
+        if(this.navIndex === 0){
+          this.offsetIn += 1
+        }else{
+          this.offsetOver += 1
+        }
         this.getTranList()
       }
     },
@@ -98,8 +99,23 @@
 
 <style lang="scss" scoped>
   @import "~assets/scss/mobile";
+
+  .tran-animate-enter{ //临时添加点小动画
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  .tran-animate-leave{
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+  .tran-animate-enter-active,.tran-animate-leave-active{
+    transition:all 0.5s
+  }
+  $otherHeight: r(173);
   .tran-record-main {
     width: 100%;
+    height: 100%;
+    overflow: hidden;
     background: #F5F5F5;
     .nav-list{
       width: 100%;
@@ -135,46 +151,10 @@
       padding: r(15) 0 r(15) r(10);
     }
     .tran-list{
-      display: block;
-    }
-    .tran-item{
       width: 100%;
-      height: r(88);
-      background: $white;
-      border-top: 1px solid;
-      border-bottom: 1px solid;
-      border-color: #D8D8D8;
-      margin-bottom: r(12);
-      padding: r(20) r(10) 0;
-      @include f(15px);
-      .type-status{
-        display: flex;
-        justify-content: space-between;
-        .type{
-          &.red-text{
-            color: #FF0000;
-          }
-          &.blue-text{
-            color: #5087FF;
-          }
-        }
-        .status-time{
-          display: flex;
-          justify-content: center;
-        }
-        .status{
-          margin-right: r(5);
-        }
-      }
-      .user-amount{
-        display: flex;
-        justify-content: space-between;
-        margin-top: r(10);
-        .text-red{
-          color: #FF0000;
-          @include f(18px)
-        }
-      }
+      height: calc(100% - $otherHeight);
+      overflow-x: hidden;
+      overflow-y: auto;
     }
   }
 </style>

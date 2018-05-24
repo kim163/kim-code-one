@@ -76,6 +76,7 @@ export default {
     sale:'卖出',
     waitingForPayment:'等待付款',
     waitingForRelease:'等待释放',
+    tarnComplete:'交易完成'
   },
   table: {
     sellers: '卖家',

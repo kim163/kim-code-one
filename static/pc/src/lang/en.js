@@ -76,6 +76,7 @@ export default {
     sale:'sell',
     waitingForPayment:'Waiting For Payment',
     waitingForRelease:'Waiting For Release',
+    tarnComplete:'Transaction Complete'
   },
   table: {
     sellers: 'Sellers',
