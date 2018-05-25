@@ -95,7 +95,11 @@ export default {
     unitPrice: '单价',
     quantity: '数量',
     payMethod: '支付方式',
-    operating: '操作'
+    operating: '操作',
+    completed: '已完成',
+    remove: '下架',
+    restored: '恢复上架',
+    deleteOrder: '删除'
 
   },
   //我的挂单

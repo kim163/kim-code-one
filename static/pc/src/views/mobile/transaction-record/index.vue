@@ -140,7 +140,7 @@
 
 <style lang="scss" scoped>
   @import "~assets/scss/mobile";
-
+  
   .tran-animate-enter { //临时添加点小动画
     opacity: 0;
     //transform: translateX(100%);

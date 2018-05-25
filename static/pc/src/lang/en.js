@@ -95,8 +95,11 @@ export default {
     unitPrice: 'Unit price',
     quantity: 'Quantity',
     payMethod: 'Payment method',
-    operating: 'Operating'
-
+    operating: 'Operating',
+    completed: 'Completed',
+    remove: 'Remove',
+    restored: 'Destored',
+    deleteOrder: 'Delete'
   },
   //我的挂单
   postPend:{
@@ -116,6 +119,6 @@ export default {
     buyerRequest:'Buyer requirements',
     sellerRequest:'Seller requirements',
     processing:'Processing',
-    hasBeenRemoved:'Has been removed',
+    hasBeenRemoved:'Removed',
   }
 }

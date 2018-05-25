@@ -1,25 +1,24 @@
 <template>
   <ul>
-    <li v-for="(item,i) in 3" :key="i" class="order-item">
+    <li v-for="(item,i) in orderList" :key="i" class="order-item">
       <div class="order-info">
         <div class="text-left">{{item.createtime | Date('yyyy-MM-dd hh:mm:ss')}}</div>
         <div class="text-right">
-          <!--<span class="c-blue" v-show="item.type == 12">{{$t('postPend.buyer')}}</span>-->
-          <!--<span class="c-red" v-show="item.type == 11">{{$t('postPend.seller')}}</span>-->
-          <span class="c-blue">{{$t('postPend.buyer')}}</span>
+          <span class="c-blue" v-show="item.type == 12">{{$t('postPend.buyer')}}</span>
+          <span class="c-red" v-show="item.type == 11">{{$t('postPend.seller')}}</span>
         </div>
       </div>
       <div class="order-info">
-        <div class="text-left">{{$t('table.quantity')}} 30000 UET</div>
-        <div class="text-right">单价 0.001 CNY</div>
+        <div class="text-left">{{$t('table.quantity')}} {{item.amount}} UET</div>
+        <div class="text-right">{{$t('table.unitPrice')}} 0.001 CNY</div>
       </div>
       <div class="order-info">
-        <div class="text-left">已完成 89.23%</div>
+        <div class="text-left">{{$t('table.completed')}} {{(item.successAmount/item.amount)*100 | toFixed(2) }}%</div>
         <div class="text-right">
-          <span class="btn drop-off" v-if="type === 'processing'">下架</span>
+          <span class="btn drop-off" v-if="type === 'processing'">{{$t('table.remove')}}</span>
           <div v-else>
-            <span class="btn restored">恢复上架</span>
-            <span class="btn delete">删除</span>
+            <span class="btn restored">{{$t('table.restored')}}</span>
+            <span class="btn delete">{{$t('table.deleteOrder')}}</span>
           </div>
         </div>
       </div>
