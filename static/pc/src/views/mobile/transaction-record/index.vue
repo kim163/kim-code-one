@@ -63,7 +63,7 @@
     computed: {
       ...mapGetters([
         "userData"
-      ])
+      ]),
     },
     data() {
       return {
