@@ -1,6 +1,6 @@
 <template>
   <ul class="list">
-    <router-link tag="li" :to="{name:'cashDesk',query:{ id: 111}}" class="tran-item" v-for="(item,index) in data" :key="index">
+    <router-link tag="li" :to="{name:'cashDesk',query:{ id: item.id}}" class="tran-item" v-for="(item,index) in data" :key="index">
       <div class="type-status">
         <div class="type blue-text" v-show="item.credit === userData.userId">{{$t('transactionRecord.buy')}}</div>
         <div class="type red-text" v-show="item.debit === userData.userId">{{$t('transactionRecord.sale')}}</div>
