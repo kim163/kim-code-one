@@ -24,7 +24,7 @@
   };
 </script>
 <style lang="scss">
-  @import "~assets/scss/mobile";
+  @import "~assets/scss/mixin";
 
   header.mobile-headnav{
     position: relative;
