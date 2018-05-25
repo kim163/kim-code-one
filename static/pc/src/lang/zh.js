@@ -113,6 +113,8 @@ export default {
     confirm:'确定挂单',
     buyerRequest:'买家要求',
     sellerRequest:'卖家要求',
+    processing:'进行中',
+    hasBeenRemoved:'已下架'
   }
 
 }
