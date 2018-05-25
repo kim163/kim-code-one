@@ -1,31 +1,39 @@
 <template>
-  <div class="tran-datalist">
+  <div class="mobile-trandatas mtranbuy-list">
       <div class="tranlist-container">
-          <div class="tranlist-head">
-              <p v-for="(item,i) in dataHead" :class="['head-item',item.value]">  {{generateTitle(item.name)}}  </p>
-          </div>
-          <div class="tranlist-body">
+
              <div class="tranlist-item" v-for="(item,i) in dataList.data||[]">
-                 <div class="tran-message">
-                   <p class="txt-left item sellers"><span class="disp-inlblo" v-html="proUserAvatars(item.userName)"> </span> {{item.userName}} </p>
-                   <p class="item tranCountOrRate">
-                     {{item.tradeTotal}} 丨
-                     <span v-if="item.tradeTotal"> {{ ((item.finishedTotal/item.tradeTotal)*100).toFixed(2)}}</span>
-                     <span v-if="!item.tradeTotal">0 </span>％
-                   </p>
-                   <p class="item">0.01元</p>
-                   <p class="item quantity"> {{item.amount}} UET </p>
-                   <p class="item">
-                     <span v-if="item.accountTypeTwin === 1" class="iconfont icon-pay-alipay"></span>
-                     <span v-else-if="item.accountTypeTwin === 2" class="iconfont icon-pay-wechat" ></span>
-                     <span v-else-if="item.accountTypeTwin === 3" class="iconfont icon-pay-bank"></span>
-                     <span v-else>
-                      {{item.debitAccountTypeTwin}}
-                      </span>
-                   </p>
-                   <p class="item">
+                 <div class="tran-message cfx">
+                   <div class="fl mtran-itemleft"><span class="disp-inlblo" v-html="proUserAvatars(item.userName)"> </span> </div>
+                   <div class="fr mtran-itemright">
+                     <p class="item user-info">
+                       <span class="user-name"> {{item.userName}}</span>
+                       <span v-if="item.accountTypeTwin === 1" class="mpay alipay">{{$t('transactionHome.payAlipay')}}</span>
+                       <span v-else-if="item.accountTypeTwin === 2" class="mpay wechat" >{{$t('transactionHome.payWechat')}}</span>
+                       <span v-else-if="item.accountTypeTwin === 3" class="mpay bank">{{$t('transactionHome.payBank')}}</span>
+                       <span v-else class="mpay">
+                         {{item.accountTypeTwin }}
+                       </span>
+                     </p>
+                     <p class="item tranCountOrRate">
+                       <span class="tradeTotal">{{$t('transactionHome.monthlyTran')}} {{item.tradeTotal}} {{$t('transactionHome.tradeTotal')}}</span>
+                       <span>{{$t('transactionHome.completionRate')}}</span>
+                       <span v-if="item.tradeTotal"> {{ ((item.finishedTotal/item.tradeTotal)*100).toFixed(2)}}</span>
+                       <span v-if="!item.tradeTotal">0 </span>％
+                    </p>
+                    <p class="item amount-line">
+                      <span class="unit-price">{{$t('transactionHome.unitPrice')}}：</span>0.01
+                      <span class="quantity-txt">{{$t('transactionHome.quantity')}}：</span>
+                      <span class="amount"> {{item.amount}} UET </span>
+                    </p>
+
+                    <p class="item hide">
                      <a href="javascript:void(0);" class="transaction-btn" @click="showView(item,i)">{{$t('transactionHome.buyUet')}}</a>
-                   </p>
+                    </p>
+                     <p class="right-arrow">
+                       <i class="iconfont icon-right-arrow"></i>
+                     </p>
+                   </div>
                  </div>
                <transition name="message">
                  <div class="tran-contpart" v-show="item.already" :ref="item.id">
@@ -49,7 +57,6 @@
 
              </div>
 
-          </div>
       </div>
 
     <paging-by :data="dataList.pageInfo" @search="searchDataList"></paging-by>
@@ -62,20 +69,10 @@
   import  {SETTING} from "@/assets/data";
   import {mapGetters,mapActions,mapMutations} from 'vuex';
 
-  let dataHead = [
-    {name: "table.sellers", value: "sellers"},
-    {name: "table.tranCountOrRate", value: "tranCountOrRate"},
-    {name: "table.unitPrice", value: "unitPrice"},
-    {name: "table.quantity", value: "quantity"},
-    {name: "table.payMethod", value: "payMethod"},
-    {name: "table.operating", value: "operating"}
-  ]
-
   export default {
     data() {
       return {
         SETTING,
-        dataHead,
         dataList: {
           data: [],
           pageInfo: {}

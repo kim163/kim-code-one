@@ -66,6 +66,15 @@ export default {
     copyBtn: 'copy',
     successCopy: 'Successfully copied',
     pengdingOrder: 'pengding Order',
+    payAlipay: 'Alipay',
+    payWechat: 'WeChat',
+    payBank: 'Bank card',
+    monthlyTran: '30 day trading',
+    tradeTotal: 'Orders',
+    completionRate: 'Completion rate',
+    unitPrice: 'Unit price',
+    quantity: 'Quantity',
+
   },
   transactionRecord: {
     tranPending: 'Transaction Pending',
