@@ -97,12 +97,12 @@
               this.tranInList = [...this.tranInList, ...res.data]
               console.log(Math.ceil(res.pageInfo.total / this.limit))
               console.log(this.$refs)
-              if(Math.ceil(res.pageInfo.total / this.limit) <= this.offsetIn){
+              if(Math.ceil(res.pageInfo.total / this.limit) - 1 <= this.offsetIn){
                 this.$refs.scrollIn.update(true)
               }
             } else {
               this.tranOverList = [...this.tranOverList, ...res.data]
-              if(Math.ceil(res.pageInfo.total / this.limit) <= this.offsetOver){
+              if(Math.ceil(res.pageInfo.total / this.limit) - 1 <= this.offsetOver){
                 this.$refs.scrollComplete.update(true)
               }
             }
@@ -152,7 +152,7 @@
   }
 
   .tran-animate-enter-active, .tran-animate-leave-active {
-    transition: all 0.5s 0.5s;
+    transition: all .5s;
   }
 
   $otherHeight: r(189);
