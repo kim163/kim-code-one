@@ -7,7 +7,14 @@
             {{generateTitle(item.name)}}
         </span>
     </div>
-    <div class="amount-balance">{{$t('navbar.accountBalance')}}：{{userData.amount}} UET</div>
+    <div class="amount-balance">{{$t('navbar.accountBalance')}}：{{userData.amount}} </div>
+    <div class="orders-list">
+      <ul>
+        <li v-for="(item,i) in 3" :key="i" class="order-info">
+
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
