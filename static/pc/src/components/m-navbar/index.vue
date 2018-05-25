@@ -55,6 +55,7 @@
     display: flex;
     justify-content: center;
     border-top: 1px solid #EBEBEB;
+    z-index: 99;
     .link-item {
       flex-grow: 1;
       display: flex;

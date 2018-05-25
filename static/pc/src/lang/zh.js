@@ -66,6 +66,14 @@ export default {
     copyBtn: '复制',
     successCopy: '复制成功',
     pengdingOrder: '挂单记录',
+    payAlipay: '支付宝',
+    payWechat: '微信',
+    payBank: '银行卡',
+    monthlyTran: '30日交易',
+    tradeTotal: '单',
+    completionRate: '完成率',
+    unitPrice: '单价',
+    quantity: '数量',
 
   },
   transactionRecord: {
@@ -79,6 +87,7 @@ export default {
     waitingForRelease:'等待释放',
     tranPendingOrder: '挂单中',
     tranPendingRemoved: '已下架',
+    tarnComplete:'交易完成'
   },
   table: {
     sellers: '卖家',

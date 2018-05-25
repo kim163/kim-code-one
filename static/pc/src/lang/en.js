@@ -66,6 +66,15 @@ export default {
     copyBtn: 'copy',
     successCopy: 'Successfully copied',
     pengdingOrder: 'pengding Order',
+    payAlipay: 'Alipay',
+    payWechat: 'WeChat',
+    payBank: 'Bank card',
+    monthlyTran: '30 day trading',
+    tradeTotal: 'Orders',
+    completionRate: 'Completion rate',
+    unitPrice: 'Unit price',
+    quantity: 'Quantity',
+
   },
   transactionRecord: {
     tranPending: 'Transaction Pending',
@@ -78,6 +87,7 @@ export default {
     waitingForRelease:'Waiting For Release',
     tranPendingOrder: 'Pending order',
     tranPendingRemoved: 'Removed order',
+    tarnComplete:'Transaction Complete'
   },
   table: {
     sellers: 'Sellers',
