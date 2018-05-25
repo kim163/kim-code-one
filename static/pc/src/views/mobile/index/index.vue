@@ -11,13 +11,9 @@
        {{$t('navbar.accountBalance')}}：
      </div>
 
-     <div v-show="transactItem=='buyUet'">
-       <tranbuy-list></tranbuy-list>
-     </div>
+     <tranbuy-list v-show="transactItem=='buyUet'"></tranbuy-list>
 
-     <div v-show="transactItem=='saleUet'">
-       <transell-list></transell-list>
-     </div>
+     <transell-list v-show="transactItem=='saleUet'"></transell-list>
 
      <m-navbar></m-navbar>
   </div>
@@ -66,6 +62,8 @@
       @include  f(16px);
       color: $font-color;
       padding: 0 r(10);
+      border-top: 1px solid #D8D8D8;
+      border-bottom: 1px solid #D8D8D8;
     }
 
   }
