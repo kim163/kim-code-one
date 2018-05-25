@@ -8,7 +8,7 @@
             <div class="status">
               {{(item.status === 45 ? $t('transactionRecord.waitingForPayment') : $t('transactionRecord.waitingForRelease'))}}
             </div>
-            <div class="time">{{item.intervalTime-item.elapsedTime | Date('mm:ss') }}</div>
+            <div class="time">{{item.status === 61 ? (item.intervalTime-item.elapsedTime | Date('mm:ss')) : '申诉锁定' }}</div>
         </div>
         <div class="status-time" v-else>
           <div class="status">

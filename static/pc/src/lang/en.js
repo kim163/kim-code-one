@@ -116,6 +116,6 @@ export default {
     buyerRequest:'Buyer requirements',
     sellerRequest:'Seller requirements',
     processing:'Processing',
-    hasBeenRemoved:'Has Been Removed'
+    hasBeenRemoved:'Has been removed',
   }
 }

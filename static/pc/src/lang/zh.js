@@ -116,7 +116,7 @@ export default {
     buyerRequest:'买家要求',
     sellerRequest:'卖家要求',
     processing:'进行中',
-    hasBeenRemoved:'已下架'
+    hasBeenRemoved:'已下架',
   }
 
 }
