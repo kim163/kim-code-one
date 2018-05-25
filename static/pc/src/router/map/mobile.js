@@ -35,11 +35,19 @@ export default [
     }
   },
  {
-    path: "/mobile/pending",
-    name: 'mPending',
+    path: "/mPendingBuy",
+    name: 'mPendingBuy',
     component(resolve){
       // 手机交易记录
       return resolve(require('views/mobile/pending-orders'))
+    }
+  },
+ {
+    path: "/mPendingSell",
+    name: 'mPendingSell',
+    component(resolve){
+      // 手机交易记录
+      return resolve(require('views/mobile/pending-orders/pending-sell'))
     }
   },
 

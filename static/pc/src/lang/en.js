@@ -76,6 +76,8 @@ export default {
     sale:'sell',
     waitingForPayment:'Waiting For Payment',
     waitingForRelease:'Waiting For Release',
+    tranPendingOrder: 'Pending order',
+    tranPendingRemoved: 'Removed order',
   },
   table: {
     sellers: 'Sellers',

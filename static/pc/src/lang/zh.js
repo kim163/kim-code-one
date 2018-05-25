@@ -77,6 +77,8 @@ export default {
     sale:'卖出',
     waitingForPayment:'等待付款',
     waitingForRelease:'等待释放',
+    tranPendingOrder: '挂单中',
+    tranPendingRemoved: '已下架',
   },
   table: {
     sellers: '卖家',
