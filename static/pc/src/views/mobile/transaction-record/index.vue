@@ -15,8 +15,9 @@
     <div class="tran-list">
       <transition name="tran-animate">
         <Scroll
-                ref="scroll"
-                :autoUpdate="true"
+                ref="scrollIn"
+                :updateData="[tranInList]"
+                :refreshData="[]"
                 class="content"
                 @pullingDown="loadRefresh"
                 @pullingUp="loadMore" v-show="navIndex === 0">
@@ -25,8 +26,9 @@
       </transition>
       <transition name="tran-animate">
         <Scroll
-                ref="scroll"
-                :autoUpdate="true"
+                ref="scrollComplete"
+                :updateData="[tranOverList]"
+                :refreshData="[]"
                 class="content"
                 @pullingDown="loadRefresh"
                 @pullingUp="loadMore" v-show="navIndex === 1">
@@ -88,14 +90,21 @@
           debit: this.userData.userId,
           types: [11, 12]
         }
-        console.log(request)
         api(request).then(res => {
           if (res.code === 10000) {
             console.log('getOrderxPage res:', res)
             if (this.navIndex === 0) {
               this.tranInList = [...this.tranInList, ...res.data]
+              console.log(Math.ceil(res.pageInfo.total / this.limit))
+              console.log(this.$refs)
+              if(Math.ceil(res.pageInfo.total / this.limit) <= this.offsetIn){
+                this.$refs.scrollIn.update(true)
+              }
             } else {
               this.tranOverList = [...this.tranOverList, ...res.data]
+              if(Math.ceil(res.pageInfo.total / this.limit) <= this.offsetOver){
+                this.$refs.scrollComplete.update(true)
+              }
             }
           } else {
             this.reset(res.message)
