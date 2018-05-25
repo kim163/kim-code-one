@@ -29,6 +29,18 @@ export const publishToSell = jsonData => service({
   method: 'post',
   data: jsonData
 });
+// 挂单记录--挂单下架
+export const putToDown = jsonData => service({
+  url: numversion+`order/c2c/putToDown`,
+  method: 'post',
+  data: jsonData
+});
+// 挂单记录--获取已下架订单
+export const getOrderxPendingUnshelve = jsonData => service({
+  url: numversion+`order/getOrderxPendingUnshelve`,
+  method: 'post',
+  data: jsonData
+});
 
 // 获取 订单记录-交易结束
 export const getTransactionPage = jsonData => service({

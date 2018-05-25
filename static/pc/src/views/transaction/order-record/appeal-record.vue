@@ -13,13 +13,8 @@
             <span class="unit">操作 <span @click="getOrderList">(刷新)</span></span>
           </div>
           <div class="group-body">
-            <!--<span class="unit">  <a class="btn">详情</a>  </span>-->
 
               <div class="group-tr" v-for="order in OrderList">
-                 <!--<span class="unit">-->
-                      <!--<span class="btn btn-border" v-show="order.credit == userData.userId">我方发起申诉</span>-->
-                      <!--<span class="btn btn-orange" v-show="order.debit == userData.userId">卖方发起申诉</span>-->
-                 <!--</span>-->
                 <span class="unit">{{order.creditUserName}}</span>
                 <span class="unit"> {{order.amount}}   UET</span>
                 <span class="unit"> 0.01 CNY</span>

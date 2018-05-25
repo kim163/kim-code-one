@@ -22,12 +22,12 @@
           {
             icon: 'icon-tran-buy',
             name: 'postPend.buyer',
-            link: 'cashDesk'
+            link: 'mPendingBuy'
           },
           {
             icon: 'icon-tran-sell',
             name: 'postPend.seller',
-            link: 'transell'
+            link: 'mPendingSell'
           },
           {
             icon: 'icon-tran-record',

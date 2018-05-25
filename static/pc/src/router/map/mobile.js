@@ -35,8 +35,8 @@ export default [
     }
   },
  {
-    path: "/mobile/pending",
-    name: 'mPending',
+    path: "/mPendingBuy",
+    name: 'mPendingBuy',
     component(resolve){
       // 手机交易记录
       return resolve(require('views/mobile/pending-orders'))
@@ -45,9 +45,17 @@ export default [
   {
     path: "/mobile/myPending",
     name: 'mMyPending',
+    component(resolve) {
+      //我的挂单
+      return resolve(require('views/mobile/my-pending-orders'))
+    }
+  },
+ {
+    path: "/mPendingSell",
+    name: 'mPendingSell',
     component(resolve){
       // 手机交易记录
-      return resolve(require('views/mobile/my-pending-orders'))
+      return resolve(require('views/mobile/pending-orders/pending-sell'))
     }
   },
 
