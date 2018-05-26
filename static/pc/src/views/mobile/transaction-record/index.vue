@@ -43,7 +43,7 @@
 <script>
   import mHeadnav from 'components/m-headnav';
   import mNavbar from 'components/m-navbar';
-  import Balance from 'components/balance'
+  import balance from 'components/balance'
   import TranscationList from './transaction-list';
   import Scroll from 'vue-slim-better-scroll'
   import {mapGetters} from 'vuex'
@@ -60,7 +60,7 @@
       mNavbar,
       TranscationList,
       Scroll,
-      Balance
+      balance
     },
     computed: {
       ...mapGetters([
@@ -140,7 +140,7 @@
 
 <style lang="scss" scoped>
   @import "~assets/scss/mobile";
-  
+
   .tran-animate-enter { //临时添加点小动画
     opacity: 0;
     //transform: translateX(100%);

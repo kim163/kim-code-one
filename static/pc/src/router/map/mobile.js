@@ -4,12 +4,12 @@
 
 export default [
   {
-    path: "/m/index",
+    path: "/mh/index",
     name: "mAindex",
-    redirect:"/m/",
+    redirect:"/mh/",
   },
   {
-    path: "/m/",
+    path: "/mh/",
     name: 'mIndex',
     component(resolve){
       return resolve(require('views/mobile/index'))
@@ -20,7 +20,31 @@ export default [
     }
   },
   {
-    path: "/mobile/cash",
+    path: "/m/tranbuyFm/:id?",
+    name: 'tranbuyForm',
+    component(resolve){
+      // 购买UET
+      return resolve(require('views/mobile/index/components/tranbuy-list/tranbuy-form'))
+    },
+    meta:{
+      noCache: true,
+      isMobilePage: "mobile-body"
+    }
+  },
+  {
+    path: "/m/transellFm/:id?",
+    name: 'transellForm',
+    component(resolve){
+      // 出售UET
+      return resolve(require('views/mobile/index/components/transell-list/transell-form'))
+    },
+    meta:{
+      noCache: true,
+      isMobilePage: "mobile-body"
+    }
+  },
+  {
+    path: "/m/cash",
     name: 'cashDesk',
     component(resolve){
       // 收银台
@@ -31,18 +55,18 @@ export default [
     }
   },
   {
-    path: "/mobile/tranRecord",
+    path: "/m/tranRecord",
     name: 'mTranRecord',
     component(resolve){
       // 手机交易记录
       return resolve(require('views/mobile/transaction-record'))
     },
     meta:{
-      isMobilePage: "mobile-body mobile-bodyPd"
+      isMobilePage: "mobile-bodyFtPd"
     }
   },
  {
-    path: "/mPendingBuy",
+    path: "/m/pendingBuy",
     name: 'mPendingBuy',
     component(resolve){
       // 手机交易记录
@@ -53,7 +77,7 @@ export default [
     }
   },
   {
-    path: "/mobile/myPending",
+    path: "/m/myPending",
     name: 'mMyPending',
     component(resolve) {
       //我的挂单
@@ -65,7 +89,7 @@ export default [
     }
   },
  {
-    path: "/mPendingSell",
+    path: "/m/pendingSell",
     name: 'mPendingSell',
     component(resolve){
       // 挂单-卖出
@@ -76,7 +100,7 @@ export default [
     }
   },
  {
-    path: "/mobile/order/:id",
+    path: "/m/order/:id",
     name: 'mOrder',
     component(resolve){
       // 订单详情

@@ -58,6 +58,8 @@ export default {
   transactionHome: {
     buyUet: '买入UET',
     saleUet: '卖出UET',
+    mBuyUet: '购买UET',
+    msaleUet: '出售UET',
     postPendOrd: '发布挂单',
     orderRecord: '订单记录',
     assetManage: '资产管理',

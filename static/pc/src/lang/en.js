@@ -58,6 +58,8 @@ export default {
   transactionHome: {
     buyUet: 'Buy UET',
     saleUet: 'Sell UET',
+    mBuyUet: 'Buy UET',
+    msaleUet: 'Sell UET',
     postPendOrd: 'Post pending orders',
     orderRecord: 'Order record',
     assetManage: 'Asset management',

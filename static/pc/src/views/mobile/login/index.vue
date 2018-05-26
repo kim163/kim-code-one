@@ -127,9 +127,9 @@
               $localStorage.set('tokenInfo', JSON.stringify(res.data.tokenVo));
               this.$store.dispatch('UPDATE_USERDATA');
 
-            //  this.$router.replace({path:"/m/"});
-             // this.$router.push({path:"/m/"});
-              window.location.href = "/m/";
+            //  this.$router.replace({path:"/mh/"});
+             // this.$router.push({path:"/mh/"});
+              window.location.href = "/mh/";
             } else {
               this.reset(res.message)
             }

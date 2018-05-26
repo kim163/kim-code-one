@@ -12,7 +12,7 @@ export default [
     component: index
   },
   {
-    path: "/mobile/login",
+    path: "/m/login",
     name: "mobileLogin",
     component: mobile,
     meta:{

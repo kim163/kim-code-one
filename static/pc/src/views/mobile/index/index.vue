@@ -8,7 +8,7 @@
      </div>
 
      <div class="account-balline">
-       {{$t('navbar.accountBalance')}}：
+       {{$t('navbar.accountBalance')}}：<balance></balance>
      </div>
 
      <tranbuy-list v-show="transactItem=='buyUet'" v-if="islogin"></tranbuy-list>
@@ -22,6 +22,7 @@
   import {mapGetters, mapActions, mapMutations} from 'vuex'
   import mHeadnav from 'components/m-headnav';
   import mNavbar from 'components/m-navbar';
+  import balance from 'components/balance';
   import tranbuyList from './components/tranbuy-list';
   import transellList from './components/transell-list';
 
@@ -51,11 +52,11 @@
     },
     created() {
       if (!this.islogin) {
-        this.$router.replace({path:"/mobile/login"});
+        this.$router.push({name: 'mobileLogin'});
       }
     },
     components: {
-      mHeadnav, mNavbar, tranbuyList, transellList
+      mHeadnav, mNavbar,balance, tranbuyList, transellList
     }
   };
 </script>

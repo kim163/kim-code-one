@@ -3,7 +3,7 @@
       <div class="tranlist-container">
 
              <div class="tranlist-item" v-for="(item,i) in dataList.data||[]">
-                 <div class="tran-message cfx">
+               <router-link :to="{name:'transellForm',params:{ id: item.id}}" :key="i" class="cfx" >
                    <div class="fl mtran-itemleft"><span class="disp-inlblo" v-html="proUserAvatars(item.userName)"> </span> </div>
                    <div class="fr mtran-itemright">
                      <p class="item user-info">
@@ -34,7 +34,7 @@
                        <i class="iconfont icon-right-arrow"></i>
                      </p>
                    </div>
-                 </div>
+                 </router-link>
                  <transition name="message">
                     <div class="tran-contpart" v-show="item.already" :ref="item.id">
                       <span class="s s1">
