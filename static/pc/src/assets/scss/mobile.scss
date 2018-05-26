@@ -4,6 +4,14 @@
 **/
 
 @import "./mixin.scss";
+.mobile-body{
+  background: $body-bg;
+}
+.mobile-bodyFtPd{
+  background: $body-bg;
+  padding-bottom: r($footer-hg+10);
+}
+
 .mobilenav-tabs{
   margin:r(15) auto;
   width: 80%;
