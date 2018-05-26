@@ -1,45 +1,54 @@
 <template>
-  <Scroll
-          ref="scroll"
-          :updateData="[orderList]"
-          :refreshData="[]"
-          class="content"
-          @pullingDown="loadRefresh"
-          @pullingUp="loadMore">
-    <ul>
-      <li v-for="(item,i) in orderList" :key="i" class="order-item">
-        <div class="order-info">
-          <div class="text-left">{{item.createtime | Date('yyyy-MM-dd hh:mm:ss')}}</div>
-          <div class="text-right">
-            <span class="c-blue" v-show="item.type === 12">{{$t('postPend.buyer')}}</span>
-            <span class="c-red" v-show="item.type === 11">{{$t('postPend.seller')}}</span>
-          </div>
-        </div>
-        <div class="order-info">
-          <div class="text-left">{{$t('table.quantity')}} {{item.amount}} UET</div>
-          <div class="text-right">{{$t('table.unitPrice')}} 0.001 CNY</div>
-        </div>
-        <div class="order-info">
-          <div class="text-left">{{$t('table.completed')}} {{(item.successAmount/item.amount)*100 | toFixed(2) }}%</div>
-          <div class="text-right">
-            <span class="btn drop-off" v-if="tabType === 1" @click="putDownUpOrder(item.id,1)">{{$t('table.remove')}}</span>
-            <div v-else-if="item.status != 11">
-              <span class="btn restored" @click="putDownUpOrder(item.id,2)">{{$t('table.restored')}}</span>
-              <span class="btn delete" @click="orderDelete(item.id)">{{$t('table.deleteOrder')}}</span>
-            </div>
-            <div v-else>
-              下架中
+  <div class="pending-main">
+    <Scroll
+            ref="scroll"
+            :updateData="[orderList]"
+            :refreshData="[]"
+            class="content"
+            @pullingDown="loadRefresh"
+            @pullingUp="loadMore">
+      <ul>
+        <li v-for="(item,i) in orderList" :key="i" class="order-item">
+          <div class="order-info">
+            <div class="text-left">{{item.createtime | Date('yyyy-MM-dd hh:mm:ss')}}</div>
+            <div class="text-right">
+              <span class="c-blue" v-show="item.type === 12">{{$t('postPend.buyer')}}</span>
+              <span class="c-red" v-show="item.type === 11">{{$t('postPend.seller')}}</span>
             </div>
           </div>
-        </div>
-      </li>
-    </ul>
-  </Scroll>
+          <div class="order-info">
+            <div class="text-left">{{$t('table.quantity')}} {{item.amount}} UET</div>
+            <div class="text-right">{{$t('table.unitPrice')}} 0.001 CNY</div>
+          </div>
+          <div class="order-info">
+            <div class="text-left">{{$t('table.completed')}} {{(item.successAmount/item.amount)*100 | toFixed(2) }}%</div>
+            <div class="text-right">
+              <span class="btn drop-off" v-if="tabType === 1" @click="putDownUpOrder(item.id,1)">{{$t('table.remove')}}</span>
+              <div v-else-if="item.status != 11">
+                <span class="btn restored" @click="putDownUpOrder(item.id,2)">{{$t('table.restored')}}</span>
+                <span class="btn delete" @click="deleteOrder(item.id)">{{$t('table.deleteOrder')}}</span>
+              </div>
+              <div v-else>
+                下架中
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </Scroll>
+    <confirm-dialog v-model="showConfirm">
+      <div slot="title">{{confrimTitle}}</div>
+      <div slot="content">{{confirmContent}}</div>
+      <!--<div slot="rightBtn" @click="orderDelete">确认</div>-->
+      <router-link tag="div" :to="{name:'mTranRecord'}" slot="rightBtn">跳转</router-link>
+    </confirm-dialog>
+  </div>
 </template>
 
 <script>
   import Scroll from 'vue-slim-better-scroll'
   import {mapGetters} from 'vuex'
+  import ConfirmDialog from 'components/confirm'
   import {
     getOrderxPendingPage,
     getOrderxPendingUnshelve,
@@ -55,11 +64,16 @@
         orderList: [],
         limit:10,
         offset:0,
-        total:0
+        total:0,
+        showConfirm: false,
+        confrimTitle:'是否确定删除该挂单',
+        confirmContent:'删除后不可恢复',
+        orderId:''
       }
     },
     components:{
-      Scroll
+      Scroll,
+      ConfirmDialog
     },
     computed:{
       ...mapGetters([
@@ -122,10 +136,24 @@
           });
         }
       },
-      orderDelete(orderId){
-        if(orderId){
-
+      deleteOrder(orderId){
+        if(orderId) {
+          this.orderId = orderId
+          this.showConfirm = true
         }
+      },
+      orderDelete(){
+        this.showConfirm = false
+        deleteUnshelve({orderId: this.orderId}).then(res => {
+          if(res.code === 10000){
+            toast(res.message)
+            this.getData()
+          }else{
+            toast(res.message)
+          }
+        }).catch(err => {
+          toast('请求失败')
+        })
       },
       loadRefresh(){
         this.offset = 0
@@ -139,13 +167,21 @@
     },
     mounted(){
       this.getData()
-    }
+    },
+    beforeRouteUpdate (to, from, next) {
+      this.showConfirm = false
+      next()
+    },
   }
 </script>
 
 <style lang="scss" scoped>
   @import "~assets/scss/mobile";
 
+  .pending-main{
+    width: 100%;
+    height: 100%;
+  }
   .order-item {
     width: 100%;
     height: r(127);
