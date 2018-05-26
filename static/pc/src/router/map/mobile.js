@@ -42,6 +42,14 @@ export default [
       return resolve(require('views/mobile/pending-orders'))
     }
   },
+  {
+    path: "/mobile/myPending",
+    name: 'mMyPending',
+    component(resolve) {
+      //我的挂单
+      return resolve(require('views/mobile/my-pending-orders'))
+    }
+  },
  {
     path: "/mPendingSell",
     name: 'mPendingSell',

@@ -115,5 +115,7 @@ export default {
     confirm:'Confirm pending orders',
     buyerRequest:'Buyer requirements',
     sellerRequest:'Seller requirements',
+    processing:'Processing',
+    hasBeenRemoved:'Has been removed',
   }
 }

@@ -4,17 +4,15 @@
       <div class="type-status">
         <div class="type blue-text" v-show="item.credit === userData.userId">{{$t('transactionRecord.buy')}}</div>
         <div class="type red-text" v-show="item.debit === userData.userId">{{$t('transactionRecord.sale')}}</div>
-        <div class="status-time">
-          <div v-if="type === 0">
+        <div class="status-time" v-if="type === 0">
             <div class="status">
               {{(item.status === 45 ? $t('transactionRecord.waitingForPayment') : $t('transactionRecord.waitingForRelease'))}}
             </div>
-            <div class="time">{{item.intervalTime-item.elapsedTime | Date('mm:ss') }}</div>
-          </div>
-          <div v-else>
-            <div class="status">
-              {{$t('transactionRecord.tarnComplete')}}
-            </div>
+            <div class="time">{{item.status === 61 ? (item.intervalTime-item.elapsedTime | Date('mm:ss')) : '申诉锁定' }}</div>
+        </div>
+        <div class="status-time" v-else>
+          <div class="status">
+            {{$t('transactionRecord.tarnComplete')}}
           </div>
         </div>
       </div>

@@ -8,7 +8,7 @@
       <div class="nav-item" :class="{active: navIndex === 1}" @click="navIndex = 1">
         {{$t('transactionRecord.tranComplete')}}
       </div>
-      <router-link tag="div" class="nav-item" :to="{name: 'cashDesk'}">{{$t('transactionRecord.tranPending')}}
+      <router-link tag="div" class="nav-item" :to="{name: 'mMyPending'}">{{$t('transactionRecord.tranPending')}}
       </router-link>
     </div>
     <div class="amount-balance">{{$t('navbar.accountBalance')}}：{{userData.amount}} UET</div>
@@ -63,7 +63,7 @@
     computed: {
       ...mapGetters([
         "userData"
-      ])
+      ]),
     },
     data() {
       return {
