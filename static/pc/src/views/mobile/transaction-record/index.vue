@@ -95,8 +95,6 @@
             console.log('getOrderxPage res:', res)
             if (this.navIndex === 0) {
               this.tranInList = [...this.tranInList, ...res.data]
-              console.log(Math.ceil(res.pageInfo.total / this.limit))
-              console.log(this.$refs)
               if(Math.ceil(res.pageInfo.total / this.limit) - 1 <= this.offsetIn){
                 this.$refs.scrollIn.update(true)
               }
@@ -107,10 +105,10 @@
               }
             }
           } else {
-            this.reset(res.message)
+            toast(res.message)
           }
         }).catch(error => {
-          this.reset("请求失败")
+          toast("请求失败")
         })
       },
       loadMore() {
@@ -152,7 +150,7 @@
   }
 
   .tran-animate-enter-active, .tran-animate-leave-active {
-    transition: all .5s;
+    transition: all .8s;
   }
 
   $otherHeight: r(189);
