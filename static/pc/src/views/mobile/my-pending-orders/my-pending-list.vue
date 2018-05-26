@@ -39,8 +39,7 @@
     <confirm-dialog v-model="showConfirm">
       <div slot="title">{{confrimTitle}}</div>
       <div slot="content">{{confirmContent}}</div>
-      <!--<div slot="rightBtn" @click="orderDelete">确认</div>-->
-      <router-link tag="div" :to="{name:'mTranRecord'}" slot="rightBtn">跳转</router-link>
+      <div slot="rightBtn" @click="orderDelete">确认</div>
     </confirm-dialog>
   </div>
 </template>
@@ -90,7 +89,7 @@
       }
     },
     methods:{
-      getData(){
+      getData(format = false){
         const api = this.tabType === 1 ? getOrderxPendingPage : getOrderxPendingUnshelve
         const request = {
           limit: this.limit,
@@ -106,10 +105,15 @@
             statuses:[11,12],
           })
         }
+        console.log(request)
         api(request).then(res => {
           if(res.code === 10000){
             console.log('pending data:',res)
-            this.orderList = [...this.orderList,...res.data]
+            if(format){
+              this.orderList[this.offset] = res.data
+            }else{
+              this.orderList = Array.from(new Set([...this.orderList,...res.data]))
+            }
             this.total = res.pageInfo.total
             if(this.totalPage - 1 <= this.offset){
               this.$refs.scroll.update(true)
@@ -126,14 +130,14 @@
           const api = type === 1 ? putToDown : putToUp
           api({orderId}).then(res => {
             if(res.code === 10000){
-              toast(res.message);
-              this.getData()
+              toast(res.message)
+              this.getData(true)
             }else{
-              toast(res.message);
+              toast(res.message)
             }
           }).catch(error => {
-            toast('请求失败');
-          });
+            toast('请求失败')
+          })
         }
       },
       deleteOrder(orderId){
@@ -147,7 +151,7 @@
         deleteUnshelve({orderId: this.orderId}).then(res => {
           if(res.code === 10000){
             toast(res.message)
-            this.getData()
+            this.getData(true)
           }else{
             toast(res.message)
           }
