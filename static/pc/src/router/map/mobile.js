@@ -49,7 +49,7 @@ export default [
       return resolve(require('views/mobile/pending-orders'))
     },
     meta:{
-       isMobilePage: "mobile-body mobile-bodyPd"
+       isMobilePage: "mobile-bodyFtPd"
     }
   },
   {
@@ -71,7 +71,7 @@ export default [
       return resolve(require('views/mobile/pending-orders/pending-sell'))
     },
     meta:{
-       isMobilePage: "mobile-body mobile-bodyPd"
+       isMobilePage: "mobile-bodyFtPd"
     }
   },
 

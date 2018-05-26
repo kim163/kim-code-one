@@ -26,16 +26,22 @@
     },
     created() {
       this.$store.dispatch("UPDATE_USERDATA");
-      if(this.$route.meta.isMobilePage){
-        let element = document.getElementsByTagName('body')[0];
-        let classN = this.$route.meta.isMobilePage;
-        if((' ' + element.className + ' ').indexOf(' ' + classN + ' ') < 0){
-          element.className += classN;
+      this.dwMobilePage();
+    },
+    methods: {
+      dwMobilePage(){
+        if(this.$route.meta.isMobilePage){
+          let element = document.getElementsByTagName('body')[0];
+          let classN = this.$route.meta.isMobilePage;
+          if((' ' + element.className + ' ').indexOf(' ' + classN + ' ') < 0){
+            element.className = classN;
+          }
         }
       }
     },
     watch:{
       "$route"(to,from){
+        this.dwMobilePage();
 //        document.title=to.meta.title||to.meta.headName||"久安钱包";
       }
     },

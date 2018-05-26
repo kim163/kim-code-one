@@ -21,7 +21,8 @@ $footer-hg: 49;
 .mobile-body{
   background: $body-bg;
 }
-.mobile-bodyPd{
+.mobile-bodyFtPd{
+   background: $body-bg;
    padding-bottom: r($footer-hg+10);
 }
 
