@@ -1,6 +1,6 @@
 <template>
   <Scroll
-          ref="scrollIn"
+          ref="scroll"
           :updateData="[orderList]"
           :refreshData="[]"
           class="content"
@@ -11,8 +11,8 @@
         <div class="order-info">
           <div class="text-left">{{item.createtime | Date('yyyy-MM-dd hh:mm:ss')}}</div>
           <div class="text-right">
-            <span class="c-blue" v-show="item.type == 12">{{$t('postPend.buyer')}}</span>
-            <span class="c-red" v-show="item.type == 11">{{$t('postPend.seller')}}</span>
+            <span class="c-blue" v-show="item.type === 12">{{$t('postPend.buyer')}}</span>
+            <span class="c-red" v-show="item.type === 11">{{$t('postPend.seller')}}</span>
           </div>
         </div>
         <div class="order-info">
@@ -22,10 +22,13 @@
         <div class="order-info">
           <div class="text-left">{{$t('table.completed')}} {{(item.successAmount/item.amount)*100 | toFixed(2) }}%</div>
           <div class="text-right">
-            <span class="btn drop-off" v-if="type === 'processing'">{{$t('table.remove')}}</span>
+            <span class="btn drop-off" v-if="tabType === 1" @click="putDownUpOrder(item.id,1)">{{$t('table.remove')}}</span>
+            <div v-else-if="item.status != 11">
+              <span class="btn restored" @click="putDownUpOrder(item.id,2)">{{$t('table.restored')}}</span>
+              <span class="btn delete" @click="orderDelete(item.id)">{{$t('table.deleteOrder')}}</span>
+            </div>
             <div v-else>
-              <span class="btn restored">{{$t('table.restored')}}</span>
-              <span class="btn delete">{{$t('table.deleteOrder')}}</span>
+              下架中
             </div>
           </div>
         </div>
@@ -40,7 +43,9 @@
   import {
     getOrderxPendingPage,
     getOrderxPendingUnshelve,
-    putToDown
+    putToDown,
+    putToUp,
+    deleteUnshelve
   } from 'api/transaction'
 
   export default {
@@ -65,23 +70,36 @@
       },
     },
     props: {
-      type: {
-        type: String,
-        default: 'processing'
+      tabType: {  // 1是进行中 2是已下架
+        type: Number,
+        default: 1
       }
     },
     methods:{
       getData(){
-        const api = type === 'processing' ? getOrderxPendingPage : getOrderxPendingUnshelve
+        const api = this.tabType === 1 ? getOrderxPendingPage : getOrderxPendingUnshelve
         const request = {
           limit: this.limit,
           offset: this.offset,
-          credit: this.userData.userId,
-          debit: this.userData.userId
+        }
+        if(this.tabType === 1){
+          Object.assign(request,{
+            credit: this.userData.userId,
+            debit: this.userData.userId
+          })
+        }else{
+          Object.assign(request,{
+            statuses:[11,12],
+          })
         }
         api(request).then(res => {
           if(res.code === 10000){
-
+            console.log('pending data:',res)
+            this.orderList = [...this.orderList,...res.data]
+            this.total = res.pageInfo.total
+            if(this.totalPage - 1 <= this.offset){
+              this.$refs.scroll.update(true)
+            }
           }else{
             toast(res.message)
           }
@@ -89,15 +107,38 @@
           toast("请求失败")
         })
       },
-      loadRefresh(){
+      putDownUpOrder(orderId,type){
+        if(orderId){
+          const api = type === 1 ? putToDown : putToUp
+          api({orderId}).then(res => {
+            if(res.code === 10000){
+              toast(res.message);
+              this.getData()
+            }else{
+              toast(res.message);
+            }
+          }).catch(error => {
+            toast('请求失败');
+          });
+        }
+      },
+      orderDelete(orderId){
+        if(orderId){
 
+        }
+      },
+      loadRefresh(){
+        this.offset = 0
+        this.orderList = []
+        this.getData()
       },
       loadMore(){
-
+        this.offset += 1
+        this.getData()
       }
     },
     mounted(){
-
+      this.getData()
     }
   }
 </script>
