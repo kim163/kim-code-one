@@ -4,76 +4,75 @@
     <nav-menu></nav-menu>
     <tran-headnav></tran-headnav>
     <transact-menu></transact-menu>
-    <!--<pending-nav></pending-nav>-->
-
     <div class="section pengding-orders">
       <div class="container">
         <div class="row0">
-
           <div class="tran-content border-box">
-            <div class="row">
-              <a v-for="item in pendingType" @click="pendingItem=item.value" class="s tab-link-a" :class="{active:pendingItem==item.value}" :key="item.value">
+            <div class="row border-bottom">
+              <a v-for="item in pendingType" @click="pendingItem=item.value" class="s tab-link-a"
+                 :class="{active:pendingItem==item.value}" :key="item.value">
                 {{generateTitle(item.name)}}
               </a>
-
-
-              <span class="back-hall"> 返回交易大厅</span>
+              <a class="back-hall" href="/transaction"> 返回交易大厅</a>
               <div class="search-box">
-                <input type="text" class="search-input" placeholder="请输入对方昵称、账号"><span class="search-btn" >搜索</span>
+                <input type="text" class="search-input" placeholder="请输入对方昵称、账号"><span class="search-btn">搜索</span>
               </div>
-
             </div>
 
-
-
             <div class="group-head">
-                 <span class="unit">挂单类型</span>
-                  <span class="unit">挂单时间</span>
-                  <span class="unit">挂单数量</span>
-                 <span class="unit">交易单价</span>
-                 <span class="unit unit2">已完成</span>
-                  <span class="unit">操作 <span @click="getOrderList">(刷新)</span></span>
+              <span class="unit">挂单类型</span>
+              <span class="unit">挂单时间</span>
+              <span class="unit">挂单数量</span>
+              <span class="unit">交易单价</span>
+              <span class="unit unit2">已完成</span>
+              <span class="unit">操作 <span @click="getOrderList">(刷新)</span></span>
+            </div>
 
-              </div>
-            <div class="group-body" v-show="pendingItem=='tranPendingOrder'">
-
+            <div class="group-body" v-if="pendingItem=='tranPendingOrder'">
               <div class="group-tr" v-for="order in OrderList.data">
                    <span class="unit">
-                        <span class="c-blue" v-show="order.type == 12">买入</span>
-                        <span class="c-orange" v-show="order.type == 11">卖出</span>
+                        <span class="c-blue" v-if="order.type == 12">买入</span>
+                        <span class="c-orange" v-if="order.type == 11">卖出</span>
                    </span>
                 <span class="unit">{{order.createtime | Date('yyyy-MM-dd hh:mm:ss')}}</span>
                 <span class="unit"> {{order.amount}}   UET</span>
                 <span class="unit"> 0.01 CNY</span>
                 <span class="unit unit2">
-                    {{(order.successAmount/order.amount)*100 | toFixed(2) }}%
-                </span>
+                    <span class="percent-bar"><i :style="'width:'+ (order.successAmount/order.amount)*100 +'%;'"></i></span>
+                    <span class="s-percent"> {{(order.successAmount/order.amount)*100 | toFixed(2) }}% </span>
+                  </span>
                 <span class="unit">  <a class="btn btn-primary" @click="putToDown(order)">下架</a>  </span>
               </div>
 
               <paging-by :data="OrderList.pageInfo" @search="getOrderList"></paging-by>
 
             </div>
-            <div class="group-body" v-show="pendingItem=='tranPendingRemoved'">
+
+            <div class="group-body" v-if="pendingItem=='tranPendingRemoved'">
 
               <div class="group-tr" v-for="order in OrderListRemoved.data">
                    <span class="unit">
-                        <span class="c-blue" v-show="order.type == 12">买入</span>
-                        <span class="c-orange" v-show="order.type == 11">卖出</span>
+                        <span class="c-blue" v-if="order.type == 12">买入</span>
+                        <span class="c-orange" v-if="order.type == 11">卖出</span>
                    </span>
                 <span class="unit">{{order.createtime | Date('yyyy-MM-dd hh:mm:ss')}}</span>
                 <span class="unit"> {{order.amount}}   UET</span>
                 <span class="unit"> 0.01 CNY</span>
                 <span class="unit unit2">
-                    {{(order.successAmount/order.amount)*100 | toFixed(2) }}%
+                    <span class="percent-bar"><i :style="'width:'+ (order.successAmount/order.amount)*100 +'%;'"></i></span>
+                    <span class="s-percent">{{(order.successAmount/order.amount)*100 | toFixed(2) }}%  </span>
                 </span>
                 <span class="unit">
-                  <a class="btn btn-primary" @click="putToUp(order)">恢复上架</a>
+                  <span v-if="order.status == 11">下架中</span>
+                  <span v-if="order.status == 12">
+                    <a class="btn btn-primary" @click="putToUp(order)">恢复上架</a>
                   <a class="btn btn-danger" @click="orderDelete(order)">删除</a>
+                  </span>
+
                 </span>
               </div>
 
-              <paging-by :data="OrderList.pageInfo" @search="getOrderList"></paging-by>
+              <paging-by :data="OrderListRemoved.pageInfo" @search="getOrderList"></paging-by>
 
             </div>
           </div>
@@ -81,7 +80,7 @@
       </div>
 
     </div>
-    <v-footer ></v-footer>
+    <v-footer></v-footer>
   </div>
 
 </template>
@@ -90,27 +89,20 @@
   import vFooter from 'components/footer';
   import tranHeadnav from 'components/master/tran-headnav';
   import transactMenu from 'components/transact-menu';
-//  import pendingNav from 'components/transact-menu/pending-nav';
 
-  import { transaction } from 'api'
-  import { generateTitle } from '@/util/i18n'
-  import {mapGetters,mapActions,mapMutations} from 'vuex'
+  import {transaction} from 'api'
+  import {generateTitle} from '@/util/i18n'
+  import {mapGetters, mapActions, mapMutations} from 'vuex'
   import pagingBy from "components/paging-by";
 
-
-//  let tranredNavData = [
-//    {name:'transactionRecord.tranPendingOrder', value: 'tranPendingOrder', to: {name: 'tranPendingOrder'} },
-//    {name:'transactionRecord.tranPendingRemoved', value: 'tranPendingRemoved', to: {name: 'tranPendingRemoved'} },
-//  ]
-
-  let orderHead=[
-      {name: "order.orderType", value: "orderType"},
-      {name: "order.otherSide", value: "otherSide"},
-      {name: "order.transQuantity", value: "transQuantity"},
-      {name: "order.transUnitPrice", value: "transUnitPrice"},
-      {name: "order.transAmount", value: "transAmount"},
-      {name: "order.transStatus", value: "transStatus"},
-      {name: "order.transControl", value: "transControl"},
+  let orderHead = [
+    {name: "order.orderType", value: "orderType"},
+    {name: "order.otherSide", value: "otherSide"},
+    {name: "order.transQuantity", value: "transQuantity"},
+    {name: "order.transUnitPrice", value: "transUnitPrice"},
+    {name: "order.transAmount", value: "transAmount"},
+    {name: "order.transStatus", value: "transStatus"},
+    {name: "order.transControl", value: "transControl"},
   ]
 
 
@@ -123,47 +115,48 @@
         OrderListRemoved: {
           data: []
         },
-        pendingType:[
+        pendingType: [
           {name: "transactionRecord.tranPendingOrder", value: "tranPendingOrder"},
           {name: "transactionRecord.tranPendingRemoved", value: "tranPendingRemoved"}
         ],
-        pendingItem:'tranPendingOrder',
+        pendingItem: 'tranPendingOrder',
+        completePercent: '',
+        completePercentRomove: '',
       }
     },
     computed: {
-      ...mapGetters(["userData","islogin"]),
+      ...mapGetters(["userData", "islogin"]),
+
     },
     methods: {
       generateTitle,
       getOrderList(index){
-        //let userData=this.userData;
-        let userId=this.userData.userId;
-        //var currentTime=(new Date()).valueOf();
-        this.request={
-          limit:10,
-          offset:0,
-          credit:userId,
-          debit:userId,
-//          type:1
+        let userId = this.userData.userId;
+        this.request = {
+          limit: 10,
+          offset: 0,
+          credit: userId,
+          debit: userId,
         }
-        if(!isNaN(index)) {
+        if (!isNaN(index)) {
           this.request.offset = (index - 1) * this.request.limit;
         }
         transaction.getOrderxPendingPage(this.request).then(res => {
           console.log('挂单 OrderxPage data:');
           console.log(res.data);
           this.OrderList = res;
+          this.completePercent = res.data;
         }).catch(error => {
           this.reset(res.message);
         });
       },
       getRemovedOrderList(index){
-        this.request={
-          limit:10,
-          offset:0,
-          statuses:[11,12],
+        this.request = {
+          limit: 10,
+          offset: 0,
+          statuses: [11, 12],
         }
-        if(!isNaN(index)) {
+        if (!isNaN(index)) {
           this.request.offset = (index - 1) * this.request.limit;
         }
         transaction.getOrderxPendingUnshelve(this.request).then(res => {
@@ -175,11 +168,9 @@
         });
       },
       putToDown(order){
-        let userId=this.userData.userId;
-        this.request={
-          orderId:order.id
+        this.request = {
+          orderId: order.id
         }
-
         transaction.putToDown(this.request).then(res => {
           toast(res.message);
           this.getOrderList()
@@ -188,23 +179,22 @@
         });
       },
       orderDelete(order){
-        let userId=this.userData.userId;
-        this.request={
-          orderId:order.id
+        let userId = this.userData.userId;
+        this.request = {
+          orderId: order.id
         }
 
         transaction.deleteUnshelve(this.request).then(res => {
           toast(res.message);
-          //this.getOrderList()
           this.getRemovedOrderList()
         }).catch(error => {
           this.reset(res.message);
         });
       },
       putToUp(order){
-        let userId=this.userData.userId;
-        this.request={
-          orderId:order.id
+        let userId = this.userData.userId;
+        this.request = {
+          orderId: order.id
         }
 
         transaction.putToUp(this.request).then(res => {
@@ -214,48 +204,86 @@
         }).catch(error => {
           this.reset(res.message);
         });
-      }
+      },
+//      percenetRuslt(num1,num2){ //计算百分比
+//        return (num1/num2)*100;
+//      },
 
     },
 
     created() {
-      if(this.islogin){
+      if (this.islogin) {
         this.getOrderList()
         this.getRemovedOrderList()
       }
     },
     mounted() {
-      //this.getOrderList()
+
     },
     components: {
-        pagingBy,navMenu, vFooter, tranHeadnav, transactMenu
+      pagingBy, navMenu, vFooter, tranHeadnav, transactMenu
     }
   };
 </script>
 
 <style lang="scss">
-  .top-header{
+  .top-header {
     padding-top: 100px;
   }
+  .percent-bar{
+    display:inline-block;
+    height:18px;
+    border:1px solid #d4d4d4;
+    border-radius: 20px;
+    width:65%;
+    position:relative;
+    i{
+      position:absolute;
+      left:0;
+      display:inline-block;
+      height:18px;
+      width:10%;
+      border-radius: 20px;
+      background: #5087ff;
+      -webkit-transition:width .8s ease;
+      -moz-transition:width .8s ease;
+      transition:width .8s ease;
+      -webkit-animation:progressbar 7s infinite;
+      animation:progressbar 7s infinite;
 
-  .group-head .unit2, .group-body .unit2{
-    width:26%;
+    }
   }
-.pengding-orders{
-
-  .border-box{
-    border:1px solid #D4D4D4;
+  .border-bottom{
+    border-bottom:1px solid #d5d5d5;
+    height:79px;
+    overflow: hidden;
   }
-}
+  .s-percent{
+    display:inline-block;
+    min-width:60px;
+    padding:0 0 0 5px;
+  }
+  .group-head .unit2, .group-body .unit2 {
+    width: 26%;
+  }
 
-  .c-blue{
+  .pengding-orders {
+
+      .border-box {
+        border: 1px solid #D4D4D4;
+      }
+
+  }
+
+  .c-blue {
     color: #5087ff;
   }
-  .c-orange{
-    color:#ff9600;
+
+  .c-orange {
+    color: #ff9600;
   }
 
-  .tab-link-a{
+  .tab-link-a {
     display: inline-block;
     width: 200px;
     text-align: center;
@@ -263,17 +291,19 @@
     color: #333333;
     height: 77px;
     line-height: 77px;
-    cursor:pointer;
-    &.active{
-       color: #5087ff;
-       border-bottom: 1px solid #5087FF;
-     }
+    cursor: pointer;
+
+      &.active {
+        color: #5087ff;
+        border-bottom: 1px solid #5087FF;
+      }
+
   }
 
-  .tran-content  .btn-danger{
+  .tran-content .btn-danger {
     background: orange;
-    color:#fff;
-    border-color:orange;
+    color: #fff;
+    border-color: orange;
   }
 
 </style>
