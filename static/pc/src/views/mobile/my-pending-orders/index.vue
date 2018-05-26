@@ -7,7 +7,7 @@
             {{generateTitle(item.name)}}
         </span>
     </div>
-    <div class="amount-balance">{{$t('navbar.accountBalance')}}：{{userData.amount}} </div>
+    <div class="amount-balance">{{$t('navbar.accountBalance')}}：<balance></balance> </div>
     <div class="orders-list">
       <transition name="list-animate">
         <my-pending-list :tab-type="1" v-show="pendingOrdersItem === 1"></my-pending-list>
@@ -24,6 +24,7 @@
   import { generateTitle } from '@/util/i18n';
   import { mapGetters } from 'vuex'
   import MyPendingList from './my-pending-list'
+  import Balance from 'components/balance'
   export default {
     name: "my-pending-orders",
     data() {
@@ -42,7 +43,8 @@
     },
     components:{
       MobileHeader,
-      MyPendingList
+      MyPendingList,
+      Balance
     },
     methods: {
       generateTitle,

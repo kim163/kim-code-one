@@ -11,7 +11,7 @@
       <router-link tag="div" class="nav-item" :to="{name: 'mMyPending'}">{{$t('transactionRecord.tranPending')}}
       </router-link>
     </div>
-    <div class="amount-balance">{{$t('navbar.accountBalance')}}：{{userData.amount}} UET</div>
+    <div class="amount-balance">{{$t('navbar.accountBalance')}}：<balance></balance></div>
     <div class="tran-list">
       <transition name="tran-animate">
         <Scroll
@@ -43,6 +43,7 @@
 <script>
   import mHeadnav from 'components/m-headnav';
   import mNavbar from 'components/m-navbar';
+  import Balance from 'components/balance'
   import TranscationList from './transaction-list';
   import Scroll from 'vue-slim-better-scroll'
   import {mapGetters} from 'vuex'
@@ -58,7 +59,8 @@
       mHeadnav,
       mNavbar,
       TranscationList,
-      Scroll
+      Scroll,
+      Balance
     },
     computed: {
       ...mapGetters([
