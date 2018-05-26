@@ -48,7 +48,7 @@
 
   .m-navbar-main {
     width: 100%;
-    height: r(49);
+    height: r($footer-hg);
     background: $white;
     position: fixed;
     bottom: 0;

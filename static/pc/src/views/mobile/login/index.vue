@@ -160,7 +160,7 @@
     }
   };
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
   @import "~assets/scss/mobile";
 
   .forget-btn{

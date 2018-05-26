@@ -14,7 +14,7 @@
       <div class="white-box">
         <div class="line-box"></div>
         <div class="balance-box">
-          <p>{{$t('postPend.balance')}} 252586456.21  UET</p>
+          <p>{{$t('postPend.balance')}} <balance></balance>  UET</p>
           <p class="c-gray">{{$t('postPend.unit')}} ¥ 0.01</p>
         </div>
         <div class="input-box">
@@ -47,7 +47,7 @@
       <div class="white-box">
         <div class="line-box"></div>
         <div class="balance-box">
-          <p>{{$t('postPend.balance')}} 252586456.21  UET</p>
+          <p>{{$t('postPend.balance')}}  <balance></balance>  UET</p>
           <p class="c-gray">{{$t('postPend.unit')}} ¥ 0.01 <a class="c-blue">{{$t('postPend.allsell')}}</a></p>
         </div>
         <div class="input-box">
@@ -83,11 +83,11 @@
 
 <script>
   import { show } from 'api'
-  import { Transaction } from 'api'
+  import { transaction } from 'api'
 
   import MobileNavBar from 'components/m-navbar'
   import mHeadnav from 'components/m-headnav'
-  import { transaction } from 'api'
+  import balance from 'components/balance';
   import { generateTitle } from '@/util/i18n'
   import {mapGetters,mapActions,mapMutations} from 'vuex'
 
@@ -96,7 +96,8 @@
 
     components: {
       MobileNavBar,
-      mHeadnav
+      mHeadnav,
+      balance
     },
 
     data(){
@@ -179,10 +180,7 @@
           }
         }).catch(err => {
         })
-//       transaction.publishToSell(this.requestda).then((res) => {
-//          console.log(res)
-//        }).catch(err => {
-//        })
+
 
       },
       publishSell(){
@@ -244,7 +242,7 @@
 </script>
 
 <style lang="scss" scoped>
-  @import "~assets/scss/mixin";
+  @import "~assets/scss/mobile";
 .white-box{
   background: #fff;
 }

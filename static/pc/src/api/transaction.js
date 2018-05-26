@@ -102,3 +102,11 @@ export const getOrderxPending = jsonData => service({
   method: 'post',
   data: jsonData
 });
+
+// 获取 代币账户列表信息- 实时账户余额
+export const getAccountChainPage = jsonData => service({
+  url: numversion+`account/chain/getAccountChainPage`,
+  method: 'post',
+  data: jsonData
+});
+
