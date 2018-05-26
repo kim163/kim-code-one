@@ -1,59 +1,152 @@
 <template>
-  <ul>
-    <li v-for="(item,i) in 3" :key="i" class="order-item">
-      <div class="order-info">
-        <div class="text-left">{{item.createtime | Date('yyyy-MM-dd hh:mm:ss')}}</div>
-        <div class="text-right">
-          <!--<span class="c-blue" v-show="item.type == 12">{{$t('postPend.buyer')}}</span>-->
-          <!--<span class="c-red" v-show="item.type == 11">{{$t('postPend.seller')}}</span>-->
-          <span class="c-blue">{{$t('postPend.buyer')}}</span>
-        </div>
-      </div>
-      <div class="order-info">
-        <div class="text-left">{{$t('table.quantity')}} 30000 UET</div>
-        <div class="text-right">单价 0.001 CNY</div>
-      </div>
-      <div class="order-info">
-        <div class="text-left">已完成 89.23%</div>
-        <div class="text-right">
-          <span class="btn drop-off" v-if="type === 'processing'">下架</span>
-          <div v-else>
-            <span class="btn restored">恢复上架</span>
-            <span class="btn delete">删除</span>
+  <Scroll
+          ref="scroll"
+          :updateData="[orderList]"
+          :refreshData="[]"
+          class="content"
+          @pullingDown="loadRefresh"
+          @pullingUp="loadMore">
+    <ul>
+      <li v-for="(item,i) in orderList" :key="i" class="order-item">
+        <div class="order-info">
+          <div class="text-left">{{item.createtime | Date('yyyy-MM-dd hh:mm:ss')}}</div>
+          <div class="text-right">
+            <span class="c-blue" v-show="item.type === 12">{{$t('postPend.buyer')}}</span>
+            <span class="c-red" v-show="item.type === 11">{{$t('postPend.seller')}}</span>
           </div>
         </div>
-      </div>
-    </li>
-  </ul>
+        <div class="order-info">
+          <div class="text-left">{{$t('table.quantity')}} {{item.amount}} UET</div>
+          <div class="text-right">{{$t('table.unitPrice')}} 0.001 CNY</div>
+        </div>
+        <div class="order-info">
+          <div class="text-left">{{$t('table.completed')}} {{(item.successAmount/item.amount)*100 | toFixed(2) }}%</div>
+          <div class="text-right">
+            <span class="btn drop-off" v-if="tabType === 1" @click="putDownUpOrder(item.id,1)">{{$t('table.remove')}}</span>
+            <div v-else-if="item.status != 11">
+              <span class="btn restored" @click="putDownUpOrder(item.id,2)">{{$t('table.restored')}}</span>
+              <span class="btn delete" @click="orderDelete(item.id)">{{$t('table.deleteOrder')}}</span>
+            </div>
+            <div v-else>
+              下架中
+            </div>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </Scroll>
 </template>
 
 <script>
   import Scroll from 'vue-slim-better-scroll'
+  import {mapGetters} from 'vuex'
   import {
     getOrderxPendingPage,
     getOrderxPendingUnshelve,
-    putToDown
+    putToDown,
+    putToUp,
+    deleteUnshelve
   } from 'api/transaction'
+
   export default {
     name: "my-pending-list",
     data() {
       return {
-        orderList:[],
-
+        orderList: [],
+        limit:10,
+        offset:0,
+        total:0
       }
     },
-    props:{
-      type:{
-        type:String,
-        default:'processing'
+    components:{
+      Scroll
+    },
+    computed:{
+      ...mapGetters([
+        'userData'
+      ]),
+      totalPage () {
+        return Math.ceil(this.total / this.limit)
+      },
+    },
+    props: {
+      tabType: {  // 1是进行中 2是已下架
+        type: Number,
+        default: 1
       }
+    },
+    methods:{
+      getData(){
+        const api = this.tabType === 1 ? getOrderxPendingPage : getOrderxPendingUnshelve
+        const request = {
+          limit: this.limit,
+          offset: this.offset,
+        }
+        if(this.tabType === 1){
+          Object.assign(request,{
+            credit: this.userData.userId,
+            debit: this.userData.userId
+          })
+        }else{
+          Object.assign(request,{
+            statuses:[11,12],
+          })
+        }
+        api(request).then(res => {
+          if(res.code === 10000){
+            console.log('pending data:',res)
+            this.orderList = [...this.orderList,...res.data]
+            this.total = res.pageInfo.total
+            if(this.totalPage - 1 <= this.offset){
+              this.$refs.scroll.update(true)
+            }
+          }else{
+            toast(res.message)
+          }
+        }).catch(err => {
+          toast("请求失败")
+        })
+      },
+      putDownUpOrder(orderId,type){
+        if(orderId){
+          const api = type === 1 ? putToDown : putToUp
+          api({orderId}).then(res => {
+            if(res.code === 10000){
+              toast(res.message);
+              this.getData()
+            }else{
+              toast(res.message);
+            }
+          }).catch(error => {
+            toast('请求失败');
+          });
+        }
+      },
+      orderDelete(orderId){
+        if(orderId){
+
+        }
+      },
+      loadRefresh(){
+        this.offset = 0
+        this.orderList = []
+        this.getData()
+      },
+      loadMore(){
+        this.offset += 1
+        this.getData()
+      }
+    },
+    mounted(){
+      this.getData()
     }
   }
 </script>
 
 <style lang="scss" scoped>
   @import "~assets/scss/mobile";
-  .order-item{
+
+  .order-item {
     width: 100%;
     height: r(127);
     background: #FFFFFF;
@@ -61,22 +154,24 @@
     border-bottom: 1px solid #D8D8D8;
     margin-bottom: r(10);
   }
-  .order-info{
+
+  .order-info {
     display: flex;
     justify-content: space-between;
     padding: 0 r(10);
     margin-top: r(15);
     @include f(16px);
-    .text-right{
-      .c-blue{
+    .text-right {
+      .c-blue {
         color: #4982FF;
       }
-      .c-red{
+      .c-red {
         color: #FF0000;
       }
     }
   }
-  .btn{
+
+  .btn {
     display: inline-block;
     width: r(70);
     height: r(24);
@@ -85,13 +180,13 @@
     @include f(15px);
     border-radius: 2px;
     color: $white;
-    &.drop-off{
+    &.drop-off {
       background: #4982FF;
     }
-    &.restored{
+    &.restored {
       background: #9D9D9D;
     }
-    &.delete{
+    &.delete {
       background: #86A5F8;
     }
   }
