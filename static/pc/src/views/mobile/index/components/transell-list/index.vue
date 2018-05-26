@@ -116,6 +116,7 @@
 
         transaction.getOrderxPendingPage(this.reqData).then(res => {
           console.log('卖出UET get OrderxPage data:', res);
+          $load.close();
           this.dataList.data = res.data.map(item => {
             item.already = false;
             return item;

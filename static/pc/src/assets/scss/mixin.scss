@@ -12,12 +12,11 @@
 }
 
 $body-bg: #F5F5F5;
-body{
-  background: $body-bg;
-}
 $white: #ffffff;
 $main-color: #4982FF; // 主色调
 $font-color: #333333; //字体颜色
 $header-hg: 44;
 
-
+.mobile-body{
+  background: $body-bg;
+}

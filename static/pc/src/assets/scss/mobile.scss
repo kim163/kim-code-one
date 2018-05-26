@@ -5,7 +5,7 @@
 
 @import "./mixin.scss";
 .mobilenav-tabs{
-  margin:r(21) auto;
+  margin:r(15) auto;
   width: 80%;
   border-radius: r(5);
   overflow: hidden;
@@ -54,7 +54,7 @@
     .mtran-itemright{
        width: 81%;
        position: relative;
-       padding: r(11) 0 r(15);
+       padding: r(10) 0;
       .user-info{
         line-height: r(28);
       }
@@ -192,3 +192,132 @@
   }
 
 }
+
+/*  mobile 表单 */
+.mobile-navtabs{
+  @include  f(14px);
+  color:#6b6b6b;
+  border-bottom:1px solid #ddd;
+  background: $white;
+  .s{
+    width: 33.33%;
+    display:block;
+    float: left;
+    height:r(55);
+    line-height: r(55);
+    cursor: pointer;
+    text-align: center;
+    &.active{
+      border-bottom:3px solid #87b5ff;
+    }
+  }
+}
+.mobile-form-box{
+  width: 80%;
+  margin: 0 auto;
+  .form-group {
+    line-height: r(54);
+    position: relative;
+    margin-bottom:r(6);
+    width: 100%;
+  }
+  .validate {
+    display: block;
+    margin: r(10) 0;
+    @include  f(12px);
+    color: #13a1ca;
+    min-height: r(16);
+    text-align: center;
+  }
+  p {
+    text-align: center;
+    color: #999;
+  }
+  .captcha-code {
+    width:r(90);
+    float: left;
+    display: block;
+    position: relative;
+    background: no-repeat;
+
+    img {
+      height: r(34);
+      width: r(90);
+      vertical-align: top;
+    }
+  }
+  .form-input{
+    height: r(50);
+    border: 1px solid #ccc;
+    background: $white;
+    .captcha-code{
+      float:right;
+      color:#555;
+      line-height: r(49);
+      height: r(49);
+    }
+  }
+  .select-country{
+    float: left;
+    width: r(87);
+    height: r(48);
+    line-height: r(48);
+    padding-left: r(20);
+    border:0;
+    border-right: 1px solid #e0e0e0;
+    color:#666;
+    cursor: pointer;
+  }
+  .ps-input {
+    width: r(150);
+    height: r(50);
+    border: 0;
+    background: 0 0;
+    outline: 0;
+    line-height: r(50);
+    @include  f(16px);
+    color: #333;
+    padding: 0 r(20);
+  }
+  .ps-input2 {
+    width: 100%;
+    float: left;
+    height: r(50);
+    outline: 0;
+    line-height: r(50);
+    @include  f(16px);
+    color: #333;
+    padding: 0 r(20);
+  }
+  i.iconfont {
+    position: absolute;
+    height: 100%;
+    line-height: r(34);
+    top: 0;
+    left: 0;
+    @include  f(16px);
+    display: inline-block;
+  }
+  span.iconfont {
+    position: absolute;
+    top: 0;
+    right: r(10);
+    @include  f(16px);
+    cursor: pointer;
+    line-height: r(34);
+    color: #f66;
+  }
+  .submit{
+    display:block;
+    width:100%;
+    margin:0 auto;
+    background: #4982FF;
+    border-radius: 4px;
+    height:r(44);
+    line-height:r(44) ;
+    font-size:r(18);
+    color:#fff;
+    margin-top:r(40)
+  }
+}
+

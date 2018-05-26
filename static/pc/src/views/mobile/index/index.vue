@@ -11,9 +11,9 @@
        {{$t('navbar.accountBalance')}}：
      </div>
 
-     <tranbuy-list v-show="transactItem=='buyUet'"></tranbuy-list>
+     <tranbuy-list v-show="transactItem=='buyUet'" v-if="islogin"></tranbuy-list>
 
-     <transell-list v-show="transactItem=='saleUet'"></transell-list>
+     <transell-list v-show="transactItem=='saleUet'" v-if="islogin"></transell-list>
 
      <m-navbar></m-navbar>
   </div>
@@ -37,14 +37,22 @@
         transactItem: 'buyUet',
       };
     },
-    props: {},
+    props: {
+      value: Boolean
+    },
     methods: {
       generateTitle,
     },
+    watch: {
+
+    },
     computed: {
-      ...mapGetters(["userData"])
+      ...mapGetters(["userData", "islogin"])
     },
     created() {
+      if (!this.islogin) {
+        this.$router.replace({path:"/mobile/login"});
+      }
     },
     components: {
       mHeadnav, mNavbar, tranbuyList, transellList

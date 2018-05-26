@@ -14,7 +14,10 @@ export default [
   {
     path: "/mobile/login",
     name: "mobileLogin",
-    component: mobile
+    component: mobile,
+    meta:{
+      isMobilePage: "mobile-body"
+    }
   },
   {
     path: "/",

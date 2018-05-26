@@ -27,6 +27,7 @@ service.interceptors.request.use(config => {
   return config
 }, error => {
   // Do something with request error
+  $load.close();
   console.log(error)
   Promise.reject(error)
 });

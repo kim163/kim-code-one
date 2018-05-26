@@ -26,6 +26,13 @@
     },
     created() {
       this.$store.dispatch("UPDATE_USERDATA");
+      if(this.$route.meta.isMobilePage){
+        let element = document.getElementsByTagName('body')[0];
+        let classN = this.$route.meta.isMobilePage;
+        if((' ' + element.className + ' ').indexOf(' ' + classN + ' ') < 0){
+          element.className += classN;
+        }
+      }
     },
     watch:{
       "$route"(to,from){

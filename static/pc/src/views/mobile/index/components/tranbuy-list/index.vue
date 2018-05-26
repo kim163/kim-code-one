@@ -107,6 +107,7 @@
         transaction.getOrderxPendingPage(this.reqData).then(res => {
           console.log('买入UET get OrderxPageForHallSell data:');
           console.log(res);
+          $load.close();
           this.dataList.data = res.data.map(item => {
             item.already = false;
             return item;

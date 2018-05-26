@@ -15,7 +15,8 @@ export default [
       return resolve(require('views/mobile/index'))
     },
     meta: {
-      noCache: true //是否不缓存组件
+      noCache: true, //是否不缓存组件
+      isMobilePage: "mobile-body"
     }
   },
   {
@@ -24,6 +25,9 @@ export default [
     component(resolve){
       // 收银台
       return resolve(require('views/mobile/cashDesk/cash'))
+    },
+    meta:{
+      isMobilePage: "mobile-body"
     }
   },
   {
@@ -32,6 +36,9 @@ export default [
     component(resolve){
       // 手机交易记录
       return resolve(require('views/mobile/transaction-record'))
+    },
+    meta:{
+      isMobilePage: "mobile-body"
     }
   },
  {
@@ -40,6 +47,9 @@ export default [
     component(resolve){
       // 手机交易记录
       return resolve(require('views/mobile/pending-orders'))
+    },
+    meta:{
+       isMobilePage: "mobile-body"
     }
   },
   {
@@ -48,6 +58,9 @@ export default [
     component(resolve) {
       //我的挂单
       return resolve(require('views/mobile/my-pending-orders'))
+    },
+    meta:{
+      isMobilePage: "mobile-body"
     }
   },
  {
@@ -56,6 +69,9 @@ export default [
     component(resolve){
       // 手机交易记录
       return resolve(require('views/mobile/pending-orders/pending-sell'))
+    },
+    meta:{
+       isMobilePage: "mobile-body"
     }
   },
 
