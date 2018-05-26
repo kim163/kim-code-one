@@ -56,7 +56,7 @@
             </div>
             <div class="group-body" v-show="pendingItem=='tranPendingRemoved'">
 
-              <div class="group-tr" v-for="order in OrderList.data">
+              <div class="group-tr" v-for="order in OrderListRemoved.data">
                    <span class="unit">
                         <span class="c-blue" v-show="order.type == 12">买入</span>
                         <span class="c-orange" v-show="order.type == 11">卖出</span>
@@ -68,7 +68,7 @@
                     {{(order.successAmount/order.amount)*100 | toFixed(2) }}%
                 </span>
                 <span class="unit">
-                  <a class="btn btn-primary" @click="putToDown(order)">恢复上架</a>
+                  <a class="btn btn-primary" @click="putToUp(order)">恢复上架</a>
                   <a class="btn btn-danger" @click="orderDelete(order)">删除</a>
                 </span>
               </div>
@@ -120,6 +120,9 @@
         OrderList: {
           data: []
         },
+        OrderListRemoved: {
+          data: []
+        },
         pendingType:[
           {name: "transactionRecord.tranPendingOrder", value: "tranPendingOrder"},
           {name: "transactionRecord.tranPendingRemoved", value: "tranPendingRemoved"}
@@ -154,6 +157,23 @@
           this.reset(res.message);
         });
       },
+      getRemovedOrderList(index){
+        this.request={
+          limit:10,
+          offset:0,
+          statuses:[11,12],
+        }
+        if(!isNaN(index)) {
+          this.request.offset = (index - 1) * this.request.limit;
+        }
+        transaction.getOrderxPendingUnshelve(this.request).then(res => {
+          console.log('已下架挂单 data:');
+          console.log(res.data);
+          this.OrderListRemoved = res;
+        }).catch(error => {
+          this.reset(res.message);
+        });
+      },
       putToDown(order){
         let userId=this.userData.userId;
         this.request={
@@ -161,10 +181,36 @@
         }
 
         transaction.putToDown(this.request).then(res => {
-//          console.log('挂单下架 OrderxPage data:');
-//          console.log(res.data);
           toast(res.message);
           this.getOrderList()
+        }).catch(error => {
+          this.reset(res.message);
+        });
+      },
+      orderDelete(order){
+        let userId=this.userData.userId;
+        this.request={
+          orderId:order.id
+        }
+
+        transaction.deleteUnshelve(this.request).then(res => {
+          toast(res.message);
+          //this.getOrderList()
+          this.getRemovedOrderList()
+        }).catch(error => {
+          this.reset(res.message);
+        });
+      },
+      putToUp(order){
+        let userId=this.userData.userId;
+        this.request={
+          orderId:order.id
+        }
+
+        transaction.putToUp(this.request).then(res => {
+          toast(res.message);
+          this.getOrderList()
+          this.getRemovedOrderList()
         }).catch(error => {
           this.reset(res.message);
         });
@@ -175,6 +221,7 @@
     created() {
       if(this.islogin){
         this.getOrderList()
+        this.getRemovedOrderList()
       }
     },
     mounted() {
