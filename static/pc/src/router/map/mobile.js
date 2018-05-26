@@ -38,7 +38,7 @@ export default [
       return resolve(require('views/mobile/transaction-record'))
     },
     meta:{
-      isMobilePage: "mobile-body"
+      isMobilePage: "mobile-body mobile-bodyPd"
     }
   },
  {
@@ -60,7 +60,8 @@ export default [
       return resolve(require('views/mobile/my-pending-orders'))
     },
     meta:{
-      isMobilePage: "mobile-body"
+      isMobilePage: "mobile-body",
+      noCache:true
     }
   },
  {
