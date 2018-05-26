@@ -42,7 +42,7 @@
     font-size: 56px;
   }
   .mint-toast-text {
-    font-size: 20px;
+    font-size: 16px;
     line-height: 28px;
     display: block;
     text-align: center
