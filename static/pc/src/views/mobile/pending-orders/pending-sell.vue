@@ -14,53 +14,64 @@
       <div class="white-box">
         <div class="line-box"></div>
         <div class="balance-box">
-          <p>{{$t('postPend.balance')}} 252586456.21  UET</p>
+          <p>{{$t('postPend.balance')}} <balance></balance>  UET</p>
           <p class="c-gray">{{$t('postPend.unit')}} ¥ 0.01</p>
         </div>
         <div class="input-box">
-            <div class="input-div"><input class="my-input" placeholder="挂单买入数量"> UET</div>
-            <div  class="input-div"><input class="my-input" placeholder="=总数量"> CNY</div>
-            <div  class="input-div">
-              <select class="my-input">
-                <option>{{$t('postPend.selectPay')}}</option>
-              </select>
-            </div>
-            <div >
-              <p class="s-title">{{$t('postPend.buyerRequest')}}</p>
-              <div  class="input-div"><input class="my-input" :placeholder="$t('postPend.minSell')"> CNY</div>
-            </div>
+          <div class="input-div"><input class="my-input" placeholder="挂单买入数量" v-model="buyAmount"> UET</div>
+          <div  class="input-div"><input class="my-input" :value="buyAmountCny" placeholder="=总数量"> CNY</div>
+          <div  class="input-div">
+            <select class="my-input" v-model="buyTypeBuy">
+              <option value="">{{$t('postPend.selectPay')}}</option>
+              <option v-for="item in bankList.data" :value="item">
+                <span  v-if="item.type == '1'">支付宝 {{item.account}}</span>
+                <span  v-if="item.type == '2'">微信 {{item.account}}</span>
+                <span  v-if="item.type == '3'">{{item.bank}} {{subData(item.account)}}</span>
+              </option>
+            </select>
+          </div>
+          <div >
+            <p class="s-title">{{$t('postPend.buyerRequest')}}</p>
+            <div  class="input-div"><input class="my-input" :placeholder="$t('postPend.minSell')"> CNY</div>
+          </div>
         </div>
         <div class="line-box"></div>
       </div>
 
       <div class="btn-box">
-        <input type="button" class="btn btn-primary"  value="确定挂单" />
+        <input type="button" class="btn btn-primary" @click="publishBuy()" value="确定挂单" />
       </div>
 
     </div>
     <div v-if="pendingItem=='seller'">
       <div class="white-box">
+        <div class="line-box"></div>
         <div class="balance-box">
-          <p>{{$t('postPend.balance')}} 252586456.21  UET</p>
+          <p>{{$t('postPend.balance')}}  <balance></balance>  UET</p>
           <p class="c-gray">{{$t('postPend.unit')}} ¥ 0.01 <a class="c-blue">{{$t('postPend.allsell')}}</a></p>
         </div>
         <div class="input-box">
-            <div class="input-div"><input class="my-input" placeholder="挂单卖出数量"> UET</div>
-            <div  class="input-div"><input class="my-input" placeholder="=总数量"> CNY</div>
-            <div  class="input-div">
-              <select class="my-input">
-                <option>请选择支付方式</option>
-              </select>
-            </div>
-            <div >
-              <p class="s-title">买家要求</p>
-              <div  class="input-div"><input class="my-input" placeholder="卖家最低买入数量"> UET</div>
-            </div>
+          <div class="input-div"><input class="my-input" placeholder="挂单卖出数量" v-model="buyAmount"> UET</div>
+          <div  class="input-div"><input class="my-input" :value="buyAmountCny" placeholder="=总数量"> CNY</div>
+          <div  class="input-div">
+            <select class="my-input" v-model="buyTypeBuy">
+              <option value="">{{$t('postPend.selectPay')}}</option>
+              <option v-for="item in bankList.data" :value="item">
+                <span  v-if="item.type == '1'">支付宝 {{item.account}}</span>
+                <span  v-if="item.type == '2'">微信 {{item.account}}</span>
+                <span  v-if="item.type == '3'">{{item.bank}} {{subData(item.account)}}</span>
+              </option>
+            </select>
+          </div>
+          <div >
+            <p class="s-title">买家要求</p>
+            <div  class="input-div"><input class="my-input" placeholder="卖家最低买入数量"> UET</div>
+          </div>
         </div>
         <div class="line-box"></div>
       </div>
       <div class="btn-box">
-        <input type="button" class="btn btn-primary"  value="确定挂单" />
+        <input type="button" class="btn btn-primary"  value="确定挂单" @click="publishSell()" />
       </div>
 
     </div>
@@ -71,17 +82,22 @@
 </template>
 
 <script>
+  import { show } from 'api'
+  import { transaction } from 'api'
+
   import MobileNavBar from 'components/m-navbar'
   import mHeadnav from 'components/m-headnav'
-  import { transaction } from 'api'
+  import balance from 'components/balance';
   import { generateTitle } from '@/util/i18n'
+  import {mapGetters,mapActions,mapMutations} from 'vuex'
 
   export default {
     name: "transaction-record",
 
     components: {
       MobileNavBar,
-      mHeadnav
+      mHeadnav,
+      balance
     },
 
     data(){
@@ -91,20 +107,145 @@
           {name: "postPend.seller", value: "seller"}
         ],
         pendingItem: 'seller',
+        bankList: {
+          data: []
+        },
+        buyAmount:'',
+        buyTypeBuy:'',
+        buyTypeSell:'',
+        accountCashVo:{},
+        buyTypeBuyBank:''
+      }
+    },
+    computed: {
+      ...mapGetters(["userData"]),
+      buyAmountCny:function(){
+        return Number(this.buyAmount) *0.01;
       }
     },
     methods: {
       generateTitle,
-    }
+      getBankInfo(){
+        this.requestdata={
+          userId: this.userData.userId
+        }
+        show.getBankInfo(this.requestdata).then((res) => {
+          this.bankList = res;
+
+        }).catch(err => {
+
+        })
+      },
+      publishBuy(){
+        if(this.buyAmount =='' || !this.buyAmount){
+          toast('数量不能为空');
+          return;
+        }
+        if(this.buyTypeBuy =='' || !this.buyTypeBuy){
+          toast('支付方式不能为空');
+          return;
+        }
+        if(this.buyTypeBuy.type =='1'){
+          this.buyTypeBuyBank='支付宝'
+        }else if(this.buyTypeBuy.type =='2'){
+          this.buyTypeBuyBank='微信'
+        }else{
+          this.buyTypeBuyBank=this.buyTypeBuy.bank
+        }
+        this.requestda={
+          userId: this.userData.userId,
+          mode:'1',
+          minUnit:this.buyAmount,//等于发布的数量
+          accountChainVo:{
+            name:this.userData.nickname,
+            address:this.userData.accountChainVos[0].address,
+            assetCode:'UET', //资产编码 默认 UET,登录后资产的编码
+            amount:this.buyAmount //uet的数量
+          },
+          accountCashVo:{
+            "account" : this.buyTypeBuy.account,
+            "bank" : this.buyTypeBuyBank, //机构名称
+            "name" : this.buyTypeBuy.name,
+            "type" : this.buyTypeBuy.type,
+            "amount" : this.buyAmount /100
+          }
+        }
+        transaction.publishToBuy(this.requestda).then((res) => {
+          console.log(res)
+          if(res.code == '10000'){
+            toast('您已下单成功，请进入列表查询');
+            $emit('hide',false)
+          }else{
+            toast(res.message)
+          }
+        }).catch(err => {
+        })
+
+
+      },
+      publishSell(){
+        if(this.buyAmount =='' || !this.buyAmount){
+          toast('数量不能为空');
+          return;
+        }
+        if(this.buyTypeSell =='' || !this.buyTypeSell){
+          toast('支付方式不能为空');
+          return;
+        }
+        if(this.buyTypeSell.type =='1'){
+          this.buyTypeBuyBank='支付宝'
+        }else if(this.buyTypeSell.type =='2'){
+          this.buyTypeBuyBank='微信'
+        }else{
+          this.buyTypeBuyBank=this.buyTypeSell.bank
+        }
+        this.requestda={
+          userId: this.userData.userId,
+          mode:'1',
+          minUnit:this.buyAmount,//等于发布的数量
+          accountChainVo:{
+            name:this.userData.nickname,
+            address:this.userData.accountChainVos[0].address,
+            assetCode:'UET', //资产编码 默认 UET,登录后资产的编码
+            amount:this.buyAmount //uet的数量
+          },
+          accountCashVo:{
+            "account" : this.buyTypeSell.account,
+            "bank" : this.buyTypeBuyBank, //机构名称
+            "name" : this.buyTypeSell.name,
+            "type" : this.buyTypeSell.type,
+            "amount" : this.buyAmount /100
+          }
+        }
+        transaction.publishToSell(this.requestda).then((res) => {
+          console.log(res)
+          if(res.code == '10000'){
+            toast('您已下单成功，请进入列表查询');
+            $emit('hide',false)
+          }else{
+            toast(res.message)
+          }
+        }).catch(err => {
+        })
+
+      },
+      subData:function(item){
+        return (item.substring(item.length-4))
+      }
+    },
+    created() {
+      this.getBankInfo()
+    },
+
 
   }
 </script>
 
 <style lang="scss" scoped>
-  @import "~assets/scss/mixin";
-.white-box{
-  background: #fff;
-}
+  @import "~assets/scss/mobile";
+  .white-box{
+    background: #fff;
+  }
   .tab-box-out{
     background:#F5F5F5 ;
     padding:r(20) r(30);
@@ -124,17 +265,17 @@
     cursor: pointer;
     background: #fff;
     color:#333;
-    &:last-child{
-       border:0;
-     }
-    &.active{
-       background: #86A5F8;
-       color:#fff;
-     }
-    &:hover,&:link,&:active{
-                      opacity: .8;
-     }
-    }
+  &:last-child{
+     border:0;
+   }
+  &.active{
+     background: #86A5F8;
+     color:#fff;
+   }
+  &:hover,&:link,&:active{
+                    opacity: .8;
+                  }
+  }
   }
 
   .balance-box{
@@ -158,9 +299,9 @@
     height:r(39);
     border:0;
     width:85%;
-    &:hover,&:focus{
-      outline: none;
-     }
+  &:hover,&:focus{
+             outline: none;
+           }
   }
   select.my-input{
     width:100%;
@@ -175,6 +316,7 @@
   .btn{
     display:block;
     width:90%;
+    text-align: center;
     margin:0 auto;
     background: #4982FF;
     border-radius: 4px;
