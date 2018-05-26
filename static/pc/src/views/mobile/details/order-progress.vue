@@ -4,31 +4,60 @@
     <m-header>订单详情</m-header>
 
     <div class="cash-details">
-      <div class="trade-time">
+      <div class="trade-time-bar">
         <span class="c-blue">买入</span>
-        <span class="red fr">等待付款 1小时59份59秒</span>
+        <span class="fr">等待付款 1小时59份59秒</span>
       </div>
-      <ul class="trade-ul">
+      <ul class="details-ul">
         <li>
           <span class="l-title">订单号 :</span>
           <span class="fr">DSJW92JF00IDFKSPKFM020409232</span>
         </li>
         <li>
-          <span class="l-title">应付金额 :</span>
+          <span class="l-title">卖方 :</span>
+          <span class="fr">深圳马化腾</span>
+        </li>
+        <li>
+          <span class="l-title">交易金额 :</span>
           <span class="fr">
-                 <span class="red">5000 UET</span> 折合 <span class="red">50 CNY</span>
+                 <span class="red">50 CNY</span>
              </span>
         </li>
         <li>
-          <span class="l-title">当前汇率 :</span> <span class="fr">100UET = 1CNY</span>
+          <span class="l-title">交易数量 :</span>
+          <span class="fr">
+                 <span class="red">5000 UET</span>
+             </span>
         </li>
         <li>
-          <span class="l-title">商户名 :</span> <span class="fr"> 千赢国际 </span>
-        </li>
-        <li>
-          <span class="l-title"></span> <span class="fr"> 更换其他支付方式&gt;&gt; </span>
+          <span class="l-title">交易单价 :</span> <span class="fr">0.01 CNY</span>
         </li>
       </ul>
+      <ul class="details-ul pay-detail">
+        <li>
+          <span class="l-title">卖家收款 :</span>
+          <span class="fr">支付宝</span>
+        </li>
+        <li>
+          <span class="l-title">收款姓名 :</span>
+          <span class="fr">马云</span>
+        </li>
+        <li>
+          <span class="l-title">收款账号 :</span>
+          <span class="fr">
+                 <span class="">fjafmcw@163.com</span>
+             </span>
+        </li>
+        <li>
+          <span class="l-title">收款二维码 :</span>
+          <span class="fr">
+                 <span class="red">二维码</span>
+             </span>
+        </li>
+
+      </ul>
+
+
     </div>
 
   </div>
@@ -96,92 +125,39 @@
 <style lang="scss">
   @import "~assets/scss/mobile";
 
+  .cash-details{
+
+  }
   .cas-main{
     background: #F5F5F5;
   }
 
-  .red{color:red;}
-  .trade-time{
-    padding:20px 15px;
-    height:60px;
+  .c-red,.red{color:red;}
+  .c-blue{color:#5087FF;}
+  .trade-time-bar{
+    background: #fff;
+    padding:r(20) r(15);
+    height:r(60);
     border-bottom:1px solid #d8d8d8;
+    margin-bottom:r(20);
   }
-  .trade-ul{
-
-  li{
-    height:50px;
-    padding:15px 15px;
+  .details-ul{
     border-bottom:1px solid #d8d8d8;
-    font-size:15px;
+    border-top:1px solid #d8d8d8;
+  li{
+    background: #fff;
+    height:r(50);
+    padding:r(15);
+    font-size:f(15);
     color:#8f8f8f;
   .l-title{
     display:inline-block;
-    width:75px;
+    width:r(75);
     text-align: right;
     color:#333;
   }
   }
   }
-  .cash-main{
 
-  .pay-btn{
-    display:inline-block;
-    text-align: center;
-    height:50px;
-    line-height: 50px;
-    background: #BB9A55;
-    color:#fff;
-    font-size:18px;
-  }
-  .btn-block{
-    display:block;
-  }
 
-  /* login */
-  .m-login-box{
-    padding:20px;
-  }
-  /* tab */
-  .tab-box{
-    color:#6b6b6b;
-    border-bottom:0;
-  .s{
-    display:inline-block;
-    height:42px;
-    padding:0 10px;
-    line-height: 42px;
-    margin-right:10px;
-    cursor: pointer;
-    background: #D8D8D8;
-    color:#333;
-  &.active{
-     background: #BB9A55;
-     color:#fff;
-   }
-  &:hover,&:link,&:active{
-                    opacity: .8;
-                  }
-  }
-  }
-
-  }
-  .text-center{
-    text-align: center;
-  }
-  .ps-input{
-    height:40px;
-    border: 1px solid #DEDEDE;
-    padding:0 10px;
-    width:90%;
-  }
-  .form-box-phone{
-    border: 1px solid #DEDEDE;
-    padding:15px;
-  }
-  .area-box{
-    background: #FFEFCE;
-  }
-  .form-subtitle{
-    padding:0 0 8px 0;
-  }
 </style>

@@ -242,7 +242,7 @@
 </script>
 
 <style lang="scss" scoped>
-  @import "~assets/scss/mixin";
+  @import "~assets/scss/mobile";
 .white-box{
   background: #fff;
 }
