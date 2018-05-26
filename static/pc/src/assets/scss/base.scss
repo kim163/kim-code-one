@@ -36,11 +36,13 @@ body, input, button, textarea, select {
 
 input {
   border: none;
+  -webkit-appearance:none;
 }
 
 input[type="submit"], input[type="button"], button {
   border: none;
   background: none;
+  -webkit-appearance:none;
 }
 input:read-only{
   background: #f0f0f0;
