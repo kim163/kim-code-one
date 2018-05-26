@@ -67,11 +67,22 @@ export default [
     path: "/mPendingSell",
     name: 'mPendingSell',
     component(resolve){
-      // 手机交易记录
+      // 挂单-卖出
       return resolve(require('views/mobile/pending-orders/pending-sell'))
     },
     meta:{
        isMobilePage: "mobile-bodyFtPd"
+    }
+  },
+ {
+    path: "/mobile/order/:id",
+    name: 'mOrder',
+    component(resolve){
+      // 订单详情
+      return resolve(require('views/mobile/details/order-progress'))
+    },
+    meta:{
+       isMobilePage: "mobile-body"
     }
   },
 
