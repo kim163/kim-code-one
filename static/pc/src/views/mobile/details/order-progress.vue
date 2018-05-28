@@ -1,12 +1,11 @@
 <template>
   <div class="transell-main transell-main-box">
-    <!--<m-header>{{$t('postPend.postTitle')}}</m-header>-->
     <m-header>订单详情</m-header>
-
     <div class="cash-details">
       <div class="trade-time-bar">
-        <span class="c-blue">买入</span>
-        <span class="fr">等待付款 1小时59份59秒</span>
+        <span class="c-blue" v-if="DetailList.type == '12'">买入</span>
+        <span class="c-orange" v-if="DetailList.type == '11'">卖出</span>
+        <span class="fr">等待付款 {{DetailList.intervalTime | Date('hh:mm:ss')}}</span>
       </div>
       <ul class="details-ul">
         <li>
@@ -21,7 +20,7 @@
           <span class="l-title">交易金额 :</span>
           <span class="fr">
                  <span class="red">{{DetailList.debitAmountTwin}} CNY</span>
-             </span>
+           </span>
         </li>
         <li>
           <span class="l-title">交易数量 :</span>
@@ -36,29 +35,30 @@
       <ul class="details-ul pay-detail">
         <li>
           <span class="l-title">卖家收款 : </span>
-          <span class="fr0">
+          <div class="fr0">
             <span v-if="DetailList.debitAccountMerchantTwin == '支付宝'"><i class="iconfont icon-pay-alipay"></i></span>
-            <span v-if="DetailList.debitAccountMerchantTwin == '微信'"><i class="iconfont icon-pay-wechat"></i></span>
+            <span v-else-if="DetailList.debitAccountMerchantTwin == '微信'"><i class="iconfont icon-pay-wechat"></i></span>
+            <span v-else><i class="iconfont icon-pay-bank"></i></span>
             {{DetailList.debitAccountMerchantTwin}}
-          </span>
+          </div>
         </li>
         <li>
           <span class="l-title">收款姓名 : </span>
-          <span class="fr0">{{DetailList.debitAccountNameTwin}}</span>
+          <div class="fr0">{{DetailList.debitAccountNameTwin}}</div>
         </li>
         <li>
           <span class="l-title">收款账号 : </span>
-          <span class="fr0">
+          <div class="fr0">
                  <span class="">{{DetailList.debitAccountTwin}}</span>
-             </span>
+             </div>
         </li>
         <li class="heightauto">
           <span class="l-title">收款二维码 : </span>
-          <span class="qrcode-box">
+          <div class="qrcode-box">
                 <!--<img src="~images/qrcode.jpg" :src="DetailList.debitAccountQrCodeUrlTwin" class="qrcode-img">-->
-                <img src="~images/qrcode.jpg" class="qrcode-img">
+                <img src="~images/qrcode.jpg" class="qrcode-img" />
                  <span class="qrcode-tips">长按二维码保存</span>
-           </span>
+           </div>
         </li>
 
       </ul>
@@ -144,6 +144,7 @@
   }
   .c-red,.red{color:red;}
   .c-blue{color:#5087FF;}
+  .c-orange{color:orange;}
   .trade-time-bar{
     background: #fff;
     padding:r(10) r(15);
@@ -159,29 +160,27 @@
     background: #fff;
     min-height:r(35);
     padding:r(10) r(15);
-    font-size:f(14);
+    font-size:r(16);
     color:#8f8f8f;
     overflow:hidden;
-    /*border-bottom:1px solid #f9f9f9;*/
     &.heightauto{
       height:180px;
     }
      .qrcode-img{
-       width:150px;
+       width:130px;
      }
      .fr0{
        padding:0 0 0 r(10);
      }
      .qrcode-tips{
        display:inline-block;
-        width:r(100);
+        width:r(99);
        word-break: break-all;
+       font-size:r(12);
       }
   .l-title{
     display:inline-block;
     float:left;
-    /*width:r(85);*/
-    /*text-align: right;*/
     color:#333;
   }
   }
@@ -216,5 +215,14 @@
       .btn-gray{
         background: #E4E4E4;
       }
+  }
+  .icon-pay-bank{
+    color: #B764FE;
+  }
+  .icon-pay-wechat{
+    color:#14CA39;
+  }
+  .icon-pay-alipay{
+    color:#03A9F3;
   }
 </style>
