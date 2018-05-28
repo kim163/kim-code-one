@@ -7,66 +7,89 @@
         <span class="c-orange" v-if="DetailList.type == '11'">卖出</span>
         <span class="fr">等待付款 {{DetailList.intervalTime | Date('hh:mm:ss')}}</span>
       </div>
-      <ul class="details-ul">
-        <li>
-          <span class="l-title">订单号 :</span>
-          <span class="fr order-id-li">{{$route.params.id}}</span>
-        </li>
-        <li>
-          <span class="l-title">卖方 :</span>
-          <span class="fr">{{DetailList.debitName}}</span>
-        </li>
-        <li>
-          <span class="l-title">交易金额 :</span>
-          <span class="fr">
-                 <span class="red">{{DetailList.debitAmountTwin}} CNY</span>
-           </span>
-        </li>
-        <li>
-          <span class="l-title">交易数量 :</span>
-          <span class="fr">
-                 <span class="red">{{DetailList.debitAmount}} UET</span>
-             </span>
-        </li>
-        <li>
-          <span class="l-title">交易单价 :</span> <span class="fr">0.01 CNY</span>
-        </li>
-      </ul>
-      <ul class="details-ul pay-detail">
-        <li>
-          <span class="l-title">卖家收款 : </span>
-          <div class="fr0">
-            <span v-if="DetailList.debitAccountMerchantTwin == '支付宝'"><i class="iconfont icon-pay-alipay"></i></span>
-            <span v-else-if="DetailList.debitAccountMerchantTwin == '微信'"><i class="iconfont icon-pay-wechat"></i></span>
-            <span v-else><i class="iconfont icon-pay-bank"></i></span>
-            {{DetailList.debitAccountMerchantTwin}}
-          </div>
-        </li>
-        <li>
-          <span class="l-title">收款姓名 : </span>
-          <div class="fr0">{{DetailList.debitAccountNameTwin}}</div>
-        </li>
-        <li>
-          <span class="l-title">收款账号 : </span>
-          <div class="fr0">
-                 <span class="">{{DetailList.debitAccountTwin}}</span>
-             </div>
-        </li>
-        <li class="heightauto">
-          <span class="l-title">收款二维码 : </span>
-          <div class="qrcode-box">
-                <!--<img src="~images/qrcode.jpg" :src="DetailList.debitAccountQrCodeUrlTwin" class="qrcode-img">-->
-                <img src="~images/qrcode.jpg" class="qrcode-img" />
-                 <span class="qrcode-tips">长按二维码保存</span>
-           </div>
-        </li>
 
-      </ul>
-
-      <div class="btn-group">
-          <input type="button" class="btn btn-block btn-primary"  value="我已完成付款">
-          <input type="button" class="btn btn-block btn-cancel"  value="取消订单">
+      <div class="mobilenav-tabs">
+        <span v-for="(item,i) in detailType" @click="detailTypeItem=item.value" :class="{active:detailTypeItem==item.value}" :key="item.value">
+            {{item.value}}
+        </span>
       </div>
+
+      <div v-if="detailTypeItem =='订单详情'">
+          <ul class="details-ul">
+            <li>
+              <span class="l-title">订单号 :</span>
+              <span class="fr order-id-li">{{$route.params.id}}</span>
+            </li>
+            <li>
+              <span class="l-title">卖方 :</span>
+              <span class="fr">{{DetailList.debitName}}</span>
+            </li>
+            <li>
+              <span class="l-title">交易金额 :</span>
+              <span class="fr">
+                     <span class="red">{{DetailList.debitAmountTwin}} CNY</span>
+               </span>
+            </li>
+            <li>
+              <span class="l-title">交易数量 :</span>
+              <span class="fr">
+                     <span class="red">{{DetailList.debitAmount}} UET</span>
+                 </span>
+            </li>
+            <li>
+              <span class="l-title">交易单价 :</span> <span class="fr">0.01 CNY</span>
+            </li>
+          </ul>
+          <ul class="details-ul pay-detail">
+            <li>
+              <span class="l-title">卖家收款 : </span>
+              <div class="fr0">
+                <span v-if="DetailList.debitAccountMerchantTwin == '支付宝'"><i class="iconfont icon-pay-alipay"></i></span>
+                <span v-else-if="DetailList.debitAccountMerchantTwin == '微信'"><i class="iconfont icon-pay-wechat"></i></span>
+                <span v-else><i class="iconfont icon-pay-bank"></i></span>
+                {{DetailList.debitAccountMerchantTwin}}
+              </div>
+            </li>
+            <li>
+              <span class="l-title">收款姓名 : </span>
+              <div class="fr0">{{DetailList.debitAccountNameTwin}}</div>
+            </li>
+            <li>
+              <span class="l-title">收款账号 : </span>
+              <div class="fr0">
+                     <span class="">{{DetailList.debitAccountTwin}}</span>
+                 </div>
+            </li>
+            <li class="heightauto">
+              <span class="l-title">收款二维码 : </span>
+              <div class="qrcode-box">
+                    <!--<img src="~images/qrcode.jpg" :src="DetailList.debitAccountQrCodeUrlTwin" class="qrcode-img">-->
+                    <img src="~images/qrcode.jpg" class="qrcode-img" />
+                     <span class="qrcode-tips">长按二维码保存</span>
+               </div>
+            </li>
+
+          </ul>
+
+          <div class="btn-group">
+              <input type="button" class="btn btn-block btn-primary"  value="我已完成付款">
+              <input type="button" class="btn btn-block btn-primary"  value="提出发证">
+              <input type="button" class="btn btn-block btn-cancel"  value="取消订单">
+              <input type="button" class="btn btn-block btn-gray"  value="我已付款">
+
+            <input type="button" class="btn btn-block btn-primary"  value="确定收款">
+            <input type="button" class="btn btn-block btn-primary"  value="我要申诉">
+          </div>
+      </div>
+
+      <div v-if="detailTypeItem =='申诉与仲裁'">
+
+        <div class="trade-time-bar">
+          申诉与仲裁
+          <span class="fr red">卖方获胜</span>
+        </div>
+      </div>
+
     </div>
 
   </div>
@@ -82,13 +105,16 @@
   export default {
     data() {
       return {
+        detailType:[
+          {name:'detail.buyUet', value: '订单详情' },
+          {name:'detail.saleUet', value: '申诉与仲裁' }
+        ],
+        detailTypeItem:'订单详情',
         DetailList: {
-
         },
         orderData:{
           orderId:this.$route.params.id,
           debitName:'', // 交易买方
-
         }
       };
     },
@@ -159,7 +185,7 @@
   li{
     background: #fff;
     min-height:r(35);
-    padding:r(10) r(15);
+    padding:r(8) r(15);
     font-size:r(16);
     color:#8f8f8f;
     overflow:hidden;
@@ -170,6 +196,7 @@
        width:130px;
      }
      .fr0{
+       display:inline-block;
        padding:0 0 0 r(10);
      }
      .qrcode-tips{
