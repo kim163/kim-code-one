@@ -1,14 +1,13 @@
 <template>
   <Scroll
-          :updateData="[tranList]"
-          :refreshData="[]"
-          class="content"
-          @pullingDown="loadRefresh"
-          @pullingUp="loadMore"
-          ref="scroll">
+      :updateData="[tranList]"
+      :refreshData="[]"
+      class="content"
+      @pullingDown="loadRefresh"
+      @pullingUp="loadMore"
+      ref="scroll">
     <ul class="list">
-      <router-link tag="li" :to="{name:'cashDesk',query:{ id: item.id}}" class="tran-item"
-                   v-for="(item,index) in tranList"
+      <router-link tag="li" :to="{name:'cashDesk',query:{ id: item.id}}" class="tran-item" v-for="(item,index) in tranList"
                    :key="index">
         <div class="type-status">
           <div class="type blue-text" v-show="item.credit === userData.userId">{{$t('transactionRecord.buy')}}</div>
@@ -45,7 +44,6 @@
     getOrderxPage,
     getTransactionPage
   } from 'api/transaction'
-
   export default {
     name: "transaction-list",
     data() {
@@ -53,7 +51,7 @@
         limit: 10,
         offset: 0,//交易页数
         tranList: [],//交易列表
-        total: 0 //总条数
+        total:0 //总条数
       }
     },
     components: {
@@ -63,13 +61,13 @@
       type: {
         type: Number,
         default: 0 //0代表交易中 1代表已完成
-      },
+      }
     },
     computed: {
       ...mapGetters([
         "userData"
       ]),
-      totalPage() {
+      totalPage () {
         return Math.ceil(this.total / this.limit)
       },
     },
@@ -88,7 +86,7 @@
             console.log('getOrderxPage res:', res)
             this.tranList = [...this.tranList, ...res.data]
             this.total = res.pageInfo.total
-            if (this.totalPage - 1 <= this.offset) {
+            if(this.totalPage - 1 <= this.offset){
               this.$refs.scroll.update(true)
             }
           } else {

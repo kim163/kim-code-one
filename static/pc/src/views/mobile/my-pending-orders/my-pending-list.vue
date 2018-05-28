@@ -121,8 +121,8 @@
           }else{
             toast(res.message)
           }
-        }).catch(err => {
-          toast("请求失败")
+        }).catch(error => {
+          toast(error)
         })
       },
       putDownUpOrder(orderId,type){
@@ -136,7 +136,7 @@
               toast(res.message)
             }
           }).catch(error => {
-            toast('请求失败')
+            toast(error)
           })
         }
       },
@@ -155,8 +155,8 @@
           }else{
             toast(res.message)
           }
-        }).catch(err => {
-          toast('请求失败')
+        }).catch(error => {
+          toast(error)
         })
       },
       loadRefresh(){
