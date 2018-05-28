@@ -12,7 +12,9 @@ export default {
     languageSel: '中文',
     nickName:'Nickname',
     accountBalance:'Account Balance',
-    transactionRecord:'Transaction Record'
+    transactionRecord:'Transaction Record',
+    userAccount: 'Account',
+    busineList: 'My business list'
   },
   login: {
     title: 'Welcome back',
@@ -29,7 +31,8 @@ export default {
     emailaddPhd:'Please input the email address',
     logIn: 'Login wallet',
     forgotpwd: 'Forget password',
-
+    iWantLogin: 'Login',
+    iWantRegister: 'Register'
   },
   register: {
     title: 'Create your Jiuan wallet',
@@ -76,6 +79,10 @@ export default {
     completionRate: 'Completion rate',
     unitPrice: 'Unit price',
     quantity: 'Quantity',
+    tranUnitPrice: 'Transaction unit price',
+    quantityAvailSale: 'Quantity available for sale',
+    buyableQuantity: 'Buyable quantity',
+    tranAmount: 'Transaction amount',
 
   },
   transactionRecord: {

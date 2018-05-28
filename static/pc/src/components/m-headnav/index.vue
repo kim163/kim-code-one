@@ -1,13 +1,19 @@
 <template>
   <header class="mobile-headnav">
-    <a @click="doClick" class="back-link"><i class="iconfont icon-transaction"></i></a>
+    <a @click="value=true" class="back-link"><i class="iconfont icon-menu"></i></a>
     <slot></slot>
+
+    <m-toolbar v-model="value" ></m-toolbar>
   </header>
 </template>
 <script>
+  import mToolbar from 'components/m-toolbar';
+
   export default {
     data() {
-      return {};
+      return {
+        value:false
+      };
     },
     props: {
 
@@ -20,7 +26,9 @@
     computed: {},
     created() {
     },
-    components: {}
+    components: {
+      mToolbar
+    }
   };
 </script>
 <style lang="scss">
@@ -28,7 +36,6 @@
 
   header.mobile-headnav{
     position: relative;
-    z-index: 99;
     height: r($header-hg);
     line-height: r($header-hg);
     background: $main-color;
@@ -45,8 +52,8 @@
       text-align: left;
       padding-left: r(15);
     }
-    .icon-transaction{
-      @include f(20px)
+    .icon-menu{
+      @include f(13px)
     }
   }
 

@@ -13,6 +13,8 @@ export default {
     nickName:'昵称',
     accountBalance:'账户余额',
     transactionRecord:'交易记录',
+    userAccount: '账号',
+    busineList: '我的商户列表'
   },
   login: {
     title: '欢迎回来',
@@ -29,7 +31,8 @@ export default {
     emailaddPhd:'请输入邮箱地址',
     logIn: '登录钱包',
     forgotpwd: '忘记密码',
-
+    iWantLogin: '我要登录',
+    iWantRegister: '我要注册'
   },
   register: {
     title: '创建您的久安钱包',
@@ -76,6 +79,10 @@ export default {
     completionRate: '完成率',
     unitPrice: '单价',
     quantity: '数量',
+    tranUnitPrice: '交易单价',
+    quantityAvailSale: '可卖数量',
+    buyableQuantity: '可买数量',
+    tranAmount: '交易金额',
 
   },
   transactionRecord: {

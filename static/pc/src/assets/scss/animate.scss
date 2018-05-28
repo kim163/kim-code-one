@@ -1,10 +1,22 @@
 .fade-enter-active, .fade-leave-active {
-  transition: opacity 1s
+  transition: opacity .5s
 }
 .fade-enter,.fade-leave-to{
   opacity: 0
 }
-
+.slideLeft-enter-active,.slideLeft-leave-active {
+  transition:transform .5s;
+}
+.slideLeft-enter,.slideLeft-leave-to{
+  transform: translateX(-100%);
+}
+.slideBottom-enter-active,.slideBottom-leave-active {
+  transition:all 0.5s;
+}
+.slideBottom-enter,.slideBottom-leave-to{
+  transform: translateY(100%);
+  opacity: 0;
+}
 
 @keyframes rotate11{
   0%{ transform: rotate(0deg);}
