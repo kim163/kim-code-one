@@ -12,6 +12,7 @@ var initInstance=function(){
   document.querySelector('body').appendChild(instance.$el);
 };
 let showNext=()=>{
+  debugger
   if(!instance.value){ //只有弹一个 下一个等待
     if(loadQueue.length>0){
       let setting=loadQueue.shift();
@@ -51,9 +52,14 @@ gifload.open=(text,options={})=>{
 gifload.close=()=>{
   if(!instance)return;
   showNext();
-  if(loadQueue.length==0){
-    instance.value=false;
-  }
+  // if(loadQueue.length==0){
+  //   instance.value=false;
+  // }
+  Vue.nextTick(()=>{
+    if(instance.value){
+      instance.value=false;
+    }
+  });
 }
 export const open=gifload.open;
 export const close=gifload.close;

@@ -123,6 +123,11 @@ export default {
     sellerRequest:'卖家要求',
     processing:'进行中',
     hasBeenRemoved:'已下架',
+    removing:'下架中',
+    delConfirmTitle:'是否确定删除该挂单',
+    delConfirmContent:'删除后不可恢复',
+    cancel:'取消',
+    confirmYes:'确认',
   }
 
 }
