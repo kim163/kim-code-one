@@ -29,7 +29,7 @@
                 <span class="btn delete" @click="deleteOrder(item.id)">{{$t('table.deleteOrder')}}</span>
               </div>
               <div v-else>
-                下架中
+                {{$t('postPend.removing')}}
               </div>
             </div>
           </div>
@@ -37,9 +37,9 @@
       </ul>
     </Scroll>
     <confirm-dialog v-model="showConfirm">
-      <div slot="title">{{confrimTitle}}</div>
-      <div slot="content">{{confirmContent}}</div>
-      <div slot="rightBtn" @click="orderDelete">确认</div>
+      <div slot="title">{{$t('postPend.delConfirmTitle')}}</div>
+      <div slot="content">{{$t('postPend.delConfirmContent')}}</div>
+      <div slot="rightBtn" @click="orderDelete">{{$t('postPend.confirmYes')}}</div>
     </confirm-dialog>
   </div>
 </template>
@@ -65,8 +65,6 @@
         offset:0,
         total:0,
         showConfirm: false,
-        confrimTitle:'是否确定删除该挂单',
-        confirmContent:'删除后不可恢复',
         orderId:''
       }
     },

@@ -10,10 +10,10 @@
     <div class="amount-balance">{{$t('navbar.accountBalance')}}：<balance></balance> </div>
     <div class="orders-list">
       <transition name="list-animate">
-        <my-pending-list :tab-type="1" v-show="pendingOrdersItem === 1"></my-pending-list>
+        <my-pending-list :tab-type="1" v-if="pendingOrdersItem === 1"></my-pending-list>
       </transition>
       <transition name="list-animate">
-        <my-pending-list :tab-type="2" v-show="pendingOrdersItem === 2"></my-pending-list>
+        <my-pending-list :tab-type="2" v-if="pendingOrdersItem === 2"></my-pending-list>
       </transition>
     </div>
   </div>

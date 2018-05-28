@@ -15,11 +15,11 @@
     <div class="tran-list">
       <transition name="tran-animate">
           <transcation-list :type="0"
-                            v-show="navIndex === 0"></transcation-list>
+                            v-if="navIndex === 0"></transcation-list>
       </transition>
       <transition name="tran-animate">
           <transcation-list :type="1"
-                            v-show="navIndex === 1"></transcation-list>
+                            v-if="navIndex === 1"></transcation-list>
       </transition>
     </div>
     <m-navbar></m-navbar>

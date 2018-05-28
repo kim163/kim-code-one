@@ -7,7 +7,7 @@
       @pullingUp="loadMore"
       ref="scroll">
     <ul class="list">
-      <router-link tag="li" :to="{name:'cashDesk',query:{ id: item.id}}" class="tran-item" v-for="(item,index) in tranList"
+      <router-link tag="li" :to="{name:'mOrder',params:{ id: item.id}}" class="tran-item" v-for="(item,index) in tranList"
                    :key="index">
         <div class="type-status">
           <div class="type blue-text" v-show="item.credit === userData.userId">{{$t('transactionRecord.buy')}}</div>
