@@ -122,5 +122,10 @@ export default {
     sellerRequest:'Seller requirements',
     processing:'Processing',
     hasBeenRemoved:'Removed',
+    removing:'Removing',
+    delConfirmTitle:'Are you sure to delete the pending order',
+    delConfirmContent:'Unrecoverable after deletion',
+    cancel:'Cancel',
+    confirmYes:'Yes',
   }
 }

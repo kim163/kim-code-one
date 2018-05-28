@@ -10,7 +10,7 @@
       </div>
       <div class="confirm-footer">
         <div class="confirm-btn" @click="hideDialog">
-          <slot name="leftBtn">取消</slot>
+          <slot name="leftBtn">{{$t('postPend.cancel')}}</slot>
         </div>
         <div class="confirm-btn">
           <slot name="rightBtn"></slot>

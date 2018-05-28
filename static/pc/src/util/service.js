@@ -23,6 +23,7 @@ service.interceptors.request.use(config => {
     }
   }
   config.headers['Authorization'] = `Bearer ${store.getters.tokenInfo ? store.getters.tokenInfo.accessToken : ''}`
+  debugger
   $load.open("Loading...");
   return config
 }, error => {
