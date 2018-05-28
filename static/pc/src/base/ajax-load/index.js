@@ -12,7 +12,6 @@ var initInstance=function(){
   document.querySelector('body').appendChild(instance.$el);
 };
 let showNext=()=>{
-  debugger
   if(!instance.value){ //只有弹一个 下一个等待
     if(loadQueue.length>0){
       let setting=loadQueue.shift();
