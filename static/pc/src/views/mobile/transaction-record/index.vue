@@ -14,26 +14,12 @@
     <div class="amount-balance">{{$t('navbar.accountBalance')}}：<balance></balance></div>
     <div class="tran-list">
       <transition name="tran-animate">
-        <Scroll
-                ref="scrollIn"
-                :updateData="[tranInList]"
-                :refreshData="[]"
-                class="content"
-                @pullingDown="loadRefresh"
-                @pullingUp="loadMore" v-show="navIndex === 0">
-          <transcation-list :data="tranInList" :type="0"></transcation-list>
-        </Scroll>
+          <transcation-list :type="0"
+                            v-show="navIndex === 0"></transcation-list>
       </transition>
       <transition name="tran-animate">
-        <Scroll
-                ref="scrollComplete"
-                :updateData="[tranOverList]"
-                :refreshData="[]"
-                class="content"
-                @pullingDown="loadRefresh"
-                @pullingUp="loadMore" v-show="navIndex === 1">
-          <transcation-list :data="tranOverList" :type="1"></transcation-list>
-        </Scroll>
+          <transcation-list :type="1"
+                            v-show="navIndex === 1"></transcation-list>
       </transition>
     </div>
     <m-navbar></m-navbar>
@@ -45,12 +31,7 @@
   import mNavbar from 'components/m-navbar';
   import balance from 'components/balance'
   import TranscationList from './transaction-list';
-  import Scroll from 'vue-slim-better-scroll'
   import {mapGetters} from 'vuex'
-  import {
-    getOrderxPage,
-    getTransactionPage
-  } from 'api/transaction'
 
   export default {
     name: "transaction-record",
@@ -59,7 +40,7 @@
       mHeadnav,
       mNavbar,
       TranscationList,
-      Scroll,
+      // Scroll,
       balance
     },
     computed: {
@@ -70,71 +51,8 @@
     data() {
       return {
         navIndex: 0,
-        limit: 10,
-        offsetIn: 0,//交易中页数
-        tranInList: [],//交易中列表
-        offsetOver: 0,//交易完成页数
-        tranOverList: []//交易完成列表
       }
     },
-    watch: {
-      navIndex() {
-        this.getTranList()
-      }
-    },
-    methods: {
-      getTranList() {
-        const api = this.navIndex === 0 ? getOrderxPage : getTransactionPage
-        const request = {
-          limit: this.limit,
-          offset: this.navIndex === 0 ? this.offsetIn : this.offsetOver,
-          credit: this.userData.userId,
-          debit: this.userData.userId,
-          types: [11, 12]
-        }
-        api(request).then(res => {
-          if (res.code === 10000) {
-            console.log('getOrderxPage res:', res)
-            if (this.navIndex === 0) {
-              this.tranInList = [...this.tranInList, ...res.data]
-              if(Math.ceil(res.pageInfo.total / this.limit) - 1 <= this.offsetIn){
-                this.$refs.scrollIn.update(true)
-              }
-            } else {
-              this.tranOverList = [...this.tranOverList, ...res.data]
-              if(Math.ceil(res.pageInfo.total / this.limit) - 1 <= this.offsetOver){
-                this.$refs.scrollComplete.update(true)
-              }
-            }
-          } else {
-            toast(res.message)
-          }
-        }).catch(error => {
-          toast("请求失败")
-        })
-      },
-      loadMore() {
-        if (this.navIndex === 0) {
-          this.offsetIn += 1
-        } else {
-          this.offsetOver += 1
-        }
-        this.getTranList()
-      },
-      loadRefresh() {
-        if (this.navIndex === 0) {
-          this.offsetIn = 0
-          this.tranInList = []
-        } else {
-          this.offsetOver = 0
-          this.tranOverList = []
-        }
-        this.getTranList()
-      }
-    },
-    mounted() {
-      this.getTranList()
-    }
   }
 </script>
 

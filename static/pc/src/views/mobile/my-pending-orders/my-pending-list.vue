@@ -110,7 +110,7 @@
           if(res.code === 10000){
             console.log('pending data:',res)
             if(format){
-              this.orderList[this.offset] = res.data
+              this.orderList = [...res.data]
             }else{
               this.orderList = Array.from(new Set([...this.orderList,...res.data]))
             }
