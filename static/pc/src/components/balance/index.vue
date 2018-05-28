@@ -1,6 +1,6 @@
 <template>
   <span>
-       {{balance}}
+       {{balance}} {{assetCode}}
   </span>
 </template>
 <script>
@@ -10,7 +10,8 @@
   export default {
     data() {
       return {
-        balance:'0'
+        balance:'0',
+        assetCode:''
       }
     },
     computed: {
@@ -23,8 +24,10 @@
             userId: userId
           }
           transaction.getAccountChainPage(this.request).then(res => {
+
             if(res.code == '10000'){
               this.balance=res.data[0].balance;
+              this.assetCode=res.data[0].assetCode;
             }else{
               this.balance='刷新后再试';
             }

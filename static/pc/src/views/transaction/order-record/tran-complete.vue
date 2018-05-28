@@ -33,7 +33,9 @@
               <span class="unit"> 0.01 CNY</span>
               <span class="unit red">{{order.creditAmountTwin}} CNY</span>
               <span class="unit">
-                交易完成
+
+                <span v-if="order.status =='204'">交易取消</span>
+                <span v-else>交易完成</span>
                 <!--{{order.createtime}}-->
               </span>
               <span class="unit">  <a class="btn btn-primary">详情</a>  </span>

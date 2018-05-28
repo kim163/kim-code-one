@@ -72,7 +72,7 @@
                 </span>
               </div>
 
-              <paging-by :data="OrderListRemoved.pageInfo" @search="getOrderList"></paging-by>
+              <paging-by :data="OrderListRemoved.pageInfo" @search="getRemovedOrderList"></paging-by>
 
             </div>
           </div>

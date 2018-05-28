@@ -1,6 +1,6 @@
 <template>
   <div class="transell-main transell-main-box">
-    <!--<m-headnav>{{$t('postPend.postTitle')}}</m-headnav>-->
+    <!--<m-header>{{$t('postPend.postTitle')}}</m-header>-->
     <m-header>订单详情</m-header>
 
     <div class="cash-details">
@@ -11,22 +11,22 @@
       <ul class="details-ul">
         <li>
           <span class="l-title">订单号 :</span>
-          <span class="fr">DSJW92JF00IDFKSPKFM020409232</span>
+          <span class="fr order-id-li">{{$route.params.id}}</span>
         </li>
         <li>
           <span class="l-title">卖方 :</span>
-          <span class="fr">深圳马化腾</span>
+          <span class="fr">{{DetailList.debitName}}</span>
         </li>
         <li>
           <span class="l-title">交易金额 :</span>
           <span class="fr">
-                 <span class="red">50 CNY</span>
+                 <span class="red">{{DetailList.debitAmountTwin}} CNY</span>
              </span>
         </li>
         <li>
           <span class="l-title">交易数量 :</span>
           <span class="fr">
-                 <span class="red">5000 UET</span>
+                 <span class="red">{{DetailList.debitAmount}} UET</span>
              </span>
         </li>
         <li>
@@ -35,29 +35,38 @@
       </ul>
       <ul class="details-ul pay-detail">
         <li>
-          <span class="l-title">卖家收款 :</span>
-          <span class="fr">支付宝</span>
+          <span class="l-title">卖家收款 : </span>
+          <span class="fr0">
+            <span v-if="DetailList.debitAccountMerchantTwin == '支付宝'"><i class="iconfont icon-pay-alipay"></i></span>
+            <span v-if="DetailList.debitAccountMerchantTwin == '微信'"><i class="iconfont icon-pay-wechat"></i></span>
+            {{DetailList.debitAccountMerchantTwin}}
+          </span>
         </li>
         <li>
-          <span class="l-title">收款姓名 :</span>
-          <span class="fr">马云</span>
+          <span class="l-title">收款姓名 : </span>
+          <span class="fr0">{{DetailList.debitAccountNameTwin}}</span>
         </li>
         <li>
-          <span class="l-title">收款账号 :</span>
-          <span class="fr">
-                 <span class="">fjafmcw@163.com</span>
+          <span class="l-title">收款账号 : </span>
+          <span class="fr0">
+                 <span class="">{{DetailList.debitAccountTwin}}</span>
              </span>
         </li>
-        <li>
-          <span class="l-title">收款二维码 :</span>
-          <span class="fr">
-                 <span class="red">二维码</span>
-             </span>
+        <li class="heightauto">
+          <span class="l-title">收款二维码 : </span>
+          <span class="qrcode-box">
+                <!--<img src="~images/qrcode.jpg" :src="DetailList.debitAccountQrCodeUrlTwin" class="qrcode-img">-->
+                <img src="~images/qrcode.jpg" class="qrcode-img">
+                 <span class="qrcode-tips">长按二维码保存</span>
+           </span>
         </li>
 
       </ul>
 
-
+      <div class="btn-group">
+          <input type="button" class="btn btn-block btn-primary"  value="我已完成付款">
+          <input type="button" class="btn btn-block btn-cancel"  value="取消订单">
+      </div>
     </div>
 
   </div>
@@ -125,39 +134,87 @@
 <style lang="scss">
   @import "~assets/scss/mobile";
 
-  .cash-details{
-
-  }
   .cas-main{
     background: #F5F5F5;
   }
-
+  .order-id-li{
+   width:79%;
+    text-align: right;
+    word-break: break-all;
+  }
   .c-red,.red{color:red;}
   .c-blue{color:#5087FF;}
   .trade-time-bar{
     background: #fff;
-    padding:r(20) r(15);
-    height:r(60);
+    padding:r(10) r(15);
+    height:r(40);
     border-bottom:1px solid #d8d8d8;
-    margin-bottom:r(20);
+    margin-bottom:r(10);
   }
   .details-ul{
     border-bottom:1px solid #d8d8d8;
     border-top:1px solid #d8d8d8;
+    margin-bottom:r(10);
   li{
     background: #fff;
-    height:r(50);
-    padding:r(15);
-    font-size:f(15);
+    min-height:r(35);
+    padding:r(10) r(15);
+    font-size:f(14);
     color:#8f8f8f;
+    overflow:hidden;
+    /*border-bottom:1px solid #f9f9f9;*/
+    &.heightauto{
+      height:180px;
+    }
+     .qrcode-img{
+       width:150px;
+     }
+     .fr0{
+       padding:0 0 0 r(10);
+     }
+     .qrcode-tips{
+       display:inline-block;
+        width:r(100);
+       word-break: break-all;
+      }
   .l-title{
     display:inline-block;
-    width:r(75);
-    text-align: right;
+    float:left;
+    /*width:r(85);*/
+    /*text-align: right;*/
     color:#333;
   }
   }
   }
 
 
+  .btn-group{
+     padding:r(10) r(15);
+      .btn {
+        display: inline-block;
+        color: #5087ff;
+        border-radius: 4px;
+        height: r(45);
+        line-height: r(45);
+        padding: 0 r(20);
+        margin: r(10)0 0 0;
+        cursor: pointer;
+        font-size: r(18);
+      }
+      .btn-primary {
+        border: 1px solid #5087ff;
+        background: #5087ff;
+        color: #fff;
+      }
+      .btn-cancel {
+        color: #787876;
+      }
+      .btn-block{
+        display:block;
+        width:100%;
+      }
+      .btn-gray{
+        background: #E4E4E4;
+      }
+  }
 </style>
