@@ -72,7 +72,7 @@
     }
   }
 </script>
-<style lang="scss" scoped>
+<style lang="scss" scoped >
   @import "~assets/scss/mixin";
 
   .tool-warp {
@@ -111,6 +111,9 @@
         .iconfont {
           @include f(18px);
           margin-right: r(10);
+        }
+        span{
+          color: #787876;
         }
       }
       .border-bot{
