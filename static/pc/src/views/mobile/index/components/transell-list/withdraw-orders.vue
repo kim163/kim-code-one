@@ -34,7 +34,7 @@
          <p>{{$t('transactionHome.accCardNum')}} </p>
        </div>
        <div class="btn-group">
-          <input type="button" class="mobile-pubtn"  :value="$t('transactionHome.order')" @click="publishSell()" />
+          <input type="button" class="mobile-pubtn pubtn-white"  value="倒计时06:30等待买家付款" @click="publishSell()" />
        </div>
     </div>
 
@@ -59,5 +59,45 @@
 </script>
 <style lang="scss">
   @import "~assets/scss/mobile";
+
+ .withdraw-orders{
+   .withdraword-content{
+     padding: r(10) 0 r(50);
+     @include  f(15px);
+     color: $font-color;
+     .ordernum-group{
+       background: $white;
+       border-top: 1px solid #D8D8D8;
+       border-bottom: 1px solid #D8D8D8;
+       padding: r(5) r(10);
+     }
+     .form-group{
+       height: r(44);
+       line-height: r(44);
+       background: $white;
+       border-bottom: 1px solid #D8D8D8;
+       padding: 0 r(10);
+       label{
+         display: block;
+       }
+       span{
+         float: right;
+         color: #787876;
+       }
+     }
+     .bankinfo-group{
+       background: $white;
+       padding: r(6) r(10);
+       p{
+         line-height: r(26);
+       }
+     }
+     .btn-group{
+       margin: r(20) auto 0;
+       width: 90%;
+     }
+   }
+
+ }
 
 </style>

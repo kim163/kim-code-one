@@ -61,7 +61,7 @@ export default {
   transactionHome: {
     buyUet: '买入UET',
     saleUet: '卖出UET',
-    mBuyUet: '购买UET',
+    mBuyUet: 'UET充值',
     msaleUet: '出售UET',
     postPendOrd: '发布挂单',
     orderRecord: '订单记录',
@@ -93,6 +93,16 @@ export default {
     bankCategory: '银行类别',
     accountName: '开户姓名',
     accCardNum: '开户卡号',
+    nextStep: '下一步',
+    buyQuantity: '买入数量',
+    convertAmount: '折合金额',
+    mbuyUetTips: '提示：您输入的数量低于最低买入数量',
+    miniPurchase: '最低买入100UET',
+    bankTransfer: '银行卡转账',
+    alipayTransfer: '支付宝转账',
+    wechatTransfer:'微信转账',
+    transferName: '转账姓名',
+    transferMethod: '转账方式',
 
   },
   transactionRecord: {
