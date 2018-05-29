@@ -4,15 +4,16 @@
     <div class="cash-details">
       <div class="trade-time-bar">
         <span class="c-blue" v-if="DetailList.type == '12'">买入</span>
-        <span class="c-orange" v-if="DetailList.type == '11'">卖出</span>
+        <span class="c-orange" v-else-if="DetailList.type == '11'">卖出</span>
+        <span class="c-blue" v-else>申诉订单</span>
         <span class="fr">等待付款 {{DetailList.intervalTime | Date('hh:mm:ss')}}</span>
       </div>
 
-      <div class="mobilenav-tabs">
-        <span v-for="(item,i) in detailType" @click="detailTypeItem=item.value" :class="{active:detailTypeItem==item.value}" :key="item.value">
-            {{item.value}}
-        </span>
-      </div>
+      <!--<div class="mobilenav-tabs">-->
+        <!--<span v-for="(item,i) in detailType" @click="detailTypeItem=item.value" :class="{active:detailTypeItem==item.value}" :key="item.value">-->
+            <!--{{item.value}}-->
+        <!--</span>-->
+      <!--</div>-->
 
       <div v-if="detailTypeItem =='订单详情'">
           <ul class="details-ul">
@@ -52,13 +53,16 @@
             </li>
             <li>
               <span class="l-title">收款姓名 : </span>
-              <div class="fr0">{{DetailList.debitAccountNameTwin}}</div>
+              <div class="fr0">{{DetailList.debitAccountNameTwin}}
+                <a href="javascript:void(0);" class="copy-btn" @click="copystr(DetailList.debitAccountNameTwin)" >{{$t('transactionHome.copyBtn')}}</a>
+              </div>
             </li>
             <li>
               <span class="l-title">收款账号 : </span>
               <div class="fr0">
                      <span class="">{{DetailList.debitAccountTwin}}</span>
-                 </div>
+                     <a href="javascript:void(0);" class="copy-btn" @click="copystr(DetailList.debitAccountTwin)" >{{$t('transactionHome.copyBtn')}}</a>
+              </div>
             </li>
             <li class="heightauto">
               <span class="l-title">收款二维码 : </span>
@@ -123,8 +127,12 @@
       fetchData(){
         this.loading = true;
         this.request={
+//          limit:'20',
+//          offset:'0',
           orderId:this.$route.params.id
         }
+        console.log('传参数')
+        console.log(this.request)
         transaction.getOrderx(this.request).then(res => {
           this.loading = false;
           console.log('订单详情记录:');
@@ -140,6 +148,10 @@
 
         this.loading = false;
       },
+      copystr(text) {
+        text.$copy();
+        toast(this.$t('transactionHome.successCopy'));
+      }
     },
     created() {
       this.fetchData();
@@ -186,7 +198,7 @@
     background: #fff;
     min-height:r(35);
     padding:r(8) r(15);
-    font-size:r(16);
+    font-size:f(16px);
     color:#8f8f8f;
     overflow:hidden;
     &.heightauto{
@@ -197,6 +209,7 @@
      }
      .fr0{
        display:inline-block;
+       width:50%;
        padding:0 0 0 r(10);
      }
      .qrcode-tips{
