@@ -10,10 +10,11 @@
      <div class="account-balline">
        {{$t('navbar.accountBalance')}}：<balance></balance>
      </div>
+      <div class="tran-container">
+       <tranbuy-list v-if="islogin && transactItem=='buyUet'"></tranbuy-list>
 
-     <tranbuy-list v-show="transactItem=='buyUet'" v-if="islogin"></tranbuy-list>
-
-     <transell-list v-show="transactItem=='saleUet'" v-if="islogin"></transell-list>
+       <transell-list v-if="islogin && transactItem=='saleUet'"></transell-list>
+      </div>
 
      <m-navbar></m-navbar>
   </div>
@@ -74,6 +75,13 @@
       border-top: 1px solid #D8D8D8;
       border-bottom: 1px solid #D8D8D8;
     }
-
+    .tran-container{
+      position: absolute;
+      width: 100%;
+      height: calc(100% - #{r(202)});
+      top: r(153);
+      left: 0;
+      overflow: hidden;
+    }
   }
 </style>
