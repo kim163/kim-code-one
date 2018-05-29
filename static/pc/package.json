@@ -22,7 +22,8 @@
     "vue-lazyload": "^1.0.5",
     "vue-router": "^2.3.1",
     "vue-slim-better-scroll": "^1.2.0",
-    "vuex": "^2.3.1"
+    "vuex": "^2.3.1",
+    "webstomp-client": "^1.2.0"
   },
   "devDependencies": {
     "autoprefixer": "^6.7.2",
