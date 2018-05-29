@@ -4,12 +4,17 @@ import store from '@/store';	//加载状态管理器
 import router from '@/router';
 import {$localStorage, $sessionStorage} from './storage';
 
+// var promiseArr = {}
+// let cancel
 const service = axios.create({
   baseURL: process.env.BASE_URL,
   headers: {
     'Content-Type': 'application/json; charset=utf-8'
   },
-  timeout: 50000
+  timeout: 50000,
+  // cancelToken: new axios.CancelToken(function (c) {
+  //   cancel = c  // 记录当前请求的取消方法
+  // })
 });
 
 // request拦截器
@@ -24,6 +29,14 @@ service.interceptors.request.use(config => {
   }
   config.headers['Authorization'] = `Bearer ${store.getters.tokenInfo ? store.getters.tokenInfo.accessToken : ''}`
   $load.open("Loading...");
+
+  // if (promiseArr[config.url]) {
+  //   promiseArr[config.url]('操作取消')
+  //   promiseArr[config.url] = cancel
+  // } else {
+  //   promiseArr[config.url] = cancel
+  // }
+
   return config
 }, error => {
   // Do something with request error
