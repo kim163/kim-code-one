@@ -342,3 +342,13 @@ select{
   }
 }
 
+input.mobile-pubtn{
+   width: 100%;
+   height: r(45);
+   line-height: r(45);
+   text-align: center;
+   border-radius: r(4);
+   @include  f(18px);
+   color: $white;
+   background: #4982FF;
+}
