@@ -83,6 +83,16 @@ export default {
     quantityAvailSale: 'Quantity available for sale',
     buyableQuantity: 'Buyable quantity',
     tranAmount: 'Transaction amount',
+    msaleUetTips: 'Tip: The quantity you entered is less than the minimum quantity sold',
+    order: 'Order',
+    withdrawOrders: 'Withdraw orders',
+    orderNumber: 'UET order number',
+    tranNumber: 'Number of transactions',
+    buyer: 'Buyer',
+    seller: 'Seller',
+    bankCategory: 'Bank category',
+    accountName: 'Account name',
+    accCardNum: 'Account card number',
 
   },
   transactionRecord: {

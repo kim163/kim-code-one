@@ -83,6 +83,16 @@ export default {
     quantityAvailSale: '可卖数量',
     buyableQuantity: '可买数量',
     tranAmount: '交易金额',
+    msaleUetTips: '提示：您输入的数量低于最低卖出数量',
+    order: '下单',
+    withdrawOrders: '提现订单',
+    orderNumber: 'UET订单编号',
+    tranNumber: '交易数量',
+    buyer: '买家',
+    seller: '卖家',
+    bankCategory: '银行类别',
+    accountName: '开户姓名',
+    accCardNum: '开户卡号',
 
   },
   transactionRecord: {
