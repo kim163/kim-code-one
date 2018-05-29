@@ -77,7 +77,7 @@
 
           <div class="btn-group">
               <input type="button" class="btn btn-block btn-primary"  value="我已完成付款">
-              <input type="button" class="btn btn-block btn-cancel"  value="取消订单">
+              <input type="button" class="btn btn-block btn-cancel" @click="cancelOrder" v-if="DetailList.status =='45'" value="取消订单">
 
           </div>
       </div>
@@ -113,7 +113,7 @@
         DetailList: {
         },
         orderData:{
-          orderId:this.$route.params.id,
+          orderId:'',
           debitName:'', // 交易买方
         }
       };
@@ -123,8 +123,6 @@
       fetchData(){
         this.loading = true;
         this.request={
-//          limit:'20',
-//          offset:'0',
           orderId:this.$route.params.id
         }
         console.log('传参数')
@@ -144,12 +142,33 @@
 
         this.loading = false;
       },
+      cancelOrder(){
+        this.loading = true;
+        this.request={
+          orderId:this.$route.params.id
+        }
+        transaction.cancelOrder(this.request).then(res => {
+          this.loading = false;
+
+        }).catch(error => {
+          this.reset(res.message);
+        });
+
+        this.loading = false;
+      },
+
       copystr(text) {
         text.$copy();
         toast(this.$t('transactionHome.successCopy'));
       }
     },
-    created() {
+    beforecreate(){
+      this.fetchData();
+    },
+      created() {
+      this.request={
+        orderId:''
+      }
       this.fetchData();
     },
     mouted(){

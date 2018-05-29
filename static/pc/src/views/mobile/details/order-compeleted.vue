@@ -6,7 +6,7 @@
         <span class="c-blue" v-if="DetailList.type == '12'">买入</span>
         <span class="c-orange" v-else-if="DetailList.type == '11'">卖出</span>
         <span class="c-blue" v-else>申诉订单</span>
-        <span class="fr">等待付款 {{DetailList.intervalTime | Date('hh:mm:ss')}}</span>
+        <span class="fr">已完成</span>
       </div>
 
       <!--<div class="mobilenav-tabs">-->
@@ -76,13 +76,11 @@
         </ul>
 
         <div class="btn-group">
-          <input type="button" class="btn btn-block btn-primary"  value="我已完成付款">
-          <input type="button" class="btn btn-block btn-primary"  value="提出发证">
-          <input type="button" class="btn btn-block btn-cancel"  value="取消订单">
-          <input type="button" class="btn btn-block btn-gray"  value="我已付款">
+          <!--<input type="button" class="btn btn-block btn-primary"  value="我已完成付款">-->
+          <!--<input type="button" class="btn btn-block btn-primary"  value="提出发证">-->
+          <!--<input type="button" class="btn btn-block btn-cancel"  value="取消订单">-->
+          <input type="button" class="btn btn-block btn-gray" readonly  value="我已付款">
 
-          <input type="button" class="btn btn-block btn-primary"  value="确定收款">
-          <input type="button" class="btn btn-block btn-primary"  value="我要申诉">
         </div>
       </div>
 
@@ -133,7 +131,7 @@
         }
         console.log('传参数')
         console.log(this.request)
-        transaction.getOrderx(this.request).then(res => {
+        transaction.getCoinTransactionHistory(this.request).then(res => {
           this.loading = false;
           console.log('订单详情记录:');
           console.log(res.data);
@@ -254,6 +252,7 @@
   }
   .btn-gray{
     background: #E4E4E4;
+    color:#666;
   }
   }
   .icon-pay-bank{
