@@ -112,6 +112,9 @@
           @include f(18px);
           margin-right: r(10);
         }
+        span{
+          color: #787876;
+        }
       }
       .border-bot{
         border-bottom: 1px solid #D8D8D8;
