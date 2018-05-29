@@ -5,6 +5,8 @@
             :updateData="[orderList]"
             :refreshData="[]"
             class="content"
+            :pullDownConfig="pullDownCfg"
+            :pullUpConfig="pullUpCfg"
             @pullingDown="loadRefresh"
             @pullingUp="loadMore">
       <ul>
@@ -48,6 +50,7 @@
   import Scroll from 'vue-slim-better-scroll'
   import {mapGetters} from 'vuex'
   import ConfirmDialog from 'components/confirm'
+  import { generateTitle } from '@/util/i18n'
   import {
     getOrderxPendingPage,
     getOrderxPendingUnshelve,
@@ -65,7 +68,16 @@
         offset:0,
         total:0,
         showConfirm: false,
-        orderId:''
+        orderId:'',
+        pullDownCfg:{
+          txt:this.generateTitle('scorllCfg.pullDownText')
+        },
+        pullUpCfg:{
+          txt:{
+            more:this.generateTitle('scorllCfg.pullUpMore'),
+            noMore:this.generateTitle('scorllCfg.pullUpNoMore')
+          }
+        }
       }
     },
     components:{
@@ -87,6 +99,7 @@
       }
     },
     methods:{
+      generateTitle,
       getData(format = false){
         const api = this.tabType === 1 ? getOrderxPendingPage : getOrderxPendingUnshelve
         const request = {

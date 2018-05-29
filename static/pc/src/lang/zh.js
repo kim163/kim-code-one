@@ -145,6 +145,10 @@ export default {
     delConfirmContent:'删除后不可恢复',
     cancel:'取消',
     confirmYes:'确认',
+  },
+  scorllCfg:{
+    pullDownText:'刷新成功',
+    pullUpMore:'上拉加载',
+    pullUpNoMore:'- 我是有底线的 -'
   }
-
 }

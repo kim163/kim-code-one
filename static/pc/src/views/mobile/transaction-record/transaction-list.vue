@@ -3,6 +3,8 @@
       :updateData="[tranList]"
       :refreshData="[]"
       class="content"
+      :pullDownConfig="pullDownCfg"
+      :pullUpConfig="pullUpCfg"
       @pullingDown="loadRefresh"
       @pullingUp="loadMore"
       ref="scroll">
@@ -40,6 +42,7 @@
 <script>
   import {mapGetters} from 'vuex'
   import Scroll from 'vue-slim-better-scroll'
+  import { generateTitle } from '@/util/i18n'
   import {
     getOrderxPage,
     getTransactionPage
@@ -51,7 +54,16 @@
         limit: 10,
         offset: 0,//交易页数
         tranList: [],//交易列表
-        total:0 //总条数
+        total:0, //总条数
+        pullDownCfg:{
+          txt:this.generateTitle('scorllCfg.pullDownText')
+        },
+        pullUpCfg:{
+          txt:{
+            more:this.generateTitle('scorllCfg.pullUpMore'),
+            noMore:this.generateTitle('scorllCfg.pullUpNoMore')
+          }
+        }
       }
     },
     components: {
@@ -72,6 +84,7 @@
       },
     },
     methods: {
+      generateTitle,
       getTranList() {
         const api = this.type === 0 ? getOrderxPage : getTransactionPage
         const request = {

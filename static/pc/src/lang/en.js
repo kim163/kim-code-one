@@ -144,5 +144,10 @@ export default {
     delConfirmContent:'Unrecoverable after deletion',
     cancel:'Cancel',
     confirmYes:'Yes',
+  },
+  scorllCfg:{
+    pullDownText:'Refreshed successfully',
+    pullUpMore:'Pull up loading',
+    pullUpNoMore:'- No More -'
   }
 }

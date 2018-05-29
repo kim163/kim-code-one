@@ -4,6 +4,8 @@
           :updateData="[dataList.data]"
           :refreshData="[]"
           class="content"
+          :pullDownConfig="pullDownCfg"
+          :pullUpConfig="pullUpCfg"
           @pullingDown="loadRefresh"
           @pullingUp="loadMore"
   >
@@ -92,6 +94,15 @@
           startBalance: 0
         },
         buyAmountUet: '',
+        pullDownCfg:{
+          txt:this.generateTitle('scorllCfg.pullDownText')
+        },
+        pullUpCfg:{
+          txt:{
+            more:this.generateTitle('scorllCfg.pullUpMore'),
+            noMore:this.generateTitle('scorllCfg.pullUpNoMore')
+          }
+        }
       }
     },
     computed: {
