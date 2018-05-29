@@ -73,7 +73,7 @@
     },
     methods: {
       getTranList() {
-        const api = this.navIndex === 0 ? getOrderxPage : getTransactionPage
+        const api = this.type === 0 ? getOrderxPage : getTransactionPage
         const request = {
           limit: this.limit,
           offset: this.offset,
@@ -81,6 +81,7 @@
           debit: this.userData.userId,
           types: [11, 12]
         }
+        console.log(request)
         api(request).then(res => {
           if (res.code === 10000) {
             console.log('getOrderxPage res:', res)
