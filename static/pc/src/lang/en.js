@@ -148,6 +148,6 @@ export default {
   scorllCfg:{
     pullDownText:'Refreshed successfully',
     pullUpMore:'Pull up loading',
-    pullUpNoMore:'No More'
+    pullUpNoMore:'- No More -'
   }
 }

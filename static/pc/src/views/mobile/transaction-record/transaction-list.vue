@@ -56,10 +56,10 @@
         tranList: [],//交易列表
         total:0, //总条数
         pullDownCfg:{
-          text:this.generateTitle('scorllCfg.pullDownText')
+          txt:this.generateTitle('scorllCfg.pullDownText')
         },
         pullUpCfg:{
-          text:{
+          txt:{
             more:this.generateTitle('scorllCfg.pullUpMore'),
             noMore:this.generateTitle('scorllCfg.pullUpNoMore')
           }

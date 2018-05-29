@@ -149,6 +149,6 @@ export default {
   scorllCfg:{
     pullDownText:'刷新成功',
     pullUpMore:'上拉加载',
-    pullUpNoMore:'我是有底线的'
+    pullUpNoMore:'- 我是有底线的 -'
   }
 }
