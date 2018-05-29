@@ -44,6 +44,18 @@ export default [
     }
   },
   {
+    path: "/m/withdrawOrder/:id?",
+    name: 'withdrawOrder',
+    component(resolve){
+      // 提现订单
+      return resolve(require('views/mobile/index/components/transell-list/withdraw-orders'))
+    },
+    meta:{
+      noCache: true,
+      isMobilePage: "mobile-body"
+    }
+  },
+  {
     path: "/m/cash",
     name: 'cashDesk',
     component(resolve){
