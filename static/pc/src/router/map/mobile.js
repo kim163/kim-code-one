@@ -115,8 +115,30 @@ export default [
     path: "/m/order/:id",
     name: 'mOrder',
     component(resolve){
-      // 订单详情
+      // 交易中-订单详情
       return resolve(require('views/mobile/details/order-progress'))
+    },
+    meta:{
+       isMobilePage: "mobile-body"
+    }
+  },
+ {
+    path: "/m/orderOver/:id",
+    name: 'mOrderOver',
+    component(resolve){
+      // 已完成-订单详情
+      return resolve(require('views/mobile/details/order-compeleted'))
+    },
+    meta:{
+       isMobilePage: "mobile-body"
+    }
+  },
+ {
+    path: "/m/orderAppeal/:id",
+    name: 'mOrderAppeal',
+    component(resolve){
+      // 申诉订单-订单详情
+      return resolve(require('views/mobile/details/order-appeal'))
     },
     meta:{
        isMobilePage: "mobile-body"
