@@ -1,7 +1,6 @@
 <template>
   <div>
     <m-headnav>{{$t('postPend.postTitle')}}</m-headnav>
-
     <div class="tab-box-out">
       <ul class="pop-tab tab-box">
         <li v-for="item in pendingType" @click="pendingItem=item.value" class="s" :class="{active:pendingItem==item.value}" :key="item.value">
