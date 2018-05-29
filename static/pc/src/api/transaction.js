@@ -84,6 +84,12 @@ export const getOrderx = jsonData => service({
   method: 'post',
   data: jsonData
 });
+// 获取 订单记录-已完成- 详情
+export const getCoinTransactionHistory = jsonData => service({
+  url: numversion+`order/chain/getCoinTransactionHistory`,
+  method: 'post',
+  data: jsonData
+});
 // 获取 订单记录- 获取申诉列表
 export const getAppealHistoryPage = jsonData => service({
   url: numversion+`appeal/getAppealHistoryPage`,
@@ -106,6 +112,12 @@ export const getOrderxPending = jsonData => service({
 // 获取 代币账户列表信息- 实时账户余额
 export const getAccountChainPage = jsonData => service({
   url: numversion+`account/chain/getAccountChainPage`,
+  method: 'post',
+  data: jsonData
+});
+// 订单详情--取消订单
+export const cancelOrder = jsonData => service({
+  url: numversion+`order/c2c/cancelOrder`,
   method: 'post',
   data: jsonData
 });

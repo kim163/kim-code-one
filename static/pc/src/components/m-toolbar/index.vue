@@ -17,7 +17,7 @@
               {{$t('navbar.nickName')}} <span class="fr"> {{userData.nickname}} </span>
             </div>
             <div class="tool-item-href border-bot">
-              {{$t('navbar.accountBalance')}} <span class="fr"></span>
+              {{$t('navbar.accountBalance')}} <span class="fr"><balance></balance></span>
             </div>
             <router-link :to="{name:'mIndex'}" class="tool-item-href mt-line"><i class="iconfont icon-busine-list"></i>{{$t('navbar.busineList')}}</router-link>
 
@@ -40,7 +40,7 @@
 <script>
   import {SETTING} from "@/assets/data"
   import {mapGetters} from 'vuex'
-
+  import Balance from 'components/balance'
   export default {
     data() {
       return {
@@ -50,6 +50,9 @@
       }
     },
     props: ["value"],
+    components:{
+      Balance
+    },
     computed: {
       ...mapGetters(["userData", 'islogin']),
       language() {
