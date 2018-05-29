@@ -57,7 +57,7 @@
   import mHeader from "components/m-header"
   import {$localStorage, $sessionStorage} from '@/util/storage'
   import { generateTitle } from '@/util/i18n'
-
+  import aesutil from '@/util/aesutil';
   import {mapGetters,mapActions,mapMutations} from 'vuex'
 
   export default {
@@ -125,6 +125,7 @@
 
               let {rquest} = this.$route.query;
               $localStorage.set('tokenInfo', JSON.stringify(res.data.tokenVo));
+              $localStorage.set('userData', JSON.stringify(aesutil.encrypt(res.data.userId)))
               this.$store.dispatch('UPDATE_USERDATA');
 
              // this.$router.replace({path:"/mh/"});

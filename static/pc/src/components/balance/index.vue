@@ -15,11 +15,11 @@
       }
     },
     computed: {
-      ...mapGetters(["userData", "islogin"]),
+      ...mapGetters(["userId", "islogin"]),
     },
     methods: {
       getBalance(order){
-          let userId = this.userData.userId;
+          let userId = this.userId;
           this.request = {
             userId: userId
           }
