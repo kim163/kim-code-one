@@ -10,8 +10,8 @@
       <router-link tag="li" :to="{name:'mOrder',params:{ id: item.id}}" class="tran-item" v-for="(item,index) in tranList"
                    :key="index">
         <div class="type-status">
-          <div class="type blue-text" v-show="item.credit === userData.userId">{{$t('transactionRecord.buy')}}</div>
-          <div class="type red-text" v-show="item.debit === userData.userId">{{$t('transactionRecord.sale')}}</div>
+          <div class="type blue-text" v-show="item.credit === userId">{{$t('transactionRecord.buy')}}</div>
+          <div class="type red-text" v-show="item.debit === userId">{{$t('transactionRecord.sale')}}</div>
           <div class="status-time" v-if="type === 0">
             <div class="status">
               {{(item.status === 45 ? $t('transactionRecord.waitingForPayment') :
@@ -65,7 +65,7 @@
     },
     computed: {
       ...mapGetters([
-        "userData"
+        "userId"
       ]),
       totalPage () {
         return Math.ceil(this.total / this.limit)
@@ -77,8 +77,8 @@
         const request = {
           limit: this.limit,
           offset: this.offset,
-          credit: this.userData.userId,
-          debit: this.userData.userId,
+          credit: this.userId,
+          debit: this.userId,
           types: [11, 12]
         }
         console.log(request)

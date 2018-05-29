@@ -74,7 +74,7 @@
     },
     computed:{
       ...mapGetters([
-        'userData'
+        'userId'
       ]),
       totalPage () {
         return Math.ceil(this.total / this.limit)
@@ -95,8 +95,8 @@
         }
         if(this.tabType === 1){
           Object.assign(request,{
-            credit: this.userData.userId,
-            debit: this.userData.userId
+            credit: this.userId,
+            debit: this.userId
           })
         }else{
           Object.assign(request,{

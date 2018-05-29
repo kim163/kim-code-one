@@ -4,6 +4,7 @@ import router from '@/router'; //引入vue
 import { show } from 'api';     // 页面刷新获取用户数据
 import * as types from './types'; //引入vue
 import {$localStorage,$sessionStorage} from '@/util/storage';
+import aesutil from '@/util/aesutil';
 Vue.use(Vuex);
 export default new Vuex.Store({
   state:{ //不要直接访问state
@@ -42,6 +43,9 @@ export default new Vuex.Store({
     userData(state,getters){ //其有可能进行过滤
       return state.userData;
     },
+    userId(state,getters){
+      return $localStorage.get('userData') ? JSON.parse(aesutil.decrypt($localStorage.get('userData'))).userId : state.userData.userId;
+    },
     islogin(state,getters){  // 根据是否有 tokenVo 并且请求返回值不为 15016
       let tokenInfo = JSON.parse($localStorage.get('tokenInfo'));
       if($localStorage&&tokenInfo){ //先查localStorage
@@ -70,6 +74,12 @@ export default new Vuex.Store({
       state.showFooter=val
     },
     [types.SET_USERDATA](state,val={}){
+      if(val.userId != ''){
+        const Obj = {
+          userId:val.userId
+        }
+        $localStorage.set('userData', aesutil.encrypt(JSON.stringify(Obj)))
+      }
       Object.assign(state.userData,val||{});
     },
     [types.SHOW_LOGIN](state,val){
@@ -98,6 +108,7 @@ export default new Vuex.Store({
     [types.LOGIN_OUT]({commit,dispatch},val){ //退出登录
        dispatch(types.INIT_INFO);
        $localStorage.remove('tokenInfo');
+       $localStorage.remove('userData');
        dispatch(types.UPDATE_TOKEN_INFO, null);
        dispatch(types.CHECK_ONLINE, false);
        router.push({path: '/'});
