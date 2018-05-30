@@ -160,5 +160,16 @@ export default {
     pullDownText:'刷新成功',
     pullUpMore:'上拉加载',
     pullUpNoMore:'- 我是有底线的 -'
+  },
+  cash:{ //收银台
+    title:'久安收银台',
+    realTime:'正在使用即时到账交易',
+    orderNumber:'订单号',
+    amountsPayable:'应付金额',
+    currentExchangeRate:'当前汇率',
+    BusinessName:'商户名',
+    otherPay:'更换其他支付方式',
+    nextBtn:'下一步'
+
   }
 }
