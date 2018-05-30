@@ -21,7 +21,7 @@
        </div>
        <div class="input-group">
          <div class="input-div">
-           <input class="my-input" placeholder="挂单买入数量" v-model="buyAmount">
+           <input class="my-input" :placeholder="$t('transactionHome.minimumSale')" v-model="buyAmount">
            <span> UET </span>
          </div>
          <div  class="input-div no-mb">

@@ -103,6 +103,7 @@ export default {
     wechatTransfer:'微信转账',
     transferName: '转账姓名',
     transferMethod: '转账方式',
+    minimumSale: '最低卖出100UET',
 
   },
   transactionRecord: {

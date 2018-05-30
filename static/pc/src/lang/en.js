@@ -103,6 +103,7 @@ export default {
     wechatTransfer:'Wechat transfer',
     transferName: 'Transfer name',
     transferMethod: 'Transfer method',
+    minimumSale: 'Minimum sell 100UET',
 
   },
   transactionRecord: {

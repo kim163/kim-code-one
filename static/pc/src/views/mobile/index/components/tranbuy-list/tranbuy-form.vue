@@ -3,20 +3,20 @@
      <m-header>{{$t('transactionHome.mBuyUet')}}</m-header>
 
      <div class="mtranbuy-content">
-       <div class="form-group">
+       <div class="form-group cfx">
          <label> {{$t('transactionHome.tranUnitPrice')}} </label>
          <span>&yen;  0.01</span>
        </div>
-       <div class="form-group">
+       <div class="form-group cfx">
          <label> {{$t('postPend.balance')}} </label>
          <balance></balance>
        </div>
-       <div class="form-group">
+       <div class="form-group cfx">
          <label> {{$t('transactionHome.buyableQuantity')}} </label>
          <span></span>
        </div>
-       <div class="form-group">
-         <label> {{$t('transactionHome.tranAmount')}} </label>
+       <div class="form-group cfx">
+         <label> {{$t('transactionHome.convertAmount')}} </label>
          <span></span>
        </div>
        <div class="tranbuy-group">
@@ -41,15 +41,15 @@
             </div>
             <div class="transfer-info">{{$t('transactionHome.transferMethod')}}: </div>
             <div class="method-part cfx">
-               <p>
+               <p :class="{active:selTransferMeth==1}" @click="selTransferMeth=1">
                   <span class="method-icon transfer-bank"></span>
                   <span class="method-text">{{$t('transactionHome.bankTransfer')}}</span>
                </p>
-              <p>
+              <p :class="{active:selTransferMeth==2}" @click="selTransferMeth=2">
                 <span class="method-icon transfer-alipay"></span>
                 <span class="method-text">{{$t('transactionHome.alipayTransfer')}} </span>
               </p>
-              <p>
+              <p :class="{active:selTransferMeth==3}" @click="selTransferMeth=3">
                 <span class="method-icon transfer-wechat"></span>
                 <span class="method-text">{{$t('transactionHome.wechatTransfer')}}</span>
               </p>
@@ -70,7 +70,7 @@
     data() {
       return {
         buyAmount: '',
-
+        selTransferMeth: 0,
       };
     },
     props: {},
@@ -180,11 +180,25 @@
              width: 33.33%;
              display: block;
              float: left;
+             &.active{
+               .transfer-bank{
+                 background: url("./images/transfer-banksel.svg") no-repeat center center;
+               }
+               .transfer-alipay{
+                 background: url("./images/transfer-alipaysel.svg") no-repeat center center;
+               }
+               .transfer-wechat{
+                 background: url("./images/transfer-wechatsel.svg") no-repeat center center;
+               }
+               .method-text{
+                 color: #FF0000;
+               }
+             }
              .method-icon{
                display: block;
                text-align: center;
-               width: r(62);
-               height: r(62);
+               width: r(64);
+               height: r(64);
                margin: auto;
              }
              .transfer-bank{
