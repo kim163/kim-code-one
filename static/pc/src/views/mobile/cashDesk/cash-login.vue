@@ -20,7 +20,7 @@
           <select class="select-country area-box" v-model="data.areaCode">
             <option v-for="areacd in areaCodeData" :value="areacd.value" :key="areacd.value"> {{areacd.name}}</option>
           </select>
-          <input type="text" class="ps-input ps-input1" v-model="data.phone"
+          <input type="text" class="ps-input ps-input-phone" v-model="data.phone"
                  :placeholder="$t('login.mobileNumPhd')" maxlength="11" name="phone">
         </div>
       </div>
@@ -135,9 +135,6 @@
 <style lang="scss" scoped>
   @import "~assets/scss/mobile";
   /* login */
-  .m-login-box {
-    padding: r(20);
-  }
 
   /* tab */
   .tab-box {
@@ -162,7 +159,7 @@
     }
   }
   .next-btn{
-    width: r(294);
+    width: 100%;
     height: r(40);
     background: #4982FF;
     color: $white;
@@ -177,10 +174,14 @@
   }
 
   .ps-input {
-    height: 40px;
+    height: r(40);
     border: 1px solid #DEDEDE;
-    padding: 0 10px;
-    width: 90%;
+    padding: 0 r(10);
+    width: 100%;
+    &.ps-input-phone{
+      width: calc(100% - #{r(80)} - 6%);
+      float: right;
+    }
   }
 
   .form-box-phone {
@@ -190,14 +191,27 @@
   }
 
   .area-box {
-    background: #FFEFCE;
+    background: #F4F7FF;
+    border: 1px solid #4982FF;
+    width: r(80);
+    height: r(40);
+    color: #4982FF;
+    @include f(15px);
+    padding: 0 3%;
+    background: url("~images/select-up-down.svg") no-repeat scroll 90% center transparent;
+    background-size: r(10) r(12);
   }
 
   .form-group {
     /*padding:0 15px;*/
   }
+  .form-input{
+    margin-top: r(10);
+    margin-bottom: r(20);
+  }
 
   .form-subtitle {
-    padding: 0 0 8px 0;
+    @include f(15px);
+    color: #333333;
   }
 </style>

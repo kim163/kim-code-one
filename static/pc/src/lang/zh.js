@@ -169,7 +169,13 @@ export default {
     currentExchangeRate:'当前汇率',
     BusinessName:'商户名',
     otherPay:'更换其他支付方式',
-    nextBtn:'下一步'
-
+    nextBtn:'下一步',
+    balance:'余额',
+    enough:'当前余额充足',
+    notEnough:'当前余额不足',
+    payPassWord:'支付密码',
+    psdInputPlaceholder:"请输入您的支付密码",
+    confirmPayment:'确实付款',
+    goTran:'前去交易大厅买币'
   }
 }

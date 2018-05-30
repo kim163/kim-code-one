@@ -168,6 +168,13 @@ export default {
     currentExchangeRate:'Amounts payable',
     BusinessName:'Business name',
     otherPay:'Replace other payment methods',
-    nextBtn:'Next'
+    nextBtn:'Next',
+    balance:'Balance',
+    enough:'Current balance is sufficient',
+    notEnough:'Insufficient current balance',
+    payPassWord:'Payment password',
+    psdInputPlaceholder:"Please enter your payment password",
+    confirmPayment:'Confirm payment',
+    goTran:'Go to the trading floor'
   }
 }

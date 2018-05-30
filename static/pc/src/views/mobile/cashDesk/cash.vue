@@ -28,12 +28,13 @@
         <router-link to="http://www.baidu.com" class="other-pay">{{$t('cash.otherPay')}}&gt;&gt;</router-link>
       </div>
     </div>
-    <div>
-      <cash-login></cash-login>
+    <div class="pay-info">
+      <cash-login v-if="!islogin"></cash-login>
+      <cash-pay v-else></cash-pay>
     </div>
 
     <div>
-      <a class="pay-btn btn-block">返回</a>
+      <a class="go-back btn-block">返回</a>
     </div>
 
   </div>
@@ -44,6 +45,7 @@
   import {generateTitle} from '@/util/i18n'
   import {mapGetters, mapActions, mapMutations} from 'vuex'
   import CashLogin from './cash-login'
+  import CashPay from './cash-pay'
 
   export default {
     data() {
@@ -66,7 +68,8 @@
 
     components: {
       MobileHeader,
-      CashLogin
+      CashLogin,
+      CashPay
     }
   };
 
@@ -118,7 +121,7 @@
 
   .cash-main {
 
-    .pay-btn {
+    .go-back {
       display: inline-block;
       text-align: center;
       height: 50px;
@@ -126,9 +129,15 @@
       background: #86A5F8;
       color: #fff;
       font-size: 18px;
+      margin-top: r(30);
     }
     .btn-block {
       display: block;
     }
+  }
+  .pay-info{
+    width: 90%;
+    padding-top: r(20);
+    margin: 0 auto;
   }
 </style>
