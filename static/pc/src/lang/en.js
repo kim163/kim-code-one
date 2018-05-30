@@ -61,7 +61,7 @@ export default {
   transactionHome: {
     buyUet: 'Buy UET',
     saleUet: 'Sell UET',
-    mBuyUet: 'Buy UET',
+    mBuyUet: 'UET recharge',
     msaleUet: 'Sell UET',
     postPendOrd: 'Post pending orders',
     orderRecord: 'Order record',
@@ -93,6 +93,16 @@ export default {
     bankCategory: 'Bank category',
     accountName: 'Account name',
     accCardNum: 'Account card number',
+    nextStep: 'Next step',
+    buyQuantity: 'Buy quantity',
+    convertAmount: 'Converted amount',
+    mbuyUetTips: 'Tip: The quantity you entered is less than the minimum buy quantity',
+    miniPurchase: 'Buy 100UET minimum',
+    bankTransfer: 'Bank card transfer',
+    alipayTransfer: 'Alipay transfer',
+    wechatTransfer:'Wechat transfer',
+    transferName: 'Transfer name',
+    transferMethod: 'Transfer method',
 
   },
   transactionRecord: {
