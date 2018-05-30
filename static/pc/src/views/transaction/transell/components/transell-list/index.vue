@@ -25,28 +25,13 @@
                      </span>
                    </p>
                    <p class="item">
-                     <a href="javascript:void(0);" class="transaction-btn" @click="showView(item,i)">{{$t('transactionHome.saleUet')}}</a>
+                     <a href="javascript:void(0);" class="transaction-btn" @click="showView('show',i)">{{$t('transactionHome.saleUet')}}</a>
                    </p>
                  </div>
-                 <transition name="message">
-                    <div class="tran-contpart" v-show="item.already" :ref="item.id">
-                      <span class="s s1">
-                         <p>数量 {{item.amount}} UET</p>
-                         <p>单价 0.01 元</p>
-                      </span>
-                      <span  class="s s2">总值 {{item.amount}}UET</span>
-                      <span class="input-box">
-                          <input type="text" v-model="buyAmountUet" > UET
-                      </span>
-                      <span class="input-box">
-                          <input type="text" :value="buyAmountCny" readonly>CNY
-                      </span>
-                      <span class="btns">
-                          <span class="btn btn-primary" @click="placeAnOrder(item)">下单</span>
-                          <span class="btn btn-cancel gray">取消</span>
-                      </span>
-                    </div>
-                 </transition>
+                 <transell-order :item="item"
+                                 :index="i"
+                                 @hidden="showView('hidden',i)"
+                                 v-show="copyList[i].already"></transell-order>
              </div>
 
           </div>
@@ -61,7 +46,7 @@
   import pagingBy from "components/paging-by";
   import  {SETTING} from "@/assets/data";
   import {mapGetters,mapActions,mapMutations} from 'vuex'
-
+  import transellOrder from "./transell-order";
 
   let dataHead = [
     {name: "table.sellers", value: "sellers"},
@@ -81,24 +66,21 @@
           data: [],
           pageInfo: {}
         },
+        copyList:[],
         reqData: {
           limit:10,
           offset:0,
           type: 12,
           startBalance:0
           //status: 41
-        },
-        buyAmountUet:'',
+        }
       }
     },
     computed: {
       ...mapGetters(["userData"]),
        avatarDealw(){
          return this.SETTING.avatarColor.length;
-       },
-      buyAmountCny:function(){
-        return Number(this.buyAmountUet) *0.01;
-      }
+       }
     },
     methods: {
       generateTitle,
@@ -125,20 +107,27 @@
             item.already = false;
             return item;
           });
+          this.copyList = [...this.dataList.data.map(() => {
+            return {
+              already:false
+            }
+          })]
           this.dataList.pageInfo = res.pageInfo;
         }).catch(error => {
           this.reset(res.message);
         });
       },
 
-      showView(item, i) {
-        if (this.$refs[item.id][0].style.display == "") {
+      showView(type, i) {
+        /*if (this.$refs[item.id][0].style.display == "") {
           this.$refs[item.id][0].style.display = 'block';
-        }
+        }*/
 
         this.$nextTick(() => {
-          item.already = !item.already;
+          // item.already = !item.already;
+          this.copyList[i].already = type === 'show' ? true : false
         });
+
       },
 
       placeAnOrder(item){
@@ -187,7 +176,7 @@
     activated() {
     },
     components: {
-      pagingBy
+      pagingBy, transellOrder
     }
   };
 </script>

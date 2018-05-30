@@ -27,25 +27,7 @@
                      <a href="javascript:void(0);" class="transaction-btn" @click="showView(item,i)">{{$t('transactionHome.buyUet')}}</a>
                    </p>
                  </div>
-               <transition name="message">
-                 <div class="tran-contpart" v-show="item.already" :ref="item.id">
-                      <span class="s s1">
-                         <p>数量 {{item.amount}} UET</p>
-                         <p>单价 0.01 元</p>
-                      </span>
-                   <span  class="s s2">总值 {{item.amount}}UET</span>
-                   <span class="input-box">
-                          <input type="text" v-model="buyAmountUet" > UET
-                      </span>
-                   <span class="input-box">
-                          <input type="text" :value="buyAmountCny" readonly>CNY
-                      </span>
-                   <span class="btns">
-                          <span class="btn btn-primary" @click="placeAnOrder(item)">下单</span>
-                          <span class="btn btn-cancel gray">取消</span>
-                      </span>
-                 </div>
-               </transition>
+                 <tranbuy-order :item="item" :ref="item.id"></tranbuy-order>
 
              </div>
 
@@ -61,6 +43,7 @@
   import pagingBy from "components/paging-by";
   import  {SETTING} from "@/assets/data";
   import {mapGetters,mapActions,mapMutations} from 'vuex';
+  import tranbuyOrder from "./tranbuy-order";
 
   let dataHead = [
     {name: "table.sellers", value: "sellers"},
@@ -85,18 +68,14 @@
           offset:0,
           type: 11,
           startBalance:0
-        },
-        buyAmountUet:'',
+        }
       }
     },
     computed: {
       ...mapGetters(["userData"]),
        avatarDealw(){
          return this.SETTING.avatarColor.length;
-       },
-      buyAmountCny:function(){
-        return Number(this.buyAmountUet) *0.01;
-      }
+       }
     },
     methods: {
       generateTitle,
@@ -110,10 +89,7 @@
         transaction.getOrderxPendingPage(this.reqData).then(res => {
           console.log('买入UET get OrderxPageForHallSell data:');
           console.log(res);
-          this.dataList.data = res.data.map(item => {
-            item.already = false;
-            return item;
-          });
+          this.dataList.data = res.data;
           this.dataList.pageInfo = res.pageInfo;
         }).catch(error => {
           this.reset(res.message);
@@ -137,7 +113,7 @@
         }
 
         this.$nextTick(() => {
-          item.already = !item.already;
+       //   item.already = !item.already;
         });
       },
       placeAnOrder(item){
@@ -180,7 +156,7 @@
     activated() {
     },
     components: {
-      pagingBy
+      pagingBy, tranbuyOrder
     }
   };
 </script>

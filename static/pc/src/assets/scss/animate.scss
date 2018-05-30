@@ -10,12 +10,12 @@
 .slideLeft-enter,.slideLeft-leave-to{
   transform: translateX(-100%);
 }
-.slideBottom-enter-active,.slideBottom-leave-active {
-  transition:all 0.5s;
+.message-enter-active, .message-leave-active {
+  transition: all 1s;
+  overflow: hidden;
 }
-.slideBottom-enter,.slideBottom-leave-to{
-  transform: translateY(100%);
-  opacity: 0;
+.message-enter,.message-leave-to {
+  height: 0 !important;
 }
 
 @keyframes rotate11{
