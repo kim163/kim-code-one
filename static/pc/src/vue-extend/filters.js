@@ -6,6 +6,30 @@ import Vue from 'vue'
 
 import {DateFormat} from "@/util/prototype"
 
+function formatDate(date, fmt) {
+  if (/(y+)/.test(fmt)) {
+    fmt = fmt.replace(RegExp.$1, (date.getFullYear() + '').substr(4 - RegExp.$1.length));
+  }
+  let o = {
+    'M+': date.getMonth() + 1,
+    'd+': date.getDate(),
+    'h+': date.getHours(),
+    'm+': date.getMinutes(),
+    's+': date.getSeconds()
+  };
+  for (let k in o) {
+    if (new RegExp(`(${k})`).test(fmt)) {
+      let str = o[k] + '';
+      fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? str : padLeftZero(str));
+    }
+  }
+  return fmt;
+};
+
+function padLeftZero(str) {
+  return ('00' + str).substr(str.length);
+}
+
 //保留二位小数点 不四舍五入 无小数点 自动加 .00
 Vue.filter('toFixed',function(val,_number=2){
   return !val?0:val.toString().$toFixed(_number)
@@ -33,5 +57,9 @@ Vue.filter('conceal',function(val,start=1,end=0,replaceval='*'){
 //分割字符串    例如  金额 10000换为 10，000 字符串相同
 Vue.filter('stringSplit',function(val,num=3,rpl=','){
   return !val?0:(val.toString().strSplit(num,rpl))
+});
+Vue.filter('formatDateMs',function(time){
+  var date = new Date(time);
+  return formatDate(date, "mm:ss");
 });
 export  default {}

@@ -9,7 +9,7 @@
       @pullingUp="loadMore"
       ref="scroll">
     <ul class="list">
-      <router-link tag="li" :to="{name:'mOrder',params:{ id: item.id}}" class="tran-item" v-for="(item,index) in tranList"
+      <router-link tag="li" :to="orderDetailLink(item)" class="tran-item" v-for="(item,index) in tranList"
                    :key="index">
         <div class="type-status">
           <div class="type blue-text" v-show="item.credit === userId">{{$t('transactionRecord.buy')}}</div>
@@ -19,8 +19,9 @@
               {{(item.status === 45 ? $t('transactionRecord.waitingForPayment') :
               $t('transactionRecord.waitingForRelease'))}}
             </div>
-            <div class="time">{{item.status != 61 ? (item.intervalTime-item.elapsedTime | Date('mm:ss')) : '申诉锁定' }}
+            <div class="time" v-if="item.status != 61">{{item.intervalTime-item.elapsedTime | formatDateMs}}
             </div>
+            <div class="time" v-else>申诉锁定</div>
           </div>
           <div class="status-time" v-else>
             <div class="status">
@@ -118,11 +119,20 @@
         this.offset = 0
         this.tranList = []
         this.getTranList()
+      },
+      orderDetailLink(item){
+        let routerName = ''
+        if(this.type === 0){
+          routerName = item.status === 61 ? 'mOrderAppeal' : 'mOrder'
+        }else{
+          routerName = 'mOrderOver'
+        }
+        return {name: routerName, params:{ id: item.id}}
       }
     },
     mounted() {
       this.getTranList()
-    }
+    },
   }
 </script>
 
