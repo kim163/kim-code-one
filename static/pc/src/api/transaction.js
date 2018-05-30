@@ -86,7 +86,7 @@ export const getOrderx = jsonData => service({
 });
 // 获取 订单记录-已完成- 详情
 export const getCoinTransactionHistory = jsonData => service({
-  url: numversion+`order/chain/getCoinTransactionHistory`,
+  url: numversion+`transaction/getTransaction`,
   method: 'post',
   data: jsonData
 });

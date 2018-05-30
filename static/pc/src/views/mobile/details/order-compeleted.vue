@@ -127,7 +127,7 @@
         this.request={
 //          limit:'20',
 //          offset:'0',
-          orderId:this.$route.params.id
+          transactionId:this.$route.params.id
         }
         console.log('传参数')
         console.log(this.request)
