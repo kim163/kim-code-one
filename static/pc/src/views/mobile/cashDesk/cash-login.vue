@@ -144,7 +144,7 @@
     .tab-info {
       display: inline-block;
       height: r(40);
-      width: r(105);
+      width: 30%;
       line-height: r(40);
       text-align: center;
       border: 1px solid #D8D8D8;
