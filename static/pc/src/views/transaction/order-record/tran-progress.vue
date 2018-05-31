@@ -14,7 +14,7 @@
                 <span class="unit">状态</span>
                 <span class="unit">操作 <span @click="getOrderList">(刷新)</span></span>
             </div>
-          <div class="group-body">
+          <div class="group-body" v-if="OrderList.data.length > 0">
             <div class="group-tr" v-for="order in OrderList.data">
                  <span class="unit">
                       <span class="btn btn-border" v-show="order.credit == userData.userId">{{$t('transactionRecord.buy')}}</span>
@@ -35,6 +35,9 @@
             <paging-by :data="OrderList.pageInfo" @search="getOrderList"></paging-by>
 
           </div>
+          <div class="group-body" v-else>
+            <no-data-tip></no-data-tip>
+          </div>
         </div>
       </div>
     </div>
@@ -45,6 +48,7 @@
   import { generateTitle } from '@/util/i18n'
   import {mapGetters,mapActions,mapMutations} from 'vuex'
   import pagingBy from "components/paging-by";
+  import NoDataTip from 'components/no-data-tip'
 
   let orderHead=[
       {name: "order.orderType", value: "orderType"},
@@ -130,7 +134,8 @@
       //this.getOrderList()
     },
     components: {
-        pagingBy
+        pagingBy,
+        NoDataTip
     },
   };
 </script>

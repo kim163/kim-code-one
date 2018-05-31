@@ -1,13 +1,14 @@
 <template>
-  <Scroll
-      :updateData="[tranList]"
-      :refreshData="[]"
-      class="content"
-      :pullDownConfig="pullDownCfg"
-      :pullUpConfig="pullUpCfg"
-      @pullingDown="loadRefresh"
-      @pullingUp="loadMore"
-      ref="scroll">
+  <div class="tran-list-main">
+    <Scroll
+            :updateData="[tranList]"
+            :refreshData="[]"
+            class="content"
+            :pullDownConfig="pullDownCfg"
+            :pullUpConfig="pullUpCfg"
+            @pullingDown="loadRefresh"
+            @pullingUp="loadMore"
+            ref="scroll" v-if="!noData">
     <ul class="list">
       <router-link tag="li" :to="orderDetailLink(item)" class="tran-item" v-for="(item,index) in tranList"
                    :key="index">
@@ -38,12 +39,15 @@
       </router-link>
     </ul>
   </Scroll>
+    <no-data-tip v-else></no-data-tip>
+  </div>
 </template>
 
 <script>
   import {mapGetters} from 'vuex'
   import Scroll from 'vue-slim-better-scroll'
   import { generateTitle } from '@/util/i18n'
+  import NoDataTip from 'components/no-data-tip'
   import {
     getOrderxPage,
     getTransactionPage
@@ -64,11 +68,13 @@
             more:this.generateTitle('scorllCfg.pullUpMore'),
             noMore:this.generateTitle('scorllCfg.pullUpNoMore')
           }
-        }
+        },
+        noData:false
       }
     },
     components: {
-      Scroll
+      Scroll,
+      NoDataTip
     },
     props: {
       type: {
@@ -99,6 +105,11 @@
         api(request).then(res => {
           if (res.code === 10000) {
             console.log('getOrderxPage res:', res)
+            if(res.data.length === 0 && this.offset === 0){
+              this.noData = true
+            }else{
+              this.noData = false
+            }
             this.tranList = [...this.tranList, ...res.data]
             this.total = res.pageInfo.total
             if(this.totalPage - 1 <= this.offset){
@@ -139,6 +150,12 @@
 <style lang="scss" scoped>
   @import "~assets/scss/mobile";
 
+  .tran-list-main{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
   .list {
     display: block;
   }
