@@ -7,14 +7,19 @@
           <div class="tranlist-body">
              <div class="tranlist-item" v-for="(item,i) in dataList.data||[]">
                  <div class="tran-message">
-                   <p class="txt-left item sellers"><span class="disp-inlblo" v-html="proUserAvatars(item.userName)"> </span> {{item.userName}} </p>
+                   <p class="txt-left item sellers">
+                     <span class="disp-inlblo" >
+                       <a class="avatars-item" :style="{'background':item.avatarColor}" > {{(item.userName).substring(0, 1)}} </a>
+                     </span>
+                     {{item.userName}}
+                   </p>
                    <p class="item tranCountOrRate">
                      {{item.tradeTotal}} 丨
                      <span v-if="item.tradeTotal">{{ ((item.finishedTotal/item.tradeTotal)*100).toFixed(2)}}</span>
                      <span v-if="!item.tradeTotal">0 </span>％
                    </p>
 
-                   <p class="item">0.01元</p>
+                   <p class="item">0.01 {{$t('transactionHome.yuan')}}</p>
                    <p class="item quantity"> {{item.amount}} UET </p>
                    <p class="item">
                      <span v-if="item.accountTypeTwin === 1" class="iconfont icon-pay-alipay"></span>
@@ -25,13 +30,15 @@
                      </span>
                    </p>
                    <p class="item">
-                     <a href="javascript:void(0);" class="transaction-btn" @click="showView('show',i)">{{$t('transactionHome.saleUet')}}</a>
+                     <a href="javascript:void(0);" class="transaction-btn" @click="showView('show',item)">{{$t('transactionHome.saleUet')}}</a>
                    </p>
                  </div>
                  <transell-order :item="item"
-                                 :index="i"
-                                 @hidden="showView('hidden',i)"
-                                 v-show="copyList[i].already"></transell-order>
+                                 v-show="item.already"
+                                 :ref="item.id"
+                                 @hiddenOrder="showView('hidden',item)"
+                                 :key="item.id"
+                                 ></transell-order>
              </div>
 
           </div>
@@ -45,7 +52,6 @@
   import { generateTitle } from '@/util/i18n';
   import pagingBy from "components/paging-by";
   import  {SETTING} from "@/assets/data";
-  import {mapGetters,mapActions,mapMutations} from 'vuex'
   import transellOrder from "./transell-order";
 
   let dataHead = [
@@ -66,7 +72,6 @@
           data: [],
           pageInfo: {}
         },
-        copyList:[],
         reqData: {
           limit:10,
           offset:0,
@@ -77,24 +82,12 @@
       }
     },
     computed: {
-      ...mapGetters(["userData"]),
        avatarDealw(){
          return this.SETTING.avatarColor.length;
        }
     },
     methods: {
       generateTitle,
-      proUserAvatars(name){
-         let mathRand = parseInt(Math.random()*this.avatarDealw,10);
-         let avatarColor = this.SETTING.avatarColor[mathRand];
-         if(name != '' || name != 'undefined' ) {
-          let nameFirst = name.substring(0, 1);
-          let avaHtml = '<a class="avatars-item" style="background: ' + avatarColor + ' ">' + nameFirst + '</a>';
-
-          return avaHtml;
-        }
-      },
-
       searchDataList(index) {
         if(!isNaN(index)) {
           this.reqData.offset = (index - 1) * this.reqData.limit;
@@ -104,68 +97,28 @@
         transaction.getOrderxPendingPage(this.reqData).then(res => {
           console.log('卖出UET get OrderxPage data:', res);
           this.dataList.data = res.data.map(item => {
+            let mathRand = parseInt(Math.random()*this.avatarDealw,10);
             item.already = false;
+            item.avatarColor = this.SETTING.avatarColor[mathRand];
             return item;
           });
-          this.copyList = [...this.dataList.data.map(() => {
-            return {
-              already:false
-            }
-          })]
           this.dataList.pageInfo = res.pageInfo;
         }).catch(error => {
           this.reset(res.message);
         });
       },
 
-      showView(type, i) {
-        /*if (this.$refs[item.id][0].style.display == "") {
-          this.$refs[item.id][0].style.display = 'block';
-        }*/
-
-        this.$nextTick(() => {
-          // item.already = !item.already;
-          this.copyList[i].already = type === 'show' ? true : false
-        });
-
-      },
-
-      placeAnOrder(item){
-        console.log('this.buyAmountUet:', this.buyAmountUet)
-        console.log(this.buyAmountCny)
-        console.log('item')
-        console.log(item)
-        console.log('test:'+this.userData)
-        this.requestda={
-          orderId:item.id,
-          userId: this.userData.userId,
-          accountChainVo:{
-            name:this.userData.nickname,
-            address:this.userData.accountChainVos[0].address,
-            assetCode:'UET', //资产编码 默认 UET,登录后资产的编码
-            amount:this.buyAmountUet //uet的数量
-          },
-          accountCashVo:{
-            account :item.accountTwin,
-            bank : item.accountMerchantTwin, //机构名称
-            name : item.accountNameTwin,
-            type : item.accountTypeTwin,
-            amount : this.buyAmountCny
-          }
+      showView(type,item) {
+        if(type == 'show'){
+          this.$nextTick(() => {
+            item.already = true;
+          });
+        }else {
+          this.$nextTick(() => {
+            item.already = false;
+          });
         }
-        console.log(this.requestda)
-        transaction.placeAnOrder(this.requestda).then((res) => {
-
-          console.log(res)
-          if (res.code == 10000) {
-            toast("下单成功，请及时支付,10分钟内未完成支付，将自动取消订单");
-          }
-
-        }).catch(err => {
-          toast(res.message);
-        })
       },
-
 
     },
     created() {

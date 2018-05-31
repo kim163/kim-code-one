@@ -104,6 +104,9 @@ export default {
     transferName: '转账姓名',
     transferMethod: '转账方式',
     minimumSale: '最低卖出100UET',
+    yuan: '元',
+    totalValue: '总值',
+    transferNamephd: '请输入转账账户的开户名',
 
   },
   transactionRecord: {

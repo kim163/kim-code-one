@@ -104,6 +104,9 @@ export default {
     transferName: 'Transfer name',
     transferMethod: 'Transfer method',
     minimumSale: 'Minimum sell 100UET',
+    yuan: 'yuan',
+    totalValue: 'Total value',
+    transferNamephd: 'Please enter the transfer accounts Account Name',
 
   },
   transactionRecord: {

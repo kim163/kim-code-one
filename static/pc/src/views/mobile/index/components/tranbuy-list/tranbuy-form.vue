@@ -13,21 +13,21 @@
        </div>
        <div class="form-group cfx">
          <label> {{$t('transactionHome.buyableQuantity')}} </label>
-         <span></span>
+         <span> {{item.amount}} UET</span>
        </div>
        <div class="form-group cfx">
          <label> {{$t('transactionHome.convertAmount')}} </label>
-         <span></span>
+         <span> {{(Number(item.amount) *0.01).toFixed(2)}} CNY</span>
        </div>
        <div class="tranbuy-group">
           <div class="tranbuy-info cfx">
               <label> {{$t('transactionHome.buyQuantity')}}: </label>
-              <input class="my-input" :placeholder="$t('transactionHome.miniPurchase')" v-model="buyAmount">
+              <input class="my-input" :placeholder="$t('transactionHome.miniPurchase')" v-model="buyAmountUet">
               <span> UET </span>
           </div>
          <div class="tranbuy-info cfx">
               <label> {{$t('transactionHome.convertAmount')}}: </label>
-              <input class="my-input" :value="buyAmountCny" placeholder="=总数量">
+              <input class="my-input" :value="buyAmountCny" placeholder="">
               <span> CNY </span>
          </div>
          <div class="tranbuy-tips">
@@ -37,50 +37,115 @@
        <div class="transfer-group">
             <div class="transfer-info cfx">
                <label>{{$t('transactionHome.transferName')}}: </label>
-               <input class="my-input" :placeholder="$t('transactionHome.miniPurchase')" v-model="aa">
+               <input class="my-input" :placeholder="$t('transactionHome.transferNamephd')" v-model="transferName">
             </div>
             <div class="transfer-info">{{$t('transactionHome.transferMethod')}}: </div>
             <div class="method-part cfx">
-               <p :class="{active:selTransferMeth==1}" @click="selTransferMeth=1">
+               <p :class="{active:selTransferMeth==3}" @click="selTransferMeth=3">
                   <span class="method-icon transfer-bank"></span>
                   <span class="method-text">{{$t('transactionHome.bankTransfer')}}</span>
                </p>
-              <p :class="{active:selTransferMeth==2}" @click="selTransferMeth=2">
+              <p :class="{active:selTransferMeth==1}" @click="selTransferMeth=1">
                 <span class="method-icon transfer-alipay"></span>
                 <span class="method-text">{{$t('transactionHome.alipayTransfer')}} </span>
               </p>
-              <p :class="{active:selTransferMeth==3}" @click="selTransferMeth=3">
+              <p :class="{active:selTransferMeth==2}" @click="selTransferMeth=2">
                 <span class="method-icon transfer-wechat"></span>
                 <span class="method-text">{{$t('transactionHome.wechatTransfer')}}</span>
               </p>
             </div>
        </div>
        <div class="btn-group">
-         <input type="button" class="mobile-pubtn"  :value="$t('transactionHome.nextStep')" @click="publishSell()" />
+         <input type="button" class="mobile-pubtn"  :value="$t('transactionHome.nextStep')" @click="placeAnOrder()"  />
        </div>
 
      </div>
   </div>
 </template>
 <script>
+  import {transaction} from 'api';
   import mHeader from "components/m-header";
   import balance from 'components/balance';
+  import {mapGetters, mapActions, mapMutations} from 'vuex';
 
   export default {
     data() {
       return {
-        buyAmount: '',
+        buyAmountUet: '',
         selTransferMeth: 0,
+        transferName: '',
+        item: {
+          amount: 0
+        },
+        orderId: ''
       };
     },
+    watch: {
+      "$route"(val) {
+        console.log('$route')
+        this.orderId = val.params.id;
+        this.searchTranDetail();
+      }
+    },
     props: {},
-    methods: {},
+    methods: {
+      searchTranDetail(){
+        let requestda = {
+          orderId: this.orderId
+        };
+        transaction.getOrderxPending(requestda).then(res => {
+          console.log(res)
+          if (res.code == 10000) {
+            this.item = res.data;
+          }
+        }).catch(err => {
+          toast(res.message);
+        })
+      },
+
+      placeAnOrder() {
+        let requestda = {
+          orderId: this.item.id,
+          userId: this.userData.userId,
+          accountChainVo: {
+            name: this.userData.nickname,
+            address: this.userData.accountChainVos[0].address,
+            assetCode: 'UET', //资产编码 默认 UET,登录后资产的编码
+            amount: this.buyAmountUet //uet的数量
+          },
+          accountCashVo: {
+            account: this.item.accountTwin,
+            bank: this.item.accountMerchantTwin, //机构名称
+            name: this.transferName,
+            type: this.selTransferMeth,
+            amount: this.buyAmountCny
+          }
+        }
+        console.log(requestda)
+        transaction.placeAnOrder(requestda).then(res => {
+
+          console.log(res)
+          if (res.code == 10000) {
+            toast("下单成功，请及时支付,10分钟内未完成支付，将自动取消订单");
+          }
+
+        }).catch(err => {
+          toast(res.message);
+        })
+      }
+    },
     computed: {
+      ...mapGetters(["userData"]),
       buyAmountCny(){
-        return (Number(this.buyAmount) *0.01).toFixed(2);
+        return (Number(this.buyAmountUet) *0.01).toFixed(2);
       }
     },
     created() {
+      if (this.$route.params.id) {
+        console.log('created')
+        this.orderId = this.$route.params.id;
+        this.searchTranDetail();
+      }
     },
     components: {
       mHeader, balance

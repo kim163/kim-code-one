@@ -13,19 +13,19 @@
        </div>
        <div class="form-group">
          <label> {{$t('transactionHome.quantityAvailSale')}} </label>
-         <span></span>
+         <span> {{item.amount}} UET</span>
        </div>
        <div class="form-group">
          <label> {{$t('transactionHome.tranAmount')}} </label>
-         <span></span>
+         <span> {{(Number(item.amount) *0.01).toFixed(2)}} CNY</span>
        </div>
        <div class="input-group">
          <div class="input-div">
-           <input class="my-input" :placeholder="$t('transactionHome.minimumSale')" v-model="buyAmount">
+           <input class="my-input" :placeholder="$t('transactionHome.minimumSale')" v-model="buyAmountUet">
            <span> UET </span>
          </div>
          <div  class="input-div no-mb">
-            <input class="my-input" :value="buyAmountCny" placeholder="=总数量">
+            <input class="my-input" :value="buyAmountCny" placeholder="">
             <span> CNY </span>
          </div>
          <div class="tips-div">
@@ -44,7 +44,7 @@
 
        </div>
        <div class="btn-group">
-         <input type="button" class="mobile-pubtn"  :value="$t('transactionHome.order')" @click="publishSell()" />
+         <input type="button" class="mobile-pubtn"  :value="$t('transactionHome.order')" @click="placeAnOrder()" />
        </div>
 
      </div>
@@ -52,28 +52,98 @@
   </div>
 </template>
 <script>
+  import {transaction} from 'api';
   import mHeader from "components/m-header";
   import balance from 'components/balance';
+  import {mapGetters, mapActions, mapMutations} from 'vuex';
 
   export default {
     data() {
       return {
-        buyAmount: '',
+        buyAmountUet: '',
         buyTypeBuy:'',
         bankList: {
           data: []
         },
-
+        item: {
+          amount: 0
+        },
+        orderId: ''
       };
     },
+    watch: {
+      "$route"(val) {
+        console.log('$route')
+        this.orderId = val.params.id;
+        this.searchTranDetail();
+      }
+    },
     props: {},
-    methods: {},
+    methods: {
+      searchTranDetail(){
+        let requestda = {
+          orderId: this.orderId
+        };
+        transaction.getOrderxPending(requestda).then(res => {
+          console.log(res)
+          if (res.code == 10000) {
+            this.item = res.data;
+          }
+        }).catch(err => {
+          toast(res.message);
+        })
+      },
+
+      placeAnOrder() {
+        console.log('this.buyAmountUet:', this.buyAmountUet)
+        console.log(this.buyAmountCny)
+        console.log('item')
+        console.log(this.item)
+        console.log('test:' + this.userData)
+        let requestda = {
+          orderId: this.item.id,
+          userId: this.userData.userId,
+          accountChainVo: {
+            name: this.userData.nickname,
+            address: this.userData.accountChainVos[0].address,
+            assetCode: 'UET', //资产编码 默认 UET,登录后资产的编码
+            amount: this.buyAmountUet //uet的数量
+          },
+          accountCashVo: {
+            account: this.item.accountTwin,
+            bank: this.item.accountMerchantTwin, //机构名称
+            name: this.item.accountNameTwin,
+            type: this.item.accountTypeTwin,
+            amount: this.buyAmountCny
+          }
+        }
+        console.log(requestda)
+        transaction.placeAnOrder(requestda).then(res => {
+
+          console.log(res)
+          if (res.code == 10000) {
+           // toast("下单成功，请及时支付,10分钟内未完成支付，将自动取消订单");
+            this.$router.push({name: 'withdrawOrder',params:{ id: res.data.key}});
+          }
+
+        }).catch(err => {
+          toast(res.message);
+        })
+      }
+    },
     computed: {
+      ...mapGetters(["userData"]),
       buyAmountCny(){
-        return (Number(this.buyAmount) *0.01).toFixed(2);
+        return (Number(this.buyAmountUet) *0.01).toFixed(2);
       }
     },
     created() {
+      if (this.$route.params.id) {
+        console.log('created')
+        this.orderId = this.$route.params.id;
+        this.searchTranDetail();
+      }
+
     },
     components: {
       mHeader, balance
