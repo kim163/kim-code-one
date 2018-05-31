@@ -176,6 +176,9 @@ export default {
     payPassWord:'支付密码',
     psdInputPlaceholder:"请输入您的支付密码",
     confirmPayment:'确实付款',
-    goTran:'前去交易大厅买币'
+    goTran:'前去交易大厅买币',
+    goBack:'返回',
+    payment:'确定支付',
+    loginPay:'登录账号密码支付'
   }
 }

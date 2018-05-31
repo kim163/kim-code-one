@@ -175,6 +175,9 @@ export default {
     payPassWord:'Payment password',
     psdInputPlaceholder:"Please enter your payment password",
     confirmPayment:'Confirm payment',
-    goTran:'Go to the trading floor'
+    goTran:'Go to the trading floor',
+    goBack:'return',
+    payment:'Payment',
+    loginPay:'Login account password payment'
   }
 }

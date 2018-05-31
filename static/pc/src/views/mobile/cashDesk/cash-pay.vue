@@ -4,15 +4,15 @@
       <div class="title">UET钱包支付</div>
       <div class="amount-detail">
         <div class="blance">{{$t('cash.balance')}}：<balance></balance></div>
-        <div class="amount-status" :class="amountStatus === 0 ? 'green' : 'red'">
-          {{ amountStatus === 0 ? $t('cash.enough') : $t('cash.notEnough')}}
+        <div class="amount-status" :class="amountStatus ? 'green' : 'red'">
+          {{ amountStatus ? $t('cash.enough') : $t('cash.notEnough')}}
         </div>
       </div>
     </div>
     <div class="pay-password">
       <div class="title">{{$t('cash.payPassWord')}}:</div>
-      <input class="input-password" v-model="payPassword" :placeholder="$t('cash.psdInputPlaceholder')"/>
-      <div class="pay-btn">{{$t('cash.confirmPayment')}}</div>
+      <input type="password" class="input-password" v-model.trim="payPassword" :placeholder="$t('cash.psdInputPlaceholder')"/>
+      <div class="pay-btn" :class="{disabled: !amountStatus}" @click="amountStatus ? payment() : ''">{{$t('cash.confirmPayment')}}</div>
       <router-link :to="{name: 'mIndex'}" class="go-tran">{{$t('cash.goTran')}}</router-link>
     </div>
   </div>
@@ -24,12 +24,21 @@
     name: "cash-pay",
     data(){
       return{
-        amountStatus:0, //余额状态 0是充足 1是不足
+        amountStatus: true, //余额状态
         payPassword:'',
       }
     },
     components:{
       Balance
+    },
+    methods:{
+      payment(){
+        if(this.payPassword != ''){
+          this.$emit('pay',this.payPassword)
+        }else{
+          toast('请输入支付密码')
+        }
+      }
     }
   }
 </script>
