@@ -7,16 +7,16 @@
     <div class="info">
       <span class="title">{{$t('cash.amountsPayable')}}</span>
       <span class="detail">
-            <span class="red">{{data.amount}} {{data.assetCode}}</span> 折合 <span class="red">50 CNY</span>
+            <span class="red">{{data.amount}} {{data.assetCode}}</span> 折合 <span class="red">{{formatCny(data.amount)}} CNY</span>
           </span>
     </div>
     <div class="info">
       <span class="title">{{$t('cash.currentExchangeRate')}}</span>
-      <span class="detail">100UET = 1CNY</span>
+      <span class="detail">100{{data.assetCode}} = {{formatCny(100)}}CNY</span>
     </div>
     <div class="info">
       <span class="title">{{$t('cash.BusinessName')}}</span>
-      <span class="detail">千赢国际</span>
+      <span class="detail">{{data.businessName}}</span>
     </div>
   </div>
 </template>
@@ -33,6 +33,14 @@
       data:{
         type:Object,
         default:{}
+      }
+    },
+    mounted:{
+
+    },
+    methods:{
+      formatCny(data){
+        return data * this.data.exchangeRate
       }
     }
   }

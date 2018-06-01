@@ -121,7 +121,7 @@
       },
 
       loadRefresh() {
-        this.reqData.currentPage = 0
+        this.reqData.currentPage = 1
         this.dataList.data = []
         this.searchDataList()
       },
