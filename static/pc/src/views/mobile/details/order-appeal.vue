@@ -209,7 +209,7 @@
   }
   .fr0{
     display:inline-block;
-    width:50%;
+    /*width:50%;*/
     padding:0 0 0 r(10);
   }
   .qrcode-tips{
