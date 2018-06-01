@@ -182,6 +182,7 @@ export default {
     goTran:'Go to the trading floor',
     goBack:'return',
     payment:'Payment',
-    loginPay:'Login account password payment'
+    loginPay:'Login account password payment',
+    yesBtn:'Yes'
   }
 }

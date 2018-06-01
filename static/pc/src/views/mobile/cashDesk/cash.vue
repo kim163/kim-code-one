@@ -8,17 +8,17 @@
           <count-down :end-time="endTime" :callback="countDownEnd"></count-down>
         </span>
       </div>
-      <cash-info :data="{}"></cash-info>
-      <router-link to="http://www.baidu.com" class="other-pay">{{$t('cash.otherPay')}}&gt;&gt;</router-link>
+      <cash-info :data="infoData"></cash-info>
+      <router-link :to="infoData.merchantCallbackurl" class="other-pay">{{$t('cash.otherPay')}}&gt;&gt;</router-link>
     </div>
     <transition name="pay-type">
-      <div class="quick-pay" v-show="quickPay">
+      <div class="quick-pay" v-show="isBind">
         <div class="pay-btn">{{$t('cash.payment')}}</div>
-        <div class="pay-btn login-pay" @click="quickPay = false">{{$t('cash.loginPay')}}</div>
+        <div class="pay-btn login-pay" @click="isBind = false">{{$t('cash.loginPay')}}</div>
       </div>
     </transition>
     <transition name="pay-type">
-      <div class="pay-info" v-show="!quickPay">
+      <div class="pay-info" v-show="!isBind">
         <transition name="login-animate">
           <cash-login v-if="!islogin"></cash-login>
         </transition>
@@ -27,15 +27,25 @@
         </transition>
       </div>
     </transition>
-    <router-link to="http://www.baidu.com" class="go-back" v-if="!quickPay">{{$t('cash.goBack')}}</router-link>
+    <router-link :to="infoData.merchantCallbackurl" class="go-back" v-if="!isBind">{{$t('cash.goBack')}}</router-link>
+
+    <confirm-dialog v-model="showPayPsdDialog">
+      <div slot="title">{{$t('cash.psdInputPlaceholder')}}</div>
+      <div slot="content">
+        <input type="password" class="pay-psd-input" v-model.trim="payPassword" :placeholder="$t('cash.psdInputPlaceholder')"/>
+      </div>
+      <div slot="leftBtn" class="btn-cancel">{{$t('postPend.cancel')}}</div>
+      <div slot="rightBtn" class="btn-yes" @click="checkPayPassWord()">{{$t('cash.yesBtn')}}</div>
+    </confirm-dialog>
   </div>
 </template>
 
 <script>
   import MobileHeader from 'components/m-header'
   import CountDown from 'components/countdown'
+  import ConfirmDialog from 'components/confirm'
   import {generateTitle} from '@/util/i18n'
-  import {mapGetters, mapActions, mapMutations} from 'vuex'
+  import {mapGetters} from 'vuex'
   import CashLogin from './cash-login'
   import CashPay from './cash-pay'
   import CashInfo from './cash-info'
@@ -44,12 +54,21 @@
     data() {
       return {
         isImmediate: false, //即时到账
-        orderId: '', //订单id
-        amount: '',//应付金额
-        exchangeRate: 0, // 汇率
-        businessName: '', //商户名
-        quickPay: true,
+        infoData:{
+          amount: '',//应付金额
+          exchangeRate: 0, // 汇率
+          businessName: '', //商户名
+          assetCode: '', //资产代码
+          merchantId:'', //商户号
+          merchantOrderid: '', //商户订单号
+          merchantCallbackurl:'', //商户回调地址
+          sign:'', //商户请求签名
+          jiuanOrderid:'',  //久安订单号
+        },
+        isBind: false, //商户是否绑定
         endTime: new Date().getTime() + 7200000,
+        showPayPsdDialog:false,
+        payPassword:''
       }
     },
     components: {
@@ -57,28 +76,67 @@
       CashLogin,
       CashPay,
       CashInfo,
-      CountDown
+      CountDown,
+      ConfirmDialog
     },
 
     created() {
-
+      const data = {
+       amount: this.getUrlParam('amount'),
+      merchantOrderid: this.getUrlParam('merchantOrderid'),
+      assetCode: this.getUrlParam('assetCode'),
+      merchantId: this.getUrlParam('merchantId'),
+      merchantOrderid: this.getUrlParam('merchantOrderid'),
+      merchantCallbackurl: this.getUrlParam('merchantCallbackurl'),
+      sign: this.getUrlParam('sign')
+      }
+      Object.assign(this.infoData,data)
     },
     watch: {},
 
     computed: {
-      ...mapGetters(["userData", "islogin"]),
+      ...mapGetters([
+        "userData",
+        "islogin"
+      ]),
     },
     methods: {
       generateTitle,
       init() {
         //调用初始化接口
       },
-      pay(psd) {  //支付接口
-        console.log(psd)
+      checkPayPassWord(){
+        if(this.payPassword === ''){
+          toast(this.generateTitle('cash.psdInputPlaceholder'))
+        }else{
+          this.pay(this.payPassword)
+        }
+      },
+      pay(password) {  //支付接口
+        console.log(password)
+          //调用支付接口
       },
       countDownEnd() {
         console.log('666666')
-      }
+      },
+      getUrlParam(name, href) {
+        const params = {}
+        const match = (href || window.location.href).match(/#?.*\?(.*)/)
+
+        if (!match) {
+          return match
+        }
+
+        match[1].split('&').forEach((arg) => {
+          arg = arg.split('=')
+          params[arg[0]] = decodeURI(arg[1])
+        })
+
+        if (name) {
+          return params[name]
+        }
+        return params
+      },
     },
   };
 
@@ -175,5 +233,25 @@
     padding-top: r(20);
     padding-bottom: r(50);
     margin: 0 auto;
+  }
+  .pay-psd-input{
+    width: 80%;
+    height: r(40);
+    padding-left: 2%;
+    margin: 0 auto;
+    background: #FFFFFF;
+    border: 1px solid #D8D8D8;
+  }
+  .btn-cancel,.btn-yes{
+    width: 100%;
+    height: 100%;
+  }
+  .btn-cancel{
+    background: #D8D8D8;
+    color: #333333;
+  }
+  .btn-yes{
+    background: #4982FF;
+    color: $white;
   }
 </style>

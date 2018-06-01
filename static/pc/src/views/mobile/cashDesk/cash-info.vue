@@ -2,12 +2,12 @@
   <div class="cash-info">
     <div class="info">
       <span class="title">{{$t('cash.orderNumber')}}</span>
-      <span class="detail">DSJW92JF00IDFKSPKFM020409232</span>
+      <span class="detail">{{data.jiuanOrderid}}</span>
     </div>
     <div class="info">
       <span class="title">{{$t('cash.amountsPayable')}}</span>
       <span class="detail">
-            <span class="red">5000 UET</span> 折合 <span class="red">50 CNY</span>
+            <span class="red">{{data.amount}} {{data.assetCode}}</span> 折合 <span class="red">50 CNY</span>
           </span>
     </div>
     <div class="info">

@@ -72,6 +72,7 @@
         reqData: {
           limit: 10,
           offset: 0,
+          currentPage:1,
           type: 11,
           startBalance: 0
         },
@@ -97,21 +98,21 @@
     methods: {
       generateTitle,
       searchDataList(index) {
-        if (!isNaN(index)) {
-          this.reqData.offset = (index - 1) * this.reqData.limit;
-        }
+        // if (!isNaN(index)) {
+          this.reqData.offset = (this.reqData.currentPage - 1) * this.reqData.limit;
+        // }
         console.log('req:', this.reqData);
 
         transaction.getOrderxPendingPage(this.reqData).then(res => {
           console.log('买入UET get OrderxPageForHallSell data:');
           console.log(res);
-          this.dataList.data = res.data.map(item => {
+          this.dataList.data = [...this.dataList.data, ...res.data.map(item => {
             let mathRand = parseInt(Math.random()*this.avatarDealw,10);
             item.avatarColor = this.SETTING.avatarColor[mathRand];
             return item;
-          });
+          })];
           this.dataList.total = res.pageInfo.total;
-          if (this.totalPage - 1 <= this.reqData.offset) {
+          if (this.totalPage <= this.reqData.currentPage) {
             this.$refs.scroll.update(true)
           }
         }).catch(error => {
@@ -120,12 +121,12 @@
       },
 
       loadRefresh() {
-        this.reqData.offset = 0
+        this.reqData.currentPage = 0
         this.dataList.data = []
         this.searchDataList()
       },
       loadMore() {
-        this.reqData.offset += 1
+        this.reqData.currentPage += 1
         this.searchDataList()
       }
     },

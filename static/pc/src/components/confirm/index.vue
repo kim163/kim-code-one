@@ -80,16 +80,16 @@
       background: rgba(0,0,0,0.40);
     }
     .container{
-      width: r(300);
-      height: r(160);
+      width: 72%;
+      overflow: hidden;
       background: #FFFFFF;
       border-radius: 5px;
       z-index: 1001;
       position: absolute;
       top: 50%;
       left: 50%;
-      margin-top: -#{r(80)};
-      margin-left: -#{r(150)};
+      margin-top: -25%;
+      margin-left: -36%;
       .confirm-title,.confirm-content{
         width: 100%;
         text-align: center;
@@ -108,13 +108,13 @@
       justify-content: space-around;
       margin-top: r(25);
       .confirm-btn{
-        width: 49.5%;
+        width: 49.9%;
         height: r(40);
         line-height: r(40);
         text-align: center;
-        &:first-child{
-          border-right: 1px solid #e5e5e5;
-        }
+        /*&:first-child{*/
+          /*border-right: 1px solid #e5e5e5;*/
+        /*}*/
       }
     }
   }

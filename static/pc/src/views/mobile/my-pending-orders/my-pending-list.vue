@@ -42,6 +42,7 @@
     <confirm-dialog v-model="showConfirm">
       <div slot="title">{{$t('postPend.delConfirmTitle')}}</div>
       <div slot="content">{{$t('postPend.delConfirmContent')}}</div>
+      <div slot="leftBtn" class="btn-cancel">{{$t('postPend.cancel')}}</div>
       <div slot="rightBtn" @click="orderDelete">{{$t('postPend.confirmYes')}}</div>
     </confirm-dialog>
   </div>
@@ -68,6 +69,7 @@
         orderList: [],
         limit:10,
         offset:0,
+        currentPage:1,
         total:0,
         showConfirm: false,
         orderId:'',
@@ -108,7 +110,7 @@
         const api = this.tabType === 1 ? getOrderxPendingPage : getOrderxPendingUnshelve
         const request = {
           limit: this.limit,
-          offset: this.offset,
+          offset: (this.currentPage - 1) * this.limit,
         }
         if(this.tabType === 1){
           Object.assign(request,{
@@ -135,7 +137,7 @@
               this.orderList = Array.from(new Set([...this.orderList,...res.data]))
             }
             this.total = res.pageInfo.total
-            if(this.totalPage - 1 <= this.offset){
+            if(this.totalPage <= this.currentPage){
               this.$refs.scroll.update(true)
             }
           }else{
@@ -180,12 +182,12 @@
         })
       },
       loadRefresh(){
-        this.offset = 0
+        this.currentPage = 0
         this.orderList = []
         this.getData()
       },
       loadMore(){
-        this.offset += 1
+        this.currentPage += 1
         this.getData()
       }
     },
@@ -249,5 +251,8 @@
     &.delete {
       background: #86A5F8;
     }
+  }
+  .btn-cancel{
+    border-right: 1px solid #e5e5e5;
   }
 </style>

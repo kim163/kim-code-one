@@ -57,8 +57,9 @@
     data() {
       return {
         limit: 10,
-        offset: 0,//交易页数
+        offset: 0,
         tranList: [],//交易列表
+        currentPage:1,
         total:0, //总条数
         pullDownCfg:{
           txt:this.generateTitle('scorllCfg.pullDownText')
@@ -96,7 +97,7 @@
         const api = this.type === 0 ? getOrderxPage : getTransactionPage
         const request = {
           limit: this.limit,
-          offset: this.offset,
+          offset: (this.currentPage - 1) * this.limit,
           credit: this.userId,
           debit: this.userId,
           types: [11, 12]
@@ -112,7 +113,7 @@
             }
             this.tranList = [...this.tranList, ...res.data]
             this.total = res.pageInfo.total
-            if(this.totalPage - 1 <= this.offset){
+            if(this.totalPage <= this.currentPage){
               this.$refs.scroll.update(true)
             }
           } else {
@@ -123,11 +124,11 @@
         })
       },
       loadMore() {
-        this.offset += 1
+        this.currentPage += 1
         this.getTranList()
       },
       loadRefresh() {
-        this.offset = 0
+        this.currentPage = 0
         this.tranList = []
         this.getTranList()
       },
