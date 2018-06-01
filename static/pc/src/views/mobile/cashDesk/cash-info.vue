@@ -32,7 +32,17 @@
     props:{
       data:{
         type:Object,
-        default:{}
+        default:{
+          amount: '',//应付金额
+          assetCode: '', //资产代码
+          merchantId: '', //商户号
+          merchantOrderid: '', //商户订单号
+          merchantCallbackurl: '', //商户回调地址
+          sign: '', //商户请求签名
+          exchangeRate: 0, // 汇率
+          businessName: '', //商户名
+          jiuanOrderid: '',  //久安订单号
+        }
       }
     },
     mounted:{
