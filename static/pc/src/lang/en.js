@@ -104,6 +104,9 @@ export default {
     transferName: 'Transfer name',
     transferMethod: 'Transfer method',
     minimumSale: 'Minimum sell 100UET',
+    yuan: 'yuan',
+    totalValue: 'Total value',
+    transferNamephd: 'Please enter the transfer accounts Account Name',
 
   },
   transactionRecord: {
@@ -160,5 +163,25 @@ export default {
     pullDownText:'Refreshed successfully',
     pullUpMore:'Pull up loading',
     pullUpNoMore:'- No More -'
+  },
+  cash:{ //收银台
+    title:'Jiuan Cash',
+    realTime:'Using real-time arrival transactions',
+    orderNumber:'Order number',
+    amountsPayable:'应付金额',
+    currentExchangeRate:'Amounts payable',
+    BusinessName:'Business name',
+    otherPay:'Replace other payment methods',
+    nextBtn:'Next',
+    balance:'Balance',
+    enough:'Current balance is sufficient',
+    notEnough:'Insufficient current balance',
+    payPassWord:'Payment password',
+    psdInputPlaceholder:"Please enter your payment password",
+    confirmPayment:'Confirm payment',
+    goTran:'Go to the trading floor',
+    goBack:'return',
+    payment:'Payment',
+    loginPay:'Login account password payment'
   }
 }

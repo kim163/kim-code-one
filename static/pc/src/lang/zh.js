@@ -104,6 +104,9 @@ export default {
     transferName: '转账姓名',
     transferMethod: '转账方式',
     minimumSale: '最低卖出100UET',
+    yuan: '元',
+    totalValue: '总值',
+    transferNamephd: '请输入转账账户的开户名',
 
   },
   transactionRecord: {
@@ -161,5 +164,25 @@ export default {
     pullDownText:'刷新成功',
     pullUpMore:'上拉加载',
     pullUpNoMore:'- 我是有底线的 -'
+  },
+  cash:{ //收银台
+    title:'久安收银台',
+    realTime:'正在使用即时到账交易',
+    orderNumber:'订单号',
+    amountsPayable:'应付金额',
+    currentExchangeRate:'当前汇率',
+    BusinessName:'商户名',
+    otherPay:'更换其他支付方式',
+    nextBtn:'下一步',
+    balance:'余额',
+    enough:'当前余额充足',
+    notEnough:'当前余额不足',
+    payPassWord:'支付密码',
+    psdInputPlaceholder:"请输入您的支付密码",
+    confirmPayment:'确实付款',
+    goTran:'前去交易大厅买币',
+    goBack:'返回',
+    payment:'确定支付',
+    loginPay:'登录账号密码支付'
   }
 }

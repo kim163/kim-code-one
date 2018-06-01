@@ -8,7 +8,7 @@
             :pullDownConfig="pullDownCfg"
             :pullUpConfig="pullUpCfg"
             @pullingDown="loadRefresh"
-            @pullingUp="loadMore">
+            @pullingUp="loadMore" v-if="!noData">
       <ul>
         <li v-for="(item,i) in orderList" :key="i" class="order-item">
           <div class="order-info">
@@ -38,6 +38,7 @@
         </li>
       </ul>
     </Scroll>
+    <no-data-tip v-else></no-data-tip>
     <confirm-dialog v-model="showConfirm">
       <div slot="title">{{$t('postPend.delConfirmTitle')}}</div>
       <div slot="content">{{$t('postPend.delConfirmContent')}}</div>
@@ -51,6 +52,7 @@
   import {mapGetters} from 'vuex'
   import ConfirmDialog from 'components/confirm'
   import { generateTitle } from '@/util/i18n'
+  import NoDataTip from 'components/no-data-tip'
   import {
     getOrderxPendingPage,
     getOrderxPendingUnshelve,
@@ -77,12 +79,14 @@
             more:this.generateTitle('scorllCfg.pullUpMore'),
             noMore:this.generateTitle('scorllCfg.pullUpNoMore')
           }
-        }
+        },
+        noData:false
       }
     },
     components:{
       Scroll,
-      ConfirmDialog
+      ConfirmDialog,
+      NoDataTip
     },
     computed:{
       ...mapGetters([
@@ -120,6 +124,11 @@
         api(request).then(res => {
           if(res.code === 10000){
             console.log('pending data:',res)
+            if(res.data.length === 0 && this.offset === 0){
+              this.noData = true
+            }else{
+              this.noData = false
+            }
             if(format){
               this.orderList = [...res.data]
             }else{

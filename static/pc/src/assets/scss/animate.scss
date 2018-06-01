@@ -11,11 +11,11 @@
   transform: translateX(-100%);
 }
 .message-enter-active, .message-leave-active {
-  transition: all 1s;
+  transition: all 0.25s ease-out;
   overflow: hidden;
 }
 .message-enter,.message-leave-to {
-  height: 0 !important;
+  opacity: 0;
 }
 
 @keyframes rotate11{
