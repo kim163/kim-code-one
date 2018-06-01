@@ -120,7 +120,16 @@ export default {
     waitingForRelease:'等待释放',
     tranPendingOrder: '挂单中',
     tranPendingRemoved: '已下架',
-    tarnComplete:'交易完成'
+    tarnComplete:'交易完成',
+    tranType: '订单类型',
+    tranTheOther: '对方',
+    tranNumber: '交易数量',
+    tranUnitPrice: '交易单价',
+    tranAmount: '交易金额',
+    tranStatus: '状态',
+    tranControl: '操作',
+    tranRefresh: '刷新',
+    tranDetail: '详情'
   },
   table: {
     sellers: '卖家',

@@ -120,7 +120,16 @@ export default {
     waitingForRelease:'Waiting For Release',
     tranPendingOrder: 'Pending order',
     tranPendingRemoved: 'Removed order',
-    tarnComplete:'Transaction Complete'
+    tarnComplete:'Transaction Complete',
+    tranType: 'Order Type',
+    tranTheOther: 'Other side',
+    tranNumber: 'Quantity',
+    tranUnitPrice: 'Unit price',
+    tranAmount: 'Transaction amount',
+    tranStatus: 'state',
+    tranControl: 'Operation',
+    tranRefresh: 'Refresh',
+    tranDetail: 'Detail'
   },
   table: {
     sellers: 'Sellers',
