@@ -128,7 +128,7 @@
         this.getTranList()
       },
       loadRefresh() {
-        this.currentPage = 0
+        this.currentPage = 1
         this.tranList = []
         this.getTranList()
       },

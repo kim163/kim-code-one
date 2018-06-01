@@ -32,7 +32,8 @@
     <confirm-dialog v-model="showPayPsdDialog">
       <div slot="title">{{$t('cash.psdInputPlaceholder')}}</div>
       <div slot="content">
-        <input type="password" class="pay-psd-input" v-model.trim="payPassword" :placeholder="$t('cash.psdInputPlaceholder')"/>
+        <input type="password" class="pay-psd-input" v-model.trim="payPassword"
+               :placeholder="$t('cash.psdInputPlaceholder')"/>
       </div>
       <div slot="leftBtn" class="btn-cancel">{{$t('postPend.cancel')}}</div>
       <div slot="rightBtn" class="btn-yes" @click="checkPayPassWord()">{{$t('cash.yesBtn')}}</div>
@@ -49,26 +50,32 @@
   import CashLogin from './cash-login'
   import CashPay from './cash-pay'
   import CashInfo from './cash-info'
+  import {
+    cashierInit,
+    loginH5,
+    paymentPay,
+  } from 'api/cashier'
+  import {login} from 'api/show'
 
   export default {
     data() {
       return {
-        isImmediate: false, //即时到账
-        infoData:{
+        infoData: {
           amount: '',//应付金额
           exchangeRate: 0, // 汇率
           businessName: '', //商户名
           assetCode: '', //资产代码
-          merchantId:'', //商户号
+          merchantId: '', //商户号
           merchantOrderid: '', //商户订单号
-          merchantCallbackurl:'', //商户回调地址
-          sign:'', //商户请求签名
-          jiuanOrderid:'',  //久安订单号
+          merchantCallbackurl: '', //商户回调地址
+          sign: '', //商户请求签名
+          jiuanOrderid: '',  //久安订单号
         },
         isBind: false, //商户是否绑定
         endTime: new Date().getTime() + 7200000,
-        showPayPsdDialog:false,
-        payPassword:''
+        showPayPsdDialog: false,
+        payPassword: '',
+        token: ''
       }
     },
     components: {
@@ -82,15 +89,15 @@
 
     created() {
       const data = {
-       amount: this.getUrlParam('amount'),
-      merchantOrderid: this.getUrlParam('merchantOrderid'),
-      assetCode: this.getUrlParam('assetCode'),
-      merchantId: this.getUrlParam('merchantId'),
-      merchantOrderid: this.getUrlParam('merchantOrderid'),
-      merchantCallbackurl: this.getUrlParam('merchantCallbackurl'),
-      sign: this.getUrlParam('sign')
+        amount: this.getUrlParam('amount'),
+        merchantOrderid: this.getUrlParam('merchantOrderid'),
+        assetCode: this.getUrlParam('assetCode'),
+        merchantId: this.getUrlParam('merchantId'),
+        merchantCallbackurl: this.getUrlParam('merchantCallbackurl'),
+        sign: this.getUrlParam('sign')
       }
-      Object.assign(this.infoData,data)
+      this.token = this.getUrlParam('token')
+      Object.assign(this.infoData, data)
     },
     watch: {},
 
@@ -104,17 +111,28 @@
       generateTitle,
       init() {
         //调用初始化接口
+        cashierInit(this.infoData).then(res => {
+          if(res.code === 10000){
+
+          }else{
+            toast(res.message)
+          }
+        }).catch(err => {
+          toast(err)
+        })
       },
-      checkPayPassWord(){
-        if(this.payPassword === ''){
+      login(){
+
+      },
+      checkPayPassWord() {
+        if (this.payPassword === '') {
           toast(this.generateTitle('cash.psdInputPlaceholder'))
-        }else{
+        } else {
           this.pay(this.payPassword)
         }
       },
-      pay(password) {  //支付接口
-        console.log(password)
-          //调用支付接口
+      pay(password) {
+        //调用支付接口
       },
       countDownEnd() {
         console.log('666666')
@@ -138,6 +156,10 @@
         return params
       },
     },
+    mounted() {
+      this.init()
+
+    }
   };
 
 </script>
@@ -234,7 +256,8 @@
     padding-bottom: r(50);
     margin: 0 auto;
   }
-  .pay-psd-input{
+
+  .pay-psd-input {
     width: 80%;
     height: r(40);
     padding-left: 2%;
@@ -242,15 +265,18 @@
     background: #FFFFFF;
     border: 1px solid #D8D8D8;
   }
-  .btn-cancel,.btn-yes{
+
+  .btn-cancel, .btn-yes {
     width: 100%;
     height: 100%;
   }
-  .btn-cancel{
+
+  .btn-cancel {
     background: #D8D8D8;
     color: #333333;
   }
-  .btn-yes{
+
+  .btn-yes {
     background: #4982FF;
     color: $white;
   }
