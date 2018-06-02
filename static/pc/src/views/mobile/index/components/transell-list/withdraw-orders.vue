@@ -5,7 +5,7 @@
     <div class="withdraword-content">
         <div class="ordernum-group">
             <p class="order-text"> {{$t('transactionHome.orderNumber')}} </p>
-            <p class="order-num"></p>
+            <p class="order-num"> {{DetailList.id}} </p>
             <p class="order-status"></p>
         </div>
        <div class="form-group">
@@ -42,15 +42,43 @@
 </template>
 <script>
   import mHeader from "components/m-header";
+  import { transaction } from 'api';
 
   export default {
     data() {
-      return {};
+      return {
+        DetailList: {},
+        orderId: ''
+      };
+    },
+    watch: {
+      "$route"(val) {
+        this.orderId = val.params.id;
+        this.searchOrderDetail();
+      }
     },
     props: {},
-    methods: {},
+    methods: {
+      searchOrderDetail(){
+        let request={
+          orderId: this.orderId
+        }
+        transaction.getOrderx(request).then(res => {
+          console.log('订单详情记录:');
+          console.log(res);
+          this.DetailList = res.data;
+        }).catch(error => {
+          this.reset(res.message);
+        });
+      },
+
+    },
     computed: {},
     created() {
+      if (this.$route.params.id) {
+        this.orderId = this.$route.params.id;
+        this.searchOrderDetail();
+      }
     },
     components: {
       mHeader
