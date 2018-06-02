@@ -172,12 +172,23 @@ export default [
     path: "/m/userBind",
     name: 'mUserBind',
     component(resolve){
-      // 申诉订单-订单详情
+      // 商户绑定
       return resolve(require('views/mobile/business-bind'))
     },
     meta:{
       isMobilePage: "mobile-body"
-    }
+    },
   },
+  {
+    path: "/m/userBind/list",
+    name: 'mBindList',
+    component(resolve){
+      // 商户绑定--绑定列表
+      return resolve(require('views/mobile/business-bind/bind-list'))
+    },
+    meta:{
+      isMobilePage: "mobile-body"
+    },
+  }
 
 ]
