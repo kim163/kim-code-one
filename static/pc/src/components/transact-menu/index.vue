@@ -53,7 +53,8 @@
   margin-top: 31px;
   a{
     display: inline-block;
-    width: 200px;
+    width:17%;
+    /*max-width: 200px;*/
     text-align: center;
     font-size: 16px;
     color: #787876;

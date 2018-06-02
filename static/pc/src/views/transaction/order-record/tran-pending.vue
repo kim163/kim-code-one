@@ -18,8 +18,8 @@
 
             <div class="group-tr" v-for="order in OrderList.data">
                  <span class="unit">
-                      <span class="btn btn-border" v-show="order.type == 12">买入</span>
-                      <span class="btn btn-orange" v-show="order.type == 11">卖出</span>
+                      <span class="c-blue" v-show="order.type == 12">买入</span>
+                      <span class="c-orange" v-show="order.type == 11">卖出</span>
                  </span>
               <!--<span class="unit">{{order.creditAccountNameTwin}}</span>-->
               <span class="unit"> {{order.amount}}   UET</span>
