@@ -32,6 +32,30 @@ export default [
     }
   },
   {
+    path: "/m/rechargeOrder/:id?",
+    name: 'rechargeOrder',
+    component(resolve){
+      // UET充值
+      return resolve(require('views/mobile/index/components/tranbuy-list/recharge-order'))
+    },
+    meta:{
+      noCache: true,
+      isMobilePage: "mobile-body"
+    }
+  },
+  {
+    path: "/m/rechWechatOrder/:id?",
+    name: 'rechWechatOrder',
+    component(resolve){
+      // UET微信充值
+      return resolve(require('views/mobile/index/components/tranbuy-list/rechwechat-order'))
+    },
+    meta:{
+      noCache: true,
+      isMobilePage: "mobile-body"
+    }
+  },
+  {
     path: "/m/transellFm/:id?",
     name: 'transellForm',
     component(resolve){
