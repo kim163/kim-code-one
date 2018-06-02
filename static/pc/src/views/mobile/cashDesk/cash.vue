@@ -5,11 +5,11 @@
       <div class="trade-time">
         {{$t('cash.realTime')}}
         <span class="red fr">
-          <count-down :end-time="endTime" :callback="countDownEnd"></count-down>
+          <count-down :end-time="endTime" @callBack="countDownEnd"></count-down>
         </span>
       </div>
       <cash-info :data="infoData"></cash-info>
-      <router-link :to="infoData.merchantCallbackurl" class="other-pay">{{$t('cash.otherPay')}}&gt;&gt;</router-link>
+      <router-link :to="initReqData.merchantCallbackurl" class="other-pay">{{$t('cash.otherPay')}}&gt;&gt;</router-link>
     </div>
     <transition name="pay-type">
       <div class="quick-pay" v-show="isBind">
@@ -27,7 +27,7 @@
         </transition>
       </div>
     </transition>
-    <router-link :to="infoData.merchantCallbackurl" class="go-back" v-if="!isBind">{{$t('cash.goBack')}}</router-link>
+    <router-link :to="initReqData.merchantCallbackurl" class="go-back" v-if="!isBind">{{$t('cash.goBack')}}</router-link>
 
     <confirm-dialog v-model="showPayPsdDialog">
       <div slot="title">{{$t('cash.psdInputPlaceholder')}}</div>
@@ -47,7 +47,7 @@
   import ConfirmDialog from 'components/confirm'
   import {generateTitle} from '@/util/i18n'
   import {mapGetters} from 'vuex'
-  import CashLogin from './cash-login'
+  import CashLogin from '../login/login-inline'
   import CashPay from './cash-pay'
   import CashInfo from './cash-info'
   import {
@@ -61,18 +61,20 @@
     data() {
       return {
         infoData: {
-          amount: '',//应付金额
           exchangeRate: 0, // 汇率
           businessName: '', //商户名
+          jiuanOrderid: '',  //久安订单号
+        },
+        initReqData:{ //初始化页面参数
+          amount: '',//应付金额
           assetCode: '', //资产代码
           merchantId: '', //商户号
           merchantOrderid: '', //商户订单号
           merchantCallbackurl: '', //商户回调地址
           sign: '', //商户请求签名
-          jiuanOrderid: '',  //久安订单号
         },
         isBind: false, //商户是否绑定
-        endTime: new Date().getTime() + 7200000,
+        endTime: 0,
         showPayPsdDialog: false,
         payPassword: '',
         token: ''
@@ -97,7 +99,8 @@
         sign: this.getUrlParam('sign')
       }
       this.token = this.getUrlParam('token')
-      Object.assign(this.infoData, data)
+      Object.assign(this.initReqData, data)
+      Object.assign(this.infoData, this.initReqData)
     },
     watch: {},
 
@@ -109,11 +112,21 @@
     },
     methods: {
       generateTitle,
-      init() {
-        //调用初始化接口
-        cashierInit(this.infoData).then(res => {
+      init() { //调用初始化接口
+        console.log(this.initReqData)
+        cashierInit(this.initReqData).then(res => {
+          console.log('cash init res: ', res)
           if(res.code === 10000){
+            const data = res.data
+            this.infoData.jiuanOrderid = data.payOrder.jiuanOrderid
+            this.infoData.exchangeRate = data.payOrder.rate
+            if(new Date().getTime() - data.payOrder.createtime > 3600000){
+              toast('该订单已超时')
+              this.endTime = 0
+            }else{
 
+            }
+            this.endTime = new Date().getTime() - data.payOrder.createtime
           }else{
             toast(res.message)
           }

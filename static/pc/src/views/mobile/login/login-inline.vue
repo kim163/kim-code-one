@@ -8,34 +8,34 @@
     </ul>
     <div class="form-box form-box-phone">
       <div class="form-group" v-show="loginItem=='account'">
-        <label class="form-subtitle">{{$t('login.username')}}</label>
+        <label class="form-subtitle">{{$t('login-inline.username')}}</label>
         <div class="form-input">
           <input name="account" @keyup.enter="login" v-model="data.account" type="text" class="ps-input ps-input1"
-                 :placeholder="$t('login.usernamePhd')">
+                 :placeholder="$t('login-inline.usernamePhd')">
         </div>
       </div>
       <div class="form-group" v-show="loginItem=='phone'">
-        <label class="form-subtitle">{{$t('login.mobileNum')}}</label>
+        <label class="form-subtitle">{{$t('login-inline.mobileNum')}}</label>
         <div class="form-input">
           <select class="select-country area-box" v-model="data.areaCode">
             <option v-for="areacd in areaCodeData" :value="areacd.value" :key="areacd.value"> {{areacd.name}}</option>
           </select>
           <input type="text" class="ps-input ps-input-phone" v-model="data.phone"
-                 :placeholder="$t('login.mobileNumPhd')" maxlength="11" name="phone">
+                 :placeholder="$t('login-inline.mobileNumPhd')" maxlength="11" name="phone">
         </div>
       </div>
       <div class="form-group" v-show="loginItem=='email'">
-        <label class="form-subtitle">{{$t('login.emailadd')}}</label>
+        <label class="form-subtitle">{{$t('login-inline.emailadd')}}</label>
         <div class="form-input">
           <input name="email" @keyup.enter="login" v-model="data.email" type="text" class="ps-input ps-input1"
-                 :placeholder="$t('login.emailaddPhd')">
+                 :placeholder="$t('login-inline.emailaddPhd')">
         </div>
       </div>
       <div class="form-group">
-        <label class="form-subtitle">{{$t('login.password')}}</label>
+        <label class="form-subtitle">{{$t('login-inline.password')}}</label>
         <div class="form-input posit-rel">
           <input ref="pwd" @keyup.enter="login" name="password" v-model="data.password" type="password"
-                 class="ps-input ps-input1" :placeholder="$t('login.passwordPhd')">
+                 class="ps-input ps-input1" :placeholder="$t('login-inline.passwordPhd')">
         </div>
       </div>
       <span class="validate"></span>
@@ -58,9 +58,9 @@
     data() {
       return {
         loginType: [
-          {name: "login.accloginTitle", value: "account"},
-          {name: "login.mobloginTitle", value: "phone"},
-          {name: "login.emailloginTitle", value: "email"}
+          {name: "login-inline.accloginTitle", value: "account"},
+          {name: "login-inline.mobloginTitle", value: "phone"},
+          {name: "login-inline.emailloginTitle", value: "email"}
         ],
         loginItem: 'account',
         areaCodeData: [
