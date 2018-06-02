@@ -122,7 +122,6 @@
 
           console.log(res)
           if (res.code == 10000) {
-           // toast("下单成功，请及时支付,10分钟内未完成支付，将自动取消订单");
             this.$router.push({name: 'withdrawOrder',params:{ id: res.data.key}});
           }
 
