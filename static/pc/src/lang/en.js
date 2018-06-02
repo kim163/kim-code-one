@@ -121,7 +121,7 @@ export default {
     waitingForRelease:'Waiting For Release',
     tranPendingOrder: 'Pending order',
     tranPendingRemoved: 'Removed order',
-    tarnComplete:'Transaction Complete',
+    tarnCancel:'Transaction Cancel',
     tranType: 'Order Type',
     tranTheOther: 'Other side',
     tranNumber: 'Quantity',
@@ -194,5 +194,15 @@ export default {
     payment:'Payment',
     loginPay:'Login account password payment',
     yesBtn:'Yes'
+  },
+  bindUser:{
+    title:'Jiuan wallet',
+    bindBusiness:'Bind business',
+    bindListTitle:'My business listing',
+    noLoginTip:'You are not logged in yet, please log in to Jiuan wallet',
+    bindTipFirst:'You will bind',
+    bindTipLast:'Account to Joan Wallet',
+    bindNow:'Bind Now',
+    businessBindingRecord:'Business binding record',
   }
 }

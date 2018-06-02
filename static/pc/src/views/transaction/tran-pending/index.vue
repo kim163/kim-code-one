@@ -125,18 +125,19 @@
       }
     },
     computed: {
-      ...mapGetters(["userData", "islogin"]),
+      ...mapGetters([
+        'userId'
+      ]),
 
     },
     methods: {
       generateTitle,
       getOrderList(index){
-        let userId = this.userData.userId;
+        let userId = this.userId;
         this.request = {
           limit: 10,
           offset: 0,
-          credit: userId,
-          debit: userId,
+          userId: userId,
         }
         if (!isNaN(index)) {
           this.request.offset = (index - 1) * this.request.limit;
@@ -155,6 +156,7 @@
           limit: 10,
           offset: 0,
           statuses: [11, 12],
+          userId: userId
         }
         if (!isNaN(index)) {
           this.request.offset = (index - 1) * this.request.limit;

@@ -121,7 +121,7 @@ export default {
     waitingForRelease:'等待释放',
     tranPendingOrder: '挂单中',
     tranPendingRemoved: '已下架',
-    tarnComplete:'交易完成',
+    tarnCancel:'交易取消',
     tranType: '订单类型',
     tranTheOther: '对方',
     tranNumber: '交易数量',
@@ -195,5 +195,15 @@ export default {
     payment:'确定支付',
     loginPay:'登录账号密码支付',
     yesBtn:'确定'
+  },
+  bindUser:{
+    title:'久安钱包',
+    bindBusiness:'绑定商户',
+    bindListTitle:'我的商户列表',
+    noLoginTip:'您尚未登陆，请先登录久安钱包',
+    bindTipFirst:'您将绑定',
+    bindTipLast:'的账号至久安钱包',
+    bindNow:'立即绑定',
+    businessBindingRecord:'商户绑定记录',
   }
 }

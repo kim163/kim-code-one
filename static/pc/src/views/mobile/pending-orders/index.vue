@@ -13,7 +13,7 @@
       <div class="white-box">
         <div class="line-box"></div>
         <div class="balance-box">
-          <p>{{$t('postPend.balance')}} <balance></balance>  UET</p>
+          <p>{{$t('postPend.balance')}} <balance></balance> </p>
           <p class="c-gray">{{$t('postPend.unit')}} ¥ 0.01</p>
         </div>
         <div class="input-box">
@@ -31,7 +31,7 @@
             </div>
             <div >
               <p class="s-title">{{$t('postPend.buyerRequest')}}</p>
-              <div  class="input-div"><input class="my-input" :placeholder="$t('postPend.minSell')"> CNY</div>
+              <div  class="input-div"><input class="my-input" :placeholder="$t('postPend.minSell')"> UET</div>
             </div>
         </div>
         <div class="line-box"></div>
@@ -46,7 +46,7 @@
       <div class="white-box">
         <div class="line-box"></div>
         <div class="balance-box">
-          <p>{{$t('postPend.balance')}}  <balance></balance>  UET</p>
+          <p>{{$t('postPend.balance')}}  <balance></balance></p>
           <p class="c-gray">{{$t('postPend.unit')}} ¥ 0.01 <a class="c-blue">{{$t('postPend.allsell')}}</a></p>
         </div>
         <div class="input-box">
@@ -118,6 +118,9 @@
     },
     computed: {
       ...mapGetters(["userData"]),
+      ...mapGetters([
+        'userId'
+      ]),
       buyAmountCny:function(){
         return Number(this.buyAmount) *0.01;
       }
@@ -126,7 +129,7 @@
       generateTitle,
       getBankInfo(){
         this.requestdata={
-          userId: this.userData.userId
+          userId: this.userId
         }
         show.getBankInfo(this.requestdata).then((res) => {
           this.bankList = res;

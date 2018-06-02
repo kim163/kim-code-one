@@ -119,6 +119,13 @@
             phone: this.data.phone,
             password: this.data.password
           }
+       }else if(this.loginItem=='email'){
+         this.requestda = {
+           type:4,
+           areaCode: this.data.areaCode,
+           email: this.data.email,
+           password: this.data.password
+         }
        }
 
         if(this.loginItem=='phone' || this.loginItem=='email') {

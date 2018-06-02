@@ -1,7 +1,8 @@
 <template>
   <div>
     <mobile-header>{{title}}</mobile-header>
-    <no-login v-if="islogin"></no-login>
+    <no-login v-if="!islogin"></no-login>
+    <user-bind v-if="islogin"></user-bind>
   </div>
 </template>
 
@@ -10,16 +11,17 @@
   import {generateTitle} from '@/util/i18n'
   import MobileHeader from 'components/m-header'
   import noLogin from './no-login'
+  import UserBind from './bind-user'
   export default {
     name: "business-bind",
     data() {
       return {
-        title:'久安钱包',
+        title:'',
       }
     },
     watch:{
       islogin(){
-        this.title = this.islogin ? '' : ''
+        this.title = this.islogin ? '绑定商户' : '久安钱包'
       }
     },
     computed: {
@@ -29,14 +31,15 @@
     },
     components:{
       MobileHeader,
-      noLogin
+      noLogin,
+      UserBind
     },
     methods:{
       generateTitle,
-
-      callBack() {
-
-      }
+    },
+    created(){
+      this.title = this.islogin ? '绑定商户' : '久安钱包'
+      console.log(_.getUrlParam('name'))
     }
   }
 </script>

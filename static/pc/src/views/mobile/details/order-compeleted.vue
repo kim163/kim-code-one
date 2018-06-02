@@ -6,7 +6,10 @@
         <span class="c-blue" v-if="DetailList.type == '12'">买入</span>
         <span class="c-orange" v-else-if="DetailList.type == '11'">卖出</span>
         <span class="c-blue" v-else>申诉订单</span>
-        <span class="fr">已完成</span>
+        <span class="fr">
+          <span v-if="DetailList.status == 203">已完成</span>
+          <span v-if="DetailList.status == 204">已取消</span>
+        </span>
       </div>
 
       <!--<div class="mobilenav-tabs">-->
@@ -20,6 +23,10 @@
           <li>
             <span class="l-title">订单号 :</span>
             <span class="fr order-id-li">{{$route.params.id}}</span>
+          </li>
+          <li>
+            <span class="l-title">订单时间 :</span>
+            <span class="fr ">{{DetailList.createtime | Date('yyyy-MM-dd hh:mm:ss')}}</span>
           </li>
           <li>
             <span class="l-title">卖方 :</span>
@@ -64,11 +71,11 @@
               <a href="javascript:void(0);" class="copy-btn" @click="copystr(DetailList.debitAccountTwin)" >{{$t('transactionHome.copyBtn')}}</a>
             </div>
           </li>
-          <li class="heightauto">
+          <li class="heightauto" v-if="DetailList.debitAccountMerchantTwin == '支付宝' || DetailList.debitAccountMerchantTwin == '微信'">
             <span class="l-title">收款二维码 : </span>
-            <div class="qrcode-box">
+            <div class="qrcode-box" >
               <!--<img src="~images/qrcode.jpg" :src="DetailList.debitAccountQrCodeUrlTwin" class="qrcode-img">-->
-              <img src="~images/qrcode.jpg" class="qrcode-img" />
+              <img src="~images/qrcode.jpg" :src="DetailList.debitAccountQrCodeUrlTwin" class="qrcode-img" />
               <span class="qrcode-tips">长按二维码保存</span>
             </div>
           </li>
@@ -76,9 +83,6 @@
         </ul>
 
         <div class="btn-group">
-          <!--<input type="button" class="btn btn-block btn-primary"  value="我已完成付款">-->
-          <!--<input type="button" class="btn btn-block btn-primary"  value="提出发证">-->
-          <!--<input type="button" class="btn btn-block btn-cancel"  value="取消订单">-->
           <input type="button" class="btn btn-block btn-gray" readonly  value="我已付款">
 
         </div>

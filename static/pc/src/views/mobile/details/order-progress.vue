@@ -64,7 +64,7 @@
                      <a href="javascript:void(0);" class="copy-btn" @click="copystr(DetailList.debitAccountTwin)" >{{$t('transactionHome.copyBtn')}}</a>
               </div>
             </li>
-            <li class="heightauto">
+            <li class="heightauto" v-if="DetailList.debitAccountMerchantTwin == '支付宝'">
               <span class="l-title">收款二维码 : </span>
               <div class="qrcode-box">
                     <img src="~images/qrcode.jpg" class="qrcode-img" />
@@ -132,9 +132,9 @@
           console.log(res.data);
           this.DetailList = res.data;
           this.DetailList.creditProofUrlTwin = res.data.creditProofUrlTwin.split(',');
-
-          console.log('图片分解')
-          console.log(res.data.creditProofUrlTwin.split(','))
+          if(res.code == '10000'){
+            toast('您已下单成功，请进入列表查询');
+          }
         }).catch(error => {
           this.reset(res.message);
         });

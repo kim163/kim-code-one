@@ -20,7 +20,7 @@
           </div>
           <div class="order-info">
             <div class="text-left">{{$t('table.quantity')}} {{item.amount}} UET</div>
-            <div class="text-right">{{$t('table.unitPrice')}} 0.001 CNY</div>
+            <div class="text-right">{{$t('table.unitPrice')}} 0.01 CNY</div>
           </div>
           <div class="order-info">
             <div class="text-left">{{$t('table.completed')}} {{(item.successAmount/item.amount)*100 | toFixed(2) }}%</div>
@@ -42,7 +42,7 @@
     <confirm-dialog v-model="showConfirm">
       <div slot="title">{{$t('postPend.delConfirmTitle')}}</div>
       <div slot="content">{{$t('postPend.delConfirmContent')}}</div>
-      <div slot="leftBtn" class="btn-cancel">{{$t('postPend.cancel')}}</div>
+      <div slot="leftBtn" class="confirm-btn-cancel">{{$t('postPend.cancel')}}</div>
       <div slot="rightBtn" @click="orderDelete">{{$t('postPend.confirmYes')}}</div>
     </confirm-dialog>
   </div>
@@ -114,11 +114,11 @@
         }
         if(this.tabType === 1){
           Object.assign(request,{
-            credit: this.userId,
-            debit: this.userId
+            userId: this.userId
           })
         }else{
           Object.assign(request,{
+            userId: this.userId,
             statuses:[11,12],
           })
         }
@@ -251,8 +251,5 @@
     &.delete {
       background: #86A5F8;
     }
-  }
-  .btn-cancel{
-    border-right: 1px solid #e5e5e5;
   }
 </style>
