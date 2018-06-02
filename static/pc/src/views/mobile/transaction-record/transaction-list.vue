@@ -26,7 +26,8 @@
           </div>
           <div class="status-time" v-else>
             <div class="status">
-              {{$t('transactionRecord.tarnComplete')}}
+              <span v-if="item.status =='204'">已取消</span>
+              <span v-if="item.status =='203'">{{$t('transactionRecord.tranComplete')}}</span>
             </div>
           </div>
         </div>

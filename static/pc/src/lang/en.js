@@ -121,7 +121,7 @@ export default {
     waitingForRelease:'Waiting For Release',
     tranPendingOrder: 'Pending order',
     tranPendingRemoved: 'Removed order',
-    tarnComplete:'Transaction Complete',
+    tarnCancel:'Transaction Cancel',
     tranType: 'Order Type',
     tranTheOther: 'Other side',
     tranNumber: 'Quantity',
