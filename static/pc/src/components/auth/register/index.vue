@@ -29,7 +29,7 @@
           <div class="form-group" v-if="registerItem=='email'">
             <p class="form-subtitle">{{$t('register.inputEmail')}}</p>
             <div class="form-input">
-              <input type="text" class="ps-input" v-model="data.email" :placeholder="$t('register.inputPlaceholder0')" maxlength="20" />
+              <input type="text" class="ps-input" v-model="data.email" :placeholder="$t('register.inputPlaceholder0')"  />
             </div>
 
           </div>
