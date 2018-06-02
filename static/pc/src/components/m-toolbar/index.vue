@@ -26,8 +26,8 @@
             </div>
           </div>
           <div v-else @click="myValue=false">
-            <router-link :to="{name:'mobileLogin'}" class="tool-item-href"><i class="iconfont icon-user-login"></i>{{$t('login.iWantLogin')}}</router-link>
-            <router-link :to="{name:'mobileLogin'}" class="tool-item-href"><i class="iconfont icon-user-register"></i>{{$t('login.iWantRegister')}}
+            <router-link :to="{name:'mobileLogin'}" class="tool-item-href"><i class="iconfont icon-user-login"></i>{{$t('login-inline.iWantLogin')}}</router-link>
+            <router-link :to="{name:'mobileLogin'}" class="tool-item-href"><i class="iconfont icon-user-register"></i>{{$t('login-inline.iWantRegister')}}
             </router-link>
           </div>
           <div class="tool-item-href border-bot" @click="handleSetLanguage" > {{$t('navbar.languageSel')}} </div>

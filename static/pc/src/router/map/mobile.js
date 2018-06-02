@@ -144,5 +144,16 @@ export default [
        isMobilePage: "mobile-body"
     }
   },
+  {
+    path: "/m/userBind",
+    name: 'mUserBind',
+    component(resolve){
+      // 申诉订单-订单详情
+      return resolve(require('views/mobile/business-bind'))
+    },
+    meta:{
+      isMobilePage: "mobile-body"
+    }
+  },
 
 ]

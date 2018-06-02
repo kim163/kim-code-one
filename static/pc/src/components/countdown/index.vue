@@ -23,18 +23,15 @@
         type : String,
         default:'已结束'
       },
-      callback : {
-        type : Function,
-        default :''
-      }
     },
     methods: {
-      countdowm(timestamp){
+      countdowm(t){
         let self = this;
         let timer = setInterval(function(){
-          let nowTime = new Date();
-          let endTime = new Date(timestamp);
-          let t = endTime.getTime() - nowTime.getTime();
+          // let nowTime = new Date();
+          // let endTime = new Date(timestamp);
+          // let t = endTime.getTime() - nowTime.getTime();
+          t = t - 1000
           if(t>0){
             let day = Math.floor(t/86400000);
             let hour=Math.floor((t/3600000)%24);
@@ -60,15 +57,10 @@
           }else{
             clearInterval(timer);
             self.content = self.endText;
-            self._callback();
+            self.$emit('callBack')
           }
         },1000);
       },
-      _callback(){
-        if(this.callback && this.callback instanceof Function){
-          this.callback(...this);
-        }
-      }
     },
     mounted () {
       this.countdowm(this.endTime)
