@@ -126,7 +126,12 @@
 
           console.log(res)
           if (res.code == 10000) {
-            toast("下单成功，请及时支付,10分钟内未完成支付，将自动取消订单");
+           // toast("下单成功，请及时支付,10分钟内未完成支付，将自动取消订单");
+            if(this.selTransferMeth == 2){
+              this.$router.push({name: 'rechWechatOrder',params:{ id: res.data.key}});
+            }else {
+              this.$router.push({name: 'rechargeOrder',params:{ id: res.data.key}});
+            }
           }
 
         }).catch(err => {
