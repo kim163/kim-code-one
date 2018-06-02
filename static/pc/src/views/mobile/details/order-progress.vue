@@ -67,7 +67,6 @@
             <li class="heightauto">
               <span class="l-title">收款二维码 : </span>
               <div class="qrcode-box">
-                    <!--<img src="~images/qrcode.jpg" :src="DetailList.debitAccountQrCodeUrlTwin" class="qrcode-img">-->
                     <img src="~images/qrcode.jpg" class="qrcode-img" />
                      <span class="qrcode-tips">长按二维码保存</span>
                </div>
@@ -76,7 +75,7 @@
           </ul>
 
           <div class="btn-group">
-              <input type="button" class="btn btn-block btn-primary"  value="我已完成付款">
+              <input type="button" class="btn btn-block btn-primary" @click="payCompleted" value="我已完成付款">
               <input type="button" class="btn btn-block btn-cancel" @click="cancelOrder" v-if="DetailList.status =='45'" value="取消订单">
 
           </div>
@@ -148,6 +147,20 @@
           orderId:this.$route.params.id
         }
         transaction.cancelOrder(this.request).then(res => {
+          this.loading = false;
+
+        }).catch(error => {
+          this.reset(res.message);
+        });
+
+        this.loading = false;
+      },
+      payCompleted(){
+        this.loading = true;
+        this.request={
+          orderId:this.$route.params.id
+        }
+        transaction.payCompleted(this.request).then(res => {
           this.loading = false;
 
         }).catch(error => {
