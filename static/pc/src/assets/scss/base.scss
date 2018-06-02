@@ -700,9 +700,6 @@ span.icon-close,i.icon-close{
       &:hover{
         background: #F8F8F8;
       }
-      &:last-child{
-        border-bottom: none;
-      }
       .item{
         display: inline-block;
         width: 14%;
@@ -780,6 +777,12 @@ span.icon-close,i.icon-close{
         background: #FF9600;
         border: 1px solid #FF9600;
         color: #ffffff;
+      }
+      &.ownpend-order{
+         background: #e4e4e4;
+         color: #787876;
+         border: 1px solid #e4e4e4;
+         cursor: not-allowed;
       }
     }
     .avatars-item{

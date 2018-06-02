@@ -107,6 +107,7 @@ export default {
     yuan: 'yuan',
     totalValue: 'Total value',
     transferNamephd: 'Please enter the transfer accounts Account Name',
+    ownPendOrder: 'Can not buy your own pending order',
 
   },
   transactionRecord: {
