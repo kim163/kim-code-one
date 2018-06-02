@@ -206,6 +206,7 @@
               if (res.success) {
                 console.log(res);
                 toast(res.message);
+                window.location.href="/transaction"
               } else {
                 console.log(res);
                 toast(res.message);
