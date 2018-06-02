@@ -91,14 +91,14 @@
 
     created() {
       const data = {
-        amount: this.getUrlParam('amount'),
-        merchantOrderid: this.getUrlParam('merchantOrderid'),
-        assetCode: this.getUrlParam('assetCode'),
-        merchantId: this.getUrlParam('merchantId'),
-        merchantCallbackurl: this.getUrlParam('merchantCallbackurl'),
-        sign: this.getUrlParam('sign')
+        amount: _.getUrlParam('amount'),
+        merchantOrderid: _.getUrlParam('merchantOrderid'),
+        assetCode: _.getUrlParam('assetCode'),
+        merchantId: _.getUrlParam('merchantId'),
+        merchantCallbackurl: _.getUrlParam('merchantCallbackurl'),
+        sign: _.getUrlParam('sign')
       }
-      this.token = this.getUrlParam('token')
+      this.token = _.getUrlParam('token')
       Object.assign(this.initReqData, data)
       Object.assign(this.infoData, this.initReqData)
     },
@@ -149,24 +149,6 @@
       },
       countDownEnd() {
         console.log('666666')
-      },
-      getUrlParam(name, href) {
-        const params = {}
-        const match = (href || window.location.href).match(/#?.*\?(.*)/)
-
-        if (!match) {
-          return match
-        }
-
-        match[1].split('&').forEach((arg) => {
-          arg = arg.split('=')
-          params[arg[0]] = decodeURI(arg[1])
-        })
-
-        if (name) {
-          return params[name]
-        }
-        return params
       },
     },
     mounted() {

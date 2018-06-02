@@ -356,3 +356,17 @@ input.pubtn-white{
   background: $white;
   color: #FF0000;
 }
+.bind-def-btn{
+  display: block;
+  width: 100%;
+  height: r(50);
+  line-height: r(50);
+  background: #4982FF;
+  border-radius: 4px;
+  text-align: center;
+  margin-top: r(10);
+  color: $white;
+}
+.confirm-btn-cancel{
+  border-right: 1px solid #e5e5e5;
+}

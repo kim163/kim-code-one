@@ -42,7 +42,7 @@
     <confirm-dialog v-model="showConfirm">
       <div slot="title">{{$t('postPend.delConfirmTitle')}}</div>
       <div slot="content">{{$t('postPend.delConfirmContent')}}</div>
-      <div slot="leftBtn" class="btn-cancel">{{$t('postPend.cancel')}}</div>
+      <div slot="leftBtn" class="confirm-btn-cancel">{{$t('postPend.cancel')}}</div>
       <div slot="rightBtn" @click="orderDelete">{{$t('postPend.confirmYes')}}</div>
     </confirm-dialog>
   </div>
@@ -251,8 +251,5 @@
     &.delete {
       background: #86A5F8;
     }
-  }
-  .btn-cancel{
-    border-right: 1px solid #e5e5e5;
   }
 </style>

@@ -1,7 +1,10 @@
 <template>
   <div>
     <div class="top-tip">
-      <div class="text">您尚未登陆，请先登录久安钱包</div>
+      <div class="icon">
+        <i class="iconfont icon-user-login"></i>
+      </div>
+      <div class="text">{{$t('bindUser.noLoginTip')}}</div>
     </div>
     <div class="bottom-login">
       <login></login>
@@ -21,6 +24,7 @@
 
 <style lang="scss" scoped>
   @import "~assets/scss/mobile";
+
   .top-tip{
     width: 100%;
     height: r(156);
@@ -32,6 +36,9 @@
     border-bottom: 1px solid #D8D8D8;
     .text{
       margin-top: r(10);
+    }
+    .iconfont{
+      @include f(50px);
     }
   }
   .bottom-login{
