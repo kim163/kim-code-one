@@ -205,7 +205,7 @@
 
               if (res.success) {
                 console.log(res);
-                toast(res.message);
+                toast('恭喜，您已注册成功');
                 window.location.href="/transaction"
               } else {
                 console.log(res);
