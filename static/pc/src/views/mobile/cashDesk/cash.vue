@@ -5,7 +5,7 @@
       <div class="trade-time">
         {{$t('cash.realTime')}}
         <span class="red fr">
-          <count-down :end-time="endTime" :callback="countDownEnd"></count-down>
+          <count-down :end-time="endTime" @callBack="countDownEnd"></count-down>
         </span>
       </div>
       <cash-info :data="infoData"></cash-info>
@@ -47,7 +47,7 @@
   import ConfirmDialog from 'components/confirm'
   import {generateTitle} from '@/util/i18n'
   import {mapGetters} from 'vuex'
-  import CashLogin from './cash-login'
+  import CashLogin from '../login/login-inline'
   import CashPay from './cash-pay'
   import CashInfo from './cash-info'
   import {
