@@ -1,9 +1,11 @@
 <template>
   <div>
     <div class="top-tip">
-
+      <div class="text">您尚未登陆，请先登录久安钱包</div>
     </div>
-    <login></login>
+    <div class="bottom-login">
+      <login></login>
+    </div>
   </div>
 </template>
 
@@ -25,5 +27,14 @@
     background: $white;
     padding-top: r(40);
     text-align: center;
+    @include f(15px);
+    color: #333333;
+    border-bottom: 1px solid #D8D8D8;
+    .text{
+      margin-top: r(10);
+    }
+  }
+  .bottom-login{
+    padding: r(20);
   }
 </style>
