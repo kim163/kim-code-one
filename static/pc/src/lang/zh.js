@@ -107,6 +107,7 @@ export default {
     yuan: '元',
     totalValue: '总值',
     transferNamephd: '请输入转账账户的开户名',
+    ownPendOrder: '不能买自己的挂单',
 
   },
   transactionRecord: {

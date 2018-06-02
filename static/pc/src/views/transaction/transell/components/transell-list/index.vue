@@ -30,11 +30,13 @@
                      </span>
                    </p>
                    <p class="item">
-                     <a href="javascript:void(0);" class="transaction-btn" @click="showView('show',item)">{{$t('transactionHome.saleUet')}}</a>
+                     <a href="javascript:void(0);" v-if="item.userId !== userData.userId" class="transaction-btn" @click="showView('show',item)">{{$t('transactionHome.saleUet')}}</a>
+                     <a href="javascript:void(0);" v-else class="transaction-btn ownpend-order"> {{$t('transactionHome.saleUet')}} </a>
                    </p>
                  </div>
                  <transell-order :item="item"
                                  v-show="item.already"
+                                 v-if="item.userId !== userData.userId"
                                  :ref="item.id"
                                  @hiddenOrder="showView('hidden',item)"
                                  :key="item.id"
@@ -53,6 +55,7 @@
   import pagingBy from "components/paging-by";
   import  {SETTING} from "@/assets/data";
   import transellOrder from "./transell-order";
+  import {mapGetters,mapActions,mapMutations} from 'vuex';
 
   let dataHead = [
     {name: "table.sellers", value: "sellers"},
@@ -82,6 +85,7 @@
       }
     },
     computed: {
+      ...mapGetters(["userData"]),
        avatarDealw(){
          return this.SETTING.avatarColor.length;
        }
