@@ -165,6 +165,17 @@ export default [
     meta:{
       isMobilePage: "mobile-body"
     },
+  },
+  {
+    path: "/m/quickCreate",
+    name: 'mQuickCreate',
+    component(resolve){
+      // 商户绑定--绑定列表
+      return resolve(require('views/mobile/quick-create'))
+    },
+    meta:{
+      isMobilePage: "mobile-body"
+    },
   }
 
 ]

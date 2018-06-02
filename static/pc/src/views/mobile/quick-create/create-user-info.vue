@@ -1,61 +1,53 @@
 <template>
   <div>
-    <div class="bing-container" v-if="!bindSuccess">
-      <div class="bing-info">
+    <div class="create-container">
+      <div class="create-info">
         <i class="iconfont icon-user-login"></i>
         <div class="text">
-          您将绑定<img :src="merchantInfo.logo" class="business-logo"/>的账号至久安钱包
+          您即将用<img :src="merchantInfo.logo" class="business-logo"/>账号创建久安钱包账号
         </div>
       </div>
       <div class="user-account">
         您的{{merchantInfo.short}}账号：qycs004783
       </div>
-      <div class="bind-content">
-        <div class="has-bind-tip">
-          提示：您的{{merchantInfo.short}}账号已被绑定或已在久安注册，不能重复操作
+      <div class="create-content">
+        <div class="has-create-tip">
+          提示：您的{{merchantInfo.short}}账号已在久安注册，或已被绑定久安钱包，不能重复操作
         </div>
         <div class="btn-list">
-          <div class="bind-def-btn">立即绑定</div>
-          <router-link tag="div" class="bing-list" :to="{name:'mBindList'}">商户绑定记录</router-link>
+          <div class="bind-def-btn" @click="$emit('createNow')">立即创建</div>
         </div>
         <div class="tip-info">
           <p>1，久安钱包不会获取您{{merchantInfo.name}}上除账号以外的任何信息。</p>
-          <p>2，绑定后，您在{{merchantInfo.short}}网站的九安钱包入口进入久安钱包，可自动登录钱包。</p>
+          <p>2，创建后，您可以使用{{merchantInfo.short}}前缀（{{merchantInfo.prefix}}）+该{{merchantInfo.short}}账号登陆久安钱包。</p>
+          <p>3，创建后，您的{{merchantInfo.short}}账号将默认绑定久安钱包</p>
         </div>
       </div>
     </div>
-    <bind-success v-else></bind-success>
   </div>
 </template>
 
 <script>
-  import BindSuccess from './bind-success'
-  import BusinessCfg from '../misc/merchant-config'
   export default {
-    name: "user-bind",
+    name: "create-user-info",
     data(){
       return{
-        bindSuccess: false,
-        merchantId:0, //商户id
-        merchantInfo:{}, //商户基本信息
+
       }
     },
-    components:{
-      BindSuccess
-    },
-    created(){
-      this.merchantId = _.getUrlParam('merchantId')
-      if(this.merchantId != 0){
-        Object.assign(this.merchantInfo,BusinessCfg.getDeail(this.merchantId))
+    props:{
+      merchantInfo:{
+        type:Object,
+        default:{}
       }
-    },
+    }
   }
 </script>
 
 <style lang="scss" scoped>
   @import "~assets/scss/mobile";
 
-  .bing-info{
+  .create-info{
     width: 100%;
     height: r(156);
     text-align: center;
@@ -88,21 +80,14 @@
     border-top: 1px solid #d8d8d8;
     margin-top: r(10);
   }
-  .bind-content{
+  .create-content{
     padding: r(10);
-    .has-bind-tip{
+    .has-create-tip{
       width: 90%;
       @include f(15px);
       color: #FF0000;
       margin: r(10) r(20);
       line-height: r(25);
-    }
-    .bing-list{
-      width: 100%;
-      text-align: center;
-      @include f(18px);
-      margin-top: r(20);
-      color: #333333;
     }
     .tip-info{
       @include f(15px);
