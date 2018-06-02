@@ -84,6 +84,7 @@ export const getOrderx = jsonData => service({
   method: 'post',
   data: jsonData
 });
+
 // 获取 订单记录-已完成- 详情
 export const getCoinTransactionHistory = jsonData => service({
   url: numversion+`transaction/getTransaction`,
@@ -102,6 +103,21 @@ export const getAppealHistoryDetail = jsonData => service({
   method: 'post',
   data: jsonData
 });
+
+// 获取 订单记录- 申诉记录申诉与仲裁 列表
+export const getAppealDetailPage = jsonData => service({
+  url: numversion+`appeal/getAppealDetailPage`,
+  method: 'post',
+  data: jsonData
+});
+
+// 获取 订单记录- 申诉记录申诉与仲裁 申诉-点击发送 -（ 双方证据追加 ）
+export const addAppealDetail = jsonData => service({
+  url: numversion+`appeal/addAppealDetailV2`,
+  method: 'post',
+  data: jsonData
+});
+
 // 获取 订单记录- 获取挂单详情
 export const getOrderxPending = jsonData => service({
   url: numversion+`order/getOrderxPending`,
@@ -118,6 +134,14 @@ export const getAccountChainPage = jsonData => service({
 // 订单详情--取消订单
 export const cancelOrder = jsonData => service({
   url: numversion+`order/c2c/cancelOrder`,
+  method: 'post',
+  data: jsonData
+});
+
+
+// 获取 订单记录-详情-我已完成收款
+export const payCompleted = jsonData => service({
+  url: numversion+`order/c2c/payCompleted`,
   method: 'post',
   data: jsonData
 });
