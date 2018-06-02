@@ -23,7 +23,7 @@
             <!--<span class="unit">交易完成</span>-->
             <!--<span class="unit">  <a class="btn btn-primary">详情</a>  </span>-->
 
-            <div class="group-tr" v-for="order in OrderList.data || '暂无交易数据'">
+            <div class="group-tr" v-for="order in OrderList.data">
                  <span class="unit">
                       <span class="btn btn-border" v-show="order.credit == userData.userId">买入</span>
                       <span class="btn btn-orange" v-show="order.debit == userData.userId">卖出</span>

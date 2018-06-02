@@ -121,7 +121,7 @@ export default {
     waitingForRelease:'等待释放',
     tranPendingOrder: '挂单中',
     tranPendingRemoved: '已下架',
-    tarnComplete:'交易完成',
+    tarnCancel:'交易取消',
     tranType: '订单类型',
     tranTheOther: '对方',
     tranNumber: '交易数量',

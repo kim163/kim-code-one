@@ -66,8 +66,24 @@ export default [
     path: "/orderDetail/:id",
     name: 'orderDetail',
     component(resolve){
-      // 订单详情页
+      // 订单详情页-交易中
       return resolve(require('views/transaction/order-detail/detail'))
+    }
+  },
+  {
+    path: "/orderDetailAppeal/:id",
+    name: 'orderDetailAppeal',
+    component(resolve){
+      // 订单详情页-已完成
+      return resolve(require('views/transaction/order-detail/detail-appeal'))
+    }
+  },
+  {
+    path: "/orderDetailOver/:id",
+    name: 'orderDetailOver',
+    component(resolve){
+      // 订单详情页
+      return resolve(require('views/transaction/order-detail/detail-over'))
     }
   },
 
