@@ -3,7 +3,9 @@ const config = [
   {
     id:1,
     name:'千赢国际',
-    logo: require('./qianying-logo.png')
+    logo: require('./qianying-logo.png'),
+    short:'千赢',
+    prefix:'qy'
   }
 ]
 
