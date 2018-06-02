@@ -126,7 +126,7 @@
         api(request).then(res => {
           if(res.code === 10000){
             console.log('pending data:',res)
-            if(res.data.length === 0 && this.offset === 0){
+            if(res.data.length === 0 && this.currentPage === 1){
               this.noData = true
             }else{
               this.noData = false
@@ -137,7 +137,7 @@
               this.orderList = Array.from(new Set([...this.orderList,...res.data]))
             }
             this.total = res.pageInfo.total
-            if(this.totalPage <= this.currentPage){
+            if(this.currentPage >= this.totalPage){
               this.$refs.scroll.update(true)
             }
           }else{
