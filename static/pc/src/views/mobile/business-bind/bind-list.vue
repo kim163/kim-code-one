@@ -52,6 +52,7 @@
       },
       unBind(){
         this.showConfirm = false
+        toast('调用解绑接口')
         //调用解绑接口
       }
     }

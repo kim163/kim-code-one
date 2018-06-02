@@ -16,7 +16,7 @@
         </div>
         <div class="btn-list">
           <div class="bind-def-btn">立即绑定</div>
-          <router-link tag="div" class="bing-list" to="">商户绑定记录</router-link>
+          <router-link tag="div" class="bing-list" :to="{name:'mBindList'}">商户绑定记录</router-link>
         </div>
         <div class="tip-info">
           <p>1，久安钱包不会获取您{{merchantInfo.name}}上除账号以外的任何信息。</p>
@@ -36,8 +36,11 @@
     data(){
       return{
         bindSuccess: false,
-        merchantId:1, //商户id
-        merchantInfo:{}, //商户基本信息
+        merchantId:0, //商户id
+        merchantInfo:{
+          logo:'',
+          name:''
+        }, //商户基本信息
       }
     },
     components:{
@@ -45,7 +48,9 @@
     },
     created(){
       this.merchantId = _.getUrlParam('merchantId')
-      this.merchantInfo = BusinessCfg.getDeail(this.merchantId)
+      if(this.merchantId != 0){
+        this.merchantInfo = BusinessCfg.getDeail(this.merchantId)
+      }
     },
   }
 </script>
