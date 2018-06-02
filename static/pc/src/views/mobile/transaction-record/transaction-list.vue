@@ -114,7 +114,6 @@
             this.tranList = [...this.tranList, ...res.data]
             this.total = res.pageInfo.total
             if(this.currentPage >= this.totalPage){
-              debugger
               this.$refs.scroll.update(true)
             }
           } else {
