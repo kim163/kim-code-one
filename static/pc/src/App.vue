@@ -19,6 +19,7 @@
     data(){
       return {
         transitionName:"slide",
+        mobileDevice:"0",
       }
     },
     computed:{
@@ -36,6 +37,7 @@
     methods: {
       dwMobilePage(){
         if(this.$route.meta.isMobilePage){
+          this.mobileDevice = '1';
           let element = document.getElementsByTagName('body')[0];
           let classN = this.$route.meta.isMobilePage;
           if((' ' + element.className + ' ').indexOf(' ' + classN + ' ') < 0){
@@ -57,8 +59,16 @@
 
       let client = null
       let userId=this.userId;
-      console.log('userId===')
-      console.log(this.userId)
+
+      let detailNormal='/orderDetail/';
+      let detailOver='/orderDetailOver/';
+      let detailAppeal='/orderDetailAppeal/';
+      if(this.mobileDevice = '1'){
+         detailNormal='/m/order/';
+         detailOver='/m/orderOver/';
+         detailAppeal='/m/orderAppeal/';
+      }
+      console.log('userId===',this.userId)
       let stompSuccessCallback = function (frame) {
         console.log('STOMP: Connection successful')
         client.subscribe('/exchange/walletCustomOperation/'+userId, function (data) {
@@ -66,27 +76,22 @@
           console.log(JSON.parse(aesutil.decrypt(data.body)));
           let msgData=JSON.parse(aesutil.decrypt(data.body));
           console.log('msgData.type：'+msgData.type)
-          //根据类型显示不同的页面
-//    C2C_ORDER_PLACE(1, "C2C下单"),
-//      C2C_ORDER_PAY(2, "C2C订单支付完成"),
-//      C2C_ORDER_CANCEL(3, "C2C订单取消"),
-//      C2C_ORDER_COMPLETE(4, "C2C订单完成"),
-//      C2C_ORDER_ONLINE(5, "C2C订单发起人在线检测"),
-//      C2C_ORDER_APPEAL(11, "C2C申诉");  申诉详情
           if(msgData.type == 5){
             msgData.text=userId;
-            console.log(msgData.text);
             client.send('/exchange/walletCustomOnline/-0', {priority: 9}, aesutil.encrypt(JSON.stringify(msgData)))
           }else if(msgData.type == 1 || msgData.type == 2){
-            window.location.href='/orderDetail/'+msgData.text;
+             toast(msgData.describe)
+            window.location.href= detailNormal + msgData.text;
             console.log('状态1： 进入下单详情，订单的id是'+msgData.text);
           }else if(msgData.type == 3 || msgData.type == 4 ){
-            window.location.href='/orderDetailOver/'+msgData.text;
-            console.log(msgData);
+             toast(msgData.describe)
+             window.location.href= detailOver +msgData.text;
           }else if(msgData.type == 11){
-            window.location.href='/orderDetailAppeal/'+msgData.text;
+            toast(msgData.describe)
+            window.location.href=detailAppeal + msgData.text;
             console.log(msgData);
           }else{
+            toast(msgData.describe)
             console.log(msgData);
           }
         })
