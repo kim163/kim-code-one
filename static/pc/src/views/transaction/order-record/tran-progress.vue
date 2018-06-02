@@ -17,8 +17,8 @@
           <div class="group-body" v-if="OrderList.data.length > 0">
             <div class="group-tr" v-for="order in OrderList.data">
                  <span class="unit">
-                      <span class="btn btn-border" v-show="order.credit == userData.userId">{{$t('transactionRecord.buy')}}</span>
-                      <span class="btn btn-orange" v-show="order.debit == userData.userId">{{$t('transactionRecord.sale')}}</span>
+                      <span class="btn c-blue" v-show="order.credit == userData.userId">{{$t('transactionRecord.buy')}}</span>
+                      <span class="btn c-orange" v-show="order.debit == userData.userId">{{$t('transactionRecord.sale')}}</span>
                  </span>
               <span class="unit">{{order.creditAccountNameTwin}}</span>
               <span class="unit"> {{order.creditAmount}}   UET</span>
