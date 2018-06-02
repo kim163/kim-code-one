@@ -1,6 +1,7 @@
 <template>
   <div>
     <mobile-header>{{title}}</mobile-header>
+    <no-login v-if="islogin"></no-login>
   </div>
 </template>
 
@@ -8,7 +9,7 @@
   import {mapGetters} from 'vuex'
   import {generateTitle} from '@/util/i18n'
   import MobileHeader from 'components/m-header'
-  import Login from '../login/login-inline'
+  import noLogin from './no-login'
   export default {
     name: "business-bind",
     data() {
@@ -28,7 +29,7 @@
     },
     components:{
       MobileHeader,
-      CountDown
+      noLogin
     },
     methods:{
       generateTitle,
