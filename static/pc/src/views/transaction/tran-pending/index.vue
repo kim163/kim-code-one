@@ -125,13 +125,15 @@
       }
     },
     computed: {
-      ...mapGetters(["userData", "islogin"]),
+      ...mapGetters([
+        'userId'
+      ]),
 
     },
     methods: {
       generateTitle,
       getOrderList(index){
-        let userId = this.userData.userId;
+        let userId = this.userId;
         this.request = {
           limit: 10,
           offset: 0,

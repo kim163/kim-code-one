@@ -22,7 +22,9 @@
       }
     },
     computed:{
-      ...mapGetters(["userData", "islogin"]),
+      ...mapGetters([
+        'userId'
+      ]),
       isExclude(){
         return this.$route.meta.cache ? "" : this.$route.name;
       }
@@ -54,14 +56,16 @@
     mounted() {
 
       let client = null
-      let userId=this.userData.userId;
+      let userId=this.userId;
+      console.log('userId===')
+      console.log(this.userId)
       let stompSuccessCallback = function (frame) {
         console.log('STOMP: Connection successful')
         client.subscribe('/exchange/walletCustomOperation/'+userId, function (data) {
           console.log('接收 message：')
           console.log(JSON.parse(aesutil.decrypt(data.body)));
           let msgData=JSON.parse(aesutil.decrypt(data.body));
-          console.log('接收00 message：'+msgData)
+          console.log('msgData.type：'+msgData.type)
           //根据类型显示不同的页面
 //    C2C_ORDER_PLACE(1, "C2C下单"),
 //      C2C_ORDER_PAY(2, "C2C订单支付完成"),
@@ -73,11 +77,16 @@
             msgData.text=userId;
             console.log(msgData.text);
             client.send('/exchange/walletCustomOnline/-0', {priority: 9}, aesutil.encrypt(JSON.stringify(msgData)))
-          }else if(msgData.type == 1){
+          }else if(msgData.type == 1 || msgData.type == 2){
             window.location.href='/orderDetail/'+msgData.text;
             console.log('状态1： 进入下单详情，订单的id是'+msgData.text);
+          }else if(msgData.type == 3 || msgData.type == 4 ){
+            window.location.href='/orderDetailOver/'+msgData.text;
+            console.log(msgData);
+          }else if(msgData.type == 11){
+            window.location.href='/orderDetailAppeal/'+msgData.text;
+            console.log(msgData);
           }else{
-            console.log('非1非5====');
             console.log(msgData);
           }
         })
@@ -85,6 +94,12 @@
 
       var stompFailureCallback = function (error) {
         console.log('STOMP: ' , error)
+        if (client && client.ws.readyState === client.ws.CONNECTING) {
+          return
+        }
+        if (client.ws.readyState === client.ws.OPEN) {
+          return
+        }
         setTimeout(stompConnect, 10000)
         console.log('STOMP: Reconecting in 10 seconds')
       }
