@@ -2,7 +2,7 @@
   <div class="header ">
     <div v-if="!islogin">
       <div class="col-2">
-        <a href="javascript:void(0);" @click="showLogin">{{$t('navbar.login')}}</a>
+        <a href="javascript:void(0);" @click="showLogin">{{$t('navbar.login-inline')}}</a>
       </div>
       <div class="col-2">
         <a href="javascript:void(0);" @click="showRegisterDialog=true">{{$t('navbar.register')}}</a>

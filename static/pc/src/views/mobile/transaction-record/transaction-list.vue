@@ -106,14 +106,14 @@
         api(request).then(res => {
           if (res.code === 10000) {
             console.log('getOrderxPage res:', res)
-            if(res.data.length === 0 && this.offset === 0){
+            if(res.data.length === 0 && this.currentPage === 1){
               this.noData = true
             }else{
               this.noData = false
             }
             this.tranList = [...this.tranList, ...res.data]
             this.total = res.pageInfo.total
-            if(this.totalPage <= this.currentPage){
+            if(this.currentPage >= this.totalPage){
               this.$refs.scroll.update(true)
             }
           } else {
