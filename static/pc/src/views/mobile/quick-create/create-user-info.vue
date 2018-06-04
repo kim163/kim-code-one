@@ -2,7 +2,7 @@
   <div>
     <div class="create-container">
       <div class="create-info">
-        <i class="iconfont icon-user-login"></i>
+        <i class="iconfont icon-quick-create-avatar"></i>
         <div class="text">
           您即将用<img :src="merchantInfo.logo" class="business-logo"/>账号创建久安钱包账号
         </div>

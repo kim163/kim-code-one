@@ -76,12 +76,12 @@
         </ul>
 
         <div class="btn-group">
-          <input type="button" class="btn btn-block btn-primary"  value="我已完成付款">
+          <!--<input type="button" class="btn btn-block btn-primary"  value="我已完成付款">-->
           <input type="button" class="btn btn-block btn-primary"  value="提出发证">
-          <input type="button" class="btn btn-block btn-cancel"  value="取消订单">
-          <input type="button" class="btn btn-block btn-gray"  value="我已付款">
+          <!--<input type="button" class="btn btn-block btn-cancel"  value="取消订单">-->
+          <!--<input type="button" class="btn btn-block btn-gray"  value="我已付款">-->
 
-          <input type="button" class="btn btn-block btn-primary"  value="确定收款">
+          <!--<input type="button" class="btn btn-block btn-primary"  value="确定收款">-->
           <input type="button" class="btn btn-block btn-primary"  value="我要申诉">
         </div>
       </div>

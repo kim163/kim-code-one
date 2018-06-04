@@ -197,10 +197,10 @@
                 <div class="order-time">
                   <p class="text-center time-stame">等待释放UET  <span class="red">{{DetailList.intervalTime | formatDateMs}}</span></p>
 
-                  <input type="button" class="btn btn-normal" value="我已付款">
+                  <input type="button" class="btn btn-normal" @click="payCompleted" value="我已付款">
                   <p>请在付款后，点击“我已付款”</p>
                   <br/>
-                  <input type="button" class="btn btn-orange" value="取消交易">
+                  <input type="button" class="btn btn-orange" @click="cancelOrder" value="取消交易">
                   <p class="text-center">
                     <span class="red">如果您已向卖家付款，千万不要取消</span><br>
                     取消规则：买方当日连续取消2笔，或累计取消6笔，将限制交易24小时。
@@ -277,6 +277,34 @@
 
           this.loading = false;
         },
+      cancelOrder(){
+        this.loading = true;
+        this.request={
+          orderId:this.$route.params.id
+        }
+        transaction.cancelOrder(this.request).then(res => {
+          this.loading = false;
+
+        }).catch(error => {
+          this.reset(res.message);
+        });
+
+        this.loading = false;
+      },
+      payCompleted(){
+        this.loading = true;
+        this.request={
+          orderId:this.$route.params.id
+        }
+        transaction.payCompleted(this.request).then(res => {
+          this.loading = false;
+
+        }).catch(error => {
+          this.reset(res.message);
+        });
+        toast(res.message);
+        this.loading = false;
+      },
       copy() {
         var clipboard = new Clipboard('.copyBtn')
         clipboard.on('success', e => {
