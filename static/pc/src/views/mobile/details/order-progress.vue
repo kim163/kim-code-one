@@ -9,12 +9,6 @@
         <span class="fr">等待付款 {{DetailList.intervalTime | Date('hh:mm:ss')}}</span>
       </div>
 
-      <!--<div class="mobilenav-tabs">-->
-        <!--<span v-for="(item,i) in detailType" @click="detailTypeItem=item.value" :class="{active:detailTypeItem==item.value}" :key="item.value">-->
-            <!--{{item.value}}-->
-        <!--</span>-->
-      <!--</div>-->
-
       <div v-if="detailTypeItem =='订单详情'">
           <ul class="details-ul">
             <li>
@@ -166,7 +160,7 @@
         }).catch(error => {
           this.reset(res.message);
         });
-
+        toast(res.message);
         this.loading = false;
       },
 
