@@ -3,17 +3,11 @@
     <m-header>订单详情</m-header>
     <div class="cash-details">
       <div class="trade-time-bar">
-        <span class="c-blue" v-if="DetailList.type == '12'">买入</span>
-        <span class="c-orange" v-else-if="DetailList.type == '11'">卖出</span>
+        <span class="c-blue" v-if="DetailList.credit == userData.userId">买入</span>
+        <span class="c-orange" v-else-if="DetailList.debit == userData.userId">卖出</span>
         <span class="c-blue" v-else>申诉订单</span>
         <span class="fr">等待付款 {{DetailList.intervalTime | Date('hh:mm:ss')}}</span>
       </div>
-
-      <!--<div class="mobilenav-tabs">-->
-        <!--<span v-for="(item,i) in detailType" @click="detailTypeItem=item.value" :class="{active:detailTypeItem==item.value}" :key="item.value">-->
-            <!--{{item.value}}-->
-        <!--</span>-->
-      <!--</div>-->
 
       <div v-if="detailTypeItem =='订单详情'">
           <ul class="details-ul">
@@ -77,7 +71,13 @@
           <div class="btn-group">
               <input type="button" class="btn btn-block btn-primary" @click="payCompleted" value="我已完成付款">
               <input type="button" class="btn btn-block btn-cancel" @click="cancelOrder" v-if="DetailList.status =='45'" value="取消订单">
-
+              <input type="button" class="btn btn-block btn-primary" @click="createAppeal" v-if= "DetailList.credit == userData.userId" value="我要申诉">
+              <input type="button" class="btn btn-block btn-primary" v-if= "DetailList.debit == userData.userId" value="提出反证">
+          </div>
+          <div>
+            {{DetailList.status}}
+              <p>您已确认付款，请勿重复付款</p>
+              <p>交易已完成，请勿重复付款</p>
           </div>
       </div>
 
@@ -166,7 +166,23 @@
         }).catch(error => {
           this.reset(res.message);
         });
+        toast(res.message);
+        this.loading = false;
+      },
+      createAppeal(){
+        this.loading = true;
+        this.request={
+          orderId:this.$route.params.id,
+          userId:'',
+          type:''
+        }
+        transaction.createAppeal(this.request).then(res => {
+          this.loading = false;
 
+        }).catch(error => {
+          this.reset(res.message);
+        });
+        toast(res.message);
         this.loading = false;
       },
 
@@ -192,6 +208,7 @@
     },
     computed: {
       ...mapGetters(["userData","islogin"]),
+      ...mapGetters(["userId"]),
     },
     components: {
       mHeader
@@ -284,6 +301,7 @@
       }
       .btn-gray{
         background: #E4E4E4;
+        color: #787876;
       }
   }
   .icon-pay-bank{

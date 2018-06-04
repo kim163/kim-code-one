@@ -27,8 +27,8 @@
 
     <div class="section detail-content">
 
-      <div class="container">
-        <div class="row00 detail-box" v-if="DetailList.type == '12'">
+      <div class="container" v-if="OrderList.data.length > 0">
+        <div class="row00 detail-box" v-if= "DetailList.credit == userData.userId" >
           <!--买入   type=12 为买入订单，type=11 为卖出订单-->
           <div class="detail-title">
             <span class="title-btn btn-primary">买入</span>
@@ -117,7 +117,7 @@
                 2.请在规定时间内完成付款，并务必点击“我已付款”，卖方确认收款后，系统会将UET划转到您的账户。</p>
           </div>
         </div>
-        <div class="row00 detail-box" v-if="DetailList.type == '11'">
+        <div class="row00 detail-box" v-if="DetailLister.debit == userData.userId">
           <!--卖出-->
           <div class="detail-title">
             <span class="title-btn btn-sell">卖出</span>
@@ -197,10 +197,10 @@
                 <div class="order-time">
                   <p class="text-center time-stame">等待释放UET  <span class="red">{{DetailList.intervalTime | formatDateMs}}</span></p>
 
-                  <input type="button" class="btn btn-normal" value="我已付款">
+                  <input type="button" class="btn btn-normal" @click="payCompleted" value="我已付款">
                   <p>请在付款后，点击“我已付款”</p>
                   <br/>
-                  <input type="button" class="btn btn-orange" value="取消交易">
+                  <input type="button" class="btn btn-orange" @click="cancelOrder" value="取消交易">
                   <p class="text-center">
                     <span class="red">如果您已向卖家付款，千万不要取消</span><br>
                     取消规则：买方当日连续取消2笔，或累计取消6笔，将限制交易24小时。
@@ -227,6 +227,9 @@
           </div>
         </div>
       </div>
+      <div class="container" v-else>
+        <no-data-tip></no-data-tip>
+      </div>
     </div>
 
     <v-footer ></v-footer>
@@ -241,6 +244,7 @@
   import { transaction } from 'api'
   import {mapGetters,mapActions,mapMutations} from 'vuex'
   import Clipboard from 'clipboard';
+  import NoDataTip from 'components/no-data-tip'
 
   export default {
     data() {
@@ -277,6 +281,34 @@
 
           this.loading = false;
         },
+      cancelOrder(){
+        this.loading = true;
+        this.request={
+          orderId:this.$route.params.id
+        }
+        transaction.cancelOrder(this.request).then(res => {
+          this.loading = false;
+
+        }).catch(error => {
+          this.reset(res.message);
+        });
+
+        this.loading = false;
+      },
+      payCompleted(){
+        this.loading = true;
+        this.request={
+          orderId:this.$route.params.id
+        }
+        transaction.payCompleted(this.request).then(res => {
+          this.loading = false;
+
+        }).catch(error => {
+          this.reset(res.message);
+        });
+        toast(res.message);
+        this.loading = false;
+      },
       copy() {
         var clipboard = new Clipboard('.copyBtn')
         clipboard.on('success', e => {
@@ -305,7 +337,7 @@
       ...mapGetters(["userData","islogin"]),
     },
     components: {
-      navMenu, vFooter, tranHeadnav
+      navMenu, vFooter, tranHeadnav ,NoDataTip
     },
     filters: {
       formatDateMs(time) {
