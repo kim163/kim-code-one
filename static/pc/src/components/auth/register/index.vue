@@ -182,10 +182,13 @@
 
             show.sendEmailCode(this.requestdata).then((res) => {
               if (res.success) {
+                console.log(res.message)
                 toast(res.message);
               } else {
+                console.log(res.message)
                 toast(res.message);
               }
+
             }).catch(err => {
 
             });
