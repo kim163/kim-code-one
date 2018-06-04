@@ -149,7 +149,7 @@
       this.fetchData();
     },
     watch: {
-
+      "$route":"fetchData"
     },
     computed: {
       ...mapGetters(["userData","islogin"]),

@@ -6,7 +6,11 @@
         <span class="c-blue" v-if="DetailList.credit == userData.userId">买入</span>
         <span class="c-orange" v-else-if="DetailList.debit == userData.userId">卖出</span>
         <span class="c-blue" v-else>申诉订单</span>
-        <span class="fr">等待付款 {{DetailList.intervalTime | Date('hh:mm:ss')}}</span>
+        <span class="fr">
+          <span v-if="DetailList.status =='45'">等待付款</span>
+          <span v-if="DetailList.status =='47'">等待释放UET</span>
+
+          {{DetailList.intervalTime | Date('hh:mm:ss')}}</span>
       </div>
 
       <div v-if="detailTypeItem =='订单详情'">
@@ -15,9 +19,13 @@
               <span class="l-title">订单号 :</span>
               <span class="fr order-id-li">{{$route.params.id}}</span>
             </li>
-            <li>
+            <li v-if="DetailList.credit == userData.userId">
               <span class="l-title">卖方 :</span>
               <span class="fr">{{DetailList.debitName}}</span>
+            </li>
+            <li v-else-if="DetailList.debit == userData.userId">
+              <span class="l-title">买方 :</span>
+              <span class="fr">{{DetailList.creditAccountNameTwin}}</span>
             </li>
             <li>
               <span class="l-title">交易金额 :</span>
@@ -34,6 +42,38 @@
             <li>
               <span class="l-title">交易单价 :</span> <span class="fr">0.01 CNY</span>
             </li>
+          </ul>
+          <ul class="details-ul pay-detail my-paymethod">
+            <li>
+              <span class="l-title">我的收款方式 : </span>
+              <div class="fr0">
+                <span v-if="DetailList.creditAccountMerchantTwin == '支付宝'"><i class="iconfont icon-pay-alipay"></i></span>
+                <span v-else-if="DetailList.creditAccountMerchantTwin == '微信'"><i class="iconfont icon-pay-wechat"></i></span>
+                <span v-else><i class="iconfont icon-pay-bank"></i></span>
+                {{DetailList.creditAccountMerchantTwin}}
+              </div>
+            </li>
+            <li>
+              <span class="l-title">收款姓名 : </span>
+              <div class="fr0">{{DetailList.creditName}}（{{DetailList.creditAccountNameTwin}}）
+                <!--<a href="javascript:void(0);" class="copy-btn" @click="copystr(DetailList.debitAccountNameTwin)" >{{$t('transactionHome.copyBtn')}}</a>-->
+              </div>
+            </li>
+            <li>
+              <span class="l-title">收款账号 : </span>
+              <div class="fr0">
+                     <span class="">{{DetailList.creditAccountTwin}}</span>
+                     <!--<a href="javascript:void(0);" class="copy-btn" @click="copystr(DetailList.debitAccountTwin)" >{{$t('transactionHome.copyBtn')}}</a>-->
+              </div>
+            </li>
+            <li class="heightauto" v-if="DetailList.creditAccountMerchantTwin == '支付宝'">
+              <span class="l-title">收款二维码 : </span>
+              <div class="qrcode-box">
+                    <img src="~images/qrcode.jpg" class="qrcode-img" />
+                     <span class="qrcode-tips">长按二维码保存</span>
+               </div>
+            </li>
+
           </ul>
           <ul class="details-ul pay-detail">
             <li>
@@ -204,7 +244,7 @@
       this.fetchData();
     },
     watch: {
-
+      "$route":"fetchData"
     },
     computed: {
       ...mapGetters(["userData","islogin"]),
