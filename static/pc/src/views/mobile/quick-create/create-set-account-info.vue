@@ -10,7 +10,10 @@
       您的{{merchantInfo.short}}账号：qycs004783
     </div>
     <div class="set-account-info">
-
+      <div class="set-password">
+        <div class="title-tip"><span class="red">*</span>登陆密码：</div>
+        <input class="psd-input" v-model="password" placeholder="请设置您的登录密码"/>
+      </div>
     </div>
   </div>
 </template>
@@ -20,7 +23,8 @@
     name: "create-set-password",
     data(){
       return {
-
+        password:'',
+        confirmPassword:''
       }
     },
     props:{
