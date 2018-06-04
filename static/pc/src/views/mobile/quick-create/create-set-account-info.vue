@@ -1,56 +1,66 @@
 <template>
   <div>
-    <div class="set-info">
-      <i class="iconfont icon-danger"></i>
-      <div class="text">
-        您的账户当前未设置任何安全信息，请务必完善
-      </div>
-    </div>
-    <div class="user-account">
-      您的{{merchantInfo.short}}账号：qycs004783
-    </div>
-    <div class="set-account-info">
-      <div class="set-password">
-        <div class="title-tip"><span class="red">*</span>登陆密码：</div>
-        <input type="password" class="psd-input" v-model="password" placeholder="请设置您的登录密码"/>
-        <input type="password" class="psd-input" v-model="confirmPassword" placeholder="请再次输入您的登录密码"/>
-        <div class="error" v-show="psdError">提示：{{psdErrorText}}</div>
-      </div>
-      <div class="set-phone">
-        <div class="title-tip">安全绑定：</div>
-        <div class="select-type">
-          <select class="select" v-model.number="type">
-            <option value="1">手机号</option>
-            <option value="2">邮箱</option>
-          </select>
-          <input type="text" class="type-input" v-model="typeNumber" :placeholder="typePlaceholder"/>
+    <div v-if="!createSuccess">
+      <div class="set-info">
+        <i class="iconfont icon-danger"></i>
+        <div class="text">
+          您的账户当前未设置任何安全信息，请务必完善
         </div>
-        <div class="code-info">
-          <input type="text" class="code-input" v-model="code" placeholder="验证码"/>
-          <get-verify-code v-model="startCountDown" class="get-code" @sendAuthCode="getCode()"></get-verify-code>
+      </div>
+      <div class="user-account">
+        您的{{merchantInfo.short}}账号：qycs004783
+      </div>
+      <div class="set-account-info">
+        <div class="set-password">
+          <div class="title-tip"><span class="red">*</span>登陆密码：</div>
+          <input type="password" class="psd-input" v-model.trim="password" @mouseout="checkPwdReg" placeholder="请设置您的登录密码"/>
+          <input type="password" class="psd-input" v-model.trim="confirmPassword" placeholder="请再次输入您的登录密码"/>
+          <div class="error" v-show="pwdError">提示：{{pwdErrorText}}</div>
         </div>
-        <div class="error" v-show="bindError">提示：{{bindErrorText}}</div>
+        <div class="set-phone">
+          <div class="title-tip">安全绑定：</div>
+          <div class="select-type">
+            <select class="select" v-model.number="type">
+              <option value="1">手机号</option>
+              <option value="2">邮箱</option>
+            </select>
+            <input type="text" class="type-input" v-model="typeNumber" :placeholder="typePlaceholder"/>
+          </div>
+          <div class="code-info">
+            <input type="text" class="code-input" v-model="code" placeholder="验证码"/>
+            <get-verify-code v-model="startCountDown" class="get-code" @sendAuthCode="getCode()"></get-verify-code>
+          </div>
+          <div class="error" v-show="bindError">提示：{{bindErrorText}}</div>
+        </div>
+      </div>
+      <div class="submit">
+        <div class="bind-def-btn" @click="submit()">确认提交</div>
       </div>
     </div>
-    <div class="submit">
-      <div class="bind-def-btn" @click="submit()">确认提交</div>
-    </div>
+    <create-success v-if="createSuccess"></create-success>
   </div>
 </template>
 
 <script>
   import GetVerifyCode from 'components/get-verify-code'
+  import CreateSuccess from './create-success'
+  import RegExp from '@/util/RegExp'
+  import {
+    sendCode,
+    sendEmailCode
+  } from 'api/show'
+
   export default {
     name: "create-set-password",
     data(){
       return {
+        createSuccess:false,
         password:'',
         confirmPassword:'',
-        psdError: false,
-        psdErrorText:'',
+        pwdError: false,
+        pwdErrorText:'',
         type:1,  //1是手机号 2是邮箱
         typeNumber:'',
-        typeText:'',
         typePlaceholder:'请输入您常用的手机号码',
         code:'',//验证码
         bindError:false,
@@ -59,7 +69,8 @@
       }
     },
     components:{
-      GetVerifyCode
+      GetVerifyCode,
+      CreateSuccess
     },
     watch:{
       type(){
@@ -74,14 +85,72 @@
       }
     },
     methods:{
+      checkPwd(){
+        if(this.password === ''){
+          this.pwdError = true
+          this.pwdErrorText = '请设置您的登录密码'
+          return false
+        }else if(this.confirmPassword === ''){
+          this.pwdError = true
+          this.pwdErrorText = '请再次输入您的登录密码'
+          return false
+        }else if(this.password != this.confirmPassword){
+          this.pwdError = true
+          this.pwdErrorText = '两次密码不一致，请重新输入'
+          return false
+        }else{
+          //差一步校验密码强度
+          this.pwdError = false
+          this.pwdErrorText = ''
+          return true
+        }
+      },
+      checkPwdReg(){
+        if(this.password === ''){
+          this.pwdError = true
+          this.pwdErrorText = '请设置您的登录密码'
+          return false
+        }else if(!RegExp.password.test(this.password)){
+          this.pwdError = true
+          this.pwdErrorText = '您输入的密码不符合规则，请重新输入'
+          return false
+        }else{
+          this.pwdError = false
+          this.pwdErrorText = ''
+          return true
+        }
+      },
+      checkNumber(){
+        if(this.typeNumber === ''){
+          this.bindError = true
+          this.bindErrorText = this.type === 1 ? '请输入您常用的手机号' : '请输入您常用的邮箱地址'
+          return false
+        }else {
+          let reg = ''
+          if(this.type === 1){
+            reg = RegExp.phone
+          }else{
+            reg = RegExp.email
+          }
+          if(!reg.test(this.typeNumber)){
+            this.bindError = true
+            this.bindErrorText = this.type === 1 ? '请输入您常用的手机号' : '请输入您常用的邮箱地址'
+          }
+        }
+      },
       getCode(){ //获取验证码
         //校验手机号或者邮箱是否为空  并且是否符合规则
-        if(this.typeNumber != ''){
+        if(this.checkNumber()){
           this.startCountDown = true
         }
       },
       submit(){
         //各种校验
+        if(this.checkPwd()){
+          if(this.checkNumber()){
+
+          }
+        }
       },
     }
   }

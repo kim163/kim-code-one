@@ -2,8 +2,7 @@
   <div>
     <mobile-header>快速创建久安账号</mobile-header>
     <create-user-info :merchantInfo="merchantInfo" @createNow="setPassword = true" v-if="!setPassword"></create-user-info>
-    <create-set-account :merchantInfo="merchantInfo" @setSuccess="createSuccess = true" v-if="setPassword && !createSuccess"></create-set-account>
-    <creat-success v-if="createSuccess"></creat-success>
+    <create-set-account :merchantInfo="merchantInfo" v-if="setPassword"></create-set-account>
   </div>
 </template>
 
@@ -13,7 +12,7 @@
   import MobileHeader from 'components/m-header'
   import CreateUserInfo from './create-user-info'
   import CreateSetAccount from './create-set-account-info'
-  import CreatSuccess from './create-success'
+
 
   export default {
     name: "quick-create",
@@ -29,7 +28,6 @@
       MobileHeader,
       CreateUserInfo,
       CreateSetAccount,
-      CreatSuccess
     },
     created(){
       this.merchantId = _.getUrlParam('merchantId')

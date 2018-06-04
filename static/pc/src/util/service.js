@@ -49,20 +49,36 @@ service.interceptors.request.use(config => {
 service.interceptors.response.use(
   response => {
     $load.close();
-    if (response && response.data && response.data.code && response.data.code !== 10000) {
+    // if (response && response.data && response.data.code && response.data.code !== 10000) {
+    //   if (response.data.code === 15016) {    // 没有在线
+    //     store.dispatch('INIT_INFO');
+    //     $localStorage.remove('tokenInfo');
+    //     store.dispatch('UPDATE_TOKEN_INFO', null);
+    //     store.dispatch('CHECK_ONLINE',false);
+    //     store.commit("SHOW_LOGIN",true);
+    //   }
+    //   return Promise.reject(response.data.message)
+    // } else {
+    //   if (response.data.data) {
+    //     response.data.data = JSON.parse(aesutil.decrypt(response.data.data))
+    //   }
+    //   return response.data
+    // }
+    if (response && response.data && response.data.code) {
       if (response.data.code === 15016) {    // 没有在线
         store.dispatch('INIT_INFO');
         $localStorage.remove('tokenInfo');
+        $localStorage.remove('userData');
         store.dispatch('UPDATE_TOKEN_INFO', null);
         store.dispatch('CHECK_ONLINE',false);
         store.commit("SHOW_LOGIN",true);
       }
-      return Promise.reject(response.data.message)
-    } else {
       if (response.data.data) {
         response.data.data = JSON.parse(aesutil.decrypt(response.data.data))
       }
       return response.data
+    } else{
+      return Promise.reject(response.data.message)
     }
   },
   error => {

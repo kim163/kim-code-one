@@ -4,11 +4,13 @@
     <div class="header-list">
       <div class="header" v-for="(item,index) in headerList" :key="index">{{item}}</div>
     </div>
-    <div class="info-item">
-      <div class="info-detail">dsjflwjlfwom</div>
-      <div class="info-detail">千赢国际</div>
-      <div class="info-detail untie" @click="showConfirmDialog(1)">解绑</div>
-    </div>
+    <transition-group name="list">
+      <div class="info-item" v-for="item in bindList" :key="item.merchantId">
+        <div class="info-detail">{{item.bindUserid}}</div>
+        <div class="info-detail">{{item.merchantName}}</div>
+        <div class="info-detail untie" @click="showConfirmDialog(item.merchantId)">解绑</div>
+      </div>
+    </transition-group>
 
     <confirm-dialog v-model="showConfirm">
       <div slot="title">温馨提示</div>
@@ -26,35 +28,72 @@
   import {generateTitle} from '@/util/i18n'
   import MobileHeader from 'components/m-header'
   import ConfirmDialog from 'components/confirm'
+  import {mapGetters} from 'vuex'
+
+  import {
+    userMerchantList,
+    removeUserMerchant
+  } from 'api/cashier'
 
   export default {
     name: "bind-list",
-    data(){
-      return{
-        headerList:[
+    data() {
+      return {
+        headerList: [
           '商户账号',
           '商户名称',
           '操作'
         ],
-        bingList:[],
-        showConfirm:false,
-        itemId:0
+        bindList: [],
+        showConfirm: false,
+        itemId: 0
       }
     },
-    components:{
+    components: {
       MobileHeader,
       ConfirmDialog
     },
-    methods:{
-      showConfirmDialog(id){
+    computed: {
+      ...mapGetters([
+        'userId'
+      ])
+    },
+    methods: {
+      getList() {
+        userMerchantList({userId: this.userId}).then((res) => {
+          if(res.code === 10000) {
+            this.bindList = res.data
+          }else{
+            toast(res.message)
+          }
+        }).catch(err => {
+          toast(err)
+        })
+      },
+      showConfirmDialog(id) {
         this.itemId = id
         this.showConfirm = true
       },
-      unBind(){
+      unBind() {
         this.showConfirm = false
-        toast('调用解绑接口')
-        //调用解绑接口
+        const data = {
+          userId: this.userId,
+          merchantId: this.merchantId
+        }
+        removeUserMerchant(data).then(res => {
+          if(res.code === 10000){
+            this.getList()
+            toast('解除绑定成功')
+          }else{
+            toast(res.message)
+          }
+        }).catch(err => {
+          toast(err)
+        })
       }
+    },
+    mounted() {
+      this.getList()
     }
   }
 </script>
@@ -62,27 +101,36 @@
 <style lang="scss" scoped>
   @import "~assets/scss/mobile";
 
-  @mixin detail-info{
+  @mixin detail-info {
     width: 30%;
     text-align: center;
     @include f(15px);
-    &:first-child{
+    &:first-child {
       width: 40%;
     }
   }
-  .header-list{
+
+  .list-enter,.list-leave-to{
+    opacity: 0;
+  }
+  .list-enter-active,.list-leave-active{
+    transition: all .5s;
+  }
+
+  .header-list {
     width: 100%;
     height: r(46);
     line-height: r(46);
     background: $white;
     display: flex;
     justify-content: space-between;
-    .header{
+    .header {
       @include detail-info;
       color: #333333;
     }
   }
-  .info-item{
+
+  .info-item {
     width: 100%;
     height: r(45);
     line-height: r(45);
@@ -90,26 +138,29 @@
     background: $white;
     display: flex;
     justify-content: space-between;
-    .info-detail{
+    .info-detail {
       @include detail-info;
       color: #787876;
-      &.untie{
+      &.untie {
         color: #4982FF;
       }
     }
   }
-  .dialog-content{
+
+  .dialog-content {
     @include f(14px);
     color: #787876;
     width: 80%;
     margin: 0 auto;
     line-height: r(25);
   }
-  .dialog-cancel{
+
+  .dialog-cancel {
     @include f(15px);
     color: #787876;
   }
-  .dialog-btn-yes{
+
+  .dialog-btn-yes {
     @include f(15px);
   }
 </style>
