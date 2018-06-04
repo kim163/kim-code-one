@@ -342,7 +342,8 @@ select{
   }
 }
 
-input.mobile-pubtn{
+input.mobile-pubtn,
+a.mobile-pubtn{
    width: 100%;
    height: r(45);
    line-height: r(45);
@@ -351,10 +352,13 @@ input.mobile-pubtn{
    @include  f(18px);
    color: $white;
    background: #4982FF;
+   display: block;
 }
-input.pubtn-white{
+input.pubtn-white,
+a.pubtn-white{
   background: $white;
   color: #FF0000;
+  box-shadow: 0 0 3px #ccc;
 }
 .bind-def-btn{
   display: block;
