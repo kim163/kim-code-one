@@ -1,7 +1,7 @@
 
 const config = [
   {
-    id:1,
+    id:100108,
     name:'千赢国际',
     logo: require('./qianying-logo.png'),
     short:'千赢',

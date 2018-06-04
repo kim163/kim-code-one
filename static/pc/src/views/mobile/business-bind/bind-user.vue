@@ -8,14 +8,14 @@
         </div>
       </div>
       <div class="user-account">
-        您的{{merchantInfo.short}}账号：qycs004783
+        您的{{merchantInfo.short}}账号：{{merchantUserName}}
       </div>
       <div class="bind-content">
-        <div class="has-bind-tip">
+        <div class="has-bind-tip" v-show="hasBind">
           提示：您的{{merchantInfo.short}}账号已被绑定或已在久安注册，不能重复操作
         </div>
         <div class="btn-list">
-          <div class="bind-def-btn">立即绑定</div>
+          <div class="bind-def-btn" @click="checkBindStatus()">立即绑定</div>
           <router-link tag="div" class="bing-list" :to="{name:'mBindList'}">商户绑定记录</router-link>
         </div>
         <div class="tip-info">
@@ -29,26 +29,83 @@
 </template>
 
 <script>
+  import {mapGetters} from 'vuex'
   import BindSuccess from './bind-success'
   import BusinessCfg from '../misc/merchant-config'
+  import {
+    bindMerchantLoginRelation,
+    isSyncUser
+  } from 'api/cashier'
   export default {
     name: "user-bind",
     data(){
       return{
         bindSuccess: false,
-        merchantId:0, //商户id
+        merchantId:'', //商户id
         merchantInfo:{}, //商户基本信息
+        hasBind: false,
+        notifyUrl:'', //商户h5登陆回调地址
+        merchantUserName:'', //商户登陆账户名
       }
+    },
+    computed:{
+      ...mapGetters([
+        'userId'
+      ])
     },
     components:{
       BindSuccess
     },
+    methods:{
+      checkBindStatus(){
+        const request = {
+          merchantId:this.merchantId,
+          merchantUserName:this.merchantUserName
+        }
+        console.log(request)
+        isSyncUser(request).then(res => {
+          if(res.code === 10000){
+            if(res.message === 'yes'){
+              this.hasBind = true
+            }else{
+              this.bindUser()
+            }
+          }else{
+            toast(res.message)
+          }
+        }).catch(err => {
+          toast(err)
+        })
+      },
+      bindUser(){
+        const data = {
+          merchantId: this.merchantId,
+          notifyUrl: this.notifyUrl,
+          merchantUserName: this.merchantUserName,
+          userId: this.userId
+        }
+        bindMerchantLoginRelation(data).then(res => {
+          if(res.code === 10000){
+            this.bindSuccess = true
+          }else{
+            toast(res.message)
+          }
+        }).catch(err => {
+          toast(err)
+        })
+      },
+    },
     created(){
       this.merchantId = _.getUrlParam('merchantId')
-      if(this.merchantId != 0){
+      this.notifyUrl = _.getUrlParam('notifyUrl')
+      this.merchantUserName = _.getUrlParam('merchantUserName')
+      this.merchantUserId = _.getUrlParam('merchantUserId')
+      if(this.merchantId != '' && this.merchantId != undefined){
         Object.assign(this.merchantInfo,BusinessCfg.getDeail(this.merchantId))
       }
     },
+    mounted(){
+    }
   }
 </script>
 

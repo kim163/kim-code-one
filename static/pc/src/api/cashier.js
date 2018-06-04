@@ -10,13 +10,6 @@ export const cashierInit = jsonData => service({
   data: jsonData
 });
 
-//商户绑定用户，默认登录
-export const loginH5 = jsonData => service({
-  url: numversion+`user/chain/loginH5`,
-  method: 'post',
-  data: jsonData
-});
-
 //支付提交
 export const paymentPay = jsonData => service({
   url: numversion+`payment/pay`,
@@ -24,4 +17,30 @@ export const paymentPay = jsonData => service({
   data: jsonData
 });
 
+//商户绑定用户，默认登录
+export const bindMerchantLoginRelation = jsonData => service({
+  url: numversion+`user/chain/bindMerchantLoginRelation`,
+  method: 'post',
+  data: jsonData
+});
 
+//商户是否已经绑定
+export const isSyncUser = jsonData => service({
+  url: numversion+`user/chain/isSyncUser`,
+  method: 'post',
+  data: jsonData
+});
+
+//查看商户列表
+export const userMerchantList = jsonData => service({
+  url: numversion+`user/chain/userMerchantList`,
+  method: 'post',
+  data: jsonData
+});
+
+//删除商户列表
+export const removeUserMerchant = jsonData => service({
+  url: numversion+`user/chain/removeUserMerchant`,
+  method: 'post',
+  data: jsonData
+});
