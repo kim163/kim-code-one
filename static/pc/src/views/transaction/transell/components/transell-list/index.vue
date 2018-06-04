@@ -8,8 +8,16 @@
              <div class="tranlist-item" v-for="(item,i) in dataList.data||[]">
                  <div class="tran-message">
                    <p class="txt-left item sellers">
-                     <span class="disp-inlblo" >
-                       <a class="avatars-item" :style="{'background':item.avatarColor}" > {{(item.userName).substring(0, 1)}} </a>
+                     <span class="disp-inlblo fl avatars-part" >
+                       <span class="disp-inlblo posit-rel">
+                         <a class="avatars-item" :style="{'background':item.avatarColor}" href="javascript:void(0);"> {{(item.userName).substring(0, 1)}} </a>
+                         <a :class="['avatar-onlineicon',item.sponsorOnlineStatus === 1?'online-icon':'notonline-icon']" href="javascript:void(0);"></a>
+                       </span>
+                      <a v-if="item.sponsorOnlineStatus === 1" href="javascript:void(0);" class="avatar-onlinebtn now-online">在线</a>
+                      <a v-else-if="item.sponsorOnlineStatus === 0" href="javascript:void(0);" class="avatar-onlinebtn not-online">离线</a>
+                      <a v-else href="javascript:void(0);" class="avatar-onlinebtn not-online">
+                        {{item.sponsorOnlineStatus}}
+                      </a>
                      </span>
                      {{item.userName}}
                    </p>

@@ -205,9 +205,41 @@ select{
       text-align: center;
       @include  f(18px);
       color: $white;
-      display: inline-block;
       vertical-align: middle;
       margin: r(10) 0 0;
+      display: block;
+    }
+    .avatar-onlinebtn{
+       width: r(40);
+       height: r(16);
+       line-height: r(16);
+       text-align: center;
+       margin: r(7) auto 0;
+      @include  f(12px);
+      border-radius: r(4);
+    }
+    .now-online{
+      color: #E9BA52;
+      border: 1px solid #F4DCA8;
+    }
+    .not-online{
+      color: #D8D8D8;
+      border: 1px solid #EBEBEB;
+    }
+    .avatar-onlineicon{
+       position: absolute;
+       width: r(10);
+       height: r(10);
+       right: r(0);
+       bottom: r(0);
+       border: 1px solid #FEEDEB;
+       border-radius: r(35);
+    }
+    .online-icon{
+        background: #0cce43;
+    }
+    .notonline-icon{
+       background: #D3D3D3;
     }
 
   }

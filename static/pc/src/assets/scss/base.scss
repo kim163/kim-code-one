@@ -788,6 +788,10 @@ span.icon-close,i.icon-close{
          cursor: not-allowed;
       }
     }
+    .avatars-part{
+      line-height: normal;
+      padding-top: 10px;
+    }
     .avatars-item{
       width: 70px;
       height: 70px;
@@ -799,6 +803,39 @@ span.icon-close,i.icon-close{
       display: inline-block;
       vertical-align: middle;
       margin:0 18px 0 20px;
+    }
+    .avatar-onlinebtn{
+      width: 40px;
+      height:16px;
+      line-height: 16px;
+      text-align: center;
+      margin: 7px auto 0;
+      font-size: 12px;
+      border-radius:4px;
+      display: block;
+    }
+    .now-online{
+      color: #E9BA52;
+      border: 1px solid #F4DCA8;
+    }
+    .not-online{
+      color: #D8D8D8;
+      border: 1px solid #EBEBEB;
+    }
+    .avatar-onlineicon{
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      right: 20px;
+      bottom: 0;
+      border: 1px solid #FEEDEB;
+      border-radius: 35px;
+    }
+    .online-icon{
+      background: #0cce43;
+    }
+    .notonline-icon{
+      background: #D3D3D3;
     }
     .iconfont{
       font-size: 30px;

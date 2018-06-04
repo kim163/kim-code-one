@@ -111,11 +111,7 @@
           console.log('订单详情记录:');
           console.log(res);
           this.DetailList = res.data;
-          if(res.data.createtime + 600000 < new Date().getTime() ){
-            this.endTime = 0;
-          }else{
-            this.endTime = res.data.createtime + 600000 - new Date().getTime();
-          }
+          this.endTime = res.data.intervalTime - res.data.elapsedTime;
         }).catch(error => {
           this.reset(res.message);
         });
