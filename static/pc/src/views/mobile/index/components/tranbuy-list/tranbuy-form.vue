@@ -123,7 +123,6 @@
         }
         console.log(requestda)
         transaction.placeAnOrder(requestda).then(res => {
-
           console.log(res)
           if (res.code == 10000) {
             this.$router.push({name: 'mOrder',params:{ id: res.data.key}});
