@@ -1,5 +1,5 @@
 <template>
-  <div class="transell-main transell-main-box">
+  <div class="transell-main0 transell-main-box">
     <m-header>订单详情</m-header>
     <div class="cash-details">
       <div class="trade-time-bar">
