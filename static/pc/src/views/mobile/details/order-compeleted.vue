@@ -1,23 +1,16 @@
 <template>
   <div class="transell-main0 transell-main-box">
-    <m-header>订单详情</m-header>
+    <m-header>交易详情</m-header>
     <div class="cash-details">
       <div class="trade-time-bar">
-        <span class="c-blue" v-if="DetailList.type == '12'">买入</span>
-        <span class="c-orange" v-else-if="DetailList.type == '11'">卖出</span>
+        <span class="c-blue" v-if="DetailList.credit == userData.userId" >买入</span>
+        <span class="c-orange" v-else-if="DetailList.debit == userData.userId" >卖出</span>
         <span class="c-blue" v-else>申诉订单</span>
         <span class="fr">
           <span v-if="DetailList.status == 203">已完成</span>
           <span v-if="DetailList.status == 204">已取消</span>
         </span>
       </div>
-
-      <!--<div class="mobilenav-tabs">-->
-      <!--<span v-for="(item,i) in detailType" @click="detailTypeItem=item.value" :class="{active:detailTypeItem==item.value}" :key="item.value">-->
-      <!--{{item.value}}-->
-      <!--</span>-->
-      <!--</div>-->
-
       <div v-if="detailTypeItem =='订单详情'">
         <ul class="details-ul">
           <li>
@@ -83,7 +76,7 @@
         </ul>
 
         <div class="btn-group">
-          <input type="button" class="btn btn-block btn-gray" readonly  value="我已付款">
+          <!--<input type="button" class="btn btn-block btn-gray" readonly  value="我已付款">-->
 
         </div>
       </div>
@@ -129,21 +122,18 @@
       fetchData(){
         this.loading = true;
         this.request={
-//          limit:'20',
-//          offset:'0',
           transactionId:this.$route.params.id
         }
-        console.log('传参数')
-        console.log(this.request)
+//        console.log('传参数')
+//        console.log(this.request)
         transaction.getCoinTransactionHistory(this.request).then(res => {
           this.loading = false;
           console.log('订单详情记录:');
           console.log(res.data);
           this.DetailList = res.data;
+          //  多个图片分解
           this.DetailList.creditProofUrlTwin = res.data.creditProofUrlTwin.split(',');
 
-          console.log('图片分解')
-          console.log(res.data.creditProofUrlTwin.split(','))
         }).catch(error => {
           this.reset(res.message);
         });
@@ -163,6 +153,7 @@
     },
     computed: {
       ...mapGetters(["userData","islogin"]),
+      ...mapGetters(["userId"]),
     },
     components: {
       mHeader

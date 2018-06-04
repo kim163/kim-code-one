@@ -146,3 +146,10 @@ export const payCompleted = jsonData => service({
   data: jsonData
 });
 
+// 获取 订单记录-详情-我要申诉
+export const createAppeal = jsonData => service({
+  url: numversion+`order/c2c/createAppeal`,
+  method: 'post',
+  data: jsonData
+});
+

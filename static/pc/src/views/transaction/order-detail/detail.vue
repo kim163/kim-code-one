@@ -27,8 +27,8 @@
 
     <div class="section detail-content">
 
-      <div class="container">
-        <div class="row00 detail-box" v-if="DetailList.type == '12'">
+      <div class="container" v-if="OrderList.data.length > 0">
+        <div class="row00 detail-box" v-if= "DetailList.credit == userData.userId" >
           <!--买入   type=12 为买入订单，type=11 为卖出订单-->
           <div class="detail-title">
             <span class="title-btn btn-primary">买入</span>
@@ -117,7 +117,7 @@
                 2.请在规定时间内完成付款，并务必点击“我已付款”，卖方确认收款后，系统会将UET划转到您的账户。</p>
           </div>
         </div>
-        <div class="row00 detail-box" v-if="DetailList.type == '11'">
+        <div class="row00 detail-box" v-if="DetailLister.debit == userData.userId">
           <!--卖出-->
           <div class="detail-title">
             <span class="title-btn btn-sell">卖出</span>
@@ -227,6 +227,9 @@
           </div>
         </div>
       </div>
+      <div class="container" v-else>
+        <no-data-tip></no-data-tip>
+      </div>
     </div>
 
     <v-footer ></v-footer>
@@ -241,6 +244,7 @@
   import { transaction } from 'api'
   import {mapGetters,mapActions,mapMutations} from 'vuex'
   import Clipboard from 'clipboard';
+  import NoDataTip from 'components/no-data-tip'
 
   export default {
     data() {
@@ -333,7 +337,7 @@
       ...mapGetters(["userData","islogin"]),
     },
     components: {
-      navMenu, vFooter, tranHeadnav
+      navMenu, vFooter, tranHeadnav ,NoDataTip
     },
     filters: {
       formatDateMs(time) {

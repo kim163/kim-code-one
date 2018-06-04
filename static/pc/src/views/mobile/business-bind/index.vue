@@ -39,7 +39,6 @@
     },
     created(){
       this.title = this.islogin ? '绑定商户' : '久安钱包'
-      console.log(_.getUrlParam('name'))
     }
   }
 </script>
