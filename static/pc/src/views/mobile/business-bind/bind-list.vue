@@ -60,11 +60,12 @@
     },
     methods: {
       getList() {
-        userMerchantList({userId: this.userId}).then((res) => {
+        userMerchantList({userId: this.userId}).then(res => {
+          console.log(res)
           if(res.code === 10000) {
             this.bindList = res.data
           }else{
-            toast(res.message)
+            toast(res)
           }
         }).catch(err => {
           toast(err)

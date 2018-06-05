@@ -8,23 +8,31 @@
         </div>
       </div>
       <div class="user-account">
-        您的{{merchantInfo.short}}账号：qycs004783
+        您的{{merchantInfo.short}}账号：{{merchantInfo.merchantUserName}}
       </div>
       <div class="set-account-info">
         <div class="set-password">
           <div class="title-tip"><span class="red">*</span>登陆密码：</div>
-          <input type="password" class="psd-input" v-model.trim="password" @mouseout="checkPwdReg" placeholder="请设置您的登录密码"/>
-          <input type="password" class="psd-input" v-model.trim="confirmPassword" placeholder="请再次输入您的登录密码"/>
+          <input type="password" class="psd-input" v-model.trim="password" @mouseout="checkPwdReg"
+                 placeholder="请设置您的登录密码"/>
+          <input type="password" class="psd-input" v-model.trim="confirmPassword" @mouseout="checkPwd"
+                 placeholder="请再次输入您的登录密码"/>
           <div class="error" v-show="pwdError">提示：{{pwdErrorText}}</div>
         </div>
         <div class="set-phone">
           <div class="title-tip">安全绑定：</div>
-          <div class="select-type">
-            <select class="select" v-model.number="type">
-              <option value="1">手机号</option>
-              <option value="2">邮箱</option>
+          <div class="choose-type">
+            <div class="type-info" @click="type = 1" :class="{active: type === 1}">手机号</div>
+            <div class="type-info" @click="type = 2" :class="{active: type === 2}">邮箱</div>
+          </div>
+          <div class="select-type" v-show="type === 1">
+            <select class="select" v-model="areaCode">
+              <option v-for="item in areaCodeData" :value="item.value">{{item.name}}</option>
             </select>
             <input type="text" class="type-input" v-model="typeNumber" :placeholder="typePlaceholder"/>
+          </div>
+          <div class="email" v-show="type === 2">
+            <input type="text" class="type-input email-input" v-model="typeNumber" :placeholder="typePlaceholder"/>
           </div>
           <div class="code-info">
             <input type="text" class="code-input" v-model="code" placeholder="验证码"/>
@@ -37,120 +45,215 @@
         <div class="bind-def-btn" @click="submit()">确认提交</div>
       </div>
     </div>
-    <create-success v-if="createSuccess"></create-success>
+    <transition name="success">
+      <create-success v-if="createSuccess"></create-success>
+    </transition>
   </div>
 </template>
 
 <script>
   import GetVerifyCode from 'components/get-verify-code'
   import CreateSuccess from './create-success'
+  import {$localStorage} from '@/util/storage'
+  import aesutil from '@/util/aesutil';
   import RegExp from '@/util/RegExp'
   import {
     sendCode,
-    sendEmailCode
+    sendEmailCode,
+    login
   } from 'api/show'
+  import {
+    syncUserAndBindRelation
+  } from 'api/cashier'
 
   export default {
     name: "create-set-password",
-    data(){
+    data() {
       return {
-        createSuccess:false,
-        password:'',
-        confirmPassword:'',
+        createSuccess: false,
+        password: '',
+        confirmPassword: '',
         pwdError: false,
-        pwdErrorText:'',
-        type:1,  //1是手机号 2是邮箱
-        typeNumber:'',
-        typePlaceholder:'请输入您常用的手机号码',
-        code:'',//验证码
-        bindError:false,
-        bindErrorText:'',
-        startCountDown:false,
+        pwdErrorText: '',
+        type: 1,  //1是手机号 2是邮箱
+        areaCode: '+86',
+        areaCodeData: [
+          {name: "+63", value: "+63"},
+          {name: "+86", value: "+86"}
+        ],
+        typeNumber: '',
+        typePlaceholder: '请输入您常用的手机号码',
+        code: '',//验证码
+        bindError: false,
+        bindErrorText: '',
+        startCountDown: false,
       }
     },
-    components:{
+    components: {
       GetVerifyCode,
       CreateSuccess
     },
-    watch:{
-      type(){
+    watch: {
+      type() {
         this.typePlaceholder = this.type === 1 ? '请输入您常用的手机号码' : '请输入您常用的邮箱地址'
         this.typeNumber = ''
+        this.code = ''
+        this.bindError = false
+        this.bindErrorText = ''
       }
     },
-    props:{
-      merchantInfo:{
-        type:Object,
-        default:{}
+    props: {
+      merchantInfo: {
+        type: Object,
+        default: {}
       }
     },
-    methods:{
-      checkPwd(){
-        if(this.password === ''){
+    methods: {
+      checkPwd() {
+        if (this.password === '') {
           this.pwdError = true
           this.pwdErrorText = '请设置您的登录密码'
           return false
-        }else if(this.confirmPassword === ''){
+        } else if (this.confirmPassword === '') {
           this.pwdError = true
           this.pwdErrorText = '请再次输入您的登录密码'
           return false
-        }else if(this.password != this.confirmPassword){
+        } else if (this.password != this.confirmPassword) {
           this.pwdError = true
-          this.pwdErrorText = '两次密码不一致，请重新输入'
+          this.pwdErrorText = '两次输入的密码不一致'
           return false
-        }else{
+        } else {
           //差一步校验密码强度
           this.pwdError = false
           this.pwdErrorText = ''
           return true
         }
       },
-      checkPwdReg(){
-        if(this.password === ''){
+      checkPwdReg() {
+        if (this.password === '') {
           this.pwdError = true
           this.pwdErrorText = '请设置您的登录密码'
           return false
-        }else if(!RegExp.password.test(this.password)){
+        } else if (!RegExp.password.test(this.password)) {
           this.pwdError = true
           this.pwdErrorText = '您输入的密码不符合规则，请重新输入'
           return false
-        }else{
+        } else {
           this.pwdError = false
           this.pwdErrorText = ''
           return true
         }
       },
-      checkNumber(){
-        if(this.typeNumber === ''){
+      checkNumber() {
+        if (this.typeNumber === '') {
           this.bindError = true
           this.bindErrorText = this.type === 1 ? '请输入您常用的手机号' : '请输入您常用的邮箱地址'
           return false
-        }else {
+        } else {
           let reg = ''
-          if(this.type === 1){
-            reg = RegExp.phone
-          }else{
+          if (this.type === 1) {
+            reg = this.areaCode === '+86' ? RegExp.phone : RegExp.php_phone
+          } else {
             reg = RegExp.email
           }
-          if(!reg.test(this.typeNumber)){
+          if (!reg.test(this.typeNumber)) {
             this.bindError = true
-            this.bindErrorText = this.type === 1 ? '请输入您常用的手机号' : '请输入您常用的邮箱地址'
+            this.bindErrorText = this.type === 1 ? '请输入正确的手机号' : '请输入正确的邮箱地址'
+            return false
+          } else {
+            this.bindError = false
+            this.bindErrorText = ''
+            return true
           }
         }
       },
-      getCode(){ //获取验证码
-        //校验手机号或者邮箱是否为空  并且是否符合规则
-        if(this.checkNumber()){
-          this.startCountDown = true
+      getCode() { //获取验证码
+        if (this.checkNumber()) {
+          const api = this.type === 1 ? sendCode : sendEmailCode
+          const request = {
+            type: 1
+          }
+          if (this.type === 1) {
+            Object.assign(request, {
+              phone: this.typeNumber,
+              areaCode: this.areaCode,
+            })
+          } else {
+            Object.assign(request, {
+              email: this.typeNumber,
+            })
+          }
+          console.log(request)
+          api(request).then(res => {
+            if (res.code === 10000) {
+              this.startCountDown = true
+            } else {
+              toast(res.message)
+            }
+          }).catch(err => {
+            toast(err)
+          })
         }
       },
-      submit(){
-        //各种校验
-        if(this.checkPwd()){
-          if(this.checkNumber()){
-
+      submit() {
+        if (this.checkPwd()) { //密码必填  手机号邮箱非必填
+          const request = {
+            merchantUserName: this.merchantInfo.merchantUserName,
+            merchantId: this.merchantInfo.id.toString(),
+            password:this.password
           }
+          debugger
+          if(this.typeNumber != ''){
+            if(this.code != ''){
+              if(this.type === 1){
+                Object.assign(request,{
+                  phone:this.typeNumber,
+                  phoneMgs:this.code,
+                  areaCode:this.areaCode
+                })
+              }else{
+                Object.assign(request,{
+                  email:this.typeNumber,
+                  emailMgs:this.code
+                })
+              }
+            }else{
+              this.bindError = true
+              this.bindErrorText = '请输入验证码'
+              return false
+            }
+          }
+          console.log('submit:',request)
+          syncUserAndBindRelation(request).then(res => {
+            if(res.code === 10000){
+              this.createSuccess = true
+              this.toLogin(res.data.token)
+            }else{
+              toast(res.message)
+            }
+          }).catch(err => {
+            toast(err)
+          })
         }
+      },
+      toLogin(token){  //创建成功之后 自动调用登录接口
+        const request = {
+          type:11,
+          token,
+          password:this.password,
+          merchantId: this.merchantInfo.id.toString()
+        }
+        login(request).then(res => {
+          if(res.code === 10000){
+            $localStorage.set('tokenInfo', JSON.stringify(res.data.tokenVo));
+            $localStorage.set('userData', JSON.stringify(aesutil.encrypt(res.data.userId)))
+            this.$store.dispatch('UPDATE_USERDATA');
+          }else{
+            toast(res.message)
+          }
+        }).catch(err => {
+          toast(err)
+        })
       },
     }
   }
@@ -159,14 +262,15 @@
 <style lang="scss" scoped>
   @import "~assets/scss/mobile";
 
-  @mixin def-input{
+  @mixin def-input {
     height: r(40);
     line-height: r(10);
     background: #FFFFFF;
     border: 1px solid #D8D8D8;
     padding-left: r(10);
   }
-  .set-info{
+
+  .set-info {
     width: 100%;
     height: r(156);
     text-align: center;
@@ -175,20 +279,21 @@
     padding-top: r(38);
     border-bottom: 1px solid #d8d8d8;
     background: $white;
-    .text{
+    .text {
       margin-top: r(20);
       color: #FF0000;
     }
-    .iconfont{
+    .iconfont {
       @include f(50px);
     }
-    .business-logo{
+    .business-logo {
       height: r(28);
       margin-left: r(8);
       margin-right: r(8);
     }
   }
-  .user-account{
+
+  .user-account {
     width: 100%;
     height: r(50);
     line-height: r(50);
@@ -200,40 +305,63 @@
     border-top: 1px solid #d8d8d8;
     margin-top: r(10);
   }
-  .set-account-info{
+
+  .set-account-info {
     width: 100%;
     border-bottom: 1px solid #d8d8d8;
     border-top: 1px solid #d8d8d8;
     background: $white;
     margin-top: r(10);
     padding: r(20);
-    .title-tip{
+    .title-tip {
       color: #000000;
       @include f(15px);
-      .red{
+      .red {
         color: #FF0000;
         margin-right: r(5);
       }
     }
-    .psd-input{
+    .psd-input {
       width: 100%;
       @include def-input;
       margin-top: r(10);
     }
-    .error{
+    .error {
       width: 100%;
       color: #FF0000;
       @include f(15px);
       margin-top: r(10);
     }
-    .set-phone{
+    .set-phone {
       margin-top: r(20);
-      .select-type,.code-info{
-        margin-top: r(10);
+      .choose-type {
+        margin-top: r(20);
+        font-size: 0px;
+        .type-info {
+          width: 30%;
+          height: r(40);
+          display: inline-block;
+          text-align: center;
+          line-height: r(40);
+          background: #f5f5f5;
+          color: #868686;
+          @include f(14px);
+          &.active {
+            background: #4982FF;
+            color: $white;
+          }
+        }
+      }
+      .email {
+        width: 100%;
+        margin-top: r(20);
+      }
+      .select-type, .code-info {
+        margin-top: r(20);
         display: flex;
         justify-content: space-between;
       }
-      .select{
+      .select {
         width: 24%;
         height: r(40);
         background: url("~images/select-up-down.svg") no-repeat scroll 90% center transparent;
@@ -243,20 +371,24 @@
         border: 1px solid #4982FF;
         @include f(15px);
       }
-      .type-input{
+      .type-input {
         width: 74%;
         @include def-input;
+        &.email-input {
+          width: 100%;
+        }
       }
-      .code-input{
+      .code-input {
         width: 72%;
         @include def-input;
       }
-      .get-code{
+      .get-code {
         width: 26%;
       }
     }
   }
-  .submit{
-    padding: r(20) r(10);
+
+  .submit {
+    padding: r(10) r(10);
   }
 </style>

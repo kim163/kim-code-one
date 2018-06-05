@@ -406,3 +406,14 @@ a.pubtn-white{
 .confirm-btn-cancel{
   border-right: 1px solid #e5e5e5;
 }
+.success-enter {
+  opacity: 0;
+  transform: translateY(50%);
+}
+.success-leave {
+  opacity: 0;
+  transform: translateY(-50%);
+}
+.success-enter-active, .success-leave-active {
+  transition: all .5s;
+}

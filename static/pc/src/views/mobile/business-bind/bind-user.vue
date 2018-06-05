@@ -2,7 +2,7 @@
   <div>
     <div class="bing-container" v-if="!bindSuccess">
       <div class="bing-info">
-        <i class="iconfont icon-user-login"></i>
+        <i class="iconfont icon-bind-avatar"></i>
         <div class="text">
           您将绑定<img :src="merchantInfo.logo" class="business-logo"/>的账号至久安钱包
         </div>
@@ -24,7 +24,9 @@
         </div>
       </div>
     </div>
-    <bind-success v-else></bind-success>
+    <transition name="success">
+      <bind-success v-if="bindSuccess" :notify-url="notifyUrl"></bind-success>
+    </transition>
   </div>
 </template>
 
@@ -84,6 +86,7 @@
           merchantUserName: this.merchantUserName,
           userId: this.userId
         }
+        console.log('bind data',data)
         bindMerchantLoginRelation(data).then(res => {
           if(res.code === 10000){
             this.bindSuccess = true

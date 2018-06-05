@@ -8,7 +8,7 @@
         </div>
       </div>
       <div class="user-account">
-        您的{{merchantInfo.short}}账号：qycs004783
+        您的{{merchantInfo.short}}账号：{{merchantInfo.merchantUserName}}
       </div>
       <div class="create-content">
         <div class="has-create-tip">
