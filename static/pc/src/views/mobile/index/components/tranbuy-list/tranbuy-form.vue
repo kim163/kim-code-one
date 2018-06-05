@@ -5,7 +5,7 @@
      <div class="mtranbuy-content">
        <div class="form-group cfx">
          <label> {{$t('transactionHome.tranUnitPrice')}} </label>
-         <span>&yen;  0.01</span>
+         <span>0.01 CNY</span>
        </div>
        <div class="form-group cfx">
          <label> {{$t('postPend.balance')}} </label>
