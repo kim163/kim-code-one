@@ -187,7 +187,8 @@ export default [
       return resolve(require('views/mobile/business-bind/bind-list'))
     },
     meta:{
-      isMobilePage: "mobile-body"
+      isMobilePage: "mobile-body",
+      noCache:true
     },
   },
   {
