@@ -72,27 +72,33 @@
       let stompSuccessCallback = function (frame) {
         console.log('STOMP: Connection successful')
         client.subscribe('/exchange/walletCustomOperation/'+userId, function (data) {
-          console.log('接收 message：')
-          console.log(JSON.parse(aesutil.decrypt(data.body)));
+//          console.log('接收 message：')
+//          console.log(JSON.parse(aesutil.decrypt(data.body)));
           let msgData=JSON.parse(aesutil.decrypt(data.body));
           console.log('msgData.type：'+msgData.type)
           if(msgData.type == 5){
+            // C2C_ORDER_ONLINE(5, "C2C订单发起人在线检测"),
             msgData.text=userId;
             client.send('/exchange/walletCustomOnline/-0', {priority: 9}, aesutil.encrypt(JSON.stringify(msgData)))
           }else if(msgData.type == 1 || msgData.type == 2){
+              // C2C_ORDER_PLACE(1, "C2C下单"),
+              //  C2C_ORDER_PAY(2, "C2C订单支付完成"),
              toast(msgData.describe)
             window.location.href= detailNormal + msgData.text;
-            console.log('状态1： 进入下单详情，订单的id是'+msgData.text);
+            //console.log('状态1： 进入下单详情，订单的id是'+msgData.text);
           }else if(msgData.type == 3 || msgData.type == 4 ){
+            //  C2C_ORDER_CANCEL(3, "C2C订单取消"),
+            //   C2C_ORDER_COMPLETE(4, "C2C订单完成"),
              toast(msgData.describe)
              window.location.href= detailOver +msgData.text;
           }else if(msgData.type == 11){
+            //  C2C_ORDER_APPEAL(11, "C2C申诉");
             toast(msgData.describe)
             window.location.href=detailAppeal + msgData.text;
-            console.log(msgData);
+            //console.log(msgData);
           }else{
             toast(msgData.describe)
-            console.log(msgData);
+            //console.log(msgData);
           }
         })
       }

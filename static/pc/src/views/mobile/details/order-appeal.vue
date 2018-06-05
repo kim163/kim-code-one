@@ -131,8 +131,8 @@
           offset:'0',
           orderId:this.$route.params.id
         }
-        console.log('传参数')
-        console.log(this.request)
+//        console.log('传参数')
+//        console.log(this.request)
         transaction.getAppealHistoryDetail(this.request).then(res => {
           this.loading = false;
           console.log('订单详情记录:');
@@ -140,8 +140,6 @@
           this.DetailList = res.data;
           this.DetailList.creditProofUrlTwin = res.data.creditProofUrlTwin.split(',');
 
-          console.log('图片分解')
-          console.log(res.data.creditProofUrlTwin.split(','))
         }).catch(error => {
           this.reset(res.message);
         });

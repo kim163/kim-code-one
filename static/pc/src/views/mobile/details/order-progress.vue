@@ -3,14 +3,14 @@
     <m-header>订单详情</m-header>
     <div class="cash-details">
       <div class="trade-time-bar">
-        <span class="c-blue" v-if="DetailList.credit == userData.userId">买入</span>
-        <span class="c-orange" v-else-if="DetailList.debit == userData.userId">卖出</span>
+        <span class="c-blue" v-if="DetailList.credit == userId">买入</span>
+        <span class="c-orange" v-else-if="DetailList.debit == userId">卖出</span>
         <span class="c-blue" v-else>申诉订单</span>
         <span class="fr">
           <span v-if="DetailList.status =='45'">等待付款</span>
           <span v-if="DetailList.status =='47'">等待释放UET</span>
 
-          {{DetailList.intervalTime | Date('hh:mm:ss')}}</span>
+          {{DetailList.intervalTime-DetailList.elapsedTime | Date('hh:mm:ss')}}</span>
       </div>
 
       <div v-if="detailTypeItem =='订单详情'">
@@ -19,11 +19,11 @@
               <span class="l-title">订单号 :</span>
               <span class="fr order-id-li">{{$route.params.id}}</span>
             </li>
-            <li v-if="DetailList.credit == userData.userId">
+            <li v-if="DetailList.credit == userId">
               <span class="l-title">卖方 :</span>
               <span class="fr">{{DetailList.debitName}}</span>
             </li>
-            <li v-else-if="DetailList.debit == userData.userId">
+            <li v-else-if="DetailList.debit == userId">
               <span class="l-title">买方 :</span>
               <span class="fr">{{DetailList.creditAccountNameTwin}}</span>
             </li>
@@ -43,7 +43,7 @@
               <span class="l-title">交易单价 :</span> <span class="fr">0.01 CNY</span>
             </li>
           </ul>
-          <ul class="details-ul pay-detail my-paymethod">
+          <ul class="details-ul pay-detail my-paymethod" v-if="DetailList.debit == userId">
             <li>
               <span class="l-title">我的收款方式 : </span>
               <div class="fr0">
@@ -111,8 +111,8 @@
           <div class="btn-group">
               <input type="button" class="btn btn-block btn-primary" @click="payCompleted" value="我已完成付款">
               <input type="button" class="btn btn-block btn-cancel" @click="cancelOrder" v-if="DetailList.status =='45'" value="取消订单">
-              <input type="button" class="btn btn-block btn-primary" @click="createAppeal" v-if= "DetailList.credit == userData.userId" value="我要申诉">
-              <input type="button" class="btn btn-block btn-primary" v-if= "DetailList.debit == userData.userId" value="提出反证">
+              <input type="button" class="btn btn-block btn-primary" @click="createAppeal" v-if= "DetailList.credit == userId" value="我要申诉">
+              <input type="button" class="btn btn-block btn-primary" v-if= "DetailList.debit == userId" value="提出反证">
           </div>
           <div>
             {{DetailList.status}}
@@ -232,12 +232,8 @@
       }
     },
     beforecreate(){
-      this.fetchData();
     },
       created() {
-      this.request={
-        orderId:''
-      }
       this.fetchData();
     },
     mouted(){
