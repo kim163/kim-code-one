@@ -174,6 +174,27 @@
 
         this.loading = false;
       },
+      addAppealDetail(){
+        this.loading = true;
+        this.request={
+          limit:10,
+          offset:0,
+          orderId:this.$route.params.id,
+          userId:this.userId,
+          type:''
+        }
+        transaction.addAppealDetail(this.request).then(res => {
+          this.loading = false;
+          console.log('增加证据申诉记录:');
+          console.log(res.data);
+          this.AppealList = res.data;
+
+      }).catch(error => {
+          toast(error.message);
+      });
+
+        this.loading = false;
+      },
       copystr(text) {
         text.$copy();
         toast(this.$t('transactionHome.successCopy'));

@@ -1,7 +1,7 @@
 <template>
   <div class="transell-main0 transell-main-box">
     <m-header>订单详情</m-header>
-    <div class="cash-details" v-if="DetailList.credit == userId">
+    <div class="cash-details0" v-if="DetailList.credit == userId">
       <div class="trade-time-bar">
         <span class="c-blue">买入</span>
 
@@ -77,7 +77,7 @@
               <input type="button" class="btn btn-block btn-primary" v-if= "DetailList.debit == userId || DetailList.status =='47'" value="提出反证">
           </div>
           <div>
-              <p v-if="DetailList.status =='47'" class="text-center">您已确认付款，请勿重复付款</p>
+              <p v-if="DetailList.status =='47'" class="payed-txt">您已确认付款，请勿重复付款</p>
           </div>
       </div>
 
@@ -90,7 +90,7 @@
       </div>
 
     </div>
-    <div class="cash-details" v-if="DetailList.debit == userId">
+    <div class="cash-details0" v-if="DetailList.debit == userId">
       <div class="trade-time-bar">
         <span class="c-orange" >卖出</span>
         <span class="fr">
@@ -380,9 +380,17 @@
     font-size:f(16px);
     color:#8f8f8f;
     overflow:hidden;
+    position:relative;
     &.heightauto{
       height:180px;
     }
+
+     .copy-btn{
+       position:absolute;
+       top:r(7);
+       right:r(15);
+       color:#5087ff;
+     }
      .qrcode-img{
        width:130px;
      }
@@ -443,5 +451,10 @@
   }
   .icon-pay-alipay{
     color:#03A9F3;
+  }
+  .payed-txt{
+    padding: r(10) 0;
+    text-align: center;
+    color:#5087ff;
   }
 </style>

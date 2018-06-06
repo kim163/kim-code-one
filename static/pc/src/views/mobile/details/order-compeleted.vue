@@ -142,30 +142,6 @@
         }).catch(error => {
           this.reset(error.message);
         });
-
-        this.loading = false;
-      },
-      getAppealDetailHistoryPage(){
-        this.loading = true;
-        this.request={
-          limit:10,
-          offset:0,
-          orderId:this.$route.params.id,
-          userId:this.$route.params.id,
-          type:''
-        }
-        transaction.getAppealHistoryDetail(this.request).then(res => {
-          this.loading = false;
-          console.log('订单详情记录:');
-          console.log(res.data);
-          this.DetailList = res.data;
-          //  多个图片分解
-          this.DetailList.creditProofUrlTwin = res.data.creditProofUrlTwin.split(',');
-
-        }).catch(error => {
-          this.reset(error.message);
-        });
-
         this.loading = false;
       },
       copystr(text) {
