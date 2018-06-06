@@ -404,11 +404,11 @@
        word-break: break-all;
        font-size:r(12);
       }
-  .l-title{
-    display:inline-block;
-    float:left;
-    color:#333;
-  }
+    .l-title{
+      display:inline-block;
+      float:left;
+      color:#333;
+    }
   }
   }
 

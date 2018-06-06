@@ -4,8 +4,8 @@
     <div class="cash-details">
       <div class="trade-time-bar">
         <span class="c-blue" >申诉订单</span>
-        <span class="fr">等待付款
-          {{DetailList.intervalTime | Date('hh:mm:ss')}}
+        <span class="fr">申诉锁定中
+          <!--{{DetailList.intervalTime - DetailList.elapsedTime | Date('hh:mm:ss')}}-->
         </span>
       </div>
 
