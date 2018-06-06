@@ -269,7 +269,7 @@
               color: #FF0000;
               border: none;
               outline: none;
-              width: 78%;
+              width: 79%;
               float: left;
               display: block;
               line-height: r(40);
@@ -277,7 +277,7 @@
             }
            .all-transact{
              color: #4982FF;
-             width: 22%;
+             width: 21%;
              float: left;
              text-align: right;
              display: block;
