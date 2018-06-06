@@ -28,6 +28,7 @@
             if(res.code == '10000'){
               this.balance=res.data[0].balance;
               this.assetCode=res.data[0].assetCode;
+              this.$emit('getBalance',this.balance)
             }else{
               this.balance='刷新后再试';
             }
