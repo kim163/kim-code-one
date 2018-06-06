@@ -170,7 +170,7 @@
 
               //  window.location.href = "/mh/";
             } else {
-              this.reset(res.message)
+              toast(res.message)
             }
           }).catch(error => {
             this.reset("请求失败");
