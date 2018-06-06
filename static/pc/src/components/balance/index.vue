@@ -17,6 +17,11 @@
     computed: {
       ...mapGetters(["userId", "islogin"]),
     },
+    watch: {
+      islogin(newParam, oldParam) {
+        this.getBalance()
+      }
+    },
     methods: {
       getBalance(order){
           let userId = this.userId;
