@@ -27,7 +27,7 @@
                      <span v-if="!item.tradeTotal">0 </span>％
                    </p>
 
-                   <p class="item">0.01 {{$t('transactionHome.yuan')}}</p>
+                   <p class="item">0.01 CNY</p>
                    <p class="item quantity"> {{item.amount}} UET </p>
                    <p class="item">
                      <span v-if="item.accountTypeTwin === 1" class="iconfont icon-pay-alipay"></span>

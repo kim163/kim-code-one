@@ -16,8 +16,8 @@
       <router-link tag="li" :to="orderDetailLink(item)" class="tran-item" v-for="(item,index) in tranList"
                    :key="index">
         <div class="type-status">
-          <div class="type blue-text" v-show="item.type === 12">{{$t('transactionRecord.buy')}}</div>
-          <div class="type red-text" v-show="item.type === 11">{{$t('transactionRecord.sale')}}</div>
+          <div class="type blue-text" v-show="item.credit === userId">{{$t('transactionRecord.buy')}}</div>
+          <div class="type red-text" v-show="item.debit === userId">{{$t('transactionRecord.sale')}}</div>
           <div class="status-time" v-if="type === 0">
             <div class="status">
               {{(item.status === 45 ? $t('transactionRecord.waitingForPayment') :

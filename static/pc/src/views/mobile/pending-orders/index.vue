@@ -53,7 +53,7 @@
             <div class="input-div"><input class="my-input" placeholder="挂单卖出数量" v-model="buyAmount"> UET</div>
             <div  class="input-div"><input class="my-input" :value="buyAmountCny" placeholder="=总数量"> CNY</div>
             <div  class="input-div">
-              <select class="my-input" v-model="buyTypeBuy">
+              <select class="my-input" v-model="buyTypeSell">
                 <option value="">{{$t('postPend.selectPay')}}</option>
                 <option v-for="item in bankList.data" :value="item">
                   <span  v-if="item.type == '1'">支付宝 {{item.account}}</span>
