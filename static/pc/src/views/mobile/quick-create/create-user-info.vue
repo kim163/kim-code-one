@@ -31,6 +31,10 @@
   import {
     syncUserAndBindRelation
   } from 'api/cashier'
+  import {$localStorage} from '@/util/storage'
+  import {
+    login
+  } from 'api/show'
 
   export default {
     name: "create-user-info",
@@ -53,6 +57,7 @@
         }
         syncUserAndBindRelation(request).then(res => {
           if(res.code === 10000){
+            this.toLogin(res.data.token)
             this.$emit('createNow')
           }else if(res.code === 15047){
             this.createError = true
@@ -62,7 +67,26 @@
         }).catch(err => {
           toast(err)
         })
-      }
+      },
+      toLogin(token){  //创建成功之后 自动调用登录接口
+        const request = {
+          type:11,
+          token,
+          merchantId: this.merchantInfo.merchantId.toString()
+        }
+        console.log(request)
+        login(request).then(res => {
+          if(res.code === 10000){
+            $localStorage.set('tokenInfo', JSON.stringify(res.data.tokenVo));
+            $localStorage.set('userData', JSON.stringify(aesutil.encrypt(res.data.userId)))
+            this.$store.dispatch('UPDATE_USERDATA');
+          }else{
+            toast(res.message)
+          }
+        }).catch(err => {
+          toast(err)
+        })
+      },
     }
   }
 </script>

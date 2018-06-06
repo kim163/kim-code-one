@@ -11,6 +11,7 @@
             @pullingUp="loadMore"
             @scroll="getScroll"
             :listenScroll="true"
+            :probeType="2"
             v-if="!noData"
     >
       <div class="mobile-trandatas mtranbuy-list">
