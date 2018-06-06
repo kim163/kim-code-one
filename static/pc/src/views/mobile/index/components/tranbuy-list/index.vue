@@ -9,6 +9,8 @@
             :pullUpConfig="pullUpCfg"
             @pullingDown="loadRefresh"
             @pullingUp="loadMore"
+            @scroll="getScroll"
+            :listenScroll="true"
             v-if="!noData"
     >
       <div class="mobile-trandatas mtranbuy-list">
@@ -62,6 +64,7 @@
             noMore:this.generateTitle('scorllCfg.pullUpNoMore')
           }
         },
+        scrollY:0,
         noData:false
       }
     },
@@ -116,14 +119,19 @@
       loadMore() {
         this.reqData.currentPage += 1
         this.searchDataList()
+      },
+      getScroll(e){
+        this.scrollY = e.y
       }
     },
     created() {
       this.searchDataList();
     },
     mounted() {
+
     },
     activated() {
+      this.$refs.scroll.scrollTo(0,this.scrollY,0)
     },
     components: {
       Scroll,
