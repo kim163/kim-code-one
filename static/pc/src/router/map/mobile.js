@@ -15,7 +15,6 @@ export default [
       return resolve(require('views/mobile/index'))
     },
     meta: {
-      // noCache: true, //是否不缓存组件
       isMobilePage: "mobile-body"
     }
   },
