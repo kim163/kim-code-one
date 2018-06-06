@@ -145,6 +145,12 @@ export const payCompleted = jsonData => service({
   method: 'post',
   data: jsonData
 });
+// 获取 订单记录-详情-我已完成收款
+export const payOrder = jsonData => service({
+  url: numversion+`order/c2c/payOrder`,
+  method: 'post',
+  data: jsonData
+});
 
 // 获取 订单记录-详情-我要申诉
 export const createAppeal = jsonData => service({
