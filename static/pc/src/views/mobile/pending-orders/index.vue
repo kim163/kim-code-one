@@ -13,7 +13,7 @@
       <div class="white-box">
         <div class="line-box"></div>
         <div class="balance-box">
-          <p>{{$t('postPend.balance')}} <balance></balance> </p>
+          <p>{{$t('postPend.balance')}} <balance ></balance> </p>
           <p class="c-gray">{{$t('postPend.unit')}} ¥ 0.01</p>
         </div>
         <div class="input-box">
@@ -30,8 +30,8 @@
               </select>
             </div>
             <div >
-              <p class="s-title">{{$t('postPend.buyerRequest')}}</p>
-              <div  class="input-div"><input class="my-input" :placeholder="$t('postPend.minSell')"> UET</div>
+              <p class="s-title">卖家要求</p>
+              <div  class="input-div"><input class="my-input" v-model="minBuyAmount" :placeholder="$t('postPend.minSell')"> UET</div>
             </div>
         </div>
         <div class="line-box"></div>
@@ -46,8 +46,8 @@
       <div class="white-box">
         <div class="line-box"></div>
         <div class="balance-box">
-          <p>{{$t('postPend.balance')}}  <balance></balance></p>
-          <p class="c-gray">{{$t('postPend.unit')}} ¥ 0.01 <a class="c-blue">{{$t('postPend.allsell')}}</a></p>
+          <p>{{$t('postPend.balance')}}  <balance @getBalance="getBlance"></balance></p>
+          <p class="c-gray">{{$t('postPend.unit')}} ¥ 0.01 <a class="c-blue" @click="buyAmount = userBlance">{{$t('postPend.allsell')}}</a></p>
         </div>
         <div class="input-box">
             <div class="input-div"><input class="my-input" placeholder="挂单卖出数量" v-model="buyAmount"> UET</div>
@@ -64,7 +64,7 @@
             </div>
             <div >
               <p class="s-title">买家要求</p>
-              <div  class="input-div"><input class="my-input" placeholder="卖家最低买入数量"> UET</div>
+              <div  class="input-div"><input class="my-input" v-model="minSellAmount" placeholder="卖家最低买入数量"> UET</div>
             </div>
         </div>
         <div class="line-box"></div>
@@ -110,6 +110,8 @@
           data: []
         },
         buyAmount:'',
+        minBuyAmount:'',
+        minSellAmount:'',
         buyTypeBuy:'',
         buyTypeSell:'',
         accountCashVo:{},
@@ -157,7 +159,7 @@
         this.requestda={
           userId: this.userData.userId,
           mode:'1',
-          minUnit:this.buyAmount,//等于发布的数量
+          minUnit:this.minBuyAmount,//等于发布的数量
           accountChainVo:{
             name:this.userData.nickname,
             address:this.userData.accountChainVos[0].address,
@@ -176,7 +178,7 @@
           console.log(res)
           if(res.code == '10000'){
             toast('您已下单成功，请进入列表查询');
-            $emit('hide',false)
+            this.$router.push({name: 'mIndex'});
           }else{
             toast(res.message)
           }
@@ -204,7 +206,7 @@
         this.requestda={
           userId: this.userData.userId,
           mode:'1',
-          minUnit:this.buyAmount,//等于发布的数量
+          minUnit:this.minSellAmount,//等于发布的数量
           accountChainVo:{
             name:this.userData.nickname,
             address:this.userData.accountChainVos[0].address,
@@ -223,7 +225,7 @@
           console.log(res)
           if(res.code == '10000'){
             toast('您已下单成功，请进入列表查询');
-            $emit('hide',false)
+            this.$router.push({name: 'mIndex'});
           }else{
             toast(res.message)
           }
@@ -233,6 +235,9 @@
       },
       subData:function(item){
         return (item.substring(item.length-4))
+      },
+      getBlance(data){
+        this.userBlance = data
       }
     },
     created() {

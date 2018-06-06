@@ -81,16 +81,19 @@
             msgData.text=userId;
             client.send('/exchange/walletCustomOnline/-0', {priority: 9}, aesutil.encrypt(JSON.stringify(msgData)))
           }else if(msgData.type == 1 || msgData.type == 2){
-              // C2C_ORDER_PLACE(1, "C2C下单"),
-              //  C2C_ORDER_PAY(2, "C2C订单支付完成"),
-             toast(msgData.describe)
+            // C2C_ORDER_PLACE(1, "C2C下单"),
+            //  C2C_ORDER_PAY(2, "C2C订单支付完成"),
+            toast(msgData.describe)
             window.location.href= detailNormal + msgData.text;
             //console.log('状态1： 进入下单详情，订单的id是'+msgData.text);
-          }else if(msgData.type == 3 || msgData.type == 4 ){
+          }else if(msgData.type == 3){
             //  C2C_ORDER_CANCEL(3, "C2C订单取消"),
+            toast(msgData.describe)
+            window.location.href= detailOver +msgData.text;
+          }else if(msgData.type == 4 ){
             //   C2C_ORDER_COMPLETE(4, "C2C订单完成"),
-             toast(msgData.describe)
-             window.location.href= detailOver +msgData.text;
+            toast(msgData.describe)
+            window.location.href= detailOver +msgData.text;
           }else if(msgData.type == 11){
             //  C2C_ORDER_APPEAL(11, "C2C申诉");
             toast(msgData.describe)

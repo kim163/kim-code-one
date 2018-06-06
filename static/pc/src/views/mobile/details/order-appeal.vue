@@ -3,8 +3,13 @@
     <m-header>申诉订单详情</m-header>
     <div class="cash-details">
       <div class="trade-time-bar">
-        <span class="c-blue" >申诉订单</span>
-        <span class="fr">申诉锁定中
+        <span class="c-blue" >
+          <!--申诉订单-->
+          <span v-if="DetailList.credit == userId" class="c-blue">买入</span>
+          <span v-if="DetailList.debit == userId" class="c-red">卖出</span>
+        </span>
+        <span class="fr">
+          申诉锁定中
           <!--{{DetailList.intervalTime - DetailList.elapsedTime | Date('hh:mm:ss')}}-->
         </span>
       </div>
@@ -142,7 +147,7 @@
 
           </ul>
           <div class="btn-group">
-            <input type="button" class="btn btn-block btn-primary" @click="detailTypeItem=申诉与仲裁"  value="继续留言">
+            <input type="button" class="btn btn-block btn-primary" @click="detailTypeItem='申诉与仲裁'"  value="继续留言">
           </div>
         </div>
 

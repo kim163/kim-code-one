@@ -71,7 +71,7 @@
 
           </ul>
 
-          <div class="btn-group" v-if="DetailList.status =='45'">
+          <div class="btn-group" v-if="DetailList.status =='45' ">
               <input type="button" class="btn btn-block btn-primary" @click="payOrder" value="我已完成付款">
               <input type="button" class="btn btn-block btn-cancel" @click="cancelOrder" v-if="DetailList.status =='45'" value="取消订单">
               <input type="button" class="btn btn-block btn-primary" v-if= "DetailList.debit == userId || DetailList.status =='47'" value="提出反证">
@@ -194,7 +194,7 @@
           </div>
 
          <div>
-              <p>买家付款截图</p>
+              <p>买家付款截图:</p>
                <ul class="pic-ul">
                  <li v-for="proofImg in DetailList.creditProofUrlTwin">
                    <img :src="proofImg">
@@ -235,7 +235,7 @@
         },
         orderData:{
           orderId:'',
-          debitName:'', // 交易买方
+          debitName:'' // 交易买方
         }
       };
     },
@@ -252,13 +252,21 @@
           this.loading = false;
           console.log('订单详情记录:');
           console.log(res.data);
+          if(res.data == '' || res.data == null){
+            this.$router.push({name: 'mIndex'});
+            return;
+          }
           this.DetailList = res.data;
-          this.DetailList.creditProofUrlTwin = res.data.creditProofUrlTwin.split(',');
+          console.log('图片你点击恩解决额',res.data.creditProofUrlTwin)
+          if(res.data.creditProofUrlTwin != '' || res.data.creditProofUrlTwin != null){
+//            this.DetailList.creditProofUrlTwin = res.data.creditProofUrlTwin.split(',');
+          }
+
           if(res.code == '10000'){
             toast('您已下单成功，请进入列表查询');
           }
         }).catch(err => {
-          this.reset(err.message);
+          toast(err.message);
         });
 
         this.loading = false;
@@ -270,7 +278,10 @@
         }
         transaction.cancelOrder(this.request).then(res => {
           this.loading = false;
-
+          if(res.code == '10000'){
+            toast('您已取消，请勿重复操作');
+            this.$router.push({name: 'mTranRecord'});
+          }
         }).catch(error => {
           this.reset(res.message);
         });
@@ -289,7 +300,7 @@
           }
 
         }).catch(err => {
-          this.reset(err.message);
+          toast(err.message);
         });
         toast(res.message);
         this.loading = false;
@@ -301,6 +312,10 @@
         }
         transaction.payCompleted(this.request).then(res => {
           this.loading = false;
+          if(res.code == '10000'){
+            toast('您已确认收款，请勿重复操作');
+            this.$router.push({name: 'mTranRecord'});
+          }
 
         }).catch(error => {
           this.reset(res.message);
@@ -312,14 +327,17 @@
         this.loading = true;
         this.request={
           orderId:this.$route.params.id,
-          userId:'',
-          type:''
+          userId:this.userId,
+          type:2
         }
         transaction.createAppeal(this.request).then(res => {
           this.loading = false;
-
-        }).catch(error => {
-          this.reset(res.message);
+          if(res.code == '10000'){
+            toast('申诉创建成功');
+            this.$router.push({name: 'mOrderAppeal',params:{ id: this.$route.params.id}});
+          }
+        }).catch(err => {
+          toast(err.message);
         });
         toast(res.message);
         this.loading = false;
