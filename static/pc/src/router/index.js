@@ -15,11 +15,15 @@ const router = new VueRouter({
   base: "/",
   'linkActiveClass': 'active',
   scrollBehavior(to, from, savedPosition) {
-    // if (savedPosition) {
-    //   return savedPosition
-    // } else {
-    //   return { x: 0, y: 0 }
-    // }
+    if (savedPosition) {
+      return savedPosition
+    } else {
+      if (!from.meta.noCache) {
+        console.log('scrollTop:', document.body.scrollTop);
+        from.meta.savedPosition = document.body.scrollTop
+      }
+      return { x: 0, y: to.meta.savedPosition || 0 }
+    }
   },
   routes: maps.concat([
     {

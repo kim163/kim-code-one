@@ -79,7 +79,6 @@
     },
     watch: {
       "$route"(val) {
-        console.log('$route')
         this.orderId = val.params.id;
         this.searchTranDetail();
         this.getBankInfo();
@@ -125,7 +124,11 @@
 
       checkVerif(){
         if(this.buyAmountUet =='' || !this.buyAmountUet){
-          toast('请输入正确的购买数量');
+          toast('请您输入正确的购买数量');
+        }else if(this.buyAmountUet < this.item.minUnit){
+          toast('您输入的数量低于最低买入数量');
+        }else if(this.buyAmountUet > this.item.amount){
+          toast('您输入的数量高于可买数量');
         }else if(this.buyTypeBuy =='' || !this.buyTypeBuy){
           toast('请选择支付方式');
         }else {
