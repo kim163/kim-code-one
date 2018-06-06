@@ -199,10 +199,9 @@
         if (this.checkPwd()) { //密码必填  手机号邮箱非必填
           const request = {
             merchantUserName: this.merchantInfo.merchantUserName,
-            merchantId: this.merchantInfo.id.toString(),
+            merchantId: this.merchantInfo.merchantId.toString(),
             password:this.password
           }
-          debugger
           if(this.typeNumber != ''){
             if(this.code != ''){
               if(this.type === 1){
@@ -223,7 +222,6 @@
               return false
             }
           }
-          console.log('submit:',request)
           syncUserAndBindRelation(request).then(res => {
             if(res.code === 10000){
               this.createSuccess = true
@@ -240,9 +238,9 @@
         const request = {
           type:11,
           token,
-          password:this.password,
-          merchantId: this.merchantInfo.id.toString()
+          merchantId: this.merchantInfo.merchantId.toString()
         }
+        console.log(request)
         login(request).then(res => {
           if(res.code === 10000){
             $localStorage.set('tokenInfo', JSON.stringify(res.data.tokenVo));
@@ -285,6 +283,7 @@
     }
     .iconfont {
       @include f(50px);
+      color: red;
     }
     .business-logo {
       height: r(28);

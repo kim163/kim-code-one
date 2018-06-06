@@ -9,7 +9,7 @@
 </template>
 
 <script>
-  import BusinessCfg from '../misc/merchant-config'
+  import BusinessCfg from '../../misc/merchant-config'
   import {generateTitle} from '@/util/i18n'
   import MobileHeader from 'components/m-header'
   import CreateUserInfo from './create-user-info'

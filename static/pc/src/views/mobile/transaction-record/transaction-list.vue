@@ -8,7 +8,10 @@
             :pullUpConfig="pullUpCfg"
             @pullingDown="loadRefresh"
             @pullingUp="loadMore"
-            ref="scroll" v-if="!noData">
+            ref="scroll"
+            :scroll="getScroll"
+            :listenScroll="true"
+                    v-if="!noData">
     <ul class="list">
       <router-link tag="li" :to="orderDetailLink(item)" class="tran-item" v-for="(item,index) in tranList"
                    :key="index">
@@ -141,6 +144,9 @@
           routerName = 'mOrderOver'
         }
         return {name: routerName, params:{ id: item.id}}
+      },
+      getScroll(e){
+        console.log(e)
       }
     },
     mounted() {

@@ -33,7 +33,7 @@
 <script>
   import {mapGetters} from 'vuex'
   import BindSuccess from './bind-success'
-  import BusinessCfg from '../misc/merchant-config'
+  import BusinessCfg from '../../misc/merchant-config'
   import {
     bindMerchantLoginRelation,
     isSyncUser
