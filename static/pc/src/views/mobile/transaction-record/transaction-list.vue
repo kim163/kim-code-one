@@ -9,8 +9,9 @@
             @pullingDown="loadRefresh"
             @pullingUp="loadMore"
             ref="scroll"
-            :scroll="getScroll"
+            @scroll="getScroll"
             :listenScroll="true"
+            :probeType="2"
                     v-if="!noData">
     <ul class="list">
       <router-link tag="li" :to="orderDetailLink(item)" class="tran-item" v-for="(item,index) in tranList"
@@ -73,6 +74,7 @@
             noMore:this.generateTitle('scorllCfg.pullUpNoMore')
           }
         },
+        scrollY:0,
         noData:false
       }
     },
@@ -145,11 +147,16 @@
         return {name: routerName, params:{ id: item.id}}
       },
       getScroll(e){
-        console.log(e)
+        this.scrollY = e.y
       }
     },
     mounted() {
       this.getTranList()
+    },
+    activated() {
+      setTimeout(() => {
+        this.$refs.scroll.scrollTo(0,this.scrollY,0)
+      }, 100)
     },
   }
 </script>

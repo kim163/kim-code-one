@@ -132,7 +132,9 @@
 
     },
     activated() {
-      this.$refs.scroll.scrollTo(0,this.scrollY,0)
+      setTimeout(() => {
+        this.$refs.scroll.scrollTo(0,this.scrollY,0)
+      }, 100)
     },
     components: {
       Scroll,
