@@ -55,6 +55,7 @@
       if (!this.islogin) {
         this.$router.push({name: 'mobileLogin'});
       }
+      console.log('m index create');
     },
     components: {
       mHeadnav, mNavbar,balance, tranbuyList, transellList
