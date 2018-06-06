@@ -8,7 +8,7 @@
         </div>
       </div>
       <div class="user-account">
-        您的{{merchantInfo.short}}账号：{{merchantInfo.merchantUserName}}
+        久安账号：{{merchantInfo.prefix}}{{merchantInfo.merchantUserName}}
       </div>
       <div class="set-account-info">
         <div class="set-password">
@@ -57,13 +57,15 @@
   import {$localStorage} from '@/util/storage'
   import aesutil from '@/util/aesutil';
   import RegExp from '@/util/RegExp'
+  import {mapGetters} from 'vuex';
   import {
     sendCode,
     sendEmailCode,
-    login
   } from 'api/show'
   import {
-    syncUserAndBindRelation
+    updatePassword,
+    bindEmail,
+    bindPhone
   } from 'api/cashier'
 
   export default {
@@ -88,6 +90,11 @@
         bindErrorText: '',
         startCountDown: false,
       }
+    },
+    computed:{
+      ...mapGetters([
+        'userId'
+      ])
     },
     components: {
       GetVerifyCode,
@@ -123,7 +130,6 @@
           this.pwdErrorText = '两次输入的密码不一致'
           return false
         } else {
-          //差一步校验密码强度
           this.pwdError = false
           this.pwdErrorText = ''
           return true
@@ -171,7 +177,7 @@
         if (this.checkNumber()) {
           const api = this.type === 1 ? sendCode : sendEmailCode
           const request = {
-            type: 1
+            type: 3
           }
           if (this.type === 1) {
             Object.assign(request, {
@@ -183,7 +189,6 @@
               email: this.typeNumber,
             })
           }
-          console.log(request)
           api(request).then(res => {
             if (res.code === 10000) {
               this.startCountDown = true
@@ -197,62 +202,63 @@
       },
       submit() {
         if (this.checkPwd()) { //密码必填  手机号邮箱非必填
-          const request = {
-            merchantUserName: this.merchantInfo.merchantUserName,
-            merchantId: this.merchantInfo.merchantId.toString(),
-            password:this.password
-          }
           if(this.typeNumber != ''){
-            if(this.code != ''){
-              if(this.type === 1){
-                Object.assign(request,{
-                  phone:this.typeNumber,
-                  phoneMgs:this.code,
-                  areaCode:this.areaCode
+            if(this.checkNumber()){
+              if(this.code != ''){
+                const request = {}
+                if(this.type === 1){
+                  Object.assign(request,{
+                    phone:this.typeNumber,
+                    phoneMgs:this.code,
+                    areaCode:this.areaCode,
+                    userId: this.userId
+                  })
+                }else{
+                  Object.assign(request,{
+                    email:this.typeNumber,
+                    emailMgs:this.code,
+                    userId: this.userId
+                  })
+                }
+                const api = this.type === 1 ? bindPhone : bindEmail
+                console.log(request)
+                api(request).then(res => {
+                  if(res.code === 10000){
+                    this.updateUserPassword()
+                  }else{
+                    toast(res.message)
+                  }
+                }).catch(err => {
+                  toast(err)
                 })
               }else{
-                Object.assign(request,{
-                  email:this.typeNumber,
-                  emailMgs:this.code
-                })
+                this.bindError = true
+                this.bindErrorText = '请输入验证码'
+                return false
               }
-            }else{
-              this.bindError = true
-              this.bindErrorText = '请输入验证码'
-              return false
             }
+          }else{
+            this.updateUserPassword()
           }
-          syncUserAndBindRelation(request).then(res => {
-            if(res.code === 10000){
-              this.createSuccess = true
-              this.toLogin(res.data.token)
-            }else{
-              toast(res.message)
-            }
-          }).catch(err => {
-            toast(err)
-          })
         }
       },
-      toLogin(token){  //创建成功之后 自动调用登录接口
+      updateUserPassword(){
         const request = {
-          type:11,
-          token,
-          merchantId: this.merchantInfo.merchantId.toString()
+          userId: this.userId,
+          password: this.password,
+          confirmPassword:this.confirmPassword
         }
         console.log(request)
-        login(request).then(res => {
+        updatePassword(request).then(res => {
           if(res.code === 10000){
-            $localStorage.set('tokenInfo', JSON.stringify(res.data.tokenVo));
-            $localStorage.set('userData', JSON.stringify(aesutil.encrypt(res.data.userId)))
-            this.$store.dispatch('UPDATE_USERDATA');
+            this.createSuccess = true
           }else{
             toast(res.message)
           }
         }).catch(err => {
           toast(err)
         })
-      },
+      }
     }
   }
 </script>
