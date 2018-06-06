@@ -16,81 +16,171 @@
       </div>
 
       <div v-if="detailTypeItem =='订单详情'">
-        <ul class="details-ul">
-          <li>
-            <span class="l-title">订单号 :</span>
-            <span class="fr order-id-li">{{$route.params.id}}</span>
-          </li>
-          <li>
-            <span class="l-title">卖方 :</span>
-            <span class="fr">{{DetailList.debitName}}</span>
-          </li>
-          <li>
-            <span class="l-title">交易金额 :</span>
-            <span class="fr">
+        <div v-if="DetailList.credit == userId">
+          <!--买-->
+          <ul class="details-ul">
+            <li>
+              <span class="l-title">订单号 :</span>
+              <span class="fr order-id-li">{{$route.params.id}}</span>
+            </li>
+            <li>
+              <span class="l-title">卖方 :</span>
+              <span class="fr">{{DetailList.debitName}}</span>
+            </li>
+            <li>
+              <span class="l-title">交易金额 :</span>
+              <span class="fr">
                      <span class="red">{{DetailList.debitAmountTwin}} CNY</span>
                </span>
-          </li>
-          <li>
-            <span class="l-title">交易数量 :</span>
-            <span class="fr">
+            </li>
+            <li>
+              <span class="l-title">交易数量 :</span>
+              <span class="fr">
                      <span class="red">{{DetailList.debitAmount}} UET</span>
                  </span>
-          </li>
-          <li>
-            <span class="l-title">交易单价 :</span> <span class="fr">0.01 CNY</span>
-          </li>
-        </ul>
-        <ul class="details-ul pay-detail">
-          <li>
-            <span class="l-title">卖家收款 : </span>
-            <div class="fr0">
-              <span v-if="DetailList.debitAccountMerchantTwin == '支付宝'"><i class="iconfont icon-pay-alipay"></i></span>
-              <span v-else-if="DetailList.debitAccountMerchantTwin == '微信'"><i class="iconfont icon-pay-wechat"></i></span>
-              <span v-else><i class="iconfont icon-pay-bank"></i></span>
-              {{DetailList.debitAccountMerchantTwin}}
-            </div>
-          </li>
-          <li>
-            <span class="l-title">收款姓名 : </span>
-            <div class="fr0">{{DetailList.debitAccountNameTwin}}
-              <a href="javascript:void(0);" class="copy-btn" @click="copystr(DetailList.debitAccountNameTwin)" >{{$t('transactionHome.copyBtn')}}</a>
-            </div>
-          </li>
-          <li>
-            <span class="l-title">收款账号 : </span>
-            <div class="fr0">
-              <span class="">{{DetailList.debitAccountTwin}}</span>
-              <a href="javascript:void(0);" class="copy-btn" @click="copystr(DetailList.debitAccountTwin)" >{{$t('transactionHome.copyBtn')}}</a>
-            </div>
-          </li>
-          <li class="heightauto"  v-if="DetailList.debitAccountMerchantTwin == '支付宝' || DetailList.debitAccountMerchantTwin == '微信'">
-            <span class="l-title">收款二维码 : </span>
-            <div class="qrcode-box">
-              <img src="~images/qrcode.jpg" :src="DetailList.debitAccountQrCodeUrlTwin" class="qrcode-img">
-              <span class="qrcode-tips">长按二维码保存</span>
-            </div>
-          </li>
+            </li>
+            <li>
+              <span class="l-title">交易单价 :</span> <span class="fr">0.01 CNY</span>
+            </li>
+          </ul>
+          <ul class="details-ul pay-detail">
+            <li>
+              <span class="l-title">卖家收款 : </span>
+              <div class="fr0">
+                <span v-if="DetailList.debitAccountMerchantTwin == '支付宝'"><i class="iconfont icon-pay-alipay"></i></span>
+                <span v-else-if="DetailList.debitAccountMerchantTwin == '微信'"><i class="iconfont icon-pay-wechat"></i></span>
+                <span v-else><i class="iconfont icon-pay-bank"></i></span>
+                {{DetailList.debitAccountMerchantTwin}}
+              </div>
+            </li>
+            <li>
+              <span class="l-title">收款姓名 : </span>
+              <div class="fr0">{{DetailList.debitAccountNameTwin}}
+                <a href="javascript:void(0);" class="copy-btn" @click="copystr(DetailList.debitAccountNameTwin)" >{{$t('transactionHome.copyBtn')}}</a>
+              </div>
+            </li>
+            <li>
+              <span class="l-title">收款账号 : </span>
+              <div class="fr0">
+                <span class="">{{DetailList.debitAccountTwin}}</span>
+                <a href="javascript:void(0);" class="copy-btn" @click="copystr(DetailList.debitAccountTwin)" >{{$t('transactionHome.copyBtn')}}</a>
+              </div>
+            </li>
+            <li class="heightauto"  v-if="DetailList.debitAccountMerchantTwin == '支付宝' || DetailList.debitAccountMerchantTwin == '微信'">
+              <span class="l-title">收款二维码 : </span>
+              <div class="qrcode-box">
+                <img src="~images/qrcode.jpg" :src="DetailList.debitAccountQrCodeUrlTwin" class="qrcode-img">
+                <span class="qrcode-tips">长按二维码保存</span>
+              </div>
+            </li>
 
-        </ul>
-
-        <div class="btn-group">
-          <!--<input type="button" class="btn btn-block btn-primary"  value="我已完成付款">-->
-          <input type="button" class="btn btn-block btn-primary"  value="提出反证">
-          <!--<input type="button" class="btn btn-block btn-cancel"  value="取消订单">-->
-          <input type="button" class="btn btn-block btn-gray"  value="我已付款">
-
-          <!--<input type="button" class="btn btn-block btn-primary"  value="确定收款">-->
-          <!--<input type="button" class="btn btn-block btn-primary"  value="我要申诉">-->
+          </ul>
+          <div class="btn-group">
+            <input type="button" class="btn btn-block btn-primary"  value="提出反证">
+            <input type="button" class="btn btn-block btn-gray"  value="我已付款">
+            <!--<input type="button" class="btn btn-block btn-primary"  value="确定收款">-->
+            <!--<input type="button" class="btn btn-block btn-primary"  value="我要申诉">-->
+          </div>
         </div>
+        <div v-if="DetailList.debit == userId">
+          <!--卖-->
+          <ul class="details-ul">
+            <li>
+              <span class="l-title">订单号 :</span>
+              <span class="fr order-id-li">{{$route.params.id}}</span>
+            </li>
+            <li>
+              <span class="l-title">买方 :</span>
+              <span class="fr">{{DetailList.creditName}}</span>
+            </li>
+            <li>
+              <span class="l-title">交易金额 :</span>
+              <span class="fr">
+                       <span class="red">{{DetailList.debitAmountTwin}} CNY</span>
+                 </span>
+            </li>
+            <li>
+              <span class="l-title">交易数量 :</span>
+              <span class="fr">
+                       <span class="red">{{DetailList.debitAmount}} UET</span>
+                   </span>
+            </li>
+            <li>
+              <span class="l-title">交易单价 :</span> <span class="fr">0.01 CNY</span>
+            </li>
+          </ul>
+          <ul class="details-ul pay-detail">
+            <li>
+              <span class="l-title">卖家收款 : </span>
+              <div class="fr0">
+                <span v-if="DetailList.debitAccountMerchantTwin == '支付宝'"><i class="iconfont icon-pay-alipay"></i></span>
+                <span v-else-if="DetailList.debitAccountMerchantTwin == '微信'"><i class="iconfont icon-pay-wechat"></i></span>
+                <span v-else><i class="iconfont icon-pay-bank"></i></span>
+                {{DetailList.debitAccountMerchantTwin}}
+              </div>
+            </li>
+            <li>
+              <span class="l-title">收款姓名 : </span>
+              <div class="fr0">{{DetailList.debitAccountNameTwin}}
+                <a href="javascript:void(0);" class="copy-btn" @click="copystr(DetailList.debitAccountNameTwin)" >{{$t('transactionHome.copyBtn')}}</a>
+              </div>
+            </li>
+            <li>
+              <span class="l-title">收款账号 : </span>
+              <div class="fr0">
+                <span class="">{{DetailList.debitAccountTwin}}</span>
+                <a href="javascript:void(0);" class="copy-btn" @click="copystr(DetailList.debitAccountTwin)" >{{$t('transactionHome.copyBtn')}}</a>
+              </div>
+            </li>
+            <li class="heightauto"  v-if="DetailList.debitAccountMerchantTwin == '支付宝' || DetailList.debitAccountMerchantTwin == '微信'">
+              <span class="l-title">收款二维码 : </span>
+              <div class="qrcode-box">
+                <img src="~images/qrcode.jpg" :src="DetailList.debitAccountQrCodeUrlTwin" class="qrcode-img">
+                <span class="qrcode-tips">长按二维码保存</span>
+              </div>
+            </li>
+
+          </ul>
+          <div class="btn-group">
+            <input type="button" class="btn btn-block btn-primary"  value="提出反证">
+            <!--<input type="button" class="btn btn-block btn-gray"  value="我已付款">-->
+            <!--<input type="button" class="btn btn-block btn-primary"  value="确定收款">-->
+            <!--<input type="button" class="btn btn-block btn-primary"  value="我要申诉">-->
+          </div>
+        </div>
+
       </div>
 
       <div v-if="detailTypeItem =='申诉与仲裁'">
 
         <div class="trade-time-bar">
           申诉与仲裁
-          <span class="fr red">卖方获胜</span>
+          <span class="fr">
+            <!--<span class="red">卖方获胜</span>-->
+            <span>{{AppealList.appeal.statusText}}</span>
+          </span>
         </div>
+
+        <div class="appeal-list">
+            <ul class="appeal-list-ul">
+              <li v-for="(item,i) in AppealList.appealDetailList" >
+                <span class="userAvator">{{item.sourceTypeText }}</span>
+                <div class="mes-box">
+                     <p class="msg-time">{{item.createtime | Date('yyyy-MM-dd hh:mm:ss') }}</p>
+                    <div class="mes-box-in">
+                     <img  :src="item.attachmentUrls" class="mes-img">
+                    {{item.content }}
+                    </div>
+                </div>
+
+              </li>
+            </ul>
+          <div class="input-box bottom-keyboard">
+              <input type="text" class="my-input">
+              <span class="btn-send">发送</span>
+          </div>
+        </div>
+
       </div>
 
     </div>
@@ -145,6 +235,8 @@
            // data.appeal   申诉状态
 
           this.DetailList = res.data.orderx ;
+          this.AppealList = res.data ;
+        //statusText
 //          this.DetailList.creditProofUrlTwin = res.data.creditProofUrlTwin.split(',');
 
         }).catch(error => {
@@ -312,5 +404,74 @@
   }
   .icon-pay-alipay{
     color:#03A9F3;
+  }
+  .mes-img{
+    max-width:100%;
+  }
+  .appeal-list-ul{
+    li{
+      padding:r(10) r(10) 0;
+      overflow: hidden;
+    }
+    .userAvator{
+      background: #E9BA52;
+      height:r(45);
+      width:r(45);
+      line-height: r(45);
+      text-align: center;
+      border-radius: 50px;
+      display: inline-block;
+      float:left;
+      margin:r(15) r(10) 0 0;
+      color:#fff;
+    }
+    .userAvator-me{
+      background: #0ABB07;
+      height:r(45);
+      width:r(45);
+      line-height: r(45);
+      text-align: center;
+      border-radius: 50px;
+      display: inline-block;
+      color:#fff;
+    }
+    .mes-box{
+      display: inline-block;
+      width:calc(100% - #{r(85)});
+
+    }
+    .mes-box-in{
+      border:1px solid #ddd;
+      border-radius: 5px;
+      background: #fff;
+    }
+  }
+
+  .bottom-keyboard{
+    position: fixed;
+    bottom:0;
+    left:0;
+    width:100%;
+    padding:10px;
+    border-top:1px solid #ddd;
+    .my-input{
+      height:45px;
+      width:80%;
+      display:inline-block;
+      border-radius: 6px;
+      border:1px solid #ddd;
+    }
+    .btn-send{
+      display:inline-block;
+      width:17.5%;
+      margin:0 0 0 2.5%;
+      text-align: center;
+      height:45px;
+      line-height: 45px;
+      background: #4982FF;
+      color:#fff;
+      border-radius: 6px;
+      float:right;
+    }
   }
 </style>
