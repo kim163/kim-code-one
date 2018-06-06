@@ -3,15 +3,15 @@
     <m-header>申诉订单详情</m-header>
     <div class="cash-details">
       <div class="trade-time-bar">
-        <span class="c-blue" v-if="DetailList.type == '12'">买入</span>
-        <span class="c-orange" v-else-if="DetailList.type == '11'">卖出</span>
-        <span class="c-blue" v-else>申诉订单</span>
-        <span class="fr">等待付款 {{DetailList.intervalTime | Date('hh:mm:ss')}}</span>
+        <span class="c-blue" >申诉订单</span>
+        <span class="fr">等待付款
+          {{DetailList.intervalTime | Date('hh:mm:ss')}}
+        </span>
       </div>
 
       <div class="mobilenav-tabs">
           <span v-for="(item,i) in detailType" @click="detailTypeItem=item.value" :class="{active:detailTypeItem==item.value}" :key="item.value">
-          {{item.value}}
+              {{item.value}}
           </span>
       </div>
 
@@ -64,11 +64,10 @@
               <a href="javascript:void(0);" class="copy-btn" @click="copystr(DetailList.debitAccountTwin)" >{{$t('transactionHome.copyBtn')}}</a>
             </div>
           </li>
-          <li class="heightauto">
+          <li class="heightauto"  v-if="DetailList.debitAccountMerchantTwin == '支付宝' || DetailList.debitAccountMerchantTwin == '微信'">
             <span class="l-title">收款二维码 : </span>
             <div class="qrcode-box">
-              <!--<img src="~images/qrcode.jpg" :src="DetailList.debitAccountQrCodeUrlTwin" class="qrcode-img">-->
-              <img src="~images/qrcode.jpg" class="qrcode-img" />
+              <img src="~images/qrcode.jpg" :src="DetailList.debitAccountQrCodeUrlTwin" class="qrcode-img">
               <span class="qrcode-tips">长按二维码保存</span>
             </div>
           </li>
@@ -77,12 +76,12 @@
 
         <div class="btn-group">
           <!--<input type="button" class="btn btn-block btn-primary"  value="我已完成付款">-->
-          <input type="button" class="btn btn-block btn-primary"  value="提出发证">
+          <input type="button" class="btn btn-block btn-primary"  value="提出反证">
           <!--<input type="button" class="btn btn-block btn-cancel"  value="取消订单">-->
-          <!--<input type="button" class="btn btn-block btn-gray"  value="我已付款">-->
+          <input type="button" class="btn btn-block btn-gray"  value="我已付款">
 
           <!--<input type="button" class="btn btn-block btn-primary"  value="确定收款">-->
-          <input type="button" class="btn btn-block btn-primary"  value="我要申诉">
+          <!--<input type="button" class="btn btn-block btn-primary"  value="我要申诉">-->
         </div>
       </div>
 
@@ -116,6 +115,8 @@
         detailTypeItem:'订单详情',
         DetailList: {
         },
+        AppealList: {
+        },
         orderData:{
           orderId:this.$route.params.id,
           debitName:'', // 交易买方
@@ -129,20 +130,47 @@
         this.request={
           limit:'20',
           offset:'0',
-          orderId:this.$route.params.id
+          orderId:this.$route.params.id,
+          userId:this.userId,
+          type:3   //默认为3
         }
-//        console.log('传参数')
-//        console.log(this.request)
-        transaction.getAppealHistoryDetail(this.request).then(res => {
+        console.log('传参数')
+        console.log(this.request)
+        transaction.getAppealDetailPage(this.request).then(res => {
           this.loading = false;
-          console.log('订单详情记录:');
+          console.log('申诉详情记录:');
           console.log(res.data);
-          this.DetailList = res.data;
-          this.DetailList.creditProofUrlTwin = res.data.creditProofUrlTwin.split(',');
+           // data.orderx   订单详情
+           // data.appealDetailList   申诉消息列表
+           // data.appeal   申诉状态
+
+          this.DetailList = res.data.orderx ;
+//          this.DetailList.creditProofUrlTwin = res.data.creditProofUrlTwin.split(',');
 
         }).catch(error => {
-          this.reset(res.message);
+          toast(error.message);
         });
+
+        this.loading = false;
+      },
+      getAppealDetailHistoryPage(){
+        this.loading = true;
+        this.request={
+          limit:10,
+          offset:0,
+          orderId:this.$route.params.id,
+          userId:this.userId,
+          type:''
+        }
+        transaction.getAppealHistoryDetail(this.request).then(res => {
+          this.loading = false;
+          console.log('申诉记录:');
+          console.log(res.data);
+          this.AppealList = res.data;
+
+      }).catch(error => {
+          toast(error.message);
+      });
 
         this.loading = false;
       },
@@ -159,6 +187,7 @@
     },
     computed: {
       ...mapGetters(["userData","islogin"]),
+      ...mapGetters(["userId"]),
     },
     components: {
       mHeader
@@ -169,7 +198,6 @@
 
 <style lang="scss">
   @import "~assets/scss/mobile";
-
   .cas-main{
     background: #F5F5F5;
   }
@@ -196,7 +224,7 @@
     background: #fff;
     min-height:r(35);
     padding:r(8) r(15);
-    font-size:f(16px);
+    @include  f(16px);
     color:#8f8f8f;
     overflow:hidden;
   &.heightauto{
@@ -252,6 +280,7 @@
   }
   .btn-gray{
     background: #E4E4E4;
+    color:#787876;
   }
   }
   .icon-pay-bank{
