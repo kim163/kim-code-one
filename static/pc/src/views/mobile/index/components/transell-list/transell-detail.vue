@@ -29,7 +29,7 @@
         <span v-if="!item.tradeTotal">0 </span>％
       </p>
       <p class="item amount-line">
-        <span class="unit-price">{{$t('transactionHome.unitPrice')}}：</span> 0.01
+        <span class="unit-price">{{$t('transactionHome.unitPrice')}}：</span> 0.01 CNY
         <span class="quantity-txt">{{$t('transactionHome.quantity')}}：</span>
         <span class="amount"> {{item.amount}} UET </span>
       </p>

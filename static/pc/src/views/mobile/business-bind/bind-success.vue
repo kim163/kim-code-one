@@ -6,7 +6,7 @@
     </div>
     <div class="btn-list">
       <router-link class="bind-def-btn" :to="{name:'mBindList'}">查看绑定记录</router-link>
-      <router-link class="go-business" to="">返回商户</router-link>
+      <router-link class="go-business" :to="notifyUrl">返回商户</router-link>
     </div>
   </div>
 </template>
@@ -17,6 +17,12 @@
     data(){
       return{
 
+      }
+    },
+    props:{
+      notifyUrl:{
+        type:String,
+        default:''
       }
     }
   }

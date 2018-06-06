@@ -15,7 +15,7 @@ export default [
       return resolve(require('views/mobile/index'))
     },
     meta: {
-      noCache: true, //是否不缓存组件
+      // noCache: true, //是否不缓存组件
       isMobilePage: "mobile-body"
     }
   },
@@ -187,7 +187,8 @@ export default [
       return resolve(require('views/mobile/business-bind/bind-list'))
     },
     meta:{
-      isMobilePage: "mobile-body"
+      isMobilePage: "mobile-body",
+      noCache:true
     },
   },
   {

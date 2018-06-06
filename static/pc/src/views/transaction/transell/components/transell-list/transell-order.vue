@@ -3,7 +3,7 @@
       <div class="tran-contpart">
             <span class="s s1">
                <p>{{$t('transactionHome.quantity')}} {{item.amount}} UET</p>
-               <p>{{$t('transactionHome.unitPrice')}} 0.01 {{$t('transactionHome.yuan')}}</p>
+               <p>{{$t('transactionHome.unitPrice')}} 0.01 CNY</p>
             </span>
             <span  class="s s2">{{$t('transactionHome.totalValue')}} {{item.amount}}UET</span>
             <span class="input-box">

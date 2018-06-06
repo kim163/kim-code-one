@@ -44,3 +44,10 @@ export const removeUserMerchant = jsonData => service({
   method: 'post',
   data: jsonData
 });
+
+//快速创建久安账号
+export const syncUserAndBindRelation = jsonData => service({
+  url: numversion+`user/chain/syncUserAndBindRelation`,
+  method: 'post',
+  data: jsonData
+});
