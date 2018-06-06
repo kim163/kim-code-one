@@ -301,6 +301,7 @@
     height:r(39);
     border:0;
     width:85%;
+   @include  f(15px);
     &:hover,&:focus{
       outline: none;
      }
