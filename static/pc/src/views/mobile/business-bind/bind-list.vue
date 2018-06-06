@@ -61,7 +61,6 @@
     methods: {
       getList() {
         userMerchantList({userId: this.userId}).then(res => {
-          console.log(res)
           if(res.code === 10000) {
             this.bindList = res.data
           }else{
@@ -79,7 +78,7 @@
         this.showConfirm = false
         const data = {
           userId: this.userId,
-          merchantId: this.merchantId
+          merchantId: this.itemId
         }
         removeUserMerchant(data).then(res => {
           if(res.code === 10000){

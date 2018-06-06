@@ -132,7 +132,7 @@
 
     },
     activated() {
-      this.$refs.scroll.scrollTo(0,this.scrollY,1000)
+      this.$refs.scroll.scrollTo(0,this.scrollY,0)
     },
     components: {
       Scroll,
