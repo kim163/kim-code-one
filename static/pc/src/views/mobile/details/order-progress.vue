@@ -95,7 +95,7 @@
         <span class="c-orange" >卖出</span>
         <span class="fr">
           <span v-if="DetailList.status =='45'">等待付款</span>
-          <span v-if="DetailList.status =='47'">等待释放UET</span>
+          <span v-if="DetailList.status =='47' || DetailList.status =='48'">等待释放UET</span>
           {{DetailList.intervalTime-DetailList.elapsedTime | Date('hh:mm:ss')}}</span>
       </div>
 
@@ -190,12 +190,16 @@
 
           <div class="btn-group" v-if="DetailList.status =='47'">
               <input type="button" class="btn btn-block btn-primary" @click="payCompleted" value="确认收款">
-              <input type="button" class="btn btn-block btn-primary" @click="createAppeal" v-if= "DetailList.credit == userId" value="我要申诉">
-              <input type="button" class="btn btn-block btn-primary" value="继续留言">
+              <input type="button" class="btn btn-block btn-primary" @click="createAppeal"  value="我要申诉">
           </div>
 
          <div>
               <p>买家付款截图</p>
+               <ul class="pic-ul">
+                 <li v-for="proofImg in DetailList.creditProofUrlTwin">
+                   <img :src="proofImg">
+                 </li>
+               </ul>
          </div>
       </div>
 
