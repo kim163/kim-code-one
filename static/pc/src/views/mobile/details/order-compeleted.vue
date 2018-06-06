@@ -11,6 +11,13 @@
           <span v-if="DetailList.status == 204">已取消</span>
         </span>
       </div>
+<!--  申诉订单显示 -->
+      <!--<div class="mobilenav-tabs">-->
+          <!--<span v-for="(item,i) in detailType" @click="detailTypeItem=item.value" :class="{active:detailTypeItem==item.value}" :key="item.value">-->
+          <!--{{item.value}}-->
+          <!--</span>-->
+      <!--</div>-->
+
       <div v-if="detailTypeItem =='订单详情'">
         <ul class="details-ul">
           <li>
@@ -54,19 +61,19 @@
           <li>
             <span class="l-title">收款姓名 : </span>
             <div class="fr0">{{DetailList.debitAccountNameTwin}}
-              <a href="javascript:void(0);" class="copy-btn" @click="copystr(DetailList.debitAccountNameTwin)" >{{$t('transactionHome.copyBtn')}}</a>
+              <!--<a href="javascript:void(0);" class="copy-btn" @click="copystr(DetailList.debitAccountNameTwin)" >{{$t('transactionHome.copyBtn')}}</a>-->
             </div>
           </li>
           <li>
             <span class="l-title">收款账号 : </span>
             <div class="fr0">
               <span class="">{{DetailList.debitAccountTwin}}</span>
-              <a href="javascript:void(0);" class="copy-btn" @click="copystr(DetailList.debitAccountTwin)" >{{$t('transactionHome.copyBtn')}}</a>
+              <!--<a href="javascript:void(0);" class="copy-btn" @click="copystr(DetailList.debitAccountTwin)" >{{$t('transactionHome.copyBtn')}}</a>-->
             </div>
           </li>
           <li class="heightauto" v-if="DetailList.debitAccountMerchantTwin == '支付宝' || DetailList.debitAccountMerchantTwin == '微信'">
             <span class="l-title">收款二维码 : </span>
-            <div class="qrcode-box" >
+            <div class="qrcode-box" v-if="DetailList.debitAccountQrCodeUrlTwin != ''">
               <!--<img src="~images/qrcode.jpg" :src="DetailList.debitAccountQrCodeUrlTwin" class="qrcode-img">-->
               <img src="~images/qrcode.jpg" :src="DetailList.debitAccountQrCodeUrlTwin" class="qrcode-img" />
               <span class="qrcode-tips">长按二维码保存</span>
@@ -124,8 +131,6 @@
         this.request={
           transactionId:this.$route.params.id
         }
-//        console.log('传参数')
-//        console.log(this.request)
         transaction.getCoinTransactionHistory(this.request).then(res => {
           this.loading = false;
           console.log('订单详情记录:');
@@ -135,9 +140,8 @@
           this.DetailList.creditProofUrlTwin = res.data.creditProofUrlTwin.split(',');
 
         }).catch(error => {
-          this.reset(res.message);
+          this.reset(error.message);
         });
-
         this.loading = false;
       },
       copystr(text) {

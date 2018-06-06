@@ -20,9 +20,8 @@
           <div class="type blue-text" v-show="item.credit === userId">{{$t('transactionRecord.buy')}}</div>
           <div class="type red-text" v-show="item.debit === userId">{{$t('transactionRecord.sale')}}</div>
           <div class="status-time" v-if="type === 0">
-            <div class="status">
-              {{(item.status === 45 ? $t('transactionRecord.waitingForPayment') :
-              $t('transactionRecord.waitingForRelease'))}}
+            <div class="status" v-if="item.status != 61">
+              {{(item.status === 45 ? $t('transactionRecord.waitingForPayment') : $t('transactionRecord.waitingForRelease'))}}
             </div>
             <div class="time" v-if="item.status != 61">{{item.intervalTime-item.elapsedTime | formatDateMs}}
             </div>

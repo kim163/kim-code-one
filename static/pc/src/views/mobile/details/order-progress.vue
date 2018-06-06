@@ -1,7 +1,7 @@
 <template>
   <div class="transell-main0 transell-main-box">
     <m-header>订单详情</m-header>
-    <div class="cash-details" v-if="DetailList.credit == userId">
+    <div class="cash-details0" v-if="DetailList.credit == userId">
       <div class="trade-time-bar">
         <span class="c-blue">买入</span>
 
@@ -71,13 +71,13 @@
 
           </ul>
 
-          <div class="btn-group">
+          <div class="btn-group" v-if="DetailList.status =='45'">
               <input type="button" class="btn btn-block btn-primary" @click="payOrder" value="我已完成付款">
               <input type="button" class="btn btn-block btn-cancel" @click="cancelOrder" v-if="DetailList.status =='45'" value="取消订单">
               <input type="button" class="btn btn-block btn-primary" v-if= "DetailList.debit == userId || DetailList.status =='47'" value="提出反证">
           </div>
           <div>
-              <p v-if="DetailList.status =='47'">您已确认付款，请勿重复付款</p>
+              <p v-if="DetailList.status =='47'" class="payed-txt">您已确认付款，请勿重复付款</p>
           </div>
       </div>
 
@@ -90,7 +90,7 @@
       </div>
 
     </div>
-    <div class="cash-details" v-if="DetailList.debit == userId">
+    <div class="cash-details0" v-if="DetailList.debit == userId">
       <div class="trade-time-bar">
         <span class="c-orange" >卖出</span>
         <span class="fr">
@@ -179,7 +179,7 @@
                      <span class="">{{DetailList.creditAccountTwin}}</span>
               </div>
             </li>
-            <li class="heightauto" v-if="DetailList.creditAccountMerchantTwin == '支付宝'">
+            <li class="heightauto" v-if="DetailList.debitAccountMerchantTwin == '支付宝' || DetailList.debitAccountMerchantTwin == '微信'">
               <span class="l-title">付款二维码 : </span>
               <div class="qrcode-box">
                     <img src="~images/qrcode.jpg" class="qrcode-img" />
@@ -253,8 +253,8 @@
           if(res.code == '10000'){
             toast('您已下单成功，请进入列表查询');
           }
-        }).catch(error => {
-          this.reset(res.message);
+        }).catch(err => {
+          this.reset(err.message);
         });
 
         this.loading = false;
@@ -280,9 +280,12 @@
         }
         transaction.payOrder(this.request).then(res => {
           this.loading = false;
+          if(res.code == '10000'){
+            toast('您已确认付款，请勿重复付款');
+          }
 
-        }).catch(error => {
-          this.reset(res.message);
+        }).catch(err => {
+          this.reset(err.message);
         });
         toast(res.message);
         this.loading = false;
@@ -377,9 +380,17 @@
     font-size:f(16px);
     color:#8f8f8f;
     overflow:hidden;
+    position:relative;
     &.heightauto{
       height:180px;
     }
+
+     .copy-btn{
+       position:absolute;
+       top:r(7);
+       right:r(15);
+       color:#5087ff;
+     }
      .qrcode-img{
        width:130px;
      }
@@ -440,5 +451,10 @@
   }
   .icon-pay-alipay{
     color:#03A9F3;
+  }
+  .payed-txt{
+    padding: r(10) 0;
+    text-align: center;
+    color:#5087ff;
   }
 </style>
