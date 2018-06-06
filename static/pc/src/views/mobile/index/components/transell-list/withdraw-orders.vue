@@ -113,7 +113,7 @@
           this.DetailList = res.data;
           this.endTime = res.data.intervalTime - res.data.elapsedTime;
         }).catch(error => {
-          this.reset(res.message);
+          this.reset(error.message);
         });
       },
 
@@ -175,7 +175,7 @@
      }
      .bankinfo-group{
        .details-ul{
-         border-bottom:1px solid #d8d8d8;
+         border: none;
          margin-bottom:r(10);
          li{
            background: #fff;

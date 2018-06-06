@@ -387,7 +387,8 @@ a.mobile-pubtn{
    display: block;
 }
 input[type=button].pubtn-white,
-a.pubtn-white{
+a.pubtn-white,
+a.pubtn-white:hover {
   background: $white;
   color: #FF0000;
   box-shadow: 0 0 3px #ccc;
