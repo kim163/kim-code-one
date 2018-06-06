@@ -11,6 +11,7 @@
             @pullingUp="loadMore"
             @scroll="getScroll"
             :listenScroll="true"
+            :probeType="2"
             v-if="!noData"
     >
       <div class="mobile-trandatas mtranbuy-list">
@@ -131,7 +132,7 @@
 
     },
     activated() {
-      this.$refs.scroll.scrollTo(0,this.scrollY,0)
+      this.$refs.scroll.scrollTo(0,this.scrollY,1000)
     },
     components: {
       Scroll,
