@@ -2,7 +2,7 @@
   <div>
     <div class="top-tip">
       <div class="icon">
-        <i class="iconfont icon-user-login"></i>
+        <i class="iconfont icon-avatar"></i>
       </div>
       <div class="text">{{$t('bindUser.noLoginTip')}}</div>
     </div>
