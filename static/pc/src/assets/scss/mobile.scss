@@ -248,43 +248,38 @@ select{
 
 /*  mobile 表单 */
 .mobile-navtabs{
-  @include  f(14px);
-  color:#6b6b6b;
-  border-bottom:1px solid #ddd;
+  @include f(16px);
+  color: #000000;
+  border-bottom:1px solid #D8D8D8;
   background: $white;
   .s{
     width: 33.33%;
     display:block;
     float: left;
-    height:r(55);
-    line-height: r(55);
+    height:r(52);
+    line-height: r(52);
     cursor: pointer;
     text-align: center;
     &.active{
-      border-bottom:3px solid #87b5ff;
+      color: #4982FF;
+      border-bottom:1px solid #4982FF;
     }
   }
 }
 .mobile-form-box{
-  width: 80%;
-  margin: 0 auto;
+  padding: 0 r(10) r(50);
   .form-group {
-    line-height: r(54);
+    line-height: r(40);
     position: relative;
-    margin-bottom:r(6);
+    padding-top: r(30);
     width: 100%;
   }
-  .validate {
-    display: block;
-    margin: r(10) 0;
-    @include  f(12px);
-    color: #13a1ca;
-    min-height: r(16);
-    text-align: center;
-  }
   p {
-    text-align: center;
-    color: #999;
+    color: #666666;
+    display: block;
+    @include  f(16px);
+    width: 8%;
+    float: left;
   }
   .captcha-code {
     width:r(90);
@@ -300,9 +295,9 @@ select{
     }
   }
   .form-input{
-    height: r(50);
-    border: 1px solid #ccc;
-    background: $white;
+    border-bottom: 1px solid #D8D8D8;
+    float: left;
+    width: 92%;
     .captcha-code{
       float:right;
       color:#555;
@@ -311,26 +306,36 @@ select{
     }
   }
   .select-country{
-    float: left;
-    width: r(87);
-    height: r(48);
-    line-height: r(48);
-    padding-left: r(20);
-    border:0;
-    border-right: 1px solid #e0e0e0;
-    color:#666;
+    width: 25%;
+    height: r(40);
+    line-height: r(40);
+    border: none;
+    color:#333;
     cursor: pointer;
+    background:#F5F5F5 url(~images/xl.jpg) no-repeat right center;
+    background-size: 30px;
+    padding: 0 40px 0 0;
+    @include  f(16px);
+    float: left;
+  }
+  .form-subtitle{
+    display: block;
+    width: 20%;
+    float: left;
   }
   .ps-input {
-    width: r(150);
-    height: r(50);
-    border: 0;
-    background: 0 0;
-    outline: 0;
-    line-height: r(50);
+    width: 80%;
+    float: left;
+    height: r(40);
+    border: none;
+    outline: none;
+    line-height: r(40);
     @include  f(16px);
     color: #333;
-    padding: 0 r(20);
+    background: none;
+  }
+  .mobile-input{
+    width: 55%;
   }
   .ps-input2 {
     width: 100%;
@@ -342,6 +347,15 @@ select{
     color: #333;
     padding: 0 r(20);
   }
+  .link-group{
+     line-height: r(48);
+  }
+  .link-register{
+    display: block;
+    @include  f(18px);
+    color: #4982FF;
+  }
+
   i.iconfont {
     position: absolute;
     height: 100%;
@@ -363,14 +377,13 @@ select{
   .submit{
     display:block;
     width:100%;
-    margin:0 auto;
+    margin:r(31) auto 0;
     background: #4982FF;
     border-radius: 4px;
     height:r(44);
     line-height:r(44) ;
     font-size:r(18);
     color:#fff;
-    margin-top:r(40)
   }
 }
 

@@ -142,7 +142,8 @@ export default [
       return resolve(require('views/mobile/details/order-progress'))
     },
     meta:{
-       isMobilePage: "mobile-body"
+       isMobilePage: "mobile-body",
+       noCache:true
     }
   },
  {
@@ -153,7 +154,8 @@ export default [
       return resolve(require('views/mobile/details/order-compeleted'))
     },
     meta:{
-       isMobilePage: "mobile-body"
+       isMobilePage: "mobile-body",
+       noCache:true
     }
   },
  {
@@ -164,7 +166,8 @@ export default [
       return resolve(require('views/mobile/details/order-appeal'))
     },
     meta:{
-       isMobilePage: "mobile-body"
+       isMobilePage: "mobile-body",
+       noCache:true
     }
   },
   {

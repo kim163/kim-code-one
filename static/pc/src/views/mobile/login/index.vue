@@ -9,40 +9,44 @@
           </li>
         </ul>
         <div class="mobile-form-box form-box-phone">
-          <div class="form-group" v-show="loginItem=='account'">
-             <label class="form-subtitle">{{$t('login.username')}}</label>
+          <div class="form-group cfx" v-show="loginItem=='account'">
+             <p class="iconfont icon-useravat"></p>
              <div class="form-input">
+                <label class="form-subtitle">{{$t('login.username')}}</label>
                 <input name="account" @keyup.enter="login" v-model="data.account" type="text" class="ps-input ps-input1" :placeholder="$t('login.usernamePhd')">
              </div>
-            </div>
-          <div class="form-group" v-show="loginItem=='phone'">
-            <label class="form-subtitle">{{$t('login.mobileNum')}}</label>
+          </div>
+          <div class="form-group cfx" v-show="loginItem=='phone'">
+            <p class="iconfont icon-mobile"></p>
             <div class="form-input">
+               <label class="form-subtitle">手机号</label>
                <select class="select-country" v-model="data.areaCode">
                      <option v-for="areacd in areaCodeData" :value="areacd.value" :key="areacd.value" > {{areacd.name}} </option>
                </select>
-               <input type="text" class="ps-input ps-input1" v-model="data.phone"
+               <input type="text" class="ps-input ps-input1 mobile-input" v-model="data.phone"
                    :placeholder="$t('login.mobileNumPhd')" maxlength="11" name="phone">
             </div>
           </div>
-          <div class="form-group" v-show="loginItem=='email'">
-            <label class="form-subtitle">{{$t('login.emailadd')}}</label>
+          <div class="form-group cfx" v-show="loginItem=='email'">
+            <p class="iconfont icon-login-email"></p>
             <div class="form-input">
+               <label class="form-subtitle">邮箱</label>
                <input name="email" @keyup.enter="login" v-model="data.email" type="text" class="ps-input ps-input1" :placeholder="$t('login.emailaddPhd')">
             </div>
           </div>
-          <div class="form-group">
-            <label class="form-subtitle">{{$t('login.password')}}</label>
+          <div class="form-group cfx">
+            <p class="iconfont icon-password"></p>
             <div class="form-input posit-rel">
+              <label class="form-subtitle">{{$t('login.password')}}</label>
               <input ref="pwd" @keyup.enter="login" name="password" v-model="data.password" type="password" class="ps-input ps-input1" :placeholder="$t('login.passwordPhd')">
                <eyes :dom="$refs.pwd"></eyes>
             </div>
           </div>
 
-          <span class="validate"></span>
           <input type="button" class="submit btn btn-block" @click.enter="login" id="submit_user" :value="$t('login.logIn')">
-          <div>
-            <a href="javascript:void(0);" class="forget-btn" @click="openFindPWD">{{$t('login.forgotpwd')}}</a>
+          <div class="link-group">
+            <a href="javascript:void(0);" class="forget-btn hide" @click="openFindPWD">{{$t('login.forgotpwd')}}</a>
+            <router-link :to="{name:'mobileLogin'}" class="link-register fr hidden">注册账户</router-link>
           </div>
         </div>
       </div>
@@ -106,8 +110,13 @@
         toast(msg);
       },
       login() {
-      //  if(!this.check())return;
-       if(this.loginItem=='phone'){
+        if(!this.check())return;
+        if(this.loginItem=='account'){
+          this.requestda ={
+            userName: this.data.account,
+            password: this.data.password
+          }
+        }else if(this.loginItem=='phone'){
           this.requestda = {
             type:4,
             areaCode: this.data.areaCode,
@@ -123,14 +132,35 @@
          }
        }
 
-        if(this.loginItem=='phone' || this.loginItem=='email') {
+        if(this.loginItem=='account'){
+          show.loginByUserNameAndPwd(this.requestda).then(res => {
+            if (res.code == 10000) {
+              this.$emit('input',false);
+              this.SHOW_LOGIN(false);
+
+              $localStorage.set('tokenInfo', JSON.stringify(res.data.tokenVo));
+              $localStorage.set('userData', JSON.stringify(aesutil.encrypt(res.data.userId)))
+              this.$store.dispatch('UPDATE_USERDATA');
+
+              // this.$router.replace({path:"/mh/"});
+              this.$router.push({name: 'mIndex'});
+
+              //  window.location.href = "/mh/";
+            }else {
+              toast(res.message);
+            }
+            console.log('user login:', res);
+          }).catch(err => {
+            toast(err.message);
+          });
+
+        }else if(this.loginItem=='phone' || this.loginItem=='email') {
           show.login(this.requestda).then(res => {
             console.log('login res: ', res);
             if (res.code == 10000) {
               this.$emit('input',false);
               this.SHOW_LOGIN(false);
 
-              let {rquest} = this.$route.query;
               $localStorage.set('tokenInfo', JSON.stringify(res.data.tokenVo));
               $localStorage.set('userData', JSON.stringify(aesutil.encrypt(res.data.userId)))
               this.$store.dispatch('UPDATE_USERDATA');
@@ -148,15 +178,32 @@
         }
       },
       check() {
-        if(this.data.account=="")
-          toast("用户名不能为空")
-        else if(this.data.password=="")
-          toast("密码不能为空")
-        else if(this.data.imageCode=="")
-          toast("验证码不能为空")
-        else
-          return true;
-      },
+        if(this.loginItem=='account'){
+           if(this.data.account=="" || !this.data.account){
+             toast("请您输入用户名");
+           }else if(this.data.password=="" || !this.data.password){
+             toast("请您输入密码");
+           }else {
+             return true;
+           }
+        }else if(this.loginItem=='phone'){
+          if(this.data.phone=="" || !this.data.phone){
+            toast("请您输入电话号码");
+          }else if(this.data.password=="" || !this.data.password){
+            toast("请您输入密码");
+          }else {
+            return true;
+          }
+        }else if(this.loginItem=='email'){
+          if(this.data.email=="" || !this.data.email){
+            toast("请您输入邮箱");
+          }else if(this.data.password=="" || !this.data.password){
+            toast("请您输入密码");
+          }else {
+            return true;
+          }
+        }
+      }
     },
     created(){
 
