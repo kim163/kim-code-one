@@ -104,7 +104,7 @@ export const getAppealHistoryDetail = jsonData => service({
   data: jsonData
 });
 
-// 获取 订单记录- 申诉记录申诉与仲裁 列表
+// 获取 订单记录- 申诉记录申诉与仲裁  进行中
 export const getAppealDetailPage = jsonData => service({
   url: numversion+`appeal/getAppealDetailPage`,
   method: 'post',

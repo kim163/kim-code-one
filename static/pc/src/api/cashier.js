@@ -51,3 +51,24 @@ export const syncUserAndBindRelation = jsonData => service({
   method: 'post',
   data: jsonData
 });
+
+//快速创建--修改密码
+export const updatePassword = jsonData => service({
+  url: numversion+`user/chain/updatePassword`,
+  method: 'post',
+  data: jsonData
+});
+
+//快速创建--绑定邮箱
+export const bindEmail = jsonData => service({
+  url: numversion+`/account/cash/bindEmail`,
+  method: 'post',
+  data: jsonData
+});
+
+//快速创建--绑定手机号码
+export const bindPhone = jsonData => service({
+  url: numversion+`/account/cash/bindPhone`,
+  method: 'post',
+  data: jsonData
+});

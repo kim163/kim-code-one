@@ -9,8 +9,9 @@
             @pullingDown="loadRefresh"
             @pullingUp="loadMore"
             ref="scroll"
-            :scroll="getScroll"
+            @scroll="getScroll"
             :listenScroll="true"
+            :probeType="2"
                     v-if="!noData">
     <ul class="list">
       <router-link tag="li" :to="orderDetailLink(item)" class="tran-item" v-for="(item,index) in tranList"
@@ -19,9 +20,8 @@
           <div class="type blue-text" v-show="item.credit === userId">{{$t('transactionRecord.buy')}}</div>
           <div class="type red-text" v-show="item.debit === userId">{{$t('transactionRecord.sale')}}</div>
           <div class="status-time" v-if="type === 0">
-            <div class="status">
-              {{(item.status === 45 ? $t('transactionRecord.waitingForPayment') :
-              $t('transactionRecord.waitingForRelease'))}}
+            <div class="status" v-if="item.status != 61">
+              {{(item.status === 45 ? $t('transactionRecord.waitingForPayment') : $t('transactionRecord.waitingForRelease'))}}
             </div>
             <div class="time" v-if="item.status != 61">{{item.intervalTime-item.elapsedTime | formatDateMs}}
             </div>
@@ -74,6 +74,7 @@
             noMore:this.generateTitle('scorllCfg.pullUpNoMore')
           }
         },
+        scrollY:0,
         noData:false
       }
     },
@@ -146,11 +147,16 @@
         return {name: routerName, params:{ id: item.id}}
       },
       getScroll(e){
-        console.log(e)
+        this.scrollY = e.y
       }
     },
     mounted() {
       this.getTranList()
+    },
+    activated() {
+      setTimeout(() => {
+        this.$refs.scroll.scrollTo(0,this.scrollY,0)
+      }, 100)
     },
   }
 </script>

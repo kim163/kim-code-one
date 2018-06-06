@@ -11,6 +11,7 @@
             @pullingUp="loadMore"
             @scroll="getScroll"
             :listenScroll="true"
+            :probeType="2"
             v-if="!noData"
     >
       <div class="mobile-trandatas mtransell-list">
@@ -130,7 +131,9 @@
     mounted() {
     },
     activated() {
-      this.$refs.scroll.scrollTo(0,this.scrollY,0)
+      setTimeout(() => {
+        this.$refs.scroll.scrollTo(0,this.scrollY,0)
+      }, 100)
     },
     components: {
       Scroll,
