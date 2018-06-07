@@ -19,7 +19,7 @@
             <div class="tool-item-href">
               {{$t('navbar.accountBalance')}} <span class="fr"><balance></balance></span>
             </div>
-            <router-link :to="{name:'mBindList'}" class="tool-item-href mt-line"><i class="iconfont icon-busine-list"></i>{{$t('navbar.busineList')}}</router-link>
+            <router-link :to="{name:'mBindList'}" class="tool-item-href"><i class="iconfont icon-busine-list"></i>{{$t('navbar.busineList')}}</router-link>
 
             <div class="tool-item-href border-bot" @click="$store.dispatch('LOGIN_OUT')">
               <i class="iconfont icon-log-out"></i>{{$t('navbar.logOut')}}
