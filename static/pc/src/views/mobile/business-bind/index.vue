@@ -17,7 +17,7 @@
     data() {
       return {
         title:'',
-        callBackUrl:''
+        callBackUrl: this.$route.query.callBackUrl
       }
     },
     watch:{
@@ -43,7 +43,6 @@
     },
     created(){
       this.title = this.islogin ? '绑定商户' : '久安钱包'
-      this.callbackUrl = decodeURIComponent(_.getUrlParam('callBackUrl'))
     }
   }
 </script>

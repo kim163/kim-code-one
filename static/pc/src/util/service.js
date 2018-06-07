@@ -71,7 +71,10 @@ service.interceptors.response.use(
         $localStorage.remove('userData');
         store.dispatch('UPDATE_TOKEN_INFO', null);
         store.dispatch('CHECK_ONLINE',false);
-        store.commit("SHOW_LOGIN",true);
+        const routerName = router.currentRoute.name
+        if(routerName != 'mUserBind' && routerName != 'mQuickCreate'){
+          store.commit("SHOW_LOGIN",true);
+        }
       }
       if (response.data.data) {
         response.data.data = JSON.parse(aesutil.decrypt(response.data.data))
