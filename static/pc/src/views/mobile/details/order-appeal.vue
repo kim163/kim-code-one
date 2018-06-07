@@ -165,21 +165,24 @@
 
         <div class="appeal-list">
             <ul class="appeal-list-ul">
-              <li v-for="(item,i) in AppealList.appealDetailList" >
-                <span class="userAvator">{{item.sourceTypeText }}</span>
-                <div class="mes-box">
-                     <p class="msg-time">{{item.createtime | Date('yyyy-MM-dd hh:mm:ss') }}</p>
+              <li v-for="(item,i) in reverseAppealList" >
+                <div v-if="DetailList.credit == userId" >
+                  <span class="userAvator">{{item.sourceTypeText }}</span>
+                  <div class="mes-box">
+                    <p class="msg-time">{{item.createtime | Date('yyyy-MM-dd hh:mm:ss') }}</p>
                     <div class="mes-box-in">
-                     <img  :src="item.attachmentUrls" class="mes-img">
-                    {{item.content }}
+                      <img v-if="item.attachmentUrls"  :src="item.attachmentUrls" class="mes-img">
+                      <p class="msg-details">{{item.content }}</p>
                     </div>
+                  </div>
                 </div>
+
 
               </li>
             </ul>
           <div class="input-box bottom-keyboard">
-              <input type="text" class="my-input">
-              <span class="btn-send">发送</span>
+              <input type="text" class="my-input"  v-model="myMessage">
+              <span class="btn-send" @click="addAppealDetail">发送</span>
           </div>
         </div>
 
@@ -209,6 +212,7 @@
         },
         AppealList: {
         },
+        myMessage:'',
         orderData:{
           orderId:this.$route.params.id,
           debitName:'', // 交易买方
@@ -228,6 +232,7 @@
         }
         console.log('传参数')
         console.log(this.request)
+        console.log(this.userData)
         transaction.getAppealDetailPage(this.request).then(res => {
           this.loading = false;
           console.log('申诉详情记录:');
@@ -271,22 +276,27 @@
       addAppealDetail(){
         this.loading = true;
         this.request={
-          limit:10,
-          offset:0,
           orderId:this.$route.params.id,
           userId:this.userId,
-          type:''
+          userName:'',
+          attachmentUrls:'',
+          content:this.myMessage
         }
         transaction.addAppealDetail(this.request).then(res => {
           this.loading = false;
           console.log('增加证据申诉记录:');
           console.log(res.data);
-          this.AppealList = res.data;
+          if(res.code == '10000'){
+              this.AppealList = res.data;
+              toast('消息发送成功');
+              this.myMessage='';
+              this.getAppealDetailHistoryPage;
+          }
+
 
       }).catch(error => {
           toast(error.message);
       });
-
         this.loading = false;
       },
       copystr(text) {
@@ -303,6 +313,10 @@
     computed: {
       ...mapGetters(["userData","islogin"]),
       ...mapGetters(["userId"]),
+      reverseAppealList() {
+      // 按照时间倒序显示数据
+        return this.AppealList.appealDetailList.reverse();
+      }
     },
     components: {
       mHeader
@@ -440,12 +454,17 @@
     .mes-box{
       display: inline-block;
       width:calc(100% - #{r(85)});
-
+      line-height: 25px;
+      @include  f(15px);
     }
     .mes-box-in{
       border:1px solid #ddd;
       border-radius: 5px;
       background: #fff;
+    }
+    .msg-time{
+      color:#787876;
+      @include  f(14px);
     }
   }
 
@@ -459,6 +478,7 @@
     .my-input{
       height:45px;
       width:80%;
+      padding:0 2%;
       display:inline-block;
       border-radius: 6px;
       border:1px solid #ddd;
@@ -475,5 +495,8 @@
       border-radius: 6px;
       float:right;
     }
+  }
+  .msg-details{
+    padding:r(10);
   }
 </style>

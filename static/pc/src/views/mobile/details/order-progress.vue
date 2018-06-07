@@ -198,7 +198,7 @@
               <input type="button" class="btn btn-block btn-primary" @click="createAppeal"  value="我要申诉">
           </div>
 
-         <div>
+         <div v-if="DetailList.creditProofUrlTwin">
               <p>买家付款截图:</p>
                <ul class="pic-ul">
                  <li v-for="proofImg in DetailList.creditProofUrlTwin">
@@ -460,6 +460,7 @@
         margin: r(10)0 0 0;
         cursor: pointer;
         font-size: r(18);
+        text-align: center;
       }
       .btn-primary {
         border: 1px solid #5087ff;
@@ -477,6 +478,11 @@
         background: #E4E4E4;
         color: #787876;
       }
+      .btn-tips{
+        background: #FFFFFF;
+        border: 1px solid #E4E4E4;
+        color: #FF0000;
+      }
   }
   .icon-pay-bank{
     color: #B764FE;
@@ -492,8 +498,5 @@
     text-align: center;
     color:#5087ff;
   }
-  .btn-tips{
-    border:1px solid orange;
-    color:orange;
-  }
+
 </style>
