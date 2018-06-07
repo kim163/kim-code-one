@@ -31,6 +31,7 @@
   import {
     syncUserAndBindRelation
   } from 'api/cashier'
+  import aesutil from '@/util/aesutil';
   import {$localStorage} from '@/util/storage'
   import {
     login
