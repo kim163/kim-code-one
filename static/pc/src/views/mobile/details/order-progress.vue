@@ -66,7 +66,7 @@
             <li class="heightauto" v-if="DetailList.debitAccountMerchantTwin == '支付宝'">
               <span class="l-title">收款二维码 : </span>
               <div class="qrcode-box">
-                    <img src="~images/qrcode.jpg" class="qrcode-img" />
+                    <img src="~images/qrcode.jpg" :src="DetailList.debitAccountQrCodeUrlTwin"  class="qrcode-img" />
                      <span class="qrcode-tips">长按二维码保存</span>
                </div>
             </li>
@@ -186,13 +186,14 @@
             <li class="heightauto" v-if="DetailList.debitAccountMerchantTwin == '支付宝' || DetailList.debitAccountMerchantTwin == '微信'">
               <span class="l-title">付款二维码 : </span>
               <div class="qrcode-box">
-                    <img src="~images/qrcode.jpg" class="qrcode-img" />
+                    <img src="~images/qrcode.jpg" :src="DetailList.debitAccountQrCodeUrlTwin"  class="qrcode-img" />
                </div>
             </li>
 
           </ul>
 
           <div class="btn-group" v-if="DetailList.status =='47'">
+              <span class="btn btn-block btn-tips">释放UET倒计时 <count-down :end-time="DetailList.intervalTime-DetailList.elapsedTime" @callBack="countDownEnd"></count-down></span>
               <input type="button" class="btn btn-block btn-primary" @click="payCompleted" value="确认收款">
               <input type="button" class="btn btn-block btn-primary" @click="createAppeal"  value="我要申诉">
           </div>
@@ -267,7 +268,12 @@
           }
 
           if(res.code == '10000'){
-            toast('您已下单成功，请进入列表查询');
+            if(this.DetailList.credit == this.userId){
+              toast('您已下单成功，请进入列表查询');
+            }else{
+              toast('对方已确认付款，请查收是否到账');
+            }
+
           }
         }).catch(err => {
           toast(err.message);
@@ -411,7 +417,7 @@
     overflow:hidden;
     position:relative;
     &.heightauto{
-      height:180px;
+      height:150px;
     }
 
      .copy-btn{
@@ -485,5 +491,9 @@
     padding: r(10) 0;
     text-align: center;
     color:#5087ff;
+  }
+  .btn-tips{
+    border:1px solid orange;
+    color:orange;
   }
 </style>

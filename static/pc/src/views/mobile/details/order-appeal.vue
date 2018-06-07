@@ -81,7 +81,7 @@
 
           </ul>
           <div class="btn-group">
-            <input type="button" class="btn btn-block btn-primary" @click="detailTypeItem=申诉与仲裁"  value="提出反证">
+            <input type="button" class="btn btn-block btn-primary" @click="detailTypeItem='申诉与仲裁'"  value="提出反证">
             <!--<input type="button" class="btn btn-block btn-gray"  value="我已付款">-->
             <!--<input type="button" class="btn btn-block btn-primary"  value="确定收款">-->
             <!--<input type="button" class="btn btn-block btn-primary"  value="我要申诉">-->
