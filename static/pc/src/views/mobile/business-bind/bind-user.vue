@@ -100,7 +100,7 @@
     },
     created(){
       this.merchantId = _.getUrlParam('merchantId')
-      this.notifyUrl = _.getUrlParam('notifyUrl')
+      this.notifyUrl = decodeURIComponent(_.getUrlParam('notifyUrl'))
       this.merchantUserName = _.getUrlParam('merchantUserName')
       this.merchantUserId = _.getUrlParam('merchantUserId')
       if(this.merchantId != '' && this.merchantId != undefined){
