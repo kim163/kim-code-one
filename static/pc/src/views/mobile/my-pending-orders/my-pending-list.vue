@@ -4,7 +4,6 @@
             ref="scroll"
             :updateData="[orderList]"
             :refreshData="[]"
-            class="content"
             :pullDownConfig="pullDownCfg"
             :pullUpConfig="pullUpCfg"
             @pullingDown="loadRefresh"
@@ -74,7 +73,9 @@
         showConfirm: false,
         orderId:'',
         pullDownCfg:{
-          txt:this.generateTitle('scorllCfg.pullDownText')
+          txt:this.generateTitle('scorllCfg.pullDownText'),
+          threshold:45,
+          stop:20
         },
         pullUpCfg:{
           txt:{
