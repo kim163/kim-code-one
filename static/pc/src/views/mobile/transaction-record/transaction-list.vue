@@ -22,7 +22,8 @@
             <div class="status" v-if="item.status != 61">
               {{(item.status === 45 ? $t('transactionRecord.waitingForPayment') : $t('transactionRecord.waitingForRelease'))}}
             </div>
-            <div class="time" v-if="item.status != 61">{{item.intervalTime-item.elapsedTime | formatDateMs}}
+            <div class="time" v-if="item.status != 61">
+              <countdown :end-time="item.intervalTime-item.elapsedTime" end-text="过期"></countdown>
             </div>
             <div class="time" v-else>申诉锁定</div>
           </div>
@@ -51,10 +52,12 @@
   import Scroll from 'vue-slim-better-scroll'
   import { generateTitle } from '@/util/i18n'
   import NoDataTip from 'components/no-data-tip'
+  import CountDown from 'components/countdown'
   import {
     getOrderxPage,
     getTransactionPage
   } from 'api/transaction'
+  import Countdown from "../../../components/countdown/index";
   export default {
     name: "transaction-list",
     data() {
@@ -80,6 +83,7 @@
       }
     },
     components: {
+      Countdown,
       Scroll,
       NoDataTip
     },
