@@ -8,7 +8,7 @@
           <span v-if="DetailList.credit == userId" class="c-blue">买入</span>
           <span v-if="DetailList.debit == userId" class="c-red">卖出</span>
         </span>
-        <span class="fr">
+        <span class="fr c-gray">
           申诉锁定中
           <!--{{DetailList.intervalTime - DetailList.elapsedTime | Date('hh:mm:ss')}}-->
         </span>
@@ -165,21 +165,37 @@
 
         <div class="appeal-list">
             <ul class="appeal-list-ul">
-              <li v-for="(item,i) in AppealList.appealDetailList" >
-                <span class="userAvator">{{item.sourceTypeText }}</span>
-                <div class="mes-box">
-                     <p class="msg-time">{{item.createtime | Date('yyyy-MM-dd hh:mm:ss') }}</p>
+              <li v-for="(item,i) in reverseAppealList" >
+                <div v-if="item.sourceType == 4"  class="you-msg">
+                  <span class="userAvator">
+                    我
+                    <!--{{item.sourceTypeText }}-->
+                  </span>
+                  <div class="mes-box">
+                    <p class="msg-time">{{item.createtime | Date('yyyy-MM-dd hh:mm:ss') }}</p>
                     <div class="mes-box-in">
-                     <img  :src="item.attachmentUrls" class="mes-img">
-                    {{item.content }}
+                      <img v-if="item.attachmentUrls"  :src="item.attachmentUrls" class="mes-img">
+                      <p class="msg-details">{{item.content }}</p>
                     </div>
+                  </div>
                 </div>
+                <div v-else>
+                  <span class="userAvator">{{item.sourceTypeText }}</span>
+                  <div class="mes-box">
+                    <p class="msg-time">{{item.createtime | Date('yyyy-MM-dd hh:mm:ss') }}</p>
+                    <div class="mes-box-in">
+                      <img v-if="item.attachmentUrls"  :src="item.attachmentUrls" class="mes-img">
+                      <p class="msg-details">{{item.content }}</p>
+                    </div>
+                  </div>
+                </div>
+
 
               </li>
             </ul>
           <div class="input-box bottom-keyboard">
-              <input type="text" class="my-input">
-              <span class="btn-send">发送</span>
+              <input type="text" class="my-input"  v-model="myMessage">
+              <span class="btn-send" @click="addAppealDetail">发送</span>
           </div>
         </div>
 
@@ -209,6 +225,7 @@
         },
         AppealList: {
         },
+        myMessage:'',
         orderData:{
           orderId:this.$route.params.id,
           debitName:'', // 交易买方
@@ -228,6 +245,7 @@
         }
         console.log('传参数')
         console.log(this.request)
+        console.log(this.userData)
         transaction.getAppealDetailPage(this.request).then(res => {
           this.loading = false;
           console.log('申诉详情记录:');
@@ -271,22 +289,28 @@
       addAppealDetail(){
         this.loading = true;
         this.request={
-          limit:10,
-          offset:0,
           orderId:this.$route.params.id,
           userId:this.userId,
-          type:''
+          userName:'',
+          attachmentUrls:'',
+          content:this.myMessage
         }
         transaction.addAppealDetail(this.request).then(res => {
           this.loading = false;
           console.log('增加证据申诉记录:');
           console.log(res.data);
-          this.AppealList = res.data;
+          if(res.code == '10000'){
+              this.AppealList = res.data;
+              toast('消息发送成功');
+              this.fetchData();
+              this.myMessage='';
+              this.fetchData();
+          }
+
 
       }).catch(error => {
           toast(error.message);
       });
-
         this.loading = false;
       },
       copystr(text) {
@@ -303,6 +327,10 @@
     computed: {
       ...mapGetters(["userData","islogin"]),
       ...mapGetters(["userId"]),
+      reverseAppealList() {
+      // 按照时间倒序显示数据
+        return this.AppealList.appealDetailList.reverse();
+      }
     },
     components: {
       mHeader
@@ -330,6 +358,9 @@
     height:r(40);
     border-bottom:1px solid #d8d8d8;
     margin-bottom:r(10);
+  }
+  .appeal-list{
+    padding:0 0 70px 0;
   }
   .details-ul{
     border-bottom:1px solid #d8d8d8;
@@ -427,25 +458,45 @@
       margin:r(15) r(10) 0 0;
       color:#fff;
     }
-    .userAvator-me{
-      background: #0ABB07;
-      height:r(45);
-      width:r(45);
-      line-height: r(45);
-      text-align: center;
-      border-radius: 50px;
-      display: inline-block;
-      color:#fff;
-    }
     .mes-box{
       display: inline-block;
       width:calc(100% - #{r(85)});
-
+      line-height: 25px;
+      @include  f(15px);
     }
     .mes-box-in{
       border:1px solid #ddd;
       border-radius: 5px;
       background: #fff;
+      display: inline-block;
+    }
+    .msg-time{
+      color:#787876;
+      @include  f(14px);
+    }
+    .you-msg{
+      .userAvator{
+        background: #0ABB07;
+        height:r(45);
+        width:r(45);
+        line-height: r(45);
+        text-align: center;
+        border-radius: 50px;
+        display: inline-block;
+        color:#fff;
+        float:right;
+      }
+      .msg-time{
+        text-align: right;
+      }
+      .mes-box{
+        float:right;
+        margin-right:r(15);
+      }
+      .mes-box-in{
+        float: right;
+        background: #A0E75A;
+      }
     }
   }
 
@@ -454,11 +505,13 @@
     bottom:0;
     left:0;
     width:100%;
-    padding:10px;
+    padding:r(8) r(10);
     border-top:1px solid #ddd;
+    background:#F5F5F5;
     .my-input{
-      height:45px;
+      height:42px;
       width:80%;
+      padding:0 2%;
       display:inline-block;
       border-radius: 6px;
       border:1px solid #ddd;
@@ -468,12 +521,16 @@
       width:17.5%;
       margin:0 0 0 2.5%;
       text-align: center;
-      height:45px;
-      line-height: 45px;
+      height:42px;
+      line-height: 42px;
       background: #4982FF;
       color:#fff;
       border-radius: 6px;
       float:right;
     }
+  }
+  .msg-details{
+    padding:r(10);
+    word-break: break-all;
   }
 </style>

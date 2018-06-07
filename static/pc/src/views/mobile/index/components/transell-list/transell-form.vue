@@ -274,7 +274,7 @@
              float: left;
              display: block;
              line-height: r(40);
-             @include  f(15px);
+             @include  f(13px);
              background: transparent;
            }
            .all-transact{
@@ -283,6 +283,7 @@
              float: left;
              text-align: right;
              display: block;
+             @include  f(14px);
            }
          }
        }
