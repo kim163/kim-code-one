@@ -41,7 +41,7 @@ export default new Vuex.Store({
       return state.showLogin;
     },
     userData(state,getters){ //其有可能进行过滤
-      return state.userData;
+      return $localStorage.get('userData') ? JSON.parse(aesutil.decrypt($localStorage.get('userData'))) : state.userData;
     },
     userId(state,getters){
       return $localStorage.get('userData') ? JSON.parse(aesutil.decrypt($localStorage.get('userData'))).userId : state.userData.userId;
@@ -74,11 +74,8 @@ export default new Vuex.Store({
       state.showFooter=val
     },
     [types.SET_USERDATA](state,val={}){
-      if(val.userId != ''){
-        const Obj = {
-          userId:val.userId
-        }
-        $localStorage.set('userData', aesutil.encrypt(JSON.stringify(Obj)))
+      if(val != ''){
+        $localStorage.set('userData', aesutil.encrypt(JSON.stringify(val)))
       }
       Object.assign(state.userData,val||{});
     },

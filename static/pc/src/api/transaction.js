@@ -159,3 +159,9 @@ export const createAppeal = jsonData => service({
   data: jsonData
 });
 
+// 获取实时余额
+export const getRealBalance = jsonData => service({
+  url: numversion+`account/chain/getRealBalance`,
+  method: 'post',
+  data: jsonData
+});
