@@ -166,7 +166,20 @@
         <div class="appeal-list">
             <ul class="appeal-list-ul">
               <li v-for="(item,i) in reverseAppealList" >
-                <div v-if="DetailList.credit == userId" >
+                <div v-if="item.sourceType == 4"  class="you-msg">
+                  <span class="userAvator">
+                    我
+                    <!--{{item.sourceTypeText }}-->
+                  </span>
+                  <div class="mes-box">
+                    <p class="msg-time">{{item.createtime | Date('yyyy-MM-dd hh:mm:ss') }}</p>
+                    <div class="mes-box-in">
+                      <img v-if="item.attachmentUrls"  :src="item.attachmentUrls" class="mes-img">
+                      <p class="msg-details">{{item.content }}</p>
+                    </div>
+                  </div>
+                </div>
+                <div v-else>
                   <span class="userAvator">{{item.sourceTypeText }}</span>
                   <div class="mes-box">
                     <p class="msg-time">{{item.createtime | Date('yyyy-MM-dd hh:mm:ss') }}</p>
@@ -289,8 +302,9 @@
           if(res.code == '10000'){
               this.AppealList = res.data;
               toast('消息发送成功');
+              this.fetchData();
               this.myMessage='';
-              this.getAppealDetailHistoryPage;
+              this.fetchData();
           }
 
 
@@ -344,6 +358,9 @@
     height:r(40);
     border-bottom:1px solid #d8d8d8;
     margin-bottom:r(10);
+  }
+  .appeal-list{
+    padding:0 0 70px 0;
   }
   .details-ul{
     border-bottom:1px solid #d8d8d8;
@@ -441,16 +458,6 @@
       margin:r(15) r(10) 0 0;
       color:#fff;
     }
-    .userAvator-me{
-      background: #0ABB07;
-      height:r(45);
-      width:r(45);
-      line-height: r(45);
-      text-align: center;
-      border-radius: 50px;
-      display: inline-block;
-      color:#fff;
-    }
     .mes-box{
       display: inline-block;
       width:calc(100% - #{r(85)});
@@ -461,10 +468,35 @@
       border:1px solid #ddd;
       border-radius: 5px;
       background: #fff;
+      display: inline-block;
     }
     .msg-time{
       color:#787876;
       @include  f(14px);
+    }
+    .you-msg{
+      .userAvator{
+        background: #0ABB07;
+        height:r(45);
+        width:r(45);
+        line-height: r(45);
+        text-align: center;
+        border-radius: 50px;
+        display: inline-block;
+        color:#fff;
+        float:right;
+      }
+      .msg-time{
+        text-align: right;
+      }
+      .mes-box{
+        float:right;
+        margin-right:r(15);
+      }
+      .mes-box-in{
+        float: right;
+        background: #A0E75A;
+      }
     }
   }
 
@@ -473,10 +505,11 @@
     bottom:0;
     left:0;
     width:100%;
-    padding:10px;
+    padding:r(8) r(10);
     border-top:1px solid #ddd;
+    background:#F5F5F5;
     .my-input{
-      height:45px;
+      height:42px;
       width:80%;
       padding:0 2%;
       display:inline-block;
@@ -488,8 +521,8 @@
       width:17.5%;
       margin:0 0 0 2.5%;
       text-align: center;
-      height:45px;
-      line-height: 45px;
+      height:42px;
+      line-height: 42px;
       background: #4982FF;
       color:#fff;
       border-radius: 6px;
