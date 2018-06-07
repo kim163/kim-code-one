@@ -307,6 +307,7 @@
           this.loading = false;
           if(res.code == '10000'){
             toast('您已确认付款，请勿重复付款');
+            this.fetchData();
           }
 
         }).catch(err => {

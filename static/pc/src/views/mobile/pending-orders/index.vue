@@ -158,8 +158,11 @@
         }
         this.requestda={
           userId: this.userData.userId,
-          mode:'1',
-          minUnit:this.minBuyAmount,//等于发布的数量
+          orderOptionVo:{
+            minUnit:this.minBuyAmount,//等于发布的数量
+            contractType:1,
+            mode:1
+          },
           accountChainVo:{
             name:this.userData.nickname,
             address:this.userData.accountChainVos[0].address,
@@ -174,11 +177,13 @@
             "amount" : this.buyAmount /100
           }
         }
+        console.log('this.requestd  请求数据：')
+        console.log(this.requestda)
         transaction.publishToBuy(this.requestda).then((res) => {
           console.log(res)
           if(res.code == '10000'){
             toast('您已下单成功，请进入列表查询');
-            this.$router.push({name: 'mIndex'});
+            //this.$router.push({name: 'mIndex'});
           }else{
             toast(res.message)
           }
@@ -205,8 +210,11 @@
         }
         this.requestda={
           userId: this.userData.userId,
-          mode:'1',
-          minUnit:this.minSellAmount,//等于发布的数量
+          orderOptionVo:{
+            minUnit:this.minSellAmount,//等于发布的数量
+            contractType:1,
+            mode:1
+          },
           accountChainVo:{
             name:this.userData.nickname,
             address:this.userData.accountChainVos[0].address,
@@ -221,11 +229,13 @@
             "amount" : this.buyAmount /100
           }
         }
+        console.log('this.requestd  请求数据：')
+        console.log(this.requestda)
         transaction.publishToSell(this.requestda).then((res) => {
           console.log(res)
           if(res.code == '10000'){
             toast('您已下单成功，请进入列表查询');
-            this.$router.push({name: 'mIndex'});
+            //this.$router.push({name: 'mIndex'});
           }else{
             toast(res.message)
           }
@@ -306,7 +316,7 @@
   .my-input{
     height:r(39);
     border:0;
-    width:85%;
+    width:84%;
    @include  f(15px);
     &:hover,&:focus{
       outline: none;

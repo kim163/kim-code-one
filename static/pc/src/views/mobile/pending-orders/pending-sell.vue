@@ -31,7 +31,7 @@
           </div>
           <div >
             <p class="s-title">{{$t('postPend.buyerRequest')}}</p>
-            <div  class="input-div"><input class="my-input" :placeholder="$t('postPend.minSell')"> UET</div>
+            <div  class="input-div"><input class="my-input" v-model="minBuyAmount" :placeholder="$t('postPend.minSell')"> UET</div>
           </div>
         </div>
         <div class="line-box"></div>
@@ -64,7 +64,7 @@
           </div>
           <div >
             <p class="s-title">买家要求</p>
-            <div  class="input-div"><input class="my-input" placeholder="卖家最低买入数量"> UET</div>
+            <div  class="input-div"><input class="my-input" v-model="minSellAmount" placeholder="卖家最低买入数量"> UET</div>
           </div>
         </div>
         <div class="line-box"></div>
@@ -112,6 +112,8 @@
         buyAmount:'',
         buyTypeBuy:'',
         buyTypeSell:'',
+        minBuyAmount:'',
+        minSellAmount:'',
         accountCashVo:{},
         buyTypeBuyBank:'',
         userBlance:0
@@ -157,8 +159,11 @@
         }
         this.requestda={
           userId: this.userData.userId,
-          mode:'1',
-          minUnit:this.buyAmount,//等于发布的数量
+          orderOptionVo:{
+            minUnit:this.minBuyAmount,//等于发布的数量
+            contractType:1,
+            mode:1
+          },
           accountChainVo:{
             name:this.userData.nickname,
             address:this.userData.accountChainVos[0].address,
@@ -204,8 +209,11 @@
         }
         this.requestda={
           userId: this.userData.userId,
-          mode:'1',
-          minUnit:this.buyAmount,//等于发布的数量
+          orderOptionVo:{
+            minUnit:this.minSellAmount,//等于发布的数量
+            contractType:1,
+            mode:1
+          },
           accountChainVo:{
             name:this.userData.nickname,
             address:this.userData.accountChainVos[0].address,
@@ -305,7 +313,7 @@
   .my-input{
     height:r(39);
     border:0;
-    width:85%;
+    width:84%;
   @include  f(15px);
   &:hover,&:focus{
              outline: none;
