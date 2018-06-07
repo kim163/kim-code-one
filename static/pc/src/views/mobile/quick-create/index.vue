@@ -21,8 +21,12 @@
     data() {
       return {
         createSuccess:false,
-        merchantId:0, //商户id
-        merchantInfo:{},
+        merchantId: this.$route.query.merchantId, //商户id
+        merchantInfo:{
+          merchantUserName: this.$route.query.merchantUserName,
+          notifyUrl: this.$route.query.notifyUrl,
+          callBackUrl: this.$route.query.callBackUrl
+        },
         setPassword:false
       }
     },
@@ -33,17 +37,17 @@
     },
     methods:{
       goBack(){
-        window.location.href = this.merchantInfo.callbackUrl
+        window.location.href = this.merchantInfo.callBackUrl
       }
     },
     created(){
-      this.merchantId = _.getUrlParam('merchantId')
+      // this.merchantId = _.getUrlParam('merchantId')
       if(this.merchantId != 0){
         Object.assign(this.merchantInfo,BusinessCfg.getDeail(this.merchantId))
       }
-      this.merchantInfo.merchantUserName = _.getUrlParam('merchantUserName')
-      this.merchantInfo.notifyUrl = decodeURIComponent(_.getUrlParam('notifyUrl'))
-      this.merchantInfo.callbackUrl = decodeURIComponent(_.getUrlParam('callBackUrl'))
+      // this.merchantInfo.merchantUserName = _.getUrlParam('merchantUserName')
+      // this.merchantInfo.notifyUrl = decodeURIComponent(_.getUrlParam('notifyUrl'))
+      // this.merchantInfo.callBackUrl = decodeURIComponent(_.getUrlParam('callBackUrl'))
     },
   }
 </script>

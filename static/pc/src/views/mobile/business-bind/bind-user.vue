@@ -25,7 +25,7 @@
       </div>
     </div>
     <transition name="success">
-      <bind-success v-if="bindSuccess" :call-back-url="callbackUrl"></bind-success>
+      <bind-success v-if="bindSuccess" :call-back-url="callBackUrl"></bind-success>
     </transition>
   </div>
 </template>
@@ -48,7 +48,7 @@
         hasBind: false,
         notifyUrl: this.$route.query.notifyUrl, //商户h5登陆回调地址
         merchantUserName: this.$route.query.merchantUserName, //商户登陆账户名
-        callbackUrl: this.$route.query.callbackUrl//商户地址
+        callBackUrl: this.$route.query.callBackUrl//商户地址
       }
     },
     computed:{
