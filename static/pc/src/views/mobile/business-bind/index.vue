@@ -1,6 +1,6 @@
 <template>
   <div>
-    <mobile-header>{{title}}</mobile-header>
+    <mobile-header :back="goBack">{{title}}</mobile-header>
     <no-login v-if="!islogin"></no-login>
     <user-bind v-if="islogin"></user-bind>
   </div>
@@ -17,6 +17,7 @@
     data() {
       return {
         title:'',
+        callBackUrl:''
       }
     },
     watch:{
@@ -36,9 +37,13 @@
     },
     methods:{
       generateTitle,
+      goBack(){
+        window.location.href = this.callbackUrl
+      }
     },
     created(){
       this.title = this.islogin ? '绑定商户' : '久安钱包'
+      this.callbackUrl = decodeURIComponent(_.getUrlParam('callBackUrl'))
     }
   }
 </script>

@@ -31,6 +31,7 @@
   import {
     syncUserAndBindRelation
   } from 'api/cashier'
+  import aesutil from '@/util/aesutil';
   import {$localStorage} from '@/util/storage'
   import {
     login
@@ -53,7 +54,8 @@
       create(){
         const request = {
           merchantId: this.merchantInfo.merchantId,
-          merchantUserName: this.merchantInfo.merchantUserName
+          merchantUserName: this.merchantInfo.merchantUserName,
+          notifyUrl: this.merchantInfo.notifyUrl
         }
         syncUserAndBindRelation(request).then(res => {
           if(res.code === 10000){

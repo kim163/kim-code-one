@@ -1,6 +1,6 @@
 <template>
   <div>
-    <mobile-header>快速创建久安账号</mobile-header>
+    <mobile-header :back="goBack">快速创建久安账号</mobile-header>
     <create-user-info :merchantInfo="merchantInfo" @createNow="setPassword = true" v-if="!setPassword"></create-user-info>
     <transition name="create">
       <create-set-account :merchantInfo="merchantInfo" v-if="setPassword"></create-set-account>
@@ -31,12 +31,19 @@
       CreateUserInfo,
       CreateSetAccount,
     },
+    methods:{
+      goBack(){
+        window.location.href = this.merchantInfo.callbackUrl
+      }
+    },
     created(){
       this.merchantId = _.getUrlParam('merchantId')
       if(this.merchantId != 0){
         Object.assign(this.merchantInfo,BusinessCfg.getDeail(this.merchantId))
       }
       this.merchantInfo.merchantUserName = _.getUrlParam('merchantUserName')
+      this.merchantInfo.notifyUrl = decodeURIComponent(_.getUrlParam('notifyUrl'))
+      this.merchantInfo.callbackUrl = decodeURIComponent(_.getUrlParam('callBackUrl'))
     },
   }
 </script>

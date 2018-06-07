@@ -92,6 +92,7 @@
       @include f(15px);
       color: #787876;
       position: relative;
+      user-select: none;
       &.active {
         color: #4982FF;
         &:after {
