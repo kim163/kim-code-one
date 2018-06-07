@@ -47,7 +47,7 @@
 </template>
 
 <script>
-  import {login} from 'api/show'
+  import { show } from 'api'
   import {$localStorage, $sessionStorage} from '@/util/storage'
   import {generateTitle} from '@/util/i18n'
   import aesutil from '@/util/aesutil';
@@ -57,26 +57,26 @@
     name: "cash-login",
     data() {
       return {
-        loginType: [
+        loginType:[
           {name: "login.accloginTitle", value: "account"},
           {name: "login.mobloginTitle", value: "phone"},
           {name: "login.emailloginTitle", value: "email"}
         ],
-        loginItem: 'account',
+        loginItem: 'phone',
         areaCodeData: [
-          {name: "+63", value: "+63"},
-          {name: "+86", value: "+86"}
+          {name:"+63", value: "+63" },
+          {name:"+86", value: "+86" }
         ],
-        showPass: false,
-        showRig: false,
-        ImgCode: "",
-        isAgent: false,
-        data: {
-          account: "",
-          phone: "9950180120",
-          areaCode: "+63",
-          email: "",
-          password: "a123456"
+        showPass:false,
+        showRig:false,
+        ImgCode:"",
+        isAgent:false,
+        data:{
+          account:"",
+          phone:"9950180120",
+          areaCode:"+63",
+          email:"",
+          password:"a123456"
         },
         requestda: {}
       }
@@ -88,31 +88,67 @@
         toast(msg);
       },
       login() {
-        //  if(!this.check())return;
-        if (this.loginItem == 'phone') {
+        if(!this.check())return;
+        if(this.loginItem=='account'){
+          this.requestda ={
+            userName: this.data.account,
+            password: this.data.password
+          }
+        }else if(this.loginItem=='phone'){
           this.requestda = {
-            type: 4,
+            type:4,
             areaCode: this.data.areaCode,
             phone: this.data.phone,
             password: this.data.password
           }
+        }else if(this.loginItem=='email'){
+          this.requestda = {
+            type:4,
+            areaCode: this.data.areaCode,
+            email: this.data.email,
+            password: this.data.password
+          }
         }
 
-        if (this.loginItem == 'phone' || this.loginItem == 'email') {
-          login(this.requestda).then(res => {
-            console.log('login res: ', res);
+        if(this.loginItem=='account'){
+          show.loginByUserNameAndPwd(this.requestda).then(res => {
             if (res.code == 10000) {
-              // this.$emit('input', false);
-              // this.SHOW_LOGIN(false);
+              this.$emit('input',false);
+              this.$store.commit('SHOW_LOGIN',false);
 
-              let {rquest} = this.$route.query;
               $localStorage.set('tokenInfo', JSON.stringify(res.data.tokenVo));
               $localStorage.set('userData', JSON.stringify(aesutil.encrypt(res.data.userId)))
               this.$store.dispatch('UPDATE_USERDATA');
 
-              // this.$router.push({path: rquest});
+              // this.$router.replace({path:"/mh/"});
+             // this.$router.push({name: 'mIndex'});
+
+              //  window.location.href = "/mh/";
+            }else {
+              toast(res.message);
+            }
+            console.log('user login:', res);
+          }).catch(err => {
+            toast(err.message);
+          });
+
+        }else if(this.loginItem=='phone' || this.loginItem=='email') {
+          show.login(this.requestda).then(res => {
+            console.log('login res: ', res);
+            if (res.code == 10000) {
+              this.$emit('input',false);
+              this.$store.commit('SHOW_LOGIN',false);
+
+              $localStorage.set('tokenInfo', JSON.stringify(res.data.tokenVo));
+              $localStorage.set('userData', JSON.stringify(aesutil.encrypt(res.data.userId)))
+              this.$store.dispatch('UPDATE_USERDATA');
+
+              // this.$router.replace({path:"/mh/"});
+              //this.$router.push({name: 'mIndex'});
+
+              //  window.location.href = "/mh/";
             } else {
-              this.reset(res.message)
+              toast(res.message)
             }
           }).catch(error => {
             this.reset("请求失败");
@@ -120,15 +156,32 @@
         }
       },
       check() {
-        if (this.data.account == "")
-          toast("用户名不能为空")
-        else if (this.data.password == "")
-          toast("密码不能为空")
-        else if (this.data.imageCode == "")
-          toast("验证码不能为空")
-        else
-          return true;
-      },
+        if(this.loginItem=='account'){
+          if(this.data.account=="" || !this.data.account){
+            toast("请您输入用户名");
+          }else if(this.data.password=="" || !this.data.password){
+            toast("请您输入密码");
+          }else {
+            return true;
+          }
+        }else if(this.loginItem=='phone'){
+          if(this.data.phone=="" || !this.data.phone){
+            toast("请您输入电话号码");
+          }else if(this.data.password=="" || !this.data.password){
+            toast("请您输入密码");
+          }else {
+            return true;
+          }
+        }else if(this.loginItem=='email'){
+          if(this.data.email=="" || !this.data.email){
+            toast("请您输入邮箱");
+          }else if(this.data.password=="" || !this.data.password){
+            toast("请您输入密码");
+          }else {
+            return true;
+          }
+        }
+      }
     }
   }
 </script>

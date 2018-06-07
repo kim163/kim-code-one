@@ -38,7 +38,7 @@
     methods:{
       generateTitle,
       goBack(){
-        window.location.href = this.callbackUrl
+        window.location.href = this.callBackUrl
       }
     },
     created(){
