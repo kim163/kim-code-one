@@ -55,7 +55,7 @@
   import GetVerifyCode from 'components/get-verify-code'
   import CreateSuccess from './create-success'
   import {$localStorage} from '@/util/storage'
-  import aesutil from '@/util/aesutil';
+
   import RegExp from '@/util/RegExp'
   import {mapGetters} from 'vuex';
   import {
