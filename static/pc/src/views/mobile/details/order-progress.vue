@@ -1,14 +1,16 @@
 <template>
   <div class="transell-main0 transell-main-box">
     <m-header>订单详情</m-header>
-    <div class="cash-details0" v-if="DetailList.credit == userId">
+    <div class="m-order-details" v-if="DetailList.credit == userId">
       <div class="trade-time-bar">
         <span class="c-blue">买入</span>
 
         <span class="fr">
           <span v-if="DetailList.status =='45'">等待付款</span>
           <span v-if="DetailList.status =='47'">等待释放UET</span>
-          {{DetailList.intervalTime-DetailList.elapsedTime | Date('hh:mm:ss')}}</span>
+          <!--{{DetailList.intervalTime-DetailList.elapsedTime | Date('hh:mm:ss')}}-->
+          <count-down :end-time="DetailList.intervalTime-DetailList.elapsedTime" @callBack="countDownEnd"></count-down>
+        </span>
       </div>
 
       <div v-if="detailTypeItem =='订单详情'">
@@ -96,7 +98,9 @@
         <span class="fr">
           <span v-if="DetailList.status =='45'">等待付款</span>
           <span v-if="DetailList.status =='47' || DetailList.status =='48'">等待释放UET</span>
-          {{DetailList.intervalTime-DetailList.elapsedTime | Date('hh:mm:ss')}}</span>
+          <!--{{DetailList.intervalTime-DetailList.elapsedTime | Date('hh:mm:ss')}}-->
+          <count-down :end-time="DetailList.intervalTime-DetailList.elapsedTime" @callBack="countDownEnd"></count-down>
+        </span>
       </div>
 
       <div v-if="detailTypeItem =='订单详情'">
@@ -218,7 +222,7 @@
 
 <script>
   import mHeader from "components/m-header"
-
+  import CountDown from 'components/countdown'
   import { generateTitle } from '@/util/i18n'
   import { transaction } from 'api'
   import {mapGetters,mapActions,mapMutations} from 'vuex'
@@ -342,7 +346,9 @@
         toast(res.message);
         this.loading = false;
       },
-
+      countDownEnd() {
+        console.log('倒计时结束')
+      },
       copystr(text) {
         text.$copy();
         toast(this.$t('transactionHome.successCopy'));
@@ -364,7 +370,8 @@
       ...mapGetters(["userId"]),
     },
     components: {
-      mHeader
+      mHeader,
+      CountDown
     }
   };
 

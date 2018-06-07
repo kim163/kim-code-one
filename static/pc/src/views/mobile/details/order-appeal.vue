@@ -1,7 +1,7 @@
 <template>
   <div class="transell-main0 transell-main-box">
     <m-header>申诉订单详情</m-header>
-    <div class="cash-details">
+    <div class="m-order-details">
       <div class="trade-time-bar">
         <span class="c-blue" >
           <!--申诉订单-->

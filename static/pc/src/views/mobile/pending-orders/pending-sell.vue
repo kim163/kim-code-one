@@ -254,7 +254,7 @@
   }
   .tab-box-out{
     background:#F5F5F5 ;
-    padding:r(20) r(30);
+    padding:r(15) r(30);
   }
   .tab-box{
     color:#6b6b6b;

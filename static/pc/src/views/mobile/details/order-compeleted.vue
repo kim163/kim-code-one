@@ -1,7 +1,7 @@
 <template>
   <div class="transell-main0 transell-main-box">
     <m-header>交易详情</m-header>
-    <div class="cash-details">
+    <div class="m-order-details">
       <div class="trade-time-bar">
         <span class="c-blue" v-if="DetailList.credit == userData.userId" >买入</span>
         <span class="c-orange" v-else-if="DetailList.debit == userData.userId" >卖出</span>
