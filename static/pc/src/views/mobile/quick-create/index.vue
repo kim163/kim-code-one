@@ -37,6 +37,7 @@
         Object.assign(this.merchantInfo,BusinessCfg.getDeail(this.merchantId))
       }
       this.merchantInfo.merchantUserName = _.getUrlParam('merchantUserName')
+      this.merchantInfo.notifyUrl = decodeURIComponent(_.getUrlParam('notifyUrl'))
     },
   }
 </script>
