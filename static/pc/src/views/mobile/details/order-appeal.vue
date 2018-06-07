@@ -531,5 +531,6 @@
   }
   .msg-details{
     padding:r(10);
+    word-break: break-all;
   }
 </style>
