@@ -112,9 +112,9 @@ export default new Vuex.Store({
        dispatch(types.UPDATE_TOKEN_INFO, null);
        dispatch(types.CHECK_ONLINE, false);
        if(_.isMobile()){
-         router.push({path: '/m/login'});
+         router.push({name:'mobileLogin'});
        }else{
-         router.push({path: '/'});
+         router.push({name:'aindex'});
        }
 
     },
