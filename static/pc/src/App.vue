@@ -14,6 +14,7 @@
   import {mapGetters} from 'vuex'
   import Stomp from 'webstomp-client'
   import { aesutil } from '@/util';
+  import {$alert} from "./base/msgbox/msgbox";
 
   export default {
     data(){
@@ -63,7 +64,7 @@
       let detailNormal='/orderDetail/';
       let detailOver='/orderDetailOver/';
       let detailAppeal='/orderDetailAppeal/';
-      if(this.mobileDevice = '1'){
+      if(_.isMobile()){
          detailNormal='/m/order/';
          detailOver='/m/orderOver/';
          detailAppeal='/m/orderAppeal/';
