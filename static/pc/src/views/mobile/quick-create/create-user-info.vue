@@ -53,7 +53,8 @@
       create(){
         const request = {
           merchantId: this.merchantInfo.merchantId,
-          merchantUserName: this.merchantInfo.merchantUserName
+          merchantUserName: this.merchantInfo.merchantUserName,
+          notifyUrl: this.merchantInfo.notifyUrl
         }
         syncUserAndBindRelation(request).then(res => {
           if(res.code === 10000){
