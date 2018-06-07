@@ -133,54 +133,6 @@ select{
       }
     }
 
-    .tran-contpart{
-      background: #F8F8F8;
-      border-top: 1px solid #D4D4D4;
-      padding:20px 0;
-      overflow:hidden;
-      .input-box{
-        display:inline-block;
-        margin-top:12px;
-        input{
-          height:40px;
-          border:1px solid #ddd;
-          padding:0 10px;
-        }
-      }
-
-      .s{
-        display:inline-block;
-        width:19%;
-        float:left;
-
-      }
-      .s1{padding:20px;  width:140px;}
-      .s2{margin-top:20px;}
-      .s1 p{font-size:15px;}
-      .btn {
-        display: inline-block;
-        height:40px;
-        line-height: 40px;
-        padding: 0 15px;
-        margin-top: 6px;
-        font-size: 18px;
-        background: orange;
-        border:0;
-        cursor: pointer;
-        vertical-align: top;
-        border-radius: 3px;
-        color: #fff;
-        transition: all .3s;
-        &.blue{
-          background: #5087ff;
-        }
-        &.gray{
-          background: #fff;
-          color:#333;
-        }
-      }
-      .btn-block{width:100%;}
-    }
     .transaction-btn{
       width: 120px;
       height: 38px;
@@ -312,7 +264,7 @@ select{
     border: none;
     color:#333;
     cursor: pointer;
-    background:#F5F5F5 url(~images/xl.png) no-repeat right center;
+    background: url(~images/xl.png) no-repeat right center;
     background-size: 30px;
     padding: 0 40px 0 0;
     @include  f(16px);
@@ -368,11 +320,13 @@ select{
   span.iconfont {
     position: absolute;
     top: 0;
-    right: r(10);
+    right: r(0);
     @include  f(16px);
     cursor: pointer;
-    line-height: r(34);
+    line-height: r(40);
     color: #f66;
+    width: 15%;
+    text-align: center;
   }
   .submit{
     display:block;
