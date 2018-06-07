@@ -6,6 +6,7 @@
     </div>
     <div class="btn-list">
       <router-link class="bind-def-btn" :to="{name:'mBindList'}">查看绑定记录</router-link>
+      <router-link class="bind-def-btn" :to="{name:'mIndex'}">进入交易大厅</router-link>
       <a class="go-business" :href="callBackUrl">返回商户</a>
     </div>
   </div>
