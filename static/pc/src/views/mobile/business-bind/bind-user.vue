@@ -43,12 +43,12 @@
     data(){
       return{
         bindSuccess: false,
-        merchantId:'', //商户id
+        merchantId: this.$route.query.merchantId, //商户id
         merchantInfo:{}, //商户基本信息
         hasBind: false,
-        notifyUrl:'', //商户h5登陆回调地址
-        merchantUserName:'', //商户登陆账户名
-        callbackUrl:''//商户地址
+        notifyUrl: this.$route.query.notifyUrl, //商户h5登陆回调地址
+        merchantUserName: this.$route.query.merchantUserName, //商户登陆账户名
+        callbackUrl: this.$route.query.callbackUrl//商户地址
       }
     },
     computed:{
@@ -100,11 +100,10 @@
       },
     },
     created(){
-      this.merchantId = _.getUrlParam('merchantId')
-      this.notifyUrl = decodeURIComponent(_.getUrlParam('notifyUrl'))
-      this.merchantUserName = _.getUrlParam('merchantUserName')
-      this.merchantUserId = _.getUrlParam('merchantUserId')
-      this.callbackUrl = decodeURIComponent(_.getUrlParam('callBackUrl'))
+      // this.merchantId = _.getUrlParam('merchantId')
+      // this.notifyUrl = decodeURIComponent(_.getUrlParam('notifyUrl'))
+      // this.merchantUserName = _.getUrlParam('merchantUserName')
+      // this.callbackUrl = decodeURIComponent(_.getUrlParam('callBackUrl'))
       if(this.merchantId != '' && this.merchantId != undefined){
         Object.assign(this.merchantInfo,BusinessCfg.getDeail(this.merchantId))
       }

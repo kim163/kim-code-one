@@ -19,9 +19,7 @@
             <div class="tool-item-href">
               {{$t('navbar.accountBalance')}} <span class="fr"><balance></balance></span>
             </div>
-            <a href="javascript:void(0);" class="tool-item-href" @click="comingSoon" >
-              <i class="iconfont icon-busine-list"></i>{{$t('navbar.busineList')}}
-            </a>
+            <router-link :to="{name:'mBindList'}" class="tool-item-href mt-line"><i class="iconfont icon-busine-list"></i>{{$t('navbar.busineList')}}</router-link>
 
             <div class="tool-item-href border-bot" @click="$store.dispatch('LOGIN_OUT')">
               <i class="iconfont icon-log-out"></i>{{$t('navbar.logOut')}}
@@ -74,9 +72,6 @@
         this.$i18n.locale === 'zh' ? this.$i18n.locale = 'en' : this.$i18n.locale = 'zh';
         this.$store.dispatch("SET_LANGUAGE", this.$i18n.locale);
       },
-      comingSoon(){
-        toast('即将上线，敬请期待...');
-      }
     }
   }
 </script>

@@ -83,7 +83,11 @@ export default new Vuex.Store({
       Object.assign(state.userData,val||{});
     },
     [types.SHOW_LOGIN](state,val){
-      state.showLogin=val;
+      if(_.isMobile()){
+        router.push({name:'mobileLogin'});
+      }else{
+        state.showLogin=val;
+      }
     }
   },
   actions:{    // 可以给组件使用的函数，以此用来驱动事件处理器 mutations
@@ -112,9 +116,9 @@ export default new Vuex.Store({
        dispatch(types.UPDATE_TOKEN_INFO, null);
        dispatch(types.CHECK_ONLINE, false);
        if(_.isMobile()){
-         router.push({name:'mobileLogin'});
+         router.replace({name:'mobileLogin'});
        }else{
-         router.push({name:'aindex'});
+         router.replace({name:'aindex'});
        }
 
     },
