@@ -111,7 +111,12 @@ export default new Vuex.Store({
        $localStorage.remove('userData');
        dispatch(types.UPDATE_TOKEN_INFO, null);
        dispatch(types.CHECK_ONLINE, false);
-       router.push({path: '/'});
+       if(_.isMobile()){
+         router.push({path: '/m/login'});
+       }else{
+         router.push({path: '/'});
+       }
+
     },
     [types.UPDATE_USERDATA]({commit,dispatch},val){  //获取 初始化信息
       let tokenInfo = JSON.parse($localStorage.get('tokenInfo'));
