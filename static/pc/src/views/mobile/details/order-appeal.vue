@@ -8,7 +8,7 @@
           <span v-if="DetailList.credit == userId" class="c-blue">买入</span>
           <span v-if="DetailList.debit == userId" class="c-red">卖出</span>
         </span>
-        <span class="fr">
+        <span class="fr c-gray">
           申诉锁定中
           <!--{{DetailList.intervalTime - DetailList.elapsedTime | Date('hh:mm:ss')}}-->
         </span>

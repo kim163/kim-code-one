@@ -325,10 +325,12 @@
           if(res.code == '10000'){
             toast('您已确认收款，请勿重复操作');
             this.$router.push({name: 'mTranRecord'});
+          }else{
+            toast(res.message)
           }
 
-        }).catch(error => {
-          this.reset(res.message);
+        }).catch(err => {
+          toast(err.message);
         });
         toast(res.message);
         this.loading = false;
