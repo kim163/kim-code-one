@@ -1,14 +1,16 @@
 <template>
   <div class="transell-main0 transell-main-box">
     <m-header>订单详情</m-header>
-    <div class="cash-details0" v-if="DetailList.credit == userId">
+    <div class="m-order-details" v-if="DetailList.credit == userId">
       <div class="trade-time-bar">
         <span class="c-blue">买入</span>
 
         <span class="fr">
           <span v-if="DetailList.status =='45'">等待付款</span>
           <span v-if="DetailList.status =='47'">等待释放UET</span>
-          {{DetailList.intervalTime-DetailList.elapsedTime | Date('hh:mm:ss')}}</span>
+          <!--{{DetailList.intervalTime-DetailList.elapsedTime | Date('hh:mm:ss')}}-->
+          <count-down :end-time="DetailList.intervalTime-DetailList.elapsedTime" @callBack="countDownEnd"></count-down>
+        </span>
       </div>
 
       <div v-if="detailTypeItem =='订单详情'">
@@ -64,7 +66,7 @@
             <li class="heightauto" v-if="DetailList.debitAccountMerchantTwin == '支付宝'">
               <span class="l-title">收款二维码 : </span>
               <div class="qrcode-box">
-                    <img src="~images/qrcode.jpg" class="qrcode-img" />
+                    <img src="~images/qrcode.jpg" :src="DetailList.debitAccountQrCodeUrlTwin"  class="qrcode-img" />
                      <span class="qrcode-tips">长按二维码保存</span>
                </div>
             </li>
@@ -96,7 +98,9 @@
         <span class="fr">
           <span v-if="DetailList.status =='45'">等待付款</span>
           <span v-if="DetailList.status =='47' || DetailList.status =='48'">等待释放UET</span>
-          {{DetailList.intervalTime-DetailList.elapsedTime | Date('hh:mm:ss')}}</span>
+          <!--{{DetailList.intervalTime-DetailList.elapsedTime | Date('hh:mm:ss')}}-->
+          <count-down :end-time="DetailList.intervalTime-DetailList.elapsedTime" @callBack="countDownEnd"></count-down>
+        </span>
       </div>
 
       <div v-if="detailTypeItem =='订单详情'">
@@ -182,13 +186,14 @@
             <li class="heightauto" v-if="DetailList.debitAccountMerchantTwin == '支付宝' || DetailList.debitAccountMerchantTwin == '微信'">
               <span class="l-title">付款二维码 : </span>
               <div class="qrcode-box">
-                    <img src="~images/qrcode.jpg" class="qrcode-img" />
+                    <img src="~images/qrcode.jpg" :src="DetailList.debitAccountQrCodeUrlTwin"  class="qrcode-img" />
                </div>
             </li>
 
           </ul>
 
           <div class="btn-group" v-if="DetailList.status =='47'">
+              <span class="btn btn-block btn-tips">释放UET倒计时 <count-down :end-time="DetailList.intervalTime-DetailList.elapsedTime" @callBack="countDownEnd"></count-down></span>
               <input type="button" class="btn btn-block btn-primary" @click="payCompleted" value="确认收款">
               <input type="button" class="btn btn-block btn-primary" @click="createAppeal"  value="我要申诉">
           </div>
@@ -218,7 +223,7 @@
 
 <script>
   import mHeader from "components/m-header"
-
+  import CountDown from 'components/countdown'
   import { generateTitle } from '@/util/i18n'
   import { transaction } from 'api'
   import {mapGetters,mapActions,mapMutations} from 'vuex'
@@ -263,7 +268,12 @@
           }
 
           if(res.code == '10000'){
-            toast('您已下单成功，请进入列表查询');
+            if(this.DetailList.credit == this.userId){
+              toast('您已下单成功，请进入列表查询');
+            }else{
+              toast('对方已确认付款，请查收是否到账');
+            }
+
           }
         }).catch(err => {
           toast(err.message);
@@ -342,7 +352,9 @@
         toast(res.message);
         this.loading = false;
       },
-
+      countDownEnd() {
+        console.log('倒计时结束')
+      },
       copystr(text) {
         text.$copy();
         toast(this.$t('transactionHome.successCopy'));
@@ -364,7 +376,8 @@
       ...mapGetters(["userId"]),
     },
     components: {
-      mHeader
+      mHeader,
+      CountDown
     }
   };
 
@@ -404,7 +417,7 @@
     overflow:hidden;
     position:relative;
     &.heightauto{
-      height:180px;
+      height:150px;
     }
 
      .copy-btn{
@@ -478,5 +491,9 @@
     padding: r(10) 0;
     text-align: center;
     color:#5087ff;
+  }
+  .btn-tips{
+    border:1px solid orange;
+    color:orange;
   }
 </style>
