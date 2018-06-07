@@ -6,7 +6,7 @@
     </div>
     <div class="btn-list">
       <router-link class="bind-def-btn" :to="{name:'mBindList'}">查看绑定记录</router-link>
-      <div class="go-business" @click="goBack()">返回商户</div>
+      <a class="go-business" :href="callBackUrl">返回商户</a>
     </div>
   </div>
 </template>
@@ -20,14 +20,9 @@
       }
     },
     props:{
-      notifyUrl:{
+      callBackUrl:{
         type:String,
         default:''
-      }
-    },
-    methods:{
-      goBack(){
-        this.$router.back();
       }
     }
   }

@@ -25,7 +25,7 @@
       </div>
     </div>
     <transition name="success">
-      <bind-success v-if="bindSuccess" :notify-url="notifyUrl"></bind-success>
+      <bind-success v-if="bindSuccess" :call-back-url="callbackUrl"></bind-success>
     </transition>
   </div>
 </template>
@@ -48,6 +48,7 @@
         hasBind: false,
         notifyUrl:'', //商户h5登陆回调地址
         merchantUserName:'', //商户登陆账户名
+        callbackUrl:''//商户地址
       }
     },
     computed:{
@@ -103,6 +104,7 @@
       this.notifyUrl = decodeURIComponent(_.getUrlParam('notifyUrl'))
       this.merchantUserName = _.getUrlParam('merchantUserName')
       this.merchantUserId = _.getUrlParam('merchantUserId')
+      this.callbackUrl = decodeURIComponent(_.getUrlParam('callBackUrl'))
       if(this.merchantId != '' && this.merchantId != undefined){
         Object.assign(this.merchantInfo,BusinessCfg.getDeail(this.merchantId))
       }
