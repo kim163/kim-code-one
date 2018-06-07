@@ -4,7 +4,6 @@
             ref="scroll"
             :updateData="[dataList.data]"
             :refreshData="[]"
-            class="content"
             :pullDownConfig="pullDownCfg"
             :pullUpConfig="pullUpCfg"
             @pullingDown="loadRefresh"
@@ -58,7 +57,9 @@
           //status: 41
         },
         pullDownCfg:{
-          txt:this.generateTitle('scorllCfg.pullDownText')
+          txt:this.generateTitle('scorllCfg.pullDownText'),
+          threshold:45,
+          stop:20
         },
         pullUpCfg:{
           txt:{

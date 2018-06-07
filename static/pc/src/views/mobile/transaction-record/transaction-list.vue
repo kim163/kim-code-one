@@ -3,7 +3,6 @@
     <Scroll
             :updateData="[tranList]"
             :refreshData="[]"
-            class="content"
             :pullDownConfig="pullDownCfg"
             :pullUpConfig="pullUpCfg"
             @pullingDown="loadRefresh"
@@ -66,7 +65,9 @@
         currentPage:1,
         total:0, //总条数
         pullDownCfg:{
-          txt:this.generateTitle('scorllCfg.pullDownText')
+          txt:this.generateTitle('scorllCfg.pullDownText'),
+          threshold:45,
+          stop:20
         },
         pullUpCfg:{
           txt:{
