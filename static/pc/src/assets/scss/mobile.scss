@@ -38,6 +38,7 @@ select{
     color: $font-color;
     border-radius: 0 r(5) r(5) 0;
     background: $white;
+    user-select: none;
     &:first-child{
       border-radius: r(5) 0 0 r(5);
       float:left;
@@ -212,6 +213,7 @@ select{
     line-height: r(52);
     cursor: pointer;
     text-align: center;
+    user-select: none;
     &.active{
       color: #4982FF;
       border-bottom:1px solid #4982FF;
