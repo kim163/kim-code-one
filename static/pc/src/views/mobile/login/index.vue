@@ -43,7 +43,7 @@
             </div>
           </div>
 
-          <input type="button" class="submit btn btn-block" @click.enter="login" id="submit_user" :value="$t('login.logIn')">
+          <input type="button" class="submit btn btn-block" @click="login" id="submit_user" :value="$t('login.logIn')">
           <div class="link-group">
             <a href="javascript:void(0);" class="forget-btn hide" @click="openFindPWD">{{$t('login.forgotpwd')}}</a>
             <router-link :to="{name:'mobileLogin'}" class="link-register fr hidden">注册账户</router-link>
@@ -63,6 +63,7 @@
   import { generateTitle } from '@/util/i18n'
   import aesutil from '@/util/aesutil';
   import {mapGetters,mapActions,mapMutations} from 'vuex'
+  import check from "@/util/RegExp"
 
   export default {
     data(){
@@ -78,9 +79,6 @@
           {name:"+86", value: "+86" }
         ],
         showPass:false,
-        showRig:false,
-        ImgCode:"",
-        isAgent:false,
         data:{
           account:"",
           phone:"9950180120",
@@ -103,11 +101,6 @@
       openFindPWD(findType){
         this.showPass=true;
         this.$emit('input',false);
-      },
-      reset(msg){
-        this.data.imageCode=""
-
-        toast(msg);
       },
       login() {
         if(!this.check())return;
@@ -139,13 +132,11 @@
               this.SHOW_LOGIN(false);
 
               $localStorage.set('tokenInfo', JSON.stringify(res.data.tokenVo));
-              $localStorage.set('userData', JSON.stringify(aesutil.encrypt(res.data.userId)))
+              $localStorage.set('userData', JSON.stringify(aesutil.encrypt(res.data.userId)));
+              this.$store.dispatch('CHECK_ONLINE', true);
               this.$store.dispatch('UPDATE_USERDATA');
 
-              // this.$router.replace({path:"/mh/"});
-              this.$router.push({name: 'mIndex'});
-
-              //  window.location.href = "/mh/";
+              this.$router.replace({name: 'mIndex'});
             }else {
               toast(res.message);
             }
@@ -162,18 +153,16 @@
               this.SHOW_LOGIN(false);
 
               $localStorage.set('tokenInfo', JSON.stringify(res.data.tokenVo));
-              $localStorage.set('userData', JSON.stringify(aesutil.encrypt(res.data.userId)))
+              $localStorage.set('userData', JSON.stringify(aesutil.encrypt(res.data.userId)));
+              this.$store.dispatch('CHECK_ONLINE', true);
               this.$store.dispatch('UPDATE_USERDATA');
 
-             // this.$router.replace({path:"/mh/"});
-                this.$router.push({name: 'mIndex'});
-
-              //  window.location.href = "/mh/";
+              this.$router.replace({name: 'mIndex'});
             } else {
               toast(res.message)
             }
           }).catch(error => {
-            this.reset("请求失败");
+            toast(error.message);
           });
         }
       },
@@ -197,6 +186,8 @@
         }else if(this.loginItem=='email'){
           if(this.data.email=="" || !this.data.email){
             toast("请您输入邮箱");
+          }else if (!check.email.test(this.data.email)) {
+            toast("您输入的电子邮箱格式不正确");
           }else if(this.data.password=="" || !this.data.password){
             toast("请您输入密码");
           }else {

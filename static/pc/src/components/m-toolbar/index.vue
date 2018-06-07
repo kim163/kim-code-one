@@ -16,12 +16,14 @@
             <div class="tool-item-href">
               {{$t('navbar.nickName')}} <span class="fr"> {{userData.nickname}} </span>
             </div>
-            <div class="tool-item-href border-bot">
+            <div class="tool-item-href">
               {{$t('navbar.accountBalance')}} <span class="fr"><balance></balance></span>
             </div>
-            <router-link :to="{name:'mIndex'}" class="tool-item-href mt-line"><i class="iconfont icon-busine-list"></i>{{$t('navbar.busineList')}}</router-link>
+            <a href="javascript:void(0);" class="tool-item-href" @click="comingSoon" >
+              <i class="iconfont icon-busine-list"></i>{{$t('navbar.busineList')}}
+            </a>
 
-            <div class="tool-item-href" @click="$store.dispatch('LOGIN_OUT')">
+            <div class="tool-item-href border-bot" @click="$store.dispatch('LOGIN_OUT')">
               <i class="iconfont icon-log-out"></i>{{$t('navbar.logOut')}}
             </div>
           </div>
@@ -30,7 +32,7 @@
             <router-link :to="{name:'mobileLogin'}" class="tool-item-href"><i class="iconfont icon-user-register"></i>{{$t('login.iWantRegister')}}
             </router-link>
           </div>
-          <div class="tool-item-href border-bot" @click="handleSetLanguage" > {{$t('navbar.languageSel')}} </div>
+          <div class="tool-item-href border-bot hidden" @click="handleSetLanguage" > {{$t('navbar.languageSel')}} </div>
 
         </div>
       </transition>
@@ -71,6 +73,9 @@
       handleSetLanguage() {
         this.$i18n.locale === 'zh' ? this.$i18n.locale = 'en' : this.$i18n.locale = 'zh';
         this.$store.dispatch("SET_LANGUAGE", this.$i18n.locale);
+      },
+      comingSoon(){
+        toast('即将上线，敬请期待...');
       }
     }
   }

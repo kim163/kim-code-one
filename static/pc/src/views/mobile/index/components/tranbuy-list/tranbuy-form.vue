@@ -31,7 +31,7 @@
               <span> CNY </span>
          </div>
          <div class="tranbuy-tips cfx">
-             <input type="text" class="tips-info" :value="tipsInfo" >
+             <input type="text" class="tips-info" :value="tipsInfo" readonly>
              <a href="javascript:void(0);" @click="allTransact" class="all-transact">全部买入</a>
          </div>
          <div class="tranbuy-info cfx">
@@ -274,6 +274,7 @@
               display: block;
               line-height: r(40);
               @include  f(15px);
+              background: transparent;
             }
            .all-transact{
              color: #4982FF;

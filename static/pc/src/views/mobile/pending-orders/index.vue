@@ -272,6 +272,7 @@
     cursor: pointer;
     background: #fff;
     color:#333;
+    user-select: none;
     &:last-child{
        border:0;
      }
