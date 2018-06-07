@@ -15,7 +15,7 @@
       }
     },
     computed: {
-      ...mapGetters(["userId", "islogin"]),
+      ...mapGetters(["userId", "islogin", "userData"]),
     },
     watch: {
       islogin(newParam, oldParam) {
@@ -25,21 +25,25 @@
     methods: {
       getBalance(order){
           let userId = this.userId;
+          const userData = this.userData
+          this.assetCode = userData.accountChainVos[0].assetCode
           this.request = {
-            userId: userId
+            userId: userId,
+            assetCode: this.assetCode,
+            address: userData.accountChainVos[0].address,
           }
-          transaction.getAccountChainPage(this.request).then(res => {
-
+          transaction.getRealBalance(this.request).then(res => {
+            console.log(res)
             if(res.code == '10000'){
-              this.balance=res.data[0].balance;
-              this.assetCode=res.data[0].assetCode;
+              this.balance=res.data.key;
+              // this.assetCode=res.data[0].assetCode;
               this.$emit('getBalance',this.balance)
             }else{
               this.balance='刷新后再试';
             }
 
           }).catch(error => {
-            this.reset(res.message);
+            toast(error.message);
           });
         }
 
