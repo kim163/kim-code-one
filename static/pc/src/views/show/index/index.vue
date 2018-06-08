@@ -9,7 +9,11 @@
     },
     methods: {},
     created() {
-       window.location.href = "/static/index.html";
+      if(_.isMobile()){
+        this.$router.replace({name: 'mIndex'});
+      }else{
+        window.location.href = "/static/index.html";
+      }
     },
     mounted() {
     },
