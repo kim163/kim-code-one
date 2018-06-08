@@ -13,7 +13,7 @@
       <div class="white-box">
         <div class="line-box"></div>
         <div class="balance-box">
-          <p>{{$t('postPend.balance')}} <balance ></balance> </p>
+          <p>{{$t('postPend.balance')}} <balance @getBalance="getBalance"></balance> </p>
           <p class="c-gray">{{$t('postPend.unit')}} ¥ 0.01</p>
         </div>
         <div class="input-box">
@@ -46,8 +46,8 @@
       <div class="white-box">
         <div class="line-box"></div>
         <div class="balance-box">
-          <p>{{$t('postPend.balance')}}  <balance @getBalance="getBlance"></balance></p>
-          <p class="c-gray">{{$t('postPend.unit')}} ¥ 0.01 <a class="c-blue" @click="buyAmount = userBlance">{{$t('postPend.allsell')}}</a></p>
+          <p>{{$t('postPend.balance')}}  <balance @getBalance="getBalance"></balance></p>
+          <p class="c-gray">{{$t('postPend.unit')}} ¥ 0.01 <a class="c-blue" @click="allSell()">{{$t('postPend.allsell')}}</a></p>
         </div>
         <div class="input-box">
             <div class="input-div"><input class="my-input" placeholder="挂单卖出数量" v-model="buyAmount"> UET</div>
@@ -115,7 +115,8 @@
         buyTypeBuy:'',
         buyTypeSell:'',
         accountCashVo:{},
-        buyTypeBuyBank:''
+        buyTypeBuyBank:'',
+        userBalance:0,
       }
     },
     computed: {
@@ -246,8 +247,11 @@
       subData:function(item){
         return (item.substring(item.length-4))
       },
-      getBlance(data){
-        this.userBlance = data
+      getBalance(data){
+        this.userBalance = data
+      },
+      allSell(){
+        this.buyAmount = this.userBalance
       }
     },
     created() {
