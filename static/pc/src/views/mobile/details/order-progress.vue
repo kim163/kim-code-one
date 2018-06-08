@@ -155,7 +155,7 @@
           <li class="heightauto" v-if="DetailList.debitAccountMerchantTwin == '支付宝'">
             <span class="l-title">收款二维码 : </span>
             <div class="qrcode-box">
-              <img src="~images/qrcode.jpg" class="qrcode-img" />
+              <img src="~images/qrcode.jpg" :src="DetailList.debitAccountQrCodeUrlTwin"  class="qrcode-img" />
               <span class="qrcode-tips">长按二维码保存</span>
             </div>
           </li>
@@ -260,8 +260,8 @@
         this.request={
           orderId:this.$route.params.id
         }
-        console.log('传参数')
-        console.log(this.request)
+//        console.log('传参数')
+//        console.log(this.request)
         transaction.getOrderx(this.request).then(res => {
           this.loading = false;
           console.log('订单详情记录:');
@@ -272,7 +272,7 @@
           }
           this.DetailList = res.data;
           console.log('图片列表',res.data.creditProofUrlTwin)
-          if(res.data.creditProofUrlTwin != '' || res.data.creditProofUrlTwin != null){
+          if(res.data.creditProofUrlTwin && res.data.creditProofUrlTwin.length > 1){
             this.DetailList.creditProofUrlTwin = res.data.creditProofUrlTwin.split(',');
           }
 
@@ -301,8 +301,8 @@
             toast('您已取消，请勿重复操作');
             this.$router.push({name: 'mTranRecord'});
           }
-        }).catch(error => {
-          this.reset(res.message);
+        }).catch(err => {
+          toast(err.message);
         });
 
         this.loading = false;

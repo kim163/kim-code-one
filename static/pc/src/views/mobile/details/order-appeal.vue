@@ -170,8 +170,7 @@
                 <!-- 我是卖家 DetailList.debit == userId-->
                 <div v-if="item.sourceType == 4" class="you-msg">
                   <span class="userAvator">
-                    我
-                    <!--{{item.sourceTypeText }}-->
+                    {{item.sourceTypeText }}
                   </span>
                   <div class="mes-box">
                     <p class="msg-time">{{item.createtime | Date('yyyy-MM-dd hh:mm:ss') }}</p>
@@ -200,8 +199,7 @@
                 <!-- 我是卖家 DetailList.debit == userId-->
                 <div v-if="item.sourceType == 4"  >
                   <span class="userAvator">
-                    我
-                    <!--{{item.sourceTypeText }}-->
+                    {{item.sourceTypeText }}
                   </span>
                   <div class="mes-box">
                     <p class="msg-time">{{item.createtime | Date('yyyy-MM-dd hh:mm:ss') }}</p>
