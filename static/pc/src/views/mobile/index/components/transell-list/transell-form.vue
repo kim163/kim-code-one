@@ -167,6 +167,8 @@
           console.log(res)
           if (res.code == 10000) {
             this.$router.push({name: 'withdrawOrder',params:{ id: res.data.key}});
+          }else {
+            toast(res.message);
           }
 
         }).catch(err => {
