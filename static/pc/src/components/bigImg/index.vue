@@ -42,9 +42,11 @@
           background: rgba(0, 0, 0, 0.7);
           width: 100%;
           height: 100%;
+          max-height:100%;
           overflow: hidden;}
   　　.img-view .img img {
         max-width: 100%;
+        width:90%;
         display: block;
         position: absolute;
         left: 0;

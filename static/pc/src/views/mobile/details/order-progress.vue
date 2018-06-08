@@ -201,14 +201,15 @@
          <div class="pic-box pic-box2" v-if="DetailList.creditProofUrlTwin">
               <p>买家付款截图:</p>
                <ul class="pic-ul">
-                 <!-- 放大图片 -->test
-                 <big-img v-if="showImg" @click="viewImg" :imgSrc="imgSrc"></big-img>
+
                  <li v-for="proofImg in DetailList.creditProofUrlTwin">
 
                    <img :src="proofImg" @click="clickImg($event)">
 
                  </li>
                </ul>
+           <!-- 放大图片 -->
+           <big-img v-if="showImg" @clickit="viewImg" :imgSrc="imgSrc"></big-img>
          </div>
       </div>
 
@@ -376,6 +377,7 @@
         this.imgSrc = e.currentTarget.src;
       },
       viewImg(){
+        console.log('关闭预览');
         this.showImg = false;
       },
     },
