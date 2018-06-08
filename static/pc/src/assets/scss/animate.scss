@@ -4,10 +4,10 @@
 .fade-enter,.fade-leave-to{
   opacity: 0
 }
-.slideLeft-enter-active,.slideLeft-leave-active {
+.toolSlideLeft-enter-active,.toolSlideLeft-leave-active {
   transition:transform .5s;
 }
-.slideLeft-enter,.slideLeft-leave-to{
+.toolSlideLeft-enter,.toolSlideLeft-leave-to{
   transform: translateX(-100%);
 }
 .message-enter-active, .message-leave-active {

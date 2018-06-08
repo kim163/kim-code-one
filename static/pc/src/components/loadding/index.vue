@@ -1,6 +1,7 @@
 <template>
   <div class="loading-warp">
-    <img width="24" height="24" src="./loading.gif">
+    <img width="24" height="24" src="http://samherbert.net/svg-loaders/svg-loaders/three-dots.svg">
+    <!--<img width="24" height="24" src="./loading.gif">-->
     <p class="desc"><slot>正在加载...</slot></p>
   </div>
 </template>

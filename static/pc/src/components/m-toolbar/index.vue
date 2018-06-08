@@ -1,7 +1,7 @@
 <template>
   <transition name="fade">
     <div class="tool-warp" v-show="myValue" @click.self="myValue=false">
-      <transition name="slideLeft">
+      <transition name="toolSlideLeft">
         <div v-show="myValue" class="tool-bar">
 
           <div @click="myValue=false" class="tool-user-info">

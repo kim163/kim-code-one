@@ -17,8 +17,8 @@
           <p class="c-gray">{{$t('postPend.unit')}} ¥ 0.01</p>
         </div>
         <div class="input-box">
-          <div class="input-div"><input class="my-input" placeholder="挂单买入数量" v-model="buyAmount"> UET</div>
-          <div  class="input-div"><input class="my-input" :value="buyAmountCny" placeholder="=总数量"> CNY</div>
+          <div class="input-div"><input class="my-input" type="number" placeholder="挂单买入数量" v-model="buyAmount"> UET</div>
+          <div  class="input-div"><input class="my-input" type="number" :value="buyAmountCny" placeholder="=总数量"> CNY</div>
           <div  class="input-div">
             <select class="my-input" v-model="buyTypeBuy">
               <option value="">{{$t('postPend.selectPay')}}</option>
@@ -31,7 +31,7 @@
           </div>
           <div >
             <p class="s-title">{{$t('postPend.buyerRequest')}}</p>
-            <div  class="input-div"><input class="my-input" v-model="minBuyAmount" :placeholder="$t('postPend.minSell')"> UET</div>
+            <div  class="input-div"><input class="my-input" type="number" v-model="minBuyAmount" :placeholder="$t('postPend.minSell')"> UET</div>
           </div>
         </div>
         <div class="line-box"></div>
@@ -150,6 +150,10 @@
           toast('支付方式不能为空');
           return;
         }
+        if(this.minBuyAmount =='' || !this.minBuyAmount || this.minBuyAmount < 0){
+          toast('最低卖出数量输入不正确');
+          return;
+        }
         if(this.buyTypeBuy.type =='1'){
           this.buyTypeBuyBank='支付宝'
         }else if(this.buyTypeBuy.type =='2'){
@@ -198,6 +202,10 @@
         }
         if(this.buyTypeSell =='' || !this.buyTypeSell){
           toast('支付方式不能为空');
+          return;
+        }
+        if(this.minSellAmount =='' || !this.minSellAmount || this.minSellAmount < 0){
+          toast('最低买入数量输入不正确');
           return;
         }
         if(this.buyTypeSell.type =='1'){

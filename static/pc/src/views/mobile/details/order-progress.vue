@@ -155,7 +155,7 @@
           <li class="heightauto" v-if="DetailList.debitAccountMerchantTwin == '支付宝'">
             <span class="l-title">收款二维码 : </span>
             <div class="qrcode-box">
-              <img src="~images/qrcode.jpg" class="qrcode-img" />
+              <img src="~images/qrcode.jpg" :src="DetailList.debitAccountQrCodeUrlTwin"  class="qrcode-img" />
               <span class="qrcode-tips">长按二维码保存</span>
             </div>
           </li>
@@ -198,13 +198,18 @@
               <input type="button" class="btn btn-block btn-primary" @click="createAppeal"  value="我要申诉">
           </div>
 
-         <div v-if="DetailList.creditProofUrlTwin">
+         <div class="pic-box pic-box2" v-if="DetailList.creditProofUrlTwin">
               <p>买家付款截图:</p>
                <ul class="pic-ul">
+
                  <li v-for="proofImg in DetailList.creditProofUrlTwin">
-                   <img :src="proofImg">
+
+                   <img :src="proofImg" @click="clickImg($event)">
+
                  </li>
                </ul>
+           <!-- 放大图片 -->
+           <big-img v-if="showImg" @clickit="viewImg" :imgSrc="imgSrc"></big-img>
          </div>
       </div>
 
@@ -224,6 +229,7 @@
 <script>
   import mHeader from "components/m-header"
   import CountDown from 'components/countdown'
+  import BigImg  from 'components/bigImg'
   import { generateTitle } from '@/util/i18n'
   import { transaction } from 'api'
   import {mapGetters,mapActions,mapMutations} from 'vuex'
@@ -241,9 +247,12 @@
         orderData:{
           orderId:'',
           debitName:'' // 交易买方
-        }
+        },
+        showImg:false,
+        imgSrc: ''
       };
     },
+    //props: ['pagedata'],
     methods: {
       generateTitle,
       fetchData(){
@@ -251,8 +260,8 @@
         this.request={
           orderId:this.$route.params.id
         }
-        console.log('传参数')
-        console.log(this.request)
+//        console.log('传参数')
+//        console.log(this.request)
         transaction.getOrderx(this.request).then(res => {
           this.loading = false;
           console.log('订单详情记录:');
@@ -262,16 +271,19 @@
             return;
           }
           this.DetailList = res.data;
-          console.log('图片你点击恩解决额',res.data.creditProofUrlTwin)
-          if(res.data.creditProofUrlTwin != '' || res.data.creditProofUrlTwin != null){
-//            this.DetailList.creditProofUrlTwin = res.data.creditProofUrlTwin.split(',');
+          console.log('图片列表',res.data.creditProofUrlTwin)
+          if(res.data.creditProofUrlTwin && res.data.creditProofUrlTwin.length > 1){
+            this.DetailList.creditProofUrlTwin = res.data.creditProofUrlTwin.split(',');
           }
 
           if(res.code == '10000'){
             if(this.DetailList.credit == this.userId){
               toast('您已下单成功，请进入列表查询');
             }else{
-              toast('对方已确认付款，请查收是否到账');
+              if(this.DetailList.status =='47' || this.DetailList.status =='48'){
+                  toast('对方已确认付款，请查收是否到账');
+              }
+              // toast('对方已确认付款，请查收是否到账');
             }
 
           }
@@ -292,8 +304,8 @@
             toast('您已取消，请勿重复操作');
             this.$router.push({name: 'mTranRecord'});
           }
-        }).catch(error => {
-          this.reset(res.message);
+        }).catch(err => {
+          toast(err.message);
         });
 
         this.loading = false;
@@ -357,11 +369,21 @@
       },
       countDownEnd() {
         console.log('倒计时结束')
+        this.fetchData();
       },
       copystr(text) {
         text.$copy();
         toast(this.$t('transactionHome.successCopy'));
-      }
+      },
+      clickImg(e) {
+        this.showImg = true;
+        // 获取当前图片地址
+        this.imgSrc = e.currentTarget.src;
+      },
+      viewImg(){
+        console.log('关闭预览');
+        this.showImg = false;
+      },
     },
     beforecreate(){
     },
@@ -380,7 +402,8 @@
     },
     components: {
       mHeader,
-      CountDown
+      CountDown,
+      'big-img':BigImg
     }
   };
 
@@ -502,4 +525,13 @@
     color:#5087ff;
   }
 
+  .pic-box{
+    padding:0 r(15)  r(30) r(15);
+  }
+  .pic-ul{
+    max-height:180px;
+    padding:10px 0 30px;
+    overflow:hidden;
+    img{width:33%; display:inline-block;}
+  }
 </style>

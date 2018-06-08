@@ -21,12 +21,12 @@
        </div>
        <div class="tranbuy-group">
           <div class="tranbuy-info cfx">
-              <label> {{$t('transactionHome.buyQuantity')}}: </label>
+              <label> {{$t('transactionHome.buyQuantity')}} </label>
               <input class="my-input" type="number" :placeholder="buyMinUnit" v-model="buyAmountUet">
               <span> UET </span>
           </div>
          <div class="tranbuy-info cfx">
-              <label> {{$t('transactionHome.convertAmount')}}: </label>
+              <label> {{$t('transactionHome.convertAmount')}} </label>
               <input class="my-input" type="text" :value="buyAmountCny" :placeholder="$t('transactionHome.convertAmount')">
               <span> CNY </span>
          </div>
@@ -35,7 +35,7 @@
              <a href="javascript:void(0);" @click="allTransact" class="all-transact">全部买入</a>
          </div>
          <div class="tranbuy-info cfx">
-           <label> 支付方式： </label>
+           <label> 支付方式 </label>
            <select class="my-input" v-model="buyTypeBuy">
              <option value="">{{$t('postPend.selectPay')}}</option>
              <option v-for="bank in bankList.data" :value="bank">
@@ -168,6 +168,8 @@
           console.log(res)
           if (res.code == 10000) {
             this.$router.push({name: 'mOrder',params:{ id: res.data.key}});
+          }else {
+            toast(res.message);
           }
 
         }).catch(err => {

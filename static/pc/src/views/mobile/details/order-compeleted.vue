@@ -140,9 +140,9 @@
           this.DetailList.creditProofUrlTwin = res.data.creditProofUrlTwin.split(',');
 
         }).catch(error => {
-          this.reset(error.message);
+          toast(error.message);
         });
-        this.loading = false;
+//        this.loading = false;
       },
       copystr(text) {
         text.$copy();

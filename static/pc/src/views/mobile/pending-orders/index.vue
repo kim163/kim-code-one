@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="m-pengding-box">
     <m-headnav>{{$t('postPend.postTitle')}}</m-headnav>
     <div class="tab-box-out">
       <ul class="pop-tab tab-box">
@@ -17,8 +17,8 @@
           <p class="c-gray">{{$t('postPend.unit')}} ¥ 0.01</p>
         </div>
         <div class="input-box">
-            <div class="input-div"><input class="my-input" placeholder="挂单买入数量" v-model="buyAmount"> UET</div>
-            <div  class="input-div"><input class="my-input" :value="buyAmountCny" placeholder="=总数量"> CNY</div>
+            <div class="input-div"><input class="my-input" type="number" placeholder="挂单买入数量" v-model="buyAmount"> UET</div>
+            <div  class="input-div"><input class="my-input" type="number" :value="buyAmountCny" readonly placeholder="=总数量"> CNY</div>
             <div  class="input-div">
               <select class="my-input" v-model="buyTypeBuy">
                 <option value="">{{$t('postPend.selectPay')}}</option>
@@ -31,7 +31,7 @@
             </div>
             <div >
               <p class="s-title">卖家要求</p>
-              <div  class="input-div"><input class="my-input" v-model="minBuyAmount" :placeholder="$t('postPend.minSell')"> UET</div>
+              <div  class="input-div"><input class="my-input" type="number"  v-model="minBuyAmount" :placeholder="$t('postPend.minSell')"> UET</div>
             </div>
         </div>
         <div class="line-box"></div>
@@ -50,8 +50,8 @@
           <p class="c-gray">{{$t('postPend.unit')}} ¥ 0.01 <a class="c-blue" @click="allSell()">{{$t('postPend.allsell')}}</a></p>
         </div>
         <div class="input-box">
-            <div class="input-div"><input class="my-input" placeholder="挂单卖出数量" v-model="buyAmount"> UET</div>
-            <div  class="input-div"><input class="my-input" :value="buyAmountCny" placeholder="=总数量"> CNY</div>
+            <div class="input-div"><input class="my-input" type="number" placeholder="挂单卖出数量" v-model="buyAmount"> UET</div>
+            <div  class="input-div"><input class="my-input" type="number" :value="buyAmountCny" readonly placeholder="=总数量"> CNY</div>
             <div  class="input-div">
               <select class="my-input" v-model="buyTypeSell">
                 <option value="">{{$t('postPend.selectPay')}}</option>
@@ -64,7 +64,7 @@
             </div>
             <div >
               <p class="s-title">买家要求</p>
-              <div  class="input-div"><input class="my-input" v-model="minSellAmount" placeholder="卖家最低买入数量"> UET</div>
+              <div  class="input-div"><input class="my-input" type="number" v-model="minSellAmount" placeholder="卖家最低买入数量"> UET</div>
             </div>
         </div>
         <div class="line-box"></div>
@@ -150,6 +150,10 @@
           toast('支付方式不能为空');
           return;
         }
+        if(this.minBuyAmount =='' || !this.minBuyAmount || this.minBuyAmount < 0){
+          toast('最低卖出数量输入不正确');
+          return;
+        }
         if(this.buyTypeBuy.type =='1'){
           this.buyTypeBuyBank='支付宝'
         }else if(this.buyTypeBuy.type =='2'){
@@ -202,6 +206,10 @@
           toast('支付方式不能为空');
           return;
         }
+        if(this.minSellAmount =='' || !this.minSellAmount || this.minSellAmount < 0){
+          toast('最低买入数量输入不正确');
+          return;
+        }
         if(this.buyTypeSell.type =='1'){
           this.buyTypeBuyBank='支付宝'
         }else if(this.buyTypeSell.type =='2'){
@@ -250,7 +258,7 @@
       getBalance(data){
         this.userBalance = data
       },
-      allSell(){
+      allSell() {
         this.buyAmount = this.userBalance
       }
     },
@@ -354,5 +362,8 @@
   }
   .c-blue{
     color: #4982FF;
+  }
+  .m-pengding-box input:read-only{
+    background:#fff;
   }
 </style>

@@ -182,8 +182,8 @@
 
             show.sendEmailCode(this.requestdata).then((res) => {
               if (res.success) {
-                console.log(res.message)
                 toast(res.message);
+                this.$router.push({name: 'transaction'});
               } else {
                 console.log(res.message)
                 toast(res.message);
@@ -207,9 +207,8 @@
             show.sendCode(this.requestdata).then((res) => {
 
               if (res.success) {
-                console.log(res);
                 toast('恭喜，您已注册成功');
-                window.location.href="/transaction"
+                this.$router.push({name: 'transaction'});
               } else {
                 console.log(res);
                 toast(res.message);
