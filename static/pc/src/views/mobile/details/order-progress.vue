@@ -198,11 +198,15 @@
               <input type="button" class="btn btn-block btn-primary" @click="createAppeal"  value="我要申诉">
           </div>
 
-         <div v-if="DetailList.creditProofUrlTwin">
+         <div class="pic-box pic-box2" v-if="DetailList.creditProofUrlTwin">
               <p>买家付款截图:</p>
                <ul class="pic-ul">
+                 <!-- 放大图片 -->test
+                 <big-img v-if="showImg" @click="viewImg" :imgSrc="imgSrc"></big-img>
                  <li v-for="proofImg in DetailList.creditProofUrlTwin">
-                   <img :src="proofImg">
+
+                   <img :src="proofImg" @click="clickImg($event)">
+
                  </li>
                </ul>
          </div>
@@ -224,6 +228,7 @@
 <script>
   import mHeader from "components/m-header"
   import CountDown from 'components/countdown'
+  import BigImg  from 'components/bigImg'
   import { generateTitle } from '@/util/i18n'
   import { transaction } from 'api'
   import {mapGetters,mapActions,mapMutations} from 'vuex'
@@ -241,9 +246,12 @@
         orderData:{
           orderId:'',
           debitName:'' // 交易买方
-        }
+        },
+        showImg:false,
+        imgSrc: ''
       };
     },
+    //props: ['pagedata'],
     methods: {
       generateTitle,
       fetchData(){
@@ -262,9 +270,9 @@
             return;
           }
           this.DetailList = res.data;
-          console.log('图片你点击恩解决额',res.data.creditProofUrlTwin)
+          console.log('图片列表',res.data.creditProofUrlTwin)
           if(res.data.creditProofUrlTwin != '' || res.data.creditProofUrlTwin != null){
-//            this.DetailList.creditProofUrlTwin = res.data.creditProofUrlTwin.split(',');
+            this.DetailList.creditProofUrlTwin = res.data.creditProofUrlTwin.split(',');
           }
 
           if(res.code == '10000'){
@@ -361,7 +369,15 @@
       copystr(text) {
         text.$copy();
         toast(this.$t('transactionHome.successCopy'));
-      }
+      },
+      clickImg(e) {
+        this.showImg = true;
+        // 获取当前图片地址
+        this.imgSrc = e.currentTarget.src;
+      },
+      viewImg(){
+        this.showImg = false;
+      },
     },
     beforecreate(){
     },
@@ -380,7 +396,8 @@
     },
     components: {
       mHeader,
-      CountDown
+      CountDown,
+      'big-img':BigImg
     }
   };
 
@@ -502,4 +519,13 @@
     color:#5087ff;
   }
 
+  .pic-box{
+    padding:0 r(15)  r(30) r(15);
+  }
+  .pic-ul{
+    max-height:180px;
+    padding:10px 0 30px;
+    overflow:hidden;
+    img{width:40%;}
+  }
 </style>
