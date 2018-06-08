@@ -280,7 +280,10 @@
             if(this.DetailList.credit == this.userId){
               toast('您已下单成功，请进入列表查询');
             }else{
-              toast('对方已确认付款，请查收是否到账');
+              if(this.DetailList.status =='47' || this.DetailList.status =='48'){
+                  toast('对方已确认付款，请查收是否到账');
+              }
+              // toast('对方已确认付款，请查收是否到账');
             }
 
           }
@@ -366,6 +369,7 @@
       },
       countDownEnd() {
         console.log('倒计时结束')
+        this.fetchData();
       },
       copystr(text) {
         text.$copy();
@@ -528,6 +532,6 @@
     max-height:180px;
     padding:10px 0 30px;
     overflow:hidden;
-    img{width:40%;}
+    img{width:33%; display:inline-block;}
   }
 </style>

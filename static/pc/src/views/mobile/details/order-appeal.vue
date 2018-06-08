@@ -545,6 +545,7 @@
       display:inline-block;
       border-radius: 6px;
       border:1px solid #ddd;
+      @include f(16px);
     }
     .btn-send{
       display:inline-block;
