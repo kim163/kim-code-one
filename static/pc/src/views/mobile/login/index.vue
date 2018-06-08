@@ -81,10 +81,10 @@
         showPass:false,
         data:{
           account:"",
-          phone:"9950180120",
+          phone:"",
           areaCode:"+63",
           email:"",
-          password:"a123456"
+          password:""
         },
         requestda: {}
       }
