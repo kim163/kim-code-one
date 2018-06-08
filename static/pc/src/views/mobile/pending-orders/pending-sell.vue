@@ -182,7 +182,7 @@
           console.log(res)
           if(res.code == '10000'){
             toast('您已下单成功，请进入列表查询');
-            this.$router.push({name: 'mIndex'});
+            this.$router.push({name: 'mTranRecord'});
           }else{
             toast(res.message)
           }
@@ -232,7 +232,7 @@
           console.log(res)
           if(res.code == '10000'){
             toast('您已下单成功，请进入列表查询');
-            this.$router.push({name: 'mIndex'});
+            this.$router.push({name: 'mTranRecord'});
           }else{
             toast(res.message)
           }

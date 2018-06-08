@@ -164,9 +164,11 @@
         </div>
 
         <div class="appeal-list">
-            <ul class="appeal-list-ul">
+            <ul class="appeal-list-ul"  v-if="DetailList.credit == userId">
               <li v-for="(item,i) in reverseAppealList" >
-                <div v-if="item.sourceType == 4"  class="you-msg">
+                <!-- 我是买家 DetailList.credit == userId-->
+                <!-- 我是卖家 DetailList.debit == userId-->
+                <div v-if="item.sourceType == 4" class="you-msg">
                   <span class="userAvator">
                     我
                     <!--{{item.sourceTypeText }}-->
@@ -179,7 +181,37 @@
                     </div>
                   </div>
                 </div>
-                <div v-else>
+                <div v-else >
+                  <span class="userAvator">{{item.sourceTypeText }}</span>
+                  <div class="mes-box">
+                    <p class="msg-time">{{item.createtime | Date('yyyy-MM-dd hh:mm:ss') }}</p>
+                    <div class="mes-box-in">
+                      <img v-if="item.attachmentUrls"  :src="item.attachmentUrls" class="mes-img">
+                      <p class="msg-details">{{item.content }}</p>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            </ul>
+            <ul class="appeal-list-ul" v-if="DetailList.debit == userId">
+              <li v-for="(item,i) in reverseAppealList" >
+                <!-- 我是买家 DetailList.credit == userId-->
+
+                <!-- 我是卖家 DetailList.debit == userId-->
+                <div v-if="item.sourceType == 4"  >
+                  <span class="userAvator">
+                    我
+                    <!--{{item.sourceTypeText }}-->
+                  </span>
+                  <div class="mes-box">
+                    <p class="msg-time">{{item.createtime | Date('yyyy-MM-dd hh:mm:ss') }}</p>
+                    <div class="mes-box-in">
+                      <img v-if="item.attachmentUrls"  :src="item.attachmentUrls" class="mes-img">
+                      <p class="msg-details">{{item.content }}</p>
+                    </div>
+                  </div>
+                </div>
+                <div v-else class="you-msg">
                   <span class="userAvator">{{item.sourceTypeText }}</span>
                   <div class="mes-box">
                     <p class="msg-time">{{item.createtime | Date('yyyy-MM-dd hh:mm:ss') }}</p>
