@@ -135,6 +135,7 @@
               $localStorage.set('userData', JSON.stringify(aesutil.encrypt(res.data.userId)));
               this.$store.dispatch('CHECK_ONLINE', true);
               this.$store.dispatch('UPDATE_TOKEN_INFO', res.data.tokenVo);
+              this.$store.dispatch('INIT_INFO');
               this.$store.commit('SET_USERDATA',res.data);
 
               this.$router.replace({name: 'mIndex'});
@@ -157,6 +158,7 @@
               $localStorage.set('userData', JSON.stringify(aesutil.encrypt(res.data.userId)));
               this.$store.dispatch('CHECK_ONLINE', true);
               this.$store.dispatch('UPDATE_TOKEN_INFO', res.data.tokenVo);
+              this.$store.dispatch('INIT_INFO');
               this.$store.commit('SET_USERDATA',res.data);
 
               this.$router.replace({name: 'mIndex'});
