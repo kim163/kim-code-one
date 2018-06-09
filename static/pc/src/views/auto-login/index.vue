@@ -30,6 +30,7 @@
           this.$router.replace({name:'mIndex'})
         }else{
           toast(res.message)
+          this.$store.dispatch('LOGIN_OUT')
           this.$router.replace({name:'mobileLogin'})
         }
       }).catch(err => {
