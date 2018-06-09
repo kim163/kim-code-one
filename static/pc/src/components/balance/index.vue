@@ -52,6 +52,9 @@
       if (this.islogin) {
         this.getBalance()
       }
+      Vue.$global.bus.$on('update:balance', () => {
+        this.getBalance()
+      })
     },
     mounted() {
 

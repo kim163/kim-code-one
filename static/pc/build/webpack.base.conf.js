@@ -69,6 +69,7 @@ module.exports = {
   },
   plugins:[
     new webpack.ProvidePlugin({
+      Vue: ['vue/dist/vue.esm.js', 'default'],
       _: 'lodash',
     })
   ]
