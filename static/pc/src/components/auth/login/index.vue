@@ -84,10 +84,10 @@
         isAgent:false,
         data:{
           account:"",
-          phone:"9950180120",
-          areaCode:"+63",
+          phone:"",
+          areaCode:"",
           email:"",
-          password:"a123456"
+          password:""
         },
         requestda: {}
       }

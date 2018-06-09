@@ -24,6 +24,7 @@
       }
     },
     computed:{
+      ...mapGetters(["userData"]),
       ...mapGetters([
         'userId'
       ]),
@@ -59,7 +60,8 @@
     mounted() {
       let client = null
       let userId=this.userId;
-
+console.log('this.userData===================')
+console.log(this.userData.configVos)
       let detailNormal='/orderDetail/';
       let detailOver='/orderDetailOver/';
       let detailAppeal='/orderDetailAppeal/';
