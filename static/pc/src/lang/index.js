@@ -18,11 +18,13 @@ const messages = {
 function get_language() {    // 获取语言
   let language ;
   if(!$localStorage.get('language-sel')){
-    if (navigator.language) {
+   /* if (navigator.language) {
       language = navigator.language;
     }else {
       language = navigator.browserLanguage;
-    }
+    }*/
+
+    language = "zh";
 
     if(language.indexOf("zh") != -1){
       language = "zh";

@@ -17,7 +17,7 @@ export default new Vuex.Store({
       userId: '',
       accountChainVos: []
     },
-    language: $localStorage.get('language-sel') || 'en',
+    language: $localStorage.get('language-sel') || 'zh',
     tokenInfo: null,
     checkOnline: false
   },
