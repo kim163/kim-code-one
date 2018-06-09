@@ -159,9 +159,11 @@
       this.getTranList()
     },
     activated() {
-      setTimeout(() => {
-        this.$refs.scroll.scrollTo(0,this.scrollY,0)
-      }, 100)
+      if(this.$refs.scroll){
+        setTimeout(() => {
+          this.$refs.scroll.scrollTo(0,this.scrollY,0)
+        }, 100)
+      }
     },
   }
 </script>
