@@ -10,9 +10,9 @@
             </div>
           </div>
           <div v-if="islogin" @click="myValue=false">
-             <div class="tool-item-href">
-               {{$t('navbar.userAccount')}} <span class="fr"> {{userData.userName}} </span>
-             </div>
+             <!--<div class="tool-item-href">-->
+               <!--{{$t('navbar.userAccount')}} <span class="fr"> {{userData.userName}} </span>-->
+             <!--</div>-->
             <div class="tool-item-href">
               {{$t('navbar.nickName')}} <span class="fr"> {{userData.nickname}} </span>
             </div>

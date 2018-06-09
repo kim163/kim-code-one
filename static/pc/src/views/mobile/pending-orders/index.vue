@@ -13,7 +13,7 @@
       <div class="white-box">
         <div class="line-box"></div>
         <div class="balance-box">
-          <p>{{$t('postPend.balance')}} <balance ></balance> </p>
+          <p>{{$t('postPend.balance')}} <balance @getBalance="getBalance"></balance> </p>
           <p class="c-gray">{{$t('postPend.unit')}} ¥ 0.01</p>
         </div>
         <div class="input-box">
@@ -256,9 +256,11 @@
       subData:function(item){
         return (item.substring(item.length-4))
       },
-      getBlance(data){
-        console.log('余额等于'+data)
-        this.userBlance = data
+      getBalance(data){
+        this.userBalance = data
+      },
+      allSell() {
+        this.buyAmount = this.userBalance
       }
     },
     created() {
