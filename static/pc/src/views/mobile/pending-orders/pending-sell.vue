@@ -186,6 +186,9 @@
           console.log(res)
           if(res.code == '10000'){
             toast('您已下单成功，请进入列表查询');
+            this.buyAmount='';
+            this.buyTypeBuy='';
+            this.minBuyAmount = '';
             Vue.$global.bus.$emit('update:balance');
             this.$router.push({name: 'mTranRecord'});
           }else{
@@ -241,6 +244,10 @@
           console.log(res)
           if(res.code == '10000'){
             toast('您已下单成功，请进入列表查询');
+            this.buyAmount='';
+             this.buyTypeSell='';
+             this.minSellAmount = '';
+
             Vue.$global.bus.$emit('update:balance');
             this.$router.push({name: 'mTranRecord'});
           }else{
