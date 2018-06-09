@@ -34,7 +34,7 @@
     width: 150px;
     text-align: center;
     font-size: 20px;
-    color: #03A9F3;
+    color: #fff;
     top: 50%; left: 50%;
     transform: translate(-50%, -50%);
   }
