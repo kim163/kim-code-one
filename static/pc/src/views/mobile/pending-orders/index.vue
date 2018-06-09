@@ -257,7 +257,7 @@
         return (item.substring(item.length-4))
       },
       getBlance(data){
-        alert(data)
+        console.log('余额等于'+data)
         this.userBlance = data
       }
     },
