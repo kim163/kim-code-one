@@ -1,387 +1,246 @@
 <template>
-  <div class="transell-main">
-    <nav-menu></nav-menu>
-    <tran-headnav></tran-headnav>
+  <div class="modal fade in" v-show="value">
+    <div class="modal-dialog popup">
+      <div type="button" class="close" @click="$emit('input',false)">
+        <i class="iconfont icon-close"></i>
+      </div>
+      <div class="pop-content">
+        <h2 class="alert-title">{{$t('register.title')}} <span class="fr smalltxt">{{$t('register.hasAccount')}}？ <a class="a-login" @click="goLogin" >{{$t('register.loginNow')}}</a></span></h2>
+        <div class="tab-box">
+          <span v-for="item in registerType" @click="registerItem=item.value" class="s" :class="{active:registerItem==item.value}" :key="item.value">
+            {{generateTitle(item.name)}}
+          </span>
+        </div>
+        <div class="form-box form-box-phone">
+          <div class="form-group" v-if="registerItem=='phone'">
+            <p class="form-subtitle">{{$t('register.inputPhoneNum')}}</p>
+            <div class="form-input">
+              <!--<label class="select-country" id="select-country" country_id="+86" @click="getJsonInfo">-->
+                <!--中国 +86-->
+                <!--<a href="javascript:void(0) " class="arrow"></a>-->
+              <!--</label>-->
+              <select class="select-country"  v-model="data.areaCode">
+                <option v-for="areacd in areaCodeData" :value="areacd.value" :key="areacd.value" > {{areacd.name}} </option>
+              </select>
+              <input type="text" class="ps-input cl-blue fl" v-model="data.phone" :placeholder="$t('register.inputPlaceholder1')" maxlength="20" />
+            </div>
 
-    <div>这是手机端</div>
-    <div>这是手机端</div>
-    <div>这是手机端</div>
-    <div>这是手机端</div>
-    <div>这是手机端</div>
-    <div>这是手机端</div>
-    <div>这是手机端</div>
-    <div>这是手机端</div>
-    <div>这是手机端</div>
-    <div>这是手机端</div>
-    <div>这是手机端</div>
-    <div>这是手机端</div>
-    <div>这是手机端</div>
+          </div>
+          <div class="form-group" v-if="registerItem=='email'">
+            <p class="form-subtitle">{{$t('register.inputEmail')}}</p>
+            <div class="form-input">
+              <input type="text" class="ps-input" v-model="data.email" :placeholder="$t('register.inputPlaceholder0')"  />
+            </div>
 
-    <v-footer ></v-footer>
+          </div>
+          <div class="form-group">
+            <p class="form-subtitle">{{$t('register.Code')}}</p>
+            <div class="form-input">
+            <input ref="pwd" type="text" autocomplete="off" class="ps-input fl inpt-pwd"
+                   v-model="data.imageCode" :placeholder="$t('register.inputPlaceholder2')" maxlength="16" />
+              <a href="javascript:;" @click.prevent="getCaptcha" class="captcha-code">
+                {{$t('register.sendCode')}}</a>
+            <!--<eyes :dom="$refs.pwd"></eyes>-->
+            </div>
+          </div>
+          <div class="form-group">
+            <p class="form-subtitle">{{$t('register.password')}}</p>
+            <div class="form-input">
+            <input ref="pwd" type="password" autocomplete="off" class="ps-input fl inpt-pwd"
+                   v-model="data.password" :placeholder="$t('register.inputPlaceholder3')" maxlength="16" />
+            <!--<eyes :dom="$refs.pwd"></eyes>-->
+            </div>
+          </div>
+          <div class="form-group">
+            <p class="form-subtitle">{{$t('register.AgainPassword')}}</p>
+            <div class="form-input">
+            <input ref="pwd" type="password" autocomplete="off" class="ps-input fl inpt-pwd"
+                   v-model="data.confirmPassword" :placeholder="$t('register.inputPlaceholder4')" maxlength="16" />
+            <!--<eyes :dom="$refs.pwd"></eyes>-->
+            </div>
+          </div>
+          <!--<div class="form-group">-->
+            <!--<i class="iconfont icon-yanzhengma"></i>-->
+            <!--<input type="text" class="ps-input ps-input2" v-model="data.imageCode" placeholder="验证码"-->
+                   <!--maxlength="4">-->
+            <!--<a href="javascript:;" class="captcha-code icon_popup">-->
+              <!--<img @click="getimg" :src="authImg"></a>-->
+          <!--</div>-->
+          <div class="agreement">
+            <input type="checkbox" checked>
+            {{$t('register.readAgreenment')}} <a class="a-login">{{$t('register.agreenment')}}</a>
+          </div>
+          <span class="validate"></span>
+          <input type="submit" class="submit btn btn-block" @click.prevent="register" id="submit_user" :value="$t('register.register')">
+        </div>
+      </div>
+    </div>
+
   </div>
 </template>
-
 <script>
-  import navMenu from 'components/nav';
-  import vFooter from 'components/footer';
-  import tranHeadnav from 'components/master/tran-headnav';
+  import { show } from 'api'
   import { generateTitle } from '@/util/i18n'
-  import { transaction } from 'api'
-  import {mapGetters,mapActions,mapMutations} from 'vuex'
 
   export default {
+    props: {
+      value: Boolean
+    },
     data() {
       return {
-        DetailList: {
-
+        registerType:[
+          {name: "register.phoneReg", value: "phone"},
+          {name: "register.emailReg", value: "email"}
+        ],
+        registerItem: 'email',
+        areaCodeData: [
+          {name:"+63", value: "+63" },
+          {name:"+86", value: "+86" }
+        ],
+        data: {
+          phone: "", //true string
+          email: "", //true string
+          imageCode: "", //true string
+          password: "", //true string
+          confirmPassword: "",// true string
+          areaCode:"+63"
         },
-        orderData:{
-          orderId:this.$route.params.id,
-          debitName:'', // 交易买方
-
-        }
-      };
+        requestdata: {}
+      }
     },
     methods: {
       generateTitle,
-        fetchData(){
-          this.loading = true;
-          this.request={
-            orderId:this.$route.params.id
+      checked() {
+          if(this.registerItem =='email'){
+            if (!this.data.email || this.data.email=='')
+              toast("邮箱地址不允许为空");
+          }else{
+            if (!this.data.phone || this.data.phone=='')
+              toast("手机号不允许为空");
           }
-          transaction.getOrderx(this.request).then(res => {
-            this.loading = false;
-            console.log('订单详情记录:');
-            console.log(res.data);
-            this.DetailList = res.data;
-            this.DetailList.creditProofUrlTwin = res.data.creditProofUrlTwin.split(',');
 
-            console.log('图片分解')
-            console.log(res.data.creditProofUrlTwin.split(','))
-          }).catch(error => {
-            this.reset(res.message);
-          });
+          if (!this.data.imageCode || this.data.imageCode==''){
+            toast("验证码不能为空");
+          }else{
+            if (!this.data.password || this.data.password=='')
+              toast("请输入密码");
+            else if (!this.data.confirmPassword || this.data.confirmPassword=='')
+              toast("请输入确认密码");
+            else {
+              return true;
+          }
 
-          this.loading = false;
-        },
-      copy() {
-        var clipboard = new Clipboard('.copyBtn')
-        clipboard.on('success', e => {
-          toast('复制成功')
-          console.log('复制成功')
-          // 释放内存
-          clipboard.destroy()
-        })
-        clipboard.on('error', e => {
-          // 不支持复制
-          console.log('该浏览器不支持自动复制')
-          // 释放内存
-          clipboard.destroy()
-        })
-      }
+          }
+      },
+      register() {
+        if(this.registerItem =='email'){
+          this.requestdata={
+            email: this.data.email,
+            emailMgs: this.data.imageCode, //true string
+            password: this.data.password, //true string
+          }
+        }else{
+          this.requestdata={
+            phone: this.data.phone,
+            areaCode:this.data.areaCode,
+            phoneMgs: this.data.imageCode, //true string
+            password: this.data.password, //true string
+          }
+        }
+        if (!this.checked()) return;
+        show.register(this.requestdata).then((res) => {
+          //this.getimg()
+          if (res.success) {
+            if(res.code == '1000'){
+              this.$emit('input', false)
+              this.$store.dispatch("UPDATE_USERDATA");
+              console.log(JSON.stringify(res.data))
+            }else{
+              toast(res.message);
+            }
 
+          } else {
+            toast(res.message);
+          }
+        }).catch(err => {
+          //this.getimg()
+        });
+      },
+      getCaptcha(e) {
+        // 发送验证码  判断是否输入手机号或者邮箱号
+        //this.authImg = getAuthImg();
+        if(this.registerItem =='email'){
+          if (!this.data.email || this.data.email==''){
+            toast("邮箱地址不允许为空");
+          }else{
+            this.requestdata={
+              email: this.data.email, //true string
+              type: "1", //true string
+            }
 
-    },
-    created() {
-      this.fetchData();
-    },
-    watch: {
+            show.sendEmailCode(this.requestdata).then((res) => {
+              if (res.success) {
+                toast(res.message);
+                this.$router.push({name: 'transaction'});
+              } else {
+                console.log(res.message)
+                toast(res.message);
+              }
 
-    },
-    computed: {
-      ...mapGetters(["userData","islogin"]),
+            }).catch(err => {
+
+            });
+
+          }
+        }else{
+          if (!this.data.phone || this.data.phone==''){
+            toast("手机号不允许为空");
+          }else{
+            this.requestdata={
+              phone: this.data.phone,
+              type: "1",
+              areaCode:this.data.areaCode
+            }
+
+            show.sendCode(this.requestdata).then((res) => {
+
+              if (res.success) {
+                toast('恭喜，您已注册成功');
+                this.$router.push({name: 'transaction'});
+              } else {
+                console.log(res);
+                toast(res.message);
+              }
+            }).catch(err => {
+              alert(err);
+              toast(err.message);
+            });
+          }
+        }
+      },
+      getJsonInfo()  {
+        // 国家
+//        this.$http({
+//          method: 'get',
+//          url: '/country',
+//          data: {
+////            name: 'xiaoming',
+////            info: '12'
+//          }
+//        })
+      },
+      goLogin(e){
+        //alert('emit')
+        this.$emit('input',false);
+        this.$emit('showLogin');
+      },
+
     },
     components: {
-      navMenu, vFooter, tranHeadnav
-    },
-    filters: {
-      formatDateMs(time) {
-        var date = new Date(time);
-        return formatDate(date, "mm:ss");
-      },
-      bankIcon: function (value) {
-        if (!value) return 'icbc';
-        if(value == '工商银行'){
-          return 'icbc';
-        }
-        if(value == '招商银行'){
-          return 'cmbc';
-        }
-        //value = value.toString()
-        return value
-      }
+      //eyes
     }
-  };
-// 时间格式过滤
-  export function formatDate(date, fmt) {
-    if (/(y+)/.test(fmt)) {
-      fmt = fmt.replace(RegExp.$1, (date.getFullYear() + '').substr(4 - RegExp.$1.length));
-    }
-    let o = {
-      'M+': date.getMonth() + 1,
-      'd+': date.getDate(),
-      'h+': date.getHours(),
-      'm+': date.getMinutes(),
-      's+': date.getSeconds()
-    };
-    for (let k in o) {
-      if (new RegExp(`(${k})`).test(fmt)) {
-        let str = o[k] + '';
-        fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? str : padLeftZero(str));
-      }
-    }
-    return fmt;
-  };
-
-  function padLeftZero(str) {
-    return ('00' + str).substr(str.length);
   }
 </script>
-
 <style lang="scss">
 
-.detail-content{
-  min-height:300px;
-  margin:30px 0;
-}
-
-.detail-box{
-  border:1px solid #d4d4d4;
-  input{
-    height:50px;
-    line-height: 50px;
-    border:1px solid #d4d4d4;
-    width:100%;
-    padding:0 20px;
-    font-size:16px;
-  }
-    input:read-only {
-      background: #f7f7f7;
-    }
-    .btn-sell{
-      background: orange;
-    }
-  .time-stame{
-    font-size:22px;
-    padding:10px 0;
-  }
-  .col-33{
-    display:inline-block;
-    width:33%;
-    border-right:1px solid #d4d4d4;
-    margin:0;
-    min-height:427px;
-    min-width:350px;
-    &:last-child{
-      border:0;
-     }
-  }
-   p {
-    font-size: 16px;
-     padding:5px 0;
-     line-height: 25px;
-  }
-   .red{color:red;}
-  .alipay-box{
-    margin:50px;
-    .alipay-box-title{
-      border:1px solid #d4d4d4;
-      padding:10px 10px 10px 10px;
-      background-size: 30px;
-      font-size:16px;
-      &.bank-ttile{
-         font-size:20px;
-       }
-    }
-    .i-alipay{
-      display:inline-block;
-      float:left;
-      height:50px;
-      width:38px;
-      background: url('~images/i-alipay.png') no-repeat left center;
-      background-size: 30px;
-    }
-    .i-wechat{
-      display:inline-block;
-      float:left;
-      height:50px;
-      width:38px;
-      background: url('~images/i-wechat.png') no-repeat left center;
-      background-size: 30px;
-    }
-    .alipay-qrcode{
-      background: #4aa9e9;
-      color:#fff;
-      text-align: center;
-      padding:18px;
-      &.text-left{
-        text-align: left;
-       }
-      &.bank-txt-box{
-        padding:18px 22px;
-       }
-       h3{
-         font-weight:normal;
-         font-size:18px;
-         padding:2px 0 8px;
-       }
-      img{
-        width:160px;
-        height:160px;
-        padding:12px;
-        background: url('~images/j.png') no-repeat;
-        margin-bottom:5px;
-      }
-    }
-  }
-}
-
-.order-time{
-  padding:20px 50px;
-}
-.detail-title{
-  height:80px;
-  border-bottom:1px solid #d4d4d4;
-}
-.title-btn{
-   height:80px;
-   line-height: 80px;
-   display:inline-block;
-   width:140px;
-  color:#fff;
-  text-align: center;
-  background: #5087ff;
-  margin:0 20px 0 0;
-  font-size:18px;
-}
-
-.detail-tips{
-  border-top:1px solid #d4d4d4;
-  color:#787876;
-  line-height:30px;
-  padding:18px 30px 50px;
-  p{
-    font-size:16px;
-  }
-  .tips-title{
-    color:red;
-    font-size:18px;
-    padding:0 0 15px 0;
-  }
-  .tips-title-i{
-    background: url(~images/tips.png) no-repeat left 4px;
-    padding:0 0 15px 25px;
-  }
-  .tips-title0{
-    padding:0 0 15px 0;
-  }
-}
-.detail-tips-sell{
-  padding:18px 30px 20px;
-  overflow: hidden;
-}
-.h3{
-  font-weight:normal;
-  color:#333;
-  font-size:22px;
-  padding:20px 30px 0;
-}
-.details-data{
- padding:0 30px 30px;
-  li{
-    padding:20px 0 0 0;
-  }
-  p{
-    font-size:16px;
-    padding: 0 0 8px 0;
-  }
-  .red{color:red;}
-}
-
-input[type="button"]{
-  &.btn{
-    display:inline-block;
-    border:1px solid #5087ff;
-    color:#5087ff;
-    border-radius: 4px;
-    height:50px;
-    line-height: 50px;
-    padding:0 20px;
-    margin:10px 0 0 0;
-    cursor: pointer;
-  &:hover{opacity: .8;}
-  }
-  .btn-blue{
-    border:1px solid #5087ff;
-    color:#5087ff;
-  }
-  &.btn-orange{
-    border:1px solid #ffa500;
-    color:#ffa500;
-  }
-  &.btn-normal{
-    border:1px solid #5087ff;
-    background:#5087ff ;
-    color:#fff;
-  }
-}
-  .item-info{
-    color:#333;
-  }
-  .item-info.active{
-    color:#5087FF;
-  }
-
-.tranred-headnav {
-  /*height: 56px;*/
-  line-height: 56px;
-  height: auto;
-  border-bottom: 1px solid #D4D4D4;
-}
-  .text-center{
-    text-align: center;
-  }
-
-  .pic-ul{overflow: hidden;float:left;}
-  .pic-ul li{float:left; margin-right:15px;}
-  .pic-ul li img{ height:190px;}
-  .friend-txt{
-    margin-top:150px;
-  }
-  .bank-list-p{
-    position:relative;
-    margin-bottom:18px;
-  }
-  .btn-copy{
-    position: absolute;
-    right:0;
-    bottom:0;
-    color:#fff;
-    border:0;
-    cursor: pointer;
-  }
-  .i-bank{
-    display:inline-block;
-    height:40px;
-    width:46px;
-    vertical-align: -13px;
-    &.icbc{
-       background: url(~images/bankIcon/icbc.png) no-repeat;
-       background-size: 40px;
-     }
-    &.cmbc{
-       background: url(~images/bankIcon/cmbc.png) no-repeat;
-       background-size: 40px;
-     }
-  }
-
-@media(max-width:1330px){
-    .detail-box .col-33{
-      width:50%;
-        border-right:1px solid #d4d4d4;
-      border-bottom:1px solid #d4d4d4;
-        height:430px;
-
-  }
-}
 </style>
