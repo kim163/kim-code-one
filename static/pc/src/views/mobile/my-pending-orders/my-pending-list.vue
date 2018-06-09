@@ -8,7 +8,8 @@
             :pullUpConfig="pullUpCfg"
             @pullingDown="loadRefresh"
             @pullingUp="loadMore" v-if="!noData">
-      <ul>
+
+      <transition-group name="list" tag="ul">
         <li v-for="(item,i) in orderList" :key="i" class="order-item">
           <div class="order-info">
             <div class="text-left">{{item.createtime | Date('yyyy-MM-dd hh:mm:ss')}}</div>
@@ -35,7 +36,7 @@
             </div>
           </div>
         </li>
-      </ul>
+      </transition-group>
     </Scroll>
     <no-data-tip v-else></no-data-tip>
     <confirm-dialog v-model="showConfirm">
@@ -132,11 +133,11 @@
             }else{
               this.noData = false
             }
-            if(format){
-              this.orderList = [...res.data]
-            }else{
-              this.orderList = Array.from(new Set([...this.orderList,...res.data]))
-            }
+            // if(format){
+            //   this.orderList = [...res.data]
+            // }else{
+            this.orderList = Array.from(new Set([...this.orderList,...res.data]))
+            //}
             this.total = res.pageInfo.total
             if(this.currentPage >= this.totalPage){
               this.$refs.scroll.update(true)
@@ -154,7 +155,9 @@
           api({orderId}).then(res => {
             if(res.code === 10000){
               toast(res.message)
-              this.getData(true)
+              const arr = this.orderList
+              _.remove(arr,{'id': orderId})
+              this.orderList = [...arr]
             }else{
               toast(res.message)
             }
@@ -174,7 +177,10 @@
         deleteUnshelve({orderId: this.orderId}).then(res => {
           if(res.code === 10000){
             toast(res.message)
-            this.getData(true)
+           // this.getData(true)
+            const arr = this.orderList
+            _.remove(arr,{'id': this.orderId})
+            this.orderList = [...arr]
           }else{
             toast(res.message)
           }
@@ -204,6 +210,14 @@
 
 <style lang="scss" scoped>
   @import "~assets/scss/mobile";
+
+  .list-leave{
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  .list-leave-active{
+    transition: all .5s;
+  }
 
   .pending-main{
     width: 100%;

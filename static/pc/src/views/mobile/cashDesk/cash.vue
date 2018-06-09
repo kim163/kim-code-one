@@ -91,14 +91,14 @@
 
     created() {
       const data = {
-        amount: _.getUrlParam('amount'),
-        merchantOrderid: _.getUrlParam('merchantOrderid'),
-        assetCode: _.getUrlParam('assetCode'),
-        merchantId: _.getUrlParam('merchantId'),
-        merchantCallbackurl: _.getUrlParam('merchantCallbackurl'),
-        sign: _.getUrlParam('sign')
+        amount: global.getUrlParam('amount'),
+        merchantOrderid: global.getUrlParam('merchantOrderid'),
+        assetCode: global.getUrlParam('assetCode'),
+        merchantId: global.getUrlParam('merchantId'),
+        merchantCallbackurl: global.getUrlParam('merchantCallbackurl'),
+        sign: global.getUrlParam('sign')
       }
-      this.token = _.getUrlParam('token')
+      this.token = global.getUrlParam('token')
       Object.assign(this.initReqData, data)
       Object.assign(this.infoData, this.initReqData)
     },
