@@ -147,6 +147,7 @@
 
           </ul>
           <div class="btn-group">
+            <input type="button" class="btn btn-block btn-border" @click="payCompleted"  value="释放UET">
             <input type="button" class="btn btn-block btn-primary" @click="detailTypeItem='申诉与仲裁'"  value="继续留言">
           </div>
         </div>
@@ -343,6 +344,25 @@
       });
         this.loading = false;
       },
+      payCompleted(){
+        this.request={
+          orderId:this.$route.params.id
+        }
+        transaction.payCompleted(this.request).then(res => {
+          this.loading = false;
+          if(res.code == '10000'){
+            toast('您已确认收款，请勿重复操作');
+            this.$router.push({name: 'mTranRecord'});
+          }else{
+            toast(res.message)
+          }
+
+        }).catch(err => {
+          toast(err.message);
+        });
+        toast(res.message);
+        this.loading = false;
+      },
       copystr(text) {
         text.$copy();
         toast(this.$t('transactionHome.successCopy'));
@@ -430,7 +450,7 @@
 
 
   .btn-group{
-    padding:r(10) r(15);
+    padding:r(6) r(15) r(10);
   .btn {
     display: inline-block;
     color: #5087ff;
@@ -446,6 +466,11 @@
     border: 1px solid #5087ff;
     background: #5087ff;
     color: #fff;
+  }
+  .btn-border{
+    border: 1px solid #5087ff;
+    background: #fff;
+    color: #5087ff;
   }
   .btn-cancel {
     color: #787876;

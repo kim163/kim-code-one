@@ -125,7 +125,7 @@
         'userData'
       ]),
       buyAmountCny:function(){
-        return Number(this.buyAmount) *0.01;
+        return (Number(this.buyAmount) *0.01).toFixed(2);
       }
     },
     methods: {

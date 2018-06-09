@@ -1,7 +1,7 @@
 <template>
   <div class="ajax-load-animate" v-show="value">
     <div class="animate-item-warp animate-item-two">
-      <img width="80"  src="http://samherbert.net/svg-loaders/svg-loaders/three-dots.svg"><br>
+      <img width="80"  src="~images/loading.svg"><br>
       {{text}}
       <slot></slot>
     </div>
