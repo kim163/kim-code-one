@@ -53,14 +53,14 @@
              <div class="fr0">
                {{DetailList.debitAccountNameTwin}}
              </div>
-             <a href="javascript:void(0);" class="copy-btn" @click="copystr(DetailList.debitAccountNameTwin)" >{{$t('transactionHome.copyBtn')}}</a>
+             <a href="javascript:void(0);" class="copy-btn" :data-clipboard-text="DetailList.debitAccountNameTwin" @click="copy" >{{$t('transactionHome.copyBtn')}}</a>
            </li>
            <li>
              <span class="l-title">{{$t('transactionHome.accCardNum')}} : </span>
              <div class="fr0">
                <span class="">{{DetailList.debitAccountTwin}}</span>
              </div>
-             <a href="javascript:void(0);" class="copy-btn" @click="copystr(DetailList.debitAccountTwin)" >{{$t('transactionHome.copyBtn')}}</a>
+             <a href="javascript:void(0);" class="copy-btn" :data-clipboard-text="DetailList.debitAccountTwin" @click="copy">{{$t('transactionHome.copyBtn')}}</a>
            </li>
          </ul>
        </div>
@@ -86,6 +86,8 @@
   import mHeader from "components/m-header";
   import { transaction } from 'api';
   import countdown from "components/countdown";
+  import Clipboard from 'clipboard';
+
 
   export default {
     data() {
@@ -120,10 +122,18 @@
       countDownEnd(){
         console.log('倒计时已完毕');
       },
-
-      copystr(text) {
-        text.$copy();
-        toast(this.$t('transactionHome.successCopy'));
+      copy() {
+        var clipboard = new Clipboard('.copyBtn')
+        clipboard.on('success', e => {
+          toast('复制成功')
+          // 释放内存
+          clipboard.destroy()
+        })
+        clipboard.on('error', e => {
+          // 不支持复制
+          // 释放内存
+          clipboard.destroy()
+        })
       }
 
     },
