@@ -35,9 +35,11 @@
           transaction.getRealBalance(this.request).then(res => {
             console.log(res)
             if(res.code == '10000'){
-              this.balance=res.data.key;
-              // this.assetCode=res.data[0].assetCode;
-              this.$emit('getBalance',this.balance)
+              this.$nextTick(() => {
+                this.balance=res.data.key;
+                // this.assetCode=res.data[0].assetCode;
+                this.$emit('getBalance',this.balance)
+              })
             }else{
               this.balance='刷新后再试';
             }
@@ -52,6 +54,9 @@
       if (this.islogin) {
         this.getBalance()
       }
+      Vue.$global.bus.$on('update:balance', () => {
+        this.getBalance()
+      })
     },
     mounted() {
 
