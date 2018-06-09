@@ -60,8 +60,21 @@
     mounted() {
       let client = null
       let userId=this.userId;
-console.log('this.userData===================')
-console.log(this.userData.configVos)
+      let connectMsg = [];
+      let connectUrl='' ;
+      let connectUser= '';
+      let connectPsw= '';
+
+        console.log('this.userData===================')
+        console.log(this.userData.configVos)
+        _.forEach(this.userData.configVos, function(value, key) {
+          if(value.type == 1002){
+            connectMsg = value.value.split(',');
+             connectUrl= connectMsg[0];
+             connectUser= connectMsg[1];
+             connectPsw= connectMsg[2];
+          }
+        });
       let detailNormal='/orderDetail/';
       let detailOver='/orderDetailOver/';
       let detailAppeal='/orderDetailAppeal/';
@@ -121,11 +134,11 @@ console.log(this.userData.configVos)
       }
       function stompConnect () {
         console.log('STOMP: Attempting connection')
-        let ws = new WebSocket('ws://210.213.158.53:15674/ws')
-        client = Stomp.over(ws)
-        client.heartbeat.outgoing = 30000
-        client.heartbeat.incoming = 30000
-        client.connect('guest', 'guest', stompSuccessCallback, stompFailureCallback)
+        let ws = new WebSocket(connectUrl);
+        client = Stomp.over(ws);
+        client.heartbeat.outgoing = 30000;
+        client.heartbeat.incoming = 30000;
+        client.connect(connectUser, connectPsw, stompSuccessCallback, stompFailureCallback)
       }
       stompConnect()
 

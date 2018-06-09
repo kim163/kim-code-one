@@ -107,6 +107,7 @@
   import { generateTitle } from '@/util/i18n'
   import { transaction } from 'api'
   import {mapGetters,mapActions,mapMutations} from 'vuex'
+  import Clipboard from 'clipboard';
 
   export default {
     data() {
@@ -144,9 +145,18 @@
         });
 //        this.loading = false;
       },
-      copystr(text) {
-        text.$copy();
-        toast(this.$t('transactionHome.successCopy'));
+      copy() {
+        var clipboard = new Clipboard('.copyBtn')
+        clipboard.on('success', e => {
+          toast('复制成功')
+          // 释放内存
+          clipboard.destroy()
+        })
+        clipboard.on('error', e => {
+          // 不支持复制
+          // 释放内存
+          clipboard.destroy()
+        })
       }
     },
     created() {
