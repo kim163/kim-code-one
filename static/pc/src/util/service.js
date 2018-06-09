@@ -32,7 +32,7 @@ service.interceptors.request.use(config => {
     }
   }
   config.headers['Authorization'] = `Bearer ${store.getters.tokenInfo ? store.getters.tokenInfo.accessToken : ''}`
-  $load.open("Loading...");
+  $load.open("loading...");
 
   // if (promiseArr[config.url]) {
   //   promiseArr[config.url]('操作取消')
