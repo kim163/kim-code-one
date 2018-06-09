@@ -12,7 +12,7 @@ const filterRouterName = [  //过滤路由 无需跳转到登录页
 // var promiseArr = {}
 // let cancel
 const service = axios.create({
-  baseURL: process.env.BASE_URL,
+  // baseURL: process.env.BASE_URL,
   headers: {
     'Content-Type': 'application/json; charset=utf-8'
   },

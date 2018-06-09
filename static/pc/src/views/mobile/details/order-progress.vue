@@ -329,7 +329,6 @@
         this.loading = false;
       },
       payCompleted(){
-//
         this.request={
           orderId:this.$route.params.id
         }
@@ -475,7 +474,7 @@
 
 
   .btn-group{
-     padding:r(10) r(15);
+     padding:r(5) r(15) r(10);
       .btn {
         display: inline-block;
         color: #5087ff;
