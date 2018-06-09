@@ -46,7 +46,12 @@
       generateTitle,
     },
     watch: {
-
+      islogin(val) {
+        if (!val) {
+          this.$router.push({name: 'mobileLogin'});
+        }
+        console.log('mindex islogin:', val);
+      }
     },
     computed: {
       ...mapGetters(["userData", "islogin"])

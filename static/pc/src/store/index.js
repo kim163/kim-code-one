@@ -113,7 +113,8 @@ export default new Vuex.Store({
        dispatch(types.UPDATE_TOKEN_INFO, null);
        dispatch(types.CHECK_ONLINE, false);
        if(_.isMobile()){
-         router.replace({name:'mobileLogin'});
+        //  router.replace({name:'mobileLogin'});
+         window.location.href = "/m/login";
        }else{
          router.replace({name:'aindex'});
        }
