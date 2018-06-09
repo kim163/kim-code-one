@@ -138,7 +138,9 @@
           console.log(res.data);
           this.DetailList = res.data;
           //  多个图片分解
-          this.DetailList.creditProofUrlTwin = res.data.creditProofUrlTwin.split(',');
+          if(res.data.creditProofUrlTwin && res.data.creditProofUrlTwin.length > 1){
+            this.DetailList.creditProofUrlTwin = res.data.creditProofUrlTwin.split(',');
+          }
 
         }).catch(error => {
           toast(error.message);

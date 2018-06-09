@@ -3,7 +3,8 @@ $( document ).ready(function() {
         userAgent = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
     if (!localStorage.getItem('language-sel')) {
-        language = $.i18n.normaliseLanguageCode({"language" : ""});
+        // language = $.i18n.normaliseLanguageCode({"language" : ""});
+      language = "zh";
         if(language.indexOf("zh") != -1){
            language = "zh";
         }else if(language.indexOf("en") != -1){
