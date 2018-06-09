@@ -29,7 +29,7 @@
           this.$store.commit('SET_USERDATA',res.data);
           this.$router.replace({name:'mIndex'})
         }else{
-          toast(err)
+          toast(res.message)
           this.$router.replace({name:'mobileLogin'})
         }
       }).catch(err => {

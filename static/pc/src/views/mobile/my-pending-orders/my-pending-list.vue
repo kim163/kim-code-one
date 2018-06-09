@@ -155,7 +155,7 @@
           api({orderId}).then(res => {
             if(res.code === 10000){
               toast(res.message)
-              const arr = this.orderList
+              const arr = [...this.orderList]
               _.remove(arr,{'id': orderId})
               this.orderList = [...arr]
             }else{
@@ -178,7 +178,7 @@
           if(res.code === 10000){
             toast(res.message)
            // this.getData(true)
-            const arr = this.orderList
+            const arr = [...this.orderList]
             _.remove(arr,{'id': this.orderId})
             this.orderList = [...arr]
           }else{
