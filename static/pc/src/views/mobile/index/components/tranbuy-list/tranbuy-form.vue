@@ -167,6 +167,7 @@
         transaction.placeAnOrder(requestda).then(res => {
           console.log(res)
           if (res.code == 10000) {
+            Vue.$global.bus.$emit('update:balance');
             this.$router.push({name: 'mOrder',params:{ id: res.data.key}});
           }else {
             toast(res.message);

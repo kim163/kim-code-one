@@ -340,6 +340,7 @@
         transaction.payCompleted(this.request).then(res => {
           this.loading = false;
           if(res.code == '10000'){
+            Vue.$global.bus.$emit('update:balance');
             toast('您已确认收款，请勿重复操作');
             this.$router.push({name: 'mTranRecord'});
           }else{
