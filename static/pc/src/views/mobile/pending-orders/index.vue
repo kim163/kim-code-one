@@ -1,5 +1,5 @@
 <template>
-  <div class="m-pengding-box">
+  <div>
     <m-headnav>{{$t('postPend.postTitle')}}</m-headnav>
     <div class="tab-box-out">
       <ul class="pop-tab tab-box">
@@ -17,22 +17,22 @@
           <p class="c-gray">{{$t('postPend.unit')}} ¥ 0.01</p>
         </div>
         <div class="input-box">
-            <div class="input-div"><input class="my-input" type="number" placeholder="挂单买入数量" v-model="buyAmount"> UET</div>
-            <div  class="input-div"><input class="my-input" type="number" :value="buyAmountCny" readonly placeholder="=总数量"> CNY</div>
-            <div  class="input-div">
-              <select class="my-input" v-model="buyTypeBuy">
-                <option value="">{{$t('postPend.selectPay')}}</option>
-                <option v-for="item in bankList.data" :value="item">
-                  <span  v-if="item.type == '1'">支付宝 {{item.account}}</span>
-                  <span  v-if="item.type == '2'">微信 {{item.account}}</span>
-                  <span  v-if="item.type == '3'">{{item.bank}} {{subData(item.account)}}</span>
-                </option>
-              </select>
-            </div>
-            <div >
-              <p class="s-title">卖家要求</p>
-              <div  class="input-div"><input class="my-input" type="number"  v-model="minBuyAmount" :placeholder="$t('postPend.minSell')"> UET</div>
-            </div>
+          <div class="input-div"><input class="my-input" type="number" placeholder="挂单买入数量" v-model="buyAmount"> UET</div>
+          <div  class="input-div"><input class="my-input" type="number" :value="buyAmountCny" placeholder="=总数量"> CNY</div>
+          <div  class="input-div">
+            <select class="my-input" v-model="buyTypeBuy">
+              <option value="">{{$t('postPend.selectPay')}}</option>
+              <option v-for="item in bankList.data" :value="item">
+                <span  v-if="item.type == '1'">支付宝 {{item.account}}</span>
+                <span  v-if="item.type == '2'">微信 {{item.account}}</span>
+                <span  v-if="item.type == '3'">{{item.bank}} {{subData(item.account)}}</span>
+              </option>
+            </select>
+          </div>
+          <div >
+            <p class="s-title">{{$t('postPend.buyerRequest')}}</p>
+            <div  class="input-div"><input class="my-input" type="number" v-model="minBuyAmount" :placeholder="$t('postPend.minSell')"> UET</div>
+          </div>
         </div>
         <div class="line-box"></div>
       </div>
@@ -46,27 +46,26 @@
       <div class="white-box">
         <div class="line-box"></div>
         <div class="balance-box">
-          <p>{{$t('postPend.balance')}}  <balance @getBalance="getBlance"></balance></p>
-          <p class="c-gray">{{$t('postPend.unit')}} ¥ 0.01 <a class="c-blue" @click="buyAmount = userBlance">{{$t('postPend.allsell')}}</a></p>
-
+          <p>{{$t('postPend.balance')}}  <balance @getBalance="getBalance"></balance></p>
+          <p class="c-gray">{{$t('postPend.unit')}} ¥ 0.01 <a class="c-blue" @click="allSell()">{{$t('postPend.allsell')}}</a></p>
         </div>
         <div class="input-box">
-            <div class="input-div"><input class="my-input" type="number" placeholder="挂单卖出数量" v-model="buyAmount"> UET</div>
-            <div  class="input-div"><input class="my-input" type="number" :value="buyAmountCny" readonly placeholder="=总数量"> CNY</div>
-            <div  class="input-div">
-              <select class="my-input" v-model="buyTypeSell">
-                <option value="">{{$t('postPend.selectPay')}}</option>
-                <option v-for="item in bankList.data" :value="item">
-                  <span  v-if="item.type == '1'">支付宝 {{item.account}}</span>
-                  <span  v-if="item.type == '2'">微信 {{item.account}}</span>
-                  <span  v-if="item.type == '3'">{{item.bank}} {{subData(item.account)}}</span>
-                </option>
-              </select>
-            </div>
-            <div >
-              <p class="s-title">买家要求</p>
-              <div  class="input-div"><input class="my-input" type="number" v-model="minSellAmount" placeholder="卖家最低买入数量"> UET</div>
-            </div>
+          <div class="input-div"><input class="my-input" placeholder="挂单卖出数量" v-model="buyAmount"> UET</div>
+          <div  class="input-div"><input class="my-input" :value="buyAmountCny" placeholder="=总数量"> CNY</div>
+          <div  class="input-div">
+            <select class="my-input" v-model="buyTypeSell">
+              <option value="">{{$t('postPend.selectPay')}}</option>
+              <option v-for="item in bankList.data" :value="item">
+                <span  v-if="item.type == '1'">支付宝 {{item.account}}</span>
+                <span  v-if="item.type == '2'">微信 {{item.account}}</span>
+                <span  v-if="item.type == '3'">{{item.bank}} {{subData(item.account)}}</span>
+              </option>
+            </select>
+          </div>
+          <div >
+            <p class="s-title">买家要求</p>
+            <div  class="input-div"><input class="my-input" v-model="minSellAmount" placeholder="卖家的最低买入数量"> UET</div>
+          </div>
         </div>
         <div class="line-box"></div>
       </div>
@@ -111,22 +110,22 @@
           data: []
         },
         buyAmount:'',
-        minBuyAmount:'',
-        minSellAmount:'',
         buyTypeBuy:'',
         buyTypeSell:'',
+        minBuyAmount:'',
+        minSellAmount:'',
         accountCashVo:{},
         buyTypeBuyBank:'',
-        userBlance:0
+        userBalance:'',
       }
     },
     computed: {
-      ...mapGetters(["userData"]),
       ...mapGetters([
-        'userId'
+        'userId',
+        'userData'
       ]),
       buyAmountCny:function(){
-        return Number(this.buyAmount) *0.01;
+        return (Number(this.buyAmount) *0.01).toFixed(2);
       }
     },
     methods: {
@@ -183,8 +182,6 @@
             "amount" : this.buyAmount /100
           }
         }
-        console.log('this.requestd  请求数据：')
-        console.log(this.requestda)
         transaction.publishToBuy(this.requestda).then((res) => {
           console.log(res)
           if(res.code == '10000'){
@@ -239,8 +236,6 @@
             "amount" : this.buyAmount /100
           }
         }
-        console.log('this.requestd  请求数据：')
-        console.log(this.requestda)
         transaction.publishToSell(this.requestda).then((res) => {
           console.log(res)
           if(res.code == '10000'){
@@ -259,7 +254,7 @@
       getBalance(data){
         this.userBalance = data
       },
-      allSell() {
+      allSell(){
         this.buyAmount = this.userBalance
       }
     },
@@ -273,9 +268,9 @@
 
 <style lang="scss" scoped>
   @import "~assets/scss/mobile";
-.white-box{
-  background: #fff;
-}
+  .white-box{
+    background: #fff;
+  }
   .tab-box-out{
     background:#F5F5F5 ;
     padding:r(15) r(30);
@@ -296,17 +291,17 @@
     background: #fff;
     color:#333;
     user-select: none;
-    &:last-child{
-       border:0;
-     }
-    &.active{
-       background: #86A5F8;
-       color:#fff;
-     }
-    &:hover,&:link,&:active{
-                      opacity: .8;
-     }
-    }
+  &:last-child{
+     border:0;
+   }
+  &.active{
+     background: #86A5F8;
+     color:#fff;
+   }
+  &:hover,&:link,&:active{
+                    opacity: .8;
+                  }
+  }
   }
 
   .balance-box{
@@ -330,10 +325,10 @@
     height:r(39);
     border:0;
     width:84%;
-   @include  f(15px);
-    &:hover,&:focus{
-      outline: none;
-     }
+  @include  f(15px);
+  &:hover,&:focus{
+             outline: none;
+           }
   }
   select.my-input{
     width:100%;
@@ -363,8 +358,5 @@
   }
   .c-blue{
     color: #4982FF;
-  }
-  .m-pengding-box input:read-only{
-    background:#fff;
   }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div class="ajax-load-animate" v-show="value">
     <div class="animate-item-warp animate-item-two">
-      <img width="80"  src="http://samherbert.net/svg-loaders/svg-loaders/three-dots.svg"><br>
+      <img width="80"  src="~images/loading.svg"><br>
       {{text}}
       <slot></slot>
     </div>
@@ -34,7 +34,7 @@
     width: 150px;
     text-align: center;
     font-size: 20px;
-    color: #fff;
+    color: #03A9F3;
     top: 50%; left: 50%;
     transform: translate(-50%, -50%);
   }
