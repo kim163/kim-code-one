@@ -7,9 +7,13 @@
 .toolSlideLeft-enter-active,.toolSlideLeft-leave-active {
   transition:transform .5s;
 }
-.toolSlideLeft-enter,.toolSlideLeft-leave-to{
+.toolSlideLeft-enter{
   transform: translateX(-100%);
 }
+.toolSlideLeft-leave-to{
+  transform: translateX(100%);
+}
+
 .message-enter-active, .message-leave-active {
   transition: all 0.25s ease-out;
   overflow: hidden;
