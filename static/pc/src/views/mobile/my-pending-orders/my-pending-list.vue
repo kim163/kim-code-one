@@ -116,7 +116,8 @@
         }
         if(this.tabType === 1){
           Object.assign(request,{
-            userId: this.userId
+            userId: this.userId,
+            statuses:[1],
           })
         }else{
           Object.assign(request,{
@@ -158,6 +159,9 @@
               const arr = [...this.orderList]
               _.remove(arr,{'id': orderId})
               this.orderList = [...arr]
+              if(type === 1){
+                Vue.$global.bus.$emit('')
+              }
             }else{
               toast(res.message)
             }
