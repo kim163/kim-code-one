@@ -160,7 +160,7 @@
               _.remove(arr,{'id': orderId})
               this.orderList = [...arr]
               if(type === 1){
-                Vue.$global.bus.$emit('')
+                Vue.$global.bus.$emit('update:balance')
               }
             }else{
               toast(res.message)
