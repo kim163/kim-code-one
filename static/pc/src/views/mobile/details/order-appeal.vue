@@ -376,7 +376,7 @@
         this.loading = false;
       },
       copy() {
-        var clipboard = new Clipboard('.copyBtn')
+        var clipboard = new Clipboard('.copy-btn')
         clipboard.on('success', e => {
           toast('复制成功')
           // 释放内存
