@@ -7,7 +7,8 @@ import {$localStorage, $sessionStorage} from './storage';
 const filterRouterName = [  //过滤路由 无需跳转到登录页
   'mUserBind',
   'mQuickCreate',
-  'autoLogin'
+  'autoLogin',
+  'mobileRegister'
 ]
 // var promiseArr = {}
 // let cancel
