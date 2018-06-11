@@ -100,7 +100,7 @@
       generateTitle,
       checked() {
           console.log('test');
-        console.log('test  aaaaaa     999999999999');
+        console.log('test  aaaaaa     999999999999  8888');
           if(this.registerItem =='email'){
             if (!this.data.email || this.data.email=='')
               toast("邮箱地址不允许为空");
