@@ -72,3 +72,10 @@ export const bindPhone = jsonData => service({
   method: 'post',
   data: jsonData
 });
+
+//判断用户名是否已经存在
+export const checkExistUser = jsonData => service({
+  url: numversion+`/user/chain/checkExistUser`,
+  method: 'post',
+  data: jsonData
+});

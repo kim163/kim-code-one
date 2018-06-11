@@ -55,17 +55,20 @@
   import GetVerifyCode from 'components/get-verify-code'
   import CreateSuccess from './create-success'
   import {$localStorage} from '@/util/storage'
+  import aesutil from '@/util/aesutil';
 
   import RegExp from '@/util/RegExp'
   import {mapGetters} from 'vuex';
   import {
     sendCode,
     sendEmailCode,
+    login
   } from 'api/show'
   import {
-    updatePassword,
-    bindEmail,
-    bindPhone
+    // updatePassword,
+    // bindEmail,
+    // bindPhone,
+    syncUserAndBindRelation
   } from 'api/cashier'
 
   export default {
@@ -177,7 +180,7 @@
         if (this.checkNumber()) {
           const api = this.type === 1 ? sendCode : sendEmailCode
           const request = {
-            type: 3
+            type: 1
           }
           if (this.type === 1) {
             Object.assign(request, {
@@ -211,26 +214,27 @@
                     phone:this.typeNumber,
                     phoneMgs:this.code,
                     areaCode:this.areaCode,
-                    userId: this.userId
+                    // userId: this.userId
                   })
                 }else{
                   Object.assign(request,{
                     email:this.typeNumber,
                     emailMgs:this.code,
-                    userId: this.userId
+                    // userId: this.userId
                   })
                 }
-                const api = this.type === 1 ? bindPhone : bindEmail
-                console.log(request)
-                api(request).then(res => {
-                  if(res.code === 10000){
-                    this.updateUserPassword()
-                  }else{
-                    toast(res.message)
-                  }
-                }).catch(err => {
-                  toast(err)
-                })
+                this.syncUserAndBind(request)
+                // const api = this.type === 1 ? bindPhone : bindEmail
+                // console.log(request)
+                // api(request).then(res => {
+                //   if(res.code === 10000){
+                //     this.updateUserPassword()
+                //   }else{
+                //     toast(res.message)
+                //   }
+                // }).catch(err => {
+                //   toast(err)
+                // })
               }else{
                 this.bindError = true
                 this.bindErrorText = '请输入验证码'
@@ -238,19 +242,24 @@
               }
             }
           }else{
-            this.updateUserPassword()
+            this.syncUserAndBind({})
           }
         }
       },
-      updateUserPassword(){
+      syncUserAndBind(data){
         const request = {
-          userId: this.userId,
+          // userId: this.userId,
+          merchantId: this.merchantInfo.merchantId,
+          merchantUserName: this.merchantInfo.merchantUserName,
+          notifyUrl: this.merchantInfo.notifyUrl,
           password: this.password,
           confirmPassword:this.confirmPassword
         }
+        Object.assign(request,data)
         console.log(request)
-        updatePassword(request).then(res => {
+        syncUserAndBindRelation(request).then(res => {
           if(res.code === 10000){
+            this.toLogin(res.data.token)
             this.createSuccess = true
           }else{
             toast(res.message)
@@ -258,7 +267,26 @@
         }).catch(err => {
           toast(err)
         })
-      }
+      },
+      toLogin(token){  //创建成功之后 自动调用登录接口
+        const request = {
+          type:11,
+          token,
+          merchantId: this.merchantInfo.merchantId.toString()
+        }
+        console.log(request)
+        login(request).then(res => {
+          if(res.code === 10000){
+            $localStorage.set('tokenInfo', JSON.stringify(res.data.tokenVo));
+            $localStorage.set('userData', JSON.stringify(aesutil.encrypt(res.data.userId)))
+            this.$store.dispatch('UPDATE_USERDATA');
+          }else{
+            toast(res.message)
+          }
+        }).catch(err => {
+          toast(err)
+        })
+      },
     }
   }
 </script>
