@@ -15,10 +15,6 @@
           <div class="form-group" v-if="registerItem=='phone'">
             <p class="form-subtitle">{{$t('register.inputPhoneNum')}}</p>
             <div class="form-input">
-              <!--<label class="select-country" id="select-country" country_id="+86" @click="getJsonInfo">-->
-                <!--中国 +86-->
-                <!--<a href="javascript:void(0) " class="arrow"></a>-->
-              <!--</label>-->
               <select class="select-country"  v-model="data.areaCode">
                 <option v-for="areacd in areaCodeData" :value="areacd.value" :key="areacd.value" > {{areacd.name}} </option>
               </select>
@@ -36,11 +32,10 @@
           <div class="form-group">
             <p class="form-subtitle">{{$t('register.Code')}}</p>
             <div class="form-input">
-            <input ref="pwd" type="text" autocomplete="off" class="ps-input fl inpt-pwd"
+            <input type="text" autocomplete="off" class="ps-input fl inpt-pwd"
                    v-model="data.imageCode" :placeholder="$t('register.inputPlaceholder2')" maxlength="16" />
               <a href="javascript:;" @click.prevent="getCaptcha" class="captcha-code">
                 {{$t('register.sendCode')}}</a>
-            <!--<eyes :dom="$refs.pwd"></eyes>-->
             </div>
           </div>
           <div class="form-group">
@@ -59,13 +54,6 @@
             <!--<eyes :dom="$refs.pwd"></eyes>-->
             </div>
           </div>
-          <!--<div class="form-group">-->
-            <!--<i class="iconfont icon-yanzhengma"></i>-->
-            <!--<input type="text" class="ps-input ps-input2" v-model="data.imageCode" placeholder="验证码"-->
-                   <!--maxlength="4">-->
-            <!--<a href="javascript:;" class="captcha-code icon_popup">-->
-              <!--<img @click="getimg" :src="authImg"></a>-->
-          <!--</div>-->
           <div class="agreement">
             <input type="checkbox" checked>
             {{$t('register.readAgreenment')}} <a class="a-login">{{$t('register.agreenment')}}</a>
@@ -111,6 +99,8 @@
     methods: {
       generateTitle,
       checked() {
+          console.log('test');
+        console.log('test  aaaaaa     999999999999');
           if(this.registerItem =='email'){
             if (!this.data.email || this.data.email=='')
               toast("邮箱地址不允许为空");
