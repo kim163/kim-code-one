@@ -53,3 +53,8 @@ export const getBankInfo = jsonData => service({
   data: jsonData
 });  //获取银行卡
 
+export const getLive800Url = jsonData => service({
+  url: numversion + `getLive800Url`,
+  method: 'post',
+  data: jsonData
+});  //获取Live800

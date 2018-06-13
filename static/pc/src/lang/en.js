@@ -14,7 +14,8 @@ export default {
     accountBalance:'Account Balance',
     transactionRecord:'Transaction Record',
     userAccount: 'Account',
-    busineList: 'My business list'
+    busineList: 'My business list',
+    onlineService: 'online service'
   },
   login: {
     title: 'Welcome back',
