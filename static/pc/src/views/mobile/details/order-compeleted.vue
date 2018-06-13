@@ -71,10 +71,9 @@
               <!--<a href="javascript:void(0);" class="copy-btn" @click="copystr(DetailList.debitAccountTwin)" >{{$t('transactionHome.copyBtn')}}</a>-->
             </div>
           </li>
-          <li class="heightauto" v-if="DetailList.debitAccountMerchantTwin == '支付宝' || DetailList.debitAccountMerchantTwin == '微信'">
+          <li class="heightauto" v-if="DetailList.debitAccountMerchantTwin == '支付宝' || DetailList.debitAccountMerchantTwin == '微信'" >
             <span class="l-title">收款二维码 : </span>
             <div class="qrcode-box" v-if="DetailList.debitAccountQrCodeUrlTwin != ''">
-              <!--<img src="~images/qrcode.jpg" :src="DetailList.debitAccountQrCodeUrlTwin" class="qrcode-img">-->
               <img src="~images/qrcode.jpg" :src="DetailList.debitAccountQrCodeUrlTwin" class="qrcode-img" />
               <span class="qrcode-tips">长按二维码保存</span>
             </div>

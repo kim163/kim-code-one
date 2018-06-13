@@ -8,8 +8,9 @@
         <span class="fr">
           <span v-if="DetailList.status =='45'">等待付款</span>
           <span v-if="DetailList.status =='47'">等待释放UET</span>
+          <span v-if="DetailList.status =='61'">申诉锁定</span>
           <!--{{DetailList.intervalTime-DetailList.elapsedTime | Date('hh:mm:ss')}}-->
-          <count-down :end-time="DetailList.intervalTime-DetailList.elapsedTime" @callBack="countDownEnd"></count-down>
+          <count-down v-if="DetailList.status !='61'" :end-time="DetailList.intervalTime-DetailList.elapsedTime" @callBack="countDownEnd"></count-down>
         </span>
       </div>
 
@@ -65,7 +66,7 @@
 
               </div>
             </li>
-            <li class="heightauto" v-if="DetailList.debitAccountMerchantTwin == '支付宝'">
+            <li class="heightauto" v-if="DetailList.debitAccountMerchantTwin == '支付宝' || DetailList.debitAccountMerchantTwin == '微信'">
               <span class="l-title">收款二维码 : </span>
               <div class="qrcode-box">
                     <img src="~images/qrcode.jpg" :src="DetailList.debitAccountQrCodeUrlTwin"  class="qrcode-img" />
@@ -100,8 +101,9 @@
         <span class="fr">
           <span v-if="DetailList.status =='45'">等待付款</span>
           <span v-if="DetailList.status =='47' || DetailList.status =='48'">等待释放UET</span>
+          <span v-if="DetailList.status =='61'">申诉锁定</span>
           <!--{{DetailList.intervalTime-DetailList.elapsedTime | Date('hh:mm:ss')}}-->
-          <count-down :end-time="DetailList.intervalTime-DetailList.elapsedTime" @callBack="countDownEnd"></count-down>
+          <count-down v-if="DetailList.status !='61'"  :end-time="DetailList.intervalTime-DetailList.elapsedTime" @callBack="countDownEnd"></count-down>
         </span>
       </div>
 
@@ -187,7 +189,7 @@
                      <span class="">{{DetailList.creditAccountTwin}}</span>
               </div>
             </li>
-            <li class="heightauto" v-if="DetailList.debitAccountMerchantTwin == '支付宝' || DetailList.debitAccountMerchantTwin == '微信'">
+            <li class="heightauto" v-if="DetailList.creditAccountMerchantTwin == '支付宝' || DetailList.creditAccountMerchantTwin == '微信'">
               <span class="l-title">付款二维码 : </span>
               <div class="qrcode-box">
                     <img src="~images/qrcode.jpg" :src="DetailList.debitAccountQrCodeUrlTwin"  class="qrcode-img" />
@@ -271,11 +273,18 @@
           this.loading = false;
           console.log('订单详情记录:');
           console.log(res.data);
+          console.log('res.data.status:'+res.data.status);
           if(res.data == '' || res.data == null){
             this.$router.push({name: 'mIndex'});
             return;
           }
+          if(res.data.status =='61'){
+            this.$router.push({name: 'mOrderAppeal',params:{ id: this.$route.params.id}});
+            return;
+          }
+
           this.DetailList = res.data;
+
           console.log('图片列表',res.data.creditProofUrlTwin)
           if(res.data.creditProofUrlTwin && res.data.creditProofUrlTwin.length > 1){
             this.DetailList.creditProofUrlTwin = res.data.creditProofUrlTwin.split(',');

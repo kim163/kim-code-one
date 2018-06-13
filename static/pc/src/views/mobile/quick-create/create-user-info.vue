@@ -29,13 +29,13 @@
 
 <script>
   import {
-    syncUserAndBindRelation
+    checkExistUser
   } from 'api/cashier'
-  import aesutil from '@/util/aesutil';
-  import {$localStorage} from '@/util/storage'
-  import {
-    login
-  } from 'api/show'
+  // import aesutil from '@/util/aesutil';
+  // import {$localStorage} from '@/util/storage'
+  // import {
+  //   login
+  // } from 'api/show'
 
   export default {
     name: "create-user-info",
@@ -55,11 +55,11 @@
         const request = {
           merchantId: this.merchantInfo.merchantId,
           merchantUserName: this.merchantInfo.merchantUserName,
-          notifyUrl: this.merchantInfo.notifyUrl
         }
-        syncUserAndBindRelation(request).then(res => {
+        console.log('checkExistUser',request)
+        checkExistUser(request).then(res => {
           if(res.code === 10000){
-            this.toLogin(res.data.token)
+            // this.toLogin(res.data.token)
             this.$emit('createNow')
           }else if(res.code === 15047){
             this.createError = true
@@ -70,25 +70,25 @@
           toast(err)
         })
       },
-      toLogin(token){  //创建成功之后 自动调用登录接口
-        const request = {
-          type:11,
-          token,
-          merchantId: this.merchantInfo.merchantId.toString()
-        }
-        console.log(request)
-        login(request).then(res => {
-          if(res.code === 10000){
-            $localStorage.set('tokenInfo', JSON.stringify(res.data.tokenVo));
-            $localStorage.set('userData', JSON.stringify(aesutil.encrypt(res.data.userId)))
-            this.$store.dispatch('UPDATE_USERDATA');
-          }else{
-            toast(res.message)
-          }
-        }).catch(err => {
-          toast(err)
-        })
-      },
+      // toLogin(token){  //创建成功之后 自动调用登录接口
+      //   const request = {
+      //     type:11,
+      //     token,
+      //     merchantId: this.merchantInfo.merchantId.toString()
+      //   }
+      //   console.log(request)
+      //   login(request).then(res => {
+      //     if(res.code === 10000){
+      //       $localStorage.set('tokenInfo', JSON.stringify(res.data.tokenVo));
+      //       $localStorage.set('userData', JSON.stringify(aesutil.encrypt(res.data.userId)))
+      //       this.$store.dispatch('UPDATE_USERDATA');
+      //     }else{
+      //       toast(res.message)
+      //     }
+      //   }).catch(err => {
+      //     toast(err)
+      //   })
+      // },
     }
   }
 </script>
