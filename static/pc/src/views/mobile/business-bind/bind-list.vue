@@ -4,14 +4,16 @@
     <div class="header-list">
       <div class="header" v-for="(item,index) in headerList" :key="index">{{item}}</div>
     </div>
-    <transition-group name="list">
-      <div class="info-item" v-for="item in bindList" :key="item.merchantId">
-        <div class="info-detail">{{item.bindUserid}}</div>
-        <div class="info-detail">{{item.merchantName}}</div>
-        <div class="info-detail untie" @click="showConfirmDialog(item.merchantId)">解绑</div>
-      </div>
-    </transition-group>
-
+    <div v-if="showRes">
+      <transition-group name="list" v-if="bindList.length > 0">
+        <div class="info-item" v-for="item in bindList" :key="item.merchantId">
+          <div class="info-detail">{{item.bindUserid}}</div>
+          <div class="info-detail">{{item.merchantName}}</div>
+          <div class="info-detail untie" @click="showConfirmDialog(item.merchantId)">解绑</div>
+        </div>
+      </transition-group>
+      <no-data-tip v-else></no-data-tip>
+    </div>
     <confirm-dialog v-model="showConfirm">
       <div slot="title">温馨提示</div>
       <div slot="content">
@@ -28,6 +30,7 @@
   import {generateTitle} from '@/util/i18n'
   import MobileHeader from 'components/m-header'
   import ConfirmDialog from 'components/confirm'
+  import NoDataTip from 'components/no-data-tip'
   import {mapGetters} from 'vuex'
 
   import {
@@ -46,12 +49,14 @@
         ],
         bindList: [],
         showConfirm: false,
-        itemId: 0
+        itemId: 0,
+        showRes:false
       }
     },
     components: {
       MobileHeader,
-      ConfirmDialog
+      ConfirmDialog,
+      NoDataTip
     },
     computed: {
       ...mapGetters([
@@ -63,6 +68,7 @@
         userMerchantList({userId: this.userId}).then(res => {
           if(res.code === 10000) {
             this.bindList = res.data
+            this.showRes = true
           }else{
             toast(res)
           }
