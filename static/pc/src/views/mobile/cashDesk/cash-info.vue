@@ -8,7 +8,7 @@
       <span class="title">{{$t('cash.amountsPayable')}}</span>
       <span class="detail">
             <span class="red">{{data.amount}} {{data.assetCode}}</span> 折合 <span class="red">{{formatCny(data.amount)}} CNY</span>
-          </span>
+      </span>
     </div>
     <div class="info">
       <span class="title">{{$t('cash.currentExchangeRate')}}</span>
@@ -24,15 +24,13 @@
 <script>
   export default {
     name: "cash-info",
-    data(){
-      return{
-
-      }
+    data() {
+      return {}
     },
-    props:{
-      data:{
-        type:Object,
-        default:{
+    props: {
+      data: {
+        type: Object,
+        default: {
           amount: '',//应付金额
           assetCode: '', //资产代码
           merchantId: '', //商户号
@@ -45,11 +43,9 @@
         }
       }
     },
-    mounted:{
-
-    },
-    methods:{
-      formatCny(data){
+    mounted: {},
+    methods: {
+      formatCny(data) {
         return data * this.data.exchangeRate
       }
     }
@@ -59,14 +55,14 @@
 <style lang="scss" scoped>
   @import "~assets/scss/mobile";
 
-  .cash-info{
+  .cash-info {
     width: 100%;
-    .info{
+    .info {
       padding-left: r(10);
       @include f(15px);
       color: #333333;
       margin-top: r(15);
-      .detail{
+      .detail {
         color: #8F8F8F;
         margin-left: r(10);
       }

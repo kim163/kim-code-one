@@ -9,35 +9,35 @@
         </span>
       </div>
       <cash-info :data="infoData"></cash-info>
-      <router-link :to="initReqData.merchantCallbackurl" class="other-pay">{{$t('cash.otherPay')}}&gt;&gt;</router-link>
+      <router-link :to="infoData.notifyUrl" class="other-pay">{{$t('cash.otherPay')}}&gt;&gt;</router-link>
     </div>
     <transition name="pay-type">
-      <div class="quick-pay" v-show="isBind">
+      <div class="quick-pay" v-show="hasApp">
         <div class="pay-btn">{{$t('cash.payment')}}</div>
-        <div class="pay-btn login-pay" @click="isBind = false">{{$t('cash.loginPay')}}</div>
+        <div class="pay-btn login-pay" @click="hasApp = false">{{$t('cash.loginPay')}}</div>
       </div>
     </transition>
     <transition name="pay-type">
-      <div class="pay-info" v-show="!isBind">
+      <div class="pay-info" v-show="!hasApp">
         <transition name="login-animate">
-          <cash-login v-if="!islogin"></cash-login>
+          <login v-if="!islogin"></login>
         </transition>
         <transition name="pay-info-animate">
           <cash-pay v-if="islogin" @pay="pay"></cash-pay>
         </transition>
       </div>
     </transition>
-    <router-link :to="initReqData.merchantCallbackurl" class="go-back" v-if="!isBind">{{$t('cash.goBack')}}</router-link>
+    <router-link :to="infoData.notifyUrl" class="go-back" v-if="!hasApp">{{$t('cash.goBack')}}</router-link>
 
-    <confirm-dialog v-model="showPayPsdDialog">
-      <div slot="title">{{$t('cash.psdInputPlaceholder')}}</div>
-      <div slot="content">
-        <input type="password" class="pay-psd-input" v-model.trim="payPassword"
-               :placeholder="$t('cash.psdInputPlaceholder')"/>
-      </div>
-      <div slot="leftBtn" class="btn-cancel">{{$t('postPend.cancel')}}</div>
-      <div slot="rightBtn" class="btn-yes" @click="checkPayPassWord()">{{$t('cash.yesBtn')}}</div>
-    </confirm-dialog>
+    <!--<confirm-dialog v-model="showPayPsdDialog">-->
+      <!--<div slot="title">{{$t('cash.psdInputPlaceholder')}}</div>-->
+      <!--<div slot="content">-->
+        <!--<input type="password" class="pay-psd-input" v-model.trim="payPassword"-->
+               <!--:placeholder="$t('cash.psdInputPlaceholder')"/>-->
+      <!--</div>-->
+      <!--<div slot="leftBtn" class="btn-cancel">{{$t('postPend.cancel')}}</div>-->
+      <!--<div slot="rightBtn" class="btn-yes" @click="checkPayPassWord()">{{$t('cash.yesBtn')}}</div>-->
+    <!--</confirm-dialog>-->
   </div>
 </template>
 
@@ -47,7 +47,7 @@
   import ConfirmDialog from 'components/confirm'
   import {generateTitle} from '@/util/i18n'
   import {mapGetters} from 'vuex'
-  import CashLogin from '../login/login-inline'
+  import Login from '../login/login-inline'
   import CashPay from './cash-pay'
   import CashInfo from './cash-info'
   import {
@@ -64,25 +64,25 @@
           exchangeRate: 0, // 汇率
           businessName: '', //商户名
           jiuanOrderid: '',  //久安订单号
+          amount: this.$route.query.amount,//应付金额
+          assetCode: this.$route.query.assetCode, //资产代码
+          merchantId: this.$route.query.merchantId, //商户号
+          merchantOrderid: this.$route.query.merchantOrderid, //商户订单号
+          merchantCallbackurl: this.$route.query.merchantCallbackurl, //商户回调地址
+          sign: this.$route.query.sign, //商户请求签名
+          notifyUrl:this.$route.query.notifyUrl,//返回商户地址
         },
-        initReqData:{ //初始化页面参数
-          amount: '',//应付金额
-          assetCode: '', //资产代码
-          merchantId: '', //商户号
-          merchantOrderid: '', //商户订单号
-          merchantCallbackurl: '', //商户回调地址
-          sign: '', //商户请求签名
-        },
-        isBind: false, //商户是否绑定
+        hasApp: false, //商户是否绑定
         endTime: 0,
         showPayPsdDialog: false,
         payPassword: '',
-        token: ''
+        token: this.$route.query.token,
+        rechargeSuccess:false
       }
     },
     components: {
       MobileHeader,
-      CashLogin,
+      Login,
       CashPay,
       CashInfo,
       CountDown,
@@ -90,31 +90,29 @@
     },
 
     created() {
-      const data = {
-        amount: global.getUrlParam('amount'),
-        merchantOrderid: global.getUrlParam('merchantOrderid'),
-        assetCode: global.getUrlParam('assetCode'),
-        merchantId: global.getUrlParam('merchantId'),
-        merchantCallbackurl: global.getUrlParam('merchantCallbackurl'),
-        sign: global.getUrlParam('sign')
-      }
-      this.token = global.getUrlParam('token')
-      Object.assign(this.initReqData, data)
-      Object.assign(this.infoData, this.initReqData)
+     //判断是否安装app  如果没有  就用授权码登录
     },
     watch: {},
 
     computed: {
       ...mapGetters([
-        "userData",
+        "userId",
         "islogin"
       ]),
     },
     methods: {
       generateTitle,
       init() { //调用初始化接口
-        console.log(this.initReqData)
-        cashierInit(this.initReqData).then(res => {
+        const data = {
+          amount: this.infoData.amount,
+          merchantOrderid: this.infoData.merchantOrderid,
+          assetCode: this.infoData.assetCode,
+          merchantId: this.infoData.merchantId,
+          merchantCallbackurl: this.infoData.merchantCallbackurl,
+          sign: this.infoData.sign,
+        }
+        console.log(data)
+        cashierInit(data).then(res => {
           console.log('cash init res: ', res)
           if(res.code === 10000){
             const data = res.data
@@ -124,9 +122,8 @@
               toast('该订单已超时')
               this.endTime = 0
             }else{
-
+              this.endTime = new Date().getTime() - data.payOrder.createtime
             }
-            this.endTime = new Date().getTime() - data.payOrder.createtime
           }else{
             toast(res.message)
           }
@@ -134,7 +131,7 @@
           toast(err)
         })
       },
-      login(){
+      login(){//用授权码登录
 
       },
       checkPayPassWord() {
@@ -146,14 +143,22 @@
       },
       pay(password) {
         //调用支付接口
+        paymentPay().then(res => {
+          if(res.code === 10000){
+
+          }else{
+            toast(res.message)
+          }
+        }).catch(err => {
+          toast(err)
+        })
       },
       countDownEnd() {
-        console.log('666666')
+        toast('该订单已超时')
       },
     },
     mounted() {
       this.init()
-
     }
   };
 
