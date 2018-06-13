@@ -1,74 +1,76 @@
 <template>
-  <div class="modal fade in" v-show="value">
-    <div class="modal-dialog popup">
-      <div type="button" class="close" @click="$emit('input',false)">
-        <i class="iconfont icon-close"></i>
-      </div>
-      <div class="pop-content">
-        <h2 class="alert-title">{{$t('register.title')}} <span class="fr smalltxt">{{$t('register.hasAccount')}}？ <a class="a-login" @click="goLogin" >{{$t('register.loginNow')}}</a></span></h2>
-        <div class="tab-box">
-          <span v-for="item in registerType" @click="registerItem=item.value" class="s" :class="{active:registerItem==item.value}" :key="item.value">
+  <div class="mobile-register">
+      <m-header>{{$t('register.title')}}</m-header>
+
+      <div class="register-content">
+        <ul class="mobile-navtabs mregister-nav cfx">
+          <li v-for="item in registerType" @click="registerItem=item.value" class="s" :class="{active:registerItem==item.value}" :key="item.value">
             {{generateTitle(item.name)}}
-          </span>
-        </div>
-        <div class="form-box form-box-phone">
-          <div class="form-group" v-if="registerItem=='phone'">
-            <p class="form-subtitle">{{$t('register.inputPhoneNum')}}</p>
+          </li>
+        </ul>
+        <div class="mobile-form-box form-box-phone">
+          <div class="form-group cfx" v-if="registerItem=='phone'">
+            <p class="iconfont icon-mobile"></p>
             <div class="form-input">
+              <label class="form-subtitle">手机号</label>
               <select class="select-country"  v-model="data.areaCode">
                 <option v-for="areacd in areaCodeData" :value="areacd.value" :key="areacd.value" > {{areacd.name}} </option>
               </select>
-              <input type="text" class="ps-input cl-blue fl" v-model="data.phone" :placeholder="$t('register.inputPlaceholder1')" maxlength="20" />
+              <input type="text" class="ps-input ps-input1 mobile-input" v-model="data.phone" :placeholder="$t('register.inputPlaceholder1')" maxlength="20" />
             </div>
 
           </div>
-          <div class="form-group" v-if="registerItem=='email'">
-            <p class="form-subtitle">{{$t('register.inputEmail')}}</p>
+          <div class="form-group cfx" v-if="registerItem=='email'">
+            <p class="iconfont icon-login-email"></p>
             <div class="form-input">
-              <input type="text" class="ps-input" v-model="data.email" :placeholder="$t('register.inputPlaceholder0')"  />
+              <label class="form-subtitle">邮箱</label>
+              <input type="text" class="ps-input ps-input1" v-model="data.email" :placeholder="$t('register.inputPlaceholder0')"  />
             </div>
-
           </div>
-          <div class="form-group">
-            <p class="form-subtitle">{{$t('register.Code')}}</p>
-            <div class="form-input">
-            <input type="text" autocomplete="off" class="ps-input fl inpt-pwd"
+          <div class="form-group cfx">
+            <p class="iconfont icon-verifcode"></p>
+            <div class="form-input  posit-rel">
+              <label class="form-subtitle">{{$t('register.Code')}}</label>
+              <input type="text" autocomplete="off" class="ps-input ps-input1"
                    v-model="data.imageCode" :placeholder="$t('register.inputPlaceholder2')" maxlength="16" />
               <a href="javascript:;" @click.prevent="getCaptcha" class="captcha-code">
                 {{$t('register.sendCode')}}</a>
             </div>
           </div>
-          <div class="form-group">
-            <p class="form-subtitle">{{$t('register.password')}}</p>
-            <div class="form-input">
-            <input ref="pwd" type="password" autocomplete="off" class="ps-input fl inpt-pwd"
+          <div class="form-group cfx">
+            <p class="iconfont icon-password"></p>
+            <div class="form-input posit-rel">
+                <label class="form-subtitle">{{$t('register.password')}}</label>
+                <input ref="regpwd" type="password" autocomplete="off" class="ps-input ps-input1"
                    v-model="data.password" :placeholder="$t('register.inputPlaceholder3')" maxlength="16" />
-            <!--<eyes :dom="$refs.pwd"></eyes>-->
+                <eyes :dom="$refs.regpwd"></eyes>
             </div>
           </div>
-          <div class="form-group">
-            <p class="form-subtitle">{{$t('register.AgainPassword')}}</p>
-            <div class="form-input">
-            <input ref="pwd" type="password" autocomplete="off" class="ps-input fl inpt-pwd"
+          <div class="form-group cfx">
+            <p class="iconfont icon-password"></p>
+            <div class="form-input posit-rel">
+               <label class="form-subtitle again-pwd">{{$t('register.AgainPassword')}}</label>
+               <input ref="regconfpwd" type="password" autocomplete="off" class="ps-input ps-input1"
                    v-model="data.confirmPassword" :placeholder="$t('register.inputPlaceholder4')" maxlength="16" />
-            <!--<eyes :dom="$refs.pwd"></eyes>-->
+               <eyes :dom="$refs.regconfpwd"></eyes>
             </div>
           </div>
-          <div class="agreement">
-            <input type="checkbox" checked>
-            {{$t('register.readAgreenment')}} <a class="a-login">{{$t('register.agreenment')}}</a>
+
+          <input type="submit" class="submit btn btn-block" @click="register" id="submit_user" :value="$t('register.register')">
+          <div class="link-group">
+            <router-link :to="{name:'mobileLogin'}" class="link-register fr">{{$t('register.loginNow')}}</router-link>
           </div>
-          <span class="validate"></span>
-          <input type="submit" class="submit btn btn-block" @click.prevent="register" id="submit_user" :value="$t('register.register')">
         </div>
       </div>
-    </div>
 
   </div>
 </template>
 <script>
   import { show } from 'api'
   import { generateTitle } from '@/util/i18n'
+  import eyes from "components/eyes"
+  import mHeader from "components/m-header"
+  import check from "@/util/RegExp"
 
   export default {
     props: {
@@ -99,27 +101,32 @@
     methods: {
       generateTitle,
       checked() {
-          console.log('test');
-        console.log('test  aaaaaa     999999999999');
           if(this.registerItem =='email'){
-            if (!this.data.email || this.data.email=='')
+            if (!this.data.email || this.data.email==''){
               toast("邮箱地址不允许为空");
-          }else{
-            if (!this.data.phone || this.data.phone=='')
-              toast("手机号不允许为空");
-          }
-
-          if (!this.data.imageCode || this.data.imageCode==''){
-            toast("验证码不能为空");
-          }else{
-            if (!this.data.password || this.data.password=='')
+            }else if (!check.email.test(this.data.email)) {
+              toast("邮箱地址格式不正确");
+            }else if (!this.data.imageCode || this.data.imageCode==''){
+              toast("验证码不能为空");
+            }else if (!this.data.password || this.data.password==''){
               toast("请输入密码");
-            else if (!this.data.confirmPassword || this.data.confirmPassword=='')
+            }else if (!this.data.confirmPassword || this.data.confirmPassword==''){
               toast("请输入确认密码");
-            else {
+            }else {
               return true;
-          }
-
+            }
+          }else{
+            if (!this.data.phone || this.data.phone==''){
+              toast("手机号不允许为空");
+            }else if (!this.data.imageCode || this.data.imageCode==''){
+              toast("验证码不能为空");
+            }else if (!this.data.password || this.data.password==''){
+              toast("请输入密码");
+            }else if (!this.data.confirmPassword || this.data.confirmPassword==''){
+              toast("请输入确认密码");
+            }else {
+              return true;
+            }
           }
       },
       register() {
@@ -139,21 +146,15 @@
         }
         if (!this.checked()) return;
         show.register(this.requestdata).then((res) => {
-          //this.getimg()
-          if (res.success) {
-            if(res.code == '1000'){
-              this.$emit('input', false)
+            if(res.code == 10000){
+              this.$emit('input', false);
               this.$store.dispatch("UPDATE_USERDATA");
-              console.log(JSON.stringify(res.data))
+              console.log('register:', res)
             }else{
               toast(res.message);
             }
-
-          } else {
-            toast(res.message);
-          }
         }).catch(err => {
-          //this.getimg()
+          toast(err.message);
         });
       },
       getCaptcha(e) {
@@ -162,6 +163,8 @@
         if(this.registerItem =='email'){
           if (!this.data.email || this.data.email==''){
             toast("邮箱地址不允许为空");
+          }else if (!check.email.test(this.data.email)) {
+            toast("邮箱地址格式不正确");
           }else{
             this.requestdata={
               email: this.data.email, //true string
@@ -207,30 +210,15 @@
             });
           }
         }
-      },
-      getJsonInfo()  {
-        // 国家
-//        this.$http({
-//          method: 'get',
-//          url: '/country',
-//          data: {
-////            name: 'xiaoming',
-////            info: '12'
-//          }
-//        })
-      },
-      goLogin(e){
-        //alert('emit')
-        this.$emit('input',false);
-        this.$emit('showLogin');
-      },
+      }
 
     },
     components: {
-      //eyes
+      eyes, mHeader
     }
   }
 </script>
 <style lang="scss">
+  @import "~assets/scss/mobile";
 
 </style>

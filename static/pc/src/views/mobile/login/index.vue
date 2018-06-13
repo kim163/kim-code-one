@@ -45,18 +45,16 @@
 
           <input type="button" class="submit btn btn-block" @click="login" id="submit_user" :value="$t('login.logIn')">
           <div class="link-group">
-            <a href="javascript:void(0);" class="forget-btn hide" @click="openFindPWD">{{$t('login.forgotpwd')}}</a>
-            <router-link :to="{name:'mobileLogin'}" class="link-register fr hidden">注册账户</router-link>
+            <a href="javascript:void(0);" class="forget-btn hide">{{$t('login.forgotpwd')}}</a>
+            <router-link :to="{name:'mobileRegister'}" class="link-register fr">注册账户</router-link>
           </div>
         </div>
       </div>
 
-    <forget-password v-show="showPass"  @hide="showPass=false"></forget-password>
   </div>
 </template>
 <script>
   import { show } from 'api'
-  import forgetPassword from "components/password/forget-password"
   import eyes from "components/eyes"
   import mHeader from "components/m-header"
   import {$localStorage, $sessionStorage} from '@/util/storage'
@@ -78,7 +76,6 @@
           {name:"+63", value: "+63" },
           {name:"+86", value: "+86" }
         ],
-        showPass:false,
         data:{
           account:"",
           phone:"",
@@ -98,10 +95,6 @@
     methods:{
       generateTitle,
       ...mapMutations(["SHOW_LOGIN"]),
-      openFindPWD(findType){
-        this.showPass=true;
-        this.$emit('input',false);
-      },
       login() {
         if(!this.check())return;
         if(this.loginItem=='account'){
@@ -207,7 +200,7 @@
 
     },
     components:{
-      forgetPassword, eyes, mHeader
+       eyes, mHeader
     }
   };
 </script>
