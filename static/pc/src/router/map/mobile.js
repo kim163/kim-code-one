@@ -4,6 +4,26 @@
 
 export default [
   {
+    path: "/m/login",
+    name: "mobileLogin",
+    component(resolve){
+      return resolve(require('views/mobile/login'))
+    },
+    meta: {
+      isMobilePage: "mobile-body"
+    }
+  },
+  {
+    path: "/m/register",
+    name: "mobileRegister",
+    component(resolve){
+      return resolve(require('views/mobile/register'))
+    },
+    meta: {
+      isMobilePage: "mobile-body"
+    }
+  },
+  {
     path: "/mh/index",
     name: "mAindex",
     redirect:"/mh/",

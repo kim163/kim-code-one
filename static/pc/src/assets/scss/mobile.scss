@@ -220,6 +220,9 @@ select{
     }
   }
 }
+ul.mregister-nav .s{
+  width: 50%;
+}
 .mobile-form-box{
   padding: 0 r(10) r(50);
   .form-group {
@@ -234,6 +237,9 @@ select{
     @include  f(16px);
     width: 8%;
     float: left;
+    &.icon-verifcode{
+      @include  f(18px);
+    }
   }
   .captcha-code {
     width:r(90);
@@ -253,10 +259,19 @@ select{
     float: left;
     width: 92%;
     .captcha-code{
-      float:right;
+      position: absolute;
+      right: 0;
+      top: 0;
+      display: block;
       color:#555;
-      line-height: r(49);
-      height: r(49);
+      line-height: normal;
+      background: #86A5F8;
+      border-radius: r(3);
+      @include  f(12px);
+      padding:r(10);
+      color: #FFFFFF;
+      text-align: center;
+      width: auto;
     }
   }
   .select-country{
@@ -276,6 +291,9 @@ select{
     display: block;
     width: 20%;
     float: left;
+  }
+  .again-pwd{
+    letter-spacing: -2px;
   }
   .ps-input {
     width: 80%;
