@@ -3,7 +3,7 @@
     <div class="amout-info">
       <div class="title">UET钱包支付</div>
       <div class="amount-detail">
-        <div class="blance">{{$t('cash.balance')}}：<balance></balance></div>
+        <div class="blance">{{$t('cash.balance')}}：<balance @getBalance="getUserBalance"></balance></div>
         <div class="amount-status" :class="amountStatus ? 'green' : 'red'">
           {{ amountStatus ? $t('cash.enough') : $t('cash.notEnough')}}
         </div>
@@ -26,10 +26,17 @@
       return{
         amountStatus: true, //余额状态
         payPassword:'',
+        userBalance:0,
       }
     },
     components:{
       Balance
+    },
+    props:{
+      payInfo:{
+        type:Object,
+        default:{}
+      }
     },
     methods:{
       payment(){
@@ -37,6 +44,12 @@
           this.$emit('pay',this.payPassword)
         }else{
           toast('请输入支付密码')
+        }
+      },
+      getUserBalance(data){
+        this.userBalance = data
+        if(Number(this.payInfo.amount) > this.userBalance){
+          this.amountStatus = false
         }
       }
     }
@@ -83,7 +96,7 @@
         color: $white;
         @include f(18px);
         margin-top: r(20);
-        &.disable{
+        &.disabled{
           background: #E4E4E4;
           color: #787876;
         }

@@ -4,6 +4,10 @@
       <span class="title">{{$t('cash.orderNumber')}}</span>
       <span class="detail">{{data.jiuanOrderid}}</span>
     </div>
+    <div class="info" v-if="isSuccess">
+      <span class="title">订单时间</span>
+      <span class="detail">{{data.createtime | Date('YYYY-MM-dd h:mm:ss')}}</span>
+    </div>
     <div class="info">
       <span class="title">{{$t('cash.amountsPayable')}}</span>
       <span class="detail">
@@ -13,6 +17,10 @@
     <div class="info">
       <span class="title">{{$t('cash.currentExchangeRate')}}</span>
       <span class="detail">100{{data.assetCode}} = {{formatCny(100)}}CNY</span>
+    </div>
+    <div class="info" v-if="isSuccess">
+      <span class="title">交易内容</span>
+      <span class="detail">商户账户充值</span>
     </div>
     <div class="info">
       <span class="title">{{$t('cash.BusinessName')}}</span>
@@ -41,6 +49,10 @@
           businessName: '', //商户名
           jiuanOrderid: '',  //久安订单号
         }
+      },
+      isSuccess:{
+        type:Boolean,
+        default:false
       }
     },
     mounted: {},

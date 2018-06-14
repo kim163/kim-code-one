@@ -1,43 +1,38 @@
 <template>
   <div class="cash-main">
-    <mobile-header>{{$t('cash.title')}}</mobile-header>
-    <div class="cash-details">
-      <div class="trade-time">
-        {{$t('cash.realTime')}}
-        <span class="red fr">
-          <count-down :end-time="endTime" @callBack="countDownEnd"></count-down>
+    <mobile-header :back="goBack">{{$t('cash.title')}}</mobile-header>
+    <template v-if="!cashSuccess">
+      <div class="cash-details">
+        <div class="trade-time">
+          {{$t('cash.realTime')}}
+          <span class="red fr">
+          <count-down :end-time="endTime" end-text="订单已超时" @callBack="countDownEnd"></count-down>
         </span>
+        </div>
+        <cash-info :data="infoData"></cash-info>
+        <router-link :to="infoData.notifyUrl" class="other-pay">{{$t('cash.otherPay')}}&gt;&gt;</router-link>
       </div>
-      <cash-info :data="infoData"></cash-info>
-      <router-link :to="infoData.notifyUrl" class="other-pay">{{$t('cash.otherPay')}}&gt;&gt;</router-link>
-    </div>
-    <transition name="pay-type">
-      <div class="quick-pay" v-show="hasApp">
-        <div class="pay-btn">{{$t('cash.payment')}}</div>
-        <div class="pay-btn login-pay" @click="hasApp = false">{{$t('cash.loginPay')}}</div>
-      </div>
-    </transition>
-    <transition name="pay-type">
-      <div class="pay-info" v-show="!hasApp">
-        <transition name="login-animate">
-          <login v-if="!islogin"></login>
-        </transition>
-        <transition name="pay-info-animate">
-          <cash-pay v-if="islogin" @pay="pay"></cash-pay>
-        </transition>
-      </div>
-    </transition>
-    <router-link :to="infoData.notifyUrl" class="go-back" v-if="!hasApp">{{$t('cash.goBack')}}</router-link>
-
-    <!--<confirm-dialog v-model="showPayPsdDialog">-->
-      <!--<div slot="title">{{$t('cash.psdInputPlaceholder')}}</div>-->
-      <!--<div slot="content">-->
-        <!--<input type="password" class="pay-psd-input" v-model.trim="payPassword"-->
-               <!--:placeholder="$t('cash.psdInputPlaceholder')"/>-->
-      <!--</div>-->
-      <!--<div slot="leftBtn" class="btn-cancel">{{$t('postPend.cancel')}}</div>-->
-      <!--<div slot="rightBtn" class="btn-yes" @click="checkPayPassWord()">{{$t('cash.yesBtn')}}</div>-->
-    <!--</confirm-dialog>-->
+      <transition name="pay-type">
+        <div class="quick-pay" v-show="hasApp">
+          <div class="pay-btn">{{$t('cash.payment')}}</div>
+          <div class="pay-btn login-pay" @click="hasApp = false">{{$t('cash.loginPay')}}</div>
+        </div>
+      </transition>
+      <transition name="pay-type">
+        <div class="pay-info" v-show="!hasApp">
+          <transition name="login-animate">
+            <login v-if="!islogin"></login>
+          </transition>
+          <transition name="pay-info-animate">
+            <cash-pay v-if="islogin" :pay-info="infoData" @pay="pay"></cash-pay>
+          </transition>
+        </div>
+      </transition>
+      <router-link :to="infoData.notifyUrl" class="go-back" v-if="!hasApp">{{$t('cash.goBack')}}</router-link>
+    </template>
+    <template v-else>
+      <cash-success :pay-info="infoData"></cash-success>
+    </template>
   </div>
 </template>
 
@@ -50,6 +45,12 @@
   import Login from '../login/login-inline'
   import CashPay from './cash-pay'
   import CashInfo from './cash-info'
+  import CashSuccess from './cash-success'
+  import merchantCfg from '../../misc/merchant-config'
+
+  import aesutil from '@/util/aesutil';
+  import {$localStorage} from '@/util/storage'
+
   import {
     cashierInit,
     loginH5,
@@ -71,13 +72,14 @@
           merchantCallbackurl: this.$route.query.merchantCallbackurl, //商户回调地址
           sign: this.$route.query.sign, //商户请求签名
           notifyUrl:this.$route.query.notifyUrl,//返回商户地址
+          customerAddress: '', //钱包地址
+          createtime:0,//订单时间
         },
-        hasApp: false, //商户是否绑定
-        endTime: 0,
-        showPayPsdDialog: false,
+        hasApp: false, //商户是否安装app
+        endTime: 0, //订单结束倒计时
         payPassword: '',
-        token: this.$route.query.token,
-        rechargeSuccess:false
+        token: this.$route.query.token,//授权token
+        cashSuccess:false  //充值成功
       }
     },
     components: {
@@ -86,22 +88,31 @@
       CashPay,
       CashInfo,
       CountDown,
-      ConfirmDialog
+      ConfirmDialog,
+      CashSuccess
     },
 
     created() {
      //判断是否安装app  如果没有  就用授权码登录
+      this.infoData.businessName = merchantCfg.getDeail(this.infoData.merchantId).name
+      // this.checkInstallApp()
+      if(!this.islogin){
+        this.tokenLogin()
+      }
     },
     watch: {},
 
     computed: {
       ...mapGetters([
-        "userId",
+        "userData",
         "islogin"
       ]),
     },
     methods: {
       generateTitle,
+      goBack(){
+        window.location.href = this.infoData.notifyUrl
+      },
       init() { //调用初始化接口
         const data = {
           amount: this.infoData.amount,
@@ -111,18 +122,18 @@
           merchantCallbackurl: this.infoData.merchantCallbackurl,
           sign: this.infoData.sign,
         }
-        console.log(data)
         cashierInit(data).then(res => {
           console.log('cash init res: ', res)
           if(res.code === 10000){
             const data = res.data
             this.infoData.jiuanOrderid = data.payOrder.jiuanOrderid
             this.infoData.exchangeRate = data.payOrder.rate
-            if(new Date().getTime() - data.payOrder.createtime > 3600000){
-              toast('该订单已超时')
+            this.infoData.createtime = data.payOrder.createtime
+            const nowTime = _.now()
+            if(nowTime > _(data.payOrder.createtime).add(3600000)){
               this.endTime = 0
             }else{
-              this.endTime = new Date().getTime() - data.payOrder.createtime
+              this.endTime = _(data.payOrder.createtime).add(3600000) - nowTime
             }
           }else{
             toast(res.message)
@@ -131,8 +142,50 @@
           toast(err)
         })
       },
-      login(){//用授权码登录
+      checkInstallApp(){
+        var timeout, t = 1000, hasApp = true;
+        setTimeout(function () {
+          if (hasApp) {
+            alert('安装了app');
+          } else {
+            alert('未安装app');
+          }
+          document.body.removeChild(ifr);
+        }, 2000)
 
+        var t1 = Date.now();
+        var ifr = document.createElement("iframe");
+        ifr.setAttribute('src', 'jiuanapp');
+        ifr.setAttribute('style', 'display:none');
+        document.body.appendChild(ifr);
+        timeout = setTimeout(function () {
+          var t2 = Date.now();
+          if (!t1 || t2 - t1 < t + 100) {
+            hasApp = false;
+          }
+        }, t);
+      },
+      tokenLogin(){//用授权码登录
+        const request = {
+          type:11,
+          token: this.token,
+          merchantId: this.infoData.merchantId
+        }
+        console.log(request)
+
+        login(request).then(res => {
+          if(res.code === 10000){
+            $localStorage.set('tokenInfo', JSON.stringify(res.data.tokenVo));
+            $localStorage.set('userData', JSON.stringify(aesutil.encrypt(res.data.userId)));
+            this.$store.dispatch('CHECK_ONLINE', true);
+            this.$store.dispatch('UPDATE_TOKEN_INFO', res.data.tokenVo);
+            this.$store.commit('SET_USERDATA',res.data);
+            this.$router.replace({name:'mIndex'})
+          }else{
+            toast(res.message)
+          }
+        }).catch(err => {
+        })
       },
       checkPayPassWord() {
         if (this.payPassword === '') {
@@ -143,9 +196,18 @@
       },
       pay(password) {
         //调用支付接口
-        paymentPay().then(res => {
+        const request = {
+          jiuanOrderid: this.infoData.jiuanOrderid,
+          userId: this.userId,
+          payPassword:password,
+          assetCode: this.infoData.amount,
+          customerAddress: this.infoData.customerAddress,
+          securityToken: this.token
+        }
+        console.log(request)
+        paymentPay(request).then(res => {
           if(res.code === 10000){
-
+            this.cashSuccess = true
           }else{
             toast(res.message)
           }
