@@ -149,15 +149,15 @@
         })
       },
       checkInstallApp(){
-        var timeout, t = 1000, hasApp = true;
-        setTimeout(function () {
+        let timeout, t = 1000, hasApp = true;
+        setTimeout(() => {
           this.hasApp = hasApp
           this.showPaymentLoading = false
           document.body.removeChild(ifr);
         }, 2000)
 
-        var t1 = Date.now();
-        var ifr = document.createElement("iframe");
+        const t1 = Date.now();
+        const ifr = document.createElement("iframe");
         ifr.setAttribute('src', 'scheme="jiuanapp"');
         ifr.setAttribute('style', 'display:none');
         document.body.appendChild(ifr);
