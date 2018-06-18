@@ -55,7 +55,6 @@
         default:false
       }
     },
-    mounted: {},
     methods: {
       formatCny(data) {
         return data * this.data.exchangeRate

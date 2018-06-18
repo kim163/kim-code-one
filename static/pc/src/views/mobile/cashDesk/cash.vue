@@ -12,23 +12,28 @@
         <cash-info :data="infoData"></cash-info>
         <router-link :to="infoData.notifyUrl" class="other-pay">{{$t('cash.otherPay')}}&gt;&gt;</router-link>
       </div>
-      <transition name="pay-type">
-        <div class="quick-pay" v-show="hasApp">
-          <div class="pay-btn">{{$t('cash.payment')}}</div>
-          <div class="pay-btn login-pay" @click="hasApp = false">{{$t('cash.loginPay')}}</div>
-        </div>
-      </transition>
-      <transition name="pay-type">
-        <div class="pay-info" v-show="!hasApp">
-          <transition name="login-animate">
-            <login v-if="!islogin"></login>
-          </transition>
-          <transition name="pay-info-animate">
-            <cash-pay v-if="islogin" :pay-info="infoData" @pay="pay"></cash-pay>
-          </transition>
-        </div>
-      </transition>
-      <router-link :to="infoData.notifyUrl" class="go-back" v-if="!hasApp">{{$t('cash.goBack')}}</router-link>
+      <div class="payment-loading" v-if="showPaymentLoading">
+        加载中...
+      </div>
+      <div v-if="!showPaymentLoading">
+        <transition name="pay-type">
+          <div class="quick-pay" v-show="hasApp">
+            <div class="pay-btn">{{$t('cash.payment')}}</div>
+            <div class="pay-btn login-pay" @click="hasApp = false">{{$t('cash.loginPay')}}</div>
+          </div>
+        </transition>
+        <transition name="pay-type">
+          <div class="pay-info" v-show="!hasApp">
+            <transition name="login-animate">
+              <login v-if="!islogin"></login>
+            </transition>
+            <transition name="pay-info-animate">
+              <cash-pay v-if="islogin" :pay-info="infoData" @pay="pay"></cash-pay>
+            </transition>
+          </div>
+        </transition>
+        <router-link :to="infoData.notifyUrl" class="go-back" v-if="!hasApp">{{$t('cash.goBack')}}</router-link>
+      </div>
     </template>
     <template v-else>
       <cash-success :pay-info="infoData"></cash-success>
@@ -79,7 +84,8 @@
         endTime: 0, //订单结束倒计时
         payPassword: '',
         token: this.$route.query.token,//授权token
-        cashSuccess:false  //充值成功
+        cashSuccess:false,  //充值成功
+        showPaymentLoading: true
       }
     },
     components: {
@@ -96,7 +102,7 @@
      //判断是否安装app  如果没有  就用授权码登录
       this.infoData.businessName = merchantCfg.getDeail(this.infoData.merchantId).name
       this.checkInstallApp()
-      if(!this.islogin){
+      if(!this.islogin && this.token != ''){
         this.tokenLogin()
       }
     },
@@ -145,11 +151,8 @@
       checkInstallApp(){
         var timeout, t = 1000, hasApp = true;
         setTimeout(function () {
-          if (hasApp) {
-            alert('安装了app');
-          } else {
-            alert('未安装app');
-          }
+          this.hasApp = hasApp
+          this.showPaymentLoading = false
           document.body.removeChild(ifr);
         }, 2000)
 
@@ -341,5 +344,17 @@
   .btn-yes {
     background: #4982FF;
     color: $white;
+  }
+  .payment-loading{
+    text-align: center;
+    padding-top: r(30);
+    animation: looming 2s infinite;
+  }
+  @keyframes looming {
+    from {
+      opacity: 0;
+    }to{
+      opacity: 1;
+    }
   }
 </style>
