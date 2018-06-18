@@ -95,7 +95,7 @@
     created() {
      //判断是否安装app  如果没有  就用授权码登录
       this.infoData.businessName = merchantCfg.getDeail(this.infoData.merchantId).name
-      // this.checkInstallApp()
+      this.checkInstallApp()
       if(!this.islogin){
         this.tokenLogin()
       }
@@ -155,7 +155,7 @@
 
         var t1 = Date.now();
         var ifr = document.createElement("iframe");
-        ifr.setAttribute('src', 'jiuanapp');
+        ifr.setAttribute('src', 'scheme="jiuanapp"');
         ifr.setAttribute('style', 'display:none');
         document.body.appendChild(ifr);
         timeout = setTimeout(function () {
