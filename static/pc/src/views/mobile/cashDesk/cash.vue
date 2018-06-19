@@ -161,7 +161,8 @@
 
         const t1 = Date.now();
         const ifr = document.createElement("iframe");
-        ifr.setAttribute('src', 'scheme="jiuanapp"');
+        // ifr.setAttribute('src', 'scheme="jiuanapp"');
+        ifr.setAttribute('src', 'jiuanapp');
         ifr.setAttribute('style', 'display:none');
         document.body.appendChild(ifr);
         timeout = setTimeout(function () {
