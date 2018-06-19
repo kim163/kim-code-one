@@ -10,7 +10,8 @@
         </span>
         </div>
         <cash-info :data="infoData"></cash-info>
-        <router-link :to="infoData.notifyUrl" class="other-pay">{{$t('cash.otherPay')}}&gt;&gt; 安装app：{{hasApp}}</router-link>
+        <!--<router-link :to="infoData.notifyUrl" class="other-pay">{{$t('cash.otherPay')}}&gt;&gt; 安装app：{{hasApp}}</router-link>-->
+        <div class="other-pay" @click="goApp()">{{$t('cash.otherPay')}}&gt;&gt; 安装app：{{hasApp}}</div>
       </div>
       <div class="payment-loading" v-if="showPaymentLoading">
         加载中...
@@ -86,7 +87,7 @@
         hasApp: false, //商户是否安装app
         endTime: 0, //订单结束倒计时
         payPassword: '',
-        token: this.$route.query.token,//授权token
+        token: this.$route.query.token || '',//授权token
         cashSuccess: false,  //充值成功
         showPaymentLoading: true
       }
@@ -104,7 +105,14 @@
     created() {
       //判断是否安装app  如果没有  就用授权码登录
       this.infoData.businessName = merchantCfg.getDeail(this.infoData.merchantId).name
+      var ifr = document.createElement('iframe');
+      ifr.src = 'scheme="jiuanapp"';
+      ifr.style.display = 'none';
       this.checkInstallApp()
+      document.body.appendChild(ifr);
+      setTimeout(function() {
+        document.body.removeChild(ifr);
+      }, 2000);
       if (!this.islogin && this.token != '') {
         this.tokenLogin()
       }
@@ -138,6 +146,9 @@
             this.infoData.jiuanOrderid = data.payOrder.jiuanOrderid
             this.infoData.exchangeRate = data.payOrder.rate
             this.infoData.createtime = data.payOrder.createtime
+            if(data.payOrder.status === 1){
+              this.cashSuccess = true
+            }
             const nowTime = _.now()
             if (nowTime > _(data.payOrder.createtime).add(3600000)) {
               this.endTime = 0
@@ -152,25 +163,45 @@
         })
       },
       checkInstallApp() {
-        let timeout, t = 1000, hasApp = true;
-        setTimeout(() => {
-          this.hasApp = hasApp
-          this.showPaymentLoading = false
-          document.body.removeChild(ifr);
-        }, 2000)
-
-        const t1 = Date.now();
-        const ifr = document.createElement("iframe");
+        // let timeout, t = 2000, hasApp = true;
+        // setTimeout(() => {
+        //   this.hasApp = hasApp
+        //   this.showPaymentLoading = false
+        //   document.body.removeChild(ifr);
+        // }, 2000)
+        //
+        // const t1 = Date.now();
+        // const ifr = document.createElement("iframe");
         // ifr.setAttribute('src', 'scheme="jiuanapp"');
-        ifr.setAttribute('src', 'jiuanapp');
-        ifr.setAttribute('style', 'display:none');
-        document.body.appendChild(ifr);
-        timeout = setTimeout(function () {
-          var t2 = Date.now();
-          if (!t1 || t2 - t1 < t + 100) {
-            hasApp = false;
+        // // ifr.setAttribute('src', 'jiuanapp');
+        // ifr.setAttribute('style', 'display:none');
+        // document.body.appendChild(ifr);
+        // timeout = setTimeout(function () {
+        //   var t2 = Date.now();
+        //   if (!t1 || t2 - t1 < t + 100) {
+        //     hasApp = false;
+        //   }
+        // }, t);
+        var _clickTime = +(new Date());
+
+        //启动间隔20ms运行的定时器，并检测累计消耗时间是否超过3000ms，超过则结束
+        var _count = 0, intHandle;
+        intHandle = setInterval(() => {
+          _count++;
+          var elsTime = +(new Date()) - _clickTime;
+          if (_count>=100 || elsTime > 3000 ) {
+            clearInterval(intHandle);
+            this.check(elsTime);
           }
-        }, t);
+        }, 20);
+      },
+      check(elsTime) {
+        if ( elsTime > 3000 || document.hidden || document.webkitHidden) {
+          this.hasApp = true
+        } else {
+          this.hasApp = false
+        }
+        this.showPaymentLoading = false
       },
       tokenLogin() {//用授权码登录
         const request = {
@@ -224,6 +255,42 @@
       },
       countDownEnd() {
         //toast('该订单已超时')
+      },
+      goToDownLoad(status){
+        if(status === 0){
+          window.location.href='https://9anapp.com/app/9anapp.html'
+        }
+      },
+      goApp(){
+        // let _downLoadUrl = '';
+        // let _schema = '';
+        // let _protocal = '';
+        // if (_.isIos()) {
+        //   _downLoadUrl = 'https://9anapp.com/app/9anapp.html';
+        //   _schema = '?promoter';
+        //   _protocal = 'jiuanapp';
+        // } else if (_.isAndroid()) {
+        //   _downLoadUrl = 'https://9anapp.com/app/9anapp.html';
+        //   _schema = 'promotion';
+        //   _protocal = 'jiuanapp';
+        // }
+        // _.openAppFun().loadSchema({
+        //   // 通过NN打开某个链接
+        //   schema: _schema,
+        //   //schema头协议，实际情况填写
+        //   protocal: _protocal,
+        //   //发起唤醒请求后，会等待loadWaiting时间，超时则跳转到failUrl，默认3000ms
+        //   loadWaiting:"2000",
+        //   //唤起失败时的跳转链接，默认跳转到下载页
+        //   failUrl: _downLoadUrl,
+        //   // apk信息,请根据实际情况填写
+        //   // apkInfo:{
+        //   //   PKG: "com.jiuan.wallet",
+        //   //   CATEGORY: "android.intent.category.DEFAULT",
+        //   //   ACTION: "android.intent.action.VIEW"
+        //   // }
+        // });
+        _.openApp('jiuanapp://',this.goToDownLoad)
       },
     },
     mounted() {
