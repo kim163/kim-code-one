@@ -15,25 +15,27 @@
       <div class="payment-loading" v-if="showPaymentLoading">
         加载中...
       </div>
-      <div v-if="!showPaymentLoading">
-        <transition name="pay-type">
-          <div class="quick-pay" v-show="hasApp">
-            <div class="pay-btn">{{$t('cash.payment')}}</div>
-            <div class="pay-btn login-pay" @click="hasApp = false">{{$t('cash.loginPay')}}</div>
-          </div>
-        </transition>
-        <transition name="pay-type">
-          <div class="pay-info" v-show="!hasApp">
-            <transition name="login-animate">
-              <login v-if="!islogin"></login>
-            </transition>
-            <transition name="pay-info-animate">
-              <cash-pay v-if="islogin" :pay-info="infoData" @pay="pay"></cash-pay>
-            </transition>
-          </div>
-        </transition>
-        <router-link :to="infoData.notifyUrl" class="go-back" v-if="!hasApp">{{$t('cash.goBack')}}</router-link>
-      </div>
+      <transition name="login-animate">
+        <div v-if="!showPaymentLoading">
+          <transition name="pay-type">
+            <div class="quick-pay" v-show="hasApp">
+              <div class="pay-btn">{{$t('cash.payment')}}</div>
+              <div class="pay-btn login-pay" @click="hasApp = false">{{$t('cash.loginPay')}}</div>
+            </div>
+          </transition>
+          <transition name="pay-type">
+            <div class="pay-info" v-show="!hasApp">
+              <transition name="login-animate">
+                <login v-if="!islogin"></login>
+              </transition>
+              <transition name="pay-info-animate">
+                <cash-pay v-if="islogin" :pay-info="infoData" @pay="pay"></cash-pay>
+              </transition>
+            </div>
+          </transition>
+          <router-link :to="infoData.notifyUrl" class="go-back" v-if="!hasApp">{{$t('cash.goBack')}}</router-link>
+        </div>
+      </transition>
     </template>
     <template v-else>
       <cash-success :pay-info="infoData"></cash-success>
@@ -77,15 +79,15 @@
           merchantOrderid: this.$route.query.merchantOrderid || '', //商户订单号
           merchantCallbackurl: this.$route.query.merchantCallbackurl || '', //商户回调地址
           sign: this.$route.query.sign || '', //商户请求签名
-          notifyUrl:this.$route.query.notifyUrl || '',//返回商户地址
+          notifyUrl: this.$route.query.notifyUrl || '',//返回商户地址
           customerAddress: '', //钱包地址
-          createtime:0,//订单时间
+          createtime: 0,//订单时间
         },
         hasApp: false, //商户是否安装app
         endTime: 0, //订单结束倒计时
         payPassword: '',
         token: this.$route.query.token,//授权token
-        cashSuccess:false,  //充值成功
+        cashSuccess: false,  //充值成功
         showPaymentLoading: true
       }
     },
@@ -100,10 +102,10 @@
     },
 
     created() {
-     //判断是否安装app  如果没有  就用授权码登录
+      //判断是否安装app  如果没有  就用授权码登录
       this.infoData.businessName = merchantCfg.getDeail(this.infoData.merchantId).name
       this.checkInstallApp()
-      if(!this.islogin && this.token != ''){
+      if (!this.islogin && this.token != '') {
         this.tokenLogin()
       }
     },
@@ -117,7 +119,7 @@
     },
     methods: {
       generateTitle,
-      goBack(){
+      goBack() {
         window.location.href = this.infoData.notifyUrl
       },
       init() { //调用初始化接口
@@ -131,25 +133,25 @@
         }
         cashierInit(data).then(res => {
           console.log('cash init res: ', res)
-          if(res.code === 10000){
+          if (res.code === 10000) {
             const data = res.data
             this.infoData.jiuanOrderid = data.payOrder.jiuanOrderid
             this.infoData.exchangeRate = data.payOrder.rate
             this.infoData.createtime = data.payOrder.createtime
             const nowTime = _.now()
-            if(nowTime > _(data.payOrder.createtime).add(3600000)){
+            if (nowTime > _(data.payOrder.createtime).add(3600000)) {
               this.endTime = 0
-            }else{
+            } else {
               this.endTime = _(data.payOrder.createtime).add(3600000) - nowTime
             }
-          }else{
+          } else {
             toast(res.message)
           }
         }).catch(err => {
           toast(err)
         })
       },
-      checkInstallApp(){
+      checkInstallApp() {
         let timeout, t = 1000, hasApp = true;
         setTimeout(() => {
           this.hasApp = hasApp
@@ -169,23 +171,23 @@
           }
         }, t);
       },
-      tokenLogin(){//用授权码登录
+      tokenLogin() {//用授权码登录
         const request = {
-          type:11,
+          type: 11,
           token: this.token,
           merchantId: this.infoData.merchantId
         }
         console.log(request)
 
         login(request).then(res => {
-          if(res.code === 10000){
+          if (res.code === 10000) {
             $localStorage.set('tokenInfo', JSON.stringify(res.data.tokenVo));
             $localStorage.set('userData', JSON.stringify(aesutil.encrypt(res.data.userId)));
             this.$store.dispatch('CHECK_ONLINE', true);
             this.$store.dispatch('UPDATE_TOKEN_INFO', res.data.tokenVo);
-            this.$store.commit('SET_USERDATA',res.data);
-            this.$router.replace({name:'mIndex'})
-          }else{
+            this.$store.commit('SET_USERDATA', res.data);
+            this.$router.replace({name: 'mIndex'})
+          } else {
             toast(res.message)
           }
         }).catch(err => {
@@ -203,16 +205,16 @@
         const request = {
           jiuanOrderid: this.infoData.jiuanOrderid,
           userId: this.userId,
-          payPassword:password,
+          payPassword: password,
           assetCode: this.infoData.amount,
           customerAddress: this.infoData.customerAddress,
           securityToken: this.token
         }
         console.log(request)
         paymentPay(request).then(res => {
-          if(res.code === 10000){
+          if (res.code === 10000) {
             this.cashSuccess = true
-          }else{
+          } else {
             toast(res.message)
           }
         }).catch(err => {
@@ -346,15 +348,18 @@
     background: #4982FF;
     color: $white;
   }
-  .payment-loading{
+
+  .payment-loading {
     text-align: center;
     padding-top: r(30);
     animation: looming 2s infinite;
   }
+
   @keyframes looming {
     from {
       opacity: 0;
-    }to{
+    }
+    to {
       opacity: 1;
     }
   }
