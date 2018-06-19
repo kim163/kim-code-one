@@ -14,7 +14,8 @@ export default {
     accountBalance:'账户余额',
     transactionRecord:'交易记录',
     userAccount: '账号',
-    busineList: '我的商户列表'
+    busineList: '我的商户列表',
+    onlineService: '在线客服'
   },
   login: {
     title: '欢迎回来',

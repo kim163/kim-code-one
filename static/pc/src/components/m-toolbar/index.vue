@@ -20,14 +20,20 @@
               {{$t('navbar.accountBalance')}} <span class="fr"><balance></balance></span>
             </div>
             <router-link :to="{name:'mBindList'}" class="tool-item-href"><i class="iconfont icon-busine-list"></i>{{$t('navbar.busineList')}}</router-link>
+            <a class="tool-item-href" target="_blank" :href="live800Url">
+              <i class="iconfont icon-online-service"></i>{{$t('navbar.onlineService')}}
+            </a>
             <div class="tool-item-href border-bot" @click="$store.dispatch('LOGIN_OUT')">
               <i class="iconfont icon-log-out"></i>{{$t('navbar.logOut')}}
             </div>
           </div>
           <div v-else @click="myValue=false">
             <router-link :to="{name:'mobileLogin'}" class="tool-item-href"><i class="iconfont icon-user-login"></i>{{$t('login.iWantLogin')}}</router-link>
-            <router-link :to="{name:'mobileRegister'}" class="tool-item-href border-bot"><i class="iconfont icon-user-register"></i>{{$t('login.iWantRegister')}}
+            <router-link :to="{name:'mobileRegister'}" class="tool-item-href"><i class="iconfont icon-user-register"></i>{{$t('login.iWantRegister')}}
             </router-link>
+            <a class="tool-item-href border-bot" target="_blank" :href="live800Url">
+              <i class="iconfont icon-online-service"></i>{{$t('navbar.onlineService')}}
+            </a>
           </div>
           <div class="tool-item-href border-bot hidden" @click="handleSetLanguage" > {{$t('navbar.languageSel')}} </div>
 
@@ -37,6 +43,7 @@
   </transition>
 </template>
 <script>
+  import { show } from 'api';
   import {SETTING} from "@/assets/data"
   import {mapGetters} from 'vuex'
   import Balance from 'components/balance'
@@ -44,8 +51,8 @@
     data() {
       return {
         SETTING,
-        myValue: false
-
+        myValue: false,
+        live800Url: ''
       }
     },
     props: ["value"],
@@ -71,6 +78,22 @@
         this.$i18n.locale === 'zh' ? this.$i18n.locale = 'en' : this.$i18n.locale = 'zh';
         this.$store.dispatch("SET_LANGUAGE", this.$i18n.locale);
       },
+
+      getLive800Url(){
+        show.getLive800Url({}).then(res => {
+          if (res.code == 10000) {
+            this.live800Url = res.data.url;
+          }else{
+            toast(res.message);
+          }
+        }).catch(err => {
+          toast(err.message);
+        })
+      }
+
+    },
+    created(){
+      this.getLive800Url();
     }
   }
 </script>
@@ -113,6 +136,7 @@
         .iconfont {
           @include f(18px);
           margin-right: r(10);
+          color: #ABABAB;
         }
         span{
           color: #787876;

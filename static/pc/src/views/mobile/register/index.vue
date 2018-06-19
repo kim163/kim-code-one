@@ -57,7 +57,7 @@
           </div>
 
           <input type="submit" class="submit btn btn-block" @click="register" id="submit_user" :value="$t('register.register')">
-          <div class="link-group">
+          <div class="link-group cfx">
             <router-link :to="{name:'mobileLogin'}" class="link-register fr">{{$t('register.loginNow')}}</router-link>
           </div>
         </div>
@@ -71,6 +71,7 @@
   import eyes from "components/eyes"
   import mHeader from "components/m-header"
   import check from "@/util/RegExp"
+  import {mapGetters,mapActions,mapMutations} from 'vuex'
 
   export default {
     props: {
@@ -100,6 +101,7 @@
     },
     methods: {
       generateTitle,
+      ...mapMutations(["SHOW_LOGIN"]),
       checked() {
           if(this.registerItem =='email'){
             if (!this.data.email || this.data.email==''){
@@ -145,11 +147,21 @@
           }
         }
         if (!this.checked()) return;
-        show.register(this.requestdata).then((res) => {
+        show.register(this.requestdata).then(res => {
             if(res.code == 10000){
-              this.$emit('input', false);
-              this.$store.dispatch("UPDATE_USERDATA");
-              console.log('register:', res)
+              console.log('register success :', res);
+
+              this.$emit('input',false);
+              this.SHOW_LOGIN(false);
+
+              $localStorage.set('tokenInfo', JSON.stringify(res.data.tokenVo));
+              $localStorage.set('userData', JSON.stringify(aesutil.encrypt(res.data.userId)));
+              this.$store.dispatch('CHECK_ONLINE', true);
+              this.$store.dispatch('UPDATE_TOKEN_INFO', res.data.tokenVo);
+              this.$store.dispatch('INIT_INFO');
+              this.$store.commit('SET_USERDATA',res.data);
+
+              this.$router.replace({name: 'mIndex'});
             }else{
               toast(res.message);
             }
