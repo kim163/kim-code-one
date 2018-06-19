@@ -60,6 +60,7 @@
     cashierInit,
     loginH5,
     paymentPay,
+    // cashierInitv2,
   } from 'api/cashier'
   import {login} from 'api/show'
 
