@@ -70,13 +70,13 @@
           exchangeRate: 0, // 汇率
           businessName: '', //商户名
           jiuanOrderid: '',  //久安订单号
-          amount: this.$route.query.amount,//应付金额
-          assetCode: this.$route.query.assetCode, //资产代码
-          merchantId: this.$route.query.merchantId, //商户号
-          merchantOrderid: this.$route.query.merchantOrderid, //商户订单号
-          merchantCallbackurl: this.$route.query.merchantCallbackurl, //商户回调地址
-          sign: this.$route.query.sign, //商户请求签名
-          notifyUrl:this.$route.query.notifyUrl,//返回商户地址
+          amount: this.$route.query.amount || '',//应付金额
+          assetCode: this.$route.query.assetCode || '', //资产代码
+          merchantId: this.$route.query.merchantId || '', //商户号
+          merchantOrderid: this.$route.query.merchantOrderid || '', //商户订单号
+          merchantCallbackurl: this.$route.query.merchantCallbackurl || '', //商户回调地址
+          sign: this.$route.query.sign || '', //商户请求签名
+          notifyUrl:this.$route.query.notifyUrl || '',//返回商户地址
           customerAddress: '', //钱包地址
           createtime:0,//订单时间
         },
@@ -219,7 +219,7 @@
         })
       },
       countDownEnd() {
-        toast('该订单已超时')
+        //toast('该订单已超时')
       },
     },
     mounted() {
