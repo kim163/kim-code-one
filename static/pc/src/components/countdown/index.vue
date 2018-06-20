@@ -55,6 +55,7 @@
         min = min < 10 ? "0" + min : min;
         sec = sec < 10 ? "0" + sec : sec;
         let format = '';
+        debugger
         if(day > 0){
           format = `${day}天${hour}小时${min}分${sec}秒`;
         }
@@ -64,7 +65,7 @@
         if(day <= 0 && hour <= 0){
           format =`${min}分${sec}秒`;
         }
-        if(min <= 0 && sec > 0){
+        if(min <= 0 && sec >= 0){
           format =`${sec}秒`;
         }
         this.content = format;

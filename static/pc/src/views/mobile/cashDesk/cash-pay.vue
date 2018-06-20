@@ -52,7 +52,7 @@
       },
       getUserBalance(data){
         this.userBalance = data
-        if(Number(this.payInfo.amount) > this.userBalance){
+        if(Number(this.payInfo.coinAmount) > this.userBalance){
           this.amountStatus = false
         }
       }
