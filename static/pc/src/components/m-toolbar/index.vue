@@ -23,6 +23,9 @@
             <a class="tool-item-href" target="_blank" :href="live800Url">
               <i class="iconfont icon-online-service"></i>{{$t('navbar.onlineService')}}
             </a>
+            <a class="tool-item-href" target="_blank" :href="SETTING.appUrl">
+              <i class="iconfont icon-download"></i>{{$t('navbar.juanApp')}}
+            </a>
             <div class="tool-item-href border-bot" @click="$store.dispatch('LOGIN_OUT')">
               <i class="iconfont icon-log-out"></i>{{$t('navbar.logOut')}}
             </div>
@@ -33,6 +36,9 @@
             </router-link>
             <a class="tool-item-href border-bot" target="_blank" :href="live800Url">
               <i class="iconfont icon-online-service"></i>{{$t('navbar.onlineService')}}
+            </a>
+            <a class="tool-item-href" target="_blank" :href="SETTING.appUrl">
+              <i class="iconfont icon-download"></i>{{$t('navbar.juanApp')}}
             </a>
           </div>
           <div class="tool-item-href border-bot hidden" @click="handleSetLanguage" > {{$t('navbar.languageSel')}} </div>

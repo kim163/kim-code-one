@@ -15,7 +15,8 @@ export default {
     transactionRecord:'交易记录',
     userAccount: '账号',
     busineList: '我的商户列表',
-    onlineService: '在线客服'
+    onlineService: '在线客服',
+    juanApp: '久安APP'
   },
   login: {
     title: '欢迎回来',

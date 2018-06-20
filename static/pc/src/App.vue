@@ -21,13 +21,19 @@
       return {
         transitionName:"slide",
         mobileDevice:"0",
+        client: null,
+        connectMsg: [],
+        connectUrl: '',
+        connectUser: '',
+        connectPsw: '',
+        detailNormal: '',
+        detailOver: '',
+        detailAppeal: '',
+
       }
     },
     computed:{
-      ...mapGetters(["userData"]),
-      ...mapGetters([
-        'userId'
-      ]),
+      ...mapGetters(["userData", "userId", "islogin"]),
       isExclude(){
         return this.$route.meta.cache ? "" : this.$route.name;
       }
@@ -46,101 +52,102 @@
             element.className = classN;
           }
         }
-      }
-    },
-    watch:{
-      "$route"(to,from){
-        this.dwMobilePage();
-//        document.title=to.meta.title||to.meta.headName||"久安钱包";
-      }
-    },
-    components:{
-
-    },
-    mounted() {
-      let client = null
-      let userId=this.userId;
-      let connectMsg = [];
-      let connectUrl='' ;
-      let connectUser= '';
-      let connectPsw= '';
-
+      },
+      initWsData(){
         console.log('this.userData===================')
         console.log(this.userData.configVos)
-        _.forEach(this.userData.configVos, function(value, key) {
+        _.forEach(this.userData.configVos, (value, key) => {
           if(value.type == 1002){
-            connectMsg = value.value.split(',');
-             connectUrl= connectMsg[0];
-             connectUser= connectMsg[1];
-             connectPsw= connectMsg[2];
+            this.connectMsg = value.value.split(',');
+            this.connectUrl= this.connectMsg[0];
+            this.connectUser= this.connectMsg[1];
+            this.connectPsw= this.connectMsg[2];
           }
         });
-      let detailNormal='/orderDetail/';
-      let detailOver='/orderDetailOver/';
-      let detailAppeal='/orderDetailAppeal/';
-      if(_.isMobile()){
-         detailNormal='/m/order/';
-         detailOver='/m/orderOver/';
-         detailAppeal='/m/orderAppeal/';
-      }
-      console.log('userId===',this.userId)
-      let stompSuccessCallback = function (frame) {
+        this.detailNormal='/orderDetail/';
+        this.detailOver='/orderDetailOver/';
+        this.detailAppeal='/orderDetailAppeal/';
+        if(_.isMobile()){
+          this.detailNormal='/m/order/';
+          this.detailOver='/m/orderOver/';
+          this.detailAppeal='/m/orderAppeal/';
+        }
+      },
+      stompSuccessCallback(frame) {
         console.log('STOMP: Connection successful')
-        client.subscribe('/exchange/walletCustomOperation/'+userId, function (data) {
-//          console.log('接收 message：')
-//          console.log(JSON.parse(aesutil.decrypt(data.body)));
+        this.client.subscribe('/exchange/walletCustomOperation/'+this.userId, (data) => {
           let msgData=JSON.parse(aesutil.decrypt(data.body));
           console.log('msgData.type：'+msgData.type)
           if(msgData.type == 5){
             // C2C_ORDER_ONLINE(5, "C2C订单发起人在线检测"),
-            msgData.text=userId;
-            client.send('/exchange/walletCustomOnline/-0', {priority: 9}, aesutil.encrypt(JSON.stringify(msgData)))
+            msgData.text= this.userId;
+            this.client.send('/exchange/walletCustomOnline/-0', {priority: 9}, aesutil.encrypt(JSON.stringify(msgData)))
           }else if(msgData.type == 1 || msgData.type == 2){
             // C2C_ORDER_PLACE(1, "C2C下单"),
             //  C2C_ORDER_PAY(2, "C2C订单支付完成"),
             toast(msgData.describe)
-            window.location.href= detailNormal + msgData.text;
+            window.location.href= this.detailNormal + msgData.text;
             //console.log('状态1： 进入下单详情，订单的id是'+msgData.text);
           }else if(msgData.type == 3){
             //  C2C_ORDER_CANCEL(3, "C2C订单取消"),
             toast(msgData.describe)
-            window.location.href= detailOver +msgData.text;
+            window.location.href= this.detailOver +msgData.text;
           }else if(msgData.type == 4 ){
             //   C2C_ORDER_COMPLETE(4, "C2C订单完成"),
             toast(msgData.describe)
-            window.location.href= detailOver +msgData.text;
+            window.location.href= this.detailOver +msgData.text;
           }else if(msgData.type == 11){
             //  C2C_ORDER_APPEAL(11, "C2C申诉");
             toast(msgData.describe)
-            window.location.href=detailAppeal + msgData.text;
+            window.location.href=this.detailAppeal + msgData.text;
             //console.log(msgData);
           }else{
             toast(msgData.describe)
             //console.log(msgData);
           }
         })
-      }
-
-      var stompFailureCallback = function (error) {
+      },
+      stompFailureCallback(error) {
         console.log('STOMP: ' , error)
-        if (client && client.ws.readyState === client.ws.CONNECTING) {
+        if (this.client && this.client.ws.readyState === this.client.ws.CONNECTING) {
           return
         }
-        if (client.ws.readyState === client.ws.OPEN) {
+        if (this.client.ws.readyState === this.client.ws.OPEN) {
           return
         }
         setTimeout(stompConnect, 10000)
         console.log('STOMP: Reconecting in 10 seconds')
-      }
-      function stompConnect () {
+      },
+      stompConnect () {
         console.log('STOMP: Attempting connection')
-        let ws = new WebSocket(connectUrl);
-        client = Stomp.over(ws);
-        client.heartbeat.outgoing = 30000;
-        client.heartbeat.incoming = 30000;
-        client.connect(connectUser, connectPsw, stompSuccessCallback, stompFailureCallback)
+        let ws = new WebSocket(this.connectUrl);
+        this.client = Stomp.over(ws);
+        this.client.heartbeat.outgoing = 30000;
+        this.client.heartbeat.incoming = 30000;
+        this.client.connect(this.connectUser, this.connectPsw, this.stompSuccessCallback, this.stompFailureCallback);
       }
-      stompConnect()
+
+    },
+    watch:{
+      "$route"(to,from){
+        this.dwMobilePage();
+//        document.title=to.meta.title||to.meta.headName||"久安钱包";
+      },
+      islogin(val) {
+        if (val) {
+          this.initWsData();
+          this.stompConnect();
+        }
+      }
+    },
+    components:{
+
+    },
+    mounted() {
+      if (this.islogin) {
+        this.initWsData();
+        this.stompConnect();
+      }
 
     }
   }

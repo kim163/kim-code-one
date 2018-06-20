@@ -15,7 +15,8 @@ export default {
     transactionRecord:'Transaction Record',
     userAccount: 'Account',
     busineList: 'My business list',
-    onlineService: 'online service'
+    onlineService: 'Online service',
+    juanApp: 'Juan APP'
   },
   login: {
     title: 'Welcome back',
