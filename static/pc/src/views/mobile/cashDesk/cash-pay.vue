@@ -12,7 +12,7 @@
     <div class="pay-password">
       <div class="title">{{$t('cash.payPassWord')}}:</div>
       <input type="password" class="input-password" v-model.trim="payPassword" :placeholder="$t('cash.psdInputPlaceholder')"/>
-      <div class="pay-btn" :class="{disabled: !amountStatus}" @click="amountStatus ? payment() : ''">{{$t('cash.confirmPayment')}}</div>
+      <div class="pay-btn" :class="{disabled: !amountStatus || !payBtn}" @click="amountStatus && payBtn ? payment() : ''">{{$t('cash.confirmPayment')}}</div>
       <router-link :to="{name: 'mIndex'}" class="go-tran">{{$t('cash.goTran')}}</router-link>
     </div>
   </div>
@@ -36,6 +36,10 @@
       payInfo:{
         type:Object,
         default:{}
+      },
+      payBtn:{
+        type:Boolean,
+        default:true
       }
     },
     methods:{

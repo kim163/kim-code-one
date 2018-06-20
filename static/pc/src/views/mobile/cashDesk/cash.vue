@@ -11,7 +11,7 @@
         </div>
         <cash-info :data="infoData"></cash-info>
         <!--<router-link :to="infoData.notifyUrl" class="other-pay">{{$t('cash.otherPay')}}&gt;&gt; 安装app：{{hasApp}}</router-link>-->
-        <div class="other-pay" @click="goApp()">{{$t('cash.otherPay')}}&gt;&gt; 安装app：{{hasApp}}</div>
+        <div class="other-pay" @click="goApp()">{{$t('cash.otherPay')}}&gt;&gt;</div>
       </div>
       <div class="payment-loading" v-if="showPaymentLoading">
         加载中...
@@ -30,7 +30,7 @@
                 <login v-if="!islogin"></login>
               </transition>
               <transition name="pay-info-animate">
-                <cash-pay v-if="islogin" :pay-info="infoData" @pay="pay"></cash-pay>
+                <cash-pay v-if="islogin" :pay-info="infoData" :pay-btn="payBtnStatus" @pay="pay"></cash-pay>
               </transition>
             </div>
           </transition>
@@ -63,7 +63,7 @@
     cashierInit,
     loginH5,
     paymentPay,
-    // cashierInitv2,
+    getOrderStatus,
   } from 'api/cashier'
   import {login} from 'api/show'
 
@@ -75,6 +75,7 @@
           businessName: '', //商户名
           jiuanOrderid: '',  //久安订单号
           amount: this.$route.query.amount || '',//应付金额
+          coinAmount:'', //对应uet金额
           assetCode: this.$route.query.assetCode || '', //资产代码
           merchantId: this.$route.query.merchantId || '', //商户号
           merchantOrderid: this.$route.query.merchantOrderid || '', //商户订单号
@@ -87,9 +88,17 @@
         hasApp: false, //商户是否安装app
         endTime: 0, //订单结束倒计时
         payPassword: '',
+        payBtnStatus: true, //确定付款按钮状态
         token: this.$route.query.token || '',//授权token
         cashSuccess: false,  //充值成功
         showPaymentLoading: true
+      }
+    },
+    watch:{
+      islogin(){
+        if(this.islogin){
+          this.infoData.customerAddress = this.userData.accountChainVos[0].address
+        }
       }
     },
     components: {
@@ -116,13 +125,13 @@
       if (!this.islogin && this.token != '') {
         this.tokenLogin()
       }
+      this.infoData.customerAddress = this.userData.accountChainVos[0].address
     },
-    watch: {},
-
     computed: {
       ...mapGetters([
         "userData",
-        "islogin"
+        "islogin",
+        "userId"
       ]),
     },
     methods: {
@@ -144,23 +153,45 @@
           if (res.code === 10000) {
             const data = res.data
             this.infoData.jiuanOrderid = data.payOrder.jiuanOrderid
-            this.infoData.exchangeRate = data.payOrder.rate
+            this.infoData.exchangeRate = data.payOrder.exchangeRate
             this.infoData.createtime = data.payOrder.createtime
+            this.infoData.coinAmount = data.payOrder.coinAmount
             if(data.payOrder.status === 1){
               this.cashSuccess = true
             }
             const nowTime = _.now()
             if (nowTime > _(data.payOrder.createtime).add(3600000)) {
               this.endTime = 0
+              this.payBtnStatus = false
             } else {
-              this.endTime = _(data.payOrder.createtime).add(3600000) - nowTime
+              this.endTime = _.chain(data.payOrder.createtime).add(3600000).subtract(nowTime).value()
             }
+            this.getOrderStatus()
           } else {
             toast(res.message)
           }
         }).catch(err => {
           toast(err)
         })
+      },
+      getOrderStatus(){
+        const data = {
+          jiuanOrderid: this.infoData.jiuanOrderid,
+          merchantId: this.infoData.merchantId,
+          merchantOrderid: this.infoData.merchantOrderid
+        }
+        this.timer = setInterval(() => {
+          console.log('getOrderStatus',data)
+            getOrderStatus(data).then(res => {
+              if(res.code === 10000){
+                this.cashSuccess = res.data
+              }else{
+                toast(res.message)
+              }
+            }).catch(err => {
+              toast(err)
+            })
+        },3000)
       },
       checkInstallApp() {
         // let timeout, t = 2000, hasApp = true;
@@ -217,8 +248,8 @@
             $localStorage.set('userData', JSON.stringify(aesutil.encrypt(res.data.userId)));
             this.$store.dispatch('CHECK_ONLINE', true);
             this.$store.dispatch('UPDATE_TOKEN_INFO', res.data.tokenVo);
-            this.$store.commit('SET_USERDATA', res.data);
-            this.$router.replace({name: 'mIndex'})
+            this.$store.dispatch('INIT_INFO');
+            this.$store.commit('SET_USERDATA',res.data);
           } else {
             toast(res.message)
           }
@@ -238,9 +269,9 @@
           jiuanOrderid: this.infoData.jiuanOrderid,
           userId: this.userId,
           payPassword: password,
-          assetCode: this.infoData.amount,
+          assetCode: this.infoData.assetCode,
           customerAddress: this.infoData.customerAddress,
-          securityToken: this.token
+          amount: this.infoData.amount,
         }
         console.log(request)
         paymentPay(request).then(res => {
@@ -254,7 +285,8 @@
         })
       },
       countDownEnd() {
-        //toast('该订单已超时')
+        toast('该订单已超时')
+        this.payBtnStatus = false
       },
       goToDownLoad(status){
         if(status === 0){
@@ -290,7 +322,7 @@
         //   //   ACTION: "android.intent.action.VIEW"
         //   // }
         // });
-        _.openApp('jiuanapp://',this.goToDownLoad)
+        _.openApp('taobao://',this.goToDownLoad)
       },
     },
     mounted() {
