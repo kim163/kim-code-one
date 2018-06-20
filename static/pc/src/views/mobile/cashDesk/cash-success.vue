@@ -5,7 +5,7 @@
       <div class="tip-text">恭喜您，充值成功！</div>
     </div>
     <div class="cash-info">
-      <cash-info :data="payInfo"></cash-info>
+      <cash-info :data="payInfo" :isSuccess="true"></cash-info>
     </div>
     <router-link class="go-back" :to="payInfo.notifyUrl">返回商户页面</router-link>
   </div>

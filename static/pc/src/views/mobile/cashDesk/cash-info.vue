@@ -6,12 +6,12 @@
     </div>
     <div class="info" v-if="isSuccess">
       <span class="title">订单时间</span>
-      <span class="detail">{{data.createtime | Date('YYYY-MM-dd h:mm:ss')}}</span>
+      <span class="detail">{{data.createtime | Date('yyyy-MM-dd h:mm:ss')}}</span>
     </div>
     <div class="info">
       <span class="title">{{$t('cash.amountsPayable')}}</span>
       <span class="detail">
-            <span class="red">{{data.amount}} {{data.assetCode}}</span> 折合 <span class="red">{{formatCny(data.amount)}} CNY</span>
+            <span class="red">{{data.coinAmount}} {{data.assetCode}}</span> 折合 <span class="red">{{data.amount}} CNY</span>
       </span>
     </div>
     <div class="info">
@@ -57,7 +57,7 @@
     },
     methods: {
       formatCny(data) {
-        return data * this.data.exchangeRate
+        return data / this.data.exchangeRate
       }
     }
   }
