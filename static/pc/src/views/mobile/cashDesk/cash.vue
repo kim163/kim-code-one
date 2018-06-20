@@ -160,11 +160,13 @@
               this.cashSuccess = true
             }
             const nowTime = _.now()
+            console.log(nowTime,data.payOrder.createtime)
             if (nowTime > _(data.payOrder.createtime).add(3600000)) {
               this.endTime = 0
               this.payBtnStatus = false
             } else {
-              this.endTime = _.chain(data.payOrder.createtime).add(3600000).subtract(nowTime).value()
+              const endTime = _.chain(data.payOrder.createtime).add(3600000).subtract(nowTime).value()
+              this.endTime = endTime > 3600000 ? 3600000 : endTime
             }
             this.getOrderStatus()
           } else {
@@ -181,7 +183,6 @@
           merchantOrderid: this.infoData.merchantOrderid
         }
         this.timer = setInterval(() => {
-          console.log('getOrderStatus',data)
             getOrderStatus(data).then(res => {
               if(res.code === 10000){
                 this.cashSuccess = res.data
@@ -322,7 +323,7 @@
         //   //   ACTION: "android.intent.action.VIEW"
         //   // }
         // });
-        _.openApp('taobao://',this.goToDownLoad)
+        _.openApp('weixin://',this.goToDownLoad)
       },
     },
     mounted() {

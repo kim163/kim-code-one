@@ -69,6 +69,7 @@ _.mixin(
     isWeChat(){
       return browser.versions.weChat
     },
+
     openApp(openUrl, callback){
       //检查app是否打开
       function checkOpen(cb){
