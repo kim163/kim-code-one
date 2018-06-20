@@ -288,6 +288,7 @@
       countDownEnd() {
         toast('该订单已超时')
         this.payBtnStatus = false
+        clearInterval(this.timer)
       },
       goToDownLoad(status){
         if(status === 0){
