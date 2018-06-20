@@ -10,8 +10,8 @@
         </span>
         </div>
         <cash-info :data="infoData"></cash-info>
-        <!--<router-link :to="infoData.notifyUrl" class="other-pay">{{$t('cash.otherPay')}}&gt;&gt; 安装app：{{hasApp}}</router-link>-->
-        <div class="other-pay" @click="goApp()">{{$t('cash.otherPay')}}&gt;&gt;</div>
+        <router-link :to="infoData.notifyUrl" class="other-pay">{{$t('cash.otherPay')}}&gt;&gt;</router-link>
+        <!--<div class="other-pay" @click="goApp()">{{$t('cash.otherPay')}}&gt;&gt; 安装app：{{hasApp}}</div>-->
       </div>
       <div class="payment-loading" v-if="showPaymentLoading">
         加载中...
