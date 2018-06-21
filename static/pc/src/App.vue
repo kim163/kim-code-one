@@ -28,8 +28,7 @@
         connectPsw: '',
         detailNormal: '',
         detailOver: '',
-        detailAppeal: '',
-
+        detailAppeal: ''
       }
     },
     computed:{

@@ -27,8 +27,7 @@
       <span class="login-line"></span>
       <a href="javascript:void(0);" @click="$store.dispatch('LOGIN_OUT')" class="btn-other">{{$t('navbar.logOut')}}</a>
     </div>
-    <v-login v-if="!islogin" v-model="showLoginDialog" @show="showLoginDialog=true"
-             v-on:refreshbizlines="showLoginDialog=true"></v-login>
+    <v-login v-if="!islogin" v-model="showLoginDialog"></v-login>
     <v-register @showLogin="showLogin" v-if="!islogin" v-model="showRegisterDialog"></v-register>
 
   </div>
@@ -50,11 +49,9 @@
     },
     methods: {
       showLogin() {
-        console.log('事件通讯成功了')
         if (!this.showLoginDialog) {
-          this.showLoginDialog = 'true';
+          this.showLoginDialog = true;
         }
-
       },
 
     },

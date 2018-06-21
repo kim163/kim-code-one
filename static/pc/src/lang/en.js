@@ -110,7 +110,8 @@ export default {
     totalValue: 'Total value',
     transferNamephd: 'Please enter the transfer accounts Account Name',
     ownPendOrder: 'Can not buy your own pending order',
-
+    remainBuy:'Remaining buy',
+    remainSell: 'Remaining sell'
   },
   transactionRecord: {
     tranPending: 'Transaction Pending',

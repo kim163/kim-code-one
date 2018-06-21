@@ -15,10 +15,6 @@
           <div class="form-group" v-if="registerItem=='phone'">
             <p class="form-subtitle">{{$t('register.inputPhoneNum')}}</p>
             <div class="form-input">
-              <!--<label class="select-country" id="select-country" country_id="+86" @click="getJsonInfo">-->
-                <!--中国 +86-->
-                <!--<a href="javascript:void(0) " class="arrow"></a>-->
-              <!--</label>-->
               <select class="select-country"  v-model="data.areaCode">
                 <option v-for="areacd in areaCodeData" :value="areacd.value" :key="areacd.value" > {{areacd.name}} </option>
               </select>
@@ -36,27 +32,26 @@
           <div class="form-group">
             <p class="form-subtitle">{{$t('register.Code')}}</p>
             <div class="form-input">
-            <input ref="pwd" type="text" autocomplete="off" class="ps-input fl inpt-pwd"
+            <input ref="code" type="text" autocomplete="off" class="ps-input fl inpt-pwd"
                    v-model="data.imageCode" :placeholder="$t('register.inputPlaceholder2')" maxlength="16" />
               <a href="javascript:;" @click.prevent="getCaptcha" class="captcha-code">
                 {{$t('register.sendCode')}}</a>
-            <!--<eyes :dom="$refs.pwd"></eyes>-->
             </div>
           </div>
           <div class="form-group">
             <p class="form-subtitle">{{$t('register.password')}}</p>
-            <div class="form-input">
-            <input ref="pwd" type="password" autocomplete="off" class="ps-input fl inpt-pwd"
+            <div class="form-input posit-rel">
+            <input ref="regconfpwd" type="password" autocomplete="off" class="ps-input fl inpt-pwd"
                    v-model="data.password" :placeholder="$t('register.inputPlaceholder3')" maxlength="16" />
-            <!--<eyes :dom="$refs.pwd"></eyes>-->
+            <eyes :dom="$refs.regconfpwd"></eyes>
             </div>
           </div>
           <div class="form-group">
             <p class="form-subtitle">{{$t('register.AgainPassword')}}</p>
-            <div class="form-input">
-            <input ref="pwd" type="password" autocomplete="off" class="ps-input fl inpt-pwd"
+            <div class="form-input posit-rel">
+            <input ref="regpwd" type="password" autocomplete="off" class="ps-input fl inpt-pwd"
                    v-model="data.confirmPassword" :placeholder="$t('register.inputPlaceholder4')" maxlength="16" />
-            <!--<eyes :dom="$refs.pwd"></eyes>-->
+            <eyes :dom="$refs.regpwd"></eyes>
             </div>
           </div>
           <!--<div class="form-group">-->
@@ -81,8 +76,10 @@
 <script>
   import { show } from 'api'
   import { generateTitle } from '@/util/i18n'
-  import axios from 'axios'
-  import vLogin from "components/auth/login"
+  import eyes from "components/eyes"
+  import check from "@/util/RegExp"
+  import {mapGetters,mapActions,mapMutations} from 'vuex'
+  import {$localStorage, $sessionStorage} from '@/util/storage'
 
   export default {
     props: {
@@ -112,27 +109,35 @@
     },
     methods: {
       generateTitle,
+      ...mapMutations(["SHOW_LOGIN"]),
       checked() {
-          if(this.registerItem =='email'){
-            if (!this.data.email || this.data.email=='')
-              toast("邮箱地址不允许为空");
-          }else{
-            if (!this.data.phone || this.data.phone=='')
-              toast("手机号不允许为空");
-          }
-
-          if (!this.data.imageCode || this.data.imageCode==''){
+        if(this.registerItem =='email'){
+          if (!this.data.email || this.data.email==''){
+            toast("邮箱地址不允许为空");
+          }else if (!check.email.test(this.data.email)) {
+            toast("邮箱地址格式不正确");
+          }else if (!this.data.imageCode || this.data.imageCode==''){
             toast("验证码不能为空");
-          }else{
-            if (!this.data.password || this.data.password=='')
-              toast("请输入密码");
-            else if (!this.data.confirmPassword || this.data.confirmPassword=='')
-              toast("请输入确认密码");
-            else {
-              return true;
+          }else if (!this.data.password || this.data.password==''){
+            toast("请输入密码");
+          }else if (!this.data.confirmPassword || this.data.confirmPassword==''){
+            toast("请输入确认密码");
+          }else {
+            return true;
           }
-
+        }else{
+          if (!this.data.phone || this.data.phone==''){
+            toast("手机号不允许为空");
+          }else if (!this.data.imageCode || this.data.imageCode==''){
+            toast("验证码不能为空");
+          }else if (!this.data.password || this.data.password==''){
+            toast("请输入密码");
+          }else if (!this.data.confirmPassword || this.data.confirmPassword==''){
+            toast("请输入确认密码");
+          }else {
+            return true;
           }
+        }
       },
       register() {
         if(this.registerItem =='email'){
@@ -151,21 +156,21 @@
         }
         if (!this.checked()) return;
         show.register(this.requestdata).then((res) => {
-          //this.getimg()
-          if (res.success) {
-            if(res.code == '1000'){
-              this.$emit('input', false)
-              this.$store.dispatch("UPDATE_USERDATA");
-              console.log(JSON.stringify(res.data))
+            if(res.code == 10000){
+              this.$emit('input',false);
+              this.SHOW_LOGIN(false);
+
+              let {rquest} = this.$route.query;
+              $localStorage.set('tokenInfo', JSON.stringify(res.data.tokenVo));
+              $localStorage.set('userData', JSON.stringify(aesutil.encrypt(res.data.userId)))
+              this.$store.dispatch('UPDATE_USERDATA');
+
+              this.$router.push({path:rquest});
             }else{
               toast(res.message);
             }
-
-          } else {
-            toast(res.message);
-          }
         }).catch(err => {
-          //this.getimg()
+          toast(err.message);
         });
       },
       getCaptcha(e) {
@@ -239,7 +244,7 @@
 
     },
     components: {
-      //eyes
+      eyes
     }
   }
 </script>

@@ -28,7 +28,7 @@
                    </p>
 
                    <p class="item">0.01 CNY</p>
-                   <p class="item quantity"> {{item.amount}} UET </p>
+                   <p class="item quantity"> {{item.balance}} UET </p>
                    <p class="item">
                      <span v-if="item.accountTypeTwin === 1" class="iconfont icon-pay-alipay"></span>
                      <span v-else-if="item.accountTypeTwin === 2" class="iconfont icon-pay-wechat" ></span>

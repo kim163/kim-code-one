@@ -23,6 +23,8 @@ npm run build
 > &nbsp;&nbsp;&nbsp;&nbsp;  build.sh <br><br>
 > &nbsp;&nbsp;  Win 版：<br>
 > &nbsp;&nbsp;&nbsp;&nbsp;  build.bat
+> <br><br>
+> 注意事项：推送代码到服务器需要先把跟目录下面的 pwd.txt 文件复制到 C 盘根目录下；并且安装好 cwRsyncServer 简称小青蛙工具，配置好环境变量，使 rsync 在命令行中可以运行。做好这两步才能正常推送打包后的代码到服务器哦。
 
 # 6. 推荐的开发工具：开发神器 WebStorm
 
@@ -40,4 +42,6 @@ npm run build
 
 # Creators 
 > Anne  &nbsp;&nbsp;
-> Clover
+> Clover  &nbsp;&nbsp;
+> Polo   &nbsp;&nbsp;
+> Lukas

@@ -144,6 +144,10 @@
           margin-right: r(10);
           color: #ABABAB;
         }
+        i.icon-download{
+          @include f(20px);
+          margin-right: r(8);
+        }
         span{
           color: #787876;
         }
