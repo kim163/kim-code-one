@@ -228,16 +228,13 @@
 
               </li>
             </ul>
-          <div class="input-box bottom-keyboard">
-              <input type="text" class="my-input"  v-model="myMessage">
-              <span class="btn-send" @click="addAppealDetail">发送</span>
-          </div>
+
         </div>
 
       </div>
 
     </div>
-
+     <chatEntrance></chatEntrance>
   </div>
 </template>
 
@@ -249,6 +246,7 @@
   import {mapGetters,mapActions,mapMutations} from 'vuex'
   import Clipboard from 'clipboard';
 
+  import chatEntrance from '../chatroom/chatEntrance'
   export default {
     data() {
       return {
@@ -404,7 +402,8 @@
       }
     },
     components: {
-      mHeader
+      mHeader,
+      chatEntrance
     }
   };
 
@@ -609,5 +608,28 @@
   .msg-details{
     padding:r(10);
     word-break: break-all;
+  }
+  .chatroom{
+    width: r(50);
+    height: r(50);
+    background-color: #fff;
+    position: fixed;
+    right: 0;
+    top: r(600);
+    border-radius: 50%;
+    background: url("../../../assets/images/chatbg.png")no-repeat;
+    background-size: 100%;
+    img{
+      padding-top: r(7);
+      display: block;
+      width: r(20);
+      height: r(20);
+      margin: 0 auto;
+    }
+    .chatroom_num{
+      font-size: r(12);
+      color: #4982FF;
+      line-height: r(12);
+    }
   }
 </style>

@@ -234,7 +234,6 @@
   }
   }
 
-
   .btn-group{
     padding:r(5) r(15) r(10);
   .btn {
@@ -273,5 +272,28 @@
   }
   .icon-pay-alipay{
     color:#03A9F3;
+  }
+  .chatroom{
+    width: r(50);
+    height: r(50);
+    background-color: #fff;
+    position: fixed;
+    right: 0;
+    top: r(600);
+    border-radius: 50%;
+    background: url("../../../assets/images/chatbg.png")no-repeat;
+    background-size: 100%;
+    img{
+      padding-top: r(7);
+      display: block;
+      width: r(20);
+      height: r(20);
+      margin: 0 auto;
+    }
+    .chatroom_num{
+      font-size: r(12);
+      color: #4982FF;
+      line-height: r(12);
+    }
   }
 </style>

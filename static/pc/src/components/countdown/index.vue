@@ -64,7 +64,7 @@
         if(day <= 0 && hour <= 0){
           format =`${min}分${sec}秒`;
         }
-        if(min <= 0 && sec > 0){
+        if(min <= 0 && sec >= 0){
           format =`${sec}秒`;
         }
         this.content = format;

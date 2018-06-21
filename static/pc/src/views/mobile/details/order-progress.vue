@@ -4,7 +4,6 @@
     <div class="m-order-details" v-if="DetailList.credit == userId">
       <div class="trade-time-bar">
         <span class="c-blue">买入</span>
-
         <span class="fr">
           <span v-if="DetailList.status =='45'">等待付款</span>
           <span v-if="DetailList.status =='47'">等待释放UET</span>
@@ -228,6 +227,13 @@
       </div>
 
     </div>
+    <div class="chatroom" @click="goChatroom()">
+      <img src="../../../assets/images/chat.png" alt="">
+      <span class="chatroom_num"></span>
+    </div>
+    <transition name="toolSlideRight">
+      <chat v-if="chatState" class="chatWindow"></chat>
+    </transition>
 
   </div>
 </template>
@@ -237,10 +243,11 @@
   import CountDown from 'components/countdown'
   import BigImg  from 'components/bigImg'
   import { generateTitle } from '@/util/i18n'
-  import { transaction } from 'api'
+  import { transaction,chatWith } from 'api'
   import {mapGetters,mapActions,mapMutations} from 'vuex'
   import Clipboard from 'clipboard';
-
+  import ChatEntrance from '../chatroom/chatEntrance'
+  import chat from '../chatroom/chat'
   export default {
     data() {
       return {
@@ -256,7 +263,8 @@
           debitName:'' // 交易买方
         },
         showImg:false,
-        imgSrc: ''
+        imgSrc: '',
+        chatState:''
       };
     },
     //props: ['pagedata'],
@@ -380,8 +388,28 @@
         toast(res.message);
         this.loading = false;
       },
+      goChatroom(){
+        //先获取订单号
+
+        const gameID = this.$route.params.id;
+       //
+        let params ={
+          groupId : gameID,
+          founderId: this.$store.state.userData.userId,
+          type:1,
+          founderNickname: this.$store.state.userData.nickname
+        }
+        chatWith.createChatGroup(params).then(res=>{
+           if(res.code ===10000){
+             this.chatState = true
+           }else {
+              toast(res.message)
+           }
+        }).catch(res=>{
+          toast(res.message)
+        })
+      },
       countDownEnd() {
-        console.log('倒计时结束')
         this.fetchData();
       },
       copy() {
@@ -406,6 +434,7 @@
         console.log('关闭预览');
         this.showImg = false;
       },
+
     },
     beforecreate(){
     },
@@ -425,6 +454,8 @@
     components: {
       mHeader,
       CountDown,
+      ChatEntrance,
+      chat,
       'big-img':BigImg
     }
   };
@@ -555,5 +586,47 @@
     padding:10px 0 30px;
     overflow:hidden;
     img{width:33%; display:inline-block;}
+  }
+  .chatroom{
+    width: r(50);
+    height: r(50);
+    background-color: #fff;
+    position: fixed;
+    right: 0;
+    top: r(600);
+    border-radius: 50%;
+    background: url("../../../assets/images/chatbg.png")no-repeat;
+    background-size: 100%;
+    img{
+      padding-top: r(7);
+      display: block;
+      width: r(20);
+      height: r(20);
+      margin: 0 auto;
+    }
+    .chatroom_num{
+      font-size: r(12);
+      color: #4982FF;
+      line-height: r(12);
+    }
+  }
+  .toolSlideRight-enter-active,.toolSlideRight-leave-active {
+    transition:transform .5s;
+  }
+  .toolSlideRight-enter{
+    transform: translateX(100%);
+  }
+  .toolSlideRight-leave-to{
+    transform: translateX(-100%);
+  }
+
+  .chatWindow{
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    width: 100%;
+    height: 100%;
+    background-color: #F5F5F5;
   }
 </style>

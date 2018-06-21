@@ -68,21 +68,29 @@ export const updatePassword = jsonData => service({
 
 //快速创建--绑定邮箱
 export const bindEmail = jsonData => service({
-  url: numversion+`/account/cash/bindEmail`,
+  url: numversion+`account/cash/bindEmail`,
   method: 'post',
   data: jsonData
 });
 
 //快速创建--绑定手机号码
 export const bindPhone = jsonData => service({
-  url: numversion+`/account/cash/bindPhone`,
+  url: numversion+`account/cash/bindPhone`,
   method: 'post',
   data: jsonData
 });
 
 //判断用户名是否已经存在
 export const checkExistUser = jsonData => service({
-  url: numversion+`/user/chain/checkExistUser`,
+  url: numversion+`user/chain/checkExistUser`,
   method: 'post',
   data: jsonData
+});
+
+// 查询订单状态
+export const getOrderStatus = jsonData => service({
+  url: numversion+`payment/getOrderStatus`,
+  method: 'post',
+  data: jsonData,
+  loading:false
 });

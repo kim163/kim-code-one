@@ -100,7 +100,7 @@ export default [
   },
   {
     path: "/m/cash",
-    name: 'cashDesk',
+    name: 'mCashDesk',
     component(resolve){
       // 收银台
       return resolve(require('views/mobile/cashDesk/cash'))
@@ -223,6 +223,16 @@ export default [
     meta:{
       isMobilePage: "mobile-body"
     },
+  },
+  {
+    path:'/m/chatWith',
+    name:'mchatWith',
+    component(resolve){
+      return resolve(require('views/mobile/chatroom/chat'))
+    },
+    meta:{
+      noCache:true,
+      isMobilePage:"mobile-body"
+    }
   }
-
 ]

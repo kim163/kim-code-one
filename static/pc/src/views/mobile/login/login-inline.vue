@@ -74,7 +74,7 @@
         data:{
           account:"",
           phone:"",
-          areaCode:"",
+          areaCode:"+86",
           email:"",
           password:""
         },
