@@ -15,7 +15,8 @@ export default {
     transactionRecord:'交易记录',
     userAccount: '账号',
     busineList: '我的商户列表',
-    onlineService: '在线客服'
+    onlineService: '在线客服',
+    juanApp: '久安APP'
   },
   login: {
     title: '欢迎回来',
@@ -109,7 +110,8 @@ export default {
     totalValue: '总值',
     transferNamephd: '请输入转账账户的开户名',
     ownPendOrder: '不能买自己的挂单',
-
+    remainBuy:'剩余可买',
+    remainSell: '剩余可卖'
   },
   transactionRecord: {
     tranPending: '我的挂单',
