@@ -100,7 +100,7 @@ export default [
   },
   {
     path: "/m/cash",
-    name: 'cashDesk',
+    name: 'mCashDesk',
     component(resolve){
       // 收银台
       return resolve(require('views/mobile/cashDesk/cash'))
