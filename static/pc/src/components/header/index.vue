@@ -52,7 +52,7 @@
       showLogin() {
         console.log('事件通讯成功了')
         if (!this.showLoginDialog) {
-          this.showLoginDialog = 'true';
+          this.showLoginDialog = true;
         }
 
       },

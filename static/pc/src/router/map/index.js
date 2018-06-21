@@ -27,11 +27,11 @@ export default [
     name: "autoLogin",
     component: autoLogin
   },
-  {
-    path: "/cash",
-    name: "pcCashDesk",
-    component: cash
-  },
+  // {
+  //   path: "/cash",
+  //   name: "pcCashDesk",
+  //   component: cash
+  // },
   ...transaction,
   ...mobileUrl
 ]

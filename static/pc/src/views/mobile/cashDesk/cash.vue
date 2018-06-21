@@ -10,7 +10,7 @@
       </span>
         </div>
         <cash-info :data="infoData"></cash-info>
-        <router-link :to="infoData.notifyUrl" class="other-pay">{{$t('cash.otherPay')}}&gt;&gt;</router-link>
+        <a :href="infoData.notifyUrl" class="other-pay">{{$t('cash.otherPay')}}&gt;&gt;</a>
         <!--<div class="other-pay" @click="goApp()">{{$t('cash.otherPay')}}&gt;&gt; 安装app：{{hasApp}}</div>-->
       </div>
       <div class="payment-loading" v-if="showPaymentLoading">
@@ -34,7 +34,7 @@
               </transition>
             </div>
           </transition>
-          <router-link :to="infoData.notifyUrl" class="go-back" v-if="!hasApp">{{$t('cash.goBack')}}</router-link>
+          <a :href="infoData.notifyUrl" class="go-back" v-if="!hasApp">{{$t('cash.goBack')}}</a>
         </div>
       </transition>
     </template>
@@ -120,7 +120,7 @@
       //判断是否安装app  如果没有  就用授权码登录
       this.infoData.businessName = merchantCfg.getDeail(this.infoData.merchantId).name
       var ifr = document.createElement('iframe');
-      ifr.src = 'scheme="jiuanapp"';
+      ifr.src = 'jiuanapp';
       ifr.style.display = 'none';
       this.checkInstallApp()
       document.body.appendChild(ifr);
@@ -130,7 +130,9 @@
       if (!this.islogin && this.token != '') {
         this.tokenLogin()
       }
-      this.infoData.customerAddress = this.userData.accountChainVos[0].address
+      if(this.islogin){
+        this.infoData.customerAddress = this.userData.accountChainVos[0].address
+      }
     },
     computed: {
       ...mapGetters([
