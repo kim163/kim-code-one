@@ -7,7 +7,7 @@
     <div class="cash-info">
       <cash-info :data="payInfo" :isSuccess="true"></cash-info>
     </div>
-    <router-link class="go-back" :to="payInfo.notifyUrl">返回商户页面</router-link>
+    <a class="go-back" :href="payInfo.notifyUrl">返回商户页面</a>
   </div>
 </template>
 
