@@ -12,19 +12,21 @@
           <!--<img class="animated bounceInDown" src="images/txt1.png">-->
           <div class="book-box">
             <p class="p0 p-txt1">您正在使用即时到账交易，请在
-              <strong class="orange">1小时59分59秒</strong>
+              <strong class="orange">
+                <count-down :end-time="endTime" end-text="订单已超时" @callBack="countDownEnd"></count-down>
+              </strong>
               内完成支付，否则订单将会自动取消</p>
             <p class="p0 p-txt2">
-              <strong>订单号：DSJW92JF00IDFKSPKFM020409232
-                <span class="fr shop-user">商户名：龙8国际</span>
+              <strong>订单号：{{infoData.jiuanOrderid}}
+                <span class="fr shop-user">商户名：{{infoData.businessName}}</span>
               </strong>
             </p>
             <p class="p0 p-txt3">
               应付金额：
-              <span class="red">5000  UET</span> 折合
-              <span class="red">50 CNY </span>
-              <span class="gray current-rate">当前汇率：100UET=1CNY	</span>
-              <a class="orange fr otherPay"><strong>更换其他支付方式&gt;&gt; </strong></a>
+              <span class="red">{{infoData.coinAmount}}  UET</span> 折合
+              <span class="red">{{infoData.amount}} CNY </span>
+              <span class="gray current-rate">当前汇率：100UET={{_(100).subtract(infoData.exchangeRate)}}CNY	</span>
+              <router-link :to="infoData.notifyUrl" class="orange fr otherPay"><strong>更换其他支付方式&gt;&gt; </strong></router-link>
             </p>
           </div>
         </div>
@@ -96,6 +98,7 @@
           notifyUrl: this.$route.query.notifyUrl || '',//返回商户地址
           customerAddress: '', //钱包地址
           createtime: 0,//订单时间
+          qrCodeImg:'', //二维码地址
         },
         hasApp: false, //商户是否安装app
         endTime: 0, //订单结束倒计时
