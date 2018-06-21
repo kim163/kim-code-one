@@ -6,7 +6,7 @@
         <div class="logo-right">您好，欢迎使用久安支付！ <a class="blue">常见问题</a></div>
       </div>
     </header>
-    <div class="content-box">
+    <div class="content-box" v-if="!cashSuccess">
       <div class="content" id="pageOne">
         <div class="content01">
           <!--<img class="animated bounceInDown" src="images/txt1.png">-->
@@ -67,6 +67,7 @@
         <div class="clear"></div>
       </div>
     </div>
+    <cash-success :data="infoData" v-else></cash-success>
 
     <footer class="footer">
       <div class="footer-in">
@@ -221,7 +222,10 @@
         this.timer = setInterval(() => {
           getOrderStatus(data).then(res => {
             if(res.code === 10000){
-              this.cashSuccess = res.data
+              this.qrCodeStatus = Number(res.data)
+              if(Number(res.data) === 2){
+                this.cashSuccess = true
+              }
             }else{
               toast(res.message)
             }
