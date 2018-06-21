@@ -56,6 +56,7 @@
         <div class="photo_area">
           <div>
             <input type="image" class="" value="这是一个图片">
+            <input type="file" accept="image/*" capture="camera" value="打开照相机">
             <img src="../../../../static/images/chatWith/camera.png" alt="">
             <span>照片</span>
           </div>
