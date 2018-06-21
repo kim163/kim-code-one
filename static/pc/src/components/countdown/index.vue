@@ -55,7 +55,6 @@
         min = min < 10 ? "0" + min : min;
         sec = sec < 10 ? "0" + sec : sec;
         let format = '';
-        debugger
         if(day > 0){
           format = `${day}天${hour}小时${min}分${sec}秒`;
         }
