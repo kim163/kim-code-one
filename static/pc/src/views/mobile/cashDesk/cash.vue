@@ -6,8 +6,8 @@
         <div class="trade-time">
           {{$t('cash.realTime')}}
           <span class="red fr">
-          <count-down :end-time="endTime" end-text="订单已超时" @callBack="countDownEnd"></count-down>
-        </span>
+        <count-down :end-time="endTime" end-text="订单已超时" @callBack="countDownEnd"></count-down>
+      </span>
         </div>
         <cash-info :data="infoData"></cash-info>
         <router-link :to="infoData.notifyUrl" class="other-pay">{{$t('cash.otherPay')}}&gt;&gt;</router-link>
@@ -38,9 +38,9 @@
         </div>
       </transition>
     </template>
-    <template v-else>
-      <cash-success :pay-info="infoData"></cash-success>
-    </template>
+    <transition name="success">
+      <cash-success :pay-info="infoData" v-if="cashSuccess"></cash-success>
+    </transition>
   </div>
 </template>
 
@@ -98,6 +98,11 @@
       islogin(){
         if(this.islogin){
           this.infoData.customerAddress = this.userData.accountChainVos[0].address
+        }
+      },
+      cashSuccess(){
+        if(this.cashSuccess){
+          clearInterval(this.timer)
         }
       }
     },
@@ -334,7 +339,7 @@
 
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   @import "~assets/scss/mobile";
 
   .login-animate-enter {

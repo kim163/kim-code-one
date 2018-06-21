@@ -9,7 +9,8 @@ const filterRouterName = [  //过滤路由 无需跳转到登录页
   'mQuickCreate',
   'autoLogin',
   'mobileRegister',
-  'cashDesk',
+  'mCashDesk',
+  'pcCashDesk',
 ]
 // var promiseArr = {}
 // let cancel
