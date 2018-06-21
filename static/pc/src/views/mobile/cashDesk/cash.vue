@@ -119,16 +119,18 @@
     created() {
       //判断是否安装app  如果没有  就用授权码登录
       this.infoData.businessName = merchantCfg.getDeail(this.infoData.merchantId).name
-      var ifr = document.createElement('iframe');
-      ifr.src = 'jiuanapp';
-      ifr.style.display = 'none';
-      this.checkInstallApp()
-      document.body.appendChild(ifr);
-      setTimeout(function() {
-        document.body.removeChild(ifr);
-      }, 2000);
-      if (!this.islogin && this.token != '') {
+      // var ifr = document.createElement('iframe');
+      // ifr.src = 'jiuanapp';
+      // ifr.style.display = 'none';
+      // this.checkInstallApp()
+      // document.body.appendChild(ifr);
+      // setTimeout(function() {
+      //   document.body.removeChild(ifr);
+      // }, 2000);
+      if (!this.islogin && this.token != '' && !_(this.token).isUndefined()) {
         this.tokenLogin()
+      }else{
+        this.showPaymentLoading = false
       }
       if(this.islogin){
         this.infoData.customerAddress = this.userData.accountChainVos[0].address
@@ -192,7 +194,7 @@
         this.timer = setInterval(() => {
             getOrderStatus(data).then(res => {
               if(res.code === 10000){
-                this.cashSuccess = res.data
+                this.cashSuccess = res.data === 2 ? true : false
               }else{
                 toast(res.message)
               }
@@ -262,6 +264,8 @@
             toast(res.message)
           }
         }).catch(err => {
+        }).finally(() => {
+          this.showPaymentLoading = false
         })
       },
       checkPayPassWord() {
