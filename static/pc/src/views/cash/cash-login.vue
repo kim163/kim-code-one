@@ -240,7 +240,8 @@
     width: 344px;
     &.ps-input-phone{
       width: 258px;
-      float: right;
+      /*float: right;*/
+      margin-left: 5px;
     }
   }
 
