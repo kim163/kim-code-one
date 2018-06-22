@@ -111,7 +111,7 @@
     data() {
       return {
         infoData: {
-          exchangeRate: 0, // 汇率
+          exchangeRate: 100, // 汇率
           businessName: '', //商户名
           jiuanOrderid: '',  //久安订单号
           amount: this.$route.query.amount || '',//应付金额
@@ -230,7 +230,9 @@
         this.timer = setInterval(() => {
           getOrderStatus(data).then(res => {
             if(res.code === 10000){
-              this.qrCodeStatus = Number(res.data)
+              if(Number(res.data) === 1){
+                this.qrCodeStatus = Number(res.data)
+              }
               if(Number(res.data) === 2){
                 this.cashSuccess = true
               }
@@ -285,6 +287,17 @@
         paymentPay(request).then(res => {
           if (res.code === 10000) {
             this.cashSuccess = true
+            clearInterval(this.timer)
+            let paySuccessList = $localStorage.get('paySuccessList') //获取本地支付成功列表
+            if(!_.isUndefined(paySuccessList) && !_.isNull(paySuccessList)){
+              paySuccessList = JSON.parse(aesutil.decrypt(paySuccessList))
+              paySuccessList.push(this.infoData)
+              $localStorage.set('paySuccessList',aesutil.encrypt(JSON.stringify(paySuccessList)))
+            }else{
+              const arr = []
+              arr.push(this.infoData)
+              $localStorage.set('paySuccessList',aesutil.encrypt(JSON.stringify(arr)))
+            }
           } else {
             toast(res.message)
           }
@@ -311,6 +324,18 @@
             token: this.token
         }})
       }
+      let paySuccessList = $localStorage.get('paySuccessList') //获取本地支付成功列表
+      if(!_.isUndefined(paySuccessList) && !_.isNull(paySuccessList)){
+        paySuccessList = JSON.parse(aesutil.decrypt(paySuccessList))
+        const info = paySuccessList.find((item) => {
+          return item.merchantOrderid === this.infoData.merchantOrderid
+        })
+        if(info){
+          console.log(info)
+          Object.assign(this.infoData,info)
+          this.cashSuccess = true
+        }
+      }
       this.infoData.businessName = merchantCfg.getDeail(this.infoData.merchantId).name
       // if (!this.islogin && this.token != '') {
       //   this.tokenLogin()
@@ -320,10 +345,12 @@
       }
     },
     mounted() {
-      this.init()
-      Vue.$global.bus.$on('cash:payPassword',(pwd) => {
-        this.pay(pwd)
-      });
+      if(!this.cashSuccess){
+        this.init()
+        Vue.$global.bus.$on('cash:payPassword',(pwd) => {
+          this.pay(pwd)
+        });
+      }
     }
   }
 </script>
@@ -369,6 +396,7 @@
   }
 
   .header {
+    width: 100%;
     height: 96px;
     background: rgba(255, 255, 255, .99);
     border-bottom: 1px solid #e3e3e3;

@@ -71,7 +71,7 @@
     data() {
       return {
         infoData: {
-          exchangeRate: 0, // 汇率
+          exchangeRate: 100, // 汇率
           businessName: '', //商户名
           jiuanOrderid: '',  //久安订单号
           amount: this.$route.query.amount || '',//应付金额
@@ -127,6 +127,18 @@
       // setTimeout(function() {
       //   document.body.removeChild(ifr);
       // }, 2000);
+      let paySuccessList = $localStorage.get('paySuccessList') //获取本地支付成功列表
+      if(!_.isUndefined(paySuccessList) && !_.isNull(paySuccessList)){
+        paySuccessList = JSON.parse(aesutil.decrypt(paySuccessList))
+        const info = paySuccessList.find((item) => {
+          return item.merchantOrderid === this.infoData.merchantOrderid
+        })
+        if(info){
+          console.log(info)
+          Object.assign(this.infoData,info)
+          this.cashSuccess = true
+        }
+      }
       if (!this.islogin && this.token != '' && !_(this.token).isUndefined()) {
         this.tokenLogin()
       }else{
@@ -289,6 +301,17 @@
         paymentPay(request).then(res => {
           if (res.code === 10000) {
             this.cashSuccess = true
+            clearInterval(this.timer)
+            let paySuccessList = $localStorage.get('paySuccessList') //获取本地支付成功列表
+            if(!_.isUndefined(paySuccessList) && !_.isNull(paySuccessList)){
+              paySuccessList = JSON.parse(aesutil.decrypt(paySuccessList))
+              paySuccessList.push(this.infoData)
+              $localStorage.set('paySuccessList',aesutil.encrypt(JSON.stringify(paySuccessList)))
+            }else{
+              const arr = []
+              arr.push(this.infoData)
+              $localStorage.set('paySuccessList',aesutil.encrypt(JSON.stringify(arr)))
+            }
           } else {
             toast(res.message)
           }
@@ -339,7 +362,9 @@
       },
     },
     mounted() {
-      this.init()
+      if(!this.cashSuccess) {
+        this.init()
+      }
     }
   };
 
