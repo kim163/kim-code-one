@@ -83,8 +83,9 @@
          detailOver='/m/orderOver/';
          detailAppeal='/m/orderAppeal/';
       }
+      const merchantOrderid = this.$route.query.merchantOrderid || ''
       console.log('userId===',this.userId)
-      let stompSuccessCallback = function (frame) {
+      let stompSuccessCallback = (frame) => {
         console.log('STOMP: Connection successful')
         client.subscribe('/exchange/walletCustomOperation/'+userId, function (data) {
 //          console.log('接收 message：')
@@ -119,6 +120,29 @@
             //console.log(msgData);
           }
         })
+        debugger
+        if(merchantOrderid && merchantOrderid != ''){
+          client.subscribe('/exchange/walletCustomOperation/'+merchantOrderid, function (data) {
+            let msgData=JSON.parse(aesutil.decrypt(data.body));
+            debugger
+            if(msgData.type == 21){  //收银台 支付中  用于二维码显示
+              Vue.$global.bus.$emit('update:paying');
+            }else if(msgData.type == 22){  //收银台 支付完成
+              Vue.$global.bus.$emit('update:paySuccess');
+            }
+          })
+        }
+        // Vue.$global.bus.$on('merchantOrderid',(id) => {
+        //   debugger
+        //   client.subscribe('/exchange/walletCustomOperation/'+id, function (data) {
+        //     let msgData=JSON.parse(aesutil.decrypt(data.body));
+        //     if(msgData.type == 21){  //收银台 支付中  用于二维码显示
+        //       Vue.$global.bus.$emit('update:paying');
+        //     }else if(msgData.type == 22){  //收银台 支付完成
+        //       Vue.$global.bus.$emit('update:paySuccess');
+        //     }
+        //   })
+        // })
       }
 
       var stompFailureCallback = function (error) {

@@ -117,6 +117,8 @@ export default {
     appealRecord: '申诉记录',
     buy:'买入',
     sale:'卖出',
+    buyer:'快速买入',
+    seller:'快速卖出',
     waitingForPayment:'等待付款',
     waitingForRelease:'等待释放',
     tranPendingOrder: '挂单中',

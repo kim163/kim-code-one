@@ -139,6 +139,7 @@
           this.cashSuccess = true
         }
       }
+      //Vue.$global.bus.$emit('merchantOrderid',this.infoData.merchantOrderid)
       if (!this.islogin && this.token != '' && !_(this.token).isUndefined()) {
         this.tokenLogin()
       }else{
@@ -188,8 +189,8 @@
             } else {
               const endTime = _.chain(data.payOrder.createtime).add(3600000).subtract(nowTime).value()
               this.endTime = endTime > 3600000 ? 3600000 : endTime
+              //this.getOrderStatus()
             }
-            this.getOrderStatus()
           } else {
             toast(res.message)
           }
@@ -364,6 +365,9 @@
     mounted() {
       if(!this.cashSuccess) {
         this.init()
+        Vue.$global.bus.$on('update:paySuccess',() => {
+          this.cashSuccess = true
+        })
       }
     }
   };

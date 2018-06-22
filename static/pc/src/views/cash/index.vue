@@ -2,8 +2,13 @@
   <div class="main">
     <header class="header">
       <div class="header-in">
-        <img src="~images/logo-blue.png" class="logo">
-        <div class="logo-right">您好，欢迎使用久安支付！ <a class="blue">常见问题</a></div>
+        <div class="logo-left">
+          <img src="~images/logo-blue.png" class="logo">
+          <div class="title">久安钱包</div>
+          <div class="line"></div>
+          <div class="des">商户收银台</div>
+        </div>
+        <div class="logo-right">您好，欢迎使用久安支付！ <a class="blue hidden">常见问题</a></div>
       </div>
     </header>
     <div class="content-box" v-if="!cashSuccess">
@@ -212,7 +217,7 @@
               this.endTime = endTime > 3600000 ? 3600000 : endTime
               this.qrCodeTime = 180
               this.qrCodeCountDown()
-              this.getOrderStatus()
+              //this.getOrderStatus()
             }
           } else {
             toast(res.message)
@@ -336,6 +341,7 @@
           this.cashSuccess = true
         }
       }
+     // Vue.$global.bus.$emit('merchantOrderid',this.infoData.merchantOrderid)
       this.infoData.businessName = merchantCfg.getDeail(this.infoData.merchantId).name
       // if (!this.islogin && this.token != '') {
       //   this.tokenLogin()
@@ -350,6 +356,12 @@
         Vue.$global.bus.$on('cash:payPassword',(pwd) => {
           this.pay(pwd)
         });
+        Vue.$global.bus.$on('update:paying',() => {
+          this.qrCodeStatus = 1
+        })
+        Vue.$global.bus.$on('update:paySuccess',() => {
+          this.cashSuccess = true
+        })
       }
     }
   }
@@ -414,7 +426,30 @@
   .logo {
     margin-top: 20px;
   }
-
+  .logo-left{
+    float: left;
+    display: flex;
+    justify-content: center;
+    .title{
+      font-size: 24px;
+      color: #333333;
+      margin-left: 15px;
+      margin-top: 30px;
+    }
+    .line{
+      margin-left: 15px;
+      height: 50px;
+      width: 1px;
+      background: #666666;
+      margin-top: 20px;
+    }
+    .des{
+      font-size: 24px;
+      color: #999999;
+      margin-left: 15px;
+      margin-top: 30px;
+    }
+  }
   .logo-right {
     float: right;
     margin-top: 40px;
