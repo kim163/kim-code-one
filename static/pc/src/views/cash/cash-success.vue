@@ -4,16 +4,18 @@
       <div class="suc-con">
         <p class="i-suc">充值成功！</p>
         <div class="book-details">
-          <p class="book-num">订单号：DSJW92JF00IDFKSPKFM020409232</p>
-          <p class="book-time">订单时间：2018-12-12  18:02:03   <span class="fr shop-user">商户名：龙8国际</span></p>
+          <p class="book-num">订单号：{{data.jiuanOrderid}}</p>
+          <p class="book-time">订单时间：{{data.createtime | Date('yyyy-MM-dd h:mm:ss')}}   <span class="fr shop-user">商户名：{{data.businessName}}</span></p>
           <p class="book-money">
-            应付金额：<span class="red">5000  UET</span>   折合  <span class="red">50 CNY </span>    <span class="gray current-rate">&nbsp;&nbsp;当前汇率：100UET=1CNY	</span>
+            应付金额：<span class="red">{{data.coinAmount}} {{data.assetCode}}</span>折合
+            <span class="red">{{data.amount}} CNY </span>
+            <span class="gray current-rate">&nbsp;&nbsp;当前汇率：100{{data.assetCode}} = {{formatCny(100)}}	</span>
           </p>
           <p class="book-tips gray">交易内容：商户账户充值
           </p>
 
           <div class="back-user">
-            <a class="btn">返回商户界面</a>
+            <a :href="data.notifyUrl" class="btn">返回商户界面</a>
           </div>
         </div>
       </div>
@@ -23,7 +25,28 @@
 
 <script>
   export default {
-    name: "success"
+    name: "success",
+    props:{
+      data: {
+        type: Object,
+        default: {
+          amount: '',//应付金额
+          assetCode: '', //资产代码
+          merchantId: '', //商户号
+          merchantOrderid: '', //商户订单号
+          merchantCallbackurl: '', //商户回调地址
+          sign: '', //商户请求签名
+          exchangeRate: 0, // 汇率
+          businessName: '', //商户名
+          jiuanOrderid: '',  //久安订单号
+        }
+      },
+    },
+    methods: {
+      formatCny(data) {
+        return data / this.data.exchangeRate
+      }
+    }
   }
 </script>
 

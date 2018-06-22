@@ -79,7 +79,7 @@
         data:{
           account:"",
           phone:"",
-          areaCode:"+63",
+          areaCode:"+86",
           email:"",
           password:""
         },
