@@ -9,7 +9,6 @@
     <div class="content-box" v-if="!cashSuccess">
       <div class="content" id="pageOne">
         <div class="content01">
-          <!--<img class="animated bounceInDown" src="images/txt1.png">-->
           <div class="book-box">
             <p class="p0 p-txt1">您正在使用即时到账交易，
               <span v-if="endTime > 0">
@@ -31,40 +30,48 @@
               <span class="red">{{infoData.coinAmount}}  {{infoData.assetCode}}</span> 折合
               <span class="red">{{infoData.amount}} CNY </span>
               <span class="gray current-rate">当前汇率：100{{infoData.assetCode}}={{formatCny(100)}}CNY	</span>
-              <router-link :to="infoData.notifyUrl" class="orange fr otherPay"><strong>更换其他支付方式&gt;&gt; </strong></router-link>
+              <a :href="infoData.notifyUrl" class="orange fr otherPay"><strong>更换其他支付方式&gt;&gt; </strong></a>
             </p>
           </div>
         </div>
         <div class="content02 mobile animated bounceInRight">
-          <div class="c-l">
-            <p class="c-l-title"> 久安扫码支付</p>
-            <div v-if="endTime > 0">
-              <p v-show="qrCodeStatus != 1"> 二维码将在<span class="orange">{{qrCodeTime}}秒</span>后失效</p>
-              <p v-show="qrCodeStatus === 1">支付中</p>
-            </div>
-            <div v-else>该笔订单已超时</div>
-            <div class="qrcode-box">
-              <div v-if="endTime > 0">
-                <div class="pay-mask" v-show="qrCodeStatus === 1">正在支付......</div>
-                <div class="pay-mask" v-show="qrCodeStatus === 2">
-                  <div>二维码已失效</div>
-                  <div class="qrcode-refresh" @click="init()">重新获取</div>
+          <transition name="pay-type">
+            <div v-if="!loginPay">
+              <div class="c-l">
+                <p class="c-l-title"> 久安扫码支付</p>
+                <div v-if="endTime > 0">
+                  <p v-show="qrCodeStatus != 1"> 二维码将在<span class="orange">{{qrCodeTime}}秒</span>后失效</p>
+                  <p v-show="qrCodeStatus === 1">支付中</p>
                 </div>
+                <div v-else>该笔订单已超时</div>
+                <div class="qrcode-box">
+                  <div v-if="endTime > 0">
+                    <div class="pay-mask" v-show="qrCodeStatus === 1">正在支付......</div>
+                    <div class="pay-mask" v-show="qrCodeStatus === 2">
+                      <div>二维码已失效</div>
+                      <div class="qrcode-refresh" @click="init()">重新获取</div>
+                    </div>
+                  </div>
+                  <div class="pay-mask" v-else>订单已超时</div>
+                  <qrcode :value="infoData.qrCodeImg" v-if="infoData.qrCodeImg" :options="{ size: 248 }"></qrcode>
+                </div>
+                <p class="i-scan">打开久安钱包<br>扫一扫</p>
               </div>
-              <div class="pay-mask" v-else>订单已超时</div>
-              <qrcode :value="infoData.qrCodeImg" v-if="infoData.qrCodeImg" :options="{ size: 248 }"></qrcode>
+              <div class="c-r">
+                <img src="~images/phone.png">
+                <p>
+                  不会使用？请参照上图<br>
+                  没有久安钱包APP？ <a href="https://9anapp.com/app/9anapp.html" class="blue">前往下载 > </a>
+                </p>
+                <div class="login-pay" @click="loginPay = true">登录网页版支付</div>
+              </div>
             </div>
-            <p class="i-scan">打开久安钱包<br>扫一扫</p>
-          </div>
-          <div class="c-r">
-            <img src="~images/phone.png">
-            <p>
-              不会使用？请参照上图<br>
-              没有久安钱包APP？ <a class="blue">前往下载 > </a>
-            </p>
-          </div>
+          </transition>
+          <transition name="pay-type">
+            <login-pay :data="infoData" :token="token" v-if="loginPay" @appPay="loginPay = false"></login-pay>
+          </transition>
+          <div class="clear"></div>
         </div>
-        <div class="clear"></div>
       </div>
     </div>
     <cash-success :data="infoData" v-else></cash-success>
@@ -84,17 +91,17 @@
   import CountDown from 'components/countdown'
   import {generateTitle} from '@/util/i18n'
   import {mapGetters} from 'vuex'
-  import Login from '../mobile/login/login-inline'
-  import CashSuccess from './success'
+  // import Login from '../mobile/login/login-inline'
+  import CashSuccess from './cash-success'
   import merchantCfg from '../misc/merchant-config'
   import Qrcode from '@xkeshi/vue-qrcode';
+  import LoginPay from './login-pay'
 
   import aesutil from '@/util/aesutil';
   import {$localStorage} from '@/util/storage'
 
   import {
     cashierInit,
-    loginH5,
     paymentPay,
     getOrderStatus,
   } from 'api/cashier'
@@ -127,6 +134,7 @@
         showPaymentLoading: true,
         qrCodeStatus:0,//二维码状态 0 正常显示 1支付中 2二维码失效
         qrCodeTime:180, //二维码倒计时
+        loginPay:false, // 登录支付
       }
     },
     watch:{
@@ -142,10 +150,10 @@
       }
     },
     components: {
-      Login,
       CountDown,
       CashSuccess,
-      Qrcode
+      Qrcode,
+      LoginPay
     },
     computed: {
       ...mapGetters([
@@ -234,28 +242,28 @@
           })
         },3000)
       },
-      tokenLogin() {//用授权码登录
-        const request = {
-          type: 11,
-          token: this.token,
-          merchantId: this.infoData.merchantId
-        }
-        console.log(request)
-
-        login(request).then(res => {
-          if (res.code === 10000) {
-            $localStorage.set('tokenInfo', JSON.stringify(res.data.tokenVo));
-            $localStorage.set('userData', JSON.stringify(aesutil.encrypt(res.data.userId)));
-            this.$store.dispatch('CHECK_ONLINE', true);
-            this.$store.dispatch('UPDATE_TOKEN_INFO', res.data.tokenVo);
-            this.$store.dispatch('INIT_INFO');
-            this.$store.commit('SET_USERDATA',res.data);
-          } else {
-            toast(res.message)
-          }
-        }).catch(err => {
-        })
-      },
+      // tokenLogin() {//用授权码登录
+      //   const request = {
+      //     type: 11,
+      //     token: this.token,
+      //     merchantId: this.infoData.merchantId
+      //   }
+      //   console.log(request)
+      //
+      //   login(request).then(res => {
+      //     if (res.code === 10000) {
+      //       $localStorage.set('tokenInfo', JSON.stringify(res.data.tokenVo));
+      //       $localStorage.set('userData', JSON.stringify(aesutil.encrypt(res.data.userId)));
+      //       this.$store.dispatch('CHECK_ONLINE', true);
+      //       this.$store.dispatch('UPDATE_TOKEN_INFO', res.data.tokenVo);
+      //       this.$store.dispatch('INIT_INFO');
+      //       this.$store.commit('SET_USERDATA',res.data);
+      //     } else {
+      //       toast(res.message)
+      //     }
+      //   }).catch(err => {
+      //   })
+      // },
       checkPayPassWord() {
         if (this.payPassword === '') {
           toast(this.generateTitle('cash.psdInputPlaceholder'))
@@ -295,17 +303,29 @@
       // if (!this.islogin && this.token != '') {
       //   this.tokenLogin()
       // }
-      // if(this.islogin){
-      //   this.infoData.customerAddress = this.userData.accountChainVos[0].address
-      // }
+      if(this.islogin){
+        this.infoData.customerAddress = this.userData.accountChainVos[0].address
+      }
     },
     mounted() {
       this.init()
+      Vue.$global.bus.$on('cash:payPassword',(pwd) => {
+        this.pay(pwd)
+      });
     }
   }
 </script>
 
 <style lang="scss" scoped>
+  .pay-type-enter{
+    opacity: 0;
+  }
+  .pay-type-leave{
+    opacity: 0;
+  }
+  .pay-type-enter-active,.pay-type-leave-active{
+    transition: all .5s;
+  }
   .main{
     height:100%;
     min-height:100%;
@@ -401,6 +421,7 @@
     margin: 0 auto 50px;
     box-shadow: 0 5px 5px 5px #efefef;
     border-radius: 5px;
+    height: 660px;
   }
 
   .content02 .c-l {
@@ -423,7 +444,11 @@
     width: 600px;
     text-align: center;
   }
-
+  .login-pay{
+    width: 150px;
+    margin: 15px auto;
+    cursor: pointer;
+  }
   .qrcode-box {
     width: 250px;
     height: 250px;

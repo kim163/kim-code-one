@@ -24,7 +24,7 @@
     name: "cash-pay",
     data(){
       return{
-        amountStatus: true, //余额状态
+        amountStatus: false, //余额状态
         payPassword:'',
         userBalance:0,
       }
@@ -52,8 +52,8 @@
       },
       getUserBalance(data){
         this.userBalance = data
-        if(Number(this.payInfo.coinAmount) > this.userBalance){
-          this.amountStatus = false
+        if(Number(this.payInfo.coinAmount) <= this.userBalance){
+          this.amountStatus = true
         }
       }
     }
