@@ -30,8 +30,8 @@
       </p>
       <p class="item amount-line">
         <span class="unit-price">{{$t('transactionHome.unitPrice')}}：</span>0.01 CNY
-        <span class="quantity-txt">{{$t('transactionHome.quantity')}}：</span>
-        <span class="amount"> {{item.amount}} UET </span>
+        <span class="quantity-txt">{{$t('transactionHome.remainBuy')}}：</span>
+        <span class="amount"> {{item.balance}} UET </span>
       </p>
 
       <p class="item hide">
