@@ -299,6 +299,18 @@
       },
     },
     created() {
+      if(_.isMobile()){
+        this.$router.replace({name: 'mCashDesk',query:{
+            amount: this.infoData.amount,
+            assetCode: this.infoData.assetCode,
+            merchantId: this.infoData.merchantId,
+            merchantOrderid: this.infoData.merchantOrderid,
+            merchantCallbackurl: this.infoData.merchantCallbackurl,
+            sign: this.infoData.sign,
+            notifyUrl: this.infoData.notifyUrl,
+            token: this.token
+        }})
+      }
       this.infoData.businessName = merchantCfg.getDeail(this.infoData.merchantId).name
       // if (!this.islogin && this.token != '') {
       //   this.tokenLogin()
