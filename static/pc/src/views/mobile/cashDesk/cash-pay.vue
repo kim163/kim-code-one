@@ -34,7 +34,7 @@
     },
     watch:{
       payInfo(){
-        if(Number(this.payInfo.coinAmount) <= this.userBalance){
+        if(Number(this.payInfo.coinAmount) <= Number(this.userBalance)){
           this.amountStatus = true
         }else{
           this.amountStatus = false
@@ -61,7 +61,7 @@
       },
       getUserBalance(data){
         this.userBalance = data
-        if(Number(this.payInfo.coinAmount) <= this.userBalance){
+        if(Number(this.payInfo.coinAmount) <= Number(this.userBalance)){
           this.amountStatus = true
         }
       }
