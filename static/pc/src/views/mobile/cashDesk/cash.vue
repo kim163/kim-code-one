@@ -178,7 +178,7 @@
           sign: this.infoData.sign,
           bindUserid: this.infoData.bindUserid,
           bindPhone: this.infoData.bindPhone,
-          bindName: this.infoData.bindPhone,
+          bindName: this.infoData.bindName,
           bindAreacode: this.infoData.bindAreacode,
           bindUserLevel: this.infoData.bindUserLevel,
           spareFields: this.infoData.spareFields,
