@@ -217,6 +217,7 @@
               this.endTime = endTime > 3600000 ? 3600000 : endTime
               this.qrCodeTime = 180
               this.qrCodeCountDown()
+              _.merchantOrderidWs(this.infoData.jiuanOrderid,this.userData)
               //this.getOrderStatus()
             }
           } else {
@@ -293,6 +294,7 @@
           if (res.code === 10000) {
             this.cashSuccess = true
             clearInterval(this.timer)
+            this.unSubscribe()
             let paySuccessList = $localStorage.get('paySuccessList') //获取本地支付成功列表
             if(!_.isUndefined(paySuccessList) && !_.isNull(paySuccessList)){
               paySuccessList = JSON.parse(aesutil.decrypt(paySuccessList))
@@ -314,7 +316,11 @@
         toast('该订单已超时')
         this.payBtnStatus = false
         clearInterval(this.timer)
+        this.unSubscribe()
       },
+      unSubscribe(){
+        Vue.$global.bus.$emit('merchantOrderidUnsubscribe')
+      }
     },
     created() {
       if(_.isMobile()){
@@ -361,6 +367,7 @@
         })
         Vue.$global.bus.$on('update:paySuccess',() => {
           this.cashSuccess = true
+          this.unSubscribe()
         })
       }
     }

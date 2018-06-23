@@ -120,7 +120,6 @@
             //console.log(msgData);
           }
         })
-        debugger
         if(merchantOrderid && merchantOrderid != ''){
           client.subscribe('/exchange/walletCustomOperation/'+merchantOrderid, function (data) {
             let msgData=JSON.parse(aesutil.decrypt(data.body));
