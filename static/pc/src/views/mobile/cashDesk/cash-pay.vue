@@ -1,7 +1,7 @@
 <template>
   <div class="pay-main">
     <div class="amout-info">
-      <div class="title">UET钱包支付</div>
+      <div class="title">UET钱包支付   {{this.payInfo.coinAmount}}</div>
       <div class="amount-detail">
         <div class="blance">{{$t('cash.balance')}}：<balance @getBalance="getUserBalance"></balance></div>
         <div class="amount-status" :class="amountStatus ? 'green' : 'red'">
