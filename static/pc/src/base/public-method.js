@@ -1,3 +1,5 @@
+import aesutil from '@/util/aesutil';
+import Stomp from 'webstomp-client'
 
 var browser={
   versions:function(){
@@ -287,6 +289,72 @@ _.mixin(
           }, false);
         }
       };
+    },
+
+    merchantOrderidWs(orderid,userData){
+      let client = null
+      let connectMsg = [];
+      let connectUrl='' ;
+      let connectUser= '';
+      let connectPsw= '';
+      let subscription = null
+
+      console.log('this.userData===================')
+      console.log(userData)
+      _.forEach(userData.configVos, function(value, key) {
+        if(value.type == 1002){
+          connectMsg = value.value.split(',');
+          connectUrl= connectMsg[0];
+          connectUser= connectMsg[1];
+          connectPsw= connectMsg[2];
+        }
+      });
+      let stompSuccessCallback = (frame) => {
+        console.log('STOMP: Connection successful')
+        subscription = client.subscribe('/exchange/walletCustomOperation/'+orderid, function (data) {
+            let msgData=JSON.parse(aesutil.decrypt(data.body));
+            if(msgData.type == 21){  //收银台 支付中  用于二维码显示
+              Vue.$global.bus.$emit('update:paying');
+            }else if(msgData.type == 22){  //收银台 支付完成
+              Vue.$global.bus.$emit('update:paySuccess');
+            }
+          })
+        // Vue.$global.bus.$on('merchantOrderid',(id) => {
+        //   debugger
+        //   client.subscribe('/exchange/walletCustomOperation/'+id, function (data) {
+        //     let msgData=JSON.parse(aesutil.decrypt(data.body));
+        //     if(msgData.type == 21){  //收银台 支付中  用于二维码显示
+        //       Vue.$global.bus.$emit('update:paying');
+        //     }else if(msgData.type == 22){  //收银台 支付完成
+        //       Vue.$global.bus.$emit('update:paySuccess');
+        //     }
+        //   })
+        // })
+      }
+
+      var stompFailureCallback = function (error) {
+        console.log('STOMP: ' , error)
+        if (client && client.ws.readyState === client.ws.CONNECTING) {
+          return
+        }
+        if (client.ws.readyState === client.ws.OPEN) {
+          return
+        }
+        setTimeout(stompConnect, 10000)
+        console.log('STOMP: Reconecting in 10 seconds')
+      }
+      function stompConnect () {
+        console.log('STOMP: Attempting connection')
+        let ws = new WebSocket(connectUrl);
+        client = Stomp.over(ws);
+        client.heartbeat.outgoing = 30000;
+        client.heartbeat.incoming = 30000;
+        client.connect(connectUser, connectPsw, stompSuccessCallback, stompFailureCallback)
+      }
+      stompConnect()
+      Vue.$global.bus.$on('merchantOrderidUnsubscribe',() => {
+        subscription.unsubscribe()
+      })
     }
   }
 )

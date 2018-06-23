@@ -68,8 +68,8 @@
     line-height: 35px;
   }
   .book-num{
-    font-size:24px;
-    text-align: center;
+    font-size:18px;
+    text-align: left;
     padding:5px 0 10px;
   }
   .book-time{
@@ -90,6 +90,6 @@
     font-size:20px;
   }
   .book-money{
-    font-size:20px;
+    font-size:18px;
   }
 </style>

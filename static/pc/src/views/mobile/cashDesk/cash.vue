@@ -139,6 +139,7 @@
           this.cashSuccess = true
         }
       }
+      //Vue.$global.bus.$emit('merchantOrderid',this.infoData.merchantOrderid)
       if (!this.islogin && this.token != '' && !_(this.token).isUndefined()) {
         this.tokenLogin()
       }else{
@@ -188,8 +189,9 @@
             } else {
               const endTime = _.chain(data.payOrder.createtime).add(3600000).subtract(nowTime).value()
               this.endTime = endTime > 3600000 ? 3600000 : endTime
+              //this.getOrderStatus()
+              _.merchantOrderidWs(this.infoData.jiuanOrderid,this.userData)
             }
-            this.getOrderStatus()
           } else {
             toast(res.message)
           }
@@ -302,6 +304,7 @@
           if (res.code === 10000) {
             this.cashSuccess = true
             clearInterval(this.timer)
+            this.unSubscribe()
             let paySuccessList = $localStorage.get('paySuccessList') //获取本地支付成功列表
             if(!_.isUndefined(paySuccessList) && !_.isNull(paySuccessList)){
               paySuccessList = JSON.parse(aesutil.decrypt(paySuccessList))
@@ -323,6 +326,10 @@
         toast('该订单已超时')
         this.payBtnStatus = false
         clearInterval(this.timer)
+        this.unSubscribe()
+      },
+      unSubscribe(){
+        Vue.$global.bus.$emit('merchantOrderidUnsubscribe')
       },
       goToDownLoad(status){
         if(status === 0){
@@ -364,6 +371,10 @@
     mounted() {
       if(!this.cashSuccess) {
         this.init()
+        Vue.$global.bus.$on('update:paySuccess',() => {
+          this.cashSuccess = true
+          this.unSubscribe()
+        })
       }
     }
   };
