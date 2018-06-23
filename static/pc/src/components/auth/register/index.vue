@@ -102,7 +102,7 @@
           imageCode: "", //true string
           password: "", //true string
           confirmPassword: "",// true string
-          areaCode:"+63"
+          areaCode:"+86"
         },
         requestdata: {}
       }

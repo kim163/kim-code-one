@@ -3,7 +3,7 @@
     <div class="amout-info">
       <div class="title">UET钱包支付</div>
       <div class="amount-detail">
-        <div class="blance">{{$t('cash.balance')}}：<balance></balance></div>
+        <div class="blance">{{$t('cash.balance')}}：<balance @getBalance="getUserBalance"></balance></div>
         <div class="amount-status" :class="amountStatus ? 'green' : 'red'">
           {{ amountStatus ? $t('cash.enough') : $t('cash.notEnough')}}
         </div>
@@ -12,7 +12,7 @@
     <div class="pay-password">
       <div class="title">{{$t('cash.payPassWord')}}:</div>
       <input type="password" class="input-password" v-model.trim="payPassword" :placeholder="$t('cash.psdInputPlaceholder')"/>
-      <div class="pay-btn" :class="{disabled: !amountStatus}" @click="amountStatus ? payment() : ''">{{$t('cash.confirmPayment')}}</div>
+      <div class="pay-btn" :class="{disabled: !amountStatus || !payBtn}" @click="amountStatus && payBtn ? payment() : ''">{{$t('cash.confirmPayment')}}</div>
       <router-link :to="{name: 'mIndex'}" class="go-tran">{{$t('cash.goTran')}}</router-link>
     </div>
   </div>
@@ -24,12 +24,43 @@
     name: "cash-pay",
     data(){
       return{
-        amountStatus: true, //余额状态
+        amountStatus: false, //余额状态
         payPassword:'',
+        userBalance:0,
+        coinAmount:0,
       }
     },
     components:{
       Balance
+    },
+    watch:{
+      coinAmount(){
+        if(Number(this.coinAmount) <= Number(this.userBalance)){
+          this.amountStatus = true
+        }else{
+          this.amountStatus = false
+        }
+      },
+      userBalance(){
+        if(Number(this.coinAmount) > Number(this.userBalance)){
+          this.amountStatus = false
+        }else{
+          this.amountStatus = true
+        }
+      },
+      "payInfo.coinAmount":function(newVal){
+        this.coinAmount = newVal
+      }
+    },
+    props:{
+      payInfo:{
+        type:Object,
+        default:{}
+      },
+      payBtn:{
+        type:Boolean,
+        default:true
+      }
     },
     methods:{
       payment(){
@@ -38,7 +69,19 @@
         }else{
           toast('请输入支付密码')
         }
+      },
+      getUserBalance(data){
+        this.userBalance = data
       }
+    },
+    activated(){
+      this.coinAmount = this.payInfo.coinAmount
+    },
+    mounted(){
+      this.coinAmount = this.payInfo.coinAmount
+    },
+    beforeDestroy(){
+      this.amountStatus = false
     }
   }
 </script>
@@ -83,7 +126,7 @@
         color: $white;
         @include f(18px);
         margin-top: r(20);
-        &.disable{
+        &.disabled{
           background: #E4E4E4;
           color: #787876;
         }

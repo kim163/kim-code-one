@@ -21,12 +21,12 @@
           },
           {
             icon: 'icon-tran-buy',
-            name: 'postPend.buyer',
+            name: 'transactionRecord.buyer',
             link: 'mPendingBuy'
           },
           {
             icon: 'icon-tran-sell',
-            name: 'postPend.seller',
+            name: 'transactionRecord.seller',
             link: 'mPendingSell'
           },
           {

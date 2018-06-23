@@ -1,46 +1,49 @@
 <template>
-  <div class="m-login-box">
-    <ul class="pop-tab tab-box">
-      <li v-for="item in loginType" @click="loginItem=item.value" class="tab-info" :class="{active:loginItem==item.value}"
-          :key="item.value">
-        {{generateTitle(item.name)}}
-      </li>
-    </ul>
-    <div class="form-box form-box-phone">
-      <div class="form-group" v-show="loginItem=='account'">
-        <label class="form-subtitle">{{$t('login.username')}}</label>
-        <div class="form-input">
-          <input name="account" @keyup.enter="login" v-model="data.account" type="text" class="ps-input ps-input1"
-                 :placeholder="$t('login.usernamePhd')">
+  <div>
+    <div class="login-box">
+      <ul class="pop-tab tab-box">
+        <li v-for="item in loginType" @click="loginItem=item.value" class="tab-info" :class="{active:loginItem==item.value}"
+            :key="item.value">
+          {{generateTitle(item.name)}}
+        </li>
+      </ul>
+      <div class="form-box form-box-phone">
+        <div class="form-group" v-show="loginItem=='account'">
+          <div class="form-input">
+            <label class="form-subtitle">{{$t('login.username')}}：</label>
+            <input name="account" @keyup.enter="login" v-model="data.account" type="text" class="ps-input ps-input1"
+                   :placeholder="$t('login.usernamePhd')">
+          </div>
         </div>
-      </div>
-      <div class="form-group" v-show="loginItem=='phone'">
-        <label class="form-subtitle">{{$t('login.mobileNum')}}</label>
-        <div class="form-input">
-          <select class="select-country area-box" v-model="data.areaCode">
-            <option v-for="areacd in areaCodeData" :value="areacd.value" :key="areacd.value"> {{areacd.name}}</option>
-          </select>
-          <input type="text" class="ps-input ps-input-phone" v-model="data.phone"
-                 :placeholder="$t('login.mobileNumPhd')" maxlength="11" name="phone">
+        <div class="form-group" v-show="loginItem=='phone'">
+          <div class="form-input">
+            <label class="form-subtitle">{{$t('login.mobileNum')}}：</label>
+            <select class="select-country area-box" v-model="data.areaCode">
+              <option v-for="areacd in areaCodeData" :value="areacd.value" :key="areacd.value"> {{areacd.name}}</option>
+            </select>
+            <input type="text" class="ps-input ps-input-phone" v-model="data.phone"
+                   :placeholder="$t('login.mobileNumPhd')" maxlength="11" name="phone">
+          </div>
         </div>
-      </div>
-      <div class="form-group" v-show="loginItem=='email'">
-        <label class="form-subtitle">{{$t('login.emailadd')}}</label>
-        <div class="form-input">
-          <input name="email" @keyup.enter="login" v-model="data.email" type="text" class="ps-input ps-input1"
-                 :placeholder="$t('login.emailaddPhd')">
+        <div class="form-group" v-show="loginItem=='email'">
+          <div class="form-input">
+            <label class="form-subtitle">{{$t('login.emailadd')}}：</label>
+            <input name="email" @keyup.enter="login" v-model="data.email" type="text" class="ps-input ps-input1"
+                   :placeholder="$t('login.emailaddPhd')">
+          </div>
         </div>
-      </div>
-      <div class="form-group">
-        <label class="form-subtitle">{{$t('login.password')}}</label>
-        <div class="form-input posit-rel">
-          <input ref="pwd" @keyup.enter="login" name="password" v-model="data.password" type="password"
-                 class="ps-input ps-input1" :placeholder="$t('login.passwordPhd')">
+        <div class="form-group">
+          <div class="form-input posit-rel">
+            <label class="form-subtitle">{{$t('login.password')}}：</label>
+            <input ref="pwd" @keyup.enter="login" name="password" v-model="data.password" type="password"
+                   class="ps-input ps-input1" :placeholder="$t('login.passwordPhd')">
+          </div>
         </div>
-      </div>
-      <span class="validate"></span>
-      <div class="text-center">
-        <div class="next-btn" @click.enter="login">{{$t('cash.nextBtn')}}</div>
+        <span class="validate"></span>
+        <div class="text-center">
+          <div class="next-btn" @click.enter="login">{{$t('cash.nextBtn')}}</div>
+        </div>
+        <div class="go-app-pay" @click="$emit('appPay')">手机APP扫码支付</div>
       </div>
     </div>
   </div>
@@ -52,9 +55,8 @@
   import {generateTitle} from '@/util/i18n'
   import aesutil from '@/util/aesutil';
   import {mapGetters, mapActions, mapMutations} from 'vuex'
-
   export default {
-    name: "cash-login",
+    name: "pc-cash-login",
     data() {
       return {
         loginType:[
@@ -123,7 +125,7 @@
               this.$store.commit('SET_USERDATA',res.data);
 
               // this.$router.replace({path:"/mh/"});
-             // this.$router.push({name: 'mIndex'});
+              // this.$router.push({name: 'mIndex'});
 
               //  window.location.href = "/mh/";
             }else {
@@ -189,23 +191,20 @@
 </script>
 
 <style lang="scss" scoped>
-  @import "~assets/scss/mobile";
-  /* login */
-
-  /* tab */
   .tab-box {
     border-bottom: 0;
     display: flex;
     justify-content: space-between;
     .tab-info {
       display: inline-block;
-      height: r(40);
+      height: 40px;
       width: 30%;
-      line-height: r(40);
+      line-height: 40px;
       text-align: center;
-      border: 1px solid #D8D8D8;
-      background: $white;
+      /*border: 1px solid #D8D8D8;*/
+      background: #ffffff;
       color: #787876;
+      cursor: pointer;
       &.active {
         /*border-bottom:3px solid #87b5ff;*/
         background: #4982FF;
@@ -216,58 +215,69 @@
   }
   .next-btn{
     width: 100%;
-    height: r(40);
+    height: 40px;
     background: #4982FF;
-    color: $white;
-    line-height: r(40);
+    color: #ffffff;
+    line-height: 40px;
     text-align: center;
-    @include f(18px);
-    margin-top: r(20);
+    font-size: 18px;
+    margin-top: 20px;
   }
-
+  .go-app-pay{
+    font-size: 14px;
+    color: #333333;
+    margin-top: 30px;
+    cursor: pointer;
+  }
   .text-center {
     text-align: center;
   }
 
   .ps-input {
-    height: r(40);
+    height: 40px;
     border: 1px solid #DEDEDE;
-    padding: 0 r(10);
-    width: 100%;
+    padding: 0 10px;
+    width: 344px;
     &.ps-input-phone{
-      width: calc(100% - #{r(80)} - 6%);
-      float: right;
+      width: 258px;
+      /*float: right;*/
+      margin-left: 5px;
     }
   }
 
   .form-box-phone {
     border: 1px solid #DEDEDE;
-    padding: r(20);
-    background: $white;
+    padding: 40px 20px;
+    background: #ffffff;
+    width: 500px;
+    height: 300px;
   }
 
   .area-box {
     background: #F4F7FF;
     border: 1px solid #4982FF;
-    width: r(80);
-    height: r(40);
+    width: 76px;
+    height: 40px;
     color: #4982FF;
-    @include f(15px);
-    padding: 0 3%;
+    font-size: 15px;
+    padding: 0 10px;
     background: url("~images/select-up-down.svg") no-repeat scroll 90% center transparent;
-    background-size: r(10) r(12);
+    background-size: 10px 12px;
   }
 
   .form-group {
     /*padding:0 15px;*/
   }
   .form-input{
-    margin-top: r(10);
-    margin-bottom: r(20);
+    margin-top: 10px;
+    margin-bottom: 20px;
   }
 
   .form-subtitle {
-    @include f(15px);
+    font-size: 15px;
     color: #333333;
+    width: 20%;
+    text-align: right;
+    display: inline-block;
   }
 </style>
