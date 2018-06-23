@@ -305,16 +305,7 @@
             this.cashSuccess = true
             clearInterval(this.timer)
             this.unSubscribe()
-            let paySuccessList = $localStorage.get('paySuccessList') //获取本地支付成功列表
-            if(!_.isUndefined(paySuccessList) && !_.isNull(paySuccessList)){
-              paySuccessList = JSON.parse(aesutil.decrypt(paySuccessList))
-              paySuccessList.push(this.infoData)
-              $localStorage.set('paySuccessList',aesutil.encrypt(JSON.stringify(paySuccessList)))
-            }else{
-              const arr = []
-              arr.push(this.infoData)
-              $localStorage.set('paySuccessList',aesutil.encrypt(JSON.stringify(arr)))
-            }
+            this.saveLocal()
           } else {
             toast(res.message)
           }
@@ -327,6 +318,18 @@
         this.payBtnStatus = false
         clearInterval(this.timer)
         this.unSubscribe()
+      },
+      saveLocal(){
+        let paySuccessList = $localStorage.get('paySuccessList') //获取本地支付成功列表
+        if(!_.isUndefined(paySuccessList) && !_.isNull(paySuccessList)){
+          paySuccessList = JSON.parse(aesutil.decrypt(paySuccessList))
+          paySuccessList.push(this.infoData)
+          $localStorage.set('paySuccessList',aesutil.encrypt(JSON.stringify(paySuccessList)))
+        }else{
+          const arr = []
+          arr.push(this.infoData)
+          $localStorage.set('paySuccessList',aesutil.encrypt(JSON.stringify(arr)))
+        }
       },
       unSubscribe(){
         Vue.$global.bus.$emit('merchantOrderidUnsubscribe')
@@ -373,6 +376,7 @@
         this.init()
         Vue.$global.bus.$on('update:paySuccess',() => {
           this.cashSuccess = true
+          this.saveLocal()
           this.unSubscribe()
         })
       }
