@@ -37,6 +37,15 @@
     components:{
       Balance
     },
+    watch:{
+      payInfo(){
+        if(Number(this.payInfo.coinAmount) <= this.userBalance){
+          this.amountStatus = true
+        }else{
+          this.amountStatus = false
+        }
+      }
+    },
     props:{
       payInfo:{
         type:Object,
