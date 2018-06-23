@@ -39,6 +39,11 @@
         }else{
           this.amountStatus = false
         }
+      },
+      userBalance(){
+        if(Number(this.payInfo.coinAmount) <= Number(this.userBalance)){
+          this.amountStatus = true
+        }
       }
     },
     props:{
@@ -61,11 +66,6 @@
       },
       getUserBalance(data){
         this.userBalance = data
-      }
-    },
-    mounted(){
-      if(Number(this.payInfo.coinAmount) <= Number(this.userBalance)){
-        this.amountStatus = true
       }
     },
     beforeDestroy(){

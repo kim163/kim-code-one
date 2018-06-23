@@ -19,13 +19,13 @@
       <transition name="login-animate">
         <div v-if="!showPaymentLoading">
           <transition name="pay-type">
-            <div class="quick-pay" v-show="hasApp">
+            <div class="quick-pay" v-if="hasApp">
               <div class="pay-btn">{{$t('cash.payment')}}</div>
               <div class="pay-btn login-pay" @click="hasApp = false">{{$t('cash.loginPay')}}</div>
             </div>
           </transition>
           <transition name="pay-type">
-            <div class="pay-info" v-show="!hasApp">
+            <div class="pay-info" v-if="!hasApp">
               <transition name="login-animate">
                 <login v-if="!islogin"></login>
               </transition>
