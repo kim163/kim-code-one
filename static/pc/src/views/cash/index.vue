@@ -307,6 +307,7 @@
         })
       },
       saveLocal(){
+        this.$store.dispatch("UPDATE_USERDATA")
         let paySuccessList = $localStorage.get('paySuccessList') //获取本地支付成功列表
         if(!_.isUndefined(paySuccessList) && !_.isNull(paySuccessList)){
           paySuccessList = JSON.parse(aesutil.decrypt(paySuccessList))
