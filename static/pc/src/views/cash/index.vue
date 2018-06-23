@@ -129,7 +129,7 @@
           notifyUrl: this.$route.query.notifyUrl || '',//返回商户地址
           bindUserid: this.$route.query.bindUserid || '',
           bindPhone: this.$route.query.bindPhone || '',
-          bindName: this.$route.query.bindPhone || '',
+          bindName: this.$route.query.bindName || '',
           bindAreacode: this.$route.query.bindAreacode || '',
           bindUserLevel: this.$route.query.bindUserLevel || '',
           spareFields: this.$route.query.spareFields || '',
