@@ -351,7 +351,13 @@
             merchantCallbackurl: this.infoData.merchantCallbackurl,
             sign: this.infoData.sign,
             notifyUrl: this.infoData.notifyUrl,
-            token: this.token
+            token: this.token,
+            bindUserid: this.infoData.bindUserid,
+            bindPhone: this.infoData.bindPhone,
+            bindName: this.infoData.bindName,
+            bindAreacode: this.infoData.bindAreacode,
+            bindUserLevel: this.infoData.bindUserLevel,
+            spareFields: this.infoData.spareFields,
         }})
       }
       let paySuccessList = $localStorage.get('paySuccessList') //获取本地支付成功列表
