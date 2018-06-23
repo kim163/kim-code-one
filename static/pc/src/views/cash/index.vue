@@ -127,6 +127,12 @@
           merchantCallbackurl: this.$route.query.merchantCallbackurl || '', //商户回调地址
           sign: this.$route.query.sign || '', //商户请求签名
           notifyUrl: this.$route.query.notifyUrl || '',//返回商户地址
+          bindUserid: this.$route.query.bindUserid || '',
+          bindPhone: this.$route.query.bindPhone || '',
+          bindName: this.$route.query.bindPhone || '',
+          bindAreacode: this.$route.query.bindAreacode || '',
+          bindUserLevel: this.$route.query.bindUserLevel || '',
+          spareFields: this.$route.query.spareFields || '',
           customerAddress: '', //钱包地址
           createtime: 0,//订单时间
           qrCodeImg:'', //二维码地址
@@ -194,6 +200,12 @@
           merchantId: this.infoData.merchantId,
           merchantCallbackurl: this.infoData.merchantCallbackurl,
           sign: this.infoData.sign,
+          bindUserid: this.infoData.bindUserid,
+          bindPhone: this.infoData.bindPhone,
+          bindName: this.infoData.bindPhone,
+          bindAreacode: this.infoData.bindAreacode,
+          bindUserLevel: this.infoData.bindUserLevel,
+          spareFields: this.infoData.spareFields,
         }
         cashierInit(data).then(res => {
           console.log('cash init res: ', res)
