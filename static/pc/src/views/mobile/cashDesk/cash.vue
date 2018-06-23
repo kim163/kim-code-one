@@ -98,6 +98,7 @@
       islogin(){
         if(this.islogin){
           this.infoData.customerAddress = this.userData.accountChainVos[0].address
+          _.merchantOrderidWs(this.infoData.jiuanOrderid,this.userData)
         }
       },
       cashSuccess(){
@@ -190,7 +191,9 @@
               const endTime = _.chain(data.payOrder.createtime).add(3600000).subtract(nowTime).value()
               this.endTime = endTime > 3600000 ? 3600000 : endTime
               //this.getOrderStatus()
-              _.merchantOrderidWs(this.infoData.jiuanOrderid,this.userData)
+              if(this.islogin){
+                _.merchantOrderidWs(this.infoData.jiuanOrderid,this.userData)
+              }
             }
           } else {
             toast(res.message)
