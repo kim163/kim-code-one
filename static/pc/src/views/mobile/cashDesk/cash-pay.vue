@@ -27,23 +27,29 @@
         amountStatus: false, //余额状态
         payPassword:'',
         userBalance:0,
+        coinAmount:0,
       }
     },
     components:{
       Balance
     },
     watch:{
-      payInfo(){
-        if(Number(this.payInfo.coinAmount) <= Number(this.userBalance)){
+      coinAmount(){
+        if(Number(this.coinAmount) <= Number(this.userBalance)){
           this.amountStatus = true
         }else{
           this.amountStatus = false
         }
       },
       userBalance(){
-        if(Number(this.payInfo.coinAmount) <= Number(this.userBalance)){
+        if(Number(this.coinAmount) > Number(this.userBalance)){
+          this.amountStatus = false
+        }else{
           this.amountStatus = true
         }
+      },
+      "payInfo.coinAmount":function(newVal){
+        this.coinAmount = newVal
       }
     },
     props:{
@@ -67,6 +73,12 @@
       getUserBalance(data){
         this.userBalance = data
       }
+    },
+    activated(){
+      this.coinAmount = this.payInfo.coinAmount
+    },
+    mounted(){
+      this.coinAmount = this.payInfo.coinAmount
     },
     beforeDestroy(){
       this.amountStatus = false
