@@ -295,22 +295,25 @@
             this.cashSuccess = true
             clearInterval(this.timer)
             this.unSubscribe()
-            let paySuccessList = $localStorage.get('paySuccessList') //获取本地支付成功列表
-            if(!_.isUndefined(paySuccessList) && !_.isNull(paySuccessList)){
-              paySuccessList = JSON.parse(aesutil.decrypt(paySuccessList))
-              paySuccessList.push(this.infoData)
-              $localStorage.set('paySuccessList',aesutil.encrypt(JSON.stringify(paySuccessList)))
-            }else{
-              const arr = []
-              arr.push(this.infoData)
-              $localStorage.set('paySuccessList',aesutil.encrypt(JSON.stringify(arr)))
-            }
+            this.saveLocal()
           } else {
             toast(res.message)
           }
         }).catch(err => {
           toast(err)
         })
+      },
+      saveLocal(){
+        let paySuccessList = $localStorage.get('paySuccessList') //获取本地支付成功列表
+        if(!_.isUndefined(paySuccessList) && !_.isNull(paySuccessList)){
+          paySuccessList = JSON.parse(aesutil.decrypt(paySuccessList))
+          paySuccessList.push(this.infoData)
+          $localStorage.set('paySuccessList',aesutil.encrypt(JSON.stringify(paySuccessList)))
+        }else{
+          const arr = []
+          arr.push(this.infoData)
+          $localStorage.set('paySuccessList',aesutil.encrypt(JSON.stringify(arr)))
+        }
       },
       countDownEnd() {
         toast('该订单已超时')
@@ -367,6 +370,7 @@
         })
         Vue.$global.bus.$on('update:paySuccess',() => {
           this.cashSuccess = true
+          this.saveLocal()
           this.unSubscribe()
         })
       }
