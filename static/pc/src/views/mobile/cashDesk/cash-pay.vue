@@ -34,7 +34,7 @@
     },
     watch:{
       payInfo(){
-        if(this.payInfo && this.payInfo.coinAmount && this.payInfo.coinAmount != '' && Number(this.payInfo.coinAmount) <= Number(this.userBalance)){
+        if(Number(this.payInfo.coinAmount) <= Number(this.userBalance)){
           this.amountStatus = true
         }else{
           this.amountStatus = false
@@ -61,10 +61,13 @@
       },
       getUserBalance(data){
         this.userBalance = data
-        if(this.payInfo && this.payInfo.coinAmount && this.payInfo.coinAmount != '' && Number(this.payInfo.coinAmount) <= Number(this.userBalance)){
+        if(Number(this.payInfo.coinAmount) <= Number(this.userBalance)){
           this.amountStatus = true
         }
       }
+    },
+    beforeDestroy(){
+      this.amountStatus = false
     }
   }
 </script>
