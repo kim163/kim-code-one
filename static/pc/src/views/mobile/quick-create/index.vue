@@ -45,6 +45,7 @@
       if(this.merchantId != 0){
         Object.assign(this.merchantInfo,BusinessCfg.getDeail(this.merchantId))
       }
+      this.$store.dispatch('LOGIN_OUT',false)
       // this.merchantInfo.merchantUserName = _.getUrlParam('merchantUserName')
       // this.merchantInfo.notifyUrl = decodeURIComponent(_.getUrlParam('notifyUrl'))
       // this.merchantInfo.callBackUrl = decodeURIComponent(_.getUrlParam('callBackUrl'))
