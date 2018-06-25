@@ -121,11 +121,13 @@
       },
       stompConnect () {
         console.log('STOMP: Attempting connection')
-        let ws = new WebSocket(this.connectUrl);
-        this.client = Stomp.over(ws);
-        this.client.heartbeat.outgoing = 30000;
-        this.client.heartbeat.incoming = 30000;
-        this.client.connect(this.connectUser, this.connectPsw, this.stompSuccessCallback, this.stompFailureCallback);
+        if(this.connectUrl != ''){
+          let ws = new WebSocket(this.connectUrl);
+          this.client = Stomp.over(ws);
+          this.client.heartbeat.outgoing = 30000;
+          this.client.heartbeat.incoming = 30000;
+          this.client.connect(this.connectUser, this.connectPsw, this.stompSuccessCallback, this.stompFailureCallback);
+        }
       }
 
     },
