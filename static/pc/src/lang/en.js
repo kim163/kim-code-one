@@ -16,7 +16,8 @@ export default {
     userAccount: 'Account',
     busineList: 'My business list',
     onlineService: 'Online service',
-    juanApp: 'Juan APP'
+    juanApp: 'Juan APP',
+    juanWallet: 'Juan wallet'
   },
   login: {
     title: 'Welcome back',

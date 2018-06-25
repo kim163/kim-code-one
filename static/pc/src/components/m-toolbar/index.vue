@@ -20,9 +20,7 @@
               {{$t('navbar.accountBalance')}} <span class="fr"><balance></balance></span>
             </div>
             <router-link :to="{name:'mBindList'}" class="tool-item-href"><i class="iconfont icon-busine-list"></i>{{$t('navbar.busineList')}}</router-link>
-            <a class="tool-item-href" target="_blank" :href="live800Url">
-              <i class="iconfont icon-online-service"></i>{{$t('navbar.onlineService')}}
-            </a>
+            <get-live800></get-live800>
             <a class="tool-item-href" target="_blank" :href="SETTING.appUrl">
               <i class="iconfont icon-download"></i>{{$t('navbar.juanApp')}}
             </a>
@@ -34,10 +32,8 @@
             <router-link :to="{name:'mobileLogin'}" class="tool-item-href"><i class="iconfont icon-user-login"></i>{{$t('login.iWantLogin')}}</router-link>
             <router-link :to="{name:'mobileRegister'}" class="tool-item-href"><i class="iconfont icon-user-register"></i>{{$t('login.iWantRegister')}}
             </router-link>
-            <a class="tool-item-href border-bot" target="_blank" :href="live800Url">
-              <i class="iconfont icon-online-service"></i>{{$t('navbar.onlineService')}}
-            </a>
-            <a class="tool-item-href" target="_blank" :href="SETTING.appUrl">
+            <get-live800></get-live800>
+            <a class="tool-item-href border-bot" target="_blank" :href="SETTING.appUrl">
               <i class="iconfont icon-download"></i>{{$t('navbar.juanApp')}}
             </a>
           </div>
@@ -53,17 +49,18 @@
   import {SETTING} from "@/assets/data"
   import {mapGetters} from 'vuex'
   import Balance from 'components/balance'
+  import getLive800 from 'components/get-live800'
+
   export default {
     data() {
       return {
         SETTING,
-        myValue: false,
-        live800Url: ''
+        myValue: false
       }
     },
     props: ["value"],
     components:{
-      Balance
+      Balance, getLive800
     },
     computed: {
       ...mapGetters(["userData", 'islogin']),
@@ -83,23 +80,11 @@
       handleSetLanguage() {
         this.$i18n.locale === 'zh' ? this.$i18n.locale = 'en' : this.$i18n.locale = 'zh';
         this.$store.dispatch("SET_LANGUAGE", this.$i18n.locale);
-      },
-
-      getLive800Url(){
-        show.getLive800Url({}).then(res => {
-          if (res.code == 10000) {
-            this.live800Url = res.data.url;
-          }else{
-            toast(res.message);
-          }
-        }).catch(err => {
-          toast(err.message);
-        })
       }
 
     },
     created(){
-      this.getLive800Url();
+
     }
   }
 </script>
@@ -139,7 +124,7 @@
         line-height: r(44);
         border-top: 1px solid #D8D8D8;
         padding: 0 r(10) 0 r(20);
-        .iconfont {
+        .iconfont{
           @include f(18px);
           margin-right: r(10);
           color: #ABABAB;
