@@ -277,9 +277,12 @@
         console.log(request)
         login(request).then(res => {
           if(res.code === 10000){
-            $localStorage.set('tokenInfo', JSON.stringify(res.data.tokenVo));
-            $localStorage.set('userData', JSON.stringify(aesutil.encrypt(res.data.userId)))
-            this.$store.dispatch('UPDATE_USERDATA');
+            console.log('toLogin',res)
+            $localStorage.set('tokenInfo', JSON.stringify(res.data.tokenVo))
+            $localStorage.set('userData', aesutil.encrypt(JSON.stringify(res.data)))
+            this.$store.dispatch('CHECK_ONLINE', true)
+            this.$store.dispatch('UPDATE_TOKEN_INFO', res.data.tokenVo)
+            this.$store.commit('SET_USERDATA',res.data)
           }else{
             toast(res.message)
           }

@@ -106,19 +106,20 @@ export default new Vuex.Store({
         accountChainVos: []
       })
     },
-    [types.LOGIN_OUT]({commit,dispatch},val){ //退出登录
+    [types.LOGIN_OUT]({commit,dispatch},val = true){ //退出登录
        dispatch(types.INIT_INFO);
        $localStorage.remove('tokenInfo');
        $localStorage.remove('userData');
        dispatch(types.UPDATE_TOKEN_INFO, null);
        dispatch(types.CHECK_ONLINE, false);
-       if(_.isMobile()){
-        //  router.replace({name:'mobileLogin'});
-         window.location.href = "/m/login";
-       }else{
-         router.replace({name:'aindex'});
+       if(val){
+         if(_.isMobile()){
+           //  router.replace({name:'mobileLogin'});
+           window.location.href = "/m/login";
+         }else{
+           router.replace({name:'aindex'});
+         }
        }
-
     },
     [types.UPDATE_USERDATA]({commit,dispatch},val){  //获取 初始化信息
       let tokenInfo = JSON.parse($localStorage.get('tokenInfo'));

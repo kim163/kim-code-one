@@ -114,7 +114,9 @@
         if (this.client.ws.readyState === this.client.ws.OPEN) {
           return
         }
-        setTimeout(stompConnect, 10000)
+        setTimeout(() => {
+          this.stompConnect()
+        }, 10000)
         console.log('STOMP: Reconecting in 10 seconds')
       },
       stompConnect () {
