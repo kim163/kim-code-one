@@ -61,7 +61,7 @@
       font-size: 20px;
       color: #ffffff;
       display: block;
-      .iconfont{
+      i.iconfont{
         font-size: 35px;
         color: #B8CDF8;
         margin-right: 11px;

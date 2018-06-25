@@ -35,7 +35,7 @@
 </script>
 <style lang="scss">
   @import "~assets/scss/mixin";
-  .icon-online-service {
+  i.icon-online-service {
     @include f(18px);
     margin-right: r(10);
     color: #ABABAB;
