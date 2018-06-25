@@ -221,7 +221,8 @@ export default [
       return resolve(require('views/mobile/quick-create'))
     },
     meta:{
-      isMobilePage: "mobile-body"
+      isMobilePage: "mobile-body",
+      noCache:true
     },
   }
 
