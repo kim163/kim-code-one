@@ -13,6 +13,7 @@
   export default {
     name: "index",
     created(){
+      this.$store.dispatch('LOGIN_OUT', false)
       const request = {
         type:11,
         token: this.$route.query.token,
