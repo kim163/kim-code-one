@@ -16,7 +16,8 @@ export default {
     userAccount: '账号',
     busineList: '我的商户列表',
     onlineService: '在线客服',
-    juanApp: '久安APP'
+    juanApp: '久安APP',
+    juanWallet: '久安钱包'
   },
   login: {
     title: '欢迎回来',
