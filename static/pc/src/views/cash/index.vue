@@ -43,24 +43,28 @@
           <transition name="pay-type">
             <div v-if="!loginPay">
               <div class="c-l">
-                <p class="c-l-title"> 久安扫码支付</p>
-                <div v-if="endTime > 0">
-                  <p v-show="qrCodeStatus != 1"> 二维码将在<span class="orange">{{qrCodeTime}}秒</span>后失效</p>
-                  <p v-show="qrCodeStatus === 1">支付中</p>
-                </div>
-                <div v-else>该笔订单已超时</div>
-                <div class="qrcode-box">
-                  <div v-if="endTime > 0">
-                    <div class="pay-mask" v-show="qrCodeStatus === 1">正在支付......</div>
-                    <div class="pay-mask" v-show="qrCodeStatus === 2">
-                      <div>二维码已失效</div>
-                      <div class="qrcode-refresh" @click="init()">重新获取</div>
-                    </div>
-                  </div>
-                  <div class="pay-mask" v-else>订单已超时</div>
-                  <qrcode :value="infoData.qrCodeImg" v-if="infoData.qrCodeImg" :options="{ size: 248 }"></qrcode>
-                </div>
-                <p class="i-scan">打开久安钱包<br>扫一扫</p>
+                <!--<p class="c-l-title"> 久安扫码支付</p>-->
+                <!--<div v-if="endTime > 0">-->
+                  <!--<p v-show="qrCodeStatus != 1"> 二维码将在<span class="orange">{{qrCodeTime}}秒</span>后失效</p>-->
+                  <!--<p v-show="qrCodeStatus === 1">支付中</p>-->
+                <!--</div>-->
+                <!--<div v-else>该笔订单已超时</div>-->
+                <!--<div class="qrcode-box">-->
+                  <!--<div v-if="endTime > 0">-->
+                    <!--<div class="pay-mask" v-show="qrCodeStatus === 1">正在支付......</div>-->
+                    <!--<div class="pay-mask" v-show="qrCodeStatus === 2">-->
+                      <!--<div>二维码已失效</div>-->
+                      <!--<div class="qrcode-refresh" @click="init()">重新获取</div>-->
+                    <!--</div>-->
+                  <!--</div>-->
+                  <!--<div class="pay-mask" v-else>订单已超时</div>-->
+                  <!--<qrcode :value="infoData.qrCodeImg" v-if="infoData.qrCodeImg" :options="{ size: 248 }"></qrcode>-->
+                <!--</div>-->
+                <!--<p class="i-scan">打开久安钱包<br>扫一扫</p>-->
+                <cass-qrcode :end-time="endTime"
+                             :info-data="infoData"
+                             :qr-code-status="qrCodeStatus"
+                              @qrcode-refresh="init()"></cass-qrcode>
               </div>
               <div class="c-r">
                 <img src="~images/phone.png">
@@ -100,6 +104,7 @@
   import merchantCfg from '../misc/merchant-config'
   import Qrcode from '@xkeshi/vue-qrcode';
   import LoginPay from './login-pay'
+  import CassQrcode from './cash-qrcode'
 
   import aesutil from '@/util/aesutil';
   import {$localStorage} from '@/util/storage'
@@ -143,7 +148,7 @@
         cashSuccess: false,  //充值成功
         showPaymentLoading: true,
         qrCodeStatus:0,//二维码状态 0 正常显示 1支付中 2二维码失效
-        qrCodeTime:180, //二维码倒计时
+        // qrCodeTime:180, //二维码倒计时
         loginPay:false, // 登录支付
         hasSubscribe:false, //是否订阅
       }
@@ -160,7 +165,8 @@
       CountDown,
       CashSuccess,
       Qrcode,
-      LoginPay
+      LoginPay,
+      CassQrcode
     },
     computed: {
       ...mapGetters([
@@ -177,16 +183,16 @@
       formatCny(data) {
         return data / this.infoData.exchangeRate
       },
-      qrCodeCountDown(){
-        setTimeout(() => {
-          this.qrCodeTime -= 1
-          if(this.qrCodeTime <= 0){
-            this.qrCodeStatus = 2
-          }else{
-            this.qrCodeCountDown()
-          }
-        },1000)
-      },
+      // qrCodeCountDown(){
+      //   setTimeout(() => {
+      //     this.qrCodeTime -= 1
+      //     if(this.qrCodeTime <= 0){
+      //       this.qrCodeStatus = 2
+      //     }else{
+      //       this.qrCodeCountDown()
+      //     }
+      //   },1000)
+      // },
       init() { //调用初始化接口
         const data = {
           amount: this.infoData.amount,
@@ -222,8 +228,8 @@
             } else {
               const endTime = _.chain(data.payOrder.createtime).add(3600000).subtract(nowTime).value()
               this.endTime = endTime > 3600000 ? 3600000 : endTime
-              this.qrCodeTime = 180
-              this.qrCodeCountDown()
+              // this.qrCodeTime = 180
+              // this.qrCodeCountDown()
               if(!this.hasSubscribe){
                 _.merchantOrderidWs(this.infoData.jiuanOrderid)
                 this.hasSubscribe = true
@@ -511,10 +517,6 @@
     margin: 105px 0 60px 0;
   }
 
-  .c-l-title {
-    font-size: 26px;
-    padding: 8px 0;
-  }
 
   .content02 .c-r {
     float: left;
@@ -525,45 +527,6 @@
     width: 150px;
     margin: 15px auto;
     cursor: pointer;
-  }
-  .qrcode-box {
-    width: 250px;
-    height: 250px;
-    border: 1px solid #ececec;
-    margin: 20px auto;
-    position: relative;
-    .pay-mask{
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      z-index: 2;
-      background: rgba(0,0,0,.8);
-      color: #ffffff;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-    }
-    .qrcode-refresh{
-      margin-top: 20px;
-      width: 120px;
-      height: 30px;
-      background: #619eff;
-      border-radius: 5px;
-      font-size: 16px;
-      line-height: 30px;
-      cursor: pointer;
-    }
-  }
-
-
-  .i-scan {
-    background: url(~images/scan.png) no-repeat left center;
-    padding-left: 52px;
-    width: 170px;
-    margin: 0 auto;
-    text-align: left;
-    font-size: 18px;
   }
 
   .footer {
