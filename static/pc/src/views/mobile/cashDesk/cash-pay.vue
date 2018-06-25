@@ -35,18 +35,10 @@
     },
     watch:{
       coinAmount(){
-        if(Number(this.coinAmount) <= Number(this.userBalance)){
-          this.amountStatus = true
-        }else{
-          this.amountStatus = false
-        }
+        this.checkAmountStatus()
       },
       userBalance(){
-        if(Number(this.coinAmount) > Number(this.userBalance)){
-          this.amountStatus = false
-        }else{
-          this.amountStatus = true
-        }
+        this.checkAmountStatus()
       },
       "payInfo.coinAmount":function(newVal){
         this.coinAmount = newVal
@@ -72,11 +64,18 @@
       },
       getUserBalance(data){
         this.userBalance = data
+      },
+      checkAmountStatus(){
+        if(Number(this.coinAmount) > Number(this.userBalance)){
+          this.amountStatus = false
+        }else{
+          this.amountStatus = true
+        }
       }
     },
-    activated(){
-      this.coinAmount = this.payInfo.coinAmount
-    },
+    // activated(){
+    //   this.coinAmount = this.payInfo.coinAmount
+    // },
     mounted(){
       this.coinAmount = this.payInfo.coinAmount
     },

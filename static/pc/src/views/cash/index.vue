@@ -96,7 +96,6 @@
   import CountDown from 'components/countdown'
   import {generateTitle} from '@/util/i18n'
   import {mapGetters} from 'vuex'
-  // import Login from '../mobile/login/login-inline'
   import CashSuccess from './cash-success'
   import merchantCfg from '../misc/merchant-config'
   import Qrcode from '@xkeshi/vue-qrcode';
@@ -146,6 +145,7 @@
         qrCodeStatus:0,//二维码状态 0 正常显示 1支付中 2二维码失效
         qrCodeTime:180, //二维码倒计时
         loginPay:false, // 登录支付
+        hasSubscribe:false, //是否订阅
       }
     },
     watch:{
@@ -155,11 +155,6 @@
           _.merchantOrderidWs(this.infoData.jiuanOrderid,this.userData)
         }
       },
-      cashSuccess(){
-        if(this.cashSuccess){
-          clearInterval(this.timer)
-        }
-      }
     },
     components: {
       CountDown,
@@ -221,7 +216,6 @@
               this.cashSuccess = true
             }
             const nowTime = _.now()
-            console.log(nowTime,data.payOrder.createtime)
             if (nowTime > _(data.payOrder.createtime).add(3600000)) {
               this.endTime = 0
               this.payBtnStatus = false
@@ -230,10 +224,10 @@
               this.endTime = endTime > 3600000 ? 3600000 : endTime
               this.qrCodeTime = 180
               this.qrCodeCountDown()
-              if(this.islogin){
-                _.merchantOrderidWs(this.infoData.jiuanOrderid,this.userData)
+              if(!this.hasSubscribe){
+                _.merchantOrderidWs(this.infoData.jiuanOrderid)
+                this.hasSubscribe = true
               }
-              //this.getOrderStatus()
             }
           } else {
             toast(res.message)
@@ -241,29 +235,6 @@
         }).catch(err => {
           toast(err)
         })
-      },
-      getOrderStatus(){
-        const data = {
-          jiuanOrderid: this.infoData.jiuanOrderid,
-          merchantId: this.infoData.merchantId,
-          merchantOrderid: this.infoData.merchantOrderid
-        }
-        this.timer = setInterval(() => {
-          getOrderStatus(data).then(res => {
-            if(res.code === 10000){
-              if(Number(res.data) === 1){
-                this.qrCodeStatus = Number(res.data)
-              }
-              if(Number(res.data) === 2){
-                this.cashSuccess = true
-              }
-            }else{
-              toast(res.message)
-            }
-          }).catch(err => {
-            toast(err)
-          })
-        },3000)
       },
       // tokenLogin() {//用授权码登录
       //   const request = {
@@ -308,7 +279,6 @@
         paymentPay(request).then(res => {
           if (res.code === 10000) {
             this.cashSuccess = true
-            clearInterval(this.timer)
             this.unSubscribe()
             this.saveLocal()
           } else {
@@ -334,11 +304,11 @@
       countDownEnd() {
         toast('该订单已超时')
         this.payBtnStatus = false
-        clearInterval(this.timer)
         this.unSubscribe()
       },
       unSubscribe(){
         Vue.$global.bus.$emit('merchantOrderidUnsubscribe')
+        this.hasSubscribe = false
       }
     },
     created() {
@@ -372,7 +342,6 @@
           this.cashSuccess = true
         }
       }
-     // Vue.$global.bus.$emit('merchantOrderid',this.infoData.merchantOrderid)
       this.infoData.businessName = merchantCfg.getDeail(this.infoData.merchantId).name
       // if (!this.islogin && this.token != '') {
       //   this.tokenLogin()
@@ -471,10 +440,10 @@
     }
     .line{
       margin-left: 15px;
-      height: 50px;
+      height: 40px;
       width: 1px;
       background: #666666;
-      margin-top: 20px;
+      margin-top: 28px;
     }
     .des{
       font-size: 24px;
