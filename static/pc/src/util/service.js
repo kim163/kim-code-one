@@ -8,7 +8,9 @@ const filterRouterName = [  //过滤路由 无需跳转到登录页
   'mUserBind',
   'mQuickCreate',
   'autoLogin',
-  'mobileRegister'
+  'mobileRegister',
+  'mCashDesk',
+  'pcCashDesk',
 ]
 // var promiseArr = {}
 // let cancel
@@ -24,6 +26,7 @@ const service = axios.create({
 
 // request拦截器
 service.interceptors.request.use(config => {
+  const showLoading = _(config.loading).isUndefined() ? true : config.loading
   if (config.data && config.data.multipart) {
     config.headers['content-type'] = 'multipart/form-data'
   } else {
@@ -33,7 +36,7 @@ service.interceptors.request.use(config => {
     }
   }
   config.headers['Authorization'] = `Bearer ${store.getters.tokenInfo ? store.getters.tokenInfo.accessToken : ''}`
-  $load.open("loading...");
+  showLoading ? $load.open("loading...") : '';
 
   // if (promiseArr[config.url]) {
   //   promiseArr[config.url]('操作取消')

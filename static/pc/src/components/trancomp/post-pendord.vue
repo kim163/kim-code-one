@@ -90,8 +90,8 @@
     data() {
       return {
         postType:[
-          {name: "postPend.buyer", value: "buyer"},
-          {name: "postPend.seller", value: "seller"}
+          {name: "transactionRecord.buyer", value: "buyer"},
+          {name: "transactionRecord.seller", value: "seller"}
         ],
         postItem:'buyer',
         bankList: {

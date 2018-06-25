@@ -102,8 +102,8 @@
     data(){
       return{
         pendingType:[
-          {name: "postPend.buyer", value: "buyer"},
-          {name: "postPend.seller", value: "seller"}
+          {name: "transactionRecord.buyer", value: "buyer"},
+          {name: "transactionRecord.seller", value: "seller"}
         ],
         pendingItem: 'buyer',
         bankList: {

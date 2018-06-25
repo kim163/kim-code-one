@@ -1,43 +1,46 @@
 <template>
   <div class="cash-main">
-    <mobile-header>{{$t('cash.title')}}</mobile-header>
-    <div class="cash-details">
-      <div class="trade-time">
-        {{$t('cash.realTime')}}
-        <span class="red fr">
-          <count-down :end-time="endTime" @callBack="countDownEnd"></count-down>
-        </span>
+    <mobile-header :back="goBack">{{$t('cash.title')}}</mobile-header>
+    <template v-if="!cashSuccess">
+      <div class="cash-details">
+        <div class="trade-time">
+          {{$t('cash.realTime')}}
+          <span class="red fr">
+        <count-down :end-time="endTime" end-text="订单已超时" @callBack="countDownEnd"></count-down>
+      </span>
+        </div>
+        <cash-info :data="infoData"></cash-info>
+        <a :href="infoData.notifyUrl" class="other-pay">{{$t('cash.otherPay')}}&gt;&gt;</a>
+        <!--<div class="other-pay" @click="goApp()">{{$t('cash.otherPay')}}&gt;&gt; 安装app：{{hasApp}}</div>-->
       </div>
-      <cash-info :data="infoData"></cash-info>
-      <router-link :to="initReqData.merchantCallbackurl" class="other-pay">{{$t('cash.otherPay')}}&gt;&gt;</router-link>
-    </div>
-    <transition name="pay-type">
-      <div class="quick-pay" v-show="isBind">
-        <div class="pay-btn">{{$t('cash.payment')}}</div>
-        <div class="pay-btn login-pay" @click="isBind = false">{{$t('cash.loginPay')}}</div>
+      <div class="payment-loading" v-if="showPaymentLoading">
+        加载中...
       </div>
+      <transition name="login-animate">
+        <div v-if="!showPaymentLoading">
+          <transition name="pay-type">
+            <div class="quick-pay" v-if="hasApp">
+              <div class="pay-btn">{{$t('cash.payment')}}</div>
+              <div class="pay-btn login-pay" @click="hasApp = false">{{$t('cash.loginPay')}}</div>
+            </div>
+          </transition>
+          <transition name="pay-type">
+            <div class="pay-info" v-if="!hasApp">
+              <transition name="login-animate">
+                <login v-if="!islogin"></login>
+              </transition>
+              <transition name="pay-info-animate">
+                <cash-pay v-if="islogin" :pay-info="infoData" :pay-btn="payBtnStatus" @pay="pay"></cash-pay>
+              </transition>
+            </div>
+          </transition>
+          <a :href="infoData.notifyUrl" class="go-back" v-if="!hasApp">{{$t('cash.goBack')}}</a>
+        </div>
+      </transition>
+    </template>
+    <transition name="success">
+      <cash-success :pay-info="infoData" v-if="cashSuccess"></cash-success>
     </transition>
-    <transition name="pay-type">
-      <div class="pay-info" v-show="!isBind">
-        <transition name="login-animate">
-          <cash-login v-if="!islogin"></cash-login>
-        </transition>
-        <transition name="pay-info-animate">
-          <cash-pay v-if="islogin" @pay="pay"></cash-pay>
-        </transition>
-      </div>
-    </transition>
-    <router-link :to="initReqData.merchantCallbackurl" class="go-back" v-if="!isBind">{{$t('cash.goBack')}}</router-link>
-
-    <confirm-dialog v-model="showPayPsdDialog">
-      <div slot="title">{{$t('cash.psdInputPlaceholder')}}</div>
-      <div slot="content">
-        <input type="password" class="pay-psd-input" v-model.trim="payPassword"
-               :placeholder="$t('cash.psdInputPlaceholder')"/>
-      </div>
-      <div slot="leftBtn" class="btn-cancel">{{$t('postPend.cancel')}}</div>
-      <div slot="rightBtn" class="btn-yes" @click="checkPayPassWord()">{{$t('cash.yesBtn')}}</div>
-    </confirm-dialog>
   </div>
 </template>
 
@@ -47,13 +50,20 @@
   import ConfirmDialog from 'components/confirm'
   import {generateTitle} from '@/util/i18n'
   import {mapGetters} from 'vuex'
-  import CashLogin from '../login/login-inline'
+  import Login from '../login/login-inline'
   import CashPay from './cash-pay'
   import CashInfo from './cash-info'
+  import CashSuccess from './cash-success'
+  import merchantCfg from '../../misc/merchant-config'
+
+  import aesutil from '@/util/aesutil';
+  import {$localStorage} from '@/util/storage'
+
   import {
     cashierInit,
     loginH5,
     paymentPay,
+    getOrderStatus,
   } from 'api/cashier'
   import {login} from 'api/show'
 
@@ -61,81 +71,231 @@
     data() {
       return {
         infoData: {
-          exchangeRate: 0, // 汇率
+          exchangeRate: 100, // 汇率
           businessName: '', //商户名
           jiuanOrderid: '',  //久安订单号
+          amount: this.$route.query.amount || '',//应付金额
+          coinAmount:'', //对应uet金额
+          assetCode: this.$route.query.assetCode || '', //资产代码
+          merchantId: this.$route.query.merchantId || '', //商户号
+          merchantOrderid: this.$route.query.merchantOrderid || '', //商户订单号
+          merchantCallbackurl: this.$route.query.merchantCallbackurl || '', //商户回调地址
+          sign: this.$route.query.sign || '', //商户请求签名
+          notifyUrl: this.$route.query.notifyUrl || '',//返回商户地址
+          bindUserid: this.$route.query.bindUserid || '',
+          bindPhone: this.$route.query.bindPhone || '',
+          bindName: this.$route.query.bindName || '',
+          bindAreacode: this.$route.query.bindAreacode || '',
+          bindUserLevel: this.$route.query.bindUserLevel || '',
+          spareFields: this.$route.query.spareFields || '',
+          customerAddress: '', //钱包地址
+          createtime: 0,//订单时间
         },
-        initReqData:{ //初始化页面参数
-          amount: '',//应付金额
-          assetCode: '', //资产代码
-          merchantId: '', //商户号
-          merchantOrderid: '', //商户订单号
-          merchantCallbackurl: '', //商户回调地址
-          sign: '', //商户请求签名
-        },
-        isBind: false, //商户是否绑定
-        endTime: 0,
-        showPayPsdDialog: false,
+        hasApp: false, //商户是否安装app
+        endTime: 0, //订单结束倒计时
         payPassword: '',
-        token: ''
+        payBtnStatus: true, //确定付款按钮状态
+        token: this.$route.query.token || '',//授权token
+        cashSuccess: false,  //充值成功
+        showPaymentLoading: true
+      }
+    },
+    watch:{
+      islogin(){
+        if(this.islogin){
+          this.infoData.customerAddress = this.userData.accountChainVos[0].address
+          _.merchantOrderidWs(this.infoData.jiuanOrderid,this.userData)
+        }
+      },
+      cashSuccess(){
+        if(this.cashSuccess){
+          clearInterval(this.timer)
+        }
       }
     },
     components: {
       MobileHeader,
-      CashLogin,
+      Login,
       CashPay,
       CashInfo,
       CountDown,
-      ConfirmDialog
+      ConfirmDialog,
+      CashSuccess
     },
 
     created() {
-      const data = {
-        amount: global.getUrlParam('amount'),
-        merchantOrderid: global.getUrlParam('merchantOrderid'),
-        assetCode: global.getUrlParam('assetCode'),
-        merchantId: global.getUrlParam('merchantId'),
-        merchantCallbackurl: global.getUrlParam('merchantCallbackurl'),
-        sign: global.getUrlParam('sign')
+      //判断是否安装app  如果没有  就用授权码登录
+      this.infoData.businessName = merchantCfg.getDeail(this.infoData.merchantId).name
+      // var ifr = document.createElement('iframe');
+      // ifr.src = 'jiuanapp';
+      // ifr.style.display = 'none';
+      // this.checkInstallApp()
+      // document.body.appendChild(ifr);
+      // setTimeout(function() {
+      //   document.body.removeChild(ifr);
+      // }, 2000);
+      let paySuccessList = $localStorage.get('paySuccessList') //获取本地支付成功列表
+      if(!_.isUndefined(paySuccessList) && !_.isNull(paySuccessList)){
+        paySuccessList = JSON.parse(aesutil.decrypt(paySuccessList))
+        const info = paySuccessList.find((item) => {
+          return item.merchantOrderid === this.infoData.merchantOrderid
+        })
+        if(info){
+          console.log(info)
+          Object.assign(this.infoData,info)
+          this.cashSuccess = true
+        }
       }
-      this.token = global.getUrlParam('token')
-      Object.assign(this.initReqData, data)
-      Object.assign(this.infoData, this.initReqData)
+      //Vue.$global.bus.$emit('merchantOrderid',this.infoData.merchantOrderid)
+      if (!this.islogin && this.token != '' && !_(this.token).isUndefined()) {
+        this.tokenLogin()
+      }else{
+        this.showPaymentLoading = false
+      }
+      if(this.islogin){
+        this.infoData.customerAddress = this.userData.accountChainVos[0].address
+      }
     },
-    watch: {},
-
     computed: {
       ...mapGetters([
         "userData",
-        "islogin"
+        "islogin",
+        "userId"
       ]),
     },
     methods: {
       generateTitle,
+      goBack() {
+        window.location.href = this.infoData.notifyUrl
+      },
       init() { //调用初始化接口
-        console.log(this.initReqData)
-        cashierInit(this.initReqData).then(res => {
+        const data = {
+          amount: this.infoData.amount,
+          merchantOrderid: this.infoData.merchantOrderid,
+          assetCode: this.infoData.assetCode,
+          merchantId: this.infoData.merchantId,
+          merchantCallbackurl: this.infoData.merchantCallbackurl,
+          sign: this.infoData.sign,
+          bindUserid: this.infoData.bindUserid,
+          bindPhone: this.infoData.bindPhone,
+          bindName: this.infoData.bindName,
+          bindAreacode: this.infoData.bindAreacode,
+          bindUserLevel: this.infoData.bindUserLevel,
+          spareFields: this.infoData.spareFields,
+        }
+        cashierInit(data).then(res => {
           console.log('cash init res: ', res)
-          if(res.code === 10000){
+          if (res.code === 10000) {
             const data = res.data
             this.infoData.jiuanOrderid = data.payOrder.jiuanOrderid
-            this.infoData.exchangeRate = data.payOrder.rate
-            if(new Date().getTime() - data.payOrder.createtime > 3600000){
-              toast('该订单已超时')
-              this.endTime = 0
-            }else{
-
+            this.infoData.exchangeRate = data.payOrder.exchangeRate
+            this.infoData.createtime = data.payOrder.createtime
+            this.infoData.coinAmount = data.payOrder.coinAmount
+            if(data.payOrder.status === 1){
+              this.cashSuccess = true
             }
-            this.endTime = new Date().getTime() - data.payOrder.createtime
-          }else{
+            const nowTime = _.now()
+            console.log(nowTime,data.payOrder.createtime)
+            if (nowTime > _(data.payOrder.createtime).add(3600000)) {
+              this.endTime = 0
+              this.payBtnStatus = false
+            } else {
+              const endTime = _.chain(data.payOrder.createtime).add(3600000).subtract(nowTime).value()
+              this.endTime = endTime > 3600000 ? 3600000 : endTime
+              //this.getOrderStatus()
+              if(this.islogin){
+                _.merchantOrderidWs(this.infoData.jiuanOrderid,this.userData)
+              }
+            }
+          } else {
             toast(res.message)
           }
         }).catch(err => {
           toast(err)
         })
       },
-      login(){
+      getOrderStatus(){
+        const data = {
+          jiuanOrderid: this.infoData.jiuanOrderid,
+          merchantId: this.infoData.merchantId,
+          merchantOrderid: this.infoData.merchantOrderid
+        }
+        this.timer = setInterval(() => {
+            getOrderStatus(data).then(res => {
+              if(res.code === 10000){
+                this.cashSuccess = res.data === 2 ? true : false
+              }else{
+                toast(res.message)
+              }
+            }).catch(err => {
+              toast(err)
+            })
+        },3000)
+      },
+      checkInstallApp() {
+        // let timeout, t = 2000, hasApp = true;
+        // setTimeout(() => {
+        //   this.hasApp = hasApp
+        //   this.showPaymentLoading = false
+        //   document.body.removeChild(ifr);
+        // }, 2000)
+        //
+        // const t1 = Date.now();
+        // const ifr = document.createElement("iframe");
+        // ifr.setAttribute('src', 'scheme="jiuanapp"');
+        // // ifr.setAttribute('src', 'jiuanapp');
+        // ifr.setAttribute('style', 'display:none');
+        // document.body.appendChild(ifr);
+        // timeout = setTimeout(function () {
+        //   var t2 = Date.now();
+        //   if (!t1 || t2 - t1 < t + 100) {
+        //     hasApp = false;
+        //   }
+        // }, t);
+        var _clickTime = +(new Date());
 
+        //启动间隔20ms运行的定时器，并检测累计消耗时间是否超过3000ms，超过则结束
+        var _count = 0, intHandle;
+        intHandle = setInterval(() => {
+          _count++;
+          var elsTime = +(new Date()) - _clickTime;
+          if (_count>=100 || elsTime > 3000 ) {
+            clearInterval(intHandle);
+            this.check(elsTime);
+          }
+        }, 20);
+      },
+      check(elsTime) {
+        if ( elsTime > 3000 || document.hidden || document.webkitHidden) {
+          this.hasApp = true
+        } else {
+          this.hasApp = false
+        }
+        this.showPaymentLoading = false
+      },
+      tokenLogin() {//用授权码登录
+        const request = {
+          type: 11,
+          token: this.token,
+          merchantId: this.infoData.merchantId
+        }
+        console.log(request)
+
+        login(request).then(res => {
+          if (res.code === 10000) {
+            $localStorage.set('tokenInfo', JSON.stringify(res.data.tokenVo));
+            $localStorage.set('userData', JSON.stringify(aesutil.encrypt(res.data.userId)));
+            this.$store.dispatch('CHECK_ONLINE', true);
+            this.$store.dispatch('UPDATE_TOKEN_INFO', res.data.tokenVo);
+            this.$store.dispatch('INIT_INFO');
+            this.$store.commit('SET_USERDATA',res.data);
+          } else {
+            toast(res.message)
+          }
+        }).catch(err => {
+        }).finally(() => {
+          this.showPaymentLoading = false
+        })
       },
       checkPayPassWord() {
         if (this.payPassword === '') {
@@ -146,20 +306,102 @@
       },
       pay(password) {
         //调用支付接口
+        const request = {
+          jiuanOrderid: this.infoData.jiuanOrderid,
+          userId: this.userId,
+          payPassword: password,
+          assetCode: this.infoData.assetCode,
+          customerAddress: this.infoData.customerAddress,
+          amount: this.infoData.amount,
+        }
+        console.log(request)
+        paymentPay(request).then(res => {
+          if (res.code === 10000) {
+            this.cashSuccess = true
+            clearInterval(this.timer)
+            this.unSubscribe()
+            this.saveLocal()
+          } else {
+            toast(res.message)
+          }
+        }).catch(err => {
+          toast(err)
+        })
       },
       countDownEnd() {
-        console.log('666666')
+        toast('该订单已超时')
+        this.payBtnStatus = false
+        clearInterval(this.timer)
+        this.unSubscribe()
+      },
+      saveLocal(){
+        this.$store.dispatch("UPDATE_USERDATA")
+        let paySuccessList = $localStorage.get('paySuccessList') //获取本地支付成功列表
+        if(!_.isUndefined(paySuccessList) && !_.isNull(paySuccessList)){
+          paySuccessList = JSON.parse(aesutil.decrypt(paySuccessList))
+          paySuccessList.push(this.infoData)
+          $localStorage.set('paySuccessList',aesutil.encrypt(JSON.stringify(paySuccessList)))
+        }else{
+          const arr = []
+          arr.push(this.infoData)
+          $localStorage.set('paySuccessList',aesutil.encrypt(JSON.stringify(arr)))
+        }
+      },
+      unSubscribe(){
+        Vue.$global.bus.$emit('merchantOrderidUnsubscribe')
+      },
+      goToDownLoad(status){
+        if(status === 0){
+          window.location.href='https://9anapp.com/app/9anapp.html'
+        }
+      },
+      goApp(){
+        // let _downLoadUrl = '';
+        // let _schema = '';
+        // let _protocal = '';
+        // if (_.isIos()) {
+        //   _downLoadUrl = 'https://9anapp.com/app/9anapp.html';
+        //   _schema = '?promoter';
+        //   _protocal = 'jiuanapp';
+        // } else if (_.isAndroid()) {
+        //   _downLoadUrl = 'https://9anapp.com/app/9anapp.html';
+        //   _schema = 'promotion';
+        //   _protocal = 'jiuanapp';
+        // }
+        // _.openAppFun().loadSchema({
+        //   // 通过NN打开某个链接
+        //   schema: _schema,
+        //   //schema头协议，实际情况填写
+        //   protocal: _protocal,
+        //   //发起唤醒请求后，会等待loadWaiting时间，超时则跳转到failUrl，默认3000ms
+        //   loadWaiting:"2000",
+        //   //唤起失败时的跳转链接，默认跳转到下载页
+        //   failUrl: _downLoadUrl,
+        //   // apk信息,请根据实际情况填写
+        //   // apkInfo:{
+        //   //   PKG: "com.jiuan.wallet",
+        //   //   CATEGORY: "android.intent.category.DEFAULT",
+        //   //   ACTION: "android.intent.action.VIEW"
+        //   // }
+        // });
+        _.openApp('weixin://',this.goToDownLoad)
       },
     },
     mounted() {
-      this.init()
-
+      if(!this.cashSuccess) {
+        this.init()
+        Vue.$global.bus.$on('update:paySuccess',() => {
+          this.cashSuccess = true
+          this.saveLocal()
+          this.unSubscribe()
+        })
+      }
     }
   };
 
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   @import "~assets/scss/mobile";
 
   .login-animate-enter {
@@ -274,5 +516,20 @@
   .btn-yes {
     background: #4982FF;
     color: $white;
+  }
+
+  .payment-loading {
+    text-align: center;
+    padding-top: r(30);
+    animation: looming 2s infinite;
+  }
+
+  @keyframes looming {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
   }
 </style>
