@@ -43,42 +43,25 @@
           <transition name="pay-type">
             <div v-if="!loginPay">
               <div class="c-l">
-                <!--<p class="c-l-title"> 久安扫码支付</p>-->
-                <!--<div v-if="endTime > 0">-->
-                  <!--<p v-show="qrCodeStatus != 1"> 二维码将在<span class="orange">{{qrCodeTime}}秒</span>后失效</p>-->
-                  <!--<p v-show="qrCodeStatus === 1">支付中</p>-->
-                <!--</div>-->
-                <!--<div v-else>该笔订单已超时</div>-->
-                <!--<div class="qrcode-box">-->
-                  <!--<div v-if="endTime > 0">-->
-                    <!--<div class="pay-mask" v-show="qrCodeStatus === 1">正在支付......</div>-->
-                    <!--<div class="pay-mask" v-show="qrCodeStatus === 2">-->
-                      <!--<div>二维码已失效</div>-->
-                      <!--<div class="qrcode-refresh" @click="init()">重新获取</div>-->
-                    <!--</div>-->
-                  <!--</div>-->
-                  <!--<div class="pay-mask" v-else>订单已超时</div>-->
-                  <!--<qrcode :value="infoData.qrCodeImg" v-if="infoData.qrCodeImg" :options="{ size: 248 }"></qrcode>-->
-                <!--</div>-->
-                <!--<p class="i-scan">打开久安钱包<br>扫一扫</p>-->
                 <cass-qrcode :end-time="endTime"
                              :info-data="infoData"
-                             :qr-code-status="qrCodeStatus"
+                             v-model="qrCodeStatus"
                               @qrcodeRefresh="init()"></cass-qrcode>
               </div>
               <div class="c-r">
-                <img src="~images/phone.png">
-                <p>
-                  不会使用？请参照上图<br>
-                  没有久安钱包APP？ <a href="https://9anapp.com/app/9anapp.html" class="blue">前往下载 > </a>
-                </p>
-                <div class="login-pay" @click="loginPay = true">登录网页版支付</div>
+                <!--<img src="~images/phone.png">-->
+                <!--<p>-->
+                  <!--不会使用？请参照上图<br>-->
+                  <!--没有久安钱包APP？ <a href="https://9anapp.com/app/9anapp.html" class="blue">前往下载 > </a>-->
+                <!--</p>-->
+                <!--<div class="login-pay" @click="loginPay = true">登录网页版支付</div>-->
+                <login-pay :data="infoData" :token="token"></login-pay>
               </div>
             </div>
           </transition>
-          <transition name="pay-type">
-            <login-pay :data="infoData" :token="token" v-if="loginPay" @appPay="loginPay = false"></login-pay>
-          </transition>
+          <!--<transition name="pay-type">-->
+            <!--<login-pay :data="infoData" :token="token" v-if="loginPay" @appPay="loginPay = false"></login-pay>-->
+          <!--</transition>-->
           <div class="clear"></div>
         </div>
       </div>
@@ -105,6 +88,8 @@
   import Qrcode from '@xkeshi/vue-qrcode';
   import LoginPay from './login-pay'
   import CassQrcode from './cash-qrcode'
+  import CashLogin from './cash-login'
+  import CashPay from './cash-pay'
 
   import aesutil from '@/util/aesutil';
   import {$localStorage} from '@/util/storage'
@@ -166,7 +151,9 @@
       CashSuccess,
       Qrcode,
       LoginPay,
-      CassQrcode
+      CassQrcode,
+      CashLogin,
+      CashPay
     },
     computed: {
       ...mapGetters([
@@ -509,7 +496,7 @@
 
   .content02 .c-l {
     float: left;
-    width: 500px;
+    width: 498px;
     padding: 0 30px 45px 69px;
     font-weight: lighter;
     font-size: 20px;
@@ -520,7 +507,7 @@
 
   .content02 .c-r {
     float: left;
-    width: 600px;
+    width: 700px;
     text-align: center;
   }
   .login-pay{

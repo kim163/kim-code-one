@@ -14,11 +14,11 @@
           <div class="title">{{$t('cash.payPassWord')}}:</div>
           <input type="password" class="input-password" v-model.trim="payPassword" :placeholder="$t('cash.psdInputPlaceholder')"/>
         </div>
+        <div class="error red">{{errorText}}</div>
         <div class="btn-info">
           <!--<router-link :to="{name: 'mIndex'}" class="go-tran">{{$t('cash.goTran')}}</router-link>-->
           <div class="pay-btn" :class="{disabled: !amountStatus || !payBtn}" @click="amountStatus && payBtn ? payment() : ''">{{$t('cash.confirmPayment')}}</div>
         </div>
-        <div class="go-app-pay" @click="$emit('appPay')">手机APP扫码支付</div>
       </div>
     </div>
 </template>
@@ -32,6 +32,8 @@
         amountStatus: false, //余额状态
         payPassword:'',
         userBalance:0,
+        errorShow:false,
+        errorText:''
       }
     },
     components:{
@@ -61,7 +63,8 @@
         if(this.payPassword != ''){
           Vue.$global.bus.$emit('cash:payPassword',this.payPassword);
         }else{
-          toast('请输入支付密码')
+          this.errorShow = true,
+          this.errorText = '请输入支付密码'
         }
       },
       getUserBalance(data){
@@ -111,6 +114,9 @@
         border: 1px solid #DEDEDE;
         padding-left: 10px;
       }
+      .btn-info{
+        margin-top: 60px;
+      }
       .pay-btn,.go-tran{
         width: 40%;
         height: 50px;
@@ -119,7 +125,7 @@
         line-height: 50px;
         color: #ffffff;
         font-size: 18px;
-        margin-top: 30px;
+        cursor: pointer;
         &.disabled{
           background: #E4E4E4;
           color: #787876;
@@ -135,6 +141,13 @@
         margin-top: 30px;
         cursor: pointer;
       }
+    }
+    .error{
+      font-size: 14px;
+      text-align: left;
+      padding-left: 100px;
+      margin-top: 10px;
+      height: 14px;
     }
     .title{
       color: #333333;

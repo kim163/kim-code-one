@@ -2,14 +2,14 @@
   <div>
     <p class="c-l-title"> 久安扫码支付</p>
     <div v-if="endTime > 0">
-      <p v-show="status != 1"> 二维码将在<span class="orange">{{qrCodeTime}}秒</span>后失效</p>
-      <p v-show="status === 1">支付中</p>
+      <p v-show="qrCodeStatus != 1"> 二维码将在<span class="orange">{{qrCodeTime}}秒</span>后失效</p>
+      <p v-show="qrCodeStatus === 1">支付中</p>
     </div>
     <div v-else>该笔订单已超时</div>
     <div class="qrcode-box">
       <div v-if="endTime > 0">
-        <div class="pay-mask" v-show="status === 1">正在支付......</div>
-        <div class="pay-mask" v-show="status === 2">
+        <div class="pay-mask" v-show="qrCodeStatus === 1">正在支付......</div>
+        <div class="pay-mask" v-show="qrCodeStatus === 2">
           <div>二维码已失效</div>
           <div class="qrcode-refresh" @click="$emit('qrcodeRefresh')">重新获取</div>
         </div>
@@ -44,19 +44,21 @@
     data() {
       return {
         qrCodeTime:180, //二维码倒计时
-        status:0,
         showPhone: false,
         showDownQrcode:false
       }
     },
     watch:{
       qrCodeStatus(val){
-        this.status = val
-        if(this.status === 0){
+        if(val === 0){
           this.qrCodeTime = 180
           this.qrCodeCountDown()
         }
       },
+    },
+    model: {
+      prop: 'qrCodeStatus',
+      event: 'change'
     },
     props:{
       infoData:{
@@ -80,7 +82,7 @@
         setTimeout(() => {
           this.qrCodeTime -= 1
           if(this.qrCodeTime <= 0){
-            this.status = 2
+            this.$emit('change', 2)
           }else{
             this.qrCodeCountDown()
           }
@@ -88,7 +90,6 @@
       },
     },
     mounted(){
-      this.status = this.qrCodeStatus
       this.qrCodeCountDown()
     }
   }

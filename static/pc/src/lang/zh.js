@@ -34,7 +34,9 @@ export default {
     logIn: '登录钱包',
     forgotpwd: '忘记密码',
     iWantLogin: '我要登录',
-    iWantRegister: '我要注册'
+    iWantRegister: '我要注册',
+    jiuanUserName:'久安账号',
+    loginPwd:'登录密码',
   },
   register: {
     title: '创建您的久安钱包',
