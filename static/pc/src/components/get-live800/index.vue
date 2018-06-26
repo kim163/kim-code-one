@@ -34,11 +34,5 @@
   };
 </script>
 <style lang="scss">
-  @import "~assets/scss/mixin";
-  i.icon-online-service {
-    @include f(18px);
-    margin-right: r(10);
-    color: #ABABAB;
-  }
 
 </style>
