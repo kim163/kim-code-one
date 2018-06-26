@@ -2,14 +2,14 @@
   <div>
     <p class="c-l-title"> 久安扫码支付</p>
     <div v-if="endTime > 0">
-      <p v-show="qrCodeStatus != 1"> 二维码将在<span class="orange">{{qrCodeTime}}秒</span>后失效</p>
-      <p v-show="qrCodeStatus === 1">支付中</p>
+      <p v-show="status != 1"> 二维码将在<span class="orange">{{qrCodeTime}}秒</span>后失效</p>
+      <p v-show="status === 1">支付中</p>
     </div>
     <div v-else>该笔订单已超时</div>
     <div class="qrcode-box">
       <div v-if="endTime > 0">
-        <div class="pay-mask" v-show="qrCodeStatus === 1">正在支付......</div>
-        <div class="pay-mask" v-show="qrCodeStatus === 2">
+        <div class="pay-mask" v-show="status === 1">正在支付......</div>
+        <div class="pay-mask" v-show="status === 2">
           <div>二维码已失效</div>
           <div class="qrcode-refresh" @click="$emit('qrcodeRefresh')">重新获取</div>
         </div>
@@ -18,6 +18,22 @@
       <qrcode :value="infoData.qrCodeImg" v-if="infoData.qrCodeImg" :options="{ size: 248 }"></qrcode>
     </div>
     <p class="i-scan">打开久安钱包<br>扫一扫</p>
+    <div class="tutorial">
+      <div class="text">
+        不会使用？
+        <span @mouseover="showPhone = true" @mouseout="showPhone = false">请戳我</span>
+      </div>
+      <div class="text">
+        没有久安钱包app?
+        <span @mouseover="showDownQrcode = true" @mouseout="showDownQrcode = false">扫码下载</span>
+      </div>
+      <transition name="pic-show">
+        <div class="phone-app" v-show="showPhone"></div>
+      </transition>
+      <transition name="pic-show">
+        <div class="app-down-qrcode" v-show="showDownQrcode"></div>
+      </transition>
+    </div>
   </div>
 </template>
 
@@ -29,11 +45,13 @@
       return {
         qrCodeTime:180, //二维码倒计时
         status:0,
+        showPhone: false,
+        showDownQrcode:false
       }
     },
     watch:{
-      qrCodeStatus(){
-        this.status = this.qrCodeStatus
+      qrCodeStatus(val){
+        this.status = val
         if(this.status === 0){
           this.qrCodeTime = 180
           this.qrCodeCountDown()
@@ -77,6 +95,15 @@
 </script>
 
 <style lang="scss" scoped>
+
+  .pic-show-enter,.pic-show-leave{
+    opacity: 0;
+    transform: translate3d(-10%, 0, 0);
+  }
+  .pic-show-enter-active,.pic-show-leave-active{
+    transition: all .5s;
+  }
+
   .c-l-title {
     font-size: 26px;
     padding: 8px 0;
@@ -121,5 +148,35 @@
   }
   .orange {
     color: #ff9200;
+  }
+  .tutorial{
+    position: relative;
+    margin-top: 20px;
+    .text{
+      font-size: 16px;
+      margin-top: 10px;
+      span{
+        color: #138bd9;
+        cursor: pointer;
+      }
+    }
+    .phone-app{
+      width: 473px;
+      height: 519px;
+      background: url("~images/phone.png") ;
+      position: absolute;
+      top: -519px;
+      left: 55%;
+      z-index: 2;
+    }
+    .app-down-qrcode{
+      width: 280px;
+      height: 280px;
+      background: url("~images/app-down-qrcode.png");
+      position: absolute;
+      top: -180px;
+      left: 81%;
+      z-index: 3;
+    }
   }
 </style>

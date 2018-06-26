@@ -64,7 +64,7 @@
                 <cass-qrcode :end-time="endTime"
                              :info-data="infoData"
                              :qr-code-status="qrCodeStatus"
-                              @qrcode-refresh="init()"></cass-qrcode>
+                              @qrcodeRefresh="init()"></cass-qrcode>
               </div>
               <div class="c-r">
                 <img src="~images/phone.png">
