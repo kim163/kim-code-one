@@ -322,7 +322,7 @@
       },
       goToDownLoad(status){
         if(status === 0){
-          window.location.href='https://9anapp.com/app/9anapp.html'
+          window.location.href='https://9apro.com/app/9anapp.html'
         }
       },
       goApp(){
