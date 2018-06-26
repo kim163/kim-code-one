@@ -49,19 +49,10 @@
                               @qrcodeRefresh="init()"></cass-qrcode>
               </div>
               <div class="c-r">
-                <!--<img src="~images/phone.png">-->
-                <!--<p>-->
-                  <!--不会使用？请参照上图<br>-->
-                  <!--没有久安钱包APP？ <a href="https://9anapp.com/app/9anapp.html" class="blue">前往下载 > </a>-->
-                <!--</p>-->
-                <!--<div class="login-pay" @click="loginPay = true">登录网页版支付</div>-->
                 <login-pay :data="infoData" :token="token"></login-pay>
               </div>
             </div>
           </transition>
-          <!--<transition name="pay-type">-->
-            <!--<login-pay :data="infoData" :token="token" v-if="loginPay" @appPay="loginPay = false"></login-pay>-->
-          <!--</transition>-->
           <div class="clear"></div>
         </div>
       </div>
@@ -85,7 +76,6 @@
   import {mapGetters} from 'vuex'
   import CashSuccess from './cash-success'
   import merchantCfg from '../misc/merchant-config'
-  import Qrcode from '@xkeshi/vue-qrcode';
   import LoginPay from './login-pay'
   import CassQrcode from './cash-qrcode'
   import CashLogin from './cash-login'
@@ -149,7 +139,6 @@
     components: {
       CountDown,
       CashSuccess,
-      Qrcode,
       LoginPay,
       CassQrcode,
       CashLogin,
@@ -170,16 +159,6 @@
       formatCny(data) {
         return data / this.infoData.exchangeRate
       },
-      // qrCodeCountDown(){
-      //   setTimeout(() => {
-      //     this.qrCodeTime -= 1
-      //     if(this.qrCodeTime <= 0){
-      //       this.qrCodeStatus = 2
-      //     }else{
-      //       this.qrCodeCountDown()
-      //     }
-      //   },1000)
-      // },
       init() { //调用初始化接口
         const data = {
           amount: this.infoData.amount,
@@ -229,28 +208,7 @@
           toast(err)
         })
       },
-      // tokenLogin() {//用授权码登录
-      //   const request = {
-      //     type: 11,
-      //     token: this.token,
-      //     merchantId: this.infoData.merchantId
-      //   }
-      //   console.log(request)
-      //
-      //   login(request).then(res => {
-      //     if (res.code === 10000) {
-      //       $localStorage.set('tokenInfo', JSON.stringify(res.data.tokenVo));
-      //       $localStorage.set('userData', JSON.stringify(aesutil.encrypt(res.data.userId)));
-      //       this.$store.dispatch('CHECK_ONLINE', true);
-      //       this.$store.dispatch('UPDATE_TOKEN_INFO', res.data.tokenVo);
-      //       this.$store.dispatch('INIT_INFO');
-      //       this.$store.commit('SET_USERDATA',res.data);
-      //     } else {
-      //       toast(res.message)
-      //     }
-      //   }).catch(err => {
-      //   })
-      // },
+
       checkPayPassWord() {
         if (this.payPassword === '') {
           toast(this.generateTitle('cash.psdInputPlaceholder'))
@@ -336,9 +294,7 @@
         }
       }
       this.infoData.businessName = merchantCfg.getDeail(this.infoData.merchantId).name
-      // if (!this.islogin && this.token != '') {
-      //   this.tokenLogin()
-      // }
+
       if(this.islogin){
         this.infoData.customerAddress = this.userData.accountChainVos[0].address
       }
