@@ -35,7 +35,9 @@ export default {
     logIn: 'Login wallet',
     forgotpwd: 'Forget password',
     iWantLogin: 'Login',
-    iWantRegister: 'Register'
+    iWantRegister: 'Register',
+    jiuanUserName:'Username',
+    loginPwd:'Password',
   },
   register: {
     title: 'Create your Jiuan wallet',

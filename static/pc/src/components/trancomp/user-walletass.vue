@@ -4,7 +4,7 @@
      <div v-for="(item,i) in userData.accountChainVos">
         <h3 class="amount">{{ item.assetCode }} {{ item.chainBalance }}</h3>
         <div class="qrcode">
-           <qrcode :value="item.address" v-if="item.address" :options="{ size: 188 }"></qrcode>
+           <qrcode :text="item.address" v-if="item.address" :size="188"></qrcode>
         </div>
         <p class="address"> {{item.address}} </p>
         <a href="javascript:void(0);" class="copy-btn" @click="copystr(item.address)" >{{$t('transactionHome.copyBtn')}}</a>
@@ -14,7 +14,7 @@
 </template>
 <script>
   import { mapGetters,mapActions, mapMutations} from 'vuex';
-  import VueQrcode from '@xkeshi/vue-qrcode';
+  import VueQrcode from 'vue-qr';
 
   export default {
     data() {
