@@ -30,7 +30,10 @@ export default [
   {
     path: "/cash",
     name: "pcCashDesk",
-    component: cash
+    component: cash,
+    meta:{
+      noCache: true
+    }
   },
   ...transaction,
   ...mobileUrl

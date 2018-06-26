@@ -43,24 +43,28 @@
           <transition name="pay-type">
             <div v-if="!loginPay">
               <div class="c-l">
-                <p class="c-l-title"> 久安扫码支付</p>
-                <div v-if="endTime > 0">
-                  <p v-show="qrCodeStatus != 1"> 二维码将在<span class="orange">{{qrCodeTime}}秒</span>后失效</p>
-                  <p v-show="qrCodeStatus === 1">支付中</p>
-                </div>
-                <div v-else>该笔订单已超时</div>
-                <div class="qrcode-box">
-                  <div v-if="endTime > 0">
-                    <div class="pay-mask" v-show="qrCodeStatus === 1">正在支付......</div>
-                    <div class="pay-mask" v-show="qrCodeStatus === 2">
-                      <div>二维码已失效</div>
-                      <div class="qrcode-refresh" @click="init()">重新获取</div>
-                    </div>
-                  </div>
-                  <div class="pay-mask" v-else>订单已超时</div>
-                  <qrcode :value="infoData.qrCodeImg" v-if="infoData.qrCodeImg" :options="{ size: 248 }"></qrcode>
-                </div>
-                <p class="i-scan">打开久安钱包<br>扫一扫</p>
+                <!--<p class="c-l-title"> 久安扫码支付</p>-->
+                <!--<div v-if="endTime > 0">-->
+                  <!--<p v-show="qrCodeStatus != 1"> 二维码将在<span class="orange">{{qrCodeTime}}秒</span>后失效</p>-->
+                  <!--<p v-show="qrCodeStatus === 1">支付中</p>-->
+                <!--</div>-->
+                <!--<div v-else>该笔订单已超时</div>-->
+                <!--<div class="qrcode-box">-->
+                  <!--<div v-if="endTime > 0">-->
+                    <!--<div class="pay-mask" v-show="qrCodeStatus === 1">正在支付......</div>-->
+                    <!--<div class="pay-mask" v-show="qrCodeStatus === 2">-->
+                      <!--<div>二维码已失效</div>-->
+                      <!--<div class="qrcode-refresh" @click="init()">重新获取</div>-->
+                    <!--</div>-->
+                  <!--</div>-->
+                  <!--<div class="pay-mask" v-else>订单已超时</div>-->
+                  <!--<qrcode :value="infoData.qrCodeImg" v-if="infoData.qrCodeImg" :options="{ size: 248 }"></qrcode>-->
+                <!--</div>-->
+                <!--<p class="i-scan">打开久安钱包<br>扫一扫</p>-->
+                <cass-qrcode :end-time="endTime"
+                             :info-data="infoData"
+                             :qr-code-status="qrCodeStatus"
+                              @qrcodeRefresh="init()"></cass-qrcode>
               </div>
               <div class="c-r">
                 <img src="~images/phone.png">
@@ -96,11 +100,11 @@
   import CountDown from 'components/countdown'
   import {generateTitle} from '@/util/i18n'
   import {mapGetters} from 'vuex'
-  // import Login from '../mobile/login/login-inline'
   import CashSuccess from './cash-success'
   import merchantCfg from '../misc/merchant-config'
   import Qrcode from '@xkeshi/vue-qrcode';
   import LoginPay from './login-pay'
+  import CassQrcode from './cash-qrcode'
 
   import aesutil from '@/util/aesutil';
   import {$localStorage} from '@/util/storage'
@@ -144,8 +148,9 @@
         cashSuccess: false,  //充值成功
         showPaymentLoading: true,
         qrCodeStatus:0,//二维码状态 0 正常显示 1支付中 2二维码失效
-        qrCodeTime:180, //二维码倒计时
+        // qrCodeTime:180, //二维码倒计时
         loginPay:false, // 登录支付
+        hasSubscribe:false, //是否订阅
       }
     },
     watch:{
@@ -155,17 +160,13 @@
           _.merchantOrderidWs(this.infoData.jiuanOrderid,this.userData)
         }
       },
-      cashSuccess(){
-        if(this.cashSuccess){
-          clearInterval(this.timer)
-        }
-      }
     },
     components: {
       CountDown,
       CashSuccess,
       Qrcode,
-      LoginPay
+      LoginPay,
+      CassQrcode
     },
     computed: {
       ...mapGetters([
@@ -182,16 +183,16 @@
       formatCny(data) {
         return data / this.infoData.exchangeRate
       },
-      qrCodeCountDown(){
-        setTimeout(() => {
-          this.qrCodeTime -= 1
-          if(this.qrCodeTime <= 0){
-            this.qrCodeStatus = 2
-          }else{
-            this.qrCodeCountDown()
-          }
-        },1000)
-      },
+      // qrCodeCountDown(){
+      //   setTimeout(() => {
+      //     this.qrCodeTime -= 1
+      //     if(this.qrCodeTime <= 0){
+      //       this.qrCodeStatus = 2
+      //     }else{
+      //       this.qrCodeCountDown()
+      //     }
+      //   },1000)
+      // },
       init() { //调用初始化接口
         const data = {
           amount: this.infoData.amount,
@@ -221,19 +222,18 @@
               this.cashSuccess = true
             }
             const nowTime = _.now()
-            console.log(nowTime,data.payOrder.createtime)
             if (nowTime > _(data.payOrder.createtime).add(3600000)) {
               this.endTime = 0
               this.payBtnStatus = false
             } else {
               const endTime = _.chain(data.payOrder.createtime).add(3600000).subtract(nowTime).value()
               this.endTime = endTime > 3600000 ? 3600000 : endTime
-              this.qrCodeTime = 180
-              this.qrCodeCountDown()
-              if(this.islogin){
-                _.merchantOrderidWs(this.infoData.jiuanOrderid,this.userData)
+              // this.qrCodeTime = 180
+              // this.qrCodeCountDown()
+              if(!this.hasSubscribe){
+                _.merchantOrderidWs(this.infoData.jiuanOrderid)
+                this.hasSubscribe = true
               }
-              //this.getOrderStatus()
             }
           } else {
             toast(res.message)
@@ -241,29 +241,6 @@
         }).catch(err => {
           toast(err)
         })
-      },
-      getOrderStatus(){
-        const data = {
-          jiuanOrderid: this.infoData.jiuanOrderid,
-          merchantId: this.infoData.merchantId,
-          merchantOrderid: this.infoData.merchantOrderid
-        }
-        this.timer = setInterval(() => {
-          getOrderStatus(data).then(res => {
-            if(res.code === 10000){
-              if(Number(res.data) === 1){
-                this.qrCodeStatus = Number(res.data)
-              }
-              if(Number(res.data) === 2){
-                this.cashSuccess = true
-              }
-            }else{
-              toast(res.message)
-            }
-          }).catch(err => {
-            toast(err)
-          })
-        },3000)
       },
       // tokenLogin() {//用授权码登录
       //   const request = {
@@ -308,7 +285,6 @@
         paymentPay(request).then(res => {
           if (res.code === 10000) {
             this.cashSuccess = true
-            clearInterval(this.timer)
             this.unSubscribe()
             this.saveLocal()
           } else {
@@ -334,11 +310,11 @@
       countDownEnd() {
         toast('该订单已超时')
         this.payBtnStatus = false
-        clearInterval(this.timer)
         this.unSubscribe()
       },
       unSubscribe(){
         Vue.$global.bus.$emit('merchantOrderidUnsubscribe')
+        this.hasSubscribe = false
       }
     },
     created() {
@@ -372,7 +348,6 @@
           this.cashSuccess = true
         }
       }
-     // Vue.$global.bus.$emit('merchantOrderid',this.infoData.merchantOrderid)
       this.infoData.businessName = merchantCfg.getDeail(this.infoData.merchantId).name
       // if (!this.islogin && this.token != '') {
       //   this.tokenLogin()
@@ -471,10 +446,10 @@
     }
     .line{
       margin-left: 15px;
-      height: 50px;
+      height: 40px;
       width: 1px;
       background: #666666;
-      margin-top: 20px;
+      margin-top: 28px;
     }
     .des{
       font-size: 24px;
@@ -542,10 +517,6 @@
     margin: 105px 0 60px 0;
   }
 
-  .c-l-title {
-    font-size: 26px;
-    padding: 8px 0;
-  }
 
   .content02 .c-r {
     float: left;
@@ -556,45 +527,6 @@
     width: 150px;
     margin: 15px auto;
     cursor: pointer;
-  }
-  .qrcode-box {
-    width: 250px;
-    height: 250px;
-    border: 1px solid #ececec;
-    margin: 20px auto;
-    position: relative;
-    .pay-mask{
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      z-index: 2;
-      background: rgba(0,0,0,.8);
-      color: #ffffff;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-    }
-    .qrcode-refresh{
-      margin-top: 20px;
-      width: 120px;
-      height: 30px;
-      background: #619eff;
-      border-radius: 5px;
-      font-size: 16px;
-      line-height: 30px;
-      cursor: pointer;
-    }
-  }
-
-
-  .i-scan {
-    background: url(~images/scan.png) no-repeat left center;
-    padding-left: 52px;
-    width: 170px;
-    margin: 0 auto;
-    text-align: left;
-    font-size: 18px;
   }
 
   .footer {

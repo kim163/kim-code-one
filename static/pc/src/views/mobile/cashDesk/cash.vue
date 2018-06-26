@@ -104,14 +104,8 @@
       islogin(){
         if(this.islogin){
           this.infoData.customerAddress = this.userData.accountChainVos[0].address
-          _.merchantOrderidWs(this.infoData.jiuanOrderid,this.userData)
         }
       },
-      cashSuccess(){
-        if(this.cashSuccess){
-          clearInterval(this.timer)
-        }
-      }
     },
     components: {
       MobileHeader,
@@ -195,17 +189,13 @@
               this.cashSuccess = true
             }
             const nowTime = _.now()
-            console.log(nowTime,data.payOrder.createtime)
             if (nowTime > _(data.payOrder.createtime).add(3600000)) {
               this.endTime = 0
               this.payBtnStatus = false
             } else {
               const endTime = _.chain(data.payOrder.createtime).add(3600000).subtract(nowTime).value()
               this.endTime = endTime > 3600000 ? 3600000 : endTime
-              //this.getOrderStatus()
-              if(this.islogin){
-                _.merchantOrderidWs(this.infoData.jiuanOrderid,this.userData)
-              }
+              _.merchantOrderidWs(this.infoData.jiuanOrderid)
             }
           } else {
             toast(res.message)
@@ -213,24 +203,6 @@
         }).catch(err => {
           toast(err)
         })
-      },
-      getOrderStatus(){
-        const data = {
-          jiuanOrderid: this.infoData.jiuanOrderid,
-          merchantId: this.infoData.merchantId,
-          merchantOrderid: this.infoData.merchantOrderid
-        }
-        this.timer = setInterval(() => {
-            getOrderStatus(data).then(res => {
-              if(res.code === 10000){
-                this.cashSuccess = res.data === 2 ? true : false
-              }else{
-                toast(res.message)
-              }
-            }).catch(err => {
-              toast(err)
-            })
-        },3000)
       },
       checkInstallApp() {
         // let timeout, t = 2000, hasApp = true;
@@ -318,7 +290,6 @@
         paymentPay(request).then(res => {
           if (res.code === 10000) {
             this.cashSuccess = true
-            clearInterval(this.timer)
             this.unSubscribe()
             this.saveLocal()
           } else {
@@ -331,7 +302,6 @@
       countDownEnd() {
         toast('该订单已超时')
         this.payBtnStatus = false
-        clearInterval(this.timer)
         this.unSubscribe()
       },
       saveLocal(){

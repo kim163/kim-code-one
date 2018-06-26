@@ -10,13 +10,6 @@ export const cashierInit = jsonData => service({
   data: jsonData
 });
 
-// export const cashierInitv2 = jsonData => service({
-//   url: numversion+`payment/cashier/initV2`,
-//   method: 'post',
-//   data: jsonData
-// });
-
-
 //支付提交
 export const paymentPay = jsonData => service({
   url: numversion+`payment/pay`,
@@ -93,4 +86,11 @@ export const getOrderStatus = jsonData => service({
   method: 'post',
   data: jsonData,
   loading:false
+});
+
+//获取收银台websocket地址
+export const getSharedConfigList = jsonData => service({
+  url: numversion+`common/getSharedConfigList`,
+  method: 'post',
+  data: jsonData
 });
