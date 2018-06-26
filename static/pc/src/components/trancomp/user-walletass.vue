@@ -14,7 +14,7 @@
 </template>
 <script>
   import { mapGetters,mapActions, mapMutations} from 'vuex';
-  import VueQrcode from '@xkeshi/vue-qrcode';
+  import VueQrcode from 'vue-qr';
 
   export default {
     data() {
