@@ -109,7 +109,7 @@ _.mixin(
         var encodeUri = encodeURIComponent(openUrl);
 
         if (_.isWeChat()) {
-          window.location.href = 'https://9anapp.com/app/9anapp.html';
+          window.location.href = 'https://9apro.com/app/9anapp.html';
         }else{
           checkOpen(function(opened){
             callback && callback(opened);

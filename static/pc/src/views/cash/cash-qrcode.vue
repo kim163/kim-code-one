@@ -15,7 +15,7 @@
         </div>
       </div>
       <div class="pay-mask" v-else>订单已超时</div>
-      <qrcode :value="infoData.qrCodeImg" v-if="infoData.qrCodeImg" :options="{ size: 248 }"></qrcode>
+      <qrcode :text="infoData.qrCodeImg" v-if="infoData.qrCodeImg" :size="248"></qrcode>
     </div>
     <p class="i-scan">打开久安钱包<br>扫一扫</p>
     <div class="tutorial">
@@ -31,21 +31,27 @@
         <div class="phone-app" v-show="showPhone"></div>
       </transition>
       <transition name="pic-show">
-        <div class="app-down-qrcode" v-show="showDownQrcode"></div>
+        <div class="app-down-qrcode" v-show="showDownQrcode">
+          <qrcode :text="SETTING.appUrl" :logoSrc="Logo" :margin="0" :logoScale="0.2" :size="150"></qrcode>
+        </div>
       </transition>
     </div>
   </div>
 </template>
 
 <script>
-  import Qrcode from '@xkeshi/vue-qrcode';
+  import Qrcode from 'vue-qr';
+  import {SETTING} from "@/assets/data"
+  import Logo from '@/assets/images/logo-blue.png'
   export default {
     name: "cash-qrcode",
     data() {
       return {
         qrCodeTime:180, //二维码倒计时
         showPhone: false,
-        showDownQrcode:false
+        showDownQrcode:false,
+        SETTING,
+        Logo
       }
     },
     watch:{
@@ -171,13 +177,14 @@
       z-index: 2;
     }
     .app-down-qrcode{
-      width: 280px;
-      height: 280px;
-      background: url("~images/app-down-qrcode.png");
+      border: 1px solid #999999;
+      background: #ffffff;
       position: absolute;
-      top: -180px;
-      left: 81%;
+      top: -100px;
+      left: 85%;
       z-index: 3;
+      padding: 10px;
+      border-radius: 10px;
     }
   }
 </style>
