@@ -10,7 +10,7 @@
       <div class="form-box form-box-phone">
         <div class="form-group" v-show="loginItem=='account'">
           <div class="form-input">
-            <label class="form-subtitle">{{$t('login.username')}}：</label>
+            <label class="form-subtitle">{{$t('login.jiuanUserName')}}：</label>
             <input name="account" @keyup.enter="login" v-model="data.account" type="text" class="ps-input ps-input1"
                    :placeholder="$t('login.usernamePhd')">
           </div>
@@ -34,7 +34,7 @@
         </div>
         <div class="form-group">
           <div class="form-input posit-rel">
-            <label class="form-subtitle">{{$t('login.password')}}：</label>
+            <label class="form-subtitle">{{$t('login.loginPwd')}}：</label>
             <input ref="pwd" @keyup.enter="login" name="password" v-model="data.password" type="password"
                    class="ps-input ps-input1" :placeholder="$t('login.passwordPhd')">
           </div>
@@ -43,7 +43,6 @@
         <div class="text-center">
           <div class="next-btn" @click.enter="login">{{$t('cash.nextBtn')}}</div>
         </div>
-        <div class="go-app-pay" @click="$emit('appPay')">手机APP扫码支付</div>
       </div>
     </div>
   </div>
@@ -111,53 +110,26 @@
             password: this.data.password
           }
         }
+        const api = this.loginItem=='account' ? show.loginByUserNameAndPwd : show.login
+        api(this.requestda).then(res => {
+          if (res.code == 10000) {
+            this.$emit('input',false);
+            this.$store.commit('SHOW_LOGIN',false);
 
-        if(this.loginItem=='account'){
-          show.loginByUserNameAndPwd(this.requestda).then(res => {
-            if (res.code == 10000) {
-              this.$emit('input',false);
-              this.$store.commit('SHOW_LOGIN',false);
+            $localStorage.set('tokenInfo', JSON.stringify(res.data.tokenVo));
+            $localStorage.set('userData', aesutil.encrypt(JSON.stringify(res.data)));
+            this.$store.dispatch('CHECK_ONLINE', true);
+            this.$store.dispatch('UPDATE_TOKEN_INFO', res.data.tokenVo);
+            this.$store.dispatch('INIT_INFO');
+            this.$store.commit('SET_USERDATA',res.data);
 
-              $localStorage.set('tokenInfo', JSON.stringify(res.data.tokenVo));
-              $localStorage.set('userData', JSON.stringify(aesutil.encrypt(res.data.userId)));
-              this.$store.dispatch('CHECK_ONLINE', true);
-              this.$store.dispatch('UPDATE_TOKEN_INFO', res.data.tokenVo);
-              this.$store.commit('SET_USERDATA',res.data);
-
-              // this.$router.replace({path:"/mh/"});
-              // this.$router.push({name: 'mIndex'});
-
-              //  window.location.href = "/mh/";
-            }else {
-              toast(res.message);
-            }
-            console.log('user login:', res);
-          }).catch(err => {
-            toast(err.message);
-          });
-
-        }else if(this.loginItem=='phone' || this.loginItem=='email') {
-          show.login(this.requestda).then(res => {
-            console.log('login res: ', res);
-            if (res.code == 10000) {
-              this.$emit('input',false);
-              this.$store.commit('SHOW_LOGIN',false);
-
-              $localStorage.set('tokenInfo', JSON.stringify(res.data.tokenVo));
-              $localStorage.set('userData', JSON.stringify(aesutil.encrypt(res.data.userId)))
-              this.$store.dispatch('UPDATE_USERDATA');
-
-              // this.$router.replace({path:"/mh/"});
-              //this.$router.push({name: 'mIndex'});
-
-              //  window.location.href = "/mh/";
-            } else {
-              toast(res.message)
-            }
-          }).catch(error => {
-            this.reset("请求失败");
-          });
-        }
+          }else {
+            toast(res.message);
+          }
+          console.log('user login:', res);
+        }).catch(err => {
+          toast(err.message);
+        });
       },
       check() {
         if(this.loginItem=='account'){
@@ -214,14 +186,16 @@
     }
   }
   .next-btn{
-    width: 100%;
+    width: 85%;
     height: 40px;
     background: #4982FF;
     color: #ffffff;
     line-height: 40px;
     text-align: center;
     font-size: 18px;
-    margin-top: 20px;
+    margin-top: 30px;
+    margin-left: 10%;
+    cursor: pointer;
   }
   .go-app-pay{
     font-size: 14px;
@@ -240,17 +214,18 @@
     width: 344px;
     &.ps-input-phone{
       width: 258px;
-      /*float: right;*/
       margin-left: 5px;
     }
   }
 
   .form-box-phone {
     border: 1px solid #DEDEDE;
-    padding: 40px 20px;
     background: #ffffff;
     width: 500px;
     height: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
 
   .area-box {
@@ -261,16 +236,13 @@
     color: #4982FF;
     font-size: 15px;
     padding: 0 10px;
-    background: url("~images/select-up-down.svg") no-repeat scroll 90% center transparent;
-    background-size: 10px 12px;
   }
 
   .form-group {
     /*padding:0 15px;*/
   }
   .form-input{
-    margin-top: 10px;
-    margin-bottom: 20px;
+    margin: 10px 0px;
   }
 
   .form-subtitle {

@@ -1,14 +1,8 @@
 <template>
   <div class="login-pay-main">
-    <div class="left-container">
-      <div class="logo"></div>
-      <div class="title">久安钱包 </div>
-      <div class="des">开启数字货币金融新时代</div>
-    </div>
-    <div class="right-container">
-      <cash-login v-if="!islogin" @appPay="$emit('appPay')"></cash-login>
-      <cash-pay v-else :pay-info="data" @appPay="$emit('appPay')"></cash-pay>
-    </div>
+    <p class="title">久安账号支付</p>
+    <cash-login v-if="!islogin"></cash-login>
+    <cash-pay v-else :pay-info="data"></cash-pay>
   </div>
 </template>
 
@@ -87,31 +81,15 @@
   .login-pay-main{
     display: flex;
     height: 100%;
-  }
-  .left-container{
-    width: 40%;
-    text-align: center;
-    display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: left;
     align-items: center;
-    .logo{
-      width: 96px;
-      height: 109px;
-      /*margin: 125px auto 0px;*/
-      background: url("~images/logo-big.png");
-    }
+    padding-top: 100px;
     .title{
-      font-size: 36px;
-      line-height: 36px;
-      color: #353535;
-      margin-top: 24px;
-    }
-    .des{
-      font-size: 24px;
-      line-height: 36px;
-      color: #8a8a8a;
-      margin-top: 21px;
+      font-weight: lighter;
+      font-size: 26px;
+      padding: 8px 0;
+      margin-bottom: 50px;
     }
   }
   .right-container{
