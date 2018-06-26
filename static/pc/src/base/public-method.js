@@ -1,6 +1,8 @@
 import aesutil from '@/util/aesutil';
 import Stomp from 'webstomp-client'
 
+import {getSharedConfigList} from 'api/cashier'
+
 var browser={
   versions:function(){
     var u = navigator.userAgent, app = navigator.appVersion;
@@ -107,7 +109,7 @@ _.mixin(
         var encodeUri = encodeURIComponent(openUrl);
 
         if (_.isWeChat()) {
-          window.location.href = 'https://9anapp.com/app/9anapp.html';
+          window.location.href = 'https://9apro.com/app/9anapp.html';
         }else{
           checkOpen(function(opened){
             callback && callback(opened);
@@ -291,7 +293,7 @@ _.mixin(
       };
     },
 
-    merchantOrderidWs(orderid,userData){
+    merchantOrderidWs(orderid){  //收银台 消息订阅
       let client = null
       let connectMsg = [];
       let connectUrl='' ;
@@ -299,16 +301,6 @@ _.mixin(
       let connectPsw= '';
       let subscription = null
 
-      console.log('this.userData===================')
-      console.log(userData)
-      _.forEach(userData.configVos, function(value, key) {
-        if(value.type == 1002){
-          connectMsg = value.value.split(',');
-          connectUrl= connectMsg[0];
-          connectUser= connectMsg[1];
-          connectPsw= connectMsg[2];
-        }
-      });
       let stompSuccessCallback = (frame) => {
         console.log('STOMP: Connection successful')
         subscription = client.subscribe('/exchange/walletCustomOperation/'+orderid, function (data) {
@@ -319,17 +311,6 @@ _.mixin(
               Vue.$global.bus.$emit('update:paySuccess');
             }
           })
-        // Vue.$global.bus.$on('merchantOrderid',(id) => {
-        //   debugger
-        //   client.subscribe('/exchange/walletCustomOperation/'+id, function (data) {
-        //     let msgData=JSON.parse(aesutil.decrypt(data.body));
-        //     if(msgData.type == 21){  //收银台 支付中  用于二维码显示
-        //       Vue.$global.bus.$emit('update:paying');
-        //     }else if(msgData.type == 22){  //收银台 支付完成
-        //       Vue.$global.bus.$emit('update:paySuccess');
-        //     }
-        //   })
-        // })
       }
 
       var stompFailureCallback = function (error) {
@@ -351,7 +332,20 @@ _.mixin(
         client.heartbeat.incoming = 30000;
         client.connect(connectUser, connectPsw, stompSuccessCallback, stompFailureCallback)
       }
-      stompConnect()
+      getSharedConfigList({}).then(res => {
+        console.log('getSharedConfigList',res)
+        if(res.code === 10000){
+          _.forEach(res.data, function(value, key) {
+            if(value.type == 1002){
+              connectMsg = value.value.split(',');
+              connectUrl= connectMsg[0];
+              connectUser= connectMsg[1];
+              connectPsw= connectMsg[2];
+            }
+          });
+          stompConnect()
+        }
+      })
       Vue.$global.bus.$on('merchantOrderidUnsubscribe',() => {
         subscription.unsubscribe()
       })

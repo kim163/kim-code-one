@@ -106,6 +106,7 @@ export default [
       return resolve(require('views/mobile/cashDesk/cash'))
     },
     meta:{
+      noCache: true,
       isMobilePage: "mobile-body"
     }
   },
