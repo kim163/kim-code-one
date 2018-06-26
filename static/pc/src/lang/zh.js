@@ -121,8 +121,8 @@ export default {
     appealRecord: '申诉记录',
     buy:'买入',
     sale:'卖出',
-    buyer:'快速买入',
-    seller:'快速卖出',
+    buyer:'我要买币',
+    seller:'我要卖币',
     waitingForPayment:'等待付款',
     waitingForRelease:'等待释放',
     tranPendingOrder: '挂单中',
@@ -153,7 +153,7 @@ export default {
   },
   //我的挂单
   postPend:{
-    postTitle:'发布挂单',
+    postTitle:'快速买卖',
     buyer:'买入挂单',
     seller:'卖出挂单',
     balance:'我的UET余额',
