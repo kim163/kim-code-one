@@ -120,7 +120,9 @@ export default {
     tranComplete: 'Transaction complete',
     appealRecord: 'Appeal record',
     buy:'Buy',
-    sale:'sell',
+    sale:'Sell',
+    buyer:'Buy coins',
+    seller:'Sell coins',
     waitingForPayment:'Waiting For Payment',
     waitingForRelease:'Waiting For Release',
     tranPendingOrder: 'Pending order',
@@ -150,7 +152,7 @@ export default {
   },
   //我的挂单
   postPend:{
-    postTitle:'Post pending orders',
+    postTitle:'Quick sale',
     buyer:'Buy pending orders',
     seller:'Sell ​​pending orders',
     balance:'my UET balance',

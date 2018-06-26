@@ -1,8 +1,8 @@
 <template>
   <div>
     <m-headnav>{{$t('postPend.postTitle')}}</m-headnav>
-    <div class="tab-box-out">
-      <ul class="pop-tab tab-box">
+    <div class="mobilenav-tabs">
+      <ul class="cfx">
         <li v-for="item in pendingType" @click="pendingItem=item.value" class="s" :class="{active:pendingItem==item.value}" :key="item.value">
           {{generateTitle(item.name)}}
         </li>
@@ -14,7 +14,7 @@
         <div class="line-box"></div>
         <div class="balance-box">
           <p>{{$t('postPend.balance')}} <balance @getBalance="getBalance"></balance> </p>
-          <p class="c-gray">{{$t('postPend.unit')}} ¥ 0.01</p>
+          <p class="c-gray">{{$t('postPend.unit')}} 0.01 CNY</p>
         </div>
         <div class="input-box">
           <div class="input-div"><input class="my-input" type="number" placeholder="挂单买入数量" v-model="buyAmount"> UET</div>
@@ -38,7 +38,7 @@
       </div>
 
       <div class="btn-box">
-        <input type="button" class="btn btn-primary" @click="publishBuy()" value="确定挂单" />
+        <input type="button" class="btn btn-primary" @click="publishBuy()" value="快速买币" />
       </div>
 
     </div>
@@ -47,7 +47,7 @@
         <div class="line-box"></div>
         <div class="balance-box">
           <p>{{$t('postPend.balance')}}  <balance @getBalance="getBalance"></balance></p>
-          <p class="c-gray">{{$t('postPend.unit')}} ¥ 0.01 <a class="c-blue" @click="allSell()">{{$t('postPend.allsell')}}</a></p>
+          <p class="c-gray">{{$t('postPend.unit')}} 0.01 CNY <a class="c-blue" @click="allSell()">{{$t('postPend.allsell')}}</a></p>
         </div>
         <div class="input-box">
           <div class="input-div"><input class="my-input" placeholder="挂单卖出数量" v-model="buyAmount"> UET</div>
@@ -70,7 +70,7 @@
         <div class="line-box"></div>
       </div>
       <div class="btn-box">
-        <input type="button" class="btn btn-primary"  value="确定挂单" @click="publishSell()" />
+        <input type="button" class="btn btn-primary"  value="快速卖币" @click="publishSell()" />
       </div>
 
     </div>
@@ -279,39 +279,6 @@
   .white-box{
     background: #fff;
   }
-  .tab-box-out{
-    background:#F5F5F5 ;
-    padding:r(15) r(30);
-  }
-  .tab-box{
-    color:#6b6b6b;
-    border-radius: 5px;
-    border: 1px solid #F5F5F5;
-    overflow:hidden;
-  .s{
-    display:inline-block;
-    height:r(35);
-    padding:0 r(10);
-    width:50%;
-    text-align: center;
-    line-height: r(35);
-    cursor: pointer;
-    background: #fff;
-    color:#333;
-    user-select: none;
-  &:last-child{
-     border:0;
-   }
-  &.active{
-     background: #86A5F8;
-     color:#fff;
-   }
-  &:hover,&:link,&:active{
-                    opacity: .8;
-                  }
-  }
-  }
-
   .balance-box{
     margin:r(5) r(30);
     line-height: r(30);
