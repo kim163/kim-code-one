@@ -232,7 +232,7 @@
       <span class="chatroom_num"></span>
     </div>
     <transition name="toolSlideRight">
-      <chat v-if="chatState" class="chatWindow"></chat>
+      <chat v-if="chatState" class="chatWindow" :detail="$route.params.id"></chat>
     </transition>
 
   </div>
@@ -275,6 +275,7 @@
         this.request={
           orderId:this.$route.params.id
         }
+
 //        console.log('传参数')
 //        console.log(this.request)
         transaction.getOrderx(this.request).then(res => {
@@ -593,7 +594,7 @@
     background-color: #fff;
     position: fixed;
     right: 0;
-    top: r(600);
+    top: r(450);
     border-radius: 50%;
     background: url("../../../assets/images/chatbg.png")no-repeat;
     background-size: 100%;

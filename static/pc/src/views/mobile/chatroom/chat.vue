@@ -1,6 +1,6 @@
 <template>
-  <div class="transell-main0 transell-main-box">
-    <m-header>会话详情</m-header>
+  <div class="transell-main0 transell-main-box wrapper_box">
+    <m-header :fixed="true">会话详情</m-header>
      <div class="order_info">
         <div class="order_state">
           <div class="state_b">
@@ -8,9 +8,10 @@
             <span class="order_num">UET订单编号:</span>
             <span class="order_d">订单详情</span>
           </div>
-           <div class="order_c">3d00982345jkhkjasasdsajkd</div>
+           <div class="order_c">{{detail}}</div>
         </div>
        <div>
+
          <!--展开-->
        <div class="display-box" v-if="isDisplay">
          <div class="line">
@@ -26,13 +27,13 @@
            <span class="fr lineColor">10000</span>
          </div>
          <div class="display" @click="showDisplay">
-           <img src="../../../../static/images/chatWith/hidden.png" alt="">
+           <img src="~images/chatWith/hidden.png" alt="">
          </div>
        </div>
          <!--隐藏-->
        <div class="hidden-box" v-if="!isDisplay">
           <div class="hiddenbox" @click="showDisplay">
-            <img src="../../../../static/images/chatWith/display.png" alt="">
+            <img src="~images/chatWith/display.png" alt="">
           </div>
        </div>
      </div>
@@ -42,66 +43,409 @@
         等待付款倒计时: 09: 09
       </p>
      <!--聊天框-->
-      <div class="chatbox">
-
+      <div class="chatbox" :class="{'displayState':!isDisplay,'hiddenState':isDisplay}" id="chatMessage">
+          <div v-for="list in chatArr" :class="{user:'',seller:''}">
+            <!--发送消息-->
+             <div v-if="list.user==1" class="chat_container">
+               <div class="" style="flex: 1"></div>
+               <div class="contents">{{list.msg}}</div>
+               <div class="user_symbol"></div>
+             </div>
+            <!--图片消息-->
+             <div v-if="list.user==3" class="chat_container">
+               <div class="" style="flex: 1"></div>
+               <div class="contents">
+                 <img :src="list.msg" alt="" class="contents_image">
+               </div>
+               <div class="user_symbol"></div>
+             </div>
+            <div v-if="list.user==2" class="chat_container">
+              <div class="user_symbol"></div>
+              <div class="contents">
+                   <div class="contents">{{list.msg}}</div>
+              </div>
+              <div class="" style="flex: 1"></div>
+            </div>
+          </div>
       </div>
      <!--输入框-->
       <div class="input_chatbox">
-        <div class="chatbox">
-        <input type="text" class="input_message" v-model="messageValue">
-        <img :src="imgSrc" alt="" class="more" @click="takePic" v-if="!needSend">
-        <input type="button" value="发送" class="sendMessage" v-if="needSend">
+        <div class="chatboxNext">
+        <input type="text" class="input_message" v-model="messageValue" id="inputMessage">
+          <div class="smile" @click="sendEmoji" :class="{emoji:isChangeValue,input:!isChangeValue}"></div>
+          <div  class="more demo1"  v-if="!needSend" @click="showMoreFunction"></div>
+        <input type="button" value="发送" class="sendMessage" v-if="needSend" @click="sendMessage">
         </div>
         <!--照片 照相机-->
-        <div class="photo_area">
-          <div>
-            <input type="file" accept="image/*" value="获取图片">
-            <input type="file" accept="image/*" capture="camera" value="打开照相机">
-            <img src="../../../../static/images/chatWith/camera.png" alt="">
-            <span>照片</span>
-          </div>
-          <div>
-            <img src="../../../../static/images/chatWith/photo.png" alt="">
-            <span>照相机</span>
-          </div>
+        <div class="photo_area" v-if="isShowMore">
+            <div class="take_photo take_box" style="position: relative">
+              <img src="~images/chatWith/photo.png" alt="" style="display: block">
+              <span>照片</span>
+              <input type="file" accept="image/*"  value="打开照相机" class="openCamera" @change="upload">
+            </div>
+      <!--    <vue-core-image-upload
+            class="btn btn-primary"
+            :crop="false"
+            @imageuploaded="imageuploaded"
+            :max-file-size="5242880"
+            url="10.33.67.28" >
+          </vue-core-image-upload>-->
+         <!--   <div class="take_camera take_box" style="position: relative">
+              <img src="~images/chatWith/camera.png" alt="" style="display: block">
+              <span>摄像</span>
+              <input type="file" accept="image/*" capture="camera" value="打开照相机" class="openCamera">
+            </div>-->
+
+        </div>
+        <!--表情-->
+        <div class="emoji_area">
+
         </div>
       </div>
+    <!--融云库-->
+    <remote-js src="https://cdn.ronghub.com/RongIMLib-2.3.0.js" @scriptLoad="callBack"></remote-js>
+    <!--表情库-->
+     <remote-js src="https://cdn.ronghub.com/RongEmoji-2.2.6.min.js" @scriptLoad="initEmoji"></remote-js>
     </div>
 </template>
 
 <script>
+    import lrz from 'lrz'  //图片压缩
+    import VueCoreImageUpload from 'vue-core-image-upload'
     import mHeader from "components/m-header"
+    import { chatWith } from 'api'
     export default {
         data(){
           return{
-            imgSrc:'../../../../static/images/chatWith/more.png',
+            imgSrc:'~images/chatWith/more.png',
             isDisplay:true,
             messageValue:'',
-            needSend: false
+            needSend: false,
+            token:'',
+            isChangeValue:true,
+            chatArr:[],
+            picUrl:'',
+            EmojiList:[],
+            isShowMore:false,
+            uploadState:'',
+            RongIMEmoji:'',
+            src:'http://img1.vued.vanthink.cn/vued0a233185b6027244f9d43e653227439a.png',
+            shadowDomList:[],
+            base64: '',
+            size:'',
+            name:'',
+            file:'',
+            config: {
+              size: 24, // 大小, 默认 24, 建议15 - 55
+              url: '//f2e.cn.ronghub.com/sdk/emoji-48.png', // 所有 emoji 的背景图片
+              lang: 'zh', // 选择的语言, 默认 zh
+            },
           }
         },
-        created(){
-
+        props:{
+          detail:{
+            type:String,
+            default: ''
+          }
         },
+
         watch:{
-          messageValue(val){
-            if(val){
+          messageValue(newParm,oldParm){
+            if(newParm){
               this.needSend = true
             }else {
               this.needSend = false
             }
+          },
+          uploadState(newParm,oldParm){
+             if(newParm){
+               this.sendPic()
+             }
           }
         },
         methods:{
           showDisplay(){
             this.isDisplay = !this.isDisplay;
           },
-          takePic(){
-            this.imgSrc = '../../../../static/images/chatWith/input.png'
+           toFixed2(num) {
+      return parseFloat(+num.toFixed(2));
+    },
+          upload(e){
+            this.uploadState = false;
+            let reader = new FileReader();
+            let file = e.target.files[0] || e.dataTransfer.files[0];
+            lrz(file,{
+              width:500
+            })
+              .then((res)=>{
+                console.log(res)
+                //处理成功会执行
+                const img = new Image()
+              const sourceSize = this.toFixed2(file.size/1024);
+              const resultSize = this.toFixed2(res.fileLen/1024);
+            // const   effect  = parseInt(100-(resultSize/sourceSize*100))
+                const RamdomValue = Math.random();
+                reader.readAsDataURL(file)
+                reader.onload=()=>{
+                  this.base64 = reader.result
+                  this.base64 = this.base64.replace(/^data:.*?;base64,/, '')
+                }
+                if(sourceSize>=500*200){
+                  toast('您上传的图片太大了,请换一张');
+                  return false;
+                }
+                this.uploadState = '';
+                let formData = new FormData();
+                res.formData.set('file',res.file,`${RamdomValue}.png`)
+                res.formData.append('nodeId',process.env.NODE_ID)
+                chatWith.uploadFile(res.formData).then(res=>{
+                  if(res.code==10000){
+                    this.picUrl = res.data.url;
+                    this.uploadState = true
+                  }else{
+                    this.uploadState = false
+                  }
+                }).catch(res=>{
+
+                })
+              })
+              .catch((err)=>{
+                console.log(err)
+              })
+
+
+          },
+          callBack(){
+            /*初始化*/
+            RongIMLib.RongIMClient.init('x18ywvq85ahuc', null, {navi: 'http://dc-jiuan-im-nav-pro.com'}) //eslint-disable-line
+            /*获取token*/
+            this.getToken()
+          },
+          initEmoji(){
+            RongIMLib.RongIMEmoji.init(this.config);
+            this.RongIMEmoji = RongIMLib.RongIMEmoji;
+          },
+          getToken(){
+            let params={
+                userId: this.$store.state.userData.userId,
+                nickName: this.$store.state.userData.nickname
+            }
+            chatWith.getToken(params).then(res=>{
+                this.token = res.data.token;
+                this.connect();
+                this.setConnectStatusListener();
+                this.setOnReceiveMessageListener()
+            })
+          },
+          setConnectStatusListener() {
+            RongIMClient.setConnectionStatusListener({  //eslint-disable-line
+              onChanged: function (status) {
+                let info = null
+                switch (status) {
+                  case RongIMLib.ConnectionStatus.CONNECTED:  //eslint-disable-line
+                    info = '链接成功'
+                    break
+                  case RongIMLib.ConnectionStatus.CONNECTING:  //eslint-disable-line
+                    info = '正在链接'
+                    break
+                  case RongIMLib.ConnectionStatus.DISCONNECTED:  //eslint-disable-line
+                    info = '断开连接'
+                    break
+                  case RongIMLib.ConnectionStatus.KICKED_OFFLINE_BY_OTHER_CLIENT:  //eslint-disable-line
+                    info = '其他设备登录'
+                    break
+                  case RongIMLib.ConnectionStatus.DOMAIN_INCORRECT:  //eslint-disable-line
+                    info = '域名不正确'
+                    break
+                  case RongIMLib.ConnectionStatus.NETWORK_UNAVAILABLE:  //eslint-disable-line
+                    info = '网络不可用'
+                    break
+                }
+                alert(info)
+              }
+            })
+          },
+          connect(){
+            RongIMClient.connect(this.token,{
+              onSuccess:function () {
+                console.log('连接成功')
+              },
+              OnTokenIncorrect:function () {
+                console.log('token无效')
+              },
+              OnError:function (error) {
+                console.log(error)
+              }
+            })
+          },
+          setOnReceiveMessageListener() {
+            RongIMClient.setOnReceiveMessageListener({  //eslint-disable-line
+              onReceived: (message)=>{
+                /*区分*/
+                if(message.content.messageName=='TextMessage'){
+                  this.chatArr.push({msg:message,user:2})
+                }
+                else if(message.content.messageName=='PicMessage'){
+                  this.chatArr.push({msg:message,user:4})
+                }
+
+                switch (message.messageType) {
+                  case RongIMClient.MessageType.TextMessage: //eslint-disable-line
+                    // message.content.content => 消息内容
+                    break
+                  case RongIMClient.MessageType.VoiceMessage: //eslint-disable-line
+                    // 对声音进行预加载
+                    // message.content.content 格式为 AMR 格式的 base64 码
+                    break
+                  case RongIMClient.MessageType.ImageMessage: //eslint-disable-line
+                    // message.content.content => 图片缩略图 base64。
+                    // message.content.imageUri => 原图 URL。
+                    break
+                  case RongIMClient.MessageType.DiscussionNotificationMessage: //eslint-disable-line
+                    // message.content.extension => 讨论组中的人员。
+                    break
+                  case RongIMClient.MessageType.LocationMessage: //eslint-disable-line
+                    // message.content.latiude => 纬度。
+                    // message.content.longitude => 经度。
+                    // message.content.content => 位置图片 base64。
+                    break
+                  case RongIMClient.MessageType.RichContentMessage: //eslint-disable-line
+                    // message.content.content => 文本消息内容。
+                    // message.content.imageUri => 图片 base64。
+                    // message.content.url => 原图 URL。
+                    break
+                  case RongIMClient.MessageType.InformationNotificationMessage: //eslint-disable-line
+                    // do something...
+                    break
+                  case RongIMClient.MessageType.ContactNotificationMessage: //eslint-disable-line
+                    // do something...
+                    break
+                  case RongIMClient.MessageType.ProfileNotificationMessage: //eslint-disable-line
+                    // do something...
+                    break
+                  case RongIMClient.MessageType.CommandNotificationMessage: //eslint-disable-line
+                    // do something...
+                    break
+                  case RongIMClient.MessageType.CommandMessage: //eslint-disable-line
+                    // do something...
+                    break
+                  case RongIMClient.MessageType.UnknownMessage: //eslint-disable-line
+                    // do something...
+                    break
+                  default:
+                  // do something...
+                }
+              }
+            })
+          },
+          getDom(html){
+              var span = document.createElement("span");
+              span.innerHTML = html;
+              return span.childNodes[0];
+          },
+          sendEmoji(){
+            var panel = document.getElementsByClassName('emoji_area')[0];
+            this.isChangeValue = !this.isChangeValue;
+            this.isShowMore = false;
+            if(!this.isChangeValue){
+              panel.style.display = 'block';
+              for(let i=0;i<this.RongIMEmoji.list.length;i++){
+                var value = this.RongIMEmoji.list[i].emoji;
+                /*避免多次创建*/
+                if(!panel.hasChildNodes()){
+                  this.shadowDomList.push(this.getDom('<span>' + value + '</span>'));
+                }
+              }
+              var emojis = this.shadowDomList;
+              for(let i=0;i<emojis.length;i++){
+                const emojiHtml = emojis[i];
+                panel.appendChild(emojiHtml);
+                emojiHtml.onclick= this.clickEmoji
+              }
+            }else {
+              document.getElementsByClassName('emoji_area')[0].style.display = 'none'
+            }
+          },
+          clickEmoji(event){
+            var e = event||window.event;
+            var targer = e.target||e.srcElement;
+            if (document.all && !document.addEventListener === false) {
+              console.log(target);
+            }
+           var chatbox = document.getElementById('inputMessage');
+            this.messageValue= chatbox.value + targer.innerHTML;
+          },
+          showMoreFunction(){
+             this.isShowMore = !this.isShowMore
+            document.getElementsByClassName('emoji_area')[0].style.display = 'none'
+          },
+          sendMessage(){
+            var div = document.getElementsByClassName('wrapper_box')[0];
+            div.scrollTop = div.scrollHeight;
+            let conversationtype = RongIMLib.ConversationType.GROUP;
+            let targetId = this.detail;
+            //改变发送messageValue的值因为用户会发送表情
+            this.messageValue =  this.RongIMEmoji.symbolToHTML(this.messageValue);
+            let msg = new RongIMLib.TextMessage({content:this.messageValue,extra:"附加信息"});
+            RongIMClient.getInstance().sendMessage(conversationtype, targetId, msg, {
+                onSuccess:(message)=> {
+                  //message 为发送的消息对象并且包含服务器返回的消息唯一Id和发送消息时间戳
+                  this.chatArr.push({msg:this.messageValue,user:1})
+                  this.messageValue = ''
+                  console.log("Send successfully");
+                },
+                onError: function (errorCode,message) {
+                  var info = '';
+                  switch (errorCode) {
+                    case RongIMLib.ErrorCode.TIMEOUT:
+                      info = '超时';
+                      break;
+                    case RongIMLib.ErrorCode.UNKNOWN_ERROR:
+                      info = '未知错误';
+                      break;
+                    case RongIMLib.ErrorCode.REJECTED_BY_BLACKLIST:
+                      info = '在黑名单中，无法向对方发送消息';
+                      break;
+                    case RongIMLib.ErrorCode.NOT_IN_DISCUSSION:
+                      info = '不在讨论组中';
+                      break;
+                    case RongIMLib.ErrorCode.NOT_IN_GROUP:
+                      info = '不在群组中';
+                      break;
+                    case RongIMLib.ErrorCode.NOT_IN_CHATROOM:
+                      info = '不在聊天室中';
+                      break;
+                    default :
+                      info = x;
+                      break;
+                  }
+                  console.log('发送失败:' + info);
+                }
+              }
+            );
+          },
+          sendPic(){
+            let conversationtype = RongIMLib.ConversationType.GROUP;
+            let targetId = this.detail;
+             console.log(this.base64)
+            let msg = new RongIMLib.ImageMessage({content:this.base64,imageUri:this.picUrl})
+            RongIMClient.getInstance().sendMessage(conversationtype,targetId,msg,{
+              onSuccess:((message)=>{
+                console.log(message,'速度阿迪斯')
+                this.chatArr.push({msg:message.content.imageUri,user:3})
+
+              }),
+              onError:((error)=>{
+                console.log(error)
+
+              })
+
+            })
           }
         },
         components:{
-          mHeader
+          mHeader,
+          'vue-core-image-upload': VueCoreImageUpload,
         }
     }
 </script>
@@ -110,6 +454,11 @@
   @import "~assets/scss/mobile";
   .fr{
     float: right;
+  }
+  .wrapper_box{
+    width: 100%;
+    height: 100%;
+    overflow: auto;
   }
   .order_info {
     width: 100%;
@@ -200,23 +549,64 @@
     text-align: center;
     background-color: #fff;
   }
+  .chatbox{
+    width: 100%;
+    overflow: auto;
+    margin-bottom: 2.5rem;
+    .chat_container{
+      display: flex;
+      flex-direction: row;
+      margin-top: r(10);
+    }
+    .contents{
+      width: r(248);
+      background-color: #84D55A;
+      color: #000000;
+      border-radius: r(5.8);
+      position: relative;
+      word-break:break-all;
+      padding: r(5);
+      &::after{
+        display:block;
+        content:'';
+        position: absolute;
+        right: r(-20);
+        top: r(8);
+        border-width:r(14);
+        border-style:solid;
+        border-color: transparent  transparent transparent #84d55a ;
+      }
+    }
+    .user_symbol{
+      width: r(45);
+      height: r(48);
+      background: url('~images/chatWith/my.png')no-repeat;
+      background-size: 100%;
+      margin-left: 1rem;
+    }
+  }
   .input_chatbox{
     position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
     border-top: 1px solid #e0e0e2;
-
     background-color: #f4f4f6;
-    .chatbox{
-
+    .chatboxNext{
+      background-color: #F5F5F5;
       display: flex;
       flex-direction: row;
+
     }
     .more{
       width: r(33);
-      height: r(33);
-      margin: r(10)  r(5);
+      height: r(35);
+      margin: r(10)  r(5) r(8);
+    }
+    .smile{
+      width: r(33);
+      height: r(35);
+      margin: r(10) r(5) r(8);
     }
   }
   .input_message{
@@ -227,7 +617,9 @@
     background-color: #fdfdfe;
     border: 1px solid #b4b6be;
     flex: 1;
+    text-indent: r(5);
   }
+
   .sendMessage{
     width: r(43);
     height: r(33);
@@ -239,9 +631,57 @@
   .photo_area{
     width: 100%;
     height: r(132);
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+    .take_box{
+      padding: r(10);
+    }
     img{
       width: r(70);
       height: r(70);
     }
+    span{
+      font-size: r(15);
+      color: #888;
+    }
+  }
+  .demo1{
+    background: url("~images/chatWith/more.png")no-repeat;
+    background-size: 100%;
+  }
+  .demo2{
+    background: url("~images/chatWith/input.png")no-repeat;
+    background-size: 100%;
+  }
+  .emoji{
+    background: url("~images/chatWith/smile.png")no-repeat;
+    background-size: 100%;
+  }
+  .input{
+    background: url("~images/chatWith/input.png")no-repeat;
+    background-size: 100%;
+  }
+  .sendPic{
+    display: inline-block;
+    position: absolute;
+    top:0;
+    left: r(10);
+    z-index: 10;
+    opacity: 1;
+  }
+  .openCamera{
+    display: inline-block;
+    position: absolute;
+    top:0;
+    left: 0;
+    width: r(70);
+    height: r(70);
+    z-index: 10;
+    opacity: 0;
+  }
+  .contents_image{
+    max-width: r(190);
   }
 </style>

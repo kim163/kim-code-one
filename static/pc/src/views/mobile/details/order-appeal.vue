@@ -234,7 +234,7 @@
       </div>
 
     </div>
-     <chatEntrance></chatEntrance>
+
   </div>
 </template>
 
@@ -246,7 +246,6 @@
   import {mapGetters,mapActions,mapMutations} from 'vuex'
   import Clipboard from 'clipboard';
 
-  import chatEntrance from '../chatroom/chatEntrance'
   export default {
     data() {
       return {
@@ -615,7 +614,7 @@
     background-color: #fff;
     position: fixed;
     right: 0;
-    top: r(600);
+    top: r(300);
     border-radius: 50%;
     background: url("../../../assets/images/chatbg.png")no-repeat;
     background-size: 100%;

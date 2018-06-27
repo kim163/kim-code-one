@@ -1,5 +1,5 @@
 <template>
-  <header class="mobile-header">
+  <header class="mobile-header" :class="{'mobile-header-fixed': fixed}">
     <a @click="doClick" class="back-link"><i class="iconfont icon-left-arrow"></i></a>
     <slot></slot>
   </header>
@@ -12,6 +12,10 @@
     props: {
       back: {
         type: Function
+      },
+      fixed:{
+        type:Boolean,
+        default:false
       }
     },
     methods: {
@@ -55,5 +59,9 @@
       @include f(18px)
     }
   }
-
+  header.mobile-header-fixed{
+    position: fixed;
+    width: 100%;
+    height: r($header-hg);
+  }
 </style>
