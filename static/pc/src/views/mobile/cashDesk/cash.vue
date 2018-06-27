@@ -92,7 +92,7 @@
           createtime: 0,//订单时间
         },
         hasApp: false, //商户是否安装app
-        endTime: 0, //订单结束倒计时
+        endTime: 3600000, //订单结束倒计时
         payPassword: '',
         payBtnStatus: true, //确定付款按钮状态
         token: this.$route.query.token || '',//授权token
@@ -303,6 +303,7 @@
         })
       },
       countDownEnd() {
+        toast('该订单已超时')
         this.payBtnStatus = false
         this.unSubscribe()
       },
