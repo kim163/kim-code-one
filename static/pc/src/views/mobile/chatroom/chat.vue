@@ -103,13 +103,14 @@
         </div>
       </div>
     <!--融云库-->
-    <remote-js src="https://cdn.ronghub.com/RongIMLib-2.3.0.js" @scriptLoad="callBack"></remote-js>
+    <!--<romete-js src="https://cdn.ronghub.com/RongIMLib-2.3.0.js" @scriptLoad="callBack"></romete-js>-->
     <!--表情库-->
-     <remote-js src="https://cdn.ronghub.com/RongEmoji-2.2.6.min.js" @scriptLoad="initEmoji"></remote-js>
+   <!--  <romete-js src="https://cdn.ronghub.com/RongEmoji-2.2.6.min.js" @scriptLoad="initEmoji"></romete-js>-->
     </div>
 </template>
 
 <script>
+
     import lrz from 'lrz'  //图片压缩
     import mHeader from "components/m-header"
     import { chatWith } from 'api'
@@ -162,6 +163,18 @@
              }
           }
         },
+      created(){
+            this.$loadScript('https://cdn.ronghub.com/RongIMLib-2.3.0.js')
+              .then(()=>{
+                this.callBack()
+              })
+            this.$loadScript('https://cdn.ronghub.com/RongEmoji-2.2.6.min.js')
+              .then(()=>{
+                this.initEmoji()
+              })
+
+
+      },
         methods:{
           showDisplay(){
             this.isDisplay = !this.isDisplay;
