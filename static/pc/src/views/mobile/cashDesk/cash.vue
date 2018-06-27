@@ -303,7 +303,6 @@
         })
       },
       countDownEnd() {
-        toast('该订单已超时')
         this.payBtnStatus = false
         this.unSubscribe()
       },
