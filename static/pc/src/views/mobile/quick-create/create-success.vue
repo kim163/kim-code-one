@@ -6,7 +6,7 @@
       <div class="info">请妥善保管好您的账号密码</div>
       <div class="info">为了您的账户安全，您可以在久安官网下载久安APP，继续完善您的安全信息</div>
       <div class="line"></div>
-      <div class="info">久安官网：https://www.jiuan.com</div>
+      <div class="info">久安官网：https://www.9security.com</div>
     </div>
     <div class="btn-list">
       <router-link :to="{name:'mIndex'}" class="bind-def-btn">进入久安官网</router-link>
