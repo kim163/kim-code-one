@@ -116,7 +116,7 @@
           createtime: 0,//订单时间
           qrCodeImg:'', //二维码地址
         },
-        endTime: 0, //订单结束倒计时
+        endTime: 3600000, //订单结束倒计时
         payPassword: '',
         payBtnStatus: true, //确定付款按钮状态
         token: this.$route.query.token || '',//授权token
