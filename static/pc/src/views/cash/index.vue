@@ -159,20 +159,23 @@
       formatCny(data) {
         return data / this.infoData.exchangeRate
       },
+      formatParameter(val){
+        return val === 'null' ? '' : val
+      },
       init() { //调用初始化接口
         const data = {
-          amount: this.infoData.amount,
-          merchantOrderid: this.infoData.merchantOrderid,
-          assetCode: this.infoData.assetCode,
-          merchantId: this.infoData.merchantId,
-          merchantCallbackurl: this.infoData.merchantCallbackurl,
-          sign: this.infoData.sign,
-          bindUserid: this.infoData.bindUserid,
-          bindPhone: this.infoData.bindPhone,
-          bindName: this.infoData.bindName,
-          bindAreacode: this.infoData.bindAreacode,
-          bindUserLevel: this.infoData.bindUserLevel,
-          spareFields: this.infoData.spareFields,
+          amount: this.formatParameter(this.infoData.amount),
+          merchantOrderid: this.formatParameter(this.infoData.merchantOrderid),
+          assetCode: this.formatParameter(this.infoData.assetCode),
+          merchantId: this.formatParameter(this.infoData.merchantId),
+          merchantCallbackurl: this.formatParameter(this.infoData.merchantCallbackurl),
+          sign: this.formatParameter(this.infoData.sign),
+          bindUserid: this.formatParameter(this.infoData.bindUserid),
+          bindPhone: this.formatParameter(this.infoData.bindPhone),
+          bindName: this.formatParameter(this.infoData.bindName),
+          bindAreacode: this.formatParameter(this.infoData.bindAreacode),
+          bindUserLevel: this.formatParameter(this.infoData.bindUserLevel),
+          spareFields: this.formatParameter(this.infoData.spareFields),
         }
         cashierInit(data).then(res => {
           console.log('cash init res: ', res)
