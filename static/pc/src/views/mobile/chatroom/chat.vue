@@ -111,7 +111,6 @@
 
 <script>
     import lrz from 'lrz'  //图片压缩
-    import VueCoreImageUpload from 'vue-core-image-upload'
     import mHeader from "components/m-header"
     import { chatWith } from 'api'
     export default {
@@ -445,7 +444,7 @@
         },
         components:{
           mHeader,
-          'vue-core-image-upload': VueCoreImageUpload,
+
         }
     }
 </script>
