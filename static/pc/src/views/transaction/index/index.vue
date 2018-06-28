@@ -53,7 +53,7 @@
 
     },
     computed: {
-      ...mapGetters([ mapGetters ])
+      ...mapGetters([ "islogin" ])
     },
     components: {
       navMenu, vFooter, tranHeadnav, transactMenu, guidePage, tranbuyList, userWalletass, recentOrders
