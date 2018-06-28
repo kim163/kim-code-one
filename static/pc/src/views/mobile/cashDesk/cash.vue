@@ -201,9 +201,11 @@
               _.merchantOrderidWs(this.infoData.jiuanOrderid)
             }
           } else {
+            this.endTime = 0
             toast(res.message)
           }
         }).catch(err => {
+          this.endTime = 0
           toast(err)
         })
       },
