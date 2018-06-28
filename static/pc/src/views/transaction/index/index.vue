@@ -1,7 +1,7 @@
 <template>
   <div class="transaction-main">
     <nav-menu></nav-menu>
-    <tran-headnav></tran-headnav>
+    <tran-headnav :url-name="'transaction'" :name="$t('navbar.tradingHall')"></tran-headnav>
     <transact-menu v-if="islogin"></transact-menu>
     <guide-page v-if="!islogin"></guide-page>
 

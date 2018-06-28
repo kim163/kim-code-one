@@ -5,22 +5,22 @@
         <div class="logo"></div>
         <div class="name">久安钱包</div>
       </div>
-      <div class="container-right">
-        <div class="nav">
-          <span class="cursor-pointer">登录</span>
-          <span class="line"></span>
-          <span class="cursor-pointer">注册</span>
-          <a class="language j-languageSel" href="javascript:void(0);" data-i18n-html="languageSel">ENGLISH</a>
-        </div>
-        <div class="mobile-nav">
-          <span class="button" :class="{'button-toggle': showMobileNav}" @click="showMobileNav = !showMobileNav"></span>
-          <div class="nav-list" v-show="showMobileNav">
-            <div class="nav-item cursor-pointer">登录</div>
-            <div class="nav-item cursor-pointer">注册</div>
-            <a class="nav-item language j-languageSel" href="javascript:void(0);" data-i18n-html="languageSel">ENGLISH</a>
-          </div>
-        </div>
-      </div>
+      <!--<div class="container-right">-->
+        <!--<div class="nav">-->
+          <!--<span class="cursor-pointer">登录</span>-->
+          <!--<span class="line"></span>-->
+          <!--<span class="cursor-pointer">注册</span>-->
+          <!--<a class="language j-languageSel" href="javascript:void(0);" data-i18n-html="languageSel">ENGLISH</a>-->
+        <!--</div>-->
+        <!--<div class="mobile-nav">-->
+          <!--<span class="button" :class="{'button-toggle': showMobileNav}" @click="showMobileNav = !showMobileNav"></span>-->
+          <!--<div class="nav-list" v-show="showMobileNav">-->
+            <!--<div class="nav-item cursor-pointer">登录</div>-->
+            <!--<div class="nav-item cursor-pointer">注册</div>-->
+            <!--<a class="nav-item language j-languageSel" href="javascript:void(0);" data-i18n-html="languageSel">ENGLISH</a>-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
     </div>
   </div>
 </template>

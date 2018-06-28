@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Header></Header>
+    <v-header></v-header>
     <div class="container">
       <div class="top">
         <div class="title">{{type === 1 ? '绑定商户' : '快速创建久安账号'}}</div>
@@ -21,7 +21,7 @@
   import BindBussiness from '../mobile/business-bind'
   import QuickCreate from '../mobile/quick-create'
   import VFooter from 'components/footer'
-  import Header from 'components/header-bind-create'
+  import VHeader from 'components/header-bind-create'
   import {mapGetters} from 'vuex'
   export default {
     name: "bind-and-create",
@@ -45,7 +45,7 @@
       BindBussiness,
       QuickCreate,
       VFooter,
-      Header
+      VHeader
     },
     methods:{
 
