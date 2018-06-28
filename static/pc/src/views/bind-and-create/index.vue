@@ -4,6 +4,7 @@
     <div class="container">
       <div class="top">
         <div class="title">{{type === 1 ? '绑定商户' : '快速创建久安账号'}}</div>
+        <router-link :to="{name: 'pcBindList'}" v-if="islogin && type === 1" class="bind-list">我的商户列表</router-link>
       </div>
       <div class="bottom">
         <div class="content">
@@ -12,15 +13,16 @@
         </div>
       </div>
     </div>
-    <footer></footer>
+    <v-footer></v-footer>
   </div>
 </template>
 
 <script>
   import BindBussiness from '../mobile/business-bind'
   import QuickCreate from '../mobile/quick-create'
-  import Footer from 'components/footer'
+  import VFooter from 'components/footer'
   import Header from 'components/header-bind-create'
+  import {mapGetters} from 'vuex'
   export default {
     name: "bind-and-create",
     data(){
@@ -34,10 +36,15 @@
         default:1
       }
     },
+    computed:{
+      ...mapGetters([
+        "islogin"
+      ])
+    },
     components:{
       BindBussiness,
       QuickCreate,
-      Footer,
+      VFooter,
       Header
     },
     methods:{
@@ -59,6 +66,8 @@
       width: 100%;
       height: 62px;
       background-color: #f7f7f7;
+      display: flex;
+      justify-content: space-between;
       .title{
         width: 200px;
         height: 100%;
@@ -83,6 +92,13 @@
       background-color: #ffffff;
       box-shadow: 0 0 10px rgba(0,0,0,.2);
     }
+  }
+  .bind-list{
+    height: 100%;
+    line-height: 62px;
+    font-size: 20px;
+    margin-right: 40px;
+    color: #333333;
   }
   @media only screen and (max-width: 999px) {
     .container{
