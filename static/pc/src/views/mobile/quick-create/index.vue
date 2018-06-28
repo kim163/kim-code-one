@@ -1,9 +1,9 @@
 <template>
   <div>
-    <mobile-header :back="goBack">快速创建久安账号</mobile-header>
-    <create-user-info :merchantInfo="merchantInfo" @createNow="setPassword = true" v-if="!setPassword"></create-user-info>
+    <mobile-header :back="goBack" v-if="!isPc">快速创建久安账号</mobile-header>
+    <create-user-info :merchantInfo="merchantInfo" :is-pc="isPc" @createNow="setPassword = true" v-if="!setPassword"></create-user-info>
     <transition name="create">
-      <create-set-account :merchantInfo="merchantInfo" v-if="setPassword"></create-set-account>
+      <create-set-account :merchantInfo="merchantInfo" :is-pc="isPc" v-if="setPassword"></create-set-account>
     </transition>
   </div>
 </template>
@@ -28,6 +28,12 @@
           callBackUrl: this.$route.query.callBackUrl
         },
         setPassword:false
+      }
+    },
+    props:{
+      isPc:{
+        type:Boolean,
+        default:false
       }
     },
     components:{

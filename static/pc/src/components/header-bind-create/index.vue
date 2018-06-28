@@ -13,11 +13,11 @@
           <a class="language j-languageSel" href="javascript:void(0);" data-i18n-html="languageSel">ENGLISH</a>
         </div>
         <div class="mobile-nav">
-          <span class="button button-toggle"></span>
-          <div class="nav-list">
-            <span class="cursor-pointer">登录</span>
-            <span class="cursor-pointer">注册</span>
-            <a class="language j-languageSel" href="javascript:void(0);" data-i18n-html="languageSel">ENGLISH</a>
+          <span class="button" :class="{'button-toggle': showMobileNav}" @click="showMobileNav = !showMobileNav"></span>
+          <div class="nav-list" v-show="showMobileNav">
+            <div class="nav-item cursor-pointer">登录</div>
+            <div class="nav-item cursor-pointer">注册</div>
+            <a class="nav-item language j-languageSel" href="javascript:void(0);" data-i18n-html="languageSel">ENGLISH</a>
           </div>
         </div>
       </div>
@@ -28,16 +28,16 @@
 <script>
   export default {
     name: "index",
-    data(){
-      return{
-
+    data() {
+      return {
+        showMobileNav:false
       }
     }
   }
 </script>
 
 <style lang="scss" scoped>
-  .header{
+  .header {
     width: 100%;
     height: 100px;
     line-height: 100px;
@@ -48,44 +48,56 @@
     right: 0;
     z-index: 100;
   }
-  .container{
+
+  .container {
     width: 80%;
     height: 100%;
     margin: 0 auto;
     position: relative;
-    .container-left{
+    .container-left {
       display: flex;
       align-items: center;
       position: absolute;
       left: 0;
       top: 0;
       transition: all .5s;
-      .logo{
+      .logo {
         width: 80px;
         height: 80px;
         background: url("~images/logo.png");
         background-size: contain;
       }
-      .name{
+      .name {
         font-size: 24px;
         color: #ffffff;
         margin-left: 15px;
       }
     }
-    .container-right{
+    .container-right {
       position: absolute;
       right: 0;
       top: 0;
       font-size: 20px;
       color: #FFFFFF;
-      .nav{
+      .nav {
         display: block;
+        .language {
+          width: 114px;
+          height: 45px;
+          border-radius: 22px;
+          border: solid 2px #ffffff;
+          display: inline-block;
+          vertical-align: middle;
+          line-height: 45px;
+          text-align: center;
+          margin-left: 30px;
+        }
       }
-      .mobile-nav{
+      .mobile-nav {
         display: none;
         position: relative;
       }
-      .line{
+      .line {
         width: 2px;
         height: 25px;
         background-color: #c9daff;
@@ -93,22 +105,49 @@
         vertical-align: middle;
         margin: 0 20px;
       }
-      .language{
-        width: 114px;
-        height: 45px;
-        border-radius: 22px;
-        border: solid 2px #ffffff;
-        display: inline-block;
-        vertical-align: middle;
-        line-height: 45px;
-        text-align: center;
-        margin-left: 30px;
-      }
-      .nav-list{
+      .nav-list {
         position: absolute;
         right: 5%;
+        top: 75%;
+        background: #ffffff;
+        color: #333333;
+        width: 100px;
+        text-align: center;
+        border: 1px solid #cccccc;
+        border-radius: 5px;
+        &:after{
+          content: '';
+          width: 0;
+          height: 0;
+          border: 10px solid transparent;
+          border-bottom-color: #cccccc;
+          position: absolute;
+          top: -20px;
+          right: 21px;
+        }
+        &:before{
+          content: '';
+          width: 0;
+          height: 0;
+          border: 9px solid transparent;
+          border-bottom-color: #ffffff;
+          position: absolute;
+          top: -18px;
+          right: 22px;
+          z-index: 2;
+        }
+        .nav-item{
+          width: 100%;
+          height: 40px;
+          line-height: 40px;
+          font-size: 18px;
+          display: block;
+          &:hover{
+            background: #f1f1f1;
+          }
+        }
       }
-      .button{
+      .button {
         font-weight: 400;
         display: inline-block;
         width: 20px;
@@ -120,48 +159,50 @@
         transition: 0.6s;
         position: relative;
         margin-right: 20px;
-        &:after,&:before{
+        &.button-toggle {
+          &:after {
+            transform: translateY(0px) rotate(-45deg) scale(1) translateX(-14%);
+          }
+          &:before {
+            transform: translateY(0px) rotate(45deg) scale(1);
+          }
+        }
+        &:after, &:before {
           position: absolute;
           content: '';
           top: 20%;
           left: 0;
           width: 100%;
           height: 2px;
-          background-color: #14171a;
+          background-color: #ffffff;
           border-radius: 5px;
           transition: 0.5s;
           display: block;
+          transform-origin: 0% 0%;
         }
-        &:after{
+        &:after {
           top: 80%;
-        }
-        &.button-toggle{
-          &:after{
-            transform: translateY(-50%) rotate(-45deg) scale(0);
-          }
-          &:before{
-            transform: translateY(-50%) rotate(45deg) scale(0);
-          }
         }
       }
     }
-    .cursor-pointer{
+    .cursor-pointer {
       cursor: pointer;
     }
   }
+
   @media only screen and (max-width: 999px) {
-    .container{
+    .container {
       width: 100%;
     }
-    .container-left{
+    .container-left {
       width: 80%;
       margin-left: 10%;
       justify-content: center;
     }
-    .nav{
+    .nav {
       display: none !important;
     }
-    .mobile-nav{
+    .mobile-nav {
       display: block !important;
     }
   }
