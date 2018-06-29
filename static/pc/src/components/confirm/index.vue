@@ -116,7 +116,7 @@
       position: absolute;
       top: 50%;
       left: 50%;
-      margin-top: -25%;
+      transform: translateY(-50%);
       margin-left: -36%;
       &.container-pc{
         width: 500px;
