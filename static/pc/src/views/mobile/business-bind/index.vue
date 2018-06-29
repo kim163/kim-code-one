@@ -1,8 +1,8 @@
 <template>
   <div>
-    <mobile-header :back="goBack">{{title}}</mobile-header>
-    <no-login v-if="!islogin"></no-login>
-    <user-bind v-if="islogin"></user-bind>
+    <mobile-header :back="goBack" v-if="!isPc">{{title}}</mobile-header>
+    <no-login v-if="!islogin" :is-pc="isPc"></no-login>
+    <user-bind v-if="islogin" :is-pc="isPc"></user-bind>
   </div>
 </template>
 
@@ -23,6 +23,12 @@
     watch:{
       islogin(){
         this.title = this.islogin ? '绑定商户' : '久安钱包'
+      }
+    },
+    props:{
+      isPc:{
+        type:Boolean,
+        default:false
       }
     },
     computed: {

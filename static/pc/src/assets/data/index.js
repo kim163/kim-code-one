@@ -14,5 +14,4 @@ export let SETTING = {
    //app
   appUrl: "https://9apro.com/app/9anapp.html",  //app下载地址
   appQr: "",  //app下载二维码
-
 };

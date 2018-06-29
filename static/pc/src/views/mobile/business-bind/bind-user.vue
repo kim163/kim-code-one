@@ -1,31 +1,32 @@
 <template>
   <div>
     <div class="bing-container" v-if="!bindSuccess">
-      <div class="bing-info">
-        <i class="iconfont icon-bind-avatar"></i>
+      <div class="bing-info" :class="{'bing-info-pc':isPc}">
+        <i class="iconfont icon-bind-avatar" v-if="!isPc"></i>
         <div class="text">
           您将绑定<img :src="merchantInfo.logo" class="business-logo"/>的账号至久安钱包
         </div>
       </div>
-      <div class="user-account">
+      <div class="user-account" :class="{'user-account-pc': isPc}">
         您的{{merchantInfo.short}}账号：{{merchantUserName}}
       </div>
       <div class="bind-content">
         <div class="has-bind-tip" v-show="hasBind">
           提示：您的{{merchantInfo.short}}账号已被绑定或已在久安注册，不能重复操作
         </div>
-        <div class="btn-list">
+        <div class="btn-list" :class="{'btn-list-pc':isPc}">
           <div class="bind-def-btn" @click="checkBindStatus()">立即绑定</div>
-          <router-link tag="div" class="bing-list" :to="{name:'mBindList'}">商户绑定记录</router-link>
+          <router-link tag="div" class="bing-list" :to="{name:'mBindList'}" v-if="!isPc">商户绑定记录</router-link>
         </div>
         <div class="tip-info">
+          <p><strong>温馨提示</strong></p>
           <p>1，久安钱包不会获取您{{merchantInfo.name}}上除账号以外的任何信息。</p>
           <p>2，绑定后，您在{{merchantInfo.short}}网站的九安钱包入口进入久安钱包，可自动登录钱包。</p>
         </div>
       </div>
     </div>
     <transition name="success">
-      <bind-success v-if="bindSuccess" :call-back-url="callBackUrl"></bind-success>
+      <bind-success v-if="bindSuccess" :is-pc="isPc" :call-back-url="callBackUrl"></bind-success>
     </transition>
   </div>
 </template>
@@ -55,6 +56,12 @@
       ...mapGetters([
         'userId'
       ])
+    },
+    props:{
+      isPc:{
+        type:Boolean,
+        default:false
+      }
     },
     components:{
       BindSuccess
@@ -100,10 +107,6 @@
       },
     },
     created(){
-      // this.merchantId = _.getUrlParam('merchantId')
-      // this.notifyUrl = decodeURIComponent(_.getUrlParam('notifyUrl'))
-      // this.merchantUserName = _.getUrlParam('merchantUserName')
-      // this.callbackUrl = decodeURIComponent(_.getUrlParam('callBackUrl'))
       if(this.merchantId != '' && this.merchantId != undefined){
         Object.assign(this.merchantInfo,BusinessCfg.getDeail(this.merchantId))
       }
@@ -125,6 +128,16 @@
     padding-top: r(38);
     border-bottom: 1px solid #d8d8d8;
     background: $white;
+    &.bing-info-pc{
+      height: auto;
+      padding: 0;
+      @include f(18px);
+      margin-bottom: r(60);
+      border: none;
+      .text{
+        margin: 0;
+      }
+    }
     .text{
       margin-top: r(20);
     }
@@ -148,6 +161,12 @@
     border-bottom: 1px solid #d8d8d8;
     border-top: 1px solid #d8d8d8;
     margin-top: r(10);
+    &.user-account-pc{
+      background-color: #f7f7f7;
+      border: solid 1px #d4d4d4;
+      width: calc(100% - #{r(20)});
+      margin: 0 auto;
+    }
   }
   .bind-content{
     padding: r(10);
@@ -157,6 +176,9 @@
       color: #FF0000;
       margin: r(10) r(20);
       line-height: r(25);
+    }
+    .btn-list-pc{
+      margin-top: r(30);
     }
     .bing-list{
       width: 100%;

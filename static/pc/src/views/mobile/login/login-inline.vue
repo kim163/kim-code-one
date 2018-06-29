@@ -204,6 +204,7 @@
       border: 1px solid #D8D8D8;
       background: $white;
       color: #787876;
+      cursor: pointer;
       &.active {
         /*border-bottom:3px solid #87b5ff;*/
         background: #4982FF;

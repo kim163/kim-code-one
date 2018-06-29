@@ -1,7 +1,7 @@
 <template>
   <div class="transell-main">
     <nav-menu></nav-menu>
-    <tran-headnav></tran-headnav>
+    <bread-crumbs :bread-list="breadList"></bread-crumbs>
     <transact-menu></transact-menu>
 
     <div class="section transaction-content">
@@ -26,7 +26,7 @@
 <script>
   import navMenu from 'components/nav';
   import vFooter from 'components/footer';
-  import tranHeadnav from 'components/master/tran-headnav';
+  import BreadCrumbs from 'components/bread-crumbs'
   import transactMenu from 'components/transact-menu';
   import transellList from './components/transell-list';
 
@@ -36,7 +36,12 @@
   export default {
     data() {
       return {
-
+        breadList:[
+          {
+            urlName:'transaction',
+            name:'navbar.tradingHall'
+          },
+        ]
       };
     },
     methods: {
@@ -52,7 +57,7 @@
 
     },
     components: {
-      navMenu, vFooter, tranHeadnav, transactMenu, transellList, userWalletass, recentOrders
+      navMenu, vFooter, BreadCrumbs, transactMenu, transellList, userWalletass, recentOrders
     }
   };
 </script>

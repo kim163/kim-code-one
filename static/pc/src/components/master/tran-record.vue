@@ -1,7 +1,7 @@
 <template>
   <div class="tranrecord-main">
     <nav-menu></nav-menu>
-    <tranred-headnav></tranred-headnav>
+    <BreadCrumbs :bread-list="breadList"></BreadCrumbs>
     <transact-menu></transact-menu>
     <tranred-subnav></tranred-subnav>
 
@@ -12,14 +12,25 @@
 </template>
 <script>
   import navMenu from 'components/nav';
-  import tranredHeadnav from './tranred-headnav';
   import transactMenu from 'components/transact-menu';
   import vFooter from 'components/footer';
   import tranredSubnav from 'components/transact-menu/tranred-subnav';
+  import BreadCrumbs from 'components/bread-crumbs'
 
   export default {
     data() {
-      return {};
+      return {
+        breadList:[
+          {
+            urlName:'transaction',
+            name:'navbar.tradingHall'
+          },
+          {
+            urlName:'tranRecord',
+            name:'transactionHome.orderRecord'
+          },
+        ]
+      };
     },
     props: {},
     methods: {},
@@ -27,7 +38,7 @@
     created() {
     },
     components: {
-      navMenu, tranredHeadnav, transactMenu, vFooter, tranredSubnav
+      navMenu, transactMenu, vFooter, tranredSubnav,BreadCrumbs
     }
   };
 </script>
