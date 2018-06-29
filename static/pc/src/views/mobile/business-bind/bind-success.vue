@@ -5,7 +5,7 @@
       <div class="text">恭喜您，绑定成功！</div>
     </div>
     <div class="btn-list">
-      <router-link class="bind-def-btn" :to="{name: isPc ? '' : 'mBindList'}">查看绑定记录</router-link>
+      <router-link class="bind-def-btn" :to="{name: isPc ? 'pcBindList' : 'mBindList'}">查看绑定记录</router-link>
       <router-link class="bind-def-btn" :to="{name:'mIndex'}" v-if="!isPc">进入交易大厅</router-link>
       <a class="go-business" :href="callBackUrl">返回商户</a>
     </div>
