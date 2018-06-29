@@ -1,16 +1,16 @@
 <template>
   <div>
     <div v-if="!createSuccess">
-      <div class="set-info">
-        <i class="iconfont icon-danger"></i>
+      <div class="set-info" :class="{'ser-info-pc':isPc}">
+        <i class="iconfont icon-danger" v-if="!isPc"></i>
         <div class="text">
           您的账户当前未设置任何安全信息，请务必完善
         </div>
       </div>
-      <div class="user-account">
+      <div class="user-account" :class="{'user-account-pc': isPc}">
         久安账号：{{merchantInfo.prefix}}{{merchantInfo.merchantUserName}}
       </div>
-      <div class="set-account-info">
+      <div class="set-account-info" :class="{'set-account-info-pc':isPc}">
         <div class="set-password">
           <div class="title-tip"><span class="red">*</span>登陆密码：</div>
           <input type="password" class="psd-input" v-model.trim="password" @mouseout="checkPwdReg"
@@ -46,7 +46,7 @@
       </div>
     </div>
     <transition name="success">
-      <create-success v-if="createSuccess"></create-success>
+      <create-success v-if="createSuccess" :is-pc="isPc"></create-success>
     </transition>
   </div>
 </template>
@@ -116,6 +116,10 @@
       merchantInfo: {
         type: Object,
         default: {}
+      },
+      isPc:{
+        type:Boolean,
+        default:false
       }
     },
     methods: {
@@ -327,6 +331,12 @@
       margin-left: r(8);
       margin-right: r(8);
     }
+    &.ser-info-pc{
+      height: auto;
+      padding: 0;
+      border: none;
+      margin-bottom: r(30);
+    }
   }
 
   .user-account {
@@ -340,6 +350,12 @@
     border-bottom: 1px solid #d8d8d8;
     border-top: 1px solid #d8d8d8;
     margin-top: r(10);
+    &.user-account-pc{
+      background-color: #f7f7f7;
+      border: solid 1px #d4d4d4;
+      width: calc(100% - #{r(40)});
+      margin: 0 auto;
+    }
   }
 
   .set-account-info {
@@ -349,6 +365,9 @@
     background: $white;
     margin-top: r(10);
     padding: r(20);
+    &.set-account-info-pc{
+      border: none;
+    }
     .title-tip {
       color: #000000;
       @include f(15px);
@@ -381,6 +400,7 @@
           line-height: r(40);
           background: #f5f5f5;
           color: #868686;
+          cursor: pointer;
           @include f(14px);
           &.active {
             background: #4982FF;

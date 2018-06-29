@@ -1,7 +1,13 @@
 <template>
   <div class="confirm-main" v-if="show">
     <div class="mask-bg" @click="hideDialog"></div>
-    <div class="container">
+    <div class="container" :class="{'container-pc': isPc}">
+      <div class="header" v-if="isPc">
+        <slot name="header-title">温馨提示</slot>
+        <a class="close" @click="hideDialog">
+          <i class="iconfont icon-close"></i>
+        </a>
+      </div>
       <div class="confirm-title">
         <slot name="title"></slot>
       </div>
@@ -9,10 +15,10 @@
         <slot name="content"></slot>
       </div>
       <div class="confirm-footer">
-        <div class="confirm-btn" @click="hideDialog">
+        <div class="confirm-btn" :class="{'confirm-btn-pc': isPc}" @click="hideDialog">
           <slot name="leftBtn">{{$t('postPend.cancel')}}</slot>
         </div>
-        <div class="confirm-btn">
+        <div class="confirm-btn" :class="{'confirm-btn-pc': isPc}">
           <slot name="rightBtn"></slot>
         </div>
       </div>
@@ -39,6 +45,10 @@
         type: Boolean,
         default: false
       },
+      isPc:{
+        type:Boolean,
+        default:false
+      }
     },
     watch: {
       show: {
@@ -79,6 +89,24 @@
       height: 100%;
       background: rgba(0,0,0,0.40);
     }
+    .header{
+      width: 100%;
+      height: r(50);
+      background-color: #5087ff;
+      line-height: r(50);
+      padding: 0 r(20);
+      display: flex;
+      justify-content: space-between;
+      color: #ffffff;
+      @include f(20px);
+      .close{
+        cursor: pointer;
+        .icon-close{
+          @include f(14px);
+          color: #FFFFFF;
+        }
+      }
+    }
     .container{
       width: 72%;
       overflow: hidden;
@@ -90,6 +118,10 @@
       left: 50%;
       margin-top: -25%;
       margin-left: -36%;
+      &.container-pc{
+        width: 500px;
+        margin-left: -250px;
+      }
       .confirm-title,.confirm-content{
         width: 100%;
         text-align: center;
@@ -112,9 +144,11 @@
         height: r(40);
         line-height: r(40);
         text-align: center;
-        /*&:first-child{*/
-          /*border-right: 1px solid #e5e5e5;*/
-        /*}*/
+        cursor: pointer;
+        &.confirm-btn-pc{
+          height: r(60);
+          line-height: r(60);
+        }
       }
     }
   }

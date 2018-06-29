@@ -1,7 +1,7 @@
 <template>
   <div class="transaction-main">
     <nav-menu></nav-menu>
-    <tran-headnav></tran-headnav>
+    <bread-crumbs :bread-list="breadList"></bread-crumbs>
     <transact-menu v-if="islogin"></transact-menu>
     <guide-page v-if="!islogin"></guide-page>
 
@@ -27,7 +27,7 @@
 <script>
   import navMenu from 'components/nav';
   import vFooter from 'components/footer';
-  import tranHeadnav from 'components/master/tran-headnav';
+  import BreadCrumbs from 'components/bread-crumbs'
   import transactMenu from 'components/transact-menu';
   import guidePage from './components/guide-page';
   import tranbuyList from './components/tranbuy-list';
@@ -40,7 +40,12 @@
   export default {
     data() {
       return {
-
+        breadList:[
+          {
+            urlName:'index',
+            name:'navbar.tradingHall'
+          }
+        ]
       };
     },
     methods: {
@@ -56,7 +61,7 @@
       ...mapGetters([ "islogin" ])
     },
     components: {
-      navMenu, vFooter, tranHeadnav, transactMenu, guidePage, tranbuyList, userWalletass, recentOrders
+      navMenu, vFooter, BreadCrumbs, transactMenu, guidePage, tranbuyList, userWalletass, recentOrders
     }
   };
 </script>
