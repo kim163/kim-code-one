@@ -51,7 +51,16 @@
 
     },
     created(){
-
+      if(_.isMobile()){
+        const data = {
+          merchantId: this.$route.query.merchantId, //商户id
+          notifyUrl: this.$route.query.notifyUrl, //商户h5登陆回调地址
+          merchantUserName: this.$route.query.merchantUserName, //商户登陆账户名
+          callBackUrl: this.$route.query.callBackUrl//商户地址
+        }
+        const urlName = this.type ===1 ? 'mUserBind' : 'mQuickCreate'
+        this.$router.replace({name: urlName,query: data})
+      }
     }
   }
 </script>

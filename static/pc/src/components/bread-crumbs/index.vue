@@ -2,11 +2,13 @@
   <div class="section tranhome-nav">
     <div class="container">
       <div class="row">
-        <router-link v-if="breadList.length > 0" v-for="(item,index) in breadList"
-                     :to="{item:urlName}"
-                     :class="{active: index === breadList.length - 1}">
-          {{item.name}}
-        </router-link>
+        <span v-if="breadList.length > 0" v-for="(item,index) in breadList">
+          <router-link :to="{name: item.urlName}" v-if="index < breadList.length - 1">
+          {{$t(item.name)}}
+          </router-link>
+          <a class="active" v-else>{{$t(item.name)}}</a>
+          <span v-if="index < breadList.length - 1"> &gt; </span>
+        </span>
       </div>
     </div>
   </div>
@@ -28,8 +30,8 @@
     },
     props:{
       breadList:{
-        type: Object,
-        default:{}
+        type: Array,
+        default:[]
       },
     }
   };
