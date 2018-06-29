@@ -90,6 +90,7 @@ export default {
     tranAmount: 'Transaction amount',
     msaleUetTips: 'Tip: The quantity you entered is less than the minimum quantity sold',
     order: 'Order',
+    rechargeOrders: 'Recharge orders',
     withdrawOrders: 'Withdraw orders',
     orderNumber: 'UET order number',
     tranNumber: 'Number of transactions',

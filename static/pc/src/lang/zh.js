@@ -90,6 +90,7 @@ export default {
     tranAmount: '交易金额',
     msaleUetTips: '提示：您输入的数量低于最低卖出数量',
     order: '下单',
+    rechargeOrders: '充值订单',
     withdrawOrders: '提现订单',
     orderNumber: 'UET订单编号',
     tranNumber: '交易数量',

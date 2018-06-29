@@ -1,6 +1,6 @@
 <template>
   <div class="recharge-order">
-     <m-header>{{$t('transactionHome.mBuyUet')}}</m-header>
+     <m-header>{{$t('transactionHome.rechargeOrders')}}</m-header>
 
      <div class="recharge-content">
         <div class="recharge-item ordetail-group">
