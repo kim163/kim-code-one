@@ -1,6 +1,6 @@
 <template>
   <div class="recharge-order">
-     <m-header>{{$t('transactionHome.mBuyUet')}}</m-header>
+     <m-header>{{$t('transactionHome.rechargeOrders')}}</m-header>
 
      <div class="recharge-content">
         <div class="recharge-item ordetail-group">
@@ -63,7 +63,7 @@
            console.log(res);
            this.DetailList = res.data;
          }).catch(error => {
-           this.reset(res.message);
+           toast(error.message);
          });
        },
       cancelOrder(){
@@ -74,7 +74,7 @@
           console.log('cancel order: ', res);
           toast(res.message);
         }).catch(error => {
-          this.reset(res.message);
+          toast(error.message);
         });
       },
       payCompleted(){
@@ -86,7 +86,7 @@
            console.log('pay completed: ' , res);
 
         }).catch(error => {
-          this.reset(res.message);
+          toast(error.message);
         });
       }
 
