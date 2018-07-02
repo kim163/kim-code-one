@@ -11,7 +11,9 @@
     data() {
       return {
         balance: '0',
-        assetCode: ''
+        assetCode: '',
+        hasOnBus:false,
+        needUpdate:true,
       }
     },
     computed: {
@@ -37,7 +39,6 @@
           if (res.code == '10000') {
             this.$nextTick(() => {
               this.balance = res.data.key;
-              // this.assetCode=res.data[0].assetCode;
               this.$emit('getBalance', this.balance)
             })
           } else {
@@ -48,38 +49,47 @@
           toast(error.message);
         });
       },
-      onBus(){
-        Vue.$global.bus.$on('update:balance', () => {
-          this.getBalance()
-        })
+      onBus() {
+        if(!this.hasOnBus){
+          Vue.$global.bus.$on('update:balance', () => {
+            this.getBalance()
+          })
+          this.hasOnBus = true
+        }
       },
-      offBus(){
-        Vue.$global.bus.$off('update:balance', () => {
+      offBus() {
+        Vue.$global.bus.$off('update:balance')
+        this.hasOnBus = false
+      },
+      checkLogin() {
+        if (this.islogin) {
           this.getBalance()
-        })
+        }
       }
     },
     created() {
-      if (this.islogin) {
-        this.getBalance()
-      }
-      debugger
-      this.onBus()
-    },
-    mounted() {
 
     },
+    mounted() {
+      if(this.needUpdate){
+        this.checkLogin()
+        this.needUpdate = false
+      }
+      this.onBus()
+    },
     components: {},
-    // activated(){
-    //   debugger
-    //   this.onBus()
-    // },
-    // deactivated(){
-    //   debugger
-    //   this.offBus()
-    // },
+    activated() {
+      this.onBus()
+      if(this.needUpdate){
+        this.checkLogin()
+        this.needUpdate = false
+      }
+    },
+    deactivated() {
+      this.offBus()
+      this.needUpdate = true
+    },
     beforeDestroy() {
-      debugger
       this.offBus()
     }
   };
