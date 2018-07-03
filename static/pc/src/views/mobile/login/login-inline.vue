@@ -109,51 +109,25 @@
             password: this.data.password
           }
         }
+        const api = this.loginItem=='account' ?  show.loginByUserNameAndPwd : show.login
+        api(this.requestda).then(res => {
+          if (res.code == 10000) {
+            this.$emit('input',false);
+            this.$store.commit('SHOW_LOGIN',false);
 
-        if(this.loginItem=='account'){
-          show.loginByUserNameAndPwd(this.requestda).then(res => {
-            if (res.code == 10000) {
-              this.$emit('input',false);
-              this.$store.commit('SHOW_LOGIN',false);
-
-              $localStorage.set('tokenInfo', JSON.stringify(res.data.tokenVo));
-              $localStorage.set('userData', JSON.stringify(aesutil.encrypt(res.data.userId)));
-              this.$store.dispatch('CHECK_ONLINE', true);
-              this.$store.dispatch('UPDATE_TOKEN_INFO', res.data.tokenVo);
-              this.$store.commit('SET_USERDATA',res.data);
-
-              // this.$router.replace({path:"/mh/"});
-             // this.$router.push({name: 'mIndex'});
-
-              //  window.location.href = "/mh/";
-            }else {
-              toast(res.message);
-            }
-            console.log('user login:', res);
-          }).catch(err => {
-            toast(err.message);
-          });
-
-        }else if(this.loginItem=='phone' || this.loginItem=='email') {
-          show.login(this.requestda).then(res => {
-            console.log('login res: ', res);
-            if (res.code == 10000) {
-              this.$emit('input',false);
-              this.$store.commit('SHOW_LOGIN',false);
-
-              $localStorage.set('tokenInfo', JSON.stringify(res.data.tokenVo));
-              $localStorage.set('userData', JSON.stringify(aesutil.encrypt(res.data.userId)))
-              this.$store.dispatch('CHECK_ONLINE', true);
-              this.$store.dispatch('UPDATE_TOKEN_INFO', res.data.tokenVo);
-              this.$store.commit('SET_USERDATA',res.data);
-
-            } else {
-              toast(res.message)
-            }
-          }).catch(error => {
-            this.reset("请求失败");
-          });
-        }
+            $localStorage.set('tokenInfo', JSON.stringify(res.data.tokenVo));
+            $localStorage.set('userData', aesutil.encrypt(JSON.stringify(res.data)));
+            this.$store.dispatch('CHECK_ONLINE', true);
+            this.$store.dispatch('UPDATE_TOKEN_INFO', res.data.tokenVo);
+            this.$store.commit('SET_USERDATA',res.data);
+            _.checkUserBind({userId: res.data.userId})
+          }else {
+            toast(res.message);
+          }
+          console.log('user login:', res);
+        }).catch(err => {
+          toast(err.message);
+        });
       },
       check() {
         if(this.loginItem=='account'){
