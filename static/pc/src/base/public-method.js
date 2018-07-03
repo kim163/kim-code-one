@@ -359,15 +359,8 @@ _.mixin(
       if(!_.isUndefined(needBind) && !_.isNull(needBind)){
         const needData = JSON.parse(aesutil.decrypt(needBind))
         const requestData = Object.assign(needData,data)
-        bindMerchantLoginRelation(requestData).then( res => {
-          if(res.code === 10000){
-            console.log(res)
-            $localStorage.remove('needBind')
-          }else{
-            toast(res.message)
-          }
-        }).catch(err => {
-          toast(err)
+        bindMerchantLoginRelation(requestData).finally(() => {
+          $localStorage.remove('needBind')
         })
       }
     }
