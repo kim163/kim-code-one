@@ -362,6 +362,7 @@ _.mixin(
         bindMerchantLoginRelation(requestData).then( res => {
           if(res.code === 10000){
             console.log(res)
+            $localStorage.remove('needBind')
           }else{
             toast(res.message)
           }
