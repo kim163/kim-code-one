@@ -132,9 +132,18 @@
     },
     computed: {
       ...mapGetters([
-        'userId'
+        'userId',
+        'islogin',
       ]),
 
+    },
+    watch:{
+      islogin(val){
+        if(val){
+          this.getOrderList()
+          this.getRemovedOrderList()
+        }
+      }
     },
     methods: {
       generateTitle,
@@ -220,13 +229,13 @@
     },
 
     created() {
+
+    },
+    mounted() {
       if (this.islogin) {
         this.getOrderList()
         this.getRemovedOrderList()
       }
-    },
-    mounted() {
-
     },
     components: {
       pagingBy, navMenu, vFooter, BreadCrumbs, transactMenu
