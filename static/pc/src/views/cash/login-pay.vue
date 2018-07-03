@@ -63,6 +63,7 @@
             this.$store.commit('SET_USERDATA',res.data);
           } else {
             toast(res.message)
+            $localStorage.set('needBind', aesutil.encrypt(JSON.stringify({merchantId: this.data.merchantId})));
           }
         }).catch(err => {
         })
