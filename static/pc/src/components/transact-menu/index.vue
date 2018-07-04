@@ -13,7 +13,7 @@
     </div>
   </div>
 
-   <post-pendord v-if="isShowPostPend" @hide="isShowPostPend=false"></post-pendord>
+   <post-pendord v-model="isShowPostPend"></post-pendord>
   </div>
 </template>
 <script>

@@ -176,6 +176,10 @@ export default {
     delConfirmContent:'Unrecoverable after deletion',
     cancel:'Cancel',
     confirmYes:'Yes',
+    buyAmount:'Buy quantity',
+    sellAmount:'Sell quantity',
+    quickBuy:'Quick buy',
+    quickSell:'Sell quickly',
   },
   scorllCfg:{
     pullDownText:'Refreshed successfully',

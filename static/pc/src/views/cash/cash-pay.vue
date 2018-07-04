@@ -16,15 +16,20 @@
         </div>
         <div class="error red">{{errorText}}</div>
         <div class="btn-info">
-          <router-link :to="{name: 'mIndex'}" class="go-tran">{{$t('cash.goTran')}}</router-link>
           <div class="pay-btn" :class="{disabled: !amountStatus || !payBtn}" @click="amountStatus && payBtn ? payment() : ''">{{$t('cash.confirmPayment')}}</div>
+          <div class="btn-sec-list">
+            <a class="sec-btn" @click="showQuickBuy = true">{{$t('postPend.quickBuy')}}</a>
+            <router-link :to="{name: 'mIndex'}" class="sec-btn">{{$t('cash.goTran')}}</router-link>
+          </div>
         </div>
       </div>
+      <post-pendord v-model="showQuickBuy" urlName="mTranRecord" title="postPend.quickBuy" :show-tab="false"></post-pendord>
     </div>
 </template>
 
 <script>
   import Balance from 'components/balance'
+  import PostPendord from 'components/trancomp/post-pendord'
   export default {
     name: "pc-cash-pay",
     data(){
@@ -35,10 +40,12 @@
         errorShow:false,
         errorText:'',
         coinAmount:0,
+        showQuickBuy:false,
       }
     },
     components:{
-      Balance
+      Balance,
+      PostPendord
     },
     watch:{
       coinAmount(){
@@ -111,7 +118,7 @@
     .pay-password{
       padding: 62px 20px 0px;
       font-size: 15px;
-      .input-info,.btn-info{
+      .input-info{
         width: 100%;
         display: flex;
         justify-content: space-around;
@@ -125,14 +132,16 @@
         padding-left: 10px;
       }
       .btn-info{
-        margin-top: 60px;
+        margin-top: 30px;
+        width: 344px;
+        margin-left: 102px;
       }
-      .pay-btn,.go-tran{
-        width: 40%;
-        height: 50px;
+      .pay-btn,.sec-btn{
+        width: 100%;
+        height: 40px;
         background: #4982FF;
         text-align: center;
-        line-height: 50px;
+        line-height: 40px;
         color: #ffffff;
         font-size: 18px;
         cursor: pointer;
@@ -141,15 +150,14 @@
           color: #787876;
         }
       }
-      .go-tran{
-        display: block;
-        background: #86A5F8;
+      .btn-sec-list{
+        display: flex;
+        justify-content: space-between;
       }
-      .go-app-pay{
-        font-size: 14px;
-        color: #333333;
-        margin-top: 30px;
-        cursor: pointer;
+      .sec-btn{
+        width: 45%;
+        background: #86A5F8;
+        margin-top: 15px;
       }
     }
     .error{
