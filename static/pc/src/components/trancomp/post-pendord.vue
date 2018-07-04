@@ -254,11 +254,13 @@
     float: left;
     height: 45px;
     line-height: 45px;
+    width: 25%;
+    text-align: right;
   }
 
   .i-uet {
-    position: absolute;
-    left: 350px;
+    /*position: absolute;*/
+    /*left: 350px;*/
     color: #777;
   }
 </style>
