@@ -49,11 +49,21 @@
             <div class="form-input-box">
               <span class="left">{{postItem == 'buyer' ? $t('postPend.buyerRequest') : $t('postPend.sellerRequest')}}：</span>
               <span class="ps-input fl">
-              <input type="text" class="ps-input-in"
-                     :placeholder="postItem == 'buyer' ? $t('postPend.minBuy') : $t('postPend.minSell')"
-                     v-model="minAmount">
-              <span class="i-uet">UET</span>
-            </span>
+                <input type="text" class="ps-input-in"
+                       :placeholder="postItem == 'buyer' ? $t('postPend.minBuy') : $t('postPend.minSell')"
+                       v-model="minAmount">
+                <span class="i-uet">UET</span>
+              </span>
+            </div>
+            <div class="form-input-box" v-if="postItem == 'seller'">
+              <span class="left">付款说明：</span>
+              <span class="fl">
+                <select class="ps-input" v-model="proofType">
+                  <option value="">请选择付款说明</option>
+                  <option value="1">要求提供付款说明</option>
+                  <option value="0">不要求提供付款说明</option>
+                </select>
+              </span>
             </div>
             <div class="btn-groups">
               <span class="btn" @click="hide">取消</span>
@@ -90,10 +100,11 @@
         accountCashVo: {},
         buyTypeBuyBank: '',
         minAmount: '',
+        proofType: '',
       }
     },
-    watch:{
-      postItem(){
+    watch: {
+      postItem() {
         this.buyAmount = '';
         this.payType = '';
         this.minAmount = '';
@@ -160,6 +171,10 @@
           toast('最低买入数量输入不正确');
           return;
         }
+        if (this.postItem === 'seller' && (this.proofType == '' || !this.proofType)) {
+          toast('付款说明不能为空');
+          return;
+        }
         if (this.payType.type == '1') {
           this.buyTypeBuyBank = '支付宝'
         } else if (this.payType.type == '2') {
@@ -188,6 +203,12 @@
             "amount": this.buyAmount / 100
           },
         }
+        if (this.postItem === 'seller') {
+          Object.assign(this.requestda.orderOptionVo,{
+            proofType: this.proofType
+          })
+        }
+        console.log('requestda',this.requestda)
         const api = this.postItem === 'buyer' ? transaction.publishToBuy : transaction.publishToSell
         api(this.requestda).then((res) => {
           console.log(res)
@@ -196,7 +217,7 @@
             this.payType = '';
             this.minAmount = '';
             toast('您已下单成功，请进入列表查询');
-            this.$emit('hide', false)
+            this.hide()
             if (this.urlName != '') {
               this.$router.push({name: this.urlName});
             }
@@ -223,12 +244,14 @@
   };
 </script>
 <style lang="scss" scoped>
-  .stab-box{
+  .stab-box {
     margin-bottom: 0 !important;
   }
-  .form-input-content{
+
+  .form-input-content {
     padding-top: 20px;
   }
+
   .form-input-box {
     height: 45px;
     line-height: 45px;
