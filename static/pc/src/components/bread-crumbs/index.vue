@@ -1,9 +1,14 @@
 <template>
-  <div class="section tranred-headnav">
+  <div class="section tranhome-nav">
     <div class="container">
       <div class="row">
-        <a href="/transaction" >{{$t('navbar.tradingHall')}}</a> &gt;
-        <a href="/tranRecord" class="active">{{$t('transactionHome.orderRecord')}}</a>
+        <span v-if="breadList.length > 0" v-for="(item,index) in breadList">
+          <router-link :to="{name: item.urlName}" v-if="index < breadList.length - 1">
+          {{$t(item.name)}}
+          </router-link>
+          <a class="active" v-else>{{$t(item.name)}}</a>
+          <span v-if="index < breadList.length - 1"> &gt; </span>
+        </span>
       </div>
     </div>
   </div>
@@ -22,11 +27,17 @@
     activated() {
     },
     components: {
+    },
+    props:{
+      breadList:{
+        type: Array,
+        default:[]
+      },
     }
   };
 </script>
 <style lang="scss">
-.tranred-headnav{
+.tranhome-nav{
   height: 56px;
   line-height: 56px;
   min-height: auto;

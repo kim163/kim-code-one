@@ -15,7 +15,6 @@
     >
       <div class="mobile-trandatas mtransell-list">
         <div class="tranlist-container">
-
           <div class="tranlist-item" v-for="(item,i) in dataList.data||[]">
             <router-link v-if="item.userId !== userData.userId" :to="{name:'transellForm',params:{ id: item.id}}" :key="i">
                 <transell-detail :item="item" :key="item.id"></transell-detail>
@@ -24,7 +23,6 @@
                 <transell-detail :item="item" :key="item.id"></transell-detail>
             </div>
           </div>
-
         </div>
       </div>
     </scroll>

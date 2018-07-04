@@ -1,7 +1,6 @@
 <template>
   <div class="transell-main transell-main-box">
     <nav-menu></nav-menu>
-    <!--<tran-headnav></tran-headnav>-->
 
     <!--<router-link v-for="(item,i) in transactMenuData" class="item-info" :to="item.to" :key="i">-->
       <!--{{generateTitle(item.name)}}-->
@@ -239,7 +238,6 @@
 <script>
   import navMenu from 'components/nav';
   import vFooter from 'components/footer';
-  import tranHeadnav from 'components/master/tran-headnav';
   import { generateTitle } from '@/util/i18n'
   import { transaction } from 'api'
   import {mapGetters,mapActions,mapMutations} from 'vuex'
@@ -337,7 +335,7 @@
       ...mapGetters(["userData","islogin"]),
     },
     components: {
-      navMenu, vFooter, tranHeadnav ,NoDataTip
+      navMenu, vFooter, NoDataTip
     },
     filters: {
       formatDateMs(time) {

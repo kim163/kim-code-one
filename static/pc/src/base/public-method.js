@@ -1,7 +1,11 @@
 import aesutil from '@/util/aesutil';
 import Stomp from 'webstomp-client'
+import {$localStorage} from '@/util/storage'
 
-import {getSharedConfigList} from 'api/cashier'
+import {
+  getSharedConfigList,
+  bindMerchantLoginRelation
+} from 'api/cashier'
 
 var browser={
   versions:function(){
@@ -349,6 +353,16 @@ _.mixin(
       Vue.$global.bus.$on('merchantOrderidUnsubscribe',() => {
         subscription.unsubscribe()
       })
+    },
+    checkUserBind(data){ //校验已绑定用户是否需要更换授权token
+      const needBind = $localStorage.get('needBind')
+      if(!_.isUndefined(needBind) && !_.isNull(needBind)){
+        const needData = JSON.parse(aesutil.decrypt(needBind))
+        const requestData = Object.assign(needData,data)
+        bindMerchantLoginRelation(requestData).finally(() => {
+          $localStorage.remove('needBind')
+        })
+      }
     }
   }
 )

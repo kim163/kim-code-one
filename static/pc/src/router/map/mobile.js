@@ -6,7 +6,7 @@ export default [
   {
     path: "/m/login",
     name: "mobileLogin",
-    component(resolve){
+    component(resolve) {
       return resolve(require('views/mobile/login'))
     },
     meta: {
@@ -16,7 +16,7 @@ export default [
   {
     path: "/m/register",
     name: "mobileRegister",
-    component(resolve){
+    component(resolve) {
       return resolve(require('views/mobile/register'))
     },
     meta: {
@@ -26,12 +26,12 @@ export default [
   {
     path: "/mh/index",
     name: "mAindex",
-    redirect:"/mh/",
+    redirect: "/mh/",
   },
   {
     path: "/mh/",
     name: 'mIndex',
-    component(resolve){
+    component(resolve) {
       return resolve(require('views/mobile/index'))
     },
     meta: {
@@ -41,11 +41,11 @@ export default [
   {
     path: "/m/tranbuyFm/:id?",
     name: 'tranbuyForm',
-    component(resolve){
+    component(resolve) {
       // 购买UET
       return resolve(require('views/mobile/index/components/tranbuy-list/tranbuy-form'))
     },
-    meta:{
+    meta: {
       noCache: true,
       isMobilePage: "mobile-body"
     }
@@ -53,11 +53,11 @@ export default [
   {
     path: "/m/rechargeOrder/:id?",
     name: 'rechargeOrder',
-    component(resolve){
+    component(resolve) {
       // UET充值
       return resolve(require('views/mobile/index/components/tranbuy-list/recharge-order'))
     },
-    meta:{
+    meta: {
       noCache: true,
       isMobilePage: "mobile-body"
     }
@@ -65,11 +65,11 @@ export default [
   {
     path: "/m/rechWechatOrder/:id?",
     name: 'rechWechatOrder',
-    component(resolve){
+    component(resolve) {
       // UET微信充值
       return resolve(require('views/mobile/index/components/tranbuy-list/rechwechat-order'))
     },
-    meta:{
+    meta: {
       noCache: true,
       isMobilePage: "mobile-body"
     }
@@ -77,11 +77,11 @@ export default [
   {
     path: "/m/transellFm/:id?",
     name: 'transellForm',
-    component(resolve){
+    component(resolve) {
       // 出售UET
       return resolve(require('views/mobile/index/components/transell-list/transell-form'))
     },
-    meta:{
+    meta: {
       noCache: true,
       isMobilePage: "mobile-body"
     }
@@ -89,11 +89,11 @@ export default [
   {
     path: "/m/withdrawOrder/:id?",
     name: 'withdrawOrder',
-    component(resolve){
+    component(resolve) {
       // 提现订单
       return resolve(require('views/mobile/index/components/transell-list/withdraw-orders'))
     },
-    meta:{
+    meta: {
       noCache: true,
       isMobilePage: "mobile-body"
     }
@@ -101,11 +101,11 @@ export default [
   {
     path: "/m/cash",
     name: 'mCashDesk',
-    component(resolve){
+    component(resolve) {
       // 收银台
       return resolve(require('views/mobile/cashDesk/cash'))
     },
-    meta:{
+    meta: {
       noCache: true,
       isMobilePage: "mobile-body"
     }
@@ -113,23 +113,24 @@ export default [
   {
     path: "/m/tranRecord",
     name: 'mTranRecord',
-    component(resolve){
+    component(resolve) {
       // 手机交易记录
       return resolve(require('views/mobile/transaction-record'))
     },
-    meta:{
-      isMobilePage: "mobile-bodyFtPd"
+    meta: {
+      isMobilePage: "mobile-bodyFtPd",
     }
   },
- {
+  {
     path: "/m/pendingBuy",
     name: 'mPendingBuy',
-    component(resolve){
+    component(resolve) {
       // 手机交易记录
       return resolve(require('views/mobile/pending-orders'))
     },
-    meta:{
-       isMobilePage: "mobile-bodyFtPd"
+    meta: {
+      isMobilePage: "mobile-bodyFtPd",
+      noCache: true
     }
   },
   {
@@ -139,91 +140,92 @@ export default [
       //我的挂单
       return resolve(require('views/mobile/my-pending-orders'))
     },
-    meta:{
+    meta: {
       isMobilePage: "mobile-body",
-      noCache:true
+      noCache: true
     }
   },
- {
+  {
     path: "/m/pendingSell",
     name: 'mPendingSell',
-    component(resolve){
+    component(resolve) {
       // 挂单-卖出
       return resolve(require('views/mobile/pending-orders/pending-sell'))
     },
-    meta:{
-       isMobilePage: "mobile-bodyFtPd"
+    meta: {
+      isMobilePage: "mobile-bodyFtPd",
+      noCache: true
     }
   },
- {
+  {
     path: "/m/order/:id",
     name: 'mOrder',
-    component(resolve){
+    component(resolve) {
       // 交易中-订单详情
       return resolve(require('views/mobile/details/order-progress'))
     },
-    meta:{
-       isMobilePage: "mobile-body",
-       noCache:true
+    meta: {
+      isMobilePage: "mobile-body",
+      noCache: true
     }
   },
- {
+  {
     path: "/m/orderOver/:id",
     name: 'mOrderOver',
-    component(resolve){
+    component(resolve) {
       // 已完成-订单详情
       return resolve(require('views/mobile/details/order-compeleted'))
     },
-    meta:{
-       isMobilePage: "mobile-body",
-       noCache:true
+    meta: {
+      isMobilePage: "mobile-body",
+      noCache: true
     }
   },
- {
+  {
     path: "/m/orderAppeal/:id",
     name: 'mOrderAppeal',
-    component(resolve){
+    component(resolve) {
       // 申诉订单-订单详情
       return resolve(require('views/mobile/details/order-appeal'))
     },
-    meta:{
-       isMobilePage: "mobile-body",
-       noCache:true
+    meta: {
+      isMobilePage: "mobile-body",
+      noCache: true
     }
   },
   {
     path: "/m/userBind",
     name: 'mUserBind',
-    component(resolve){
+    component(resolve) {
       // 商户绑定
       return resolve(require('views/mobile/business-bind'))
     },
-    meta:{
+    meta: {
       isMobilePage: "mobile-body"
     },
   },
   {
     path: "/m/userBind/list",
     name: 'mBindList',
-    component(resolve){
+    component(resolve) {
       // 商户绑定--绑定列表
       return resolve(require('views/mobile/business-bind/bind-list'))
     },
-    meta:{
+    meta: {
       isMobilePage: "mobile-body",
-      noCache:true
+      noCache: true
     },
   },
   {
     path: "/m/quickCreate",
     name: 'mQuickCreate',
-    component(resolve){
+    component(resolve) {
       // 商户绑定--绑定列表
       return resolve(require('views/mobile/quick-create'))
     },
-    meta:{
+    meta: {
       isMobilePage: "mobile-body",
-      noCache:true
+      noCache: true
     },
   },
   {

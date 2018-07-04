@@ -1,12 +1,12 @@
 <template>
   <div>
-    <div class="success-tip">
+    <div class="success-tip" :class="{'success-tip-pc':isPc}">
       <i class="iconfont icon-success"></i>
       <div class="text">恭喜您，绑定成功！</div>
     </div>
     <div class="btn-list">
-      <router-link class="bind-def-btn" :to="{name:'mBindList'}">查看绑定记录</router-link>
-      <router-link class="bind-def-btn" :to="{name:'mIndex'}">进入交易大厅</router-link>
+      <router-link class="bind-def-btn" :to="{name: isPc ? 'pcBindList' : 'mBindList'}">查看绑定记录</router-link>
+      <router-link class="bind-def-btn" :to="{name:'mIndex'}" v-if="!isPc">进入交易大厅</router-link>
       <a class="go-business" :href="callBackUrl">返回商户</a>
     </div>
   </div>
@@ -24,6 +24,10 @@
       callBackUrl:{
         type:String,
         default:''
+      },
+      isPc:{
+        type:Boolean,
+        default:false
       }
     }
   }
@@ -39,6 +43,10 @@
     border-bottom: 1px solid #d8d8d8;
     text-align: center;
     padding-top: r(60);
+    &.success-tip-pc{
+      padding: 0;
+      height: r(200);
+    }
     .iconfont{
      @include f(100px);
       color: #0ABB07;

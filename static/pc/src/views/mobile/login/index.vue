@@ -51,6 +51,7 @@
         </div>
       </div>
 
+
   </div>
 </template>
 <script>
@@ -86,6 +87,13 @@
         requestda: {}
       }
     },
+    mounted(){
+
+      this.$nextTick(()=>{
+        var jiangnan = document.getElementById('demoImg')
+        console.log(jiangnan)
+      })
+    },
     props: {
       value: Boolean
     },
@@ -117,51 +125,27 @@
            password: this.data.password
          }
        }
+        const api = this.loginItem=='account' ?  show.loginByUserNameAndPwd : show.login
+        api(this.requestda).then(res => {
+          if (res.code == 10000) {
+            this.$emit('input',false);
+            this.SHOW_LOGIN(false);
 
-        if(this.loginItem=='account'){
-          show.loginByUserNameAndPwd(this.requestda).then(res => {
-            if (res.code == 10000) {
-              this.$emit('input',false);
-              this.SHOW_LOGIN(false);
-
-              $localStorage.set('tokenInfo', JSON.stringify(res.data.tokenVo));
-              $localStorage.set('userData', JSON.stringify(aesutil.encrypt(res.data.userId)));
-              this.$store.dispatch('CHECK_ONLINE', true);
-              this.$store.dispatch('UPDATE_TOKEN_INFO', res.data.tokenVo);
-              this.$store.dispatch('INIT_INFO');
-              this.$store.commit('SET_USERDATA',res.data);
-
-              this.$router.replace({name: 'mIndex'});
-            }else {
-              toast(res.message);
-            }
-            console.log('user login:', res);
-          }).catch(err => {
-            toast(err.message);
-          });
-
-        }else if(this.loginItem=='phone' || this.loginItem=='email') {
-          show.login(this.requestda).then(res => {
-            console.log('login res: ', res);
-            if (res.code == 10000) {
-              this.$emit('input',false);
-              this.SHOW_LOGIN(false);
-
-              $localStorage.set('tokenInfo', JSON.stringify(res.data.tokenVo));
-              $localStorage.set('userData', JSON.stringify(aesutil.encrypt(res.data.userId)));
-              this.$store.dispatch('CHECK_ONLINE', true);
-              this.$store.dispatch('UPDATE_TOKEN_INFO', res.data.tokenVo);
-              this.$store.dispatch('INIT_INFO');
-              this.$store.commit('SET_USERDATA',res.data);
-
-              this.$router.replace({name: 'mIndex'});
-            } else {
-              toast(res.message)
-            }
-          }).catch(error => {
-            toast(error.message);
-          });
-        }
+            $localStorage.set('tokenInfo', JSON.stringify(res.data.tokenVo));
+            $localStorage.set('userData', aesutil.encrypt(JSON.stringify(res.data)));
+            this.$store.dispatch('CHECK_ONLINE', true);
+            this.$store.dispatch('UPDATE_TOKEN_INFO', res.data.tokenVo);
+            this.$store.dispatch('INIT_INFO');
+            this.$store.commit('SET_USERDATA',res.data);
+            _.checkUserBind({userId: res.data.userId})
+            this.$router.replace({name: 'mIndex'});
+          }else {
+            toast(res.message);
+          }
+          console.log('user login:', res);
+        }).catch(err => {
+          toast(err);
+        })
       },
       check() {
         if(this.loginItem=='account'){

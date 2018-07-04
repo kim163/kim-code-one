@@ -1,13 +1,13 @@
 <template>
   <div>
     <div class="create-container">
-      <div class="create-info">
-        <i class="iconfont icon-register"></i>
+      <div class="create-info" :class="{'create-info-pc': isPc}">
+        <i class="iconfont icon-register" v-if="!isPc"></i>
         <div class="text">
           您即将用<img :src="merchantInfo.logo" class="business-logo"/>账号创建久安钱包账号
         </div>
       </div>
-      <div class="user-account">
+      <div class="user-account" :class="{'user-account-pc': isPc}">
         您的{{merchantInfo.short}}账号：{{merchantInfo.merchantUserName}}
       </div>
       <div class="create-content">
@@ -18,6 +18,7 @@
           <div class="bind-def-btn" @click="create()">立即创建</div>
         </div>
         <div class="tip-info">
+          <p><strong>温馨提示</strong></p>
           <p>1，久安钱包不会获取您{{merchantInfo.name}}上除账号以外的任何信息。</p>
           <p>2，创建后，您可以使用{{merchantInfo.short}}前缀（{{merchantInfo.prefix}}）+该{{merchantInfo.short}}账号登陆久安钱包。</p>
           <p>3，创建后，您的{{merchantInfo.short}}账号将默认绑定久安钱包</p>
@@ -31,11 +32,6 @@
   import {
     checkExistUser
   } from 'api/cashier'
-  // import aesutil from '@/util/aesutil';
-  // import {$localStorage} from '@/util/storage'
-  // import {
-  //   login
-  // } from 'api/show'
 
   export default {
     name: "create-user-info",
@@ -48,6 +44,10 @@
       merchantInfo:{
         type:Object,
         default:{}
+      },
+      isPc:{
+        type:Boolean,
+        default:false
       }
     },
     methods:{
@@ -70,25 +70,6 @@
           toast(err)
         })
       },
-      // toLogin(token){  //创建成功之后 自动调用登录接口
-      //   const request = {
-      //     type:11,
-      //     token,
-      //     merchantId: this.merchantInfo.merchantId.toString()
-      //   }
-      //   console.log(request)
-      //   login(request).then(res => {
-      //     if(res.code === 10000){
-      //       $localStorage.set('tokenInfo', JSON.stringify(res.data.tokenVo));
-      //       $localStorage.set('userData', JSON.stringify(aesutil.encrypt(res.data.userId)))
-      //       this.$store.dispatch('UPDATE_USERDATA');
-      //     }else{
-      //       toast(res.message)
-      //     }
-      //   }).catch(err => {
-      //     toast(err)
-      //   })
-      // },
     }
   }
 </script>
@@ -116,6 +97,12 @@
       margin-left: r(8);
       margin-right: r(8);
     }
+    &.create-info-pc{
+      border: none;
+      margin-bottom: r(50);
+      padding-top: 0;
+      height: auto;
+    }
   }
   .user-account{
     width: 100%;
@@ -128,6 +115,12 @@
     border-bottom: 1px solid #d8d8d8;
     border-top: 1px solid #d8d8d8;
     margin-top: r(10);
+    &.user-account-pc{
+      background-color: #f7f7f7;
+      border: solid 1px #d4d4d4;
+      width: calc(100% - #{r(20)});
+      margin: 0 auto;
+    }
   }
   .create-content{
     padding: r(10);

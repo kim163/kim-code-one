@@ -231,7 +231,6 @@
 <script>
   import navMenu from 'components/nav';
   import vFooter from 'components/footer';
-  import tranHeadnav from 'components/master/tran-headnav';
   import { generateTitle } from '@/util/i18n'
   import { transaction } from 'api'
   import {mapGetters,mapActions,mapMutations} from 'vuex'
@@ -289,7 +288,7 @@
       ...mapGetters(["userData","islogin"]),
     },
     components: {
-      navMenu, vFooter, tranHeadnav
+      navMenu, vFooter
     },
     filters: {
       formatDateMs(time) {
