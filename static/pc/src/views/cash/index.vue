@@ -452,7 +452,7 @@
   .content02 {
     background: #fff;
     padding: 25px 0;
-    overflow: hidden;
+    /*overflow: hidden;*/
     text-align: center;
     margin: 0 auto 50px;
     box-shadow: 0 5px 5px 5px #efefef;
