@@ -92,6 +92,13 @@
         minAmount: '',
       }
     },
+    watch:{
+      postItem(){
+        this.buyAmount = '';
+        this.payType = '';
+        this.minAmount = '';
+      }
+    },
     model: {
       prop: 'show',
       event: 'change'
