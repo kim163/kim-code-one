@@ -371,6 +371,9 @@
           this.unSubscribe()
         })
       }
+    },
+    beforeDestroy(){
+      Vue.$global.bus.$off('update:paySuccess')
     }
   };
 

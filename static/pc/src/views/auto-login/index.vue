@@ -24,13 +24,14 @@
       login(request).then(res => {
         if(res.code === 10000){
           $localStorage.set('tokenInfo', JSON.stringify(res.data.tokenVo));
-          $localStorage.set('userData', JSON.stringify(aesutil.encrypt(res.data.userId)));
+          $localStorage.set('userData', aesutil.encrypt(JSON.stringify(res.data)));
           this.$store.dispatch('CHECK_ONLINE', true);
           this.$store.dispatch('UPDATE_TOKEN_INFO', res.data.tokenVo);
           this.$store.commit('SET_USERDATA',res.data);
           this.$router.replace({name:'mIndex'})
         }else{
           toast(res.message)
+          $localStorage.set('needBind', aesutil.encrypt(JSON.stringify({merchantId: this.$route.query.merchantId})));
           this.$store.dispatch('LOGIN_OUT')
           this.$router.replace({name:'mobileLogin'})
         }
