@@ -11,6 +11,7 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
+
   import {mapGetters} from 'vuex'
   import Stomp from 'webstomp-client'
   import { aesutil } from '@/util';
