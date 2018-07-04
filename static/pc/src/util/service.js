@@ -11,6 +11,8 @@ const filterRouterName = [  //过滤路由 无需跳转到登录页
   'mobileRegister',
   'mCashDesk',
   'pcCashDesk',
+  'pcUserBind',
+  'pcQuickCreate',
 ]
 // var promiseArr = {}
 // let cancel

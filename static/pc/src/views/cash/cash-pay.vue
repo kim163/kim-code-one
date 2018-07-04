@@ -33,19 +33,22 @@
         payPassword:'',
         userBalance:0,
         errorShow:false,
-        errorText:''
+        errorText:'',
+        coinAmount:0,
       }
     },
     components:{
       Balance
     },
     watch:{
-      payInfo(){
-        if(Number(this.payInfo.coinAmount) <= Number(this.userBalance)){
-          this.amountStatus = true
-        }else{
-          this.amountStatus = false
-        }
+      coinAmount(){
+        this.checkAmountStatus()
+      },
+      userBalance(){
+        this.checkAmountStatus()
+      },
+      "payInfo.coinAmount":function(newVal){
+        this.coinAmount = newVal
       }
     },
     props:{
@@ -69,11 +72,18 @@
       },
       getUserBalance(data){
         this.userBalance = data
-        if(Number(this.payInfo.coinAmount) <= Number(this.userBalance)){
+      },
+      checkAmountStatus(){
+        if(Number(this.coinAmount) > Number(this.userBalance)){
+          this.amountStatus = false
+        }else{
           this.amountStatus = true
         }
       }
-    }
+    },
+    mounted(){
+      this.coinAmount = this.payInfo.coinAmount
+    },
   }
 </script>
 

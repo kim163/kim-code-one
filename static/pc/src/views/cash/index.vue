@@ -205,9 +205,11 @@
               }
             }
           } else {
+            this.endTime = 0
             toast(res.message)
           }
         }).catch(err => {
+          this.endTime = 0
           toast(err)
         })
       },
@@ -307,7 +309,7 @@
         this.init()
         Vue.$global.bus.$on('cash:payPassword',(pwd) => {
           this.pay(pwd)
-        });
+        })
         Vue.$global.bus.$on('update:paying',() => {
           this.qrCodeStatus = 1
         })
@@ -317,6 +319,11 @@
           this.unSubscribe()
         })
       }
+    },
+    beforeDestroy(){
+      Vue.$global.bus.$off('cash:payPassword')
+      Vue.$global.bus.$off('update:paying')
+      Vue.$global.bus.$off('update:paySuccess')
     }
   }
 </script>

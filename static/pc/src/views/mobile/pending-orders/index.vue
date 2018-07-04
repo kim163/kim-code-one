@@ -50,8 +50,8 @@
           <p class="c-gray">{{$t('postPend.unit')}} 0.01 CNY <a class="c-blue" @click="allSell()">{{$t('postPend.allsell')}}</a></p>
         </div>
         <div class="input-box">
-          <div class="input-div"><input class="my-input" placeholder="挂单卖出数量" v-model="buyAmount"> UET</div>
-          <div  class="input-div"><input class="my-input" :value="buyAmountCny" placeholder="=总数量"> CNY</div>
+          <div class="input-div"><input class="my-input" placeholder="挂单卖出数量" v-model="sellAmount"> UET</div>
+          <div  class="input-div"><input class="my-input" :value="sellAmountCny" placeholder="=总数量"> CNY</div>
           <div  class="input-div">
             <select class="my-input" v-model="buyTypeSell">
               <option value="">{{$t('postPend.selectPay')}}</option>
@@ -63,8 +63,15 @@
             </select>
           </div>
           <div >
-            <p class="s-title">买家要求</p>
-            <div  class="input-div"><input class="my-input" v-model="minSellAmount" placeholder="卖家的最低买入数量"> UET</div>
+            <p class="s-title">{{$t('postPend.sellerRequest')}}</p>
+            <div  class="input-div"><input class="my-input" v-model="minSellAmount" :placeholder="$t('postPend.minBuy')"> UET</div>
+            <div  class="input-div">
+              <select class="my-input" v-model="proofType">
+                 <option value="">请选择付款说明</option>
+                 <option value="1">要求提供付款说明</option>
+                 <option value="0">不要求提供付款说明</option>
+              </select>
+            </div>
           </div>
         </div>
         <div class="line-box"></div>
@@ -81,8 +88,7 @@
 </template>
 
 <script>
-  import { show } from 'api'
-  import { transaction } from 'api'
+  import { show,transaction } from 'api'
 
   import MobileNavBar from 'components/m-navbar'
   import mHeadnav from 'components/m-headnav'
@@ -109,11 +115,15 @@
         bankList: {
           data: []
         },
+        requestdata:{},
+        requestda:{},
         buyAmount:'',
+        sellAmount:'',
         buyTypeBuy:'',
         buyTypeSell:'',
         minBuyAmount:'',
         minSellAmount:'',
+        proofType:'',
         accountCashVo:{},
         buyTypeBuyBank:'',
         userBalance:'',
@@ -124,8 +134,11 @@
         'userId',
         'userData'
       ]),
-      buyAmountCny:function(){
+      buyAmountCny(){
         return (Number(this.buyAmount) *0.01).toFixed(2);
+      },
+      sellAmountCny(){
+        return (Number(this.sellAmount) *0.01).toFixed(2);
       }
     },
     methods: {
@@ -151,7 +164,7 @@
           return;
         }
         if(this.minBuyAmount =='' || !this.minBuyAmount || this.minBuyAmount < 0){
-          toast('最低卖出数量输入不正确');
+          toast('卖家最低卖出数量输入不正确');
           return;
         }
         if(this.buyTypeBuy.type =='1'){
@@ -164,7 +177,7 @@
         this.requestda={
           userId: this.userData.userId,
           orderOptionVo:{
-            minUnit:this.minBuyAmount,//等于发布的数量
+            minUnit:this.minBuyAmount,
             contractType:1,
             mode:1
           },
@@ -195,12 +208,12 @@
             toast(res.message)
           }
         }).catch(err => {
+          toast(err.message);
         })
-
 
       },
       publishSell(){
-        if(this.buyAmount =='' || !this.buyAmount){
+        if(this.sellAmount =='' || !this.sellAmount){
           toast('数量不能为空');
           return;
         }
@@ -209,9 +222,14 @@
           return;
         }
         if(this.minSellAmount =='' || !this.minSellAmount || this.minSellAmount < 0){
-          toast('最低买入数量输入不正确');
+          toast('买家最低买入数量输入不正确');
           return;
         }
+        if(this.proofType =='' || !this.proofType){
+          toast('付款说明不能为空');
+          return;
+        }
+
         if(this.buyTypeSell.type =='1'){
           this.buyTypeBuyBank='支付宝'
         }else if(this.buyTypeSell.type =='2'){
@@ -222,37 +240,40 @@
         this.requestda={
           userId: this.userData.userId,
           orderOptionVo:{
-            minUnit:this.minSellAmount,//等于发布的数量
+            minUnit:this.minSellAmount,
             contractType:1,
-            mode:1
+            mode:1,
+            proofType: this.proofType
           },
           accountChainVo:{
             name:this.userData.nickname,
             address:this.userData.accountChainVos[0].address,
             assetCode:'UET', //资产编码 默认 UET,登录后资产的编码
-            amount:this.buyAmount //uet的数量
+            amount:this.sellAmount //uet的数量
           },
           accountCashVo:{
             "account" : this.buyTypeSell.account,
             "bank" : this.buyTypeBuyBank, //机构名称
             "name" : this.buyTypeSell.name,
             "type" : this.buyTypeSell.type,
-            "amount" : this.buyAmount /100
+            "amount" : this.sellAmount /100
           }
         }
         transaction.publishToSell(this.requestda).then((res) => {
           console.log(res)
           if(res.code == '10000'){
             toast('您已下单成功，请进入列表查询');
-            this.buyAmount='';
+            this.sellAmount='';
             this.buyTypeSell='';
             this.minSellAmount = '';
-            Vue.$global.bus.$emit('update:balance')
+            this.proofType='';
+            Vue.$global.bus.$emit('update:balance');
             this.$router.push({name: 'mTranRecord'});
           }else{
             toast(res.message)
           }
         }).catch(err => {
+          toast(err.message);
         })
 
       },
@@ -263,7 +284,7 @@
         this.userBalance = data
       },
       allSell(){
-        this.buyAmount = this.userBalance
+        this.sellAmount = this.userBalance
       }
     },
     created() {

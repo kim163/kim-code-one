@@ -2,7 +2,7 @@
   <div>
     <div class="top-header"></div>
     <nav-menu></nav-menu>
-    <tran-headnav></tran-headnav>
+    <bread-crumbs :bread-list="breadList"></bread-crumbs>
     <transact-menu></transact-menu>
     <div class="section pengding-orders">
       <div class="container">
@@ -87,7 +87,7 @@
 <script>
   import navMenu from 'components/nav';
   import vFooter from 'components/footer';
-  import tranHeadnav from 'components/master/tran-headnav';
+  import BreadCrumbs from 'components/bread-crumbs'
   import transactMenu from 'components/transact-menu';
 
   import {transaction} from 'api'
@@ -122,6 +122,12 @@
         pendingItem: 'tranPendingOrder',
         completePercent: '',
         completePercentRomove: '',
+        breadList:[
+          {
+            urlName:'transaction',
+            name:'navbar.tradingHall'
+          },
+        ]
       }
     },
     computed: {
@@ -223,7 +229,7 @@
 
     },
     components: {
-      pagingBy, navMenu, vFooter, tranHeadnav, transactMenu
+      pagingBy, navMenu, vFooter, BreadCrumbs, transactMenu
     }
   };
 </script>

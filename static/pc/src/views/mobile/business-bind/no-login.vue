@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div class="top-tip">
-      <div class="icon">
+    <div class="top-tip" :class="{'top-tip-pc': isPc}">
+      <div class="icon" v-if="!isPc">
         <i class="iconfont icon-avatar"></i>
       </div>
       <div class="text">{{$t('bindUser.noLoginTip')}}</div>
@@ -18,6 +18,12 @@
     name: "no-login",
     components:{
       Login
+    },
+    props:{
+      isPc:{
+        type:Boolean,
+        default:false
+      }
     }
   }
 </script>
@@ -39,6 +45,14 @@
     }
     .iconfont{
       @include f(50px);
+    }
+    &.top-tip-pc{
+      height: auto;
+      border: none;
+      @include f(24px);
+      color: #ff0000;
+      padding: 0;
+      margin-bottom: r(60);
     }
   }
   .bottom-login{

@@ -9,15 +9,26 @@
       <div class="info">久安官网：https://www.9security.com</div>
     </div>
     <div class="btn-list">
-      <router-link :to="{name:'mIndex'}" class="bind-def-btn">进入久安官网</router-link>
+      <router-link :to="{name: isPc ? 'index' : 'mIndex'}" class="bind-def-btn">进入久安官网</router-link>
     </div>
   </div>
 </template>
 
 <script>
+  import {SETTING} from "@/assets/data"
   export default {
     name: "create-success",
-
+    data(){
+      return{
+        SETTING
+      }
+    },
+    props:{
+      isPc:{
+        type:Boolean,
+        default:false
+      }
+    }
   }
 </script>
 
