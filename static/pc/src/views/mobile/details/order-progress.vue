@@ -94,6 +94,7 @@
       </div>
 
     </div>
+      <!--卖家-->
     <div class="cash-details0" v-if="DetailList.debit == userId">
       <div class="trade-time-bar">
         <span class="c-orange" >卖出</span>
@@ -232,7 +233,11 @@
       <span class="chatroom_num"></span>
     </div>
     <transition name="toolSlideRight">
-      <chat v-if="chatState" class="chatWindow" :detail="$route.params.id"></chat>
+      <chat v-if="chatState" class="chatWindow"
+            :detail="$route.params.id"
+            :debitNum="DetailList.debitAmount"
+            :sellName = 'DetailList.debitName'
+            :debitMoney="DetailList.debitAmountTwin" ></chat>
     </transition>
 
   </div>
@@ -594,7 +599,7 @@
     background-color: #fff;
     position: fixed;
     right: 0;
-    top: r(450);
+    top: 70%;
     border-radius: 50%;
     background: url("../../../assets/images/chatbg.png")no-repeat;
     background-size: 100%;

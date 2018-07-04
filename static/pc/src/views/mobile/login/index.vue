@@ -51,6 +51,7 @@
         </div>
       </div>
 
+
   </div>
 </template>
 <script>
@@ -85,6 +86,13 @@
         },
         requestda: {}
       }
+    },
+    mounted(){
+
+      this.$nextTick(()=>{
+        var jiangnan = document.getElementById('demoImg')
+        console.log(jiangnan)
+      })
     },
     props: {
       value: Boolean
