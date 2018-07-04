@@ -16,7 +16,7 @@
         </div>
         <div class="error red">{{errorText}}</div>
         <div class="btn-info">
-          <!--<router-link :to="{name: 'mIndex'}" class="go-tran">{{$t('cash.goTran')}}</router-link>-->
+          <router-link :to="{name: 'mIndex'}" class="go-tran">{{$t('cash.goTran')}}</router-link>
           <div class="pay-btn" :class="{disabled: !amountStatus || !payBtn}" @click="amountStatus && payBtn ? payment() : ''">{{$t('cash.confirmPayment')}}</div>
         </div>
       </div>
