@@ -141,7 +141,7 @@
         }
       }
       //Vue.$global.bus.$emit('merchantOrderid',this.infoData.merchantOrderid)
-      if (!this.islogin && this.token != '' && !_(this.token).isUndefined()) {
+      if (!this.islogin && this.token != '' && !_(this.token).isUndefined() && this.token != 'undefined') {
         this.tokenLogin()
       }else{
         this.showPaymentLoading = false
