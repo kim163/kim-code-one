@@ -25,56 +25,14 @@
               <span class="unit">挂单数量</span>
               <span class="unit">交易单价</span>
               <span class="unit unit2">已完成</span>
-              <span class="unit">操作 <span @click="getOrderList">(刷新)</span></span>
+              <span class="unit">操作 <span @click="">(刷新)</span></span>
             </div>
-
-            <div class="group-body" v-if="pendingItem=='tranPendingOrder'">
-              <div class="group-tr" v-for="order in OrderList.data">
-                   <span class="unit">
-                        <span class="c-blue" v-if="order.type == 12">买入</span>
-                        <span class="c-orange" v-if="order.type == 11">卖出</span>
-                   </span>
-                <span class="unit">{{order.createtime | Date('yyyy-MM-dd hh:mm:ss')}}</span>
-                <span class="unit"> {{order.amount}}   UET</span>
-                <span class="unit"> 0.01 CNY</span>
-                <span class="unit unit2">
-                    <span class="percent-bar"><i :style="'width:'+ (order.successAmount/order.amount)*100 +'%;'"></i></span>
-                    <span class="s-percent"> {{(order.successAmount/order.amount)*100 | toFixed(2) }}% </span>
-                  </span>
-                <span class="unit">  <a class="btn btn-primary" @click="putToDown(order)">下架</a>  </span>
-              </div>
-
-              <paging-by :data="OrderList.pageInfo" @search="getOrderList"></paging-by>
-
-            </div>
-
-            <div class="group-body" v-if="pendingItem=='tranPendingRemoved'">
-
-              <div class="group-tr" v-for="order in OrderListRemoved.data">
-                   <span class="unit">
-                        <span class="c-blue" v-if="order.type == 12">买入</span>
-                        <span class="c-orange" v-if="order.type == 11">卖出</span>
-                   </span>
-                <span class="unit">{{order.createtime | Date('yyyy-MM-dd hh:mm:ss')}}</span>
-                <span class="unit"> {{order.amount}}   UET</span>
-                <span class="unit"> 0.01 CNY</span>
-                <span class="unit unit2">
-                    <span class="percent-bar"><i :style="'width:'+ (order.successAmount/order.amount)*100 +'%;'"></i></span>
-                    <span class="s-percent">{{(order.successAmount/order.amount)*100 | toFixed(2) }}%  </span>
-                </span>
-                <span class="unit">
-                  <span v-if="order.status == 11">下架中</span>
-                  <span v-if="order.status == 12">
-                    <a class="btn btn-primary" @click="putToUp(order)">恢复上架</a>
-                  <a class="btn btn-danger" @click="orderDelete(order)">删除</a>
-                  </span>
-
-                </span>
-              </div>
-
-              <paging-by :data="OrderListRemoved.pageInfo" @search="getRemovedOrderList"></paging-by>
-
-            </div>
+            <transition name="list-animate">
+              <pend-list :tab-type="1" :search-key="searchKey" v-if="pendingItem === 'tranPendingOrder'"></pend-list>
+            </transition>
+            <transition name="list-animate">
+              <pend-list :tab-type="2" :search-key="searchKey" v-if="pendingItem === 'tranPendingRemoved'"></pend-list>
+            </transition>
           </div>
         </div>
       </div>
@@ -93,7 +51,6 @@
   import {transaction} from 'api'
   import {generateTitle} from '@/util/i18n'
   import {mapGetters, mapActions, mapMutations} from 'vuex'
-  import pagingBy from "components/paging-by"
   import PendList from './pending-list'
 
   let orderHead = [
@@ -128,7 +85,8 @@
             urlName:'transaction',
             name:'navbar.tradingHall'
           },
-        ]
+        ],
+        searchKey:''
       }
     },
     computed: {
@@ -138,94 +96,8 @@
       ]),
 
     },
-    watch:{
-      islogin(val){
-        if(val){
-          this.getOrderList()
-          this.getRemovedOrderList()
-        }
-      }
-    },
     methods: {
       generateTitle,
-      getOrderList(index){
-        let userId = this.userId;
-        this.request = {
-          limit: 10,
-          offset: 0,
-          userId: userId,
-        }
-        if (!isNaN(index)) {
-          this.request.offset = (index - 1) * this.request.limit;
-        }
-        transaction.getOrderxPendingPage(this.request).then(res => {
-          console.log('挂单 OrderxPage data:');
-          console.log(res.data);
-          this.OrderList = res;
-          this.completePercent = res.data;
-        }).catch(error => {
-          this.reset(res.message);
-        });
-      },
-      getRemovedOrderList(index){
-        this.request = {
-          limit: 10,
-          offset: 0,
-          statuses: [11, 12],
-          userId: userId
-        }
-        if (!isNaN(index)) {
-          this.request.offset = (index - 1) * this.request.limit;
-        }
-        transaction.getOrderxPendingUnshelve(this.request).then(res => {
-          console.log('已下架挂单 data:');
-          console.log(res.data);
-          this.OrderListRemoved = res;
-        }).catch(error => {
-          this.reset(res.message);
-        });
-      },
-      putToDown(order){
-        this.request = {
-          orderId: order.id
-        }
-        transaction.putToDown(this.request).then(res => {
-          toast(res.message);
-          this.getOrderList()
-        }).catch(error => {
-          this.reset(res.message);
-        });
-      },
-      orderDelete(order){
-        let userId = this.userData.userId;
-        this.request = {
-          orderId: order.id
-        }
-
-        transaction.deleteUnshelve(this.request).then(res => {
-          toast(res.message);
-          this.getRemovedOrderList()
-        }).catch(error => {
-          this.reset(res.message);
-        });
-      },
-      putToUp(order){
-        let userId = this.userData.userId;
-        this.request = {
-          orderId: order.id
-        }
-
-        transaction.putToUp(this.request).then(res => {
-          toast(res.message);
-          this.getOrderList()
-          this.getRemovedOrderList()
-        }).catch(error => {
-          this.reset(res.message);
-        });
-      },
-//      percenetRuslt(num1,num2){ //计算百分比
-//        return (num1/num2)*100;
-//      },
 
     },
 
@@ -233,10 +105,7 @@
 
     },
     mounted() {
-      if (this.islogin) {
-        this.getOrderList()
-        this.getRemovedOrderList()
-      }
+
     },
     components: {
       navMenu, vFooter, BreadCrumbs, transactMenu,PendList
@@ -244,7 +113,13 @@
   };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+  .list-animate-enter,.list-animate-leave{
+    opacity: 0;
+  }
+  .list-animate-leave-active{
+    transition: all .5s;
+  }
   .top-header {
     padding-top: 100px;
   }
