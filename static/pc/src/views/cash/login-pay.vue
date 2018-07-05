@@ -43,6 +43,11 @@
         "userId"
       ]),
     },
+    watch:{
+      islogin(){
+        this.checkToken()
+      }
+    },
     props:{
       data:{
         type:Object,
@@ -81,12 +86,17 @@
         }).catch(err => {
         })
       },
+      checkToken(){
+        if(this.islogin && (this.token === '' || _(this.token).isUndefined() || this.token === 'undefined')){
+          this.showBindLink = true
+        }
+      }
     },
     created() {
       if (!this.islogin && this.token != ''  && !_(this.token).isUndefined() && this.token != 'undefined') {
         this.tokenLogin()
-      }else if(this.islogin && (this.token === '' || _(this.token).isUndefined() || this.token === 'undefined')){
-        this.showBindLink = true
+      }else {
+        this.checkToken()
       }
     },
   }
