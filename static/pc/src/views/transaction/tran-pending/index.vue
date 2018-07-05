@@ -93,7 +93,8 @@
   import {transaction} from 'api'
   import {generateTitle} from '@/util/i18n'
   import {mapGetters, mapActions, mapMutations} from 'vuex'
-  import pagingBy from "components/paging-by";
+  import pagingBy from "components/paging-by"
+  import PendList from './pending-list'
 
   let orderHead = [
     {name: "order.orderType", value: "orderType"},
@@ -238,7 +239,7 @@
       }
     },
     components: {
-      pagingBy, navMenu, vFooter, BreadCrumbs, transactMenu
+      navMenu, vFooter, BreadCrumbs, transactMenu,PendList
     }
   };
 </script>
