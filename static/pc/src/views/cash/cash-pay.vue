@@ -83,8 +83,12 @@
       checkAmountStatus(){
         if(Number(this.coinAmount) > Number(this.userBalance)){
           this.amountStatus = false
+          setTimeout(() => {
+            this.showQuickBuy = true
+          },1000)
         }else{
           this.amountStatus = true
+          this.showQuickBuy = false
         }
       }
     },
