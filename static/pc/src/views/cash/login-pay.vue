@@ -1,8 +1,21 @@
 <template>
   <div class="login-pay-main">
-    <p class="title">久安账号支付</p>
-    <cash-login v-if="!islogin"></cash-login>
-    <cash-pay v-else :pay-info="data"></cash-pay>
+    <div class="pay-top">
+      <p class="title">久安账号支付</p>
+      <p class="bind-text" v-if="showBindLink">还没绑定久安？
+        <router-link
+                :to="{name: 'pcUserBind',
+                  query:{
+                          merchantId: data.merchantId,
+                          callBackUrl: data.notifyUrl,
+                          merchantUserName: data.bindUserid,
+                          notifyUrl: data.merchantCallbackurl}}"
+                class="go-bind" target="_blank">立即绑定</router-link></p>
+    </div>
+    <div class="pay-content">
+      <cash-login v-if="!islogin"></cash-login>
+      <cash-pay v-else :pay-info="data"></cash-pay>
+    </div>
   </div>
 </template>
 
@@ -20,7 +33,7 @@
     name: "login-pay",
     data(){
       return{
-
+        showBindLink: false
       }
     },
     computed:{
@@ -29,6 +42,11 @@
         "islogin",
         "userId"
       ]),
+    },
+    watch:{
+      islogin(){
+        this.checkToken()
+      }
     },
     props:{
       data:{
@@ -68,10 +86,17 @@
         }).catch(err => {
         })
       },
+      checkToken(){
+        if(this.islogin && (this.token === '' || _(this.token).isUndefined() || this.token === 'undefined')){
+          this.showBindLink = true
+        }
+      }
     },
     created() {
-      if (!this.islogin && this.token != ''  && !_(this.token).isUndefined()) {
+      if (!this.islogin && this.token != ''  && !_(this.token).isUndefined() && this.token != 'undefined') {
         this.tokenLogin()
+      }else {
+        this.checkToken()
       }
     },
   }
@@ -86,11 +111,24 @@
     justify-content: left;
     align-items: center;
     padding-top: 100px;
+    font-weight: lighter;
+    .pay-top{
+      height: 76px;
+    }
     .title{
       font-weight: lighter;
       font-size: 26px;
       padding: 8px 0;
-      margin-bottom: 50px;
+
+    }
+    .bind-text{
+      font-size: 20px;
+      .go-bind{
+        color: #FF0000;
+      }
+    }
+    .pay-content{
+      margin-top: 20px;
     }
   }
   .right-container{

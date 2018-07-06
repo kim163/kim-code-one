@@ -21,11 +21,11 @@
        </div>
        <div class="input-group">
          <div class="input-div">
-           <input class="my-input" type="number" :placeholder="buyMinUnit" v-model="buyAmountUet">
+           <input class="my-input" type="number" :placeholder="buyMinUnit" v-model.number="buyAmountUet" maxlength="9">
            <span> UET </span>
          </div>
          <div  class="input-div no-mb">
-            <input class="my-input" type="text" :value="buyAmountCny" :placeholder="$t('transactionHome.tranAmount')">
+            <input class="my-input readonly-txt" type="text" :value="buyAmountCny" :placeholder="$t('transactionHome.tranAmount')" readonly>
             <span> CNY </span>
          </div>
          <div class="transell-tips cfx">
@@ -123,6 +123,8 @@
       checkVerif(){
         if(this.buyAmountUet =='' || !this.buyAmountUet){
           toast('请您输入正确的卖出数量');
+        }else if(!_.isInteger(this.buyAmountUet) || this.buyAmountUet<1 ){
+          toast('请您输入整数卖出数量');
         }else if(this.buyAmountUet < this.item.minUnit){
           toast('您输入的数量低于最低卖出数量');
         }else if(this.buyAmountUet > this.item.amount){
@@ -256,6 +258,9 @@
                padding: 0 r(11);
                @include  f(15px);
             }
+           .readonly-txt{
+             background: transparent;
+           }
             span{
               position: absolute;
               display: block;

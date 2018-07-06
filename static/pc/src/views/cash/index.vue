@@ -39,20 +39,16 @@
             </p>
           </div>
         </div>
-        <div class="content02 mobile animated bounceInRight">
-          <transition name="pay-type">
-            <div v-if="!loginPay">
-              <div class="c-l">
-                <cass-qrcode :end-time="endTime"
-                             :info-data="infoData"
-                             v-model="qrCodeStatus"
-                              @qrcodeRefresh="init()"></cass-qrcode>
-              </div>
-              <div class="c-r">
-                <login-pay :data="infoData" :token="token"></login-pay>
-              </div>
-            </div>
-          </transition>
+        <div class="content02 mobile">
+          <div class="c-l">
+            <cash-qrcode :end-time="endTime"
+                         :info-data="infoData"
+                         v-model="qrCodeStatus"
+                         @qrcodeRefresh="init()"></cash-qrcode>
+          </div>
+          <div class="c-r">
+            <login-pay :data="infoData" :token="token"></login-pay>
+          </div>
           <div class="clear"></div>
         </div>
       </div>
@@ -77,7 +73,7 @@
   import CashSuccess from './cash-success'
   import merchantCfg from '../misc/merchant-config'
   import LoginPay from './login-pay'
-  import CassQrcode from './cash-qrcode'
+  import CashQrcode from './cash-qrcode'
   import CashLogin from './cash-login'
   import CashPay from './cash-pay'
 
@@ -90,6 +86,7 @@
     getOrderStatus,
   } from 'api/cashier'
   import {login} from 'api/show'
+
   export default {
     name: "pc-cash",
     data() {
@@ -99,7 +96,7 @@
           businessName: '', //商户名
           jiuanOrderid: '',  //久安订单号
           amount: this.$route.query.amount || '',//应付金额
-          coinAmount:'', //对应uet金额
+          coinAmount: '', //对应uet金额
           assetCode: this.$route.query.assetCode || '', //资产代码
           merchantId: this.$route.query.merchantId || '', //商户号
           merchantOrderid: this.$route.query.merchantOrderid || '', //商户订单号
@@ -114,7 +111,7 @@
           spareFields: this.$route.query.spareFields || '',
           customerAddress: '', //钱包地址
           createtime: 0,//订单时间
-          qrCodeImg:'', //二维码地址
+          qrCodeImg: '', //二维码地址
         },
         endTime: 3600000, //订单结束倒计时
         payPassword: '',
@@ -122,17 +119,17 @@
         token: this.$route.query.token || '',//授权token
         cashSuccess: false,  //充值成功
         showPaymentLoading: true,
-        qrCodeStatus:0,//二维码状态 0 正常显示 1支付中 2二维码失效
+        qrCodeStatus: 0,//二维码状态 0 正常显示 1支付中 2二维码失效
         // qrCodeTime:180, //二维码倒计时
-        loginPay:false, // 登录支付
-        hasSubscribe:false, //是否订阅
+        loginPay: false, // 登录支付
+        hasSubscribe: false, //是否订阅
       }
     },
-    watch:{
-      islogin(){
-        if(this.islogin){
+    watch: {
+      islogin() {
+        if (this.islogin) {
           this.infoData.customerAddress = this.userData.accountChainVos[0].address
-          _.merchantOrderidWs(this.infoData.jiuanOrderid,this.userData)
+          _.merchantOrderidWs(this.infoData.jiuanOrderid, this.userData)
         }
       },
     },
@@ -140,7 +137,7 @@
       CountDown,
       CashSuccess,
       LoginPay,
-      CassQrcode,
+      CashQrcode,
       CashLogin,
       CashPay
     },
@@ -159,7 +156,7 @@
       formatCny(data) {
         return data / this.infoData.exchangeRate
       },
-      formatParameter(val){
+      formatParameter(val) {
         return val === 'null' ? '' : val
       },
       init() { //调用初始化接口
@@ -187,7 +184,7 @@
             this.infoData.coinAmount = data.payOrder.coinAmount
             this.infoData.qrCodeImg = data.qrCode
             this.qrCodeStatus = 0
-            if(data.payOrder.status === 1){
+            if (data.payOrder.status === 1) {
               this.cashSuccess = true
             }
             const nowTime = _.now()
@@ -199,7 +196,7 @@
               this.endTime = endTime > 3600000 ? 3600000 : endTime
               // this.qrCodeTime = 180
               // this.qrCodeCountDown()
-              if(!this.hasSubscribe){
+              if (!this.hasSubscribe) {
                 _.merchantOrderidWs(this.infoData.jiuanOrderid)
                 this.hasSubscribe = true
               }
@@ -244,17 +241,17 @@
           toast(err)
         })
       },
-      saveLocal(){
+      saveLocal() {
         this.$store.dispatch("UPDATE_USERDATA")
         let paySuccessList = $localStorage.get('paySuccessList') //获取本地支付成功列表
-        if(!_.isUndefined(paySuccessList) && !_.isNull(paySuccessList)){
+        if (!_.isUndefined(paySuccessList) && !_.isNull(paySuccessList)) {
           paySuccessList = JSON.parse(aesutil.decrypt(paySuccessList))
           paySuccessList.push(this.infoData)
-          $localStorage.set('paySuccessList',aesutil.encrypt(JSON.stringify(paySuccessList)))
-        }else{
+          $localStorage.set('paySuccessList', aesutil.encrypt(JSON.stringify(paySuccessList)))
+        } else {
           const arr = []
           arr.push(this.infoData)
-          $localStorage.set('paySuccessList',aesutil.encrypt(JSON.stringify(arr)))
+          $localStorage.set('paySuccessList', aesutil.encrypt(JSON.stringify(arr)))
         }
       },
       countDownEnd() {
@@ -262,14 +259,15 @@
         this.payBtnStatus = false
         this.unSubscribe()
       },
-      unSubscribe(){
+      unSubscribe() {
         Vue.$global.bus.$emit('merchantOrderidUnsubscribe')
         this.hasSubscribe = false
       }
     },
     created() {
-      if(_.isMobile()){
-        this.$router.replace({name: 'mCashDesk',query:{
+      if (_.isMobile()) {
+        this.$router.replace({
+          name: 'mCashDesk', query: {
             amount: this.infoData.amount,
             assetCode: this.infoData.assetCode,
             merchantId: this.infoData.merchantId,
@@ -284,43 +282,44 @@
             bindAreacode: this.infoData.bindAreacode,
             bindUserLevel: this.infoData.bindUserLevel,
             spareFields: this.infoData.spareFields,
-        }})
+          }
+        })
       }
       let paySuccessList = $localStorage.get('paySuccessList') //获取本地支付成功列表
-      if(!_.isUndefined(paySuccessList) && !_.isNull(paySuccessList)){
+      if (!_.isUndefined(paySuccessList) && !_.isNull(paySuccessList)) {
         paySuccessList = JSON.parse(aesutil.decrypt(paySuccessList))
         const info = paySuccessList.find((item) => {
           return item.merchantOrderid === this.infoData.merchantOrderid
         })
-        if(info){
+        if (info) {
           console.log(info)
-          Object.assign(this.infoData,info)
+          Object.assign(this.infoData, info)
           this.cashSuccess = true
         }
       }
       this.infoData.businessName = merchantCfg.getDeail(this.infoData.merchantId).name
 
-      if(this.islogin){
+      if (this.islogin) {
         this.infoData.customerAddress = this.userData.accountChainVos[0].address
       }
     },
     mounted() {
-      if(!this.cashSuccess){
+      if (!this.cashSuccess) {
         this.init()
-        Vue.$global.bus.$on('cash:payPassword',(pwd) => {
+        Vue.$global.bus.$on('cash:payPassword', (pwd) => {
           this.pay(pwd)
         })
-        Vue.$global.bus.$on('update:paying',() => {
+        Vue.$global.bus.$on('update:paying', () => {
           this.qrCodeStatus = 1
         })
-        Vue.$global.bus.$on('update:paySuccess',() => {
+        Vue.$global.bus.$on('update:paySuccess', () => {
           this.cashSuccess = true
           this.saveLocal()
           this.unSubscribe()
         })
       }
     },
-    beforeDestroy(){
+    beforeDestroy() {
       Vue.$global.bus.$off('cash:payPassword')
       Vue.$global.bus.$off('update:paying')
       Vue.$global.bus.$off('update:paySuccess')
@@ -329,21 +328,13 @@
 </script>
 
 <style lang="scss" scoped>
-  .pay-type-enter{
-    opacity: 0;
-  }
-  .pay-type-leave{
-    opacity: 0;
-  }
-  .pay-type-enter-active,.pay-type-leave-active{
-    transition: all .5s;
-  }
-  .main{
-    height:100%;
-    min-height:100%;
+  .main {
+    height: 100%;
+    min-height: 100%;
     background: #f7f7f7;
-    color:#616161;
+    color: #616161;
   }
+
   .clear {
     clear: both;
   }
@@ -387,30 +378,32 @@
   .logo {
     margin-top: 20px;
   }
-  .logo-left{
+
+  .logo-left {
     float: left;
     display: flex;
     justify-content: center;
-    .title{
+    .title {
       font-size: 24px;
       color: #333333;
       margin-left: 15px;
       margin-top: 30px;
     }
-    .line{
+    .line {
       margin-left: 15px;
       height: 40px;
       width: 1px;
       background: #666666;
       margin-top: 28px;
     }
-    .des{
+    .des {
       font-size: 24px;
       color: #999999;
       margin-left: 15px;
       margin-top: 30px;
     }
   }
+
   .logo-right {
     float: right;
     margin-top: 40px;
@@ -452,7 +445,7 @@
   .content02 {
     background: #fff;
     padding: 25px 0;
-    overflow: hidden;
+    /*overflow: hidden;*/
     text-align: center;
     margin: 0 auto 50px;
     box-shadow: 0 5px 5px 5px #efefef;
@@ -470,13 +463,13 @@
     margin: 105px 0 60px 0;
   }
 
-
   .content02 .c-r {
     float: left;
     width: 700px;
     text-align: center;
   }
-  .login-pay{
+
+  .login-pay {
     width: 150px;
     margin: 15px auto;
     cursor: pointer;
