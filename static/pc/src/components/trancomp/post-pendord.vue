@@ -51,7 +51,7 @@
               <span class="ps-input fl">
                 <input type="text" class="ps-input-in"
                        :placeholder="postItem == 'buyer' ? $t('postPend.minBuy') : $t('postPend.minSell')"
-                       v-model="minAmount">
+                       v-model.number="minAmount">
                 <span class="i-uet">UET</span>
               </span>
             </div>
