@@ -156,7 +156,7 @@
         </ul>
         <div class="payscreen-part">
             <p class="title">您的付款截图 <span>（选填项）</span> </p>
-
+            <upload-img :uploadImgSet="uploadImgSet" @gitPicUrl="gitPicUrl" ></upload-img>
         </div>
         <div class="paybtn-group">
           <input type="button" class="mobile-pubtn" value="提交" @click="payOrder" />
@@ -318,6 +318,7 @@
   import mHeader from "components/m-header"
   import CountDown from 'components/countdown'
   import BigImg  from 'components/bigImg'
+  import uploadImg from 'components/upload-img'
   import { generateTitle } from '@/util/i18n'
   import { transaction,chatWith } from 'api'
   import {mapGetters,mapActions,mapMutations} from 'vuex'
@@ -348,6 +349,11 @@
           creditAccountTwin:'',       // 买方法币账户
           creditAccountMerchantTwin:'',   // 买方法币机构名
           creditAmountTwin:''           // 买方实际支付金额
+        },
+        uploadImgSet:{
+           maxUploadNum:3,       // 最大上传数量，如果没有最大上传数量，传 -1
+           uploadImgTips:'最多可上传三张',  // 上传图片提示文字
+          isShowUploadTip:true             // 是否有上传文件提示信息
         }
       };
     },
@@ -413,8 +419,11 @@
 
         this.loading = false;
       },
+      gitPicUrl(picUrlArr){
+        this.payOrderParam.creditProofUrlTwin = picUrlArr.join(',');
+      },
       payOrder(){
-        if(this.DetailList.creditProofTypeTwin==1 && this.DetailList.creditProofStatusTwin==0){
+        if(this.DetailList.creditProofTypeTwin==1 && this.DetailList.creditProofStatusTwin==0 && this.payOrderStep==1){
            this.payOrderStep = 2;
            return;
         }
@@ -540,6 +549,7 @@
     },
     components: {
       mHeader,
+      uploadImg,
       CountDown,
       ChatEntrance,
       chat,
@@ -615,12 +625,13 @@
     }
     .payscreen-part{
       background: $white;
-      padding: 0 r(10);
       @include  f(15px);
       color: $font-color;
       margin-bottom: r(20);
       .title{
-        line-height: r(38);
+        padding: 0 r(10);
+        line-height: r(36);
+        border-bottom: 1px solid #F5F5F5;
         span{
           color: #FF0000;
         }
@@ -789,7 +800,6 @@
     padding:0 r(15)  r(30) r(15);
   }
   .pic-ul{
-    max-height:180px;
     padding:10px 0 30px;
     overflow:hidden;
     img{width:33%; display:inline-block;}
