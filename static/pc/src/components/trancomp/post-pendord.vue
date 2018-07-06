@@ -25,7 +25,7 @@
             <div class="form-input-box">
               <span class="left">{{postItem == 'buyer' ? $t('postPend.buyAmount') : $t('postPend.sellAmount')}}：</span>
               <span class="ps-input fl">
-              <input type="text" class="ps-input-in" v-model="buyAmount">
+              <input type="text" class="ps-input-in" v-model.number="buyAmount" maxlength="9">
               <span class="i-uet">UET</span>
             </span>
               <span class="fl">
@@ -139,7 +139,7 @@
     computed: {
       ...mapGetters(["userData"]),
       buyAmountCny() {
-        return Number(this.buyAmount) * 0.01;
+        return (Number(this.buyAmount) * 0.01).toFixed(2);
       }
     },
     methods: {
@@ -161,6 +161,10 @@
       publishBuyOrSell() {
         if (this.buyAmount == '' || !this.buyAmount) {
           toast('数量不能为空');
+          return;
+        }
+        if(!_.isInteger(this.buyAmount) || this.buyAmount<1){
+          toast('请输入整数数量');
           return;
         }
         if (this.payType == '' || !this.payType) {
