@@ -13,16 +13,6 @@
             <span class="unit">操作 <span @click="getOrderList">(刷新)</span></span>
           </div>
           <div class="group-body">
-               <!--<span class="unit">-->
-                    <!--<span class="btn btn-border">买入</span>-->
-               <!--</span>-->
-            <!--<span class="unit">王大爷</span>-->
-            <!--<span class="unit">20000 UET</span>-->
-            <!--<span class="unit">0.001 CNY</span>-->
-            <!--<span class="unit red">20000 CNY</span>-->
-            <!--<span class="unit">交易完成</span>-->
-            <!--<span class="unit">  <a class="btn btn-primary">详情</a>  </span>-->
-
             <div class="group-tr" v-for="order in OrderList.data">
                  <span class="unit">
                       <span class="c-blue" v-show="order.credit == userData.userId">买入</span>

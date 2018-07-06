@@ -1,9 +1,7 @@
 <template>
   <div class="section ">
     <div class="container">
-
       <div class="row0">
-
         <div class="tran-content border-box">
              <div class="group-head">
                <span class="unit">订单类型</span>

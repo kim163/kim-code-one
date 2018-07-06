@@ -67,17 +67,20 @@
       }
     },
     watch:{
-      searchKey(){
-
+      searchKey(val){
+        if(val != ''){
+          this.getData()
+        }
       },
       islogin(val){
         if(val){
           this.getData()
         }
       },
-      search(val){
-
-      }
+    },
+    model:{
+      prop: 'searchKey',
+      event: 'changeSearchKey'
     },
     props:{
       searchKey:{
@@ -88,10 +91,6 @@
         type: Number,
         default: 1
       },
-      search:{
-        type:Boolean,
-        default:false
-      }
     },
     components:{
       ConfirmDialog,
@@ -124,6 +123,9 @@
             statuses:[11,12],
           })
         }
+        if(this.searchKey != ''){
+          //添加搜索字段
+        }
         console.log(request)
         api(request).then(res => {
           if(res.code === 10000){
@@ -133,6 +135,7 @@
             }else{
               this.noData = false
             }
+            this.$emit('changeSearchKey','')
             this.orderList = [...res.data]
             this.pageInfo = res.pageInfo
           }else{

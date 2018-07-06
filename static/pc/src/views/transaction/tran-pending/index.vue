@@ -9,14 +9,9 @@
         <div class="row0">
           <div class="tran-content border-box">
             <div class="row border-bottom">
-              <a v-for="item in pendingType" @click="pendingItem=item.value" class="s tab-link-a"
-                 :class="{active:pendingItem==item.value}" :key="item.value">
-                {{generateTitle(item.name)}}
-              </a>
-              <a class="back-hall" href="/transaction"> 返回交易大厅</a>
-              <div class="search-box">
-                <input type="text" class="search-input" placeholder="请输入对方昵称、账号"><span class="search-btn">搜索</span>
-              </div>
+              <tranred-sub-nav :nav-list="pendingType"
+                               @changeTab="pendingItem = $event"
+                               @search="searchKey = $event"></tranred-sub-nav>
             </div>
 
             <div class="group-head">
@@ -28,10 +23,10 @@
               <span class="unit">操作 <span @click="">(刷新)</span></span>
             </div>
             <transition name="list-animate">
-              <pend-list :tab-type="1" :search-key="searchKey" v-if="pendingItem === 'tranPendingOrder'"></pend-list>
+              <pend-list :tab-type="1" v-model="searchKey" v-if="pendingItem === 'tranPendingOrder'"></pend-list>
             </transition>
             <transition name="list-animate">
-              <pend-list :tab-type="2" :search-key="searchKey" v-if="pendingItem === 'tranPendingRemoved'"></pend-list>
+              <pend-list :tab-type="2"  v-model="searchKey" v-if="pendingItem === 'tranPendingRemoved'"></pend-list>
             </transition>
           </div>
         </div>
@@ -43,10 +38,11 @@
 
 </template>
 <script>
-  import navMenu from 'components/nav';
-  import vFooter from 'components/footer';
+  import NavMenu from 'components/nav';
+  import VFooter from 'components/footer';
   import BreadCrumbs from 'components/bread-crumbs'
-  import transactMenu from 'components/transact-menu';
+  import TransactMenu from 'components/transact-menu';
+  import TranredSubNav from 'components/transact-menu/tranred-subnav'
 
   import {transaction} from 'api'
   import {generateTitle} from '@/util/i18n'
@@ -67,19 +63,11 @@
   export default {
     data() {
       return {
-        OrderList: {
-          data: []
-        },
-        OrderListRemoved: {
-          data: []
-        },
         pendingType: [
           {name: "transactionRecord.tranPendingOrder", value: "tranPendingOrder"},
           {name: "transactionRecord.tranPendingRemoved", value: "tranPendingRemoved"}
         ],
         pendingItem: 'tranPendingOrder',
-        completePercent: '',
-        completePercentRomove: '',
         breadList:[
           {
             urlName:'transaction',
@@ -108,7 +96,12 @@
 
     },
     components: {
-      navMenu, vFooter, BreadCrumbs, transactMenu,PendList
+      NavMenu,
+      VFooter,
+      BreadCrumbs,
+      TransactMenu,
+      PendList,
+      TranredSubNav,
     }
   };
 </script>

@@ -1,46 +1,54 @@
 <template>
   <div class="section tranred-subnav noborder">
-    <div class="container border-box">
-      <div class="row">
-        <router-link v-for="(item,i) in tranredNavData" class="item-info" :to="item.to" :key="i">
-          {{generateTitle(item.name)}}
-        </router-link>
+    <div class="row">
+      <span v-for="(item,i) in navList"
+            class="item-info"
+            :class="{active: i === navIndex}"
+            @click="changTab(i,item.value)"
+            :key="i">
+        {{generateTitle(item.name)}}
+      </span>
 
-        <span class="back-hall"> 返回交易大厅</span>
-        <div class="search-box">
-          <input type="text" class="search-input" placeholder="请输入对方昵称、账号"><span class="search-btn" >搜索</span>
-        </div>
-
+      <span class="back-hall"> 返回交易大厅</span>
+      <div class="search-box">
+        <input type="text" class="search-input" v-model.trim="searchKey" placeholder="请输入对方昵称、账号">
+        <span class="search-btn" @click="checkSearch">搜索</span>
       </div>
     </div>
   </div>
 </template>
 <script>
   import { generateTitle } from '@/util/i18n'
-  let tranredNavData = [
-//    {name:'transactionRecord.tranPending', value: 'tranPending', to: {name: 'tranPending'} },
-    {name:'transactionRecord.tranProgress', value: 'tranProgress', to: {name: 'tranProgress'} },
-    {name:'transactionRecord.tranComplete', value: 'tranComplete', to: {name: 'tranComplete'} },
-    {name:'transactionRecord.appealRecord', value: 'appealRecord', to: {name: 'appealRecord'} }
-  ]
 
   export default {
     data() {
       return {
-        tranredNavData: tranredNavData
+        navIndex:0,
+        searchKey:''
+      }
+    },
+    props:{
+      navList:{
+        type:Array,
+        default:[],
+        request:true
       }
     },
     methods: {
-      generateTitle
+      generateTitle,
+      changTab(index,val){
+        this.navIndex = index
+        this.searchKey = ''
+        this.$emit('changeTab',val)
+      },
+      checkSearch(){
+        if(this.searchKey === ''){
+          toast('请输入搜索内容')
+        }else{
+          this.$emit('search',this.searchKey)
+        }
+      }
     },
-    created() {
-    },
-    mounted() {
-    },
-    activated() {
-    },
-    components: {
-    }
   };
 </script>
 <style lang="scss">
@@ -49,7 +57,7 @@
   line-height: 80px;
   min-height: auto;
   border-bottom: 1px solid #D4D4D4;
-  a{
+  .item-info{
     display: inline-block;
     width: 200px;
     text-align: center;
@@ -57,7 +65,7 @@
     color: #333333;
     height: 77px;
     line-height: 77px;
-
+    cursor: pointer;
     &:hover, &.active {
       color: #5087ff;
       border-bottom: 1px solid #5087FF;

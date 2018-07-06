@@ -1,4 +1,4 @@
-import tranRecord from 'components/master/tran-record'; // 订单记录模板
+import tranRecord from 'views/transaction/order-record'; // 订单记录模板
 
 let index = (resolve) => resolve(require('views/transaction/index'));  //交易大厅首页
 let transell = (resolve) => resolve(require('views/transaction/transell'));  // 交易大厅 -- 卖出 UET
