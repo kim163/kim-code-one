@@ -175,6 +175,10 @@
           toast('最低买入数量输入不正确');
           return;
         }
+        if(!_.isInteger(this.minAmount) || this.minAmount<1){
+          toast('请输入整数最低买入数量');
+          return;
+        }
         if (this.postItem === 'seller' && (this.proofType == '' || !this.proofType)) {
           toast('付款说明不能为空');
           return;
