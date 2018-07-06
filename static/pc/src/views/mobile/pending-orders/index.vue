@@ -17,8 +17,8 @@
           <p class="c-gray">{{$t('postPend.unit')}} 0.01 CNY</p>
         </div>
         <div class="input-box">
-          <div class="input-div"><input class="my-input" type="number" placeholder="挂单买入数量" v-model="buyAmount"> UET</div>
-          <div  class="input-div"><input class="my-input" type="number" :value="buyAmountCny" placeholder="=总数量"> CNY</div>
+          <div class="input-div"><input class="my-input" type="number" placeholder="挂单买入数量" v-model.number="buyAmount" maxlength="9"> UET</div>
+          <div  class="input-div"><input class="my-input readonly-txt" type="number" :value="buyAmountCny" placeholder="=总数量" readonly> CNY</div>
           <div  class="input-div">
             <select class="my-input" v-model="buyTypeBuy">
               <option value="">{{$t('postPend.selectPay')}}</option>
@@ -31,7 +31,9 @@
           </div>
           <div >
             <p class="s-title">{{$t('postPend.buyerRequest')}}</p>
-            <div  class="input-div"><input class="my-input" type="number" v-model="minBuyAmount" :placeholder="$t('postPend.minSell')"> UET</div>
+            <div  class="input-div">
+              <input class="my-input" type="number" v-model.number="minBuyAmount" :placeholder="$t('postPend.minSell')" maxlength="9"> UET
+            </div>
           </div>
         </div>
         <div class="line-box"></div>
@@ -50,8 +52,8 @@
           <p class="c-gray">{{$t('postPend.unit')}} 0.01 CNY <a class="c-blue" @click="allSell()">{{$t('postPend.allsell')}}</a></p>
         </div>
         <div class="input-box">
-          <div class="input-div"><input class="my-input" placeholder="挂单卖出数量" v-model="buyAmount"> UET</div>
-          <div  class="input-div"><input class="my-input" :value="buyAmountCny" placeholder="=总数量"> CNY</div>
+          <div class="input-div"><input class="my-input" placeholder="挂单卖出数量" v-model.number="buyAmount" maxlength="9"> UET</div>
+          <div  class="input-div"><input class="my-input readonly-txt" :value="buyAmountCny" placeholder="=总数量" readonly> CNY</div>
           <div  class="input-div">
             <select class="my-input" v-model="buyTypeSell">
               <option value="">{{$t('postPend.selectPay')}}</option>
@@ -64,7 +66,7 @@
           </div>
           <div >
             <p class="s-title">买家要求</p>
-            <div  class="input-div"><input class="my-input" v-model="minSellAmount" placeholder="卖家的最低买入数量"> UET</div>
+            <div  class="input-div"><input class="my-input" v-model.number="minSellAmount" placeholder="卖家的最低买入数量" maxlength="9"> UET</div>
           </div>
         </div>
         <div class="line-box"></div>
@@ -89,6 +91,7 @@
   import balance from 'components/balance';
   import { generateTitle } from '@/util/i18n'
   import {mapGetters,mapActions,mapMutations} from 'vuex'
+  import check from '@/util/RegExp'
 
   export default {
     name: "transaction-record",
@@ -143,7 +146,11 @@
       },
       publishBuy(){
         if(this.buyAmount =='' || !this.buyAmount){
-          toast('数量不能为空');
+          toast('买入数量不能为空');
+          return;
+        }
+        if(!check.intNum.test(this.buyAmount)){
+          toast('请输入整数买入数量');
           return;
         }
         if(this.buyTypeBuy =='' || !this.buyTypeBuy){
@@ -154,6 +161,11 @@
           toast('最低卖出数量输入不正确');
           return;
         }
+        if(!check.intNum.test(this.minBuyAmount)){
+          toast('请输入整数卖家最低卖出数量');
+          return;
+        }
+
         if(this.buyTypeBuy.type =='1'){
           this.buyTypeBuyBank='支付宝'
         }else if(this.buyTypeBuy.type =='2'){
@@ -195,13 +207,18 @@
             toast(res.message)
           }
         }).catch(err => {
+          toast(err.message);
         })
 
 
       },
       publishSell(){
         if(this.buyAmount =='' || !this.buyAmount){
-          toast('数量不能为空');
+          toast('卖出数量不能为空');
+          return;
+        }
+        if(!check.intNum.test(this.buyAmount)){
+          toast('请输入整数卖出数量');
           return;
         }
         if(this.buyTypeSell =='' || !this.buyTypeSell){
@@ -212,6 +229,11 @@
           toast('最低买入数量输入不正确');
           return;
         }
+        if(!check.intNum.test(this.minSellAmount)){
+          toast('请输入整数买家最低买入数量');
+          return;
+        }
+
         if(this.buyTypeSell.type =='1'){
           this.buyTypeBuyBank='支付宝'
         }else if(this.buyTypeSell.type =='2'){
@@ -253,6 +275,7 @@
             toast(res.message)
           }
         }).catch(err => {
+          toast(err.message);
         })
 
       },
@@ -304,6 +327,9 @@
   &:hover,&:focus{
              outline: none;
            }
+  }
+  .readonly-txt{
+    background: transparent;
   }
   select.my-input{
     width:100%;
