@@ -17,7 +17,7 @@
           <p class="c-gray">{{$t('postPend.unit')}} 0.01 CNY</p>
         </div>
         <div class="input-box">
-          <div class="input-div"><input class="my-input" type="number" placeholder="挂单买入数量" v-model.number="buyAmount"> UET</div>
+          <div class="input-div"><input class="my-input" type="number" placeholder="挂单买入数量" v-model.number="buyAmount" min="1" max="200000000" > UET</div>
           <div  class="input-div"><input class="my-input readonly-txt" type="number" :value="buyAmountCny" placeholder="=总数量" readonly> CNY</div>
           <div  class="input-div">
             <select class="my-input" v-model="buyTypeBuy">
@@ -31,7 +31,7 @@
           </div>
           <div >
             <p class="s-title">{{$t('postPend.buyerRequest')}}</p>
-            <div  class="input-div"><input class="my-input" type="number" v-model.number="minBuyAmount" :placeholder="$t('postPend.minSell')"> UET</div>
+            <div  class="input-div"><input class="my-input" type="number" v-model.number="minBuyAmount" :placeholder="$t('postPend.minSell')" min="1" max="200000000"> UET</div>
           </div>
         </div>
         <div class="line-box"></div>
@@ -50,8 +50,8 @@
           <p class="c-gray">{{$t('postPend.unit')}} 0.01 CNY <a class="c-blue" @click="allSell()">{{$t('postPend.allsell')}}</a></p>
         </div>
         <div class="input-box">
-          <div class="input-div"><input class="my-input" placeholder="挂单卖出数量" v-model.number="buyAmount"> UET</div>
-          <div  class="input-div"><input class="my-input readonly-txt" :value="buyAmountCny" placeholder="=总数量" readonly> CNY</div>
+          <div class="input-div"><input class="my-input" placeholder="挂单卖出数量" v-model.number="sellAmount" min="1" max="200000000"> UET</div>
+          <div  class="input-div"><input class="my-input readonly-txt" :value="sellAmountCny" placeholder="=总数量" readonly> CNY</div>
           <div  class="input-div">
             <select class="my-input" v-model="buyTypeSell">
               <option value="">{{$t('postPend.selectPay')}}</option>
@@ -63,8 +63,15 @@
             </select>
           </div>
           <div >
-            <p class="s-title">买家要求</p>
-            <div  class="input-div"><input class="my-input" v-model.number="minSellAmount" placeholder="卖家最低买入数量"> UET</div>
+            <p class="s-title">{{$t('postPend.sellerRequest')}}</p>
+            <div  class="input-div"><input class="my-input" v-model.number="minSellAmount" :placeholder="$t('postPend.minBuy')" min="1" max="200000000"> UET</div>
+            <div  class="input-div">
+              <select class="my-input" v-model="proofType">
+                 <option value="">请选择付款说明</option>
+                 <option value="1">要求提供付款说明</option>
+                 <option value="0">不要求提供付款说明</option>
+              </select>
+            </div>
           </div>
         </div>
         <div class="line-box"></div>
@@ -81,15 +88,13 @@
 </template>
 
 <script>
-  import { show } from 'api'
-  import { transaction } from 'api'
+  import { show,transaction } from 'api'
 
   import MobileNavBar from 'components/m-navbar'
   import mHeadnav from 'components/m-headnav'
   import balance from 'components/balance';
   import { generateTitle } from '@/util/i18n'
   import {mapGetters,mapActions,mapMutations} from 'vuex'
-  import check from '@/util/RegExp'
 
   export default {
     name: "transaction-record",
@@ -110,11 +115,15 @@
         bankList: {
           data: []
         },
+        requestdata:{},
+        requestda:{},
         buyAmount:'',
+        sellAmount:'',
         buyTypeBuy:'',
         buyTypeSell:'',
         minBuyAmount:'',
         minSellAmount:'',
+        proofType:'',
         accountCashVo:{},
         buyTypeBuyBank:'',
         userBalance:'',
@@ -125,8 +134,11 @@
         'userId',
         'userData'
       ]),
-      buyAmountCny:function(){
+      buyAmountCny(){
         return (Number(this.buyAmount) *0.01).toFixed(2);
+      },
+      sellAmountCny(){
+        return (Number(this.sellAmount) *0.01).toFixed(2);
       }
     },
     methods: {
@@ -147,20 +159,20 @@
           toast('买入数量不能为空');
           return;
         }
-        if(!check.intNum.test(this.buyAmount)){
-          toast('请输入整数买入数量');
+        if(!_.isInteger(this.buyAmount) || this.buyAmount<1 ){
+          toast('请您输入整数买入数量');
           return;
         }
         if(this.buyTypeBuy =='' || !this.buyTypeBuy){
           toast('支付方式不能为空');
           return;
         }
-        if(this.minBuyAmount =='' || !this.minBuyAmount || this.minBuyAmount < 0){
-          toast('最低卖出数量输入不正确');
+        if(this.minBuyAmount =='' || !this.minBuyAmount || this.minBuyAmount < 1){
+          toast('卖家最低卖出数量输入不正确');
           return;
         }
-        if(!check.intNum.test(this.minBuyAmount)){
-          toast('请输入整数卖家最低卖出数量');
+        if(!_.isInteger(this.minBuyAmount)){
+          toast('请您输入整数卖家最低卖出数量');
           return;
         }
 
@@ -174,7 +186,7 @@
         this.requestda={
           userId: this.userData.userId,
           orderOptionVo:{
-            minUnit:this.minBuyAmount,//等于发布的数量
+            minUnit:this.minBuyAmount,
             contractType:1,
             mode:1
           },
@@ -195,40 +207,43 @@
         transaction.publishToBuy(this.requestda).then((res) => {
           console.log(res)
           if(res.code == '10000'){
-            toast('您已下单成功，请进入列表查询');
             this.buyAmount='';
             this.buyTypeBuy='';
             this.minBuyAmount = '';
-            Vue.$global.bus.$emit('update:balance');
+            toast('您已下单成功，请进入列表查询');
+            Vue.$global.bus.$emit('update:balance')
             this.$router.push({name: 'mTranRecord'});
           }else{
             toast(res.message)
           }
         }).catch(err => {
-          toast(err.message)
+          toast(err.message);
         })
-
 
       },
       publishSell(){
-        if(this.buyAmount =='' || !this.buyAmount){
+        if(this.sellAmount =='' || !this.sellAmount){
           toast('卖出数量不能为空');
           return;
         }
-        if(!check.intNum.test(this.buyAmount)){
-          toast('请输入整数卖出数量');
+        if(!_.isInteger(this.sellAmount) || this.sellAmount<1){
+          toast('请您输入整数卖出数量');
           return;
         }
         if(this.buyTypeSell =='' || !this.buyTypeSell){
           toast('支付方式不能为空');
           return;
         }
-        if(this.minSellAmount =='' || !this.minSellAmount || this.minSellAmount < 0){
-          toast('最低买入数量输入不正确');
+        if(this.minSellAmount =='' || !this.minSellAmount || this.minSellAmount < 1){
+          toast('买家最低买入数量输入不正确');
           return;
         }
-        if(!check.intNum.test(this.minSellAmount)){
-          toast('请输入整数买家最低买入数量');
+        if(!_.isInteger(this.minSellAmount)){
+          toast('请您输入整数买家最低买入数量');
+          return;
+        }
+        if(this.proofType =='' || !this.proofType){
+          toast('付款说明不能为空');
           return;
         }
 
@@ -242,38 +257,40 @@
         this.requestda={
           userId: this.userData.userId,
           orderOptionVo:{
-            minUnit:this.minSellAmount,//等于发布的数量
+            minUnit:this.minSellAmount,
             contractType:1,
-            mode:1
+            mode:1,
+            proofType: this.proofType
           },
           accountChainVo:{
             name:this.userData.nickname,
             address:this.userData.accountChainVos[0].address,
             assetCode:'UET', //资产编码 默认 UET,登录后资产的编码
-            amount:this.buyAmount //uet的数量
+            amount:this.sellAmount //uet的数量
           },
           accountCashVo:{
             "account" : this.buyTypeSell.account,
             "bank" : this.buyTypeBuyBank, //机构名称
             "name" : this.buyTypeSell.name,
             "type" : this.buyTypeSell.type,
-            "amount" : this.buyAmount /100
+            "amount" : this.sellAmount /100
           }
         }
         transaction.publishToSell(this.requestda).then((res) => {
           console.log(res)
           if(res.code == '10000'){
             toast('您已下单成功，请进入列表查询');
-            this.buyAmount='';
-             this.buyTypeSell='';
-             this.minSellAmount = '';
-
+            this.sellAmount='';
+            this.buyTypeSell='';
+            this.minSellAmount = '';
+            this.proofType='';
             Vue.$global.bus.$emit('update:balance');
             this.$router.push({name: 'mTranRecord'});
           }else{
             toast(res.message)
           }
         }).catch(err => {
+          toast(err.message);
         })
 
       },
@@ -284,7 +301,7 @@
         this.userBalance = data
       },
       allSell(){
-        this.buyAmount = this.userBalance
+        this.sellAmount = this.userBalance
       }
     },
     created() {
