@@ -51,7 +51,7 @@
               <span class="ps-input fl">
                 <input type="text" class="ps-input-in"
                        :placeholder="postItem == 'buyer' ? $t('postPend.minBuy') : $t('postPend.minSell')"
-                       v-model="minAmount">
+                       v-model.number="minAmount">
                 <span class="i-uet">UET</span>
               </span>
             </div>
@@ -173,6 +173,10 @@
         }
         if (this.minAmount == '' || !this.minAmount || this.minAmount < 0) {
           toast('最低买入数量输入不正确');
+          return;
+        }
+        if(!_.isInteger(this.minAmount) || this.minAmount<1){
+          toast('请输入整数最低买入数量');
           return;
         }
         if (this.postItem === 'seller' && (this.proofType == '' || !this.proofType)) {
