@@ -43,24 +43,9 @@ export default [
     path: "/tranRecord",
     name: "tranRecord",
     component: tranRecord,
-    redirect: "/tranRecord/tranProgress",
-    children: [
-      {
-        path: "tranProgress", name: "tranProgress", component(resolve){
-        return resolve(require('views/transaction/order-record/tran-progress'))
-      }
-      },
-      {
-        path: "tranComplete", name: "tranComplete", component(resolve){
-        return resolve(require('views/transaction/order-record/tran-complete'))
-      }
-      },
-      {
-        path: "appealRecord", name: "appealRecord", component(resolve){
-        return resolve(require('views/transaction/order-record/appeal-record'))
-      }
-      }
-    ]
+    meta: {
+      noCache: true
+    }
   },
   {
     path: "/orderDetail/:id",

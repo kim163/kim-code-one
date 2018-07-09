@@ -111,15 +111,14 @@
         const request = {
           limit: this.limit,
           offset: (this.currentPage - 1) * this.limit,
+          userId: this.userId,
         }
         if(this.tabType === 1){
           Object.assign(request,{
-            userId: this.userId,
             statuses:[1],
           })
         }else{
           Object.assign(request,{
-            userId: this.userId,
             statuses:[11,12],
           })
         }
@@ -135,7 +134,7 @@
             }else{
               this.noData = false
             }
-            this.$emit('changeSearchKey','')
+            //this.$emit('changeSearchKey','')
             this.orderList = [...res.data]
             this.pageInfo = res.pageInfo
           }else{

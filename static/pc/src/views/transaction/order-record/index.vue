@@ -7,7 +7,18 @@
       <div class="row0">
         <div class="tran-content border-box">
           <div class="row border-bottom">
-            <tranred-subnav :nav-list="navListData" ></tranred-subnav>
+            <tranred-subnav :nav-list="navListData"
+                            @changeTab="tabItem = $event"
+                            @search="searchKey = $event"></tranred-subnav>
+            <transition name="list-animate">
+              <record-list v-if="tabItem === 'tranProgress'" :tab-type="1" :search-key="searchKey"></record-list>
+            </transition>
+            <transition name="list-animate">
+              <record-list v-if="tabItem === 'tranComplete'" :tab-type="2" :search-key="searchKey"></record-list>
+            </transition>
+            <transition name="list-animate">
+              <record-list v-if="tabItem === 'appealRecord'" :tab-type="3" :search-key="searchKey"></record-list>
+            </transition>
           </div>
         </div>
       </div>
@@ -17,11 +28,12 @@
   </div>
 </template>
 <script>
-  import navMenu from 'components/nav';
-  import transactMenu from 'components/transact-menu';
-  import vFooter from 'components/footer';
-  import tranredSubnav from 'components/transact-menu/tranred-subnav';
+  import NavMenu from 'components/nav';
+  import TransactMenu from 'components/transact-menu';
+  import VFooter from 'components/footer';
+  import TranredSubnav from 'components/transact-menu/tranred-subnav';
   import BreadCrumbs from 'components/bread-crumbs'
+  import RecordList from './record-list'
 
   export default {
     data() {
@@ -40,7 +52,9 @@
           {name: 'transactionRecord.tranProgress', value: 'tranProgress'},
           {name: 'transactionRecord.tranComplete', value: 'tranComplete'},
           {name: 'transactionRecord.appealRecord', value: 'appealRecord'}
-        ]
+        ],
+        tabItem: 'tranProgress',
+        searchKey: ""
       };
     },
     props: {},
@@ -49,7 +63,12 @@
     created() {
     },
     components: {
-      navMenu, transactMenu, vFooter, tranredSubnav, BreadCrumbs
+      NavMenu,
+      TransactMenu,
+      VFooter,
+      TranredSubnav,
+      BreadCrumbs,
+      RecordList
     }
   };
 </script>
