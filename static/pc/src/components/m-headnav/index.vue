@@ -2,7 +2,6 @@
   <header class="mobile-headnav">
     <a @click="value=true" class="back-link"><i class="iconfont icon-menu"></i></a>
     <slot></slot>
-
     <m-toolbar v-model="value" ></m-toolbar>
   </header>
 </template>

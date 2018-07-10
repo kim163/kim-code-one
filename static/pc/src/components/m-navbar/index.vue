@@ -1,6 +1,6 @@
 <template>
   <div class="m-navbar-main">
-    <router-link :to="{name: item.link}" class="link-item" tag="div" v-for="item in linkList" :key="item.icon">
+    <router-link :to="{name: item.link}" class="link-item" tag="div" v-for="item in linkList" :key="item.icon" v-on:click.native="isConversationList(item.name)">
       <i class="iconfont" :class="item.icon"></i>
       <div class="link-name">{{generateTitle(item.name)}}</div>
     </router-link>
@@ -25,9 +25,9 @@
             link: 'mPendingBuy'
           },
           {
-            icon: 'icon-tran-sell',
-            name: 'transactionRecord.seller',
-            link: 'mPendingSell'
+            icon: 'icon-tablist',
+            name: 'transactionRecord.talkhistory',
+            link: 'mtalkList'
           },
           {
             icon: 'icon-tran-record',
@@ -38,7 +38,12 @@
       }
     },
     methods: {
-      generateTitle
+      generateTitle,
+      isConversationList(name){
+      if(name == 'transactionRecord.talkhistory'){
+         this.$store.commit('CHANGE_CONNECTSTATE',true)
+      }
+  }
     }
   }
 </script>

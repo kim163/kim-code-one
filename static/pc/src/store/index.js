@@ -19,7 +19,9 @@ export default new Vuex.Store({
     },
     language: $localStorage.get('language-sel') || 'zh',
     tokenInfo: null,
-    checkOnline: false
+    checkOnline: false,
+    connectState:false,
+    RongIMEmoji:''
   },
   getters:{     // 用来从 store 获取 Vue 组件数据
     language( state,getters){
@@ -27,6 +29,9 @@ export default new Vuex.Store({
     },
     tokenInfo(state,getters){
       return state.tokenInfo;
+    },
+    connectState(state,getters){
+      return state.connectState
     },
     checkOnline(state,getters){
       return state.checkOnline;
@@ -79,13 +84,18 @@ export default new Vuex.Store({
       }
       Object.assign(state.userData,val||{});
     },
+    [types.CHANGE_CONNECTSTATE](state,val){
+      state.connectState = val
+    },
+
     [types.SHOW_LOGIN](state,val){
       if(_.isMobile() && val){
         router.replace({name:'mobileLogin'});
       }else{
         state.showLogin=val;
       }
-    }
+    },
+
   },
   actions:{    // 可以给组件使用的函数，以此用来驱动事件处理器 mutations
     [types.SET_LANGUAGE]({ commit }, language){

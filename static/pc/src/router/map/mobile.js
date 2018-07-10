@@ -238,5 +238,16 @@ export default [
       noCache:true,
       isMobilePage:"mobile-body"
     }
+  },
+  {
+    path:'/m/talkList',
+    name:'mtalkList',
+    component(resolve){
+      return resolve(require('views/mobile/chatroom/chatList'))
+    },
+    meta:{
+      noCache:true,
+      isMobilePage:'mobile-body'
+    }
   }
 ]

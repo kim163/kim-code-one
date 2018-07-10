@@ -318,8 +318,11 @@
       <chat v-if="chatState" class="chatWindow"
             :detail="$route.params.id"
             :debitNum="DetailList.debitAmount"
-            :sellName = 'DetailList.debitName'
-            :debitMoney="DetailList.debitAmountTwin" ></chat>
+            :creditName = 'DetailList.creditName'
+            :debitMoney="DetailList.debitAmountTwin"
+            :debitName="DetailList.debitName"
+      ></chat>
+
     </transition>
 
   </div>
@@ -334,7 +337,7 @@
   import { transaction,chatWith } from 'api'
   import {mapGetters,mapActions,mapMutations} from 'vuex'
   import Clipboard from 'clipboard';
-  import ChatEntrance from '../chatroom/chatEntrance'
+  import ChatEntrance from '../chatroom/chatList'
   import chat from '../chatroom/chat'
   export default {
     data() {
@@ -387,8 +390,7 @@
         }
 
         transaction.getOrderx(this.request).then(res => {
-          console.log('getOrderx 订单详情记录:');
-          console.log(res.data);
+
           console.log('res.data.status:'+res.data.status);
           if(res.data == '' || res.data == null){
             this.$router.push({name: 'mIndex'});
@@ -403,10 +405,8 @@
             this.$router.back();
             return;
           }
-
           this.DetailList = res.data;
-
-          console.log('图片列表',res.data.creditProofUrlTwin)
+          console.log(this.DetailList,'速度')
           if(res.data.creditProofUrlTwin && res.data.creditProofUrlTwin.length > 1){
             this.DetailList.creditProofUrlTwin = res.data.creditProofUrlTwin.split(',');
           }
@@ -442,7 +442,6 @@
         }).catch(err => {
           toast(err.message);
         });
-
         this.loading = false;
       },
       selCardChange(selCard){

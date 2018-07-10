@@ -78,17 +78,12 @@
               <span class="qrcode-tips">长按二维码保存</span>
             </div>
           </li>
-
         </ul>
-
         <div class="btn-group">
           <!--<input type="button" class="btn btn-block btn-gray" readonly  value="我已付款">-->
-
         </div>
       </div>
-
       <div v-if="detailTypeItem =='申诉与仲裁'">
-
         <div class="trade-time-bar">
           申诉与仲裁
           <span class="fr red">卖方获胜</span>
@@ -133,8 +128,7 @@
         }
         transaction.getCoinTransactionHistory(this.request).then(res => {
           this.loading = false;
-          console.log('订单详情记录:');
-          console.log(res.data);
+
           this.DetailList = res.data;
           //  多个图片分解
           if(res.data.creditProofUrlTwin && res.data.creditProofUrlTwin.length > 1){

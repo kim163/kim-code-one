@@ -124,6 +124,7 @@ export default {
     appealRecord: 'Appeal record',
     buy:'Buy',
     sale:'Sell',
+    talkhistory:'Conversation list',
     buyer:'Buy coins',
     seller:'Sell coins',
     waitingForPayment:'Waiting For Payment',
