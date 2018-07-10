@@ -54,13 +54,9 @@
           {name: 'transactionRecord.appealRecord', value: 'appealRecord'}
         ],
         tabItem: 'tranProgress',
+        tabType: 1,
         searchKey: ""
       };
-    },
-    props: {},
-    methods: {},
-    computed: {},
-    created() {
     },
     components: {
       NavMenu,

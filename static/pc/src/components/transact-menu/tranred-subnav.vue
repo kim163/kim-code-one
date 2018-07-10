@@ -10,7 +10,7 @@
       </span>
 
       <span class="back-hall"> 返回交易大厅</span>
-      <div class="search-box">
+      <div class="search-box" v-if="showSearch">
         <input type="text" class="search-input" v-model.trim="searchKey" placeholder="请输入对方昵称、账号">
         <span class="search-btn" @click="checkSearch">搜索</span>
       </div>
@@ -32,6 +32,10 @@
         type:Array,
         default:[],
         request:true
+      },
+      showSearch:{
+        type:Boolean,
+        default:true
       }
     },
     methods: {

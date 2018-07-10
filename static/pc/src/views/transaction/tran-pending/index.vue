@@ -10,8 +10,9 @@
           <div class="tran-content border-box">
             <div class="row border-bottom">
               <tranred-sub-nav :nav-list="pendingType"
+                               :show-search="false"
                                @changeTab="pendingItem = $event"
-                               @search="searchKey = $event"></tranred-sub-nav>
+                               ></tranred-sub-nav>
             </div>
 
             <div class="group-head">
