@@ -54,23 +54,29 @@ export default {
         switch (status) {
           case RongIMLib.ConnectionStatus.CONNECTED:  //eslint-disable-line
             info = '链接成功'
+            alert(info)
             Vue.$global.bus.$emit('rongState')
             this.$store.commit('CHANGE_CONNECTSTATE',true)
             break
           case RongIMLib.ConnectionStatus.CONNECTING:  //eslint-disable-line
             info = '正在链接'
+            alert(info);
             break
           case RongIMLib.ConnectionStatus.DISCONNECTED:  //eslint-disable-line
             info = '断开连接'
+            alert(info);
             break
           case RongIMLib.ConnectionStatus.KICKED_OFFLINE_BY_OTHER_CLIENT:  //eslint-disable-line
             info = '其他设备登录'
+            alert(info);
             break
           case RongIMLib.ConnectionStatus.DOMAIN_INCORRECT:  //eslint-disable-line
             info = '域名不正确'
+            alert(info);
             break
           case RongIMLib.ConnectionStatus.NETWORK_UNAVAILABLE:  //eslint-disable-line
             info = '网络不可用'
+            alert(info);
             break
         }
       }
