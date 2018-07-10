@@ -52,12 +52,11 @@
   import Scroll from 'vue-slim-better-scroll'
   import { generateTitle } from '@/util/i18n'
   import NoDataTip from 'components/no-data-tip'
-  import CountDown from 'components/countdown'
+  import Countdown from 'components/countdown'
   import {
     getOrderxPage,
     getTransactionPage
   } from 'api/transaction'
-  import Countdown from "../../../components/countdown/index";
   export default {
     name: "transaction-list",
     data() {

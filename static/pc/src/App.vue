@@ -124,7 +124,7 @@
         console.log('STOMP: Attempting connection')
         if(this.connectUrl != ''){
           let ws = new WebSocket(this.connectUrl);
-          this.client = Stomp.over(ws);
+          this.client = Stomp.over(ws,{debug:process.env.NODE_ENV != 'production'});
           this.client.heartbeat.outgoing = 30000;
           this.client.heartbeat.incoming = 30000;
           this.client.connect(this.connectUser, this.connectPsw, this.stompSuccessCallback, this.stompFailureCallback);
