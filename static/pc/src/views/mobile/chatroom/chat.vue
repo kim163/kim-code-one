@@ -130,7 +130,6 @@
 </template>
 
 <script>
-
   import BScroll from 'vue-slim-better-scroll';
   import mHeader from "components/m-header"
   import {chatWith} from 'api'
