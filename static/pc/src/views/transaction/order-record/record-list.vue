@@ -111,13 +111,13 @@
             debit: this.userId,
             types:[11,12]
           })
-        }else{
+        }
+        if(this.searchKey != ''){
           Object.assign(request,{
-            credit: this.userId,
-            debit: this.userId,
-            types:[11,12]
+            userId: this.searchKey
           })
         }
+        console.log('record request',request)
         let api = _.noop()
         switch (this.tabType){
           case 1:

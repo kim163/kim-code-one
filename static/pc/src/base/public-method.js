@@ -327,7 +327,7 @@ _.mixin(
       function stompConnect () {
         console.log('STOMP: Attempting connection')
         let ws = new WebSocket(connectUrl);
-        client = Stomp.over(ws);
+        client = Stomp.over(ws,{debug:process.env.NODE_ENV != 'production'});
         client.heartbeat.outgoing = 30000;
         client.heartbeat.incoming = 30000;
         client.connect(connectUser, connectPsw, stompSuccessCallback, stompFailureCallback)
