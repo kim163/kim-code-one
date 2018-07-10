@@ -50,18 +50,8 @@
           <p class="c-gray">{{$t('postPend.unit')}} 0.01 CNY <a class="c-blue" @click="allSell()">{{$t('postPend.allsell')}}</a></p>
         </div>
         <div class="input-box">
-<<<<<<< HEAD
-<<<<<<< HEAD
-          <div class="input-div"><input class="my-input" placeholder="挂单卖出数量" v-model="sellAmount"> UET</div>
-          <div  class="input-div"><input class="my-input" :value="sellAmountCny" placeholder="=总数量"> CNY</div>
-=======
-          <div class="input-div"><input class="my-input" placeholder="挂单卖出数量" v-model.number="buyAmount" maxlength="9"> UET</div>
-          <div  class="input-div"><input class="my-input readonly-txt" :value="buyAmountCny" placeholder="=总数量" readonly> CNY</div>
->>>>>>> feature/tranList
-=======
           <div class="input-div"><input class="my-input" placeholder="挂单卖出数量" v-model.number="sellAmount" min="1" max="200000000"> UET</div>
           <div  class="input-div"><input class="my-input readonly-txt" :value="sellAmountCny" placeholder="=总数量" readonly> CNY</div>
->>>>>>> a67521f9ef27f2c8d7117f4b20a4d97a8f1ab7a4
           <div  class="input-div">
             <select class="my-input" v-model="buyTypeSell">
               <option value="">{{$t('postPend.selectPay')}}</option>
@@ -73,10 +63,6 @@
             </select>
           </div>
           <div >
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> a67521f9ef27f2c8d7117f4b20a4d97a8f1ab7a4
             <p class="s-title">{{$t('postPend.sellerRequest')}}</p>
             <div  class="input-div"><input class="my-input" v-model.number="minSellAmount" :placeholder="$t('postPend.minBuy')" min="1" max="200000000"> UET</div>
             <div  class="input-div">
@@ -86,13 +72,6 @@
                  <option value="0">不要求提供付款说明</option>
               </select>
             </div>
-<<<<<<< HEAD
-=======
-            <p class="s-title">买家要求</p>
-            <div  class="input-div"><input class="my-input" v-model.number="minSellAmount" placeholder="卖家的最低买入数量" maxlength="9"> UET</div>
->>>>>>> feature/tranList
-=======
->>>>>>> a67521f9ef27f2c8d7117f4b20a4d97a8f1ab7a4
           </div>
         </div>
         <div class="line-box"></div>

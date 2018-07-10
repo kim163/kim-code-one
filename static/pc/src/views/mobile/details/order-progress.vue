@@ -297,6 +297,7 @@
                    </viewer>
                  </li>
                </ul>
+              <p class="proof-twintip">提示：点击缩略图可放大查看</p>
          </div>
       </div>
 
@@ -870,9 +871,12 @@
 
   .pic-box{
     padding:0 r(15)  r(30) r(15);
+    .proof-twintip{
+      color: #8F8F8F;
+    }
   }
   .pic-ul{
-    padding:r(10) 0 0;
+    padding:r(10) 0;
     overflow:hidden;
     li{
       display: block;
