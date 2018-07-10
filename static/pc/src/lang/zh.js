@@ -214,5 +214,11 @@ export default {
     bindTipLast:'的账号至久安钱包',
     bindNow:'立即绑定',
     businessBindingRecord:'商户绑定记录',
+  },
+  component:{
+    pleaseSelCard:'请选择银行卡',
+    pleaseSelPayMet:'请选择您的支付方式',
+    otherPayMethod:'其他支付方式',
+    uploadUpThree:'最多可上传三张'
   }
 }

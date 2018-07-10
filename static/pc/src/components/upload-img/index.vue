@@ -13,7 +13,7 @@
    </div>
 
    <div class="upload-tipsinfo" v-show="uploadImgSet.isShowUploadTip">
-      {{uploadImgSet.uploadImgTips}}
+      {{$t(uploadImgSet.uploadImgTips)}}
    </div>
  </div>
 </template>

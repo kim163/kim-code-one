@@ -213,5 +213,11 @@ export default {
     bindTipLast:'Account to Joan Wallet',
     bindNow:'Bind Now',
     businessBindingRecord:'Business binding record',
+  },
+  component:{
+    pleaseSelCard:'Select bank card',
+    pleaseSelPayMet:'Select payment method',
+    otherPayMethod:'Other payment methods',
+    uploadUpThree:'Upload up to three'
   }
 }
