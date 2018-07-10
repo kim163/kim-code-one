@@ -33,7 +33,7 @@
       }
     },
     computed:{
-      ...mapGetters(["islogin"]),
+      ...mapGetters(["userData", "userId", "islogin"]),
       isExclude(){
         return this.$route.meta.cache ? "" : this.$route.name;
       }
@@ -145,6 +145,7 @@
       }
     },
     components:{
+
     },
     mounted() {
       if (this.islogin) {

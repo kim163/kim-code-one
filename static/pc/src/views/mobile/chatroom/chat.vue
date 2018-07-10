@@ -58,14 +58,13 @@
                   <div class="contents">{{list.content.content}}</div>
                   <div class="user_symbol"></div>
             </div>
-            <div class="chat_container">
-              <div v-if="list.messageType=='ImageMessage'">
+            <div class="chat_container" v-if="list.messageType=='ImageMessage'">
                 <div class="" style="flex:1;"></div>
                 <div class="contents">
                   <img :src="list.content.imageUri" alt="" class="contents_image">
                 </div>
+                <div class="user_symbol"></div>
               </div>
-            </div>
         </div>
         <div v-for="list in chatArr" class="msg-item">
           <!--发送消息-->
