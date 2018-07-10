@@ -16,14 +16,27 @@
       fixed:{
         type:Boolean,
         default:false
+      },
+      mheadSet: {
+        type: Object,
+        default() {
+          return {
+            returnBtnFun:true,      // 是否使用默认的返回按钮事件
+            returnBtnEvent:''        // 返回按钮事件调用的函数名
+          }
+        }
       }
     },
     methods: {
       doClick(){
-        if (this.back && typeof this.back == 'function') {
-          this.back();
-        } else {
-          this.$router.back();
+        if(this.mheadSet.returnBtnFun){
+           if (this.back && typeof this.back == 'function') {
+               this.back();
+           } else {
+              this.$router.back();
+           }
+        }else {
+          this.$emit(this.mheadSet.returnBtnEvent);
         }
       }
     },
