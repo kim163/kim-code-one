@@ -25,7 +25,7 @@
             <div class="form-input-box">
               <span class="left">{{postItem == 'buyer' ? $t('postPend.buyAmount') : $t('postPend.sellAmount')}}：</span>
               <span class="ps-input fl">
-              <input type="text" class="ps-input-in" v-model="buyAmount">
+              <input type="text" class="ps-input-in" v-model.number="buyAmount" maxlength="9">
               <span class="i-uet">UET</span>
             </span>
               <span class="fl">
@@ -51,7 +51,7 @@
               <span class="ps-input fl">
                 <input type="text" class="ps-input-in"
                        :placeholder="postItem == 'buyer' ? $t('postPend.minBuy') : $t('postPend.minSell')"
-                       v-model="minAmount">
+                       v-model.number="minAmount">
                 <span class="i-uet">UET</span>
               </span>
             </div>
@@ -139,7 +139,7 @@
     computed: {
       ...mapGetters(["userData"]),
       buyAmountCny() {
-        return Number(this.buyAmount) * 0.01;
+        return (Number(this.buyAmount) * 0.01).toFixed(2);
       }
     },
     methods: {
@@ -163,12 +163,20 @@
           toast('数量不能为空');
           return;
         }
+        if(!_.isInteger(this.buyAmount) || this.buyAmount<1){
+          toast('请输入整数数量');
+          return;
+        }
         if (this.payType == '' || !this.payType) {
           toast('支付方式不能为空');
           return;
         }
         if (this.minAmount == '' || !this.minAmount || this.minAmount < 0) {
           toast('最低买入数量输入不正确');
+          return;
+        }
+        if(!_.isInteger(this.minAmount) || this.minAmount<1){
+          toast('请输入整数最低买入数量');
           return;
         }
         if (this.postItem === 'seller' && (this.proofType == '' || !this.proofType)) {

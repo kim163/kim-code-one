@@ -22,12 +22,12 @@
        <div class="tranbuy-group">
           <div class="tranbuy-info cfx">
               <label> {{$t('transactionHome.buyQuantity')}} </label>
-              <input class="my-input" type="number" :placeholder="buyMinUnit" v-model="buyAmountUet">
+              <input class="my-input" type="number" :placeholder="buyMinUnit" v-model.number="buyAmountUet" maxlength="9">
               <span> UET </span>
           </div>
          <div class="tranbuy-info cfx">
               <label> {{$t('transactionHome.convertAmount')}} </label>
-              <input class="my-input" type="text" :value="buyAmountCny" :placeholder="$t('transactionHome.convertAmount')">
+              <input class="my-input readonly-txt" type="text" :value="buyAmountCny" :placeholder="$t('transactionHome.convertAmount')" readonly>
               <span> CNY </span>
          </div>
          <div class="tranbuy-tips cfx">
@@ -125,6 +125,8 @@
       checkVerif(){
         if(this.buyAmountUet =='' || !this.buyAmountUet){
           toast('请您输入正确的购买数量');
+        }else if(!_.isInteger(this.buyAmountUet) || this.buyAmountUet<1){
+          toast('请您输入整数购买数量');
         }else if(this.buyAmountUet < this.item.minUnit){
           toast('您输入的数量低于最低买入数量');
         }else if(this.buyAmountUet > this.item.amount){
@@ -258,6 +260,9 @@
               border: 1px solid #D8D8D8;
               padding: 0 r(10);
               @include  f(15px);
+           }
+           .readonly-txt{
+             background: transparent;
            }
            span{
              position: absolute;

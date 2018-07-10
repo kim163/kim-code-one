@@ -180,8 +180,8 @@ export default {
     confirmYes:'确认',
     buyAmount:'买入数量',
     sellAmount:'卖出数量',
-    quickBuy:'快速买入',
-    quickSell:'快速卖出',
+    quickBuy:'快速买币',
+    quickSell:'快速卖币',
   },
   scorllCfg:{
     pullDownText:'刷新成功',

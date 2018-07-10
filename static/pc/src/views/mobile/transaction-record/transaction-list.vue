@@ -164,7 +164,13 @@
           this.$refs.scroll.scrollTo(0,this.scrollY,0)
         }, 100)
       }
+      Vue.$global.bus.$on('update:tranList',() => {
+        this.getTranList()
+      })
     },
+    deactivated(){
+      Vue.$global.bus.$off('update:tranList')
+    }
   }
 </script>
 
