@@ -120,9 +120,9 @@
             types:[11,12]
           })
         }else {
-          // Object.assign(request,{
-          //   userId: this.userId
-          // })
+          Object.assign(request,{
+            userId: this.userId
+          })
         }
         if(this.searchKey != ''){
           if(this.tabType != 3){
