@@ -67,26 +67,13 @@
       }
     },
     watch:{
-      searchKey(val){
-        if(val != ''){
-          this.getData()
-        }
-      },
       islogin(val){
         if(val){
           this.getData()
         }
       },
     },
-    model:{
-      prop: 'searchKey',
-      event: 'changeSearchKey'
-    },
     props:{
-      searchKey:{
-        type:String,
-        default:''
-      },
       tabType: {  // 1是进行中 2是已下架
         type: Number,
         default: 1
@@ -122,9 +109,6 @@
             statuses:[11,12],
           })
         }
-        if(this.searchKey != ''){
-          //添加搜索字段
-        }
         console.log(request)
         api(request).then(res => {
           if(res.code === 10000){
@@ -134,7 +118,6 @@
             }else{
               this.noData = false
             }
-            //this.$emit('changeSearchKey','')
             this.orderList = [...res.data]
             this.pageInfo = res.pageInfo
           }else{
