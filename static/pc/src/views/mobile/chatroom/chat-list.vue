@@ -72,14 +72,11 @@
       Vue.$global.bus.$on('rongState', () => {
         this.getConversationList();
       })
-
       if (this.connectState) {
          console.log('光辉碎玉')
        // this.clearConversationList()
         this.getConversationList()
-
       }
-
     },
 
     computed: {

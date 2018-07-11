@@ -14,7 +14,8 @@ export default {
     this.getToken()
   },
   async getToken() {
-    const userData = JSON.parse(aesutil.decrypt($localStorage.get('userData')))
+      _.initRongyun()
+     const userData = JSON.parse(aesutil.decrypt($localStorage.get('userData')))
     let params = {
       userId: userData.userId,
       nickName: userData.nickname

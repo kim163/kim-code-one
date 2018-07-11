@@ -46,28 +46,46 @@
       </p>
       <b-scroll
         ref="scroll"
-        :autoUpdate = "true"
-        :pullUp = "false"
-        :pullDown = "false"
+        :autoUpdate="true"
+        :pullUp="false"
+        :pullDown="false"
       >
         <!--历史消息-->
         <div v-for="list in historyArr" class="msg-item">
           <!--文字消息 和图片消息   区分是否是自己发的-->
-            <div class="chat_container" v-if="list.messageType=='TextMessage'">
-                  <div style="flex:1"></div>
-                  <div class="contents">{{list.content.content}}</div>
-                  <div class="user_symbol"></div>
+          <!--自己发的-->
+          <div class="chat_container"
+               v-if="list.messageType=='TextMessage'&&list.content.extra.nickName==userData.nickname">
+            <div style="flex:1"></div>
+            <div class="contents" v-html="symolEmoji.symbolToEmoji(list.content.content)"></div>
+            <div class="user_symbol"></div>
+          </div>
+          <!--别人发的-->
+          <div v-if="list.messageType=='TextMessage'&&list.content.extra.nickName!==userData.nickname">
+            <div class="user_symbol_next" :class="{'isSeller':isSeller}"></div>
+            <div class="contents_next" v-html="symolEmoji.symolEmoji(list.content.content)"></div>
+            <div class="" style="flex: 1"></div>
+          </div>
+          <!--自己发的-->
+          <div class="chat_container" v-if="list.messageType=='ImageMessage'&&list.content.extra.nickName==userData.nickname">
+            <div style="flex:1;"></div>
+            <div class="contents">
+              <viewer :images="list.picArr">
+                <img :src="list.content.imageUri" alt="" class="contents_image">
+              </viewer>
             </div>
-            <div class="chat_container" v-if="list.messageType=='ImageMessage'">
-                <div class="" style="flex:1;"></div>
-                <div class="contents">
-                  <viewer :images="list.picArr">
-                    <img :src="list.content.imageUri" alt="" class="contents_image">
-                  </viewer>
-
-                </div>
-                <div class="user_symbol"></div>
-              </div>
+            <div class="user_symbol"></div>
+          </div>
+          <!--别人发的-->
+          <div class="chat_container" v-if="list.messageType=='ImageMessage'&&list.content.extra.nickName!==userData.nickname">
+            <div class="user_symbol_next" :class="{'isSeller':isSeller}"></div>
+            <div class="contents_next">
+              <viewer :images="list.img">
+                <img :src="list.msg" alt="" class="contents_image">
+              </viewer>
+            </div>
+            <div class="" style="flex: 1"></div>
+          </div>
         </div>
         <div v-for="list in chatArr" class="msg-item">
           <!--发送消息-->
@@ -105,7 +123,6 @@
         </div>
       </b-scroll>
     </div>
-
     <!--输入框-->
     <div class="input_chatbox ">
       <div class="chatboxNext">
@@ -135,7 +152,8 @@
   import BScroll from 'vue-slim-better-scroll';
   import mHeader from "components/m-header"
   import {chatWith} from 'api'
-  import {mapGetters,mapMutations} from 'vuex'
+  import {mapGetters, mapMutations} from 'vuex'
+
   export default {
     data() {
       return {
@@ -144,6 +162,7 @@
         messageValue: '',
         needSend: false,
         token: '',
+        symolEmoji: '',
         croppa: {},
         dataUrl: {},
         isChangeValue: true,
@@ -160,12 +179,12 @@
         size: '',
         name: '',
         file: '',
-        demoArr:[],
+        demoArr: [],
         dataURLNext: '',
-        demoTest:'',
+        demoTest: '',
         isSeller: '',
-        sellName:'',
-        historyArr:'',
+        sellName: '',
+        historyArr: '',
         config: {
           size: 24, // 大小, 默认 24, 建议15 - 55
           url: '//f2e.cn.ronghub.com/sdk/emoji-48.png', // 所有 emoji 的背景图片
@@ -190,13 +209,13 @@
         type: String,
         default: ''
       },
-      creditName:{
-        type:String,
-        default:''
+      creditName: {
+        type: String,
+        default: ''
       },
 
     },
-    computed:{
+    computed: {
       ...mapGetters([
         'userData',
         'userId',
@@ -229,19 +248,19 @@
         this.isSeller = false
       }
       /*加载bettorScroll*/
-      Vue.$global.bus.$on('textMessage',(message)=>{
+      Vue.$global.bus.$on('textMessage', (message) => {
         this.chatArr.push(message)
       })
-      Vue.$global.bus.$on('picMessage',(val)=>{
+      Vue.$global.bus.$on('picMessage', (val) => {
         this.chatArr.push(val)
       })
-      if(this.connectState){
-          this.getHistoryMessage();
+      if (this.connectState) {
+        this.getHistoryMessage();
       }
       console.log('bbb')
     },
-    mounted(){
-      this.$nextTick(()=>{
+    mounted() {
+      this.$nextTick(() => {
         this.scroll = this.$refs.scroll
         this.scrollToBot()
       })
@@ -252,13 +271,13 @@
       scrollToBot() {
         this.$nextTick(() => {
           if (this.chatArr.length == 0) {
-            return ;
+            return;
           }
           const imgArr = document.getElementsByClassName('msg-item')
           const len = imgArr.length
           for (let i = 0; i < len; i++) {
             this.scroll.refresh();
-            this.scroll.scrollToElement(document.querySelectorAll('.msg-item')[this.chatArr.length-1],333)
+            this.scroll.scrollToElement(document.querySelectorAll('.msg-item')[this.chatArr.length - 1], 333)
           }
         })
       },
@@ -317,7 +336,7 @@
               context.drawImage(img, 0, 0, targetWidth, targetHeight);
               // canvas转为blob并上传
               this.dataURL = canvas.toDataURL('image/png');
-             // this.chatArr.push({msg: message.content.imageUri, user: 4, img: [message.content.imageUri]})
+              // this.chatArr.push({msg: message.content.imageUri, user: 4, img: [message.content.imageUri]})
               /*this.demoArr.push({img:[this.dataURL]});*/
               var blob = this.dataURItoBlob(this.dataURL);
               const RamdomValue = Math.random();
@@ -329,7 +348,7 @@
                 if (res.code == 10000) {
                   this.picUrl = res.data.url;
                   this.uploadState = true;
-                  this.demoArr.push({img:[this.picUrl]});
+                  this.demoArr.push({img: [this.picUrl]});
                 } else {
                   this.uploadState = false
                 }
@@ -342,22 +361,22 @@
           }
         }
       },
-      getHistoryMessage(){
+      getHistoryMessage() {
         let conversationType = RongIMLib.ConversationType.GROUP //eslint-disable-line
         let targetId = this.detail
         let timestrap = 0 // 默认传 null，若从头开始获取历史消息，请赋值为 0 ,timestrap = 0;
         let count = 20 // 范围0-20条 可多次获取
+        this.symolEmoji = RongIMLib.RongIMEmoji;
+        RongIMLib.RongIMClient.getInstance().getHistoryMessages(conversationType, targetId, timestrap, count, {
+          onSuccess: ((list, hasMsg) => {
+            /*区分图片和消息*/
+            console.log(list, '是断开连接撒旦')
 
-        RongIMLib.RongIMClient.getInstance().getHistoryMessages(conversationType,targetId,timestrap,count,{
-          onSuccess:((list,hasMsg)=>{
-              /*区分图片和消息*/
-            console.log(list,'是断开连接撒旦')
-
-              this.historyArr = list;
+            this.historyArr = list;
 
           }),
-          onError:function (error) {
-            console.log(error,'失败记录；')
+          onError: function (error) {
+            console.log(error, '失败记录；')
           }
 
         })
@@ -479,27 +498,26 @@
       showMoreFunction() {
         this.isShowMore = !this.isShowMore
         document.getElementsByClassName('emoji_area')[0].style.display = 'none'
-       // this.scrollToBot()
+        // this.scrollToBot()
       },
       sendMessage() {
-       // var div = document.getElementsByClassName('wrapper_box')[0];
-     //   div.scrollTop = div.scrollHeight;
+        // var div = document.getElementsByClassName('wrapper_box')[0];
+        //   div.scrollTop = div.scrollHeight;
 
-      //  this.scroll.scrollToElement(document.querySelector('.msg-item')[this.chatArr.length>=1?this.chatArr.length-1:0])
-       // console.log('aaa')
+        //  this.scroll.scrollToElement(document.querySelector('.msg-item')[this.chatArr.length>=1?this.chatArr.length-1:0])
+        // console.log('aaa')
         let conversationtype = RongIMLib.ConversationType.GROUP;
         let targetId = this.detail;
         //改变发送messageValue的值因为用户会发送表情
-        console.log(RongIMLib.RongIMEmoji,'速度')
-        this.messageValue = RongIMLib.RongIMEmoji.symbolToEmoji(this.messageValue);
-        let extraInfo={
-           'amount': this.debitNum,
-          'isSeller':this.isSeller,
-          'nickName':this.userData.nickname,
+        this.messageValue = this.symolEmoji.symbolToEmoji(this.messageValue);
+        let extraInfo = {
+          'amount': this.debitNum,
+          'isSeller': this.isSeller,
+          'nickName': this.userData.nickname,
           'time': this.formatMsgTime(new Date().getTime()),
-          'targetId':this.detail,
-          'debitName':this.debitName,
-          'debitMoney':this.debitMoney
+          'targetId': this.detail,
+          'debitName': this.debitName,
+          'debitMoney': this.debitMoney,
         };
         let msg = new RongIMLib.TextMessage({content: this.messageValue, extra: extraInfo});
 
@@ -531,9 +549,6 @@
                 case RongIMLib.ErrorCode.NOT_IN_CHATROOM:
                   info = '不在聊天室中';
                   break;
-                default :
-                  info = x;
-                  break;
               }
               console.log('发送失败:' + info);
             }
@@ -542,10 +557,10 @@
       },
       formatMsgTime(timespan) {
         var dateTime = new Date(timespan);
-        var month = dateTime.getMonth() + 1>=10?dateTime.getMonth()+1:'0'+dateTime.getMonth();
-        var day = dateTime.getDate()>=10?dateTime.getDate():'0'+dateTime.getDate();
-        var hour = dateTime.getHours()>=10?dateTime.getHours():'0'+dateTime.getHours();
-        var minute = dateTime.getMinutes()>=10?dateTime.getMinutes():'0'+dateTime.getMinutes();
+        var month = dateTime.getMonth() + 1 >= 10 ? dateTime.getMonth() + 1 : '0' + dateTime.getMonth();
+        var day = dateTime.getDate() >= 10 ? dateTime.getDate() : '0' + dateTime.getDate();
+        var hour = dateTime.getHours() >= 10 ? dateTime.getHours() : '0' + dateTime.getHours();
+        var minute = dateTime.getMinutes() >= 10 ? dateTime.getMinutes() : '0' + dateTime.getMinutes();
         var timeSpanStr;
         timeSpanStr = month + '-' + day + ' ' + hour + ':' + minute;
         return timeSpanStr;
@@ -556,18 +571,18 @@
         console.log(this.base64.length, 'bse64长度')
         console.log(this.picUrl, '速度')
 
-          let extraInfo={
-            'amount': this.debitNum,
-            'isSeller':this.isSeller,
-            'nickName':this.userData.nickname,
-            'time': this.formatMsgTime(new Date().getTime()),
-            'targetId':this.detail,
-            'debitName':this.debitName,
-            'debitMoney':this.debitMoney,
-            picArr: [this.picUrl]
-          };
+        let extraInfo = {
+          'amount': this.debitNum,
+          'isSeller': this.isSeller,
+          'nickName': this.userData.nickname,
+          'time': this.formatMsgTime(new Date().getTime()),
+          'targetId': this.detail,
+          'debitName': this.debitName,
+          'debitMoney': this.debitMoney,
+          picArr: [this.picUrl]
+        };
 
-        let msg = new RongIMLib.ImageMessage({content: this.base64, imageUri: this.picUrl,extra:extraInfo})
+        let msg = new RongIMLib.ImageMessage({content: this.base64, imageUri: this.picUrl, extra: extraInfo})
         RongIMClient.getInstance().sendMessage(conversationtype, targetId, msg, {
           onSuccess: ((message) => {
             this.chatArr.push({msg: message.content.imageUri, user: 3, img: [message.content.imageUri]})
@@ -581,7 +596,7 @@
         })
       }
     },
-    beforeDestroy(){
+    beforeDestroy() {
       Vue.$global.bus.$off('textMessage')
       Vue.$global.bus.$off('picMessage')
     },
@@ -594,6 +609,7 @@
 
 <style lang="scss" scoped>
   @import "~assets/scss/mobile";
+
   .box {
     display: flex;
 
@@ -606,6 +622,7 @@
   .box-ver {
     flex-direction: column;
   }
+
   .fr {
     float: right;
   }
