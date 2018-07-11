@@ -337,7 +337,7 @@
   import { transaction,chatWith } from 'api'
   import {mapGetters,mapActions,mapMutations} from 'vuex'
   import Clipboard from 'clipboard';
-  import ChatEntrance from '../chatroom/chatList'
+  import ChatEntrance from '../chatroom/chat-list'
   import chat from '../chatroom/chat'
   export default {
     data() {

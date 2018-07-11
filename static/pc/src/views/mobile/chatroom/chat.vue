@@ -61,7 +61,10 @@
             <div class="chat_container" v-if="list.messageType=='ImageMessage'">
                 <div class="" style="flex:1;"></div>
                 <div class="contents">
-                  <img :src="list.content.imageUri" alt="" class="contents_image">
+                  <viewer :images="list.picArr">
+                    <img :src="list.content.imageUri" alt="" class="contents_image">
+                  </viewer>
+
                 </div>
                 <div class="user_symbol"></div>
               </div>
@@ -349,8 +352,9 @@
           onSuccess:((list,hasMsg)=>{
               /*区分图片和消息*/
             console.log(list,'是断开连接撒旦')
-             this.historyArr=list
-            console.log(this.historyArr,'撒赖扩大就')
+
+              this.historyArr = list;
+
           }),
           onError:function (error) {
             console.log(error,'失败记录；')
@@ -485,7 +489,6 @@
        // console.log('aaa')
         let conversationtype = RongIMLib.ConversationType.GROUP;
         let targetId = this.detail;
-
         //改变发送messageValue的值因为用户会发送表情
         console.log(RongIMLib.RongIMEmoji,'速度')
         this.messageValue = RongIMLib.RongIMEmoji.symbolToEmoji(this.messageValue);
@@ -560,7 +563,8 @@
             'time': this.formatMsgTime(new Date().getTime()),
             'targetId':this.detail,
             'debitName':this.debitName,
-            'debitMoney':this.debitMoney
+            'debitMoney':this.debitMoney,
+            picArr: [this.picUrl]
           };
 
         let msg = new RongIMLib.ImageMessage({content: this.base64, imageUri: this.picUrl,extra:extraInfo})

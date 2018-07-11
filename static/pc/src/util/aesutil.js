@@ -15,6 +15,7 @@ export default {
     return encrypted.toString()
   },
   decrypt: (data) => {
+   if(data){
     let encrypted = data.toString().replace(/\r|\n/g, '')
     let decrypted = CryptoJS.AES.decrypt(encrypted, key, {
       iv: iv,
@@ -22,6 +23,7 @@ export default {
       padding: CryptoJS.pad.Pkcs7})
 
     return decrypted.toString(CryptoJS.enc.Utf8)
+   }
   }
 
 }

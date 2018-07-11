@@ -240,10 +240,10 @@ export default [
     }
   },
   {
-    path:'/m/talkList',
+    path:'/m/talk-list',
     name:'mtalkList',
     component(resolve){
-      return resolve(require('views/mobile/chatroom/chatList'))
+      return resolve(require('views/mobile/chatroom/chat-list'))
     },
     meta:{
       noCache:true,

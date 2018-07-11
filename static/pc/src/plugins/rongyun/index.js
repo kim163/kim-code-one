@@ -1,7 +1,7 @@
 import {aesutil} from '@/util';
 import {chatWith} from 'api'
 import {$localStorage, $sessionStorage} from '@/util/storage'
-
+import store from '../../store';	//加载状态管理器
 export default {
   install(Vue) {
     Vue.prototype.$loadScript('https://cdn.ronghub.com/RongIMLib-2.3.0.js')
@@ -49,15 +49,14 @@ export default {
   },
   setConnectStatusListener() {
     RongIMClient.setConnectionStatusListener({  //eslint-disable-line
-      onChanged: function (status) {
+      onChanged:(status) => {
         let info = null
         switch (status) {
           case RongIMLib.ConnectionStatus.CONNECTED:  //eslint-disable-line
             info = '链接成功'
-
             Vue.$global.bus.$emit('rongState')
-            this.$store.commit('CHANGE_CONNECTSTATE',true)
-            break
+            store.commit('CHANGE_CONNECTSTATE',true)
+            break;
           case RongIMLib.ConnectionStatus.CONNECTING:  //eslint-disable-line
             info = '正在链接'
 
@@ -76,7 +75,7 @@ export default {
             break
           case RongIMLib.ConnectionStatus.NETWORK_UNAVAILABLE:  //eslint-disable-line
             info = '网络不可用'
-       
+
             break
         }
       }
