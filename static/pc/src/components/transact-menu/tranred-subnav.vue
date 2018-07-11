@@ -27,6 +27,7 @@
         searchKey:''
       }
     },
+
     props:{
       navList:{
         type:Array,
@@ -44,13 +45,11 @@
         this.navIndex = index
         this.searchKey = ''
         this.$emit('changeTab',val)
+        this.$emit('searchKey',this.searchKey)
       },
       checkSearch(){
-        if(this.searchKey === ''){
-          toast('请输入搜索内容')
-        }else{
-          this.$emit('search',this.searchKey)
-        }
+        this.$emit('search',true)
+        this.$emit('searchKey',this.searchKey)
       }
     },
   };

@@ -70,11 +70,15 @@
       }
     },
     watch:{
-      searchKey(val){
-        if(val != ''){
+      search(val){
+        if(val){
           this.getDataList()
         }
       },
+    },
+    model:{
+      prop: 'search',
+      event: 'change'
     },
     props: {
       tabType: {  //1交易中  2交易完成  3申诉记录
@@ -86,6 +90,10 @@
         type:String,
         default:''
       },
+      search:{
+        type:Boolean,
+        default:false
+      }
     },
     computed: {
       ...mapGetters([
@@ -112,14 +120,21 @@
             types:[11,12]
           })
         }else {
-          Object.assign(request,{
-            userId: this.userId
-          })
+          // Object.assign(request,{
+          //   userId: this.userId
+          // })
         }
         if(this.searchKey != ''){
-          Object.assign(request,{
-            userId: this.searchKey
-          })
+          if(this.tabType != 3){
+            Object.assign(request,{
+              debitName: this.searchKey,
+              creditName: this.searchKey
+            })
+          }else{
+            Object.assign(request,{
+              nickname: this.searchKey
+            })
+          }
         }
         console.log('record request',request)
         let api = _.noop()
@@ -151,6 +166,8 @@
           }
         }).catch(err => {
           toast(err)
+        }).finally(() => {
+          this.$emit('change',false)
         })
       }
     },

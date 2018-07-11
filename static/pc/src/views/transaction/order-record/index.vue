@@ -9,15 +9,16 @@
           <div class="row border-bottom">
             <tranred-subnav :nav-list="navListData"
                             @changeTab="tabItem = $event"
-                            @search="searchKey = $event"></tranred-subnav>
+                            @search="search = $event"
+                            @searchKey="searchKey = $event"></tranred-subnav>
             <transition name="list-animate">
-              <record-list v-if="tabItem === 'tranProgress'" :tab-type="1" :search-key="searchKey"></record-list>
+              <record-list v-if="tabItem === 'tranProgress'" v-model="search" :tab-type="1" :search-key="searchKey"></record-list>
             </transition>
             <transition name="list-animate">
-              <record-list v-if="tabItem === 'tranComplete'" :tab-type="2" :search-key="searchKey"></record-list>
+              <record-list v-if="tabItem === 'tranComplete'" v-model="search" :tab-type="2" :search-key="searchKey"></record-list>
             </transition>
             <transition name="list-animate">
-              <record-list v-if="tabItem === 'appealRecord'" :tab-type="3" :search-key="searchKey"></record-list>
+              <record-list v-if="tabItem === 'appealRecord'" v-model="search" :tab-type="3" :search-key="searchKey"></record-list>
             </transition>
           </div>
         </div>
@@ -55,7 +56,8 @@
         ],
         tabItem: 'tranProgress',
         tabType: 1,
-        searchKey: ""
+        searchKey: "",
+        search:false,
       };
     },
     components: {
