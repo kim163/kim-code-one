@@ -72,13 +72,22 @@
       Vue.$global.bus.$on('rongState', () => {
         this.getConversationList();
       })
+
+      console.log(this.connectState,'撒孔家店了啊说得好')
       if (this.connectState) {
-         console.log('光辉碎玉')
        // this.clearConversationList()
         this.getConversationList()
+
+      }
+
+      },
+    watch:{
+      connectState(val){
+        if(val){
+          this.getConversationList()
+        }
       }
     },
-
     computed: {
       ...mapGetters([
         'userId',
@@ -92,14 +101,13 @@
         RongIMClient.getInstance().getConversationList({
           onSuccess: (list) => {
             this.chatArr = list
-            console.log(list, '速度')
             for (let i = 0; i < list.length; i++) {
               this.timeList = list[i].latestMessage.sentTime
             }
           },
           onError: function (error) {
             // do something...
-            console.log('这是' + error)
+
           }
         }, null);
       },
@@ -107,7 +115,7 @@
         RongIMClient.getInstance().clearConversations({
           onSuccess: function () {
             // 清除会话成功
-            console.log('清空绘画')
+
           },
           onError: function (error) {
             // error => 清除会话错误码。

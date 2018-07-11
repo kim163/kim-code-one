@@ -255,7 +255,9 @@
         this.chatArr.push(val)
       })
       if (this.connectState) {
+        this.symolEmoji = RongIMLib.RongIMEmoji;
         this.getHistoryMessage();
+
       }
       console.log('bbb')
     },

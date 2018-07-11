@@ -4,32 +4,38 @@ import {$localStorage, $sessionStorage} from '@/util/storage'
 import store from '../../store';	//加载状态管理器
 export default {
   install(Vue) {
-    Vue.prototype.$loadScript('https://cdn.ronghub.com/RongIMLib-2.3.0.js')
-      .then(() => {
-        this.callback()
+    if(store.getters.islogin){
+      Vue.prototype.$loadScript('https://cdn.ronghub.com/RongIMLib-2.3.0.js')
+        .then(() => {
+          this.callback()
+        })
+    }else{
+      Vue.$global.bus.$on('initRongyun',()=>{
+        this.install(Vue)
       })
+    }
   },
   callback() {
     RongIMLib.RongIMClient.init('x18ywvq85ahuc', null, {navi: 'http://dc-jiuan-im-nav-pro.com'}) //eslint-disable-line
     this.getToken()
   },
-  async getToken() {
-      _.initRongyun()
-     const userData = JSON.parse(aesutil.decrypt($localStorage.get('userData')))
-    let params = {
-      userId: userData.userId,
-      nickName: userData.nickname
-    }
-    await chatWith.getToken(params).then(res => {
-      this.token = res.data.token;
-      this.connect();
-      this.setConnectStatusListener();
-      this.setOnReceiveMessageListener();
-      Vue.prototype.$loadScript('https://cdn.ronghub.com/RongEmoji-2.2.6.min.js')
-        .then(() => {
-          this.initEmoji();
-        })
-    })
+   getToken() {
+      const userData = JSON.parse(aesutil.decrypt($localStorage.get('userData')))
+      let params = {
+        userId: userData.userId,
+        nickName: userData.nickname
+      }
+       chatWith.getToken(params).then(res => {
+        this.token = res.data.token;
+        this.connect();
+        this.setConnectStatusListener();
+        this.setOnReceiveMessageListener();
+        Vue.prototype.$loadScript('https://cdn.ronghub.com/RongEmoji-2.2.6.min.js')
+          .then(() => {
+            this.initEmoji();
+          })
+      })
+
   },
   connect() {
     RongIMClient.connect(this.token, {
@@ -55,12 +61,13 @@ export default {
         switch (status) {
           case RongIMLib.ConnectionStatus.CONNECTED:  //eslint-disable-line
             info = '链接成功'
-            Vue.$global.bus.$emit('rongState')
+            alert(info);
             store.commit('CHANGE_CONNECTSTATE',true)
+            Vue.$global.bus.$emit('rongState')
             break;
           case RongIMLib.ConnectionStatus.CONNECTING:  //eslint-disable-line
             info = '正在链接'
-
+            alert(info);
             break
           case RongIMLib.ConnectionStatus.DISCONNECTED:  //eslint-disable-line
             info = '断开连接'
@@ -68,15 +75,15 @@ export default {
             break
           case RongIMLib.ConnectionStatus.KICKED_OFFLINE_BY_OTHER_CLIENT:  //eslint-disable-line
             info = '其他设备登录'
-
+            alert(info);
             break
           case RongIMLib.ConnectionStatus.DOMAIN_INCORRECT:  //eslint-disable-line
             info = '域名不正确'
-
+            alert(info);
             break
           case RongIMLib.ConnectionStatus.NETWORK_UNAVAILABLE:  //eslint-disable-line
             info = '网络不可用'
-
+            alert(info);
             break
         }
       }
