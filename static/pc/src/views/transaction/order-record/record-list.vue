@@ -111,10 +111,14 @@
             debit: this.userId,
             types:[11,12]
           })
+        }else {
+          Object.assign(request,{
+            userId: this.userId
+          })
         }
         if(this.searchKey != ''){
           Object.assign(request,{
-            orderId: this.searchKey
+            userId: this.searchKey
           })
         }
         console.log('record request',request)
