@@ -249,5 +249,16 @@ export default [
       noCache:true,
       isMobilePage:'mobile-body'
     }
+  },
+  {
+    path:'/m/bindCard',
+    name:'mBindCard',
+    component(resolve){
+      return resolve(require('views/mobile/bind-payment/card-bind'))
+    },
+    meta:{
+      noCache:true,
+      isMobilePage:'mobile-body'
+    }
   }
 ]

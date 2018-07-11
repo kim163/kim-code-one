@@ -1,10 +1,18 @@
 <template>
-  
+  <div>
+
+  </div>
 </template>
 
 <script>
   export default {
-    name: "bind-card"
+    name: "card-list",
+    data(){
+      return{
+
+      }
+    },
+
   }
 </script>
 
