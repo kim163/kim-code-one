@@ -251,10 +251,21 @@ export default [
     }
   },
   {
-    path:'/m/bindCard',
+    path:'/m/bindCard/:id',
     name:'mBindCard',
     component(resolve){
       return resolve(require('views/mobile/bind-payment/card-bind'))
+    },
+    meta:{
+      noCache:true,
+      isMobilePage:'mobile-body'
+    }
+  },
+  {
+    path:'/m/cardList',
+    name:'mCardList',
+    component(resolve){
+      return resolve(require('views/mobile/bind-payment/card-list'))
     },
     meta:{
       noCache:true,

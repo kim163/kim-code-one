@@ -156,17 +156,18 @@
 </script>
 
 <style lang="scss">
+  @import "~assets/scss/mixin";
 .upload-imgpart{
-  padding:22px 10px 9px;
+  padding: r(22) r(10) r(9);
 }
 .upload-imgitem{
   display: block;
-  margin: 5px 1%;
+  margin: r(5) 1%;
   width: 31%;
   float: left;
 
   div{
-     height: 100px;
+     height: r(100);
   }
   img{
     width: 100%;
@@ -175,7 +176,7 @@
 }
 .upload-btngroup{
   width: 32%;
-  height: 100px;
+  height: r(100);
   margin: 5px 1%;
   display: inline-block;
   background: #F5F5F5 url("~images/plus-sign.png") no-repeat center center;
@@ -188,9 +189,9 @@
    }
 }
 .upload-tipsinfo{
-  font-size: 15px;
+  @include f(15);
   color: #8F8F8F;
-  line-height: 36px;
+  line-height: r(36);
 }
 
 </style>
