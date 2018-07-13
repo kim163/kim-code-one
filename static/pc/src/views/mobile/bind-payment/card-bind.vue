@@ -1,40 +1,44 @@
 <template>
-  <div>
+  <div v-if="showRes">
     <mobile-header>绑定{{typeName}}</mobile-header>
-    <div class="title-tip" v-if="type != 3">{{typeName}}认证姓名，务必与真实姓名相同</div>
-    <div class="card-main">
-      <div class="p-def" v-if="type === 3">
-        <div class="card-item">
-          <label class="title">银行卡号:</label>
-          <input class="card-input" type="text" v-model.trim="account"/>
+    <div v-if="!hasBind">
+      <div class="title-tip" v-if="type != 3">{{typeName}}认证姓名，务必与真实姓名相同</div>
+      <div class="card-main">
+        <div class="p-def" v-if="type === 3">
+          <div class="card-item">
+            <label class="title">银行卡号:</label>
+            <input class="card-input" type="text" v-model.trim="account"/>
+          </div>
+          <div class="card-item">
+            <label class="title">银行名称:</label>
+            <input class="card-input" type="text" v-model.trim="bank" @mouseover="getBankName"/>
+          </div>
+          <div class="card-item">
+            <label class="title">持卡人姓名:</label>
+            <span class="has-name" v-if="userData.name != ''">{{name}}</span>
+            <input v-else class="card-input" type="text" v-model.trim="name"/>
+          </div>
         </div>
-        <div class="card-item">
-          <label class="title">开户行:</label>
-          <input class="card-input" type="text" v-model.trim="bank" @mouseover="getBankName"/>
+        <div v-else>
+          <div class="add-qrcode">
+            <upload-img :upload-img-set="upLoadCfg" @gitPicUrl="getQrcodeUrl"></upload-img>
+          </div>
+          <div class="card-item p-LR-sm">
+            <label class="title qr-title">{{typeName}}账号:</label>
+            <input class="card-input qr-input" type="text" v-model.trim="account"/>
+          </div>
+          <div class="card-item p-LR-sm">
+            <label class="title qr-title">{{typeName}}认证姓名:</label>
+            <span class="has-name" v-if="userData.name != ''">{{name}}</span>
+            <input v-else class="card-input qr-input" type="text" v-model.trim="name"/>
+          </div>
         </div>
-        <div class="card-item">
-          <label class="title">持卡人姓名:</label>
-          <input class="card-input" type="text" v-model.trim="name"/>
+        <div class="p-def">
+          <div class="bind-def-btn" @click="bindCard">绑定</div>
         </div>
-      </div>
-      <div v-else>
-        <div class="add-qrcode">
-          <upload-img :upload-img-set="upLoadCfg" @gitPicUrl="getQrcodeUrl"></upload-img>
-        </div>
-        <div class="card-item p-LR-sm">
-          <label class="title qr-title">{{typeName}}账号:</label>
-          <input class="card-input" type="text" v-model.trim="account"/>
-        </div>
-        <div class="card-item p-LR-sm">
-          <label class="title qr-title">{{typeName}}认证姓名:</label>
-          <input class="card-input" type="text" v-model.trim="name"/>
-        </div>
-      </div>
-      <div class="p-def">
-        <div class="bind-def-btn" @click="bindCard">绑定</div>
       </div>
     </div>
-
+    <has-bind v-else :data-info="hasBindInfo" :type-name="typeName"></has-bind>
   </div>
 </template>
 
@@ -42,9 +46,11 @@
   import MobileHeader from 'components/m-header'
   import {mapGetters} from 'vuex'
   import UploadImg from 'components/upload-img'
+  import HasBind from './has-bind'
   import {
     autoRecognize,
-    bindBankV2
+    bindBankV2,
+    getBankList
   } from 'api/user-center'
   export default {
     name: "bind-card",
@@ -61,11 +67,15 @@
           isShowUploadTip:true
         },
         qrCodeUrl:'',
+        hasBindInfo:{},
+        hasBind:false,
+        showRes:false
       }
     },
     components:{
       MobileHeader,
       UploadImg,
+      HasBind
     },
     computed:{
       ...mapGetters([
@@ -98,14 +108,32 @@
         const data = {
           userId: this.userData.userId,
           account: this.account,
-          type: this.type
+          type: this.type,
+          name: this.name
         }
-
-        console.log('bind Card',data)
+        if(this.type != 3){
+          Object.assign(data,{
+            qrCodeUrl: this.qrCodeUrl
+          })
+        }else{
+          Object.assign(data,{
+            bank: this.bank,
+          })
+        }
         bindBankV2(data).then(res => {
+          console.log('bind Card res',res)
           if(res.code === 10000){
             toast('绑定成功')
-            this.$router.push({name:'mCardList'})
+            if(this.type === 3){
+              this.$router.push({name:'mCardList'})
+            }else{
+              this.hasBindInfo = res.data.filter((item) => {
+                return item.type === this.type
+              })
+              if(!_.isEmpty(this.hasBindInfo)){
+                this.hasBind = true
+              }
+            }
           }else{
             toast(res.message)
           }
@@ -137,6 +165,26 @@
       this.name = this.userData.name
       this.type = Number(this.$route.params.id)
       this.typeName = this.type === 1 ? '支付宝' : (this.type === 2 ? '微信' : '银行卡')
+      if(this.type != 3){
+        getBankList({userId: this.userData.userId}).then(res => {
+          if(res.code === 10000){
+            this.hasBindInfo = res.data.filter((item) => {
+              return item.type === this.type
+            })
+            if(!_.isEmpty(this.hasBindInfo)){
+              this.hasBind = true
+            }
+          }else{
+            toast(res.message)
+          }
+        }).catch(err => {
+          toast(err)
+        }).finally(() => {
+          this.showRes = true
+        })
+      }else{
+        this.showRes = true
+      }
     }
   }
 </script>
@@ -153,28 +201,34 @@
   }
   .card-main{
     background: #FFFFFF;
-    .p-def{
-      padding: r(10);
-    }
     .card-item{
       width: 100%;
       @include f(18px);
       border-bottom: 1px solid #dfdfdf;
       height: r(50);
       line-height: r(50);
-      display: flex;
       .card-input{
-        /*flex-grow: 1;*/
         padding-left: r(15);
         @include f(18px);
         border: none;
+        height: r(48);
+        line-height: r(50);
+        vertical-align: top;
+        &.qr-input{
+          width: 50%;
+        }
       }
       .qr-title{
-        /*flex-grow: 1;*/
+        width: 45%;
+        display: inline-block;
+        text-align: right;
       }
       &.p-LR-sm{
-        padding: 0 r(20);
+        padding: 0 r(10);
       }
+    }
+    .has-name{
+      padding-left: r(15);
     }
     .bind-def-btn{
       margin-top: r(20);

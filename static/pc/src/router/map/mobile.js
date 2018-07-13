@@ -253,7 +253,7 @@ export default [
   {
     path:'/m/bindCard/:id',
     name:'mBindCard',
-    component(resolve){
+    component(resolve){ //绑定银行卡
       return resolve(require('views/mobile/bind-payment/card-bind'))
     },
     meta:{
@@ -264,11 +264,21 @@ export default [
   {
     path:'/m/cardList',
     name:'mCardList',
-    component(resolve){
+    component(resolve){ //银行卡列表
       return resolve(require('views/mobile/bind-payment/card-list'))
     },
     meta:{
       noCache:true,
+      isMobilePage:'mobile-body'
+    }
+  },
+  {
+    path:'/m/userCenter',
+    name:'mUserCenter',
+    component(resolve){ //个人中心
+      return resolve(require('views/mobile/user-center'))
+    },
+    meta:{
       isMobilePage:'mobile-body'
     }
   }

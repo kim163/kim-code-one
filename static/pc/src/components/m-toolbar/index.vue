@@ -20,6 +20,9 @@
               {{$t('navbar.accountBalance')}} <span class="fr"><balance></balance></span>
             </div>
             <router-link :to="{name:'mBindList'}" class="tool-item-href"><i class="iconfont icon-busine-list"></i>{{$t('navbar.busineList')}}</router-link>
+            <router-link :to="{name:'mCardList'}" class="tool-item-href"><i class="iconfont icon-pay-bank"></i>{{$t('navbar.bindCard')}}</router-link>
+            <router-link :to="{name:'mBindCard',params:{id:1}}" class="tool-item-href"><i class="iconfont icon-pay-alipay"></i>{{$t('navbar.bindAlipay')}}</router-link>
+            <router-link :to="{name:'mBindCard',params:{id:2}}" class="tool-item-href"><i class="iconfont icon-pay-wechat"></i>{{$t('navbar.bindWeChat')}}</router-link>
             <get-live800></get-live800>
             <a class="tool-item-href" target="_blank" :href="SETTING.appUrl">
               <i class="iconfont icon-download"></i>{{$t('navbar.juanApp')}}

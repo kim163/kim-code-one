@@ -16,3 +16,17 @@ export const bindBankV2 = jsonData => service({
   method: 'post',
   data: jsonData
 });
+
+//获取银行卡
+export const getBankList = jsonData => service({
+  url: numversion+`account/cash/getBankList`,
+  method: 'post',
+  data: jsonData
+});
+
+//解绑银行卡
+export const unbindBank = jsonData => service({
+  url: numversion+`account/cash/unbindBank`,
+  method: 'post',
+  data: jsonData
+});
