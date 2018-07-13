@@ -475,7 +475,7 @@
          }else if(this.payOrderParam.creditAmountTwin=="" || !this.payOrderParam.creditAmountTwin){
            toast("请输入付款金额");
          }else if(this.payOrderParam.creditAccountNameTwin=="" || !this.payOrderParam.creditAccountNameTwin){
-           toast("付款的户名");
+           toast("请输入付款的户名");
          }else {
            return true;
          }
