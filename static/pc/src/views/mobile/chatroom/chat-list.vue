@@ -7,11 +7,11 @@
            list.latestMessage.content.extra.debitMoney,list.latestMessage.content.extra.amount)">
         <div class="converstation_info box">
           <div class="user_symbol"
-               :class="{'user_symbolNext':!list.latestMessage.content.extra.isSeller}"
+               :class="{'user_symbolNext':list.latestMessage.content.extra.isSeller}"
                v-html="userData.nickname.slice(0,1)"></div>
           <div class="user_conversation box-f1">
             <p class="user_name">{{userData.nickname}}
-              <span v-if="!list.latestMessage.content.extra.isSeller" class="sell_out">卖出</span>
+              <span v-if="list.latestMessage.content.extra.isSeller" class="sell_out">卖出</span>
               <span v-else class="buy_in">买入</span>
             </p>
             <!--区分图片和文本消息 目前就这两种-->
@@ -30,12 +30,13 @@
       </div>
     </div>
     <transition name="toolSideRight">
-      <chat v-if="chatState" class="chatWindow"
+      <chat v-show="chatState" class="chatWindow"
             :detail="DetailList.targetId"
-            :debitNum="DetailList.debitAmount"
+            :debitNum="DetailList.amount"
             :creditName='DetailList.creditName'
-            :debitMoney="DetailList.debitAmountTwin"
+            :debitMoney="DetailList.money"
             :debitName="DetailList.debitName"
+            :historyState="DetailList.historyState"
       ></chat>
     </transition>
     <mFooter></mFooter>
@@ -72,22 +73,11 @@
       Vue.$global.bus.$on('rongState', () => {
         this.getConversationList();
       })
-
-      console.log(this.connectState,'撒孔家店了啊说得好')
       if (this.connectState) {
-       // this.clearConversationList()
         this.getConversationList()
-
       }
-
-      },
-    watch:{
-      connectState(val){
-        if(val){
-          this.getConversationList()
-        }
-      }
-    },
+    }
+   ,
     computed: {
       ...mapGetters([
         'userId',
@@ -101,9 +91,12 @@
         RongIMClient.getInstance().getConversationList({
           onSuccess: (list) => {
             this.chatArr = list
-            for (let i = 0; i < list.length; i++) {
-              this.timeList = list[i].latestMessage.sentTime
+            for(let i=0;i<list.length;i++){
+              console.log(list)
+              console.log(list[i].latestMessage.content.extra.targetId,'为什么啊')
+              this.getUnreadCount(list[i].latestMessage.content.extra.targetId)
             }
+
           },
           onError: function (error) {
             // do something...
@@ -123,13 +116,61 @@
         });
       },
       goChatRoom(id, name, money, amount) {
-        this.chatState = true
-        this.DetailList.targetId = id;
-        this.DetailList.debitName = name;
-        this.DetailList.money = money;
-        this.DetailList.amount = amount
-      },
+        const requestData = {
+           userId: this.userId,
+           groupId:id
+        }
+        chatWith.groupState(requestData).then(res=>{
+            if(res.data ==-1){
+              toast('群组已解散！')
 
+              RongIMClient.getInstance().removeConversation(RongIMLib.ConversationType.GROUP,id,{
+                onSuccess:function(bool){
+                  // 删除会话成功。
+                  console.log('删除数据成功！！！！')
+                },
+                onError:function(error){
+                  // error => 删除会话的错误码
+                }
+              });
+              return
+            }else {
+              this.DetailList.targetId = id;
+              this.DetailList.debitName = name;
+              this.DetailList.money = money;
+              this.DetailList.amount = amount;
+              this.chatState = true;
+              this.DetailList.historyState = 3;
+            }
+        })
+
+      },
+      /*获取获取未读信息数*/
+      getUnreadTotalCount() {
+        RongIMClient.getInstance().getTotalUnreadCount({
+          onSuccess: function (count) {
+            // count => 多个会话的总未读数。
+            console.log(count)
+          },
+          onError: function (error) {
+            // error => 获取多个会话未读数错误码。
+          }
+        });
+      },
+      getUnreadCount(id){
+        const conversationType = RongIMLib.ConversationType.GROUP;
+        const targetId = id
+        console.log(targetId)
+        RongIMLib.RongIMClient.getInstance().getUnreadCount(conversationType,targetId,{
+          onSuccess:function(count){
+            // count => 指定会话的总未读数。
+            console.log(count,'为什么为什么为什么我们是')
+     },
+          onError:function(){
+            // error => 获取指定会话未读数错误码。
+          }
+        });
+      },
     },
     components: {
       mHeader,
@@ -242,7 +283,6 @@
   .user_content {
     font-size: r(12);
     color: #787876;
-    width: r(250);
     overflow: hidden;
     white-space: nowrap;
     padding-top: r(5);

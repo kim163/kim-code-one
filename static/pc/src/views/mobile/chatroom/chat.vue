@@ -42,7 +42,8 @@
         </div>
       </div>
       <p class="countdown">
-        等待付款倒计时: 09: 09
+        等待倒计时:
+        <count-down :end-time="startTime-endTime<=0?0:startTime-endTime"></count-down>
       </p>
       <b-scroll
         ref="scroll"
@@ -61,13 +62,15 @@
             <div class="user_symbol"></div>
           </div>
           <!--别人发的-->
-          <div v-if="list.messageType=='TextMessage'&&list.content.extra.nickName!==userData.nickname">
+          <div v-if="list.messageType=='TextMessage'&&list.content.extra.nickName!==userData.nickname"
+               class="chat_container">
             <div class="user_symbol_next" :class="{'isSeller':isSeller}"></div>
-            <div class="contents_next" v-html="symolEmoji.symolEmoji(list.content.content)"></div>
+            <div class="contents_next" v-html="symolEmoji.symbolToEmoji(list.content.content)"></div>
             <div class="" style="flex: 1"></div>
           </div>
           <!--自己发的-->
-          <div class="chat_container" v-if="list.messageType=='ImageMessage'&&list.content.extra.nickName==userData.nickname">
+          <div class="chat_container"
+               v-if="list.messageType=='ImageMessage'&&list.content.extra.nickName==userData.nickname">
             <div style="flex:1;"></div>
             <div class="contents">
               <viewer :images="list.picArr">
@@ -77,11 +80,12 @@
             <div class="user_symbol"></div>
           </div>
           <!--别人发的-->
-          <div class="chat_container" v-if="list.messageType=='ImageMessage'&&list.content.extra.nickName!==userData.nickname">
+          <div class="chat_container"
+               v-if="list.messageType=='ImageMessage'&&list.content.extra.nickName!==userData.nickname">
             <div class="user_symbol_next" :class="{'isSeller':isSeller}"></div>
             <div class="contents_next">
               <viewer :images="list.img">
-                <img :src="list.msg" alt="" class="contents_image">
+                <img :src="list.content.imageUri" alt="" class="contents_image">
               </viewer>
             </div>
             <div class="" style="flex: 1"></div>
@@ -138,7 +142,6 @@
           <span>照片</span>
           <input type="file" accept="image/*" value="打开照相机" class="openCamera" @change="upload">
           <div class="hhha"></div>
-          <img src="" alt="" id="demoImg">
         </div>
       </div>
       <!--表情-->
@@ -149,9 +152,10 @@
 </template>
 
 <script>
+  import CountDown from 'components/countdown'
   import BScroll from 'vue-slim-better-scroll';
   import mHeader from "components/m-header"
-  import {chatWith} from 'api'
+  import {chatWith, transaction} from 'api'
   import {mapGetters, mapMutations} from 'vuex'
 
   export default {
@@ -185,6 +189,8 @@
         isSeller: '',
         sellName: '',
         historyArr: '',
+        startTime: '',
+        endTime: '',
         config: {
           size: 24, // 大小, 默认 24, 建议15 - 55
           url: '//f2e.cn.ronghub.com/sdk/emoji-48.png', // 所有 emoji 的背景图片
@@ -213,7 +219,10 @@
         type: String,
         default: ''
       },
-
+      historyState:{
+        type:Number,
+        default:0
+      }
     },
     computed: {
       ...mapGetters([
@@ -236,7 +245,17 @@
           this.sendPic()
         }
       },
-
+      detail(val) {
+        if (val) {
+         this.fetchOrder()
+        }
+      },
+      historyState(val){
+        if(val){
+          this.symolEmoji = RongIMLib.RongIMEmoji;
+          this.getHistoryMessage();
+        }
+      }
     },
     created() {
       /*确定好卖买放关系*/
@@ -250,16 +269,13 @@
       /*加载bettorScroll*/
       Vue.$global.bus.$on('textMessage', (message) => {
         this.chatArr.push(message)
+        this.symolEmoji = RongIMLib.RongIMEmoji;
       })
       Vue.$global.bus.$on('picMessage', (val) => {
         this.chatArr.push(val)
-      })
-      if (this.connectState) {
         this.symolEmoji = RongIMLib.RongIMEmoji;
-        this.getHistoryMessage();
-
-      }
-      console.log('bbb')
+      })
+      /*发送开始时间*/
     },
     mounted() {
       this.$nextTick(() => {
@@ -270,6 +286,18 @@
 
     methods: {
       ...mapMutations(['CHANGE_CONNECTSTATE']),
+      fetchOrder() {
+        const requestData = {
+          orderId: this.detail
+        }
+        transaction.getOrderx(requestData).then(res => {
+          console.log(res,'为什么啊')
+          this.startTime = res.data.intervalTime;
+          this.endTime = res.data.elapsedTime;
+          Vue.$global.bus.$emit('startTime',this.startTime)
+          Vue.$global.bus.$emit('endTime',this.endTime)
+        })
+      },
       scrollToBot() {
         this.$nextTick(() => {
           if (this.chatArr.length == 0) {
@@ -368,14 +396,12 @@
         let targetId = this.detail
         let timestrap = 0 // 默认传 null，若从头开始获取历史消息，请赋值为 0 ,timestrap = 0;
         let count = 20 // 范围0-20条 可多次获取
-        this.symolEmoji = RongIMLib.RongIMEmoji;
         RongIMLib.RongIMClient.getInstance().getHistoryMessages(conversationType, targetId, timestrap, count, {
           onSuccess: ((list, hasMsg) => {
             /*区分图片和消息*/
-            console.log(list, '是断开连接撒旦')
-
             this.historyArr = list;
-
+            console.log(list, '圣诞节三大')
+            this.scrollToBot()
           }),
           onError: function (error) {
             console.log(error, '失败记录；')
@@ -412,6 +438,7 @@
                 // message.content.content => 消息内容
                 /*接收使用symbolToEmoji方法*/
                 this.chatArr.push({msg: RongIMLib.RongIMEmoji.symbolToEmoji(message.content.content), user: 2})
+                this.scrollToBot()
                 break
               case RongIMClient.MessageType.VoiceMessage: //eslint-disable-line
                 // 对声音进行预加载
@@ -421,6 +448,7 @@
                 // message.content.content => 图片缩略图 base64。
                 // message.content.imageUri => 原图 URL。
                 this.chatArr.push({msg: message.content.imageUri, user: 4, img: [message.content.imageUri]})
+                this.scrollToBot()
                 break
               case RongIMClient.MessageType.DiscussionNotificationMessage: //eslint-disable-line
                 // message.content.extension => 讨论组中的人员。
@@ -500,7 +528,7 @@
       showMoreFunction() {
         this.isShowMore = !this.isShowMore
         document.getElementsByClassName('emoji_area')[0].style.display = 'none'
-        // this.scrollToBot()
+        this.scrollToBot()
       },
       sendMessage() {
         // var div = document.getElementsByClassName('wrapper_box')[0];
@@ -511,7 +539,7 @@
         let conversationtype = RongIMLib.ConversationType.GROUP;
         let targetId = this.detail;
         //改变发送messageValue的值因为用户会发送表情
-        this.messageValue = this.symolEmoji.symbolToEmoji(this.messageValue);
+        this.messageValue = RongIMLib.RongIMEmoji.symbolToEmoji(this.messageValue);
         let extraInfo = {
           'amount': this.debitNum,
           'isSeller': this.isSeller,
@@ -520,6 +548,8 @@
           'targetId': this.detail,
           'debitName': this.debitName,
           'debitMoney': this.debitMoney,
+          'startTime': this.startTime,
+          'endTime': this.endTime,
         };
         let msg = new RongIMLib.TextMessage({content: this.messageValue, extra: extraInfo});
 
@@ -581,6 +611,8 @@
           'targetId': this.detail,
           'debitName': this.debitName,
           'debitMoney': this.debitMoney,
+          'startTime': this.startTime,
+          'endTime': this.endTime,
           picArr: [this.picUrl]
         };
 
@@ -604,7 +636,8 @@
     },
     components: {
       mHeader,
-      BScroll
+      BScroll,
+      CountDown
     }
   }
 </script>

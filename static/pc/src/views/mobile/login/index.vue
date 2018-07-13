@@ -130,7 +130,6 @@
           if (res.code == 10000) {
             this.$emit('input',false);
             this.SHOW_LOGIN(false);
-
             $localStorage.set('tokenInfo', JSON.stringify(res.data.tokenVo));
             $localStorage.set('userData', aesutil.encrypt(JSON.stringify(res.data)));
             this.$store.dispatch('CHECK_ONLINE', true);

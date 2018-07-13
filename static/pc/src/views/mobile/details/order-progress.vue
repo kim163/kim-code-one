@@ -244,9 +244,7 @@
               <span class="qrcode-tips">长按二维码保存</span>
             </div>
           </li>
-
         </ul>
-
         <ul class="details-ul pay-detail my-paymethod">
             <li>
               <span class="l-title">买家付款方式 : </span>
@@ -281,7 +279,8 @@
               <span class="btn btn-block btn-tips">释放UET倒计时
                 <count-down
                   :end-time="DetailList.intervalTime-DetailList.elapsedTime<=0 ? 0 : DetailList.intervalTime-DetailList.elapsedTime"
-                  @callBack="countDownEnd">
+                  @callBack="countDownEnd" :timestamp="true" @nowTime="countDownTime = $event">
+
                 </count-down>
               </span>
               <input type="button" class="btn btn-block btn-primary" @click="payCompleted" value="确认收款">
@@ -315,12 +314,15 @@
       <span class="chatroom_num"></span>
     </div>
     <transition name="toolSlideRight">
-      <chat v-if="chatState" class="chatWindow"
-            :detail="$route.params.id"
+      <chat v-show="chatState" class="chatWindow"
+            :detail="gameID"
             :debitNum="DetailList.debitAmount"
             :creditName = 'DetailList.creditName'
             :debitMoney="DetailList.debitAmountTwin"
             :debitName="DetailList.debitName"
+            :startTime="DetailList.intervalTime"
+            :endTime="DetailList.elapsedTime"
+            :historyState="DetailList.historyState"
       ></chat>
 
     </transition>
@@ -343,6 +345,7 @@
     data() {
       return {
         orderId:'',
+        gameID:'',
         detailType:[
           {name:'detail.buyUet', value: '订单详情' },
           {name:'detail.saleUet', value: '申诉与仲裁' }
@@ -379,7 +382,8 @@
         mheadSet:{                      // 头部返回事件
           returnBtnFun:false,
           returnBtnEvent:'returnBtnEvent'
-        }
+        },
+        countDownTime:0
       };
     },
     methods: {
@@ -388,9 +392,7 @@
         this.request={
           orderId:this.orderId
         }
-
         transaction.getOrderx(this.request).then(res => {
-
           console.log('res.data.status:'+res.data.status);
           if(res.data == '' || res.data == null){
             this.$router.push({name: 'mIndex'});
@@ -556,10 +558,10 @@
       goChatroom(){
         //先获取订单号
 
-        const gameID = this.$route.params.id;
+        this.gameID = this.$route.params.id;
        //
         let params ={
-          groupId : gameID,
+          groupId :this.gameID,
           founderId: this.$store.state.userData.userId,
           type:1,
           founderNickname: this.$store.state.userData.nickname
@@ -567,6 +569,7 @@
         chatWith.createChatGroup(params).then(res=>{
            if(res.code ===10000){
              this.chatState = true
+             this.DetailList.historyState = 2
            }else {
               toast(res.message)
            }
