@@ -25,10 +25,15 @@
             link: 'mPendingBuy'
           },
           {
-            icon: 'icon-tablist',
-            name: 'transactionRecord.talkhistory',
-            link: 'mtalkList'
+            icon: 'icon-tran-sell',
+            name: 'transactionRecord.seller',
+            link: 'mPendingSell'
           },
+          // {
+          //   icon: 'icon-tablist',
+          //   name: 'transactionRecord.talkhistory',
+          //   link: 'mtalkList'
+          // },
           {
             icon: 'icon-tran-record',
             name: 'navbar.transactionRecord',
