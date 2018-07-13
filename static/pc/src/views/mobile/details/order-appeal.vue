@@ -240,12 +240,10 @@
 
 <script>
   import mHeader from "components/m-header"
-
   import { generateTitle } from '@/util/i18n'
   import { transaction } from 'api'
   import {mapGetters,mapActions,mapMutations} from 'vuex'
   import Clipboard from 'clipboard';
-
   export default {
     data() {
       return {
@@ -402,7 +400,6 @@
     },
     components: {
       mHeader,
-      chatEntrance
     }
   };
 

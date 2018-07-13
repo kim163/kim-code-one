@@ -8,7 +8,9 @@
         <div class="converstation_info box">
           <div class="user_symbol"
                :class="{'user_symbolNext':list.latestMessage.content.extra.isSeller}"
-               v-html="userData.nickname.slice(0,1)"></div>
+               v-html="userData.nickname.slice(0,1)">
+          </div>
+          <span class="unread_num" :class="{'isShow':countUnreadNum[index].num>=1}">{{countUnreadNum[index].num}}</span>
           <div class="user_conversation box-f1">
             <p class="user_name">{{userData.nickname}}
               <span v-if="list.latestMessage.content.extra.isSeller" class="sell_out">卖出</span>
@@ -62,6 +64,7 @@
         DetailList: {},
         symolEmoji: '',
         readyOk: '',
+        countUnreadNum:[],
         config: {
           size: 24, // 大小, 默认 24, 建议15 - 55
           url: '//f2e.cn.ronghub.com/sdk/emoji-48.png', // 所有 emoji 的背景图片
@@ -160,11 +163,13 @@
       getUnreadCount(id){
         const conversationType = RongIMLib.ConversationType.GROUP;
         const targetId = id
-        console.log(targetId)
         RongIMLib.RongIMClient.getInstance().getUnreadCount(conversationType,targetId,{
-          onSuccess:function(count){
+          onSuccess:(count)=>{
             // count => 指定会话的总未读数。
-            console.log(count,'为什么为什么为什么我们是')
+            for (let i=0;i<count.length;i++){
+              this.countUnreadNum.push({num:count[i]})
+            }
+
      },
           onError:function(){
             // error => 获取指定会话未读数错误码。
@@ -232,6 +237,7 @@
 
   .converstation_info {
     height: r(60);
+    position: relative;
   }
 
   .user_conversation {
@@ -296,5 +302,24 @@
     width: 100%;
     height: 100%;
     background-color: #F5F5F5;
+  }
+  .unread_num{
+    position: absolute;
+    top: r(2);
+    left: r(25);
+    display: inline-block;
+    width: r(22);
+    height: r(14);
+    background-color: #f43531;
+    border-radius: r(7.78);
+    font-size: r(10);
+    color: #fff;
+    line-height: r(12);
+    margin: 0 auto;
+    text-align: center;
+    opacity: 0;
+    &.isShow{
+      display: block;
+    }
   }
 </style>
