@@ -89,13 +89,17 @@
               </li>
           </ul>
 
-          <div class="btn-group" v-if="DetailList.status =='45' ">
-              <span class="btn btn-block btn-tips">请在倒计时结束前完成付款
+          <div class="countdown-line" v-if="DetailList.status =='45' ">
+              <span class="btn btn-block btn-tips">
+                  请在倒计时结束前完成付款
                   <count-down v-if="DetailList.status !='61'"
                               :end-time="DetailList.intervalTime-DetailList.elapsedTime<=0 ? 0 : DetailList.intervalTime-DetailList.elapsedTime "
                               @callBack="countDownEnd">
                   </count-down>
               </span>
+          </div>
+
+          <div class="btn-group" v-if="DetailList.status =='45' ">
               <p class="payment-tips">
                 警告：为了您能快速完成交易，请尽量使用 <span>您所绑定的银行卡/支付宝付款。</span>
               </p>
@@ -275,14 +279,18 @@
 
           </ul>
 
-          <div class="btn-group" v-if="DetailList.status =='47'">
-              <span class="btn btn-block btn-tips">释放UET倒计时
+          <div class="countdown-line" v-if="DetailList.status =='47'">
+              <span class="btn btn-block btn-tips">
+                释放UET倒计时
                 <count-down
                   :end-time="DetailList.intervalTime-DetailList.elapsedTime<=0 ? 0 : DetailList.intervalTime-DetailList.elapsedTime"
                   @callBack="countDownEnd" :timestamp="true" @nowTime="countDownTime = $event">
 
                 </count-down>
               </span>
+          </div>
+
+          <div class="btn-group" v-if="DetailList.status =='47'">
               <input type="button" class="btn btn-block btn-primary" @click="payCompleted" value="确认收款">
               <input type="button" class="btn btn-block btn-primary" @click="createAppeal"  value="我要申诉">
           </div>
@@ -822,7 +830,7 @@
         padding: 0 r(20);
         margin: r(10)0 0 0;
         cursor: pointer;
-        font-size: r(18);
+        @include  f(18px);
         text-align: center;
       }
       .btn-primary {
@@ -841,12 +849,15 @@
         background: #E4E4E4;
         color: #787876;
       }
-      .btn-tips{
-        background: #FFFFFF;
-        border: 1px solid #E4E4E4;
-        color: #FF0000;
-        padding:0 r(5);
-      }
+  }
+  .countdown-line{
+    line-height: r(45);
+    background: #FFFFFF;
+    margin-top: r(8);
+    color: #FF0000;
+    padding:0 r(5);
+    @include  f(15px);
+    text-align: center;
   }
   .payment-tips{
     @include  f(15px);
