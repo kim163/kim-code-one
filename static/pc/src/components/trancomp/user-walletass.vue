@@ -2,9 +2,11 @@
   <div class="user-walletasset">
      <h2 class="title"> {{$t('transactionHome.userWalletAss')}} </h2>
      <div v-for="(item,i) in userData.accountChainVos">
-        <h3 class="amount">{{ item.assetCode }} {{ item.chainBalance }}</h3>
+        <h3 class="amount">
+          <balance></balance>
+        </h3>
         <div class="qrcode">
-           <qrcode :text="item.address" v-if="item.address" :size="188"></qrcode>
+           <qrcode :text="item.address" v-if="item.address" :logoSrc="Logo" :logoScale="0.2" :size="188"></qrcode>
         </div>
         <p class="address"> {{item.address}} </p>
         <a href="javascript:void(0);" class="copy-btn" @click="copystr(item.address)" >{{$t('transactionHome.copyBtn')}}</a>
@@ -15,10 +17,14 @@
 <script>
   import { mapGetters,mapActions, mapMutations} from 'vuex';
   import VueQrcode from 'vue-qr';
+  import Logo from '@/assets/images/logo-blue.png'
+  import balance from 'components/balance';
 
   export default {
     data() {
-      return {};
+      return {
+        Logo
+      };
     },
     props: {},
     methods: {
@@ -33,7 +39,8 @@
     created() {
     },
     components: {
-      qrcode: VueQrcode
+      qrcode: VueQrcode,
+      balance
     }
   };
 </script>

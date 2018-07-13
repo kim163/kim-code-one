@@ -10,7 +10,7 @@
     </div>
     <div v-if="islogin">
       <span class="islogin-info login-user" @mouseover="showUserInfo = true" @mouseout="showUserInfo = false">
-        {{userData.name}}
+        {{userData.nickname}}
         <i class="iconfont icon-jiantou"></i>
         <div class="info-list" v-show="showUserInfo">
           <div class="info-item">
@@ -19,7 +19,9 @@
           </div>
           <div class="info-item">
             <div class="info-title">{{$t('navbar.accountBalance')}}</div>
-            <div class="info-content">{{userData.amount}} UET</div>
+            <div class="info-content">
+               <balance></balance>
+            </div>
           </div>
           <router-link tag="div" class="info-link" :to="{name:'transaction'}">{{$t('navbar.tradingHall')}}</router-link>
         </div>
@@ -37,6 +39,7 @@
   import vLogin from "components/auth/login"
   import vRegister from "components/auth/register"
   import {SETTING} from "@/assets/data"
+  import balance from 'components/balance';
 
   export default {
     data() {
@@ -62,7 +65,7 @@
     created() {
     },
     components: {
-      vLogin, vRegister
+      vLogin, vRegister, balance
     }
 
   };
@@ -79,7 +82,6 @@
       margin: 0 15px;
     }
     .islogin-info {
-      /*color: #09edff;*/
       background: url('~images/user.png') no-repeat;
       padding-left: 45px;
       height: 50px;
@@ -238,23 +240,17 @@
   .nav-start {
     .islogin-info {
       color: #fff;
+      margin-top: 16px;
     }
   }
 
   @media(max-width: 1330px) {
-    .navbar .link-part .col-2 {
-      margin: 30px 10px 0;
-    }
-    .header .islogin-info {
-      margin-top: 20px;
-    }
     .navbar .link-part .col-2 a {
-      font-size: 16px;
+      font-size: 18px;
     }
     .navbar .link-part .lang-icons a {
-      font-size: 15px;
+      font-size: 16px;
       padding: 4px 10px;
-      border: 2px solid #ffffff;
       -webkit-border-radius: 35px;
       -moz-border-radius: 35px;
       border-radius: 35px;
