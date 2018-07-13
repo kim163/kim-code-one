@@ -68,6 +68,9 @@ select{
       a{
         display: block;
       }
+      &:first-child{
+        border-top: none;
+      }
     }
     .mtran-itemleft{
       width: 19%;
