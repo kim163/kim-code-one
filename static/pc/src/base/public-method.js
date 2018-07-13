@@ -363,6 +363,9 @@ _.mixin(
           $localStorage.remove('needBind')
         })
       }
+    },
+    initRongyun(){
+      Vue.$global.bus.$emit('initRongyun')
     }
   }
 )
