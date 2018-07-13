@@ -5,7 +5,7 @@
     <transact-menu></transact-menu>
 
     <div class="section transaction-content">
-      <div class="container">
+      <div class="container min-width">
         <div class="row">
           <div class="col-18 fl">
              <transell-list></transell-list>

@@ -33,7 +33,7 @@
                      <span v-else-if="item.accountTypeTwin === 2" class="iconfont icon-pay-wechat" ></span>
                      <span v-else-if="item.accountTypeTwin === 3" class="iconfont icon-pay-bank"></span>
                      <span v-else>
-                      {{item.debitAccountTypeTwin}}
+                      {{item.accountTypeTwin}}
                       </span>
                    </p>
                    <p class="item">
@@ -115,7 +115,7 @@
           });
           this.dataList.pageInfo = res.pageInfo;
         }).catch(error => {
-          this.reset(res.message);
+          toast(error.message);
         });
       },
 

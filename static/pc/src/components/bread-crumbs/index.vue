@@ -1,6 +1,6 @@
 <template>
   <div class="section tranhome-nav">
-    <div class="container">
+    <div class="container min-width">
       <div class="row">
         <span v-if="breadList.length > 0" v-for="(item,index) in breadList">
           <router-link :to="{name: item.urlName}" v-if="index < breadList.length - 1">
@@ -38,8 +38,8 @@
 </script>
 <style lang="scss">
 .tranhome-nav{
-  height: 56px;
-  line-height: 56px;
+  height: 46px;
+  line-height: 46px;
   min-height: auto;
   border-bottom: 1px solid #D4D4D4;
   a{

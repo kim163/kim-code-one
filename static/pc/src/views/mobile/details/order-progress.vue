@@ -845,6 +845,7 @@
         background: #FFFFFF;
         border: 1px solid #E4E4E4;
         color: #FF0000;
+        padding:0 r(5);
       }
   }
   .payment-tips{

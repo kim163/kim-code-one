@@ -3,7 +3,7 @@
     <nav-menu></nav-menu>
     <BreadCrumbs :bread-list="breadList"></BreadCrumbs>
     <transact-menu></transact-menu>
-    <div class="container">
+    <div class="container min-width">
       <div class="row0">
         <div class="tran-content border-box">
           <div class="row border-bottom">

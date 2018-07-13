@@ -1,12 +1,12 @@
 <template>
   <div>
   <div class="section transact-menu">
-    <div class="container">
+    <div class="container min-width">
       <div class="row">
         <router-link v-for="(item,i) in transactMenuData" class="item-info" :to="item.to" :key="i">
           {{generateTitle(item.name)}}
         </router-link>
-        <a href="javascript:void(0);" class="item-info" @click="isShowPostPend=true"> {{$t('transactionHome.postPendOrd')}} </a>
+        <a href="javascript:void(0);" class="item-info" @click="isShowPostPend=true"> {{$t('postPend.postTitle')}} </a>
         <router-link :to="{name: 'tranPending'}" class="item-info" >{{$t('transactionHome.pengdingOrder')}}</router-link>
         <router-link :to="{name: 'tranRecord'}" class="item-info" >{{$t('transactionHome.orderRecord')}}</router-link>
       </div>
@@ -50,11 +50,11 @@
   height: 48px;
   line-height: 48px;
   min-height: auto;
-  margin-top: 31px;
+  margin-top: 20px;
   a{
-    display: inline-block;
-    width:17%;
-    /*max-width: 200px;*/
+    display: block;
+    float: left;
+    width:18%;
     text-align: center;
     font-size: 16px;
     color: #787876;
@@ -62,11 +62,15 @@
     border-bottom: none;
     border-top-left-radius: 3px;
     border-top-right-radius: 3px;
-    margin-right: 18px;
+    margin-right: 2.2%;
     &:hover, &.active {
       color: #ffffff;
       background: #5087FF;
       border: 1px solid #5087FF;
+    }
+    &:last-child{
+      margin: 0;
+      float: right;
     }
   }
 }

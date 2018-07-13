@@ -103,7 +103,7 @@
             }
           }
         }).catch(error => {
-          this.reset(res.message);
+          toast(error.message);
         });
       },
 

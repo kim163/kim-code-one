@@ -2,15 +2,15 @@
   <transition name="message">
       <div class="tran-contpart">
             <span class="s s1">
-               <p>{{$t('transactionHome.quantity')}} {{item.amount}} UET</p>
+               <p>{{$t('transactionHome.quantity')}} {{item.balance}} UET</p>
                <p>{{$t('transactionHome.unitPrice')}} 0.01 CNY</p>
             </span>
-            <span  class="s s2">{{$t('transactionHome.totalValue')}} {{item.amount}}UET</span>
+            <span  class="s s2">{{$t('transactionHome.totalValue')}} {{item.balance}} UET</span>
             <span class="input-box">
-                 <input type="text" v-model="buyAmountUet" :key="item.id"> UET
+                 <input type="text" :placeholder="buyMinUnit" v-model.number="buyAmountUet" :key="item.id" maxlength="9"> UET
             </span>
             <span class="input-box">
-                  <input type="text" :value="buyAmountCny" readonly>CNY
+                  <input type="text" :value="buyAmountCny" :placeholder="$t('transactionHome.tranAmount')" readonly>CNY
             </span>
             <span class="btns">
                    <span class="btn btn-primary" @click="placeAnOrder(item)">{{$t('transactionHome.order')}}</span>
@@ -35,12 +35,22 @@
       }
     },
     methods: {
+      checkVerif(){
+        if(this.buyAmountUet =='' || !this.buyAmountUet){
+          toast('请您输入正确的卖出数量');
+        }else if(!_.isInteger(this.buyAmountUet) || this.buyAmountUet<1 ){
+          toast('请您输入整数卖出数量');
+        }else if(this.buyAmountUet < this.item.minUnit){
+          toast('您输入的数量低于最低卖出数量');
+        }else if(this.buyAmountUet > this.item.balance){
+          toast('您输入的数量高于卖出数量');
+        }else {
+          return true;
+        }
+      },
+
       placeAnOrder(item){
-        console.log('this.buyAmountUet:', this.buyAmountUet)
-        console.log(this.buyAmountCny)
-        console.log('item')
-        console.log(item)
-        console.log('test:',this.userData)
+        if(!this.checkVerif()) return;
         let requestda={
           orderId:item.id,
           userId: this.userData.userId,
@@ -55,7 +65,7 @@
             bank : item.accountMerchantTwin, //机构名称
             name : item.accountNameTwin,
             type : item.accountTypeTwin,
-            amount : this.buyAmountCny
+            amount : this.buyAmountUet /100
           }
         }
         console.log(requestda)
@@ -63,11 +73,14 @@
 
           console.log(res)
           if (res.code == 10000) {
-            toast("下单成功，请及时支付,10分钟内未完成支付，将自动取消订单");
+            toast("成功卖出");
+            Vue.$global.bus.$emit('update:balance');
+          }else {
+            toast(res.message);
           }
 
         }).catch(err => {
-          toast(res.message);
+          toast(err.message);
         })
       }
     },
@@ -75,6 +88,9 @@
       ...mapGetters(["userData"]),
       buyAmountCny(){
         return (Number(this.buyAmountUet) *0.01).toFixed(2);
+      },
+      buyMinUnit(){
+        return '最低卖出'+this.item.minUnit+'UET';
       }
     },
     created() {
