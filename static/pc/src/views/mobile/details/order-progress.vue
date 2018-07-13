@@ -401,7 +401,7 @@
           orderId:this.orderId
         }
         transaction.getOrderx(this.request).then(res => {
-          console.log('res.data.status:'+res.data.status);
+          console.log('res.data:'+res.data);
           if(res.data == '' || res.data == null){
             this.$router.push({name: 'mIndex'});
             return;

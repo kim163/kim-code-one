@@ -7,11 +7,8 @@
 .toolSlideLeft-enter-active,.toolSlideLeft-leave-active {
   transition:transform .5s;
 }
-.toolSlideLeft-enter{
+.toolSlideLeft-enter,.toolSlideLeft-leave-to{
   transform: translateX(-100%);
-}
-.toolSlideLeft-leave-to{
-  transform: translateX(100%);
 }
 
 .message-enter-active, .message-leave-active {
