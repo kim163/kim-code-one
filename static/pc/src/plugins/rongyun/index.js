@@ -86,14 +86,8 @@ export default {
   setOnReceiveMessageListener() {
     RongIMClient.setOnReceiveMessageListener({  //eslint-disable-line
       onReceived: (message) => {
-        /!*区分*!/
         switch (message.messageType) {
           case RongIMClient.MessageType.TextMessage: //eslint-disable-line
-            // message.content.content => 消息内容
-            /!*接收使用symbolToEmoji方法*!/
-          //  Vue.prototype.chatArr.push({msg: this.RongIMEmoji.symbolToEmoji(message.content.content), user: 2})
-         //   this.chatArr.push({msg: this.RongIMEmoji.symbolToEmoji(message.content.content), user: 2})
-            console.log(`message+${message}`)
             Vue.$global.bus.$emit('textMessage', {msg: RongIMLib.RongIMEmoji.symbolToEmoji(message.content.content), user: 2})
             break
           case RongIMClient.MessageType.VoiceMessage: //eslint-disable-line
@@ -101,9 +95,7 @@ export default {
             // message.content.content 格式为 AMR 格式的 base64 码
             break
           case RongIMClient.MessageType.ImageMessage: //eslint-disable-line
-            // message.content.content => 图片缩略图 base64。
-            // message.content.imageUri => 原图 URL。
-          //  this.chatArr.push({msg: message.content.imageUri, user: 4, img: [message.content.imageUri]})
+
             Vue.$global.bus.$emit('picMessage', {msg: message.content.imageUri, user: 4, img: [message.content.imageUri]})
             break
           case RongIMClient.MessageType.DiscussionNotificationMessage: //eslint-disable-line
