@@ -125,7 +125,7 @@
           if(res.code === 10000){
             toast('绑定成功')
             if(this.type === 3){
-              this.$router.push({name:'mCardList'})
+              this.$router.replace({name:'mCardList'})
             }else{
               this.hasBindInfo = res.data.filter((item) => {
                 return item.type === this.type
