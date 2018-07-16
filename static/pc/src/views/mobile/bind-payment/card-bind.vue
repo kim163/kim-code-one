@@ -29,7 +29,7 @@
           </div>
           <div class="card-item p-LR-sm">
             <label class="title qr-title">{{typeName}}认证姓名:</label>
-            <span class="has-name" v-if="userData.name != ''">{{name}}</span>
+            <span class="has-name" v-if="userData.name">{{name}}</span>
             <input v-else class="card-input qr-input" type="text" v-model.trim="name"/>
           </div>
         </div>

@@ -281,5 +281,15 @@ export default [
     meta:{
       isMobilePage:'mobile-body'
     }
+  },
+  {
+    path:'/m/setUserInfo',
+    name:'mSetUserInfo',
+    component(resolve){ //个人中心
+      return resolve(require('views/mobile/user-center/set-user-info'))
+    },
+    meta:{
+      isMobilePage:'mobile-body'
+    }
   }
 ]

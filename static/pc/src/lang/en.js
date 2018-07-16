@@ -18,6 +18,7 @@ export default {
     onlineService: 'Online service',
     juanApp: 'Juan APP',
     juanWallet: 'Juan wallet',
+    userCenter:'User Center',
   },
   login: {
     title: 'Welcome back',

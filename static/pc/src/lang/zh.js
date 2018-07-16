@@ -18,6 +18,7 @@ export default {
     onlineService: '在线客服',
     juanApp: '久安APP',
     juanWallet: '久安钱包',
+    userCenter:'个人中心',
   },
   login: {
     title: '欢迎回来',
