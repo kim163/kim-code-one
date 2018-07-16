@@ -50,7 +50,7 @@
               <span class="left">{{postItem == 'buyer' ? $t('postPend.buyerRequest') : $t('postPend.sellerRequest')}}：</span>
               <span class="ps-input fl">
                 <input type="text" class="ps-input-in"
-                       :placeholder="postItem == 'buyer' ? $t('postPend.minBuy') : $t('postPend.minSell')"
+                       :placeholder="postItem == 'buyer' ? $t('postPend.minSell') : $t('postPend.minBuy')"
                        v-model.number="minAmount">
                 <span class="i-uet">UET</span>
               </span>
@@ -233,6 +233,7 @@
             toast(res.message)
           }
         }).catch(err => {
+          toast(err.message);
         })
       },
       subData: function (item) {

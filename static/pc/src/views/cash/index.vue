@@ -76,7 +76,6 @@
   import CashQrcode from './cash-qrcode'
   import CashLogin from './cash-login'
   import CashPay from './cash-pay'
-
   import aesutil from '@/util/aesutil';
   import {$localStorage} from '@/util/storage'
 

@@ -157,6 +157,12 @@
   .container {
     width: 85%;
   }
+  .col-18{
+    width: 72%;
+  }
+  .col-19{
+    width: 28%;
+  }
 }
 
 @media only screen and (min-width: 62.5em) {  /* 1000px */
@@ -222,12 +228,6 @@
   }
   .col-17{
     width: 46.5%;
-  }
-  .col-18{
-    width: 72%;
-  }
-  .col-19{
-    width: 28%;
   }
 
   .hidden-sm {

@@ -13,11 +13,11 @@
        </div>
        <div class="form-group cfx">
          <label> {{$t('transactionHome.quantityAvailSale')}} </label>
-         <span> {{item.amount}} UET</span>
+         <span> {{item.balance}} UET</span>
        </div>
        <div class="form-group cfx">
          <label> {{$t('transactionHome.tranAmount')}} </label>
-         <span> {{(Number(item.amount) *0.01).toFixed(2)}} CNY</span>
+         <span> {{(Number(item.balance) *0.01).toFixed(2)}} CNY</span>
        </div>
        <div class="input-group">
          <div class="input-div">
@@ -117,7 +117,7 @@
       },
 
       allTransact(){
-        this.buyAmountUet = this.item.amount;
+        this.buyAmountUet = this.item.balance;
       },
 
       checkVerif(){
@@ -127,7 +127,7 @@
           toast('请您输入整数卖出数量');
         }else if(this.buyAmountUet < this.item.minUnit){
           toast('您输入的数量低于最低卖出数量');
-        }else if(this.buyAmountUet > this.item.amount){
+        }else if(this.buyAmountUet > this.item.balance){
           toast('您输入的数量高于卖出数量');
         }else if(this.buyTypeBuy =='' || !this.buyTypeBuy){
           toast('请您选择支付方式');
@@ -190,7 +190,7 @@
       tipsInfo(){
         if(this.buyAmountUet < this.item.minUnit){
           return '提示：您输入的数量低于最低卖出数量';
-        }else if(this.buyAmountUet > this.item.amount){
+        }else if(this.buyAmountUet > this.item.balance){
           return '提示：您输入的数量高于卖出数量';
         }else {
           return '';

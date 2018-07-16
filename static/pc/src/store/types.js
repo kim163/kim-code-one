@@ -10,5 +10,5 @@ export const SET_FOOTER = 'SET_FOOTER' //设置底部是否显示
 export const SHOW_LOGIN = 'SHOW_LOGIN' //显示登录
 export const SET_LANGUAGE='SET_LANGUAGE'//设置语言
 export const IS_LOGIN = 'IS_LOGIN' //是否登录名称
-
+export const IS_TIMEOVER = 'IS_TIMEOVER' //是否倒计时结束
 export const CHANGE_CONNECTSTATE = 'CHANGE_CONNECTSTATE'      //改变融云链接状态

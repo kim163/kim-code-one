@@ -21,3 +21,10 @@ export const uploadFile = (jsonData) => {
   return service({url: numversion+`common/uploadFile`, method: 'post', data: jsonData})
 }
 
+/*获取会话状态*/
+
+export const groupState = (jsonData)=>{
+
+   return service({url:numversion+`rongcloud/getGroupStatus`,method:'post',data:jsonData})
+}
+

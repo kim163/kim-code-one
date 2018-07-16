@@ -6,7 +6,7 @@
     <guide-page v-if="!islogin"></guide-page>
 
     <div class="section transaction-content" v-if="islogin">
-      <div class="container">
+      <div class="container min-width">
         <div class="row">
           <div class="col-18 fl">
                <tranbuy-list></tranbuy-list>
@@ -42,7 +42,7 @@
       return {
         breadList:[
           {
-            urlName:'index',
+            urlName:'transaction',
             name:'navbar.tradingHall'
           }
         ]

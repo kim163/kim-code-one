@@ -26,7 +26,6 @@
               <span class="l-title">卖方 :</span>
               <span class="fr">{{DetailList.debitName}} ({{DetailList.debitAccountNameTwin}} )</span>
             </li>
-
             <li>
               <span class="l-title">交易金额 :</span>
               <span class="fr">
@@ -89,13 +88,17 @@
               </li>
           </ul>
 
-          <div class="btn-group" v-if="DetailList.status =='45' ">
-              <span class="btn btn-block btn-tips">请在倒计时结束前完成付款
+          <div class="countdown-line" v-if="DetailList.status =='45' ">
+              <span class="btn btn-block btn-tips">
+                  请在倒计时结束前完成付款
                   <count-down v-if="DetailList.status !='61'"
                               :end-time="DetailList.intervalTime-DetailList.elapsedTime<=0 ? 0 : DetailList.intervalTime-DetailList.elapsedTime "
                               @callBack="countDownEnd">
                   </count-down>
               </span>
+          </div>
+
+          <div class="btn-group" v-if="DetailList.status =='45' ">
               <p class="payment-tips">
                 警告：为了您能快速完成交易，请尽量使用 <span>您所绑定的银行卡/支付宝付款。</span>
               </p>
@@ -244,9 +247,7 @@
               <span class="qrcode-tips">长按二维码保存</span>
             </div>
           </li>
-
         </ul>
-
         <ul class="details-ul pay-detail my-paymethod">
             <li>
               <span class="l-title">买家付款方式 : </span>
@@ -277,13 +278,18 @@
 
           </ul>
 
-          <div class="btn-group" v-if="DetailList.status =='47'">
-              <span class="btn btn-block btn-tips">释放UET倒计时
+          <div class="countdown-line" v-if="DetailList.status =='47'">
+              <span class="btn btn-block btn-tips">
+                释放UET倒计时
                 <count-down
                   :end-time="DetailList.intervalTime-DetailList.elapsedTime<=0 ? 0 : DetailList.intervalTime-DetailList.elapsedTime"
-                  @callBack="countDownEnd">
+                  @callBack="countDownEnd" :timestamp="true" @nowTime="countDownTime = $event">
+
                 </count-down>
               </span>
+          </div>
+
+          <div class="btn-group" v-if="DetailList.status =='47'">
               <input type="button" class="btn btn-block btn-primary" @click="payCompleted" value="确认收款">
               <input type="button" class="btn btn-block btn-primary" @click="createAppeal"  value="我要申诉">
           </div>
@@ -300,29 +306,28 @@
               <p class="proof-twintip">提示：点击缩略图可放大查看</p>
          </div>
       </div>
-
       <div v-if="detailTypeItem =='申诉与仲裁'">
-
         <div class="trade-time-bar">
           申诉与仲裁
           <span class="fr red">卖方获胜</span>
         </div>
       </div>
-
     </div>
     <div class="chatroom" @click="goChatroom()">
       <img src="../../../assets/images/chat.png" alt="">
       <span class="chatroom_num"></span>
     </div>
     <transition name="toolSlideRight">
-      <chat v-if="chatState" class="chatWindow"
-            :detail="$route.params.id"
+      <chat v-show="chatState" class="chatWindow"
+            :detail="gameID"
             :debitNum="DetailList.debitAmount"
             :creditName = 'DetailList.creditName'
             :debitMoney="DetailList.debitAmountTwin"
             :debitName="DetailList.debitName"
+            :startTime="DetailList.intervalTime"
+            :endTime="DetailList.elapsedTime"
+            :historyState="DetailList.historyState"
       ></chat>
-
     </transition>
 
   </div>
@@ -343,6 +348,7 @@
     data() {
       return {
         orderId:'',
+        gameID:'',
         detailType:[
           {name:'detail.buyUet', value: '订单详情' },
           {name:'detail.saleUet', value: '申诉与仲裁' }
@@ -379,7 +385,8 @@
         mheadSet:{                      // 头部返回事件
           returnBtnFun:false,
           returnBtnEvent:'returnBtnEvent'
-        }
+        },
+        countDownTime:0
       };
     },
     methods: {
@@ -388,10 +395,8 @@
         this.request={
           orderId:this.orderId
         }
-
         transaction.getOrderx(this.request).then(res => {
-
-          console.log('res.data.status:'+res.data.status);
+          console.log('res.data:'+res.data);
           if(res.data == '' || res.data == null){
             this.$router.push({name: 'mIndex'});
             return;
@@ -465,7 +470,7 @@
          }else if(this.payOrderParam.creditAmountTwin=="" || !this.payOrderParam.creditAmountTwin){
            toast("请输入付款金额");
          }else if(this.payOrderParam.creditAccountNameTwin=="" || !this.payOrderParam.creditAccountNameTwin){
-           toast("付款的户名");
+           toast("请输入付款的户名");
          }else {
            return true;
          }
@@ -480,7 +485,6 @@
               toast('请选择您的付款方式');
               return;
             }
-
             if(this.selAccountTypeTwin.type==-1){
                if(!this.checkPayDetail())return;
             }else {
@@ -492,11 +496,8 @@
             }
           }
         }
-
         this.payOrderParam.id = this.orderId;
         this.payOrderParam.creditProofTypeTwin = this.DetailList.creditProofTypeTwin;
-
-        console.log('我已完成付款 param: ',this.payOrderParam);
         transaction.payOrderV2(this.payOrderParam).then(res => {
           if(res.code == '10000'){
             toast('您已确认付款，请勿重复付款');
@@ -553,13 +554,20 @@
         });
         this.loading = false;
       },
+      getTotalUnreadCount(){
+        RongIMClicent.getInstance().getTotalUnreadCount({
+          onSuccess:(count)=>{
+            console.log(count,'我就撒啊手机打开了')
+          },
+        })
+      },
       goChatroom(){
         //先获取订单号
 
-        const gameID = this.$route.params.id;
+        this.gameID = this.$route.params.id;
        //
         let params ={
-          groupId : gameID,
+          groupId :this.gameID,
           founderId: this.$store.state.userData.userId,
           type:1,
           founderNickname: this.$store.state.userData.nickname
@@ -567,6 +575,7 @@
         chatWith.createChatGroup(params).then(res=>{
            if(res.code ===10000){
              this.chatState = true
+             this.DetailList.historyState = 2
            }else {
               toast(res.message)
            }
@@ -598,11 +607,10 @@
       if (this.$route.params.id) {
         this.orderId = this.$route.params.id;
         this.fetchData();
+      //  this.getTotalUnreadCount();
       }
     },
-    mouted(){
 
-    },
     watch: {
       "$route"(val) {
         this.orderId = val.params.id;
@@ -819,7 +827,7 @@
         padding: 0 r(20);
         margin: r(10)0 0 0;
         cursor: pointer;
-        font-size: r(18);
+        @include  f(18px);
         text-align: center;
       }
       .btn-primary {
@@ -838,11 +846,15 @@
         background: #E4E4E4;
         color: #787876;
       }
-      .btn-tips{
-        background: #FFFFFF;
-        border: 1px solid #E4E4E4;
-        color: #FF0000;
-      }
+  }
+  .countdown-line{
+    line-height: r(45);
+    background: #FFFFFF;
+    margin-top: r(8);
+    color: #FF0000;
+    padding:0 r(5);
+    @include  f(15px);
+    text-align: center;
   }
   .payment-tips{
     @include  f(15px);
@@ -903,10 +915,10 @@
     background: url("../../../assets/images/chatbg.png")no-repeat;
     background-size: 100%;
     img{
-      padding-top: r(7);
+      padding-top: r(9);
       display: block;
-      width: r(20);
-      height: r(20);
+      width: r(23);
+      height: r(23);
       margin: 0 auto;
     }
     .chatroom_num{

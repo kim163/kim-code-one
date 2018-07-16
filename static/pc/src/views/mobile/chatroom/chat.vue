@@ -8,7 +8,8 @@
       <div class="order_info">
         <div class="order_state">
           <div class="state_b">
-            <span class="state_d">买入</span>
+            <span class="state_d" v-if="!userData.nickname==debitName">买入</span>
+            <span class="state_n" v-else>卖出</span>
             <span class="order_num">UET订单编号:</span>
             <span class="order_d">订单详情</span>
           </div>
@@ -42,32 +43,54 @@
         </div>
       </div>
       <p class="countdown">
-        等待付款倒计时: 09: 09
+        等待倒计时:
+        <count-down :end-time="startTime-endTime<=0?0:startTime-endTime"></count-down>
       </p>
       <b-scroll
         ref="scroll"
-        :autoUpdate = "true"
-        :pullUp = "false"
-        :pullDown = "false"
+        :autoUpdate="true"
+        :pullUp="false"
+        :pullDown="false"
       >
         <!--历史消息-->
         <div v-for="list in historyArr" class="msg-item">
           <!--文字消息 和图片消息   区分是否是自己发的-->
-            <div class="chat_container" v-if="list.messageType=='TextMessage'">
-                  <div style="flex:1"></div>
-                  <div class="contents">{{list.content.content}}</div>
-                  <div class="user_symbol"></div>
+          <!--自己发的-->
+          <div class="chat_container"
+               v-if="list.messageType=='TextMessage'&&list.content.extra.nickName==userData.userData">
+            <div style="flex:1"></div>
+            <div class="contents" v-html="symolEmoji.symbolToEmoji(list.content.content)"></div>
+            <div class="user_symbol"></div>
+          </div>
+          <!--别人发的-->
+          <div v-if="list.messageType=='TextMessage'&&list.content.extra.nickName!==userData.nickname"
+               class="chat_container">
+            <div class="user_symbol_next" :class="{'isSeller':userData.nickname==debitName}"></div>
+            <div class="contents_next" v-html="symolEmoji.symbolToEmoji(list.content.content)"></div>
+            <div class="" style="flex: 1"></div>
+          </div>
+          <!--自己发的-->
+          <div class="chat_container"
+               v-if="list.messageType=='ImageMessage'&&list.content.extra.nickName==userData.nickname">
+            <div style="flex:1;"></div>
+            <div class="contents">
+              <viewer :images="list.picArr">
+                <img :src="list.content.imageUri" alt="" class="contents_image">
+              </viewer>
             </div>
-            <div class="chat_container" v-if="list.messageType=='ImageMessage'">
-                <div class="" style="flex:1;"></div>
-                <div class="contents">
-                  <viewer :images="list.picArr">
-                    <img :src="list.content.imageUri" alt="" class="contents_image">
-                  </viewer>
-
-                </div>
-                <div class="user_symbol"></div>
-              </div>
+            <div class="user_symbol"></div>
+          </div>
+          <!--别人发的-->
+          <div class="chat_container"
+               v-if="list.messageType=='ImageMessage'&&list.content.extra.nickName!==userData.nickname">
+            <div class="user_symbol_next" :class="{'isSeller':userData.nickname==debitName}"></div>
+            <div class="contents_next">
+              <viewer :images="list.img">
+                <img :src="list.content.imageUri" alt="" class="contents_image">
+              </viewer>
+            </div>
+            <div class="" style="flex: 1"></div>
+          </div>
         </div>
         <div v-for="list in chatArr" class="msg-item">
           <!--发送消息-->
@@ -88,13 +111,13 @@
           </div>
           <!--接收文字消息-->
           <div v-if="list.user==2" class="chat_container">
-            <div class="user_symbol_next" :class="{'isSeller':isSeller}"></div>
+            <div class="user_symbol_next" :class="{'isSeller':userData.nickname==debitName}"></div>
             <div class="contents_next">{{list.msg}}</div>
             <div class="" style="flex: 1"></div>
           </div>
           <!--接收图片消息-->
           <div v-if="list.user==4" class="chat_container">
-            <div class="user_symbol_next" :class="{'isSeller':isSeller}"></div>
+            <div class="user_symbol_next" :class="{'isSeller':userData.nickname==debitName}"></div>
             <div class="contents_next">
               <viewer :images="list.img">
                 <img :src="list.msg" alt="" class="contents_image">
@@ -105,7 +128,6 @@
         </div>
       </b-scroll>
     </div>
-
     <!--输入框-->
     <div class="input_chatbox ">
       <div class="chatboxNext">
@@ -120,8 +142,6 @@
           <img src="~images/chatWith/photo.png" alt="" style="display: block">
           <span>照片</span>
           <input type="file" accept="image/*" value="打开照相机" class="openCamera" @change="upload">
-          <div class="hhha"></div>
-          <img src="" alt="" id="demoImg">
         </div>
       </div>
       <!--表情-->
@@ -132,10 +152,12 @@
 </template>
 
 <script>
+  import CountDown from 'components/countdown'
   import BScroll from 'vue-slim-better-scroll';
   import mHeader from "components/m-header"
-  import {chatWith} from 'api'
-  import {mapGetters,mapMutations} from 'vuex'
+  import {chatWith, transaction} from 'api'
+  import {mapGetters, mapMutations} from 'vuex'
+
   export default {
     data() {
       return {
@@ -144,6 +166,7 @@
         messageValue: '',
         needSend: false,
         token: '',
+        symolEmoji: '',
         croppa: {},
         dataUrl: {},
         isChangeValue: true,
@@ -160,12 +183,13 @@
         size: '',
         name: '',
         file: '',
-        demoArr:[],
+        demoArr: [],
         dataURLNext: '',
-        demoTest:'',
-        isSeller: '',
-        sellName:'',
-        historyArr:'',
+        demoTest: '',
+        sellName: '',
+        historyArr: '',
+        startTime: '',
+        endTime: '',
         config: {
           size: 24, // 大小, 默认 24, 建议15 - 55
           url: '//f2e.cn.ronghub.com/sdk/emoji-48.png', // 所有 emoji 的背景图片
@@ -190,13 +214,16 @@
         type: String,
         default: ''
       },
-      creditName:{
-        type:String,
-        default:''
+      creditName: {
+        type: String,
+        default: ''
       },
-
+      historyState:{
+        type:Number,
+        default:0
+      }
     },
-    computed:{
+    computed: {
       ...mapGetters([
         'userData',
         'userId',
@@ -217,48 +244,58 @@
           this.sendPic()
         }
       },
-
+      detail(val) {
+        if (val) {
+         this.fetchOrder()
+        }
+      },
+      historyState(val){
+        if(val){
+          this.symolEmoji = RongIMLib.RongIMEmoji;
+          this.getHistoryMessage();
+          this.scroll = this.$refs.scroll;
+          this.scrollToBot()
+        }
+      }
     },
     created() {
-      /*确定好卖买放关系*/
-      if (this.sellName === this.$store.state.userData.nickname) {
-        /*卖方*/
-        this.isSeller = true
-      } else {
-        /*买方*/
-        this.isSeller = false
-      }
       /*加载bettorScroll*/
-      Vue.$global.bus.$on('textMessage',(message)=>{
+      Vue.$global.bus.$on('textMessage', (message) => {
         this.chatArr.push(message)
-      })
-      Vue.$global.bus.$on('picMessage',(val)=>{
-        this.chatArr.push(val)
-      })
-      if(this.connectState){
-          this.getHistoryMessage();
-      }
-      console.log('bbb')
-    },
-    mounted(){
-      this.$nextTick(()=>{
-        this.scroll = this.$refs.scroll
+        this.symolEmoji = RongIMLib.RongIMEmoji;
         this.scrollToBot()
+        this.clearUnreadCount()
       })
+      Vue.$global.bus.$on('picMessage', (val) => {
+        this.chatArr.push(val)
+        this.symolEmoji = RongIMLib.RongIMEmoji;
+        this.scrollToBot()
+        this.clearUnreadCount()
+      })
+      /*发送开始时间*/
+      /*清楚制定会话数*/
     },
-
     methods: {
       ...mapMutations(['CHANGE_CONNECTSTATE']),
+      fetchOrder() {
+        const requestData = {
+          orderId: this.detail
+        }
+        transaction.getOrderx(requestData).then(res => {
+          this.startTime = res.data.intervalTime;
+          this.endTime = res.data.elapsedTime;
+        })
+      },
       scrollToBot() {
         this.$nextTick(() => {
-          if (this.chatArr.length == 0) {
-            return ;
+          if (this.chatArr.length == 0&&this.historyArr.length==0) {
+            return;
           }
           const imgArr = document.getElementsByClassName('msg-item')
           const len = imgArr.length
-          for (let i = 0; i < len; i++) {
+          for (let i = 0; i <=len; i++) {
             this.scroll.refresh();
-            this.scroll.scrollToElement(document.querySelectorAll('.msg-item')[this.chatArr.length-1],333)
+            this.scroll.scrollToElement(document.querySelectorAll('.msg-item')[(this.chatArr.length+this.historyArr.length)-1], 333)
           }
         })
       },
@@ -317,7 +354,7 @@
               context.drawImage(img, 0, 0, targetWidth, targetHeight);
               // canvas转为blob并上传
               this.dataURL = canvas.toDataURL('image/png');
-             // this.chatArr.push({msg: message.content.imageUri, user: 4, img: [message.content.imageUri]})
+              // this.chatArr.push({msg: message.content.imageUri, user: 4, img: [message.content.imageUri]})
               /*this.demoArr.push({img:[this.dataURL]});*/
               var blob = this.dataURItoBlob(this.dataURL);
               const RamdomValue = Math.random();
@@ -329,7 +366,7 @@
                 if (res.code == 10000) {
                   this.picUrl = res.data.url;
                   this.uploadState = true;
-                  this.demoArr.push({img:[this.picUrl]});
+                  this.demoArr.push({img: [this.picUrl]});
                 } else {
                   this.uploadState = false
                 }
@@ -342,24 +379,20 @@
           }
         }
       },
-      getHistoryMessage(){
+      getHistoryMessage() {
         let conversationType = RongIMLib.ConversationType.GROUP //eslint-disable-line
         let targetId = this.detail
         let timestrap = 0 // 默认传 null，若从头开始获取历史消息，请赋值为 0 ,timestrap = 0;
         let count = 20 // 范围0-20条 可多次获取
-
-        RongIMLib.RongIMClient.getInstance().getHistoryMessages(conversationType,targetId,timestrap,count,{
-          onSuccess:((list,hasMsg)=>{
-              /*区分图片和消息*/
-            console.log(list,'是断开连接撒旦')
-
-              this.historyArr = list;
-
+        RongIMLib.RongIMClient.getInstance().getHistoryMessages(conversationType, targetId, timestrap, count, {
+          onSuccess: ((list, hasMsg) => {
+            /*区分图片和消息*/
+            this.historyArr = list;
+            this.scrollToBot()
           }),
-          onError:function (error) {
-            console.log(error,'失败记录；')
+          onError: function (error) {
+            console.log(error, '失败记录；')
           }
-
         })
       },
       dataURItoBlob(base64Data) {
@@ -381,63 +414,6 @@
         RongIMLib.RongIMClient.init('x18ywvq85ahuc', null, {navi: 'http://dc-jiuan-im-nav-pro.com'}) //eslint-disable-line
         /*获取token*/
         this.getToken()
-      },
-      setOnReceiveMessageListener() {
-        RongIMClient.setOnReceiveMessageListener({  //eslint-disable-line
-          onReceived: (message) => {
-            /*区分*/
-            switch (message.messageType) {
-              case RongIMClient.MessageType.TextMessage: //eslint-disable-line
-                // message.content.content => 消息内容
-                /*接收使用symbolToEmoji方法*/
-                this.chatArr.push({msg: RongIMLib.RongIMEmoji.symbolToEmoji(message.content.content), user: 2})
-                break
-              case RongIMClient.MessageType.VoiceMessage: //eslint-disable-line
-                // 对声音进行预加载
-                // message.content.content 格式为 AMR 格式的 base64 码
-                break
-              case RongIMClient.MessageType.ImageMessage: //eslint-disable-line
-                // message.content.content => 图片缩略图 base64。
-                // message.content.imageUri => 原图 URL。
-                this.chatArr.push({msg: message.content.imageUri, user: 4, img: [message.content.imageUri]})
-                break
-              case RongIMClient.MessageType.DiscussionNotificationMessage: //eslint-disable-line
-                // message.content.extension => 讨论组中的人员。
-                break
-              case RongIMClient.MessageType.LocationMessage: //eslint-disable-line
-                // message.content.latiude => 纬度。
-                // message.content.longitude => 经度。
-                // message.content.content => 位置图片 base64。
-                break
-              case RongIMClient.MessageType.RichContentMessage: //eslint-disable-line
-                // message.content.content => 文本消息内容。
-                // message.content.imageUri => 图片 base64。
-                // message.content.url => 原图 URL。
-
-                break
-              case RongIMClient.MessageType.InformationNotificationMessage: //eslint-disable-line
-                // do something...
-                break
-              case RongIMClient.MessageType.ContactNotificationMessage: //eslint-disable-line
-                // do something...
-                break
-              case RongIMClient.MessageType.ProfileNotificationMessage: //eslint-disable-line
-                // do something...
-                break
-              case RongIMClient.MessageType.CommandNotificationMessage: //eslint-disable-line
-                // do something...
-                break
-              case RongIMClient.MessageType.CommandMessage: //eslint-disable-line
-                // do something...
-                break
-              case RongIMClient.MessageType.UnknownMessage: //eslint-disable-line
-                // do something...
-                break
-              default:
-              // do something...
-            }
-          }
-        })
       },
       getDom(html) {
         var span = document.createElement("span");
@@ -479,36 +455,42 @@
       showMoreFunction() {
         this.isShowMore = !this.isShowMore
         document.getElementsByClassName('emoji_area')[0].style.display = 'none'
-       // this.scrollToBot()
+        this.scrollToBot()
+      },
+      clearUnreadCount(){
+        let conversationType = RongIMLib.ConversationType.GROUP
+        RongIMClient.getInstance().clearUnreadCount(conversationType,this.detail,{
+          onSuccess:(res)=>{
+            console.log(res,'野路子')
+          },
+          onError:()=>{
+          }
+        })
       },
       sendMessage() {
-       // var div = document.getElementsByClassName('wrapper_box')[0];
-     //   div.scrollTop = div.scrollHeight;
-
-      //  this.scroll.scrollToElement(document.querySelector('.msg-item')[this.chatArr.length>=1?this.chatArr.length-1:0])
-       // console.log('aaa')
         let conversationtype = RongIMLib.ConversationType.GROUP;
         let targetId = this.detail;
         //改变发送messageValue的值因为用户会发送表情
-        console.log(RongIMLib.RongIMEmoji,'速度')
         this.messageValue = RongIMLib.RongIMEmoji.symbolToEmoji(this.messageValue);
-        let extraInfo={
-           'amount': this.debitNum,
-          'isSeller':this.isSeller,
-          'nickName':this.userData.nickname,
+        let extraInfo = {
+          'amount': this.debitNum,
+          'isSeller': this.isSeller,
+          'nickName': this.userData.nickname,
           'time': this.formatMsgTime(new Date().getTime()),
-          'targetId':this.detail,
-          'debitName':this.debitName,
-          'debitMoney':this.debitMoney
+          'targetId': this.detail,
+          'debitName': this.debitName,
+          'debitMoney': this.debitMoney,
+          'startTime': this.startTime,
+          'endTime': this.endTime,
         };
         let msg = new RongIMLib.TextMessage({content: this.messageValue, extra: extraInfo});
-
         RongIMClient.getInstance().sendMessage(conversationtype, targetId, msg, {
             onSuccess: (message) => {
               //message 为发送的消息对象并且包含服务器返回的消息唯一Id和发送消息时间戳
               this.chatArr.push({msg: this.messageValue, user: 1})
               this.messageValue = ''
               this.scrollToBot()
+              this.clearUnreadCount()
             },
             onError: function (errorCode, message) {
               var info = '';
@@ -531,9 +513,6 @@
                 case RongIMLib.ErrorCode.NOT_IN_CHATROOM:
                   info = '不在聊天室中';
                   break;
-                default :
-                  info = x;
-                  break;
               }
               console.log('发送失败:' + info);
             }
@@ -542,10 +521,10 @@
       },
       formatMsgTime(timespan) {
         var dateTime = new Date(timespan);
-        var month = dateTime.getMonth() + 1>=10?dateTime.getMonth()+1:'0'+dateTime.getMonth();
-        var day = dateTime.getDate()>=10?dateTime.getDate():'0'+dateTime.getDate();
-        var hour = dateTime.getHours()>=10?dateTime.getHours():'0'+dateTime.getHours();
-        var minute = dateTime.getMinutes()>=10?dateTime.getMinutes():'0'+dateTime.getMinutes();
+        var month = dateTime.getMonth() + 1 >= 10 ? dateTime.getMonth() + 1 : '0' + dateTime.getMonth();
+        var day = dateTime.getDate() >= 10 ? dateTime.getDate() : '0' + dateTime.getDate();
+        var hour = dateTime.getHours() >= 10 ? dateTime.getHours() : '0' + dateTime.getHours();
+        var minute = dateTime.getMinutes() >= 10 ? dateTime.getMinutes() : '0' + dateTime.getMinutes();
         var timeSpanStr;
         timeSpanStr = month + '-' + day + ' ' + hour + ':' + minute;
         return timeSpanStr;
@@ -553,21 +532,21 @@
       sendPic() {
         let conversationtype = RongIMLib.ConversationType.GROUP;
         let targetId = this.detail;
-        console.log(this.base64.length, 'bse64长度')
-        console.log(this.picUrl, '速度')
+        this.clearUnreadCount()
+        let extraInfo = {
+          'amount': this.debitNum,
+          'isSeller': this.isSeller,
+          'nickName': this.userData.nickname,
+          'time': this.formatMsgTime(new Date().getTime()),
+          'targetId': this.detail,
+          'debitName': this.debitName,
+          'debitMoney': this.debitMoney,
+          'startTime': this.startTime,
+          'endTime': this.endTime,
+          picArr: [this.picUrl]
+        };
 
-          let extraInfo={
-            'amount': this.debitNum,
-            'isSeller':this.isSeller,
-            'nickName':this.userData.nickname,
-            'time': this.formatMsgTime(new Date().getTime()),
-            'targetId':this.detail,
-            'debitName':this.debitName,
-            'debitMoney':this.debitMoney,
-            picArr: [this.picUrl]
-          };
-
-        let msg = new RongIMLib.ImageMessage({content: this.base64, imageUri: this.picUrl,extra:extraInfo})
+        let msg = new RongIMLib.ImageMessage({content: this.base64, imageUri: this.picUrl, extra: extraInfo})
         RongIMClient.getInstance().sendMessage(conversationtype, targetId, msg, {
           onSuccess: ((message) => {
             this.chatArr.push({msg: message.content.imageUri, user: 3, img: [message.content.imageUri]})
@@ -575,25 +554,26 @@
           }),
           onError: ((error) => {
             console.log(error)
-
           })
 
         })
       }
     },
-    beforeDestroy(){
+    beforeDestroy() {
       Vue.$global.bus.$off('textMessage')
       Vue.$global.bus.$off('picMessage')
     },
     components: {
       mHeader,
-      BScroll
+      BScroll,
+      CountDown
     }
   }
 </script>
 
 <style lang="scss" scoped>
   @import "~assets/scss/mobile";
+
   .box {
     display: flex;
 
@@ -606,6 +586,7 @@
   .box-ver {
     flex-direction: column;
   }
+
   .fr {
     float: right;
   }
@@ -630,6 +611,19 @@
           width: r(33);
           height: r(16);
           background-color: #4982FF;
+          color: #fff;
+          border-radius: r(2);
+          font-size: r(12);
+          padding: 2px;
+          line-height: r(14);
+          margin: 0 auto;
+          text-align: center;
+        }
+        .state_n{
+          display: inline-block;
+          width: r(33);
+          height: r(16);
+          background-color:#E9BA52;
           color: #fff;
           border-radius: r(2);
           font-size: r(12);

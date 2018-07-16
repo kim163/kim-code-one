@@ -1,6 +1,6 @@
 <template>
   <div :class="['navbar',{'nav-start':!isScrollTop}]">
-    <div class="container">
+    <div class="container min-width">
       <div class="row cfx">
         <div class="logo">
           <a class="nav-logo-link" href="/static/index.html"></a>
@@ -113,6 +113,10 @@
     width: auto;
     margin: 15px 18px 0;
   }
+  .nav-start .link-part .col-2{
+    width: auto;
+    margin: 25px 18px 0;
+  }
   .navbar .link-part .col-2 a{
     font-size: 20px;
   }
@@ -120,12 +124,18 @@
     margin: 8px 0 0 20px;
     float: right;
   }
+  .nav-start .link-part .lang-icons{
+    margin: 18px 0 0 20px;
+  }
   a.lang-en{
     font-size: 18px;
     padding: 7px 16px;
     border: 1px solid #14171a;
     border-radius: 35px;
     display: block;
+  }
+  .navbar a.lang-en,.navbar .lang-icons a:hover{
+    border: 1px solid #14171a;
   }
   .nav-start a.lang-en,.nav-start .lang-icons a:hover{
     border: 2px solid #ffffff;
@@ -137,7 +147,6 @@
   @media only screen and (min-width: 800px) and (max-width: 1020px) {
     .navbar .link-part .col-2{
       width: auto;
-      margin: 15px 6px 0;
     }
   }
 
