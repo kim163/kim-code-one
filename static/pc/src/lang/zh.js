@@ -17,7 +17,8 @@ export default {
     busineList: '我的商户列表',
     onlineService: '在线客服',
     juanApp: '久安APP',
-    juanWallet: '久安钱包'
+    juanWallet: '久安钱包',
+    userCenter:'个人中心',
   },
   login: {
     title: '欢迎回来',
@@ -225,5 +226,11 @@ export default {
     pleaseSelPayMet:'请选择您的支付方式',
     otherPayMethod:'其他支付方式',
     uploadUpThree:'最多可上传三张'
+  },
+  userCenter:{
+    bindCard:'绑定银行卡',
+    bindAlipay:'绑定支付宝',
+    bindWeChat:'绑定微信',
+    uploadQrcode:'点击上传您的收款二维码'
   }
 }

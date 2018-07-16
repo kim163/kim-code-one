@@ -17,7 +17,8 @@ export default {
     busineList: 'My business list',
     onlineService: 'Online service',
     juanApp: 'Juan APP',
-    juanWallet: 'Juan wallet'
+    juanWallet: 'Juan wallet',
+    userCenter:'User Center',
   },
   login: {
     title: 'Welcome back',
@@ -224,5 +225,11 @@ export default {
     pleaseSelPayMet:'Select payment method',
     otherPayMethod:'Other payment methods',
     uploadUpThree:'Upload up to three'
+  },
+  userCenter:{
+    bindCard:'Binding bank card',
+    bindAlipay:'Binding Alipay',
+    bindWeChat:'Binding WeChat',
+    uploadQrcode:'Click to upload your receipt QR code'
   }
 }
