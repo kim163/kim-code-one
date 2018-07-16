@@ -25,7 +25,7 @@ Vue.use(BusPlugin)
 Vue.use(Viewer)
 Vue.use(LoadScript)
 Vue.use(Croppa)
-// Vue.use(Rongyun)
+Vue.use(Rongyun)
 //在所有组件里可调用函数
 
 import VueLazyload from 'vue-lazyload'
