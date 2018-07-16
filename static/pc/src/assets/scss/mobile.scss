@@ -394,6 +394,9 @@ a.pubtn-white:hover {
   margin-top: r(10);
   color: $white;
   cursor: pointer;
+  &.disabled{
+    background: #d1d1d1;
+  }
 }
 .confirm-btn-cancel{
   border-right: 1px solid #e5e5e5;
