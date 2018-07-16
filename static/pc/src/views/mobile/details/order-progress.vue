@@ -26,7 +26,6 @@
               <span class="l-title">卖方 :</span>
               <span class="fr">{{DetailList.debitName}} ({{DetailList.debitAccountNameTwin}} )</span>
             </li>
-
             <li>
               <span class="l-title">交易金额 :</span>
               <span class="fr">
@@ -307,15 +306,12 @@
               <p class="proof-twintip">提示：点击缩略图可放大查看</p>
          </div>
       </div>
-
       <div v-if="detailTypeItem =='申诉与仲裁'">
-
         <div class="trade-time-bar">
           申诉与仲裁
           <span class="fr red">卖方获胜</span>
         </div>
       </div>
-
     </div>
     <!--<div class="chatroom" @click="goChatroom()">-->
       <!--<img src="../../../assets/images/chat.png" alt="">-->
@@ -332,7 +328,6 @@
             :endTime="DetailList.elapsedTime"
             :historyState="DetailList.historyState"
       ></chat>
-
     </transition>
 
   </div>
@@ -490,7 +485,6 @@
               toast('请选择您的付款方式');
               return;
             }
-
             if(this.selAccountTypeTwin.type==-1){
                if(!this.checkPayDetail())return;
             }else {
@@ -502,11 +496,8 @@
             }
           }
         }
-
         this.payOrderParam.id = this.orderId;
         this.payOrderParam.creditProofTypeTwin = this.DetailList.creditProofTypeTwin;
-
-        console.log('我已完成付款 param: ',this.payOrderParam);
         transaction.payOrderV2(this.payOrderParam).then(res => {
           if(res.code == '10000'){
             toast('您已确认付款，请勿重复付款');
@@ -563,6 +554,13 @@
         });
         this.loading = false;
       },
+      getTotalUnreadCount(){
+        RongIMClicent.getInstance().getTotalUnreadCount({
+          onSuccess:(count)=>{
+            console.log(count,'我就撒啊手机打开了')
+          },
+        })
+      },
       goChatroom(){
         //先获取订单号
 
@@ -609,11 +607,10 @@
       if (this.$route.params.id) {
         this.orderId = this.$route.params.id;
         this.fetchData();
+      //  this.getTotalUnreadCount();
       }
     },
-    mouted(){
 
-    },
     watch: {
       "$route"(val) {
         this.orderId = val.params.id;
@@ -918,10 +915,10 @@
     background: url("../../../assets/images/chatbg.png")no-repeat;
     background-size: 100%;
     img{
-      padding-top: r(7);
+      padding-top: r(9);
       display: block;
-      width: r(20);
-      height: r(20);
+      width: r(23);
+      height: r(23);
       margin: 0 auto;
     }
     .chatroom_num{
