@@ -63,7 +63,7 @@
         typeName:'',
         upLoadCfg:{
           maxUploadNum:1,
-          uploadImgTips:'点击上传您的收款二维码',
+          uploadImgTips: 'userCenter.uploadQrcode',
           isShowUploadTip:true
         },
         qrCodeUrl:'',

@@ -279,16 +279,18 @@ export default [
       return resolve(require('views/mobile/user-center'))
     },
     meta:{
+      noCache:true,
       isMobilePage:'mobile-body'
     }
   },
   {
     path:'/m/setUserInfo',
     name:'mSetUserInfo',
-    component(resolve){ //个人中心
+    component(resolve){ //完善信息
       return resolve(require('views/mobile/user-center/set-user-info'))
     },
     meta:{
+      noCache:true,
       isMobilePage:'mobile-body'
     }
   }

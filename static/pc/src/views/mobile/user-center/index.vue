@@ -44,6 +44,11 @@
       MobileHeader,
       ConfirmDialog
     },
+    watch:{
+      'userData.name':function(val){
+        this.userData.name = val
+      }
+    },
     computed:{
       ...mapGetters([
         'userData'
@@ -52,13 +57,15 @@
     methods:{
       toSetInfo(){
         this.showConfirm = false
-        this.$router.push({name:'mIndex'})
+        this.$router.push({name:'mSetUserInfo'})
       }
     },
     beforeRouteLeave (to, from , next) {
       if(to.name === 'mBindCard'){
         if(_.isNull(this.userData.name)){
           this.showConfirm = true
+        }else{
+          next()
         }
       }else{
         next()

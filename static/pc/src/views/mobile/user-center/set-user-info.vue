@@ -8,12 +8,12 @@
       </div>
       <div class="info-item">
         <div class="title">真实姓名:</div>
-        <span v-if="name != ''">{{name}}</span>
+        <span v-if="userData.name != null">{{name}}</span>
         <input v-else class="info-input" type="text" v-model="name" placeholder="请输入真实姓名"/>
       </div>
-    </div>
-    <div class="p-def">
-      <div class="bind-def-btn" @click="setUserInfo">绑定</div>
+      <div class="m-top-md">
+        <div class="bind-def-btn" @click="setUserInfo">绑定</div>
+      </div>
     </div>
   </div>
 </template>
@@ -21,12 +21,15 @@
 <script>
   import MobileHeader from 'components/m-header'
   import {mapGetters} from 'vuex'
+  import {
+    bindUserInfo
+  } from 'api/user-center'
   export default {
     name: "set-user-info",
     data(){
       return{
         nickName:'',
-        name:''
+        name:'',
       }
     },
     computed:{
@@ -47,6 +50,24 @@
           toast('请输入真实姓名')
           return
         }
+        const data = {
+          idCard:'',
+          userId: this.userData.userId,
+          name: this.name,
+          nickname: this.nickName
+        }
+        console.log('set user',data)
+        bindUserInfo(data).then(res => {
+          if(res.code === 10000){
+            toast('绑定成功')
+            this.$store.dispatch('UPDATE_USERDATA')
+            this.$router.replace({name:'mUserCenter'})
+          }else{
+            toast(res.message)
+          }
+        }).catch(err => {
+          toast(err)
+        })
       }
     },
     created(){
@@ -60,8 +81,10 @@
   @import "~assets/scss/mobile";
   .main{
     padding: r(10);
+    background: $white;
     .info-item{
       display: flex;
+      justify-content: space-between;
       @include f(16px);
       height: r(50);
       line-height: r(50);
@@ -71,6 +94,9 @@
         padding-left: r(15);
         @include f(16px);
       }
+    }
+    .m-top-md{
+      margin-top: r(20);
     }
   }
 </style>

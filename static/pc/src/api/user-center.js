@@ -30,3 +30,10 @@ export const unbindBank = jsonData => service({
   method: 'post',
   data: jsonData
 });
+
+//绑定用户信息：姓名，身份证，昵称等
+export const bindUserInfo = jsonData => service({
+  url: numversion+`account/cash/bindUserInfo`,
+  method: 'post',
+  data: jsonData
+});

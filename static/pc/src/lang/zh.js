@@ -231,5 +231,6 @@ export default {
     bindCard:'绑定银行卡',
     bindAlipay:'绑定支付宝',
     bindWeChat:'绑定微信',
+    uploadQrcode:'点击上传您的收款二维码'
   }
 }

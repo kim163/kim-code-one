@@ -27,10 +27,10 @@
     </div>
     <confirm-dialog v-model="showConfirm">
       <div slot="content">
-        <div class="dialog-content">您是否确定解绑该银行卡？</div>
+        <div class="dialog-content">{{confrimCfg.content}}</div>
       </div>
-      <div slot="leftBtn" class="confirm-btn-cancel dialog-cancel">暂不解绑</div>
-      <div slot="rightBtn" class="dialog-btn-yes" @click="unbind">确定解绑</div>
+      <div slot="leftBtn" class="confirm-btn-cancel dialog-cancel">{{confrimCfg.leftBtn}}</div>
+      <div slot="rightBtn" class="dialog-btn-yes" @click="confrimCfg.type === 1 ? unbind() : toSetUserInfo()">{{confrimCfg.rightBtn}}</div>
     </confirm-dialog>
   </div>
 </template>
@@ -51,6 +51,12 @@
         cardList: [],
         showConfirm: false,
         account: '',
+        confrimCfg:{
+          content:'您是否确定解绑该银行卡？',
+          leftBtn:'暂不解绑',
+          rightBtn:'确定解绑',
+          type: 1
+        }
       }
     },
     components: {
@@ -59,12 +65,19 @@
     },
     computed: {
       ...mapGetters([
-        'userId'
+        'userId',
+        'userData'
       ])
     },
     methods: {
       unbindBankConfrim(account) {
         if (account) {
+          Object.assign(this.confrimCfg,{
+            content:'您是否确定解绑该银行卡？',
+            leftBtn:'暂不解绑',
+            rightBtn:'确定解绑',
+            type: 1
+          })
           this.account = account
           this.showConfirm = true
         }
@@ -99,10 +112,31 @@
         }).catch(err => {
           toast(err)
         })
+      },
+      toSetUserInfo(){
+        this.showConfirm = false
+        this.$router.push({name:'mSetUserInfo'})
       }
     },
     mounted() {
       this.getBankListInfo()
+    },
+    beforeRouteLeave (to, from , next) {
+      if(to.name === 'mBindCard'){
+        if(_.isNull(this.userData.name)){
+          Object.assign(this.confrimCfg,{
+            content:'请前往设置您的真实姓名',
+            leftBtn:'取消',
+            rightBtn:'确定',
+            type: 2
+          })
+          this.showConfirm = true
+        }else{
+          next()
+        }
+      }else{
+        next()
+      }
     }
   }
 </script>
