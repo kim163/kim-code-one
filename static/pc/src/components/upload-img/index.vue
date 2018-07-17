@@ -5,7 +5,9 @@
         <viewer :images="item.img">
           <img :src="item.img" alt="" class="contents_image">
         </viewer>
-        <a class="close" v-show="showClose" @click="removeImg(item)">&Cross;</a>
+        <a class="close" v-show="showClose" @click="removeImg(item)">
+          <i class="iconfont icon-close"></i>
+        </a>
       </div>
 
       <div class="upload-btngroup" v-show="isShowUploadBtn">
@@ -202,12 +204,14 @@
       height: r(20);
       background: #000000;
       border-radius: 50%;
-      color: $white;
       line-height: r(16);
       top: r(-10);
       right: r(-10);
       z-index: 999;
-      @include f(20)
+      .iconfont{
+        @include f(12px);
+        color: $white;
+      }
     }
   }
 
