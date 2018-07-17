@@ -21,7 +21,7 @@
         </div>
         <div v-else>
           <div class="add-qrcode">
-            <upload-img :upload-img-set="upLoadCfg" @gitPicUrl="getQrcodeUrl"></upload-img>
+            <upload-img :upload-img-set="upLoadCfg" :show-close="true" @gitPicUrl="getQrcodeUrl"></upload-img>
           </div>
           <div class="card-item p-LR-sm">
             <label class="title qr-title">{{typeName}}账号:</label>
@@ -101,7 +101,7 @@
           toast(txt)
           return false
         }
-        if(this.type != 3 && this.qrCodeUrl === ''){
+        if(this.type != 3 && (this.qrCodeUrl === '' || _.isUndefined(this.qrCodeUrl))){
           toast('请点击上传您的收款二维码')
           return false
         }
@@ -120,26 +120,26 @@
             bank: this.bank,
           })
         }
-        bindBankV2(data).then(res => {
-          console.log('bind Card res',res)
-          if(res.code === 10000){
-            toast('绑定成功')
-            if(this.type === 3){
-              this.$router.replace({name:'mCardList'})
-            }else{
-              this.hasBindInfo = res.data.filter((item) => {
-                return item.type === this.type
-              })
-              if(!_.isEmpty(this.hasBindInfo)){
-                this.hasBind = true
-              }
-            }
-          }else{
-            toast(res.message)
-          }
-        }).catch(err => {
-          toast(err)
-        })
+        // bindBankV2(data).then(res => {
+        //   console.log('bind Card res',res)
+        //   if(res.code === 10000){
+        //     toast('绑定成功')
+        //     if(this.type === 3){
+        //       this.$router.replace({name:'mCardList'})
+        //     }else{
+        //       this.hasBindInfo = res.data.filter((item) => {
+        //         return item.type === this.type
+        //       })
+        //       if(!_.isEmpty(this.hasBindInfo)){
+        //         this.hasBind = true
+        //       }
+        //     }
+        //   }else{
+        //     toast(res.message)
+        //   }
+        // }).catch(err => {
+        //   toast(err)
+        // })
       },
       getBankName(){
         const data = {

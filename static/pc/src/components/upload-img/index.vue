@@ -5,6 +5,7 @@
         <viewer :images="item.img">
           <img :src="item.img" alt="" class="contents_image">
         </viewer>
+        <a class="close" v-show="showClose" @click="removeImg(item)">&Cross;</a>
       </div>
 
       <div class="upload-btngroup" v-show="isShowUploadBtn">
@@ -39,9 +40,15 @@
           return {
             maxUploadNum: -1,        // 最大上传数量，如果没有最大上传数量，传 -1
             uploadImgTips: '',       // 上传图片提示文字
-            isShowUploadTip: true    // 是否有上传文件提示信息
+            isShowUploadTip: true,    // 是否有上传文件提示信息
+            maxWidth: 400,   //图片尺寸
+            maxHeight: 400,
           }
         }
+      },
+      showClose:{
+        type:Boolean,
+        default:false
       }
     },
     computed: {
@@ -89,8 +96,8 @@
               } else {
                 this.base64 = this.base64.replace(/^data:.*?;base64,/, '')
               }
-              var maxWidth = 400,
-                maxHeight = 400;
+              var maxWidth = this.uploadImgSet.maxWidth,
+                maxHeight = this.uploadImgSet.maxHeight;
               // 目标尺寸
               var targetWidth = originWidth,
                 targetHeight = originHeight;
@@ -150,6 +157,14 @@
           ia[i] = byteString.charCodeAt(i);
         }
         return new Blob([ia], {type: mimeString});
+      },
+      removeImg(item){
+        const index = _(this.picListArr).findIndex((pic) => {
+          return pic = item
+        })
+        this.picListArr.splice(index,1)
+        this.picUrlArr.splice(index,1)
+        this.$emit("gitPicUrl", this.picUrlArr);
       }
     }
   }
@@ -172,13 +187,27 @@
     margin: r(5) 1%;
     width: 31%;
     float: left;
-
+    position: relative;
     div {
       height: r(100);
     }
     img {
       width: 100%;
       height: 100%;
+    }
+    .close{
+      position: absolute;
+      display: block;
+      width: r(20);
+      height: r(20);
+      background: #000000;
+      border-radius: 50%;
+      color: $white;
+      line-height: r(16);
+      top: r(-10);
+      right: r(-10);
+      z-index: 999;
+      @include f(20)
     }
   }
 
