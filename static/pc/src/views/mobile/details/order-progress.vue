@@ -386,12 +386,14 @@
           returnBtnFun:false,
           returnBtnEvent:'returnBtnEvent'
         },
-        countDownTime:0
+        countDownTime:0,
+        typeState:1
       };
     },
     methods: {
       generateTitle,
       fetchData(){
+
         this.request={
           orderId:this.orderId
         }
@@ -530,7 +532,7 @@
           }else{
             toast(res.message)
           }
-
+          this.typeState= 2
         }).catch(err => {
           toast(err.message);
         });
@@ -563,13 +565,12 @@
       },
       goChatroom(){
         //先获取订单号
-
         this.gameID = this.$route.params.id;
        //
         let params ={
           groupId :this.gameID,
           founderId: this.$store.state.userData.userId,
-          type:1,
+          type:this.typeState,
           founderNickname: this.$store.state.userData.nickname
         }
         chatWith.createChatGroup(params).then(res=>{

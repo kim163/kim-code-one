@@ -6,42 +6,36 @@
         <img src="~images/chatWith/no_message.png" alt="" class="noMessage_pic">
       </div>
       <div v-else class="conversation_item" v-for="(list,num) in chatArr" :key="num"
-           @click="goChatRoom(list.latestMessage.content.extra.targetId,list.latestMessage.content.extra.debitName,
-           list.latestMessage.content.extra.debitMoney,list.latestMessage.content.extra.amount)">
+         @click="goChatRoom(list.targetId)">
         <div class="converstation_info box">
           <div class="user_symbol"
-               :class="{'user_symbolNext':userData.nickname==list.latestMessage.content.extra.debitName}"
+               :class="{'user_symbolNext':userId==JSON.parse(list.latestMessage.content.extra).debit}"
                v-html="userData.nickname.slice(0,1)">
           </div>
           <span class="unread_num" :class="{isShow:getCount(num)}">{{getCount(num)}}</span>
           <span class="unread_line" :class="{isOn:getCount(num)}"></span>
           <div class="user_conversation box-f1">
             <p class="user_name">{{userData.nickname}}
-              <span v-if="userData.nickname==list.latestMessage.content.extra.debitName" class="sell_out">卖出</span>
+              <span v-if="userId==JSON.parse(list.latestMessage.content.extra).debit" class="sell_out">卖出</span>
               <span v-else class="buy_in">买入</span>
             </p>
             <!--区分图片和文本消息 目前就这两种-->
-            <p class="user_content"
-               v-html="list.latestMessage.content.extra.nickName+': '+symolEmoji.symbolToEmoji(list.latestMessage.content.content)"
-               v-if="list.latestMessage.content.messageName=='TextMessage'"></p>
-            <p class="user_content" v-else>{{list.latestMessage.content.extra.nickName}}: [图片]</p>
+           <p class="user_content"
+               v-if="list.latestMessage.content.messageName=='TextMessage'">{{JSON.parse(list.latestMessage.content.extra).founderNickname+': '+symolEmoji.symbolToEmoji(list.latestMessage.content.content)}}</p>
+            <p class="user_content" v-else>{{JSON.parse(list.latestMessage.content.extra).founderNickname}}: [图片]</p>
           </div>
           <div class="user_time">
-            {{list.latestMessage.content.extra.time}}
+            {{timeList[num].TimeList}}
           </div>
         </div>
         <div class="conversation_num">
-          <span>交易数量:  {{list.latestMessage.content.extra.amount}}UET</span>
+          <span>交易数量: {{JSON.parse(list.latestMessage.content.extra).amount}}UET</span>
         </div>
       </div>
     </div>
     <transition name="toolSideRight">
       <chat v-show="chatState" class="chatWindow"
             :detail="DetailList.targetId"
-            :debitNum="DetailList.amount"
-            :creditName='DetailList.creditName'
-            :debitMoney="DetailList.money"
-            :debitName="DetailList.debitName"
             :historyState="DetailList.historyState"
       ></chat>
     </transition>
@@ -63,7 +57,7 @@
       return {
         token: '',
         chatArr: [],
-        timeList: '',
+        timeList: [],
         chatState: '',
         DetailList: {},
         symolEmoji: '',
@@ -80,7 +74,7 @@
       Vue.$global.bus.$on('rongState', () => {
         this.getConversationList();
       })
-      if (this.connectState) {
+      if(this.connectState){
         this.getConversationList()
       }
     }
@@ -101,9 +95,10 @@
         RongIMClient.getInstance().getConversationList({
           onSuccess: (list) => {
             this.chatArr = list
-            console.log(list,'为什么为什么为什么')
+            console.log(list,'是快乐到家三大')
             for (let i = 0; i < list.length; i++) {
-              this.getUnreadCount(list[i].latestMessage.content.extra.targetId)
+              this.getUnreadCount(list[i].targetId)
+             this.timeList.push({TimeList:this.formatMsgTime(list[i].sentTime)})
             }
           },
           onError: function (error) {
@@ -123,7 +118,7 @@
           }
         });
       },
-      goChatRoom(id, name, money, amount) {
+      goChatRoom(id) {
         const conversationType = RongIMLib.ConversationType.GROUP
         RongIMClient.getInstance().clearUnreadCount(conversationType,id,{
           onSuccess:(res)=>{
@@ -150,18 +145,15 @@
             });
             return
           } else {
-            /*先情调未读消息数*/
+            /!*先情调未读消息数*!/
             this.DetailList.targetId = id;
-            this.DetailList.debitName = name;
-            this.DetailList.money = money;
-            this.DetailList.amount = amount;
-            this.chatState = true;
             this.DetailList.historyState = 3;
+            this.chatState = true;
           }
         })
       },
       /*获取获取未读信息数*/
-      getUnreadTotalCount() {
+  /*    getUnreadTotalCount() {
         RongIMClient.getInstance().getTotalUnreadCount({
           onSuccess: function (count) {
             // count => 多个会话的总未读数。
@@ -171,6 +163,16 @@
             // error => 获取多个会话未读数错误码。
           }
         });
+      },*/
+      formatMsgTime(timespan) {
+        var dateTime = new Date(timespan);
+        var month = dateTime.getMonth() + 1 >= 10 ? dateTime.getMonth() + 1 : '0' + dateTime.getMonth();
+        var day = dateTime.getDate() >= 10 ? dateTime.getDate() : '0' + dateTime.getDate();
+        var hour = dateTime.getHours() >= 10 ? dateTime.getHours() : '0' + dateTime.getHours();
+        var minute = dateTime.getMinutes() >= 10 ? dateTime.getMinutes() : '0' + dateTime.getMinutes();
+        var timeSpanStr;
+        timeSpanStr = month + '-' + day + ' ' + hour + ':' + minute;
+        return timeSpanStr;
       },
       getUnreadCount(id) {
         const conversationType = RongIMLib.ConversationType.GROUP;
