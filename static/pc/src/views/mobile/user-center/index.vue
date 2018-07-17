@@ -34,7 +34,7 @@
   import {mapGetters} from 'vuex'
   import ConfirmDialog from 'components/confirm'
   export default {
-    name: "user-center",
+    name: "m-user-center",
     data() {
       return {
         showConfirm:false

@@ -23,6 +23,10 @@
                <balance></balance>
             </div>
           </div>
+          <router-link tag="div" :to="{name:'mUserCenter'}" class="info-item link-item">
+            <i class="iconfont icon-useravat"></i>
+            {{$t('navbar.userCenter')}}
+          </router-link>
           <router-link tag="div" class="info-link" :to="{name:'transaction'}">{{$t('navbar.tradingHall')}}</router-link>
         </div>
       </span>
@@ -97,7 +101,7 @@
       .info-list {
         position: absolute;
         width: 178px;
-        height: 188px;
+        /*height: 188px;*/
         background-color: #ffffff;
         box-shadow: 0px 3px 7px 0px
         rgba(0, 0, 0, 0.35);
@@ -114,14 +118,23 @@
         color: #787876;
         margin: 0 auto;
         line-height: 20px;
-        &:first-child{
-          border-bottom: 1px solid #d4d4d4;
+        border-bottom: 1px solid #d4d4d4;
+        &:last-child{
+          border-bottom: none;
         }
         .info-title{
           color: #333333;
         }
         .info-content{
           margin-top: 9px;
+        }
+        &.link-item{
+          line-height: 40px;
+          cursor: pointer;
+          .iconfont{
+            font-size: 20px;
+            margin-right: 15px;
+          }
         }
       }
       .info-link{

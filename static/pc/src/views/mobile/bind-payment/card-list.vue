@@ -1,6 +1,6 @@
 <template>
   <div>
-    <mobile-header>绑定银行卡</mobile-header>
+    <mobile-header v-if="!isPc">绑定银行卡</mobile-header>
     <div class="p-def">
       <div class="card-item" v-for="(item,i) in cardList" :key="i">
         <div class="card-info">
@@ -62,6 +62,12 @@
     components: {
       MobileHeader,
       ConfirmDialog
+    },
+    props:{
+      isPc:{
+        type:Boolean,
+        default:false
+      }
     },
     computed: {
       ...mapGetters([

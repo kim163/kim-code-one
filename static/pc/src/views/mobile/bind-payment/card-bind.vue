@@ -1,6 +1,6 @@
 <template>
   <div v-if="showRes">
-    <mobile-header>绑定{{typeName}}</mobile-header>
+    <mobile-header v-if="!isPc">绑定{{typeName}}</mobile-header>
     <div v-if="!hasBind">
       <div class="title-tip" v-if="type != 3">{{typeName}}认证姓名，务必与真实姓名相同</div>
       <div class="card-main">
@@ -70,6 +70,16 @@
         hasBindInfo:[],
         hasBind:false,
         showRes:false
+      }
+    },
+    props:{
+      isPc:{
+        type:Boolean,
+        default:false
+      },
+      tabType:{
+        type:Number,
+        default:1
       }
     },
     components:{
@@ -161,7 +171,7 @@
     },
     created(){
       this.name = this.userData.name
-      this.type = Number(this.$route.params.id)
+      this.type = Number(this.$route.params.id) || this.tabType
       this.typeName = this.type === 1 ? '支付宝' : (this.type === 2 ? '微信' : '银行卡')
       if(this.type != 3){
         getBankList({userId: this.userData.userId}).then(res => {
