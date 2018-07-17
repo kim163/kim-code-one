@@ -104,7 +104,8 @@
         }
         unbindBank(data).then(res => {
           if (res.code === 10000) {
-            toast(res.message)
+            toast('解除绑定成功')
+            this.showConfirm = false
             this.getBankListInfo()
           } else {
             toast(res.message)
