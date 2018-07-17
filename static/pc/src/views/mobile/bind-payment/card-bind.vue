@@ -120,26 +120,26 @@
             bank: this.bank,
           })
         }
-        // bindBankV2(data).then(res => {
-        //   console.log('bind Card res',res)
-        //   if(res.code === 10000){
-        //     toast('绑定成功')
-        //     if(this.type === 3){
-        //       this.$router.replace({name:'mCardList'})
-        //     }else{
-        //       this.hasBindInfo = res.data.filter((item) => {
-        //         return item.type === this.type
-        //       })
-        //       if(!_.isEmpty(this.hasBindInfo)){
-        //         this.hasBind = true
-        //       }
-        //     }
-        //   }else{
-        //     toast(res.message)
-        //   }
-        // }).catch(err => {
-        //   toast(err)
-        // })
+        bindBankV2(data).then(res => {
+          console.log('bind Card res',res)
+          if(res.code === 10000){
+            toast('绑定成功')
+            if(this.type === 3){
+              this.$router.replace({name:'mCardList'})
+            }else{
+              this.hasBindInfo = res.data.filter((item) => {
+                return item.type === this.type
+              })
+              if(!_.isEmpty(this.hasBindInfo)){
+                this.hasBind = true
+              }
+            }
+          }else{
+            toast(res.message)
+          }
+        }).catch(err => {
+          toast(err)
+        })
       },
       getBankName(){
         const data = {
