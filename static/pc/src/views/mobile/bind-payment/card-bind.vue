@@ -67,7 +67,7 @@
           isShowUploadTip:true
         },
         qrCodeUrl:'',
-        hasBindInfo:{},
+        hasBindInfo:[],
         hasBind:false,
         showRes:false
       }
@@ -127,10 +127,8 @@
             if(this.type === 3){
               this.$router.replace({name:'mCardList'})
             }else{
-              this.hasBindInfo = res.data.filter((item) => {
-                return item.type === this.type
-              })
-              if(!_.isEmpty(this.hasBindInfo)){
+              this.hasBindInfo.push(res.data)
+              if(!_.isEmpty(this.hasBindInfo) && !_.isNull(this.hasBindInfo)){
                 this.hasBind = true
               }
             }
@@ -171,7 +169,7 @@
             this.hasBindInfo = res.data.filter((item) => {
               return item.type === this.type
             })
-            if(!_.isEmpty(this.hasBindInfo)){
+            if(!_.isEmpty(this.hasBindInfo) && !_.isUndefined(this.hasBindInfo)){
               this.hasBind = true
             }
           }else{
