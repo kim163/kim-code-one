@@ -32,6 +32,11 @@
         name:'',
       }
     },
+    watch:{
+      'userData.name':function(val){
+        this.userData.name = val
+      }
+    },
     computed:{
       ...mapGetters([
         'userData'

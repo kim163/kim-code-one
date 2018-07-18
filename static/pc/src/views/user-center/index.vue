@@ -21,6 +21,13 @@
       </div>
     </div>
     <v-footer></v-footer>
+    <confirm-dialog v-model="showConfirm" :is-pc="true">
+      <div slot="content">
+        <div class="dialog-content">{{confrimCfg.content}}</div>
+      </div>
+      <div slot="leftBtn" class="confirm-btn-cancel dialog-cancel">{{confrimCfg.leftBtn}}</div>
+      <div slot="rightBtn" class="dialog-btn-yes" @click="toSetUserInfo">{{confrimCfg.rightBtn}}</div>
+    </confirm-dialog>
   </div>
 </template>
 
@@ -67,25 +74,13 @@
         ],
         type:3,
         showBind:false,
-        confrimCfg:{}
+        confrimCfg:{},
+        showConfirm:false,
       }
     },
     watch:{
-      type(val){
-        if(val === 2 || val === 1){
-          if(_.isNull(this.userData.name)){
-            Object.assign(this.confrimCfg,{
-              content:'请前往设置您的真实姓名',
-              leftBtn:'取消',
-              rightBtn:'确定',
-              type: 2
-            })
-            this.showConfirm = true
-            return false
-          }
-        }else{
-          this.showBind = false
-        }
+      type(){
+        this.showBind = false
       }
     },
     components:{
@@ -104,11 +99,25 @@
     },
     methods:{
       changeTab(type){
-        if(type != 3){
-          this.type = type
+        if(type === 1 || type === 2){
+          if(_.isNull(this.userData.name)){
+            Object.assign(this.confrimCfg,{
+              content:'请前往设置您的真实姓名',
+              leftBtn:'取消',
+              rightBtn:'确定',
+              type: 2
+            })
+            this.showConfirm = true
+          }else{
+            this.type = type
+          }
         }else{
           this.type = type
         }
+      },
+      toSetUserInfo(){
+        this.showConfirm = false
+        this.type = 4
       }
     }
   }
