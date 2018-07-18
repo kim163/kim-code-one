@@ -313,10 +313,10 @@
         </div>
       </div>
     </div>
-    <div class="chatroom" @click="goChatroom()">
-      <img src="../../../assets/images/chat.png" alt="">
-      <span class="chatroom_num"></span>
-    </div>
+    <!--<div class="chatroom" @click="goChatroom()">-->
+      <!--<img src="../../../assets/images/chat.png" alt="">-->
+      <!--<span class="chatroom_num"></span>-->
+    <!--</div>-->
     <transition name="toolSlideRight">
       <chat v-show="chatState" class="chatWindow"
             :detail="gameID"
