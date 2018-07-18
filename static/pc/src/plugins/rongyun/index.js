@@ -30,6 +30,7 @@ export default {
         this.connect();
         this.setConnectStatusListener();
         this.setOnReceiveMessageListener();
+        Vue.$global.bus.$emit('portrait',res.data.portrait)
         Vue.prototype.$loadScript('https://cdn.ronghub.com/RongEmoji-2.2.6.min.js')
           .then(() => {
             this.initEmoji();

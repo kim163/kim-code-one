@@ -3,12 +3,13 @@
     <m-header>会话详情</m-header>
     <!--付款倒计时-->
     <!--聊天框-->
+
     <div class="chatbox box-f1 box box-ver" :class="{'displayState':!isDisplay,'hiddenState':isDisplay}"
          id="chatMessage">
       <div class="order_info">
         <div class="order_state">
           <div class="state_b">
-            <span class="state_d" v-if="!userData.nickname==debitName">买入</span>
+            <span class="state_d" v-if="userId!==debit">买入</span>
             <span class="state_n" v-else>卖出</span>
             <span class="order_num">UET订单编号:</span>
             <span class="order_d">订单详情</span>
@@ -18,17 +19,22 @@
         <div>
           <!--展开-->
           <div class="display-box" v-if="isDisplay">
-            <div class="line">
+            <!---->
+            <div class="line" v-if="userId!==debit">
               <span>卖家:</span>
-              <span class="fr lineColor">{{debitName}}</span>
+              <span class="fr lineColor">{{debitNickname}}</span>
+            </div>
+            <div class="line" v-else>
+              <span>买家</span>
+              <span class="fr lineColor">{{creditNickname}}</span>
             </div>
             <div class="line">
               <span>交易金额:</span>
-              <span class="fr lineColor">{{debitMoney}} CNY</span>
+              <span class="fr lineColor">{{amount*0.1}} CNY</span>
             </div>
             <div class="line">
               <span>交易数量:</span>
-              <span class="fr lineColor">{{debitNum}} UET</span>
+              <span class="fr lineColor">{{amount}} UET</span>
             </div>
             <div class="display" @click="showDisplay">
               <img src="~images/chatWith/hidden.png" alt="">
@@ -57,21 +63,22 @@
           <!--文字消息 和图片消息   区分是否是自己发的-->
           <!--自己发的-->
           <div class="chat_container"
-               v-if="list.messageType=='TextMessage'&&list.content.extra.nickName==userData.userData">
+               v-if="list.messageType=='TextMessage'&&list.content.extra.founderId==userId">
             <div style="flex:1"></div>
             <div class="contents" v-html="symolEmoji.symbolToEmoji(list.content.content)"></div>
             <div class="user_symbol"></div>
           </div>
           <!--别人发的-->
-          <div v-if="list.messageType=='TextMessage'&&list.content.extra.nickName!==userData.nickname"
+
+          <div v-if="list.messageType=='TextMessage'&&list.content.extra.founderId!==userId"
                class="chat_container">
-            <div class="user_symbol_next" :class="{'isSeller':userData.nickname==debitName}"></div>
+            <div class="user_symbol_next" :class="{'isSeller':userId==debit}"></div>
             <div class="contents_next" v-html="symolEmoji.symbolToEmoji(list.content.content)"></div>
             <div class="" style="flex: 1"></div>
           </div>
           <!--自己发的-->
           <div class="chat_container"
-               v-if="list.messageType=='ImageMessage'&&list.content.extra.nickName==userData.nickname">
+               v-if="list.messageType=='ImageMessage'&&list.content.extra.founderId==userId">
             <div style="flex:1;"></div>
             <div class="contents">
               <viewer :images="list.picArr">
@@ -82,8 +89,8 @@
           </div>
           <!--别人发的-->
           <div class="chat_container"
-               v-if="list.messageType=='ImageMessage'&&list.content.extra.nickName!==userData.nickname">
-            <div class="user_symbol_next" :class="{'isSeller':userData.nickname==debitName}"></div>
+               v-if="list.messageType=='ImageMessage'&&list.content.extra.founderId!==userId">
+            <div class="user_symbol_next" :class="{'isSeller':userId==debit}"></div>
             <div class="contents_next">
               <viewer :images="list.img">
                 <img :src="list.content.imageUri" alt="" class="contents_image">
@@ -111,13 +118,13 @@
           </div>
           <!--接收文字消息-->
           <div v-if="list.user==2" class="chat_container">
-            <div class="user_symbol_next" :class="{'isSeller':userData.nickname==debitName}"></div>
+            <div class="user_symbol_next" :class="{'isSeller':userId==debit}"></div>
             <div class="contents_next">{{list.msg}}</div>
             <div class="" style="flex: 1"></div>
           </div>
           <!--接收图片消息-->
           <div v-if="list.user==4" class="chat_container">
-            <div class="user_symbol_next" :class="{'isSeller':userData.nickname==debitName}"></div>
+            <div class="user_symbol_next" :class="{'isSeller':userId==debit}"></div>
             <div class="contents_next">
               <viewer :images="list.img">
                 <img :src="list.msg" alt="" class="contents_image">
@@ -167,7 +174,6 @@
         needSend: false,
         token: '',
         symolEmoji: '',
-        croppa: {},
         dataUrl: {},
         isChangeValue: true,
         chatArr: [],
@@ -183,13 +189,18 @@
         size: '',
         name: '',
         file: '',
-        demoArr: [],
         dataURLNext: '',
-        demoTest: '',
         sellName: '',
         historyArr: '',
         startTime: '',
         endTime: '',
+        debit:'',
+        creditNickname:'',
+        debitNickname:'',
+        amount:'',
+        founderId:'',
+        portrait:'',
+        extraData:'',
         config: {
           size: 24, // 大小, 默认 24, 建议15 - 55
           url: '//f2e.cn.ronghub.com/sdk/emoji-48.png', // 所有 emoji 的背景图片
@@ -205,18 +216,6 @@
       debitNum: {
         type: Number,
         default: 0
-      },
-      debitMoney: {
-        type: Number,
-        default: 0
-      },
-      debitName: {
-        type: String,
-        default: ''
-      },
-      creditName: {
-        type: String,
-        default: ''
       },
       historyState:{
         type:Number,
@@ -255,6 +254,26 @@
           this.getHistoryMessage();
           this.scroll = this.$refs.scroll;
           this.scrollToBot()
+          console.log(this.scroll,'为什么')
+          let groupId={'groupId':this.detail}
+          chatWith.getOrderxInfo(groupId).then(res=>{
+
+             this.amount = res.data.amount
+             this.founderId = res.data.founderId
+             this.credit = res.data.credit
+             this.debit = res.data.debit
+             this.creditNickname = res.data.creditNickname
+             this.debitNickname = res.data.debitNickname
+             this.extraData={
+               "credit":res.data.credit, //买方id
+               "debit":res.data.debit,  //卖方id
+               "amount":res.data.amount, //交易数量
+              "assetCod":res.data.assetCode, //资产编码
+               "founderNickname":res.data.founderNickname,  //发起人昵称
+               "founderRoleType":res.data.founderRoleType,  //发起角色类型
+               "founderId":res.data.founderId  //会话发起人id
+             }
+          })
         }
       }
     },
@@ -274,6 +293,9 @@
       })
       /*发送开始时间*/
       /*清楚制定会话数*/
+      Vue.$global.bus.$on('portrait',(val)=>{
+         this.portrait = val
+      })
     },
     methods: {
       ...mapMutations(['CHANGE_CONNECTSTATE']),
@@ -472,18 +494,23 @@
         let targetId = this.detail;
         //改变发送messageValue的值因为用户会发送表情
         this.messageValue = RongIMLib.RongIMEmoji.symbolToEmoji(this.messageValue);
-        let extraInfo = {
+        this.userInfo = {
+           id: this.userId,
+           portrait:this.portrait,
+           name:this.userInfo
+        }
+       /* let extraInfo = {
           'amount': this.debitNum,
           'isSeller': this.isSeller,
           'nickName': this.userData.nickname,
-          'time': this.formatMsgTime(new Date().getTime()),
+        //  'time': this.formatMsgTime(new Date().getTime()),
           'targetId': this.detail,
           'debitName': this.debitName,
           'debitMoney': this.debitMoney,
           'startTime': this.startTime,
           'endTime': this.endTime,
-        };
-        let msg = new RongIMLib.TextMessage({content: this.messageValue, extra: extraInfo});
+        };*/
+        let msg = new RongIMLib.TextMessage({content: this.messageValue,user:this.userInfo, extra: JSON.stringify(this.extraData)});
         RongIMClient.getInstance().sendMessage(conversationtype, targetId, msg, {
             onSuccess: (message) => {
               //message 为发送的消息对象并且包含服务器返回的消息唯一Id和发送消息时间戳
@@ -519,21 +546,12 @@
           }
         );
       },
-      formatMsgTime(timespan) {
-        var dateTime = new Date(timespan);
-        var month = dateTime.getMonth() + 1 >= 10 ? dateTime.getMonth() + 1 : '0' + dateTime.getMonth();
-        var day = dateTime.getDate() >= 10 ? dateTime.getDate() : '0' + dateTime.getDate();
-        var hour = dateTime.getHours() >= 10 ? dateTime.getHours() : '0' + dateTime.getHours();
-        var minute = dateTime.getMinutes() >= 10 ? dateTime.getMinutes() : '0' + dateTime.getMinutes();
-        var timeSpanStr;
-        timeSpanStr = month + '-' + day + ' ' + hour + ':' + minute;
-        return timeSpanStr;
-      },
+
       sendPic() {
         let conversationtype = RongIMLib.ConversationType.GROUP;
         let targetId = this.detail;
         this.clearUnreadCount()
-        let extraInfo = {
+   /*     let extraInfo = {
           'amount': this.debitNum,
           'isSeller': this.isSeller,
           'nickName': this.userData.nickname,
@@ -544,9 +562,9 @@
           'startTime': this.startTime,
           'endTime': this.endTime,
           picArr: [this.picUrl]
-        };
+        };*/
 
-        let msg = new RongIMLib.ImageMessage({content: this.base64, imageUri: this.picUrl, extra: extraInfo})
+        let msg = new RongIMLib.ImageMessage({content: this.base64, imageUri: this.picUrl, user:this.userInfo ,extra:JSON.stringify(this.extraData)})
         RongIMClient.getInstance().sendMessage(conversationtype, targetId, msg, {
           onSuccess: ((message) => {
             this.chatArr.push({msg: message.content.imageUri, user: 3, img: [message.content.imageUri]})

@@ -28,3 +28,8 @@ export const groupState = (jsonData)=>{
    return service({url:numversion+`rongcloud/getGroupStatus`,method:'post',data:jsonData})
 }
 
+//聊天界面获取B2C订单信息
+
+export const getOrderxInfo =(jsonData)=>{
+  return service({url:numversion+`rongcloud/getOrderxInfo`,method:'post',data:jsonData})
+}
