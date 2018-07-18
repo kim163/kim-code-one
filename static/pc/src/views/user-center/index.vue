@@ -2,7 +2,7 @@
   <div class="main">
     <nav-menu></nav-menu>
     <bread-crumbs :bread-list="breadList"></bread-crumbs>
-    <div class="container">
+    <div class="container min-width">
       <div class="tab-list">
         <div class="tab-item"
              :class="{active: type === item.type}"
