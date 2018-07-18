@@ -11,7 +11,7 @@
           </div>
           <div class="card-item">
             <label class="title">银行名称:</label>
-            <input class="card-input" type="text" v-model.trim="bank" @mouseover="getBankName"/>
+            <input class="card-input" type="text" v-model.trim="bank" @focus="getBankName"/>
           </div>
           <div class="card-item">
             <label class="title">持卡人姓名:</label>
@@ -21,7 +21,7 @@
         </div>
         <div v-else>
           <div class="add-qrcode">
-            <upload-img :upload-img-set="upLoadCfg" :show-close="true" @gitPicUrl="getQrcodeUrl"></upload-img>
+            <upload-img :upload-img-set="upLoadCfg" :show-close="true" v-model="uploadReset" @gitPicUrl="getQrcodeUrl"></upload-img>
           </div>
           <div class="card-item p-LR-sm">
             <label class="title qr-title">{{typeName}}账号:</label>
@@ -69,7 +69,15 @@
         qrCodeUrl:'',
         hasBindInfo:[],
         hasBind:false,
-        showRes:false
+        showRes:false,
+        uploadReset:false
+      }
+    },
+    watch:{
+      tabType(){
+        this.hasBind = false
+        this.uploadReset = true
+        this.getBindInfo()
       }
     },
     props:{
@@ -135,7 +143,11 @@
           if(res.code === 10000){
             toast('绑定成功')
             if(this.type === 3){
-              this.$router.replace({name:'mCardList'})
+              if(this.isPc){
+                this.$emit('showCardList')
+              }else{
+                this.$router.replace({name:'mCardList'})
+              }
             }else{
               this.hasBindInfo.push(res.data)
               if(!_.isEmpty(this.hasBindInfo) && !_.isNull(this.hasBindInfo)){
@@ -167,32 +179,35 @@
         }).catch(err => {
           toast(err)
         })
+      },
+      getBindInfo(){
+        this.name = this.userData.name
+        this.type = Number(this.$route.params.id) || this.tabType
+        this.typeName = this.type === 1 ? '支付宝' : (this.type === 2 ? '微信' : '银行卡')
+        if(this.type != 3){
+          getBankList({userId: this.userData.userId}).then(res => {
+            if(res.code === 10000){
+              this.hasBindInfo = res.data.filter((item) => {
+                return item.type === this.type
+              })
+              if(!_.isEmpty(this.hasBindInfo) && !_.isUndefined(this.hasBindInfo)){
+                this.hasBind = true
+              }
+            }else{
+              toast(res.message)
+            }
+          }).catch(err => {
+            toast(err)
+          }).finally(() => {
+            this.showRes = true
+          })
+        }else{
+          this.showRes = true
+        }
       }
     },
     created(){
-      this.name = this.userData.name
-      this.type = Number(this.$route.params.id) || this.tabType
-      this.typeName = this.type === 1 ? '支付宝' : (this.type === 2 ? '微信' : '银行卡')
-      if(this.type != 3){
-        getBankList({userId: this.userData.userId}).then(res => {
-          if(res.code === 10000){
-            this.hasBindInfo = res.data.filter((item) => {
-              return item.type === this.type
-            })
-            if(!_.isEmpty(this.hasBindInfo) && !_.isUndefined(this.hasBindInfo)){
-              this.hasBind = true
-            }
-          }else{
-            toast(res.message)
-          }
-        }).catch(err => {
-          toast(err)
-        }).finally(() => {
-          this.showRes = true
-        })
-      }else{
-        this.showRes = true
-      }
+      this.getBindInfo()
     }
   }
 </script>

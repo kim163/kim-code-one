@@ -230,6 +230,7 @@ export default {
     bindCard:'Binding bank card',
     bindAlipay:'Binding Alipay',
     bindWeChat:'Binding WeChat',
-    uploadQrcode:'Click to upload your receipt QR code'
+    uploadQrcode:'Click to upload your receipt QR code',
+    completeMaterial:'Complete material',
   }
 }

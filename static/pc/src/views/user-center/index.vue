@@ -14,8 +14,9 @@
       </div>
       <div class="bottom">
         <div class="content">
-          <card-list v-if="type === 3" :is-pc="true"></card-list>
-          <bind-card v-else :is-pc="true" :tab-type="type"></bind-card>
+          <card-list v-if="type === 3 && !showBind" :is-pc="true" @addNewCard="showBind = true" @setUserInfo="type = 4"></card-list>
+          <set-user-info v-else-if="type === 4" :is-pc="true"></set-user-info>
+          <bind-card v-else :is-pc="true" :tab-type="type" @showCardList="showBind = false"></bind-card>
         </div>
       </div>
     </div>
@@ -29,6 +30,9 @@
   import BreadCrumbs from 'components/bread-crumbs'
   import BindCard from '../mobile/bind-payment/card-bind'
   import CardList from '../mobile/bind-payment/card-list'
+  import SetUserInfo from '../mobile/user-center/set-user-info'
+  import ConfirmDialog from 'components/confirm'
+  import {mapGetters} from 'vuex'
   export default {
     name: "user-center",
     data(){
@@ -45,6 +49,10 @@
           {
             name:'userCenter.bindWeChat',
             type:2,
+          },
+          {
+            name:'userCenter.completeMaterial',
+            type:4,
           }
         ],
         breadList: [
@@ -58,7 +66,26 @@
           },
         ],
         type:3,
-        addNewCard:false,
+        showBind:false,
+        confrimCfg:{}
+      }
+    },
+    watch:{
+      type(val){
+        if(val === 2 || val === 1){
+          if(_.isNull(this.userData.name)){
+            Object.assign(this.confrimCfg,{
+              content:'请前往设置您的真实姓名',
+              leftBtn:'取消',
+              rightBtn:'确定',
+              type: 2
+            })
+            this.showConfirm = true
+            return false
+          }
+        }else{
+          this.showBind = false
+        }
       }
     },
     components:{
@@ -66,10 +93,14 @@
       VFooter,
       BreadCrumbs,
       BindCard,
-      CardList
+      CardList,
+      SetUserInfo,
+      ConfirmDialog
     },
     computed:{
-
+      ...mapGetters([
+        'userData'
+      ])
     },
     methods:{
       changeTab(type){
@@ -120,11 +151,11 @@
         align-items: center;
       }
       .content{
-        min-width: 500px;
-        width: 50%;
+        width: 500px;
+        /*width: 50%;*/
         /*padding: 0%;*/
         /*background-color: #ffffff;*/
-        /*box-shadow: 0 0 10px rgba(0,0,0,.2);*/
+        box-shadow: 0 0 10px rgba(0,0,0,.2);
       }
     }
   }

@@ -23,7 +23,7 @@
                <balance></balance>
             </div>
           </div>
-          <router-link tag="div" :to="{name:'mUserCenter'}" class="info-item link-item">
+          <router-link tag="div" :to="{name:'pcUserCenter'}" class="info-item link-item">
             <i class="iconfont icon-useravat"></i>
             {{$t('navbar.userCenter')}}
           </router-link>

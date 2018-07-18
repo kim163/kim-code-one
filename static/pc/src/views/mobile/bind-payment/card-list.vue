@@ -19,13 +19,16 @@
           <div class="unbind" @click="unbindBankConfrim(item.account)">解除绑定</div>
         </div>
       </div>
-      <div class="m-top-md">
+      <div class="m-top-md" v-if="!isPc">
         <router-link :to="{name: 'mBindCard',params: {id: 3}}" class="bind-def-btn" v-if="cardList.length < 3">添加新的银行卡
         </router-link>
         <div v-else class="bind-def-btn disabled">添加新的银行卡</div>
       </div>
+      <div class="m-top-md" v-else>
+        <div class="bind-def-btn" :class="{disabled: cardList.length >= 3}" @click="cardList.length >= 3 ? '' : pcAddCard()">添加新的银行卡</div>
+      </div>
     </div>
-    <confirm-dialog v-model="showConfirm">
+    <confirm-dialog v-model="showConfirm" :is-pc="isPc">
       <div slot="content">
         <div class="dialog-content">{{confrimCfg.content}}</div>
       </div>
@@ -122,14 +125,13 @@
       },
       toSetUserInfo(){
         this.showConfirm = false
-        this.$router.push({name:'mSetUserInfo'})
-      }
-    },
-    mounted() {
-      this.getBankListInfo()
-    },
-    beforeRouteLeave (to, from , next) {
-      if(to.name === 'mBindCard'){
+        if(this.isPc){
+          this.$emit('setUserInfo')
+        }else{
+          this.$router.push({name:'mSetUserInfo'})
+        }
+      },
+      checkUserName(){
         if(_.isNull(this.userData.name)){
           Object.assign(this.confrimCfg,{
             content:'请前往设置您的真实姓名',
@@ -138,6 +140,23 @@
             type: 2
           })
           this.showConfirm = true
+          return false
+        }
+        return true
+      },
+      pcAddCard(){
+        if(this.checkUserName()){
+          this.$emit('addNewCard')
+        }
+      }
+    },
+    mounted() {
+      this.getBankListInfo()
+    },
+    beforeRouteLeave (to, from , next) {
+      if(to.name === 'mBindCard'){
+        if(!this.checkUserName()){
+
         }else{
           next()
         }
@@ -173,6 +192,7 @@
       width: 100%;
       text-align: center;
       color: #ff0000;
+      cursor: pointer;
     }
   }
 

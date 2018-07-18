@@ -1,6 +1,6 @@
 <template>
   <div>
-    <mobile-header>完善资料</mobile-header>
+    <mobile-header v-if="!isPc">{{$t('userCenter.completeMaterial')}}</mobile-header>
     <div class="main">
       <div class="info-item">
         <div class="title">昵称:</div>
@@ -37,6 +37,12 @@
         'userData'
       ])
     },
+    props:{
+      isPc:{
+        type:Boolean,
+        default:false
+      }
+    },
     components:{
       MobileHeader
     },
@@ -61,7 +67,9 @@
           if(res.code === 10000){
             toast('绑定成功')
             this.$store.dispatch('UPDATE_USERDATA')
-            this.$router.replace({name:'mUserCenter'})
+            if(!this.isPc){
+              this.$router.replace({name:'mUserCenter'})
+            }
           }else{
             toast(res.message)
           }

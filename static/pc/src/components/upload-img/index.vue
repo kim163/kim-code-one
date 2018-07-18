@@ -51,7 +51,15 @@
       showClose:{
         type:Boolean,
         default:false
+      },
+      reset:{
+        type:Boolean,
+        default:false
       }
+    },
+    model:{
+      prop: 'reset',
+      event: 'change'
     },
     computed: {
       isShowUploadBtn() {
@@ -65,7 +73,16 @@
         }
       }
     },
-    watch: {},
+    watch: {
+      reset(val){
+        if(val){
+          this.picListArr = []
+          this.picUrlArr = []
+          this.$emit("gitPicUrl", this.picUrlArr);
+          this.$emit('change',false)
+        }
+      }
+    },
     methods: {
       upload(e) {
         let reader = new FileReader();
