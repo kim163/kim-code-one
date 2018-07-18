@@ -303,7 +303,7 @@
       }
     },
     mounted() {
-      if (!this.cashSuccess) {
+      if (!this.cashSuccess && !_.isMobile()) {
         this.init()
         Vue.$global.bus.$on('cash:payPassword', (pwd) => {
           this.pay(pwd)
