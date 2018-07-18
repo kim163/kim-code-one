@@ -441,7 +441,7 @@
       background: #86A5F8;
       color: #fff;
       @include f(18px);
-      position: fixed;
+      /*position: fixed;*/
       width: 100%;
       bottom: 0;
     }
