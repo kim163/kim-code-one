@@ -279,6 +279,7 @@ export default [
       return resolve(require('views/mobile/user-center'))
     },
     meta:{
+      noCache:true,
       isMobilePage:'mobile-body'
     }
   },
