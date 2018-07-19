@@ -468,7 +468,7 @@
   .pay-info {
     width: 90%;
     padding-top: r(20);
-    padding-bottom: r(50);
+    padding-bottom: r(20);
     margin: 0 auto;
   }
 
