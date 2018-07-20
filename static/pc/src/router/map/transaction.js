@@ -7,12 +7,18 @@ export default [
   {
     path: "/transaction",
     name: 'transaction',
-    component: index
+    component: index,
+    meta: {
+      noCache: true
+    }
   },
   {
     path: "/transell",
     name: "transell",
-    component: transell
+    component: transell,
+    meta: {
+      noCache: true
+    }
   },
   {
     path: "/tranPending",
