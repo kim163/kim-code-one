@@ -4,15 +4,16 @@
     <div class="conversation_list box-f1">
       <div v-if="chatArr.length==0" class="noMessage">
         <img src="~images/chatWith/no_message.png" alt="" class="noMessage_pic">
+        <span class="no_message">暂无聊天信息</span>
       </div>
       <div v-else class="conversation_item" v-for="(list,num) in chatArr" :key="num"
-         @click="goChatRoom(list.targetId)">
+         @click="goChatRoom(list.targetId,list.latestMessage.content.user.id)">
         <div class="converstation_info box">
           <div class="user_symbol"
                :class="{'user_symbolNext':userId==JSON.parse(list.latestMessage.content.extra).debit}"
                v-html="userData.nickname.slice(0,1)">
           </div>
-          <span class="unread_num" :class="{isShow:getCount(num)}">{{getCount(num)}}</span>
+          <span class="unread_num" :class="{isShow:getCount(num)}">{{getCount(num)>99?99:getCount(num)}}</span>
           <span class="unread_line" :class="{isOn:getCount(num)}"></span>
           <div class="user_conversation box-f1">
             <p class="user_name">{{userData.nickname}}
@@ -21,8 +22,8 @@
             </p>
             <!--区分图片和文本消息 目前就这两种-->
            <p class="user_content"
-               v-if="list.latestMessage.content.messageName=='TextMessage'">{{JSON.parse(list.latestMessage.content.extra).founderNickname+': '+symolEmoji.symbolToEmoji(list.latestMessage.content.content)}}</p>
-            <p class="user_content" v-else>{{JSON.parse(list.latestMessage.content.extra).founderNickname}}: [图片]</p>
+               v-if="list.latestMessage.content.messageName=='TextMessage'">{{list.latestMessage.content.user.name+': '+symolEmoji.symbolToEmoji(list.latestMessage.content.content)}}</p>
+            <p class="user_content" v-else>{{list.latestMessage.content.user.name}}: [图片]</p>
           </div>
           <div class="user_time">
             {{timeList[num].TimeList}}
@@ -37,9 +38,11 @@
       <chat v-show="chatState" class="chatWindow"
             :detail="DetailList.targetId"
             :historyState="DetailList.historyState"
+            :userInfoId ="userInfoId"
+            @chatShow="chatStateUpdate"
       ></chat>
     </transition>
-    <mFooter></mFooter>
+    <mFooter :unreadCount="unreadTotalCount"></mFooter>
   </div>
 
 </template>
@@ -62,7 +65,9 @@
         DetailList: {},
         symolEmoji: '',
         readyOk: '',
+        unreadTotalCount:0,
         countUnreadNum: [],
+        userInfoId:'',
         config: {
           size: 24, // 大小, 默认 24, 建议15 - 55
           url: '//f2e.cn.ronghub.com/sdk/emoji-48.png', // 所有 emoji 的背景图片
@@ -83,19 +88,25 @@
       ...mapGetters([
         'userId',
         'userData',
-        'connectState'
+        'connectState',
+
       ]),
     },
     methods: {
       getCount(n) {
         return this.countUnreadNum.length > 0 && !_.isUndefined(this.countUnreadNum[n]) ? this.countUnreadNum[n].count : ''
       },
+      chatStateUpdate(value){
+        console.log(value,'晚上，')
+        this.chatState = value
+      },
       getConversationList() {
         this.symolEmoji = RongIMLib.RongIMEmoji
         RongIMClient.getInstance().getConversationList({
           onSuccess: (list) => {
+            console.log(list,'是你三大')
             this.chatArr = list
-            console.log(list,'是快乐到家三大')
+            console.log(list)
             for (let i = 0; i < list.length; i++) {
               this.getUnreadCount(list[i].targetId)
              this.timeList.push({TimeList:this.formatMsgTime(list[i].sentTime)})
@@ -118,19 +129,12 @@
           }
         });
       },
-      goChatRoom(id) {
-        const conversationType = RongIMLib.ConversationType.GROUP
-        RongIMClient.getInstance().clearUnreadCount(conversationType,id,{
-          onSuccess:(res)=>{
-            console.log(res,'野路子')
-          },
-          onError:()=>{
-          }
-        })
+      goChatRoom(id,userId) {
         const requestData = {
           userId: this.userId,
           groupId: id
         }
+        this.getUnreadTotalCount()
         chatWith.groupState(requestData).then(res => {
           if (res.data == -1) {
             toast('群组已解散！')
@@ -149,21 +153,23 @@
             this.DetailList.targetId = id;
             this.DetailList.historyState = 3;
             this.chatState = true;
+            this.userInfoId= userId
           }
         })
       },
-      /*获取获取未读信息数*/
-  /*    getUnreadTotalCount() {
+      getUnreadTotalCount() {
         RongIMClient.getInstance().getTotalUnreadCount({
-          onSuccess: function (count) {
+          onSuccess:(count)=>{
             // count => 多个会话的总未读数。
-            console.log(count)
+            const countValue = count
+           this.$store.commit('GET_UNREADCOUNT',count)
           },
-          onError: function (error) {
+          onError: (error)=> {
             // error => 获取多个会话未读数错误码。
           }
         });
-      },*/
+      },
+
       formatMsgTime(timespan) {
         var dateTime = new Date(timespan);
         var month = dateTime.getMonth() + 1 >= 10 ? dateTime.getMonth() + 1 : '0' + dateTime.getMonth();
@@ -231,11 +237,20 @@
     display: block;
     margin: 0 auto;
     width: r(150);
-    height: r(150);
+    height: r(120);
     position: absolute;
     top: 40%;
     left: 50%;
     transform: translate(-50%,-50%);
+  }
+  .no_message{
+    margin: 0 auto;
+    position: absolute;
+    top: 54%;
+    left: 50%;
+    font-size: r(15);
+    transform: translate(-50%,-50%);
+    color: #787876;
   }
   .user_symbol {
     width: r(50);
@@ -322,6 +337,7 @@
     overflow: hidden;
     white-space: nowrap;
     padding-top: r(5);
+    max-width: r(150);
   }
 
   .chatWindow {
