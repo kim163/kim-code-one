@@ -2,16 +2,16 @@
   <div class="recent-orders">
     <h3 class="title"> {{$t('transactionHome.recentOrders')}} </h3>
     <ul v-if="OrderList.data.length > 0">
-      <router-link tag="li" :to="{name:'orderDetail',params:{id: order.id}}" v-for="(order,i) in OrderList.data||[]">
+      <router-link tag="li" :to="orderDetailLink(order)" v-for="(order,i) in OrderList.data||[]">
         <div class="fl">
-          <p>
+          <div class="info">
             <span class="btn btn-border" v-show="order.credit == userData.userId">{{$t('transactionRecord.buy')}}</span>
             <span class="btn btn-orange" v-show="order.debit == userData.userId">{{$t('transactionRecord.sale')}}</span>
-          </p>
-          <p>
-            {{order.creditName}}
-          </p>
-          <div>
+          </div>
+          <div class="info">
+            {{order.credit == userData.userId ? order.debitName : order.creditName}}
+          </div>
+          <div class="info">
             <div class="status" v-if="order.status != 61">
               {{(order.status === 45 ? $t('transactionRecord.waitingForPayment') :
               $t('transactionRecord.waitingForRelease'))}}
@@ -20,7 +20,7 @@
           </div>
         </div>
         <div class="fr">
-          <p>
+          <p class="btn-orange">
             <countdown v-if="order.status != 61" :end-time="order.intervalTime-order.elapsedTime"
                        end-text="过期"></countdown>
           </p>
@@ -60,13 +60,21 @@
           this.request.offset = (index - 1) * this.request.limit;
         }
         transaction.getOrderxPage(this.request).then(res => {
-          console.log('订单记录 OrderxPage data:');
-          console.log(res.data);
+          console.log('订单记录 OrderxPage data:',res.data);
           this.OrderList = res;
         }).catch(error => {
           this.reset(res.message);
         });
-      }
+      },
+      orderDetailLink(item){
+        let routerName = ''
+        if(this.type === 0){
+          routerName = item.status === 61 ? 'orderDetailAppeal' : 'orderDetail'
+        }else{
+          routerName = 'orderDetailOver'
+        }
+        return {name: routerName, params:{ id: item.id}}
+      },
 
     },
     computed: {
@@ -92,6 +100,9 @@
       padding: 0 19px;
     }
     ul {
+      height: 660px;
+      overflow-y: auto;
+      overflow-x: hidden;
       li {
         height: 110px;
         padding: 20px 19px;
@@ -112,6 +123,9 @@
         .amount {
           font-size: 24px;
           color: #000000;
+        }
+        .info{
+          margin-bottom: 5px;
         }
       }
     }
