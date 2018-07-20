@@ -32,9 +32,9 @@
             link: 'mPendingBuy'
           },
           {
-            icon: 'icon-tran-sell',
-            name: 'transactionRecord.seller',
-            link: 'mPendingSell'
+            icon: 'icon-tab-talk',
+            name: 'transactionRecord.talkhistory',
+            link: 'mtalkList'
           },
 
           {

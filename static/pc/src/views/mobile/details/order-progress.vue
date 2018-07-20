@@ -329,7 +329,7 @@
     </div>
     <div class="chatroom" @click="goChatroom()">
       <img src="../../../assets/images/chat.png" alt="">
-      <p class="chatroom_num">{{unreadCountUpdate}}</p>
+      <p class="chatroom_num">{{unreadCountUpdate}}<!--<span class="chatroom_num" v-if="unreadCount>99">+</span>--></p>
     </div>
     <transition name="toolSlideRight">
       <chat v-show="chatState" class="chatWindow"
