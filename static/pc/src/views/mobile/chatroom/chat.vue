@@ -1,9 +1,11 @@
 <template>
   <div class=" wrapper_box  box box-ver">
-    <m-header>会话详情</m-header>
+    <header class="mobile-header">
+      <a @click="doClick" class="back-link"> <i class="iconfont icon-left-arrow"></i></a>
+      <span>会话详情</span>
+    </header>
     <!--付款倒计时-->
     <!--聊天框-->
-
     <div class="chatbox box-f1 box box-ver" :class="{'displayState':!isDisplay,'hiddenState':isDisplay}"
          id="chatMessage">
       <div class="order_info">
@@ -30,14 +32,14 @@
             </div>
             <div class="line">
               <span>交易金额:</span>
-              <span class="fr lineColor">{{amount*0.1}} CNY</span>
+              <span class="fr lineColor">{{amount*0.01}} CNY</span>
             </div>
             <div class="line">
               <span>交易数量:</span>
               <span class="fr lineColor">{{amount}} UET</span>
             </div>
             <div class="display" @click="showDisplay">
-              <img src="~images/chatWith/hidden.png" alt="">
+              <img src="~images/chatWith/hidden.png" alt="" >
             </div>
           </div>
           <!--隐藏-->
@@ -61,40 +63,50 @@
         <!--历史消息-->
         <div v-for="list in historyArr" class="msg-item">
           <!--文字消息 和图片消息   区分是否是自己发的-->
-          <!--自己发的-->
+          <!--自己发的文本消息-->
           <div class="chat_container"
-               v-if="list.messageType=='TextMessage'&&list.content.extra.founderId==userId">
+               v-show="list.messageType=='TextMessage'&&list.senderUserId==userId">
             <div style="flex:1"></div>
-            <div class="contents" v-html="symolEmoji.symbolToEmoji(list.content.content)"></div>
+              <div>
+                <div class="sendname" style="text-align: right">{{userData.name?userData.name:'null'}}</div>
+                <div class="contents">{{symolEmoji.symbolToEmoji(list.content.content)}}</div>
+              </div>
             <div class="user_symbol"></div>
           </div>
-          <!--别人发的-->
-
-          <div v-if="list.messageType=='TextMessage'&&list.content.extra.founderId!==userId"
+          <!--别人发的文本消息-->
+          <div v-if="list.messageType=='TextMessage'&&list.senderUserId!==userId"
                class="chat_container">
-            <div class="user_symbol_next" :class="{'isSeller':userId==debit}"></div>
-            <div class="contents_next" v-html="symolEmoji.symbolToEmoji(list.content.content)"></div>
-            <div class="" style="flex: 1"></div>
+            <div class="user_symbol_next" :class="{'isSeller':userId!==debit, 'iskefu':JSON.parse(list.content.extra).credit!==list.content.user.id
+            &&JSON.parse(list.content.extra).debit!==list.content.user.id}"></div>
+            <div>
+              <div class="sendname" style="text-align: left">{{list.content.user.name?list.content.user.name:'null'}}</div>
+              <div class="contents_next" v-html="symolEmoji.symbolToEmoji(list.content.content)"></div>
+            </div>
+            <div style="flex: 1"></div>
           </div>
-          <!--自己发的-->
+          <!--自己发的图片消息-->
           <div class="chat_container"
-               v-if="list.messageType=='ImageMessage'&&list.content.extra.founderId==userId">
+               v-if="list.messageType=='ImageMessage'&&list.senderUserId==userId">
             <div style="flex:1;"></div>
             <div class="contents">
-              <viewer :images="list.picArr">
-                <img :src="list.content.imageUri" alt="" class="contents_image">
+              <viewer :images="list.picArr" style="padding: .5rem">
+                <img  alt="" class="contents_image" v-lazy="list.content.imageUri">
               </viewer>
             </div>
             <div class="user_symbol"></div>
           </div>
-          <!--别人发的-->
+          <!--别人发的图片消息-->
           <div class="chat_container"
-               v-if="list.messageType=='ImageMessage'&&list.content.extra.founderId!==userId">
-            <div class="user_symbol_next" :class="{'isSeller':userId==debit}"></div>
+               v-if="list.messageType=='ImageMessage'&&list.senderUserId!==userId">
+            <div class="user_symbol_next" :class="{'isSeller':userId==debit, 'iskefu':JSON.parse(list.content.extra).credit!==list.content.user.id
+            &&JSON.parse(list.content.extra).debit!==list.content.user.id}"></div>
+            <div>
+            <div class="sendname" style="text-align: left">{{userData.name?userData.name:'null'}}</div>
             <div class="contents_next">
-              <viewer :images="list.img">
-                <img :src="list.content.imageUri" alt="" class="contents_image">
+              <viewer :images="list.img" style="padding: .5rem">
+                <img   class="contents_image" v-lazy="list.content.imageUri">
               </viewer>
+            </div>
             </div>
             <div class="" style="flex: 1"></div>
           </div>
@@ -103,32 +115,45 @@
           <!--发送消息-->
           <div v-if="list.user==1" class="chat_container">
             <div class="" style="flex: 1"></div>
-            <div class="contents">{{list.msg}}</div>
+            <div>
+              <div class="sendname" style="text-align: right">{{userData.name?userData.name:'null'}}</div>
+              <div class="contents">{{list.msg}}</div>
+            </div>
             <div class="user_symbol"></div>
           </div>
           <!--发送图片消息-->
           <div v-if="list.user==3" class="chat_container">
             <div class="" style="flex: 1"></div>
-            <div class="contents">
-              <viewer :images="list.img">
-                <img :src="list.msg" alt="" class="contents_image">
-              </viewer>
+            <div>
+              <div class="sendname" style="text-align: right">{{userData.name?userData.name:'null'}}</div>
+              <div class="contents">
+                <viewer :images="list.img" style="padding: .5rem">
+                  <img  alt="" class="contents_image" v-lazy="list.msg">
+                </viewer>
+              </div>
             </div>
+
             <div class="user_symbol"></div>
           </div>
           <!--接收文字消息-->
           <div v-if="list.user==2" class="chat_container">
-            <div class="user_symbol_next" :class="{'isSeller':userId==debit}"></div>
-            <div class="contents_next">{{list.msg}}</div>
+            <div class="user_symbol_next" :class="{'isSeller':userId!==list.debit,'isMy':userId==list.userId}"></div>
+            <div>
+              <div class="sendname" style="text-align: left">{{list.sendName?list.sendName:'null'}}</div>
+              <div class="contents_next">{{list.msg}}</div>
+            </div>
             <div class="" style="flex: 1"></div>
           </div>
           <!--接收图片消息-->
           <div v-if="list.user==4" class="chat_container">
-            <div class="user_symbol_next" :class="{'isSeller':userId==debit}"></div>
-            <div class="contents_next">
-              <viewer :images="list.img">
-                <img :src="list.msg" alt="" class="contents_image">
-              </viewer>
+            <div class="user_symbol_next" :class="{'isSeller':userId!==list.debit}"></div>
+            <div>
+              <div class="sendname" style="text-align: left">{{list.sendName?list.sendName:'null'}}</div>
+              <div class="contents_next">
+                <viewer :images="list.img" style="padding: .5rem">
+                  <img  alt="" class="contents_image" v-lazy="list.msg">
+                </viewer>
+              </div>
             </div>
             <div class="" style="flex: 1"></div>
           </div>
@@ -164,6 +189,7 @@
   import mHeader from "components/m-header"
   import {chatWith, transaction} from 'api'
   import {mapGetters, mapMutations} from 'vuex'
+  import {$alert} from "../../../base/msgbox/msgbox";
 
   export default {
     data() {
@@ -178,6 +204,7 @@
         isChangeValue: true,
         chatArr: [],
         picUrl: '',
+        founderRoleType: '',
         EmojiList: [],
         isShowMore: false,
         uploadState: '',
@@ -194,13 +221,13 @@
         historyArr: '',
         startTime: '',
         endTime: '',
-        debit:'',
-        creditNickname:'',
-        debitNickname:'',
-        amount:'',
-        founderId:'',
-        portrait:'',
-        extraData:'',
+        debit: '',
+        creditNickname: '',
+        debitNickname: '',
+        amount: '',
+        founderId: '',
+        portrait: '',
+        extraData: '',
         config: {
           size: 24, // 大小, 默认 24, 建议15 - 55
           url: '//f2e.cn.ronghub.com/sdk/emoji-48.png', // 所有 emoji 的背景图片
@@ -217,9 +244,13 @@
         type: Number,
         default: 0
       },
-      historyState:{
-        type:Number,
-        default:0
+      historyState: {
+        type: Number,
+        default: 0
+      },
+      userInfoId: {
+        type: String,
+        default: ''
       }
     },
     computed: {
@@ -245,60 +276,80 @@
       },
       detail(val) {
         if (val) {
-         this.fetchOrder()
+          this.fetchOrder()
         }
       },
-      historyState(val){
-        if(val){
+      historyState(val) {
+        if (val) {
           this.symolEmoji = RongIMLib.RongIMEmoji;
           this.getHistoryMessage();
+          const conversationType = RongIMLib.ConversationType.GROUP
+          const id = this.detail
+          RongIMClient.getInstance().clearUnreadCount(conversationType,id,{
+            onSuccess:(res)=>{
+              RongIMClient.getInstance().getTotalUnreadCount({
+                onSuccess:(count)=>{
+                  this.$store.commit('GET_UNREADCOUNT',count)
+                },
+                onError:(error)=>{
+                  // error => 获取总未读数错误码。
+                }
+              });
+            },
+            onError:()=>{
+            }
+          })
+          let groupId = {'groupId': this.detail}
+          chatWith.getOrderxInfo(groupId).then(res => {
+            this.amount = res.data.amount
+            this.founderId = res.data.founderId
+            this.credit = res.data.credit
+            this.debit = res.data.debit
+            this.creditNickname = res.data.creditNickname
+            this.debitNickname = res.data.debitNickname
+            this.founderRoleType = res.data.founderRoleType
+            this.extraData = {
+              "credit": res.data.credit, //买方id
+              "debit": res.data.debit,  //卖方id
+              "amount": res.data.amount, //交易数量
+              "assetCod": res.data.assetCode, //资产编码
+              "founderNickname": res.data.founderNickname,  //发起人昵称
+              "founderRoleType": res.data.founderRoleType,  //发起角色类型
+              "founderId": res.data.founderId  //会话发起人id
+            }
+          })
           this.scroll = this.$refs.scroll;
           this.scrollToBot()
-          console.log(this.scroll,'为什么')
-          let groupId={'groupId':this.detail}
-          chatWith.getOrderxInfo(groupId).then(res=>{
-
-             this.amount = res.data.amount
-             this.founderId = res.data.founderId
-             this.credit = res.data.credit
-             this.debit = res.data.debit
-             this.creditNickname = res.data.creditNickname
-             this.debitNickname = res.data.debitNickname
-             this.extraData={
-               "credit":res.data.credit, //买方id
-               "debit":res.data.debit,  //卖方id
-               "amount":res.data.amount, //交易数量
-              "assetCod":res.data.assetCode, //资产编码
-               "founderNickname":res.data.founderNickname,  //发起人昵称
-               "founderRoleType":res.data.founderRoleType,  //发起角色类型
-               "founderId":res.data.founderId  //会话发起人id
-             }
-          })
         }
       }
     },
     created() {
+
       /*加载bettorScroll*/
       Vue.$global.bus.$on('textMessage', (message) => {
         this.chatArr.push(message)
         this.symolEmoji = RongIMLib.RongIMEmoji;
-        this.scrollToBot()
         this.clearUnreadCount()
+        this.scrollToBot()
       })
       Vue.$global.bus.$on('picMessage', (val) => {
         this.chatArr.push(val)
         this.symolEmoji = RongIMLib.RongIMEmoji;
-        this.scrollToBot()
         this.clearUnreadCount()
+        this.scrollToBot()
       })
       /*发送开始时间*/
       /*清楚制定会话数*/
-      Vue.$global.bus.$on('portrait',(val)=>{
-         this.portrait = val
+      Vue.$global.bus.$on('portrait', (val) => {
+        this.portrait = val
       })
     },
     methods: {
       ...mapMutations(['CHANGE_CONNECTSTATE']),
+      doClick(){
+        console.log('为什么')
+        this.$emit('chatShow',false)
+      },
       fetchOrder() {
         const requestData = {
           orderId: this.detail
@@ -310,14 +361,14 @@
       },
       scrollToBot() {
         this.$nextTick(() => {
-          if (this.chatArr.length == 0&&this.historyArr.length==0) {
+          if (this.chatArr.length == 0 && this.historyArr.length == 0) {
             return;
           }
           const imgArr = document.getElementsByClassName('msg-item')
           const len = imgArr.length
-          for (let i = 0; i <=len; i++) {
+          for (let i = 0; i <= len; i++) {
             this.scroll.refresh();
-            this.scroll.scrollToElement(document.querySelectorAll('.msg-item')[(this.chatArr.length+this.historyArr.length)-1], 333)
+            this.scroll.scrollToElement(document.querySelectorAll('.msg-item')[(this.chatArr.length + this.historyArr.length) - 1], 333)
           }
         })
       },
@@ -410,6 +461,7 @@
           onSuccess: ((list, hasMsg) => {
             /*区分图片和消息*/
             this.historyArr = list;
+             console.log(list,'这是历史消息')
             this.scrollToBot()
           }),
           onError: function (error) {
@@ -479,13 +531,13 @@
         document.getElementsByClassName('emoji_area')[0].style.display = 'none'
         this.scrollToBot()
       },
-      clearUnreadCount(){
+      clearUnreadCount() {
         let conversationType = RongIMLib.ConversationType.GROUP
-        RongIMClient.getInstance().clearUnreadCount(conversationType,this.detail,{
-          onSuccess:(res)=>{
-            console.log(res,'野路子')
+        RongIMClient.getInstance().clearUnreadCount(conversationType, this.detail, {
+          onSuccess: (res) => {
+            console.log(res, '野路子')
           },
-          onError:()=>{
+          onError: () => {
           }
         })
       },
@@ -495,26 +547,19 @@
         //改变发送messageValue的值因为用户会发送表情
         this.messageValue = RongIMLib.RongIMEmoji.symbolToEmoji(this.messageValue);
         this.userInfo = {
-           id: this.userId,
-           portrait:this.portrait,
-           name:this.userInfo
+          id: this.userId,
+          portrait: this.portrait,
+          name: this.userData.name
         }
-       /* let extraInfo = {
-          'amount': this.debitNum,
-          'isSeller': this.isSeller,
-          'nickName': this.userData.nickname,
-        //  'time': this.formatMsgTime(new Date().getTime()),
-          'targetId': this.detail,
-          'debitName': this.debitName,
-          'debitMoney': this.debitMoney,
-          'startTime': this.startTime,
-          'endTime': this.endTime,
-        };*/
-        let msg = new RongIMLib.TextMessage({content: this.messageValue,user:this.userInfo, extra: JSON.stringify(this.extraData)});
+        let msg = new RongIMLib.TextMessage({
+          content: this.messageValue,
+          user: this.userInfo,
+          extra: JSON.stringify(this.extraData)
+        });
         RongIMClient.getInstance().sendMessage(conversationtype, targetId, msg, {
             onSuccess: (message) => {
               //message 为发送的消息对象并且包含服务器返回的消息唯一Id和发送消息时间戳
-              this.chatArr.push({msg: this.messageValue, user: 1})
+              this.chatArr.push({msg: this.messageValue, user: 1,userName:this.userData.name})
               this.messageValue = ''
               this.scrollToBot()
               this.clearUnreadCount()
@@ -551,20 +596,18 @@
         let conversationtype = RongIMLib.ConversationType.GROUP;
         let targetId = this.detail;
         this.clearUnreadCount()
-   /*     let extraInfo = {
-          'amount': this.debitNum,
-          'isSeller': this.isSeller,
-          'nickName': this.userData.nickname,
-          'time': this.formatMsgTime(new Date().getTime()),
-          'targetId': this.detail,
-          'debitName': this.debitName,
-          'debitMoney': this.debitMoney,
-          'startTime': this.startTime,
-          'endTime': this.endTime,
-          picArr: [this.picUrl]
-        };*/
 
-        let msg = new RongIMLib.ImageMessage({content: this.base64, imageUri: this.picUrl, user:this.userInfo ,extra:JSON.stringify(this.extraData)})
+        this.userInfo = {
+          id: this.userId,
+          portrait: this.portrait,
+          name: this.userData.name
+        }
+        let msg = new RongIMLib.ImageMessage({
+          content: this.base64,
+          imageUri: this.picUrl,
+          user: this.userInfo,
+          extra: JSON.stringify(this.extraData)
+        })
         RongIMClient.getInstance().sendMessage(conversationtype, targetId, msg, {
           onSuccess: ((message) => {
             this.chatArr.push({msg: message.content.imageUri, user: 3, img: [message.content.imageUri]})
@@ -637,11 +680,11 @@
           margin: 0 auto;
           text-align: center;
         }
-        .state_n{
+        .state_n {
           display: inline-block;
           width: r(33);
           height: r(16);
-          background-color:#E9BA52;
+          background-color: #E9BA52;
           color: #fff;
           border-radius: r(2);
           font-size: r(12);
@@ -735,39 +778,40 @@
       margin-top: r(10);
     }
     .contents {
-      width: r(248);
       background-color: #84D55A;
       color: #000000;
       border-radius: r(5.8);
       position: relative;
       word-break: break-all;
-      padding: r(5);
+      padding: r(2.5) r(10) r(0);
+      max-width: 15rem;
+      min-height: 2rem;
       &::after {
         display: block;
         content: '';
         position: absolute;
         right: r(-20);
-        top: r(8);
+        top: r(1);
         border-width: r(14);
         border-style: solid;
         border-color: transparent transparent transparent #84d55a;
       }
     }
     .contents_next {
-      width: r(248);
       background-color: #fff;
       color: #000000;
       border-radius: r(5.8);
       position: relative;
       word-break: break-all;
-      padding: r(5);
-      text-indent: r(10);
+      padding: r(5) r(10) r(5) r(10);
+      max-width: 15rem;
+      max-height: 8rem;
       &::after {
         display: block;
         content: '';
         position: absolute;
         left: r(-20);
-        top: r(8);
+        top: r(4);
         border-width: r(14);
         border-style: solid;
         border-color: transparent #fff transparent transparent;
@@ -780,18 +824,31 @@
       background-size: 100%;
       margin-left: 1rem;
     }
+
     .user_symbol_next {
       width: r(45);
       height: r(48);
-      background: url('~images/chatWith/seller.png') no-repeat;
+      background: url('~images/chatWith/buyer.png') no-repeat;
       background-size: 100%;
       margin-right: 1rem;
       &.isSeller {
         width: r(45);
         height: r(48);
-        background: url('~images/chatWith/buyer.png') no-repeat;
+        background: url('~images/chatWith/seller.png') no-repeat;
         background-size: 100%;
         margin-right: 1rem;
+      }
+      &.iskefu{
+        width: r(45);
+        height: r(48);
+        background: url('~images/chatWith/kefu.png')no-repeat;
+        background-size: 100%;
+      }
+      &.isMy{
+        width: r(45);
+        height: r(45);
+        background: url("~images/chatWith/my.png~")no-repeat;
+        background-size: 100%;
       }
     }
   }
@@ -901,5 +958,38 @@
 
   .contents_image {
     max-width: r(190);
+    max-height: 8rem;
+  }
+  .sendname{
+    color: #787876;
+    font-size: r(13);
+  }
+  header.mobile-header{
+    position: relative;
+    z-index: 99;
+    height: r($header-hg);
+    line-height: r($header-hg);
+    background: $main-color;
+    @include  f(18px);
+    color: $white;
+    text-align: center;
+    .back-link{
+      position: absolute;
+      height: 100%;
+      left:0;
+      width:r(66);
+      top:50%;
+      transform:translateY(-50%);
+      text-align: left;
+      padding-left: r(8);
+    }
+    .icon-left-arrow{
+      @include f(18px)
+    }
+  }
+  header.mobile-header-fixed{
+    position: fixed;
+    width: 100%;
+    height: r($header-hg);
   }
 </style>

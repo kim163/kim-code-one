@@ -23,6 +23,7 @@ export default new Vuex.Store({
     connectState:false,
     RongIMEmoji:'',
     timeOver:false,
+    unreadCount:0,
   },
   getters:{     // 用来从 store 获取 Vue 组件数据
     language( state,getters){
@@ -72,6 +73,9 @@ export default new Vuex.Store({
     },
     timeOver(state,getters){
       return state.timeOver
+    },
+    unreadCount(state,getters){
+      return state.unreadCount
     }
   },
   mutations:{         // 事件处理器用来驱动状态的变化
@@ -107,6 +111,9 @@ export default new Vuex.Store({
         state.showLogin=val;
       }
     },
+    [types.GET_UNREADCOUNT](state,val){
+      state.unreadCount = val
+    }
   },
   actions:{    // 可以给组件使用的函数，以此用来驱动事件处理器 mutations
     [types.SET_LANGUAGE]({ commit }, language){

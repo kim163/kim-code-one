@@ -35,6 +35,7 @@ export default {
           .then(() => {
             this.initEmoji();
           })
+
       })
 
   },
@@ -63,22 +64,30 @@ export default {
           case RongIMLib.ConnectionStatus.CONNECTED:  //eslint-disable-line
             info = '链接成功'
             store.commit('CHANGE_CONNECTSTATE',true)
-            Vue.$global.bus.$emit('rongState')
+            this.getConversationList()
             break;
           case RongIMLib.ConnectionStatus.CONNECTING:  //eslint-disable-line
             info = '正在链接'
             break
           case RongIMLib.ConnectionStatus.DISCONNECTED:  //eslint-disable-line
             info = '断开连接'
+            toast(info)
             break
           case RongIMLib.ConnectionStatus.KICKED_OFFLINE_BY_OTHER_CLIENT:  //eslint-disable-line
             info = '其他设备登录'
+            toast(info)
+            setTimeout(()=>{
+              store.dispatch('LOGIN_OUT')
+            },1500)
+
             break
           case RongIMLib.ConnectionStatus.DOMAIN_INCORRECT:  //eslint-disable-line
             info = '域名不正确'
+            toast(info)
             break
           case RongIMLib.ConnectionStatus.NETWORK_UNAVAILABLE:  //eslint-disable-line
             info = '网络不可用'
+            toast(info)
             break
         }
       }
@@ -89,15 +98,29 @@ export default {
       onReceived: (message) => {
         switch (message.messageType) {
           case RongIMClient.MessageType.TextMessage: //eslint-disable-line
-            Vue.$global.bus.$emit('textMessage', {msg: RongIMLib.RongIMEmoji.symbolToEmoji(message.content.content), user: 2})
+           /*因为有可能APP和h5或者PC同时发*/
+            if(message.content.user.id == store.state.userData.userId){
+              Vue.$global.bus.$emit('textMessage', {msg: RongIMLib.RongIMEmoji.symbolToEmoji(message.content.content), user: 1,
+                sendName:message.content.user.name,userId:message.content.user.id})
+            }else {
+              Vue.$global.bus.$emit('textMessage', {msg: RongIMLib.RongIMEmoji.symbolToEmoji(message.content.content), user: 2,
+                sendName:message.content.user.name,userId:message.content.user.id,debit:JSON.parse(message.content.extra).debit})
+            }
+            this.getConversationList()
             break
           case RongIMClient.MessageType.VoiceMessage: //eslint-disable-line
             // 对声音进行预加载
             // message.content.content 格式为 AMR 格式的 base64 码
             break
           case RongIMClient.MessageType.ImageMessage: //eslint-disable-line
-
-            Vue.$global.bus.$emit('picMessage', {msg: message.content.imageUri, user: 4, img: [message.content.imageUri]})
+            if(message.content.user.id == store.state.userData.userId){
+              Vue.$global.bus.$emit('picMessage', {msg: message.content.imageUri, user: 3, img: [message.content.imageUri],sendName:message.content.user.name,
+                userId:message.content.user.id})
+            }else {
+              Vue.$global.bus.$emit('picMessage', {msg: message.content.imageUri, user: 4, img: [message.content.imageUri],sendName:message.content.user.name,
+                userId:message.content.user.id,debit:JSON.parse(message.content.extra).debit})
+            }
+            this.getConversationList()
             break
           case RongIMClient.MessageType.DiscussionNotificationMessage: //eslint-disable-line
             // message.content.extension => 讨论组中的人员。
@@ -136,6 +159,28 @@ export default {
         }
       }
     })
+  },
+    getConversationList() {
+      RongIMClient.getInstance().getConversationList({
+        onSuccess: () => {
+           this.getUnreadTotalCount()
+        },
+        onError: function (error) {
+          // do something...
+        }
+      }, null);
+    },
+
+  getUnreadTotalCount() {
+    RongIMClient.getInstance().getTotalUnreadCount({
+      onSuccess:(count)=>{
+        // count => 多个会话的总未读数。
+      store.commit('GET_UNREADCOUNT',count)
+      },
+      onError: (error)=> {
+        // error => 获取多个会话未读数错误码。
+      }
+    });
   },
 }
 
