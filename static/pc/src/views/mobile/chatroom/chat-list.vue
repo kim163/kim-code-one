@@ -90,7 +90,14 @@
         'userData',
         'connectState',
 
-      ]),
+      ])
+    },
+    watch:{
+      connectState(val){
+        if(val){
+          this.getConversationList()
+        }
+      }
     },
     methods: {
       getCount(n) {
@@ -104,9 +111,7 @@
         this.symolEmoji = RongIMLib.RongIMEmoji
         RongIMClient.getInstance().getConversationList({
           onSuccess: (list) => {
-            console.log(list,'是你三大')
             this.chatArr = list
-            console.log(list)
             for (let i = 0; i < list.length; i++) {
               this.getUnreadCount(list[i].targetId)
              this.timeList.push({TimeList:this.formatMsgTime(list[i].sentTime)})
@@ -152,7 +157,6 @@
             /!*先情调未读消息数*!/
             this.DetailList.targetId = id;
             this.DetailList.historyState = 3;
-            this.chatState = true;
             this.userInfoId= userId
             /*清楚未读绘画*/
             const conversationType = RongIMLib.ConversationType.GROUP
@@ -161,6 +165,8 @@
                 RongIMClient.getInstance().getTotalUnreadCount({
                   onSuccess:(count)=>{
                     this.$store.commit('GET_UNREADCOUNT',count)
+                    this.chatState = true;
+                    this.$store.commit('CHANGE_CONNECTSTATE', true)
                   },
                   onError:(error)=>{
                     // error => 获取总未读数错误码。
@@ -199,10 +205,12 @@
       getUnreadCount(id) {
         const conversationType = RongIMLib.ConversationType.GROUP;
         const targetId = id
+        this.countUnreadNum = []
         RongIMLib.RongIMClient.getInstance().getUnreadCount(conversationType, targetId, {
           onSuccess: (count) => {
             const arr = []
             arr.push(count)
+            console.log(count,'为什么为什么为什么我们是明晚上')
             for (let i = 0; i < arr.length; i++) {
               this.countUnreadNum.push({count: arr[i]})
             }

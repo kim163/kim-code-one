@@ -347,8 +347,9 @@
     methods: {
       ...mapMutations(['CHANGE_CONNECTSTATE']),
       doClick(){
-        console.log('为什么')
+        this.$store.commit('CHANGE_CONNECTSTATE', 3)
         this.$emit('chatShow',false)
+
       },
       fetchOrder() {
         const requestData = {
@@ -535,7 +536,7 @@
         let conversationType = RongIMLib.ConversationType.GROUP
         RongIMClient.getInstance().clearUnreadCount(conversationType, this.detail, {
           onSuccess: (res) => {
-            console.log(res, '野路子')
+            this.$forceUpdate()
           },
           onError: () => {
           }
