@@ -2,7 +2,7 @@
   <div class="recent-orders">
       <h3 class="title"> {{$t('transactionHome.recentOrders')}} </h3>
       <ul>
-         <li v-for="(order,i) in OrderList.data||[]">
+         <router-link tag="li" :to="{name:'orderDetail',params:{id:order.id}}" v-for="(order,i) in OrderList.data||[]">
            <div class="fl">
              <p>
                <span class="btn btn-border" v-show="order.credit == userData.userId">买入</span>
@@ -19,7 +19,7 @@
               <p>09:45</p>
               <p><span class="amount"> {{order.creditAmount}} </span>  UET</p>
            </div>
-         </li>
+         </router-link>
       </ul>
   </div>
 </template>
@@ -83,6 +83,7 @@
       height: 110px;
       padding: 20px 19px;
       border-bottom: 1px solid #D4D4D4;
+      cursor: pointer;
       &:last-child{
         border: none;
       }

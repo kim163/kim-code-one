@@ -89,7 +89,6 @@ export default new Vuex.Store({
       state.showFooter=val
     },
     [types.SET_USERDATA](state,val={}){
-      debugger
       if(val != ''){
         $localStorage.set('userData', aesutil.encrypt(JSON.stringify(val)))
       }
