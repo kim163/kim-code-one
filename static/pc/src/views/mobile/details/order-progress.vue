@@ -327,7 +327,7 @@
         </div>
       </div>
     </div>
-    <div class="chatroom" @click="goChatroom()">
+    <div class="Rongyunchatroom" @click="goChatroom()">
       <img src="../../../assets/images/chat.png" alt="">
       <p class="chatroom_num">{{unreadCountUpdate}}<!--<span class="chatroom_num" v-if="unreadCount>99">+</span>--></p>
     </div>
@@ -937,13 +937,13 @@
     }
   }
 
-  .chatroom {
+  .Rongyunchatroom {
     width: r(50);
     height: r(50);
     background-color: #fff;
     position: fixed;
     right: 0;
-    top: 70%;
+    top: 75%!important;
     border-radius: 50%;
     background: url("../../../assets/images/chatbg.png") no-repeat;
     background-size: 100%;

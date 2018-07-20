@@ -154,6 +154,22 @@
             this.DetailList.historyState = 3;
             this.chatState = true;
             this.userInfoId= userId
+            /*清楚未读绘画*/
+            const conversationType = RongIMLib.ConversationType.GROUP
+            RongIMClient.getInstance().clearUnreadCount(conversationType,id,{
+              onSuccess:(res)=>{
+                RongIMClient.getInstance().getTotalUnreadCount({
+                  onSuccess:(count)=>{
+                    this.$store.commit('GET_UNREADCOUNT',count)
+                  },
+                  onError:(error)=>{
+                    // error => 获取总未读数错误码。
+                  }
+                });
+              },
+              onError:()=>{
+              }
+            })
           }
         })
       },
