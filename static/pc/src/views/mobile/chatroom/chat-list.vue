@@ -13,14 +13,15 @@
                :class="{'user_symbolNext':userId==JSON.parse(list.latestMessage.content.extra).debit}"
                v-html="userData.nickname.slice(0,1)">
           </div>
-          <span class="unread_num" :class="{isShow:getCount(num)}">{{getCount(num)>99?99:getCount(num)}}</span>
-          <span class="unread_line" :class="{isOn:getCount(num)}"></span>
+          <span class="unread_num" :class="{isShow:list.unreadMessageCount}">{{list.unreadMessageCount>99?99:list.unreadMessageCount}}</span>
+          <span class="unread_line" :class="{isOn:list.unreadMessageCount}"></span>
           <div class="user_conversation box-f1">
             <p class="user_name">{{userData.nickname}}
               <span v-if="userId==JSON.parse(list.latestMessage.content.extra).debit" class="sell_out">卖出</span>
               <span v-else class="buy_in">买入</span>
             </p>
             <!--区分图片和文本消息 目前就这两种-->
+
            <p class="user_content"
                v-if="list.latestMessage.content.messageName=='TextMessage'">{{list.latestMessage.content.user.name+': '+symolEmoji.symbolToEmoji(list.latestMessage.content.content)}}</p>
             <p class="user_content" v-else>{{list.latestMessage.content.user.name}}: [图片]</p>
@@ -183,7 +184,6 @@
         RongIMClient.getInstance().getTotalUnreadCount({
           onSuccess:(count)=>{
             // count => 多个会话的总未读数。
-            const countValue = count
            this.$store.commit('GET_UNREADCOUNT',count)
           },
           onError: (error)=> {
