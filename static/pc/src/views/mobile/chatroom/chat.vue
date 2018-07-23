@@ -324,7 +324,6 @@
       }
     },
     created() {
-
       /*加载bettorScroll*/
       Vue.$global.bus.$on('textMessage', (message) => {
         this.chatArr.push(message)
@@ -368,8 +367,11 @@
           const imgArr = document.getElementsByClassName('msg-item')
           const len = imgArr.length
           for (let i = 0; i <= len; i++) {
-            this.scroll.refresh();
-            this.scroll.scrollToElement(document.querySelectorAll('.msg-item')[(this.chatArr.length + this.historyArr.length) - 1], 333)
+            if(this.scroll){
+              this.scroll.refresh();
+              this.scroll.scrollToElement(document.querySelectorAll('.msg-item')[(this.chatArr.length + this.historyArr.length) - 1], 333)
+            }else {
+            }
           }
         })
       },
@@ -428,8 +430,6 @@
               context.drawImage(img, 0, 0, targetWidth, targetHeight);
               // canvas转为blob并上传
               this.dataURL = canvas.toDataURL('image/png');
-              // this.chatArr.push({msg: message.content.imageUri, user: 4, img: [message.content.imageUri]})
-              /*this.demoArr.push({img:[this.dataURL]});*/
               var blob = this.dataURItoBlob(this.dataURL);
               const RamdomValue = Math.random();
               var fd = new FormData();
@@ -449,7 +449,6 @@
               })
 
             }
-            //  fr.readAsDataURL(input.files[0]);
           }
         }
       },
@@ -597,7 +596,6 @@
         let conversationtype = RongIMLib.ConversationType.GROUP;
         let targetId = this.detail;
         this.clearUnreadCount()
-
         this.userInfo = {
           id: this.userId,
           portrait: this.portrait,
