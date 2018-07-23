@@ -2,7 +2,7 @@
   <div>
     <div class="group-head">
       <span class="unit">订单类型</span>
-      <span class="unit">对方</span>
+      <span class="unit">{{tabType === 3 ? '申诉人' : '对方'}}</span>
       <span class="unit">交易数量</span>
       <span class="unit">交易单价</span>
       <span class="unit">交易金额</span>
@@ -12,14 +12,20 @@
     <div class="group-body">
       <div v-if="!noData">
         <div class="group-tr" v-for="(item,index) in dataList" :key="index">
-          <span class="unit" v-if="tabType != 3">
-            <span class="c-blue type blue-border" v-if="item.credit == userData.userId">{{$t('transactionRecord.buy')}}</span>
-            <span class="c-orange type orange-border" v-if="item.debit == userData.userId">{{$t('transactionRecord.sale')}}</span>
+          <span class="unit">
+            <span v-if="tabType != 3">
+              <span class="c-blue type blue-border" v-if="item.credit == userData.userId">{{$t('transactionRecord.buy')}}</span>
+              <span class="c-orange type orange-border" v-if="item.debit == userData.userId">{{$t('transactionRecord.sale')}}</span>
+            </span>
+            <span v-else>
+              <span class="c-blue type blue-border" v-if="item.userId == userData.userId">我方发起申诉</span>
+              <span class="c-orange type orange-border" v-else>对方发起申诉</span>
+            </span>
           </span>
           <span class="unit">{{getUserName(item)}}</span>
           <span class="unit"> {{tabType === 3 ? item.amount : item.creditAmount}}   UET</span>
           <span class="unit"> 0.01 CNY</span>
-          <span class="unit red">{{tabType === 3 ? item.amountTwin : item.creditAmountTwin}} CNY</span>
+          <span class="unit cl-red">{{tabType === 3 ? item.amountTwin : item.creditAmountTwin}} CNY</span>
           <span class="unit" v-if="tabType === 1">
             <span v-if="item.status != 61">
               {{(item.status === 45 ? $t('transactionRecord.waitingForPayment') : $t('transactionRecord.waitingForRelease'))}}
@@ -30,11 +36,11 @@
             <span v-else>申诉锁定</span>
           </span>
           <span class="unit" v-if="tabType === 2">
-            <span v-if="item.status =='204'">交易取消</span>
+            <span v-if="item.status =='204'" :class="{'text-gray': item.status =='204'}">交易取消</span>
             <span v-else>交易完成</span>
           </span>
           <span class="unit" v-if="tabType === 3">
-            {{item.statusText}}
+            {{item.resultTypeText}}
           </span>
           <span class="unit">
             <router-link :to='orderDetailLink(item)' class="btn btn-primary">详情</router-link>
@@ -172,18 +178,20 @@
       },
       orderDetailLink(item){
         let routerName = ''
+        let id = item.id
         if(this.tabType === 1){
-          routerName = 'orderDetail'
+          routerName = item.status === 61 ? 'orderDetailAppeal' :'orderDetail'
         }else if(this.tabType === 2){
           routerName = 'orderDetailOver'
-        }else{
+        }else if(this.tabType === 3){
           routerName = 'orderDetailAppeal'
+          id = item.orderId
         }
-        return {name: routerName, params:{ id: item.id}}
+        return {name: routerName, params:{ id }}
       },
       getUserName(item){
         if(this.tabType === 3){
-          return item.credit == this.userData.userId ? item.debitName : item.creditName
+          return item.userName
         }else{
           return item.credit == this.userData.userId ? item.debitName : item.creditName
         }
@@ -204,8 +212,6 @@
 </script>
 
 <style lang="scss" scoped>
-  .red{
-  }
   .type{
     display: block;
     width: 80%;
@@ -217,6 +223,9 @@
   }
   .orange-border{
     border: 1px solid #ff9600;
+  }
+  .text-gray{
+    color: #787876;
   }
 </style>
 
