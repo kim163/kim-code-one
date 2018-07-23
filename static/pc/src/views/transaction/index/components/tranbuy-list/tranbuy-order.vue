@@ -72,8 +72,8 @@
         transaction.placeAnOrder(requestda).then(res => {
           console.log(res)
           if (res.code == 10000) {
-            toast("下单成功，请及时支付,20分钟内未完成支付，将自动取消订单");
             Vue.$global.bus.$emit('update:balance');
+            this.$router.push({name: 'orderDetail',params:{ id: res.data.key}});
           }else {
             toast(res.message);
           }

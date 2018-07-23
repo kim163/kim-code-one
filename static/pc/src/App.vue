@@ -64,14 +64,14 @@
             this.connectPsw= this.connectMsg[2];
           }
         });
-        // this.detailNormal='/orderDetail/';
-        // this.detailOver='/orderDetailOver/';
-        // this.detailAppeal='/orderDetailAppeal/';
-        // if(_.isMobile()){
+        this.detailNormal='/orderDetail/';
+        this.detailOver='/orderDetailOver/';
+        this.detailAppeal='/orderDetailAppeal/';
+        if(_.isMobile()){
           this.detailNormal='/m/order/';
           this.detailOver='/m/orderOver/';
           this.detailAppeal='/m/orderAppeal/';
-        //}
+        }
       },
       stompSuccessCallback(frame) {
         console.log('STOMP: Connection successful')

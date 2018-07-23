@@ -53,6 +53,9 @@ export default [
     component(resolve){
       // 订单详情页-交易中
       return resolve(require('views/transaction/order-detail/detail'))
+    },
+    meta: {
+      noCache: true
     }
   },
   {
@@ -61,6 +64,9 @@ export default [
     component(resolve){
       // 订单详情页-已完成
       return resolve(require('views/transaction/order-detail/detail-appeal'))
+    },
+    meta: {
+      noCache: true
     }
   },
   {
@@ -69,6 +75,9 @@ export default [
     component(resolve){
       // 订单详情页
       return resolve(require('views/transaction/order-detail/detail-over'))
+    },
+    meta: {
+      noCache: true
     }
   },
 

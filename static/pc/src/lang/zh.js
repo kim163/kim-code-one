@@ -140,7 +140,18 @@ export default {
     tranStatus: '状态',
     tranControl: '操作',
     tranRefresh: '刷新',
-    tranDetail: '详情'
+    tranDetail: '详情',
+    orderDetails: '订单详情',
+    appealArbitrat:'申诉与仲裁'
+  },
+  orderDetailPay:{
+    confirmPayTitle: '您是否确定已收到买方付款？',
+    confirmPayCont: '若因买方未付款而导致UET损失，平台概不负责',
+    confirmPayBtn: '确认收款（释放UET）',
+    alreadyPaidTitle: '您是否确定已付款给卖方？',
+    alreadyPaidCont: '若因您未付款导致卖方申诉或损失，将影响您的账户信誉，甚至封禁账户！',
+    alreadyPaidCancelBtn: '还没付款',
+    alreadyPaidBtn: '确定已付款给卖方'
   },
   table: {
     sellers: '卖家',

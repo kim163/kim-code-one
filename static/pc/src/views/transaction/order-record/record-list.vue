@@ -173,6 +173,14 @@
     },
     mounted(){
       this.getDataList()
+    },
+    activated() {
+      Vue.$global.bus.$on('update:tranList',() => {
+        this.getDataList()
+      })
+    },
+    deactivated(){
+      Vue.$global.bus.$off('update:tranList')
     }
   }
 </script>
