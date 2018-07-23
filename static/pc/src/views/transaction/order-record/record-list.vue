@@ -184,7 +184,7 @@
         }else if(this.tabType === 2){
           routerName = 'orderDetailOver'
         }else if(this.tabType === 3){
-          routerName = 'orderDetailAppeal'
+          routerName = 'orderDetailOver'
           id = item.orderId
         }
         return {name: routerName, params:{ id }}
