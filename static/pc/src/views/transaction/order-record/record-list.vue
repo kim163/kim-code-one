@@ -173,10 +173,10 @@
       orderDetailLink(item){
         let routerName = ''
         if(this.tabType === 1){
-          routerName = 'orderDetail'
+          routerName = item.status === 61 ? 'orderDetailAppeal' :'orderDetail'
         }else if(this.tabType === 2){
           routerName = 'orderDetailOver'
-        }else{
+        }else if(this.tabType === 3){
           routerName = 'orderDetailAppeal'
         }
         return {name: routerName, params:{ id: item.id}}
