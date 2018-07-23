@@ -189,13 +189,20 @@
     },
     mounted(){
       this.getDataList()
+    },
+    activated() {
+      Vue.$global.bus.$on('update:tranList',() => {
+        this.getDataList()
+      })
+    },
+    deactivated(){
+      Vue.$global.bus.$off('update:tranList')
     }
   }
 </script>
 
 <style lang="scss" scoped>
   .red{
-
   }
   .type{
     display: block;
@@ -210,3 +217,4 @@
     border: 1px solid #ff9600;
   }
 </style>
+

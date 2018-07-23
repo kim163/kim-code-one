@@ -73,8 +73,8 @@
 
           console.log(res)
           if (res.code == 10000) {
-            toast("成功卖出");
             Vue.$global.bus.$emit('update:balance');
+            this.$router.push({name: 'orderDetail',params:{ id: res.data.key}});
           }else {
             toast(res.message);
           }

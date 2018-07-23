@@ -327,6 +327,7 @@
         </div>
       </div>
     </div>
+
     <div class="Rongyunchatroom" @click="goChatroom()">
       <img src="../../../assets/images/chat.png" alt="">
       <p class="chatroom_num">{{unreadCountUpdate}}<!--<span class="chatroom_num" v-if="unreadCount>99">+</span>--></p>

@@ -36,7 +36,6 @@
             name: 'transactionRecord.talkhistory',
             link: 'mtalkList'
           },
-
           {
             icon: 'icon-tab-money',
             name: 'navbar.transactionRecord',

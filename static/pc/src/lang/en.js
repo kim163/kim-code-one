@@ -142,7 +142,18 @@ export default {
     tranStatus: 'state',
     tranControl: 'Operation',
     tranRefresh: 'Refresh',
-    tranDetail: 'Detail'
+    tranDetail: 'Detail',
+    orderDetails: 'Order details',
+    appealArbitrat:'Appeal and arbitration'
+  },
+  orderDetailPay:{
+    confirmPayTitle: 'Are you sure you have received payment from the buyer?',
+    confirmPayCont: 'The platform is not responsible for any loss of UET due to the buyer’s failure to pay.',
+    confirmPayBtn: 'Confirm receipt (release UET)',
+    alreadyPaidTitle: 'Are you sure you have paid to the seller?',
+    alreadyPaidCont: 'If the seller complains or loses due to your failure to pay, it will affect your account reputation and even block the account!',
+    alreadyPaidCancelBtn: 'No payment',
+    alreadyPaidBtn: 'Sure that the payment to the seller'
   },
   table: {
     sellers: 'Sellers',

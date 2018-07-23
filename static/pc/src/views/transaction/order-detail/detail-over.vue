@@ -1,44 +1,24 @@
 <template>
   <div class="transell-main transell-main-box">
     <nav-menu></nav-menu>
-
-    <div class="tranred-headnav">
-      <div class="container">
-        <div>
-          <a href="/index" class="item-info">
-            首页
-          </a> &gt;
-          <a href="/transaction" class="item-info">
-            交易大厅
-          </a> &gt;
-          <a href="/tranRecord" class="item-info">
-            订单记录
-          </a> &gt;
-          <a href="javascript:;" class="item-info active">
-            订单详情
-          </a>
-        </div>
-      </div>
-    </div>
+    <bread-crumbs :bread-list="breadList"></bread-crumbs>
 
     <div class="section detail-content">
+      <div class="container min-width" v-if="DetailList">
+        <div class="row00 detail-box" >
 
-      <div class="container">
-        <div class="row00 detail-box" v-if= "DetailList.credit == userData.userId">
-          <!--买入   type=12 为买入订单，type=11 为卖出订单-->
           <div class="detail-title">
-            <span class="title-btn btn-primary">买入</span>
+            <span v-if="isCredit" class="title-btn btn-primary">买入</span>
+            <span v-else-if="isDebit" class="title-btn btn-sell">卖出</span>
+            <span v-else class="title-btn btn-primary">申诉订单</span>
             <span class="order-num">
-              订单号：   {{$route.params.id}}
+              订单号：   {{orderId}}
             </span>
           </div>
-          <div class="detail-in">
-            <div class="row">
+          <div class="detail-in cfx">
               <div class="col-33" >
-                <h3 class="h3">卖方：
-                  {{DetailList.debitName}}
-
-                </h3>
+                <h3 v-if="isCredit" class="h3">卖方 : {{DetailList.debitName}} ({{DetailList.debitAccountNameTwin}} )</h3>
+                <h3 v-else-if="isDebit" class="h3">买方 : {{DetailList.creditName}} ({{DetailList.creditAccountNameTwin}})</h3>
                 <ul class="details-data">
                   <li>
                     <p>交易金额:</p>
@@ -52,177 +32,125 @@
                     <p>交易单价:</p>
                     <input type="text" readonly value="0.01 CNY">
                   </li>
-                </ul>
-              </div>
-              <div class="col-33">
-                <div class="alipay-box" v-if="DetailList.debitAccountMerchantTwin == '支付宝'">
-                  <p class="alipay-box-title">
-                    <i class="i-alipay" v-if="DetailList.debitAccountMerchantTwin == '支付宝'"></i>
-                    <i class="i-wechat" v-if="DetailList.debitAccountMerchantTwin == '微信'"></i>
-                    {{DetailList.debitAccountNameTwin}}<br> {{DetailList.debitAccountTwin}}</p>
-                  <div class="alipay-qrcode">
-                    <img src="~images/qrcode.jpg"  :src="DetailList.debitAccountQrCodeUrlTwin">
-                    <p>打开{{DetailList.debitAccountMerchantTwin}} [扫一扫] </p>
-                  </div>
-                </div>
-                <div class="alipay-box" v-if="DetailList.debitAccountMerchantTwin == '微信'">
-                  <p class="alipay-box-title">
-                    <i class="i-wechat" v-if="DetailList.debitAccountMerchantTwin == '微信'"></i>
-                    {{DetailList.debitAccountNameTwin}}<br> {{DetailList.debitAccountTwin}}</p>
-                  <div class="alipay-qrcode">
-                    <img src="~images/qrcode.jpg"  :src="DetailList.debitAccountQrCodeUrlTwin">
-                    <p>打开{{DetailList.debitAccountMerchantTwin}} [扫一扫] </p>
-                  </div>
-                </div>
-                <div class="alipay-box" v-else>
-                  <p class="alipay-box-title">
-                    <i class="i-bank"></i>
-                    {{DetailList.debitAccountMerchantTwin}} </p>
-                  <div class="alipay-qrcode">
-
-                    银行卡号:<br>
-                    {{DetailList.debitAccountTwin}} 复制卡号<br>
-                    开户姓名：<br>
-                    {{DetailList.debitAccountNameTwin}}   复制姓名<br>
-
-                    银行类别：<br>
-                    {{DetailList.debitAccountMerchantTwin}}<br>
-                  </div>
-                </div>
-              </div>
-              <div class="col-33">
-                <div class="order-time">
-                  <p class="text-center time-stame">等待付款   <span class="red">{{DetailList.intervalTime | formatDateMs}}</span></p>
-
-                  <input type="button" class="btn btn-normal" value="我已付款">
-                  <p>请在付款后，点击“我已付款”</p>
-                  <br/>
-                  <input type="button" class="btn btn-orange" value="取消交易">
-                  <p class="text-center">
-                    <span class="red">如果您已向卖家付款，千万不要取消</span><br>
-                    取消规则：买方当日连续取消2笔，或累计取消6笔，将限制交易24小时。
-                  </p>
-
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="detail-tips">
-            <p class="tips-title">温馨提示</p>
-            <p>1.您的汇款将直接进入卖方账户，交易过程中卖方出售的UET由平台托管保护。<br>
-              2.请在规定时间内完成付款，并务必点击“我已付款”，卖方确认收款后，系统会将UET划转到您的账户。</p>
-          </div>
-        </div>
-        <div class="row00 detail-box" v-if="DetailLister.debit == userData.userId">
-          <!--卖出-->
-          <div class="detail-title">
-            <span class="title-btn btn-sell">卖出</span>
-            <span class="order-num">
-              订单号：   {{$route.params.id}}
-            </span>
-          </div>
-          <div class="detail-in">
-
-
-            <div class="row">
-              <div class="col-33" >
-                <h3 class="h3">买方：
-                  {{DetailList.debitName}}
-
-                </h3>
-                <ul class="details-data">
                   <li>
-                    <p>交易金额:</p>
-                    <input type="text" class="red" readonly :value="DetailList.debitAmountTwin+' CNY'" >
-                  </li>
-                  <li>
-                    <p>交易数量:</p>
-                    <input type="text" readonly  :value="DetailList.debitAmount+' UET'">
-                  </li>
-                  <li>
-                    <p>交易单价:</p>
-                    <input type="text" readonly value="0.01 CNY">
+                    <p>订单时间:</p>
+                    <input type="text" readonly :value="DetailList.createtime | Date('yyyy-MM-dd hh:mm:ss')">
                   </li>
                 </ul>
               </div>
-              <div class="col-33">
-                <div class="alipay-box" v-if="DetailList.debitAccountMerchantTwin == '支付宝'">
-                  <p class="alipay-box-title">
-                    <i class="i-alipay" v-if="DetailList.debitAccountMerchantTwin == '支付宝'"></i>
-                    <i class="i-wechat" v-if="DetailList.debitAccountMerchantTwin == '微信'"></i>
-                    {{DetailList.debitAccountNameTwin}}<br> {{DetailList.debitAccountTwin}}</p>
-                  <div class="alipay-qrcode">
-                    <img src="~images/qrcode.jpg"  :src="DetailList.debitAccountQrCodeUrlTwin">
-                    <p>打开{{DetailList.debitAccountMerchantTwin}} [扫一扫] </p>
-                  </div>
-                </div>
-                <div class="alipay-box" v-else-if="DetailList.debitAccountMerchantTwin == '微信'">
-                  <p class="alipay-box-title">
-                    <i class="i-wechat" v-if="DetailList.debitAccountMerchantTwin == '微信'"></i>
-                    {{DetailList.debitAccountNameTwin}}<br> {{DetailList.debitAccountTwin}}</p>
-                  <div class="alipay-qrcode">
-                    <img src="~images/qrcode.jpg"  :src="DetailList.debitAccountQrCodeUrlTwin">
-                    <p>打开{{DetailList.debitAccountMerchantTwin}} [扫一扫] </p>
-                  </div>
-                </div>
-                <div class="alipay-box" v-else>
-                  <p class="alipay-box-title text-center bank-title">
-                    <i class="i-bank" :class="DetailList.debitAccountMerchantTwin | bankIcon"></i>{{DetailList.debitAccountMerchantTwin}} </p>
-                  <div class="alipay-qrcode text-left bank-txt-box">
-                    <div class="bank-list-p">
-                      <h3>银行卡号:</h3>
-                      {{DetailList.debitAccountTwin}}
-                      <button class="copyBtn btn-copy" :data-clipboard-text="DetailList.debitAccountTwin" @click="copy">复制卡号</button>
-                      <br>
-                    </div>
-                    <div class="bank-list-p">
-                      <h3>开户姓名：</h3>
-                      {{DetailList.debitAccountNameTwin}}
-                      <button class="copyBtn btn-copy" :data-clipboard-text="DetailList.debitAccountNameTwin" @click="copy">复制姓名</button>
-                      <br>
-                    </div>
+            <div v-if="isCredit" class="col-33">
+              <h4 class="bank-title">卖家收款方式 : </h4>
 
-                    <div class="bank-list-p">
-                      <h3>银行类别：</h3>
-                      {{DetailList.debitAccountMerchantTwin}} (储蓄卡)<br>
-                    </div>
-                  </div>
+              <div class="alipay-box" v-if="DetailList.debitAccountMerchantTwin == '支付宝' || DetailList.debitAccountMerchantTwin == '微信'" >
+                <p class="alipay-box-title">
+                  <i class="i-alipay" v-if="DetailList.debitAccountMerchantTwin == '支付宝'"></i>
+                  <i class="i-wechat" v-else-if="DetailList.debitAccountMerchantTwin == '微信'"></i>
+                  {{DetailList.debitName}} ({{DetailList.debitAccountNameTwin}})<br> {{DetailList.debitAccountTwin}}
+                </p>
+                <div class="alipay-qrcode">
+                  <img src="~images/qrcode.jpg" :src="DetailList.debitAccountQrCodeUrlTwin"  class="qrcode-img" />
+                  <p>打开 {{DetailList.debitAccountMerchantTwin}} [扫一扫] </p>
                 </div>
               </div>
-              <div class="col-33">
-                <div class="order-time">
-                  <p class="text-center time-stame">等待释放UET  <span class="red">{{DetailList.intervalTime | formatDateMs}}</span></p>
 
-                  <input type="button" class="btn btn-normal" value="我已付款">
-                  <p>请在付款后，点击“我已付款”</p>
-                  <br/>
-                  <input type="button" class="btn btn-orange" value="取消交易">
-                  <p class="text-center">
-                    <span class="red">如果您已向卖家付款，千万不要取消</span><br>
-                    取消规则：买方当日连续取消2笔，或累计取消6笔，将限制交易24小时。
-                  </p>
-
+              <div class="alipay-box" v-else>
+                <p class="alipay-box-title text-center bank-title">
+                  <i class="i-bank" :class="DetailList.debitAccountMerchantTwin | bankIcon"></i>{{DetailList.debitAccountMerchantTwin}}
+                </p>
+                <div class="alipay-qrcode text-left bank-txt-box">
+                  <div class="bank-list-p">
+                    <h3>银行卡号:</h3>
+                    {{DetailList.debitAccountTwin}}
+                    <button class="copyBtn btn-copy" @click="copystr(DetailList.debitAccountTwin)">复制卡号</button>
+                    <br>
+                  </div>
+                  <div class="bank-list-p">
+                    <h3>开户姓名：</h3>
+                    {{DetailList.debitName}} ({{DetailList.debitAccountNameTwin}})
+                    <button class="copyBtn btn-copy" @click="copystr(DetailList.debitAccountNameTwin)">复制姓名</button>
+                    <br>
+                  </div>
+                  <div class="bank-list-p">
+                    <h3>银行类别：</h3>
+                    {{DetailList.debitAccountMerchantTwin}} (储蓄卡)<br>
+                  </div>
                 </div>
               </div>
             </div>
+            <div v-else-if="isDebit" class="col-33">
+              <h4  class="bank-title">买家付款方式 : </h4>
+
+              <div class="alipay-box" v-if="DetailList.creditAccountMerchantTwin == '支付宝' || DetailList.creditAccountMerchantTwin == '微信'" >
+                <p class="alipay-box-title">
+                  <i class="i-alipay" v-if="DetailList.creditAccountMerchantTwin == '支付宝'"></i>
+                  <i class="i-wechat" v-else-if="DetailList.creditAccountMerchantTwin == '微信'"></i>
+                  {{DetailList.creditName}}（{{DetailList.creditAccountNameTwin}}）<br>{{DetailList.creditAccountTwin}}
+                </p>
+                <div class="alipay-qrcode">
+                  <img src="~images/qrcode.jpg" :src="DetailList.creditAccountQrCodeUrlTwin"  class="qrcode-img" />
+                  <p>打开 {{DetailList.creditAccountMerchantTwin}} [扫一扫] </p>
+                </div>
+              </div>
+
+              <div class="alipay-box" v-else>
+                <p class="alipay-box-title text-center bank-title">
+                  <i class="i-bank" :class="DetailList.creditAccountMerchantTwin | bankIcon"></i>{{DetailList.creditAccountMerchantTwin}}
+                </p>
+                <div class="alipay-qrcode text-left bank-txt-box">
+                  <div class="bank-list-p">
+                    <h3>银行卡号:</h3>
+                    {{DetailList.creditAccountTwin}}
+                    <button class="copyBtn btn-copy" @click="copystr(DetailList.creditAccountTwin)">复制卡号</button>
+                    <br>
+                  </div>
+                  <div class="bank-list-p">
+                    <h3>开户姓名：</h3>
+                    {{DetailList.creditName}}（{{DetailList.creditAccountNameTwin}}）
+                    <button class="copyBtn btn-copy" @click="copystr(DetailList.creditAccountNameTwin)">复制姓名</button>
+                    <br>
+                  </div>
+                  <div class="bank-list-p">
+                    <h3>银行类别：</h3>
+                    {{DetailList.creditAccountMerchantTwin}} (储蓄卡)<br>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-33">
+                <div class="order-time">
+                  <p class="text-center time-stame" v-if="DetailList.status == 203">
+                    <img src="~images/order-completed.png" height="107">
+                    <span >订单已完成</span>
+                  </p>
+                  <p class="text-center time-stame" v-else-if="DetailList.status == 204">
+                    <img src="~images/order-cancel.png" height="107">
+                    <span >订单已取消</span>
+                  </p>
+                </div>
+            </div>
+
           </div>
-          <div class="detail-tips detail-tips-sell">
-            <p class="tips-title0">买方付款说明：买方已付款至您的  {{DetailList.debitAccountMerchantTwin}}</p>
+          <div class="detail-tips detail-tips-sell" v-if="DetailList.creditProofUrlTwin">
+            <p v-if="isDebit" class="tips-title0">买家付款截图:</p>
+            <p v-else-if="isCredit" class="tips-title0">您的付款截图:</p>
             <ul class="pic-ul">
-              <li v-for="proofImg in DetailList.creditProofUrlTwin">
-                <img :src="proofImg">
+              <li v-for="proofImg in DetailList.creditProofUrlTwin||[]">
+                <viewer :images="DetailList.creditProofUrlTwin">
+                  <img :src="proofImg" alt="付款截图">
+                </viewer>
               </li>
             </ul>
-            <span class="fl friend-txt">友情提示：点击可查看大图</span>
+            <span class="fl friend-txt">提示：点击缩略图可放大查看</span>
+          </div>
 
-          </div>
-          <div class="detail-tips">
-            <p class="tips-title tips-title-i">温馨提示</p>
-            <p>1.您的汇款将直接进入卖方账户，交易过程中卖方出售的UET由平台托管保护。<br>
-              2.请在规定时间内完成付款，并务必点击“我已付款”，卖方确认收款后，系统会将UET划转到您的账户。</p>
-          </div>
         </div>
+
       </div>
+      <div class="container min-width" v-else>
+        <no-data-tip></no-data-tip>
+      </div>
+
     </div>
 
     <v-footer ></v-footer>
@@ -231,11 +159,12 @@
 
 <script>
   import navMenu from 'components/nav';
+  import breadCrumbs from 'components/bread-crumbs';
+  import NoDataTip from 'components/no-data-tip'
   import vFooter from 'components/footer';
   import { generateTitle } from '@/util/i18n'
   import { transaction } from 'api'
   import {mapGetters,mapActions,mapMutations} from 'vuex'
-  import Clipboard from 'clipboard';
 
   export default {
     data() {
@@ -243,64 +172,70 @@
         DetailList: {
 
         },
-        orderData:{
-          orderId:this.$route.params.id,
-          debitName:'', // 交易买方
-
-        }
+        breadList: [
+          {
+            urlName: 'transaction',
+            name: 'navbar.tradingHall'
+          },
+          {
+            urlName: 'tranRecord',
+            name: 'transactionHome.orderRecord'
+          },
+          {
+            urlName:'orderDetailOver',
+            name: 'transactionRecord.orderDetails'
+          }
+        ],
+        request:{},
+        orderId: '',
+        isCredit: false,
+        isDebit: false
       };
     },
     methods: {
       generateTitle,
       fetchData(){
-        this.loading = true;
         this.request={
-          orderId:this.$route.params.id
+          transactionId:this.orderId
         }
         transaction.getCoinTransactionHistory(this.request).then(res => {
-          this.loading = false;
-          console.log('订单详情记录:');
-          console.log(res.data);
           this.DetailList = res.data;
-          this.DetailList.creditProofUrlTwin = res.data.creditProofUrlTwin.split(',');
+          if(this.DetailList.credit == this.userId){
+            this.isCredit = true;
+          }else if(this.DetailList.debit == this.userId){
+            this.isDebit = true;
+          }
+          //  多个图片分解
+          if(res.data.creditProofUrlTwin && res.data.creditProofUrlTwin.length > 1){
+            this.DetailList.creditProofUrlTwin = res.data.creditProofUrlTwin.split(',');
+          }
 
-          console.log('图片分解')
-          console.log(res.data.creditProofUrlTwin.split(','))
         }).catch(error => {
-          this.reset(res.message);
+          toast(error.message);
         });
-
-        this.loading = false;
       },
-      copy() {
-        var clipboard = new Clipboard('.copyBtn')
-        clipboard.on('success', e => {
-          toast('复制成功')
-          console.log('复制成功')
-          // 释放内存
-          clipboard.destroy()
-        })
-        clipboard.on('error', e => {
-          // 不支持复制
-          console.log('该浏览器不支持自动复制')
-          // 释放内存
-          clipboard.destroy()
-        })
+      copystr(text) {
+        text.$copy();
+        toast(this.$t('transactionHome.successCopy'));
       }
-
-
     },
     created() {
-      this.fetchData();
+      if (this.$route.params.id) {
+        this.orderId = this.$route.params.id;
+        this.fetchData();
+      }
     },
     watch: {
-
+      "$route"(val) {
+        this.orderId = val.params.id;
+        this.fetchData();
+      }
     },
     computed: {
-      ...mapGetters(["userData","islogin"]),
+      ...mapGetters(["userData","islogin","userId"]),
     },
     components: {
-      navMenu, vFooter
+      navMenu, breadCrumbs, NoDataTip, vFooter
     },
     filters: {
       bankIcon: function (value) {
@@ -331,8 +266,8 @@
   .detail-box{
     border:1px solid #d4d4d4;
   input{
-    height:50px;
-    line-height: 50px;
+    height:40px;
+    line-height: 40px;
     border:1px solid #d4d4d4;
     width:100%;
     padding:0 20px;
@@ -345,12 +280,19 @@
     background: orange;
   }
   .time-stame{
-    font-size:22px;
-    padding:10px 0;
+    padding: 105px 0 0;
+    span{
+      display: block;
+      font-size:24px;
+      color: #333333;
+      line-height: 40px;
+      margin-top: 20px;
+    }
   }
   .col-33{
-    display:inline-block;
+    display:block;
     width:33%;
+    float: left;
     border-right:1px solid #d4d4d4;
     margin:0;
     min-height:427px;
@@ -366,7 +308,7 @@
   }
   .red{color:red;}
   .alipay-box{
-    margin:50px;
+    margin: 20px 50px 10px;
   .alipay-box-title{
     border:1px solid #d4d4d4;
     padding:10px 10px 10px 10px;
@@ -414,6 +356,7 @@
     padding:12px;
     background: url('~images/j.png') no-repeat;
     margin-bottom:5px;
+    display: inline-block;
   }
   }
   }
@@ -463,16 +406,16 @@
     padding:18px 30px 20px;
     overflow: hidden;
   }
-  .h3{
+  .h3,.bank-title{
     font-weight:normal;
     color:#333;
     font-size:22px;
     padding:20px 30px 0;
   }
   .details-data{
-    padding:0 30px 30px;
+    padding:0 30px 10px;
   li{
-    padding:20px 0 0 0;
+    padding:15px 0 0 0;
   }
   p{
     font-size:16px;
@@ -515,12 +458,6 @@
     color:#5087FF;
   }
 
-  .tranred-headnav {
-    /*height: 56px;*/
-    line-height: 56px;
-    height: auto;
-    border-bottom: 1px solid #D4D4D4;
-  }
   .text-center{
     text-align: center;
   }
@@ -548,6 +485,8 @@
     height:40px;
     width:46px;
     vertical-align: -13px;
+    background: url(~images/bankIcon/juan-bank.png) no-repeat;
+    background-size: contain;
   &.icbc{
      background: url(~images/bankIcon/icbc.png) no-repeat;
      background-size: 40px;
@@ -556,15 +495,5 @@
      background: url(~images/bankIcon/cmbc.png) no-repeat;
      background-size: 40px;
    }
-  }
-
-  @media(max-width:1330px){
-    .detail-box .col-33{
-      width:50%;
-      border-right:1px solid #d4d4d4;
-      border-bottom:1px solid #d4d4d4;
-      height:430px;
-
-    }
   }
 </style>

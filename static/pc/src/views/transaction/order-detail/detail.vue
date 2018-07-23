@@ -1,47 +1,22 @@
 <template>
   <div class="transell-main transell-main-box">
     <nav-menu></nav-menu>
-
-    <!--<router-link v-for="(item,i) in transactMenuData" class="item-info" :to="item.to" :key="i">-->
-      <!--{{generateTitle(item.name)}}-->
-    <!--</router-link>-->
-    <div class="tranred-headnav">
-      <div class="container">
-        <div>
-          <a href="/index" class="item-info">
-            首页
-          </a> &gt;
-          <a href="/transaction" class="item-info">
-            交易大厅
-          </a> &gt;
-          <a href="/tranRecord" class="item-info">
-            订单记录
-          </a> &gt;
-          <a href="javascript:;" class="item-info active">
-            订单详情
-          </a>
-        </div>
-      </div>
-    </div>
+    <bread-crumbs :bread-list="breadList"></bread-crumbs>
 
     <div class="section detail-content">
-
-      <div class="container" v-if="OrderList.data.length > 0">
-        <div class="row00 detail-box" v-if= "DetailList.credit == userData.userId" >
-          <!--买入   type=12 为买入订单，type=11 为卖出订单-->
+      <div class="container min-width" v-if="DetailList">
+        <div class="row00 detail-box">
           <div class="detail-title">
-            <span class="title-btn btn-primary">买入</span>
+            <span v-if="isCredit" class="title-btn btn-primary">买入</span>
+            <span v-else-if="isDebit" class="title-btn btn-sell">卖出</span>
             <span class="order-num">
-              订单号：   {{$route.params.id}}
+              订单号：   {{orderId}}
             </span>
           </div>
-          <div class="detail-in">
-            <div class="row">
+          <div class="detail-in cfx">
               <div class="col-33" >
-                <h3 class="h3">卖方：
-                    {{DetailList.debitName}}
-
-                </h3>
+                <h3 v-if="isCredit" class="h3">卖方 : {{DetailList.debitName}} ({{DetailList.debitAccountNameTwin}} )</h3>
+                <h3 v-else-if="isDebit" class="h3">买方 : {{DetailList.creditName}} ({{DetailList.creditAccountNameTwin}})</h3>
                 <ul class="details-data">
                   <li>
                     <p>交易金额:</p>
@@ -55,180 +30,248 @@
                     <p>交易单价:</p>
                     <input type="text" readonly value="0.01 CNY">
                   </li>
+                  <li>
+                    <p>订单时间:</p>
+                    <input type="text" readonly :value="DetailList.createtime | Date('yyyy-MM-dd hh:mm:ss')">
+                  </li>
                 </ul>
               </div>
-              <div class="col-33">
-                 <div class="alipay-box" v-if="DetailList.debitAccountMerchantTwin == '支付宝'">
+              <div v-if="isCredit" class="col-33">
+                 <h4 class="bank-title">卖家收款方式 : </h4>
+
+                 <div class="alipay-box" v-if="DetailList.debitAccountMerchantTwin == '支付宝' || DetailList.debitAccountMerchantTwin == '微信'" >
                    <p class="alipay-box-title">
                      <i class="i-alipay" v-if="DetailList.debitAccountMerchantTwin == '支付宝'"></i>
-                     <i class="i-wechat" v-if="DetailList.debitAccountMerchantTwin == '微信'"></i>
-                     {{DetailList.debitAccountNameTwin}}<br> {{DetailList.debitAccountTwin}}</p>
+                     <i class="i-wechat" v-else-if="DetailList.debitAccountMerchantTwin == '微信'"></i>
+                     {{DetailList.debitName}} ({{DetailList.debitAccountNameTwin}})<br> {{DetailList.debitAccountTwin}}
+                   </p>
                    <div class="alipay-qrcode">
-                       <img src="~images/qrcode.jpg"  :src="DetailList.debitAccountQrCodeUrlTwin">
-                       <p>打开{{DetailList.debitAccountMerchantTwin}} [扫一扫] </p>
+                       <img src="~images/qrcode.jpg" :src="DetailList.debitAccountQrCodeUrlTwin"  class="qrcode-img" />
+                       <p>打开 {{DetailList.debitAccountMerchantTwin}} [扫一扫] </p>
                    </div>
                  </div>
-                 <div class="alipay-box" v-if="DetailList.debitAccountMerchantTwin == '微信'">
-                   <p class="alipay-box-title">
-                     <i class="i-wechat" v-if="DetailList.debitAccountMerchantTwin == '微信'"></i>
-                     {{DetailList.debitAccountNameTwin}}<br> {{DetailList.debitAccountTwin}}</p>
-                   <div class="alipay-qrcode">
-                       <img src="~images/qrcode.jpg"  :src="DetailList.debitAccountQrCodeUrlTwin">
-                       <p>打开{{DetailList.debitAccountMerchantTwin}} [扫一扫] </p>
-                   </div>
-                 </div>
+
                  <div class="alipay-box" v-else>
-                   <p class="alipay-box-title">
-                     <i class="i-bank"></i>
-                     {{DetailList.debitAccountMerchantTwin}} </p>
-                   <div class="alipay-qrcode">
-
-                     银行卡号:<br>
-                     {{DetailList.debitAccountTwin}} 复制卡号<br>
-                     开户姓名：<br>
-                     {{DetailList.debitAccountNameTwin}}   复制姓名<br>
-
-                     银行类别：<br>
-                     {{DetailList.debitAccountMerchantTwin}}<br>
-                   </div>
-                 </div>
-              </div>
-              <div class="col-33">
-                <div class="order-time">
-                  <p class="text-center time-stame">等待付款   <span class="red">{{DetailList.intervalTime | formatDateMs}}</span></p>
-
-                  <input type="button" class="btn btn-normal" value="我已付款">
-                  <p>请在付款后，点击“我已付款”</p>
-                  <br/>
-                  <input type="button" class="btn btn-orange" value="取消交易">
-                  <p class="text-center">
-                    <span class="red">如果您已向卖家付款，千万不要取消</span><br>
-                    取消规则：买方当日连续取消2笔，或累计取消6笔，将限制交易24小时。
-                  </p>
-
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="detail-tips">
-              <p class="tips-title">温馨提示</p>
-              <p>1.您的汇款将直接进入卖方账户，交易过程中卖方出售的UET由平台托管保护。<br>
-                2.请在规定时间内完成付款，并务必点击“我已付款”，卖方确认收款后，系统会将UET划转到您的账户。</p>
-          </div>
-        </div>
-        <div class="row00 detail-box" v-if="DetailLister.debit == userData.userId">
-          <!--卖出-->
-          <div class="detail-title">
-            <span class="title-btn btn-sell">卖出</span>
-            <span class="order-num">
-              订单号：   {{$route.params.id}}
-            </span>
-          </div>
-          <div class="detail-in">
-
-
-            <div class="row">
-              <div class="col-33" >
-                <h3 class="h3">买方：
-                    {{DetailList.debitName}}
-
-                </h3>
-                <ul class="details-data">
-                  <li>
-                    <p>交易金额:</p>
-                    <input type="text" class="red" readonly :value="DetailList.debitAmountTwin+' CNY'" >
-                  </li>
-                  <li>
-                    <p>交易数量:</p>
-                    <input type="text" readonly  :value="DetailList.debitAmount+' UET'">
-                  </li>
-                  <li>
-                    <p>交易单价:</p>
-                    <input type="text" readonly value="0.01 CNY">
-                  </li>
-                </ul>
-              </div>
-              <div class="col-33">
-                <div class="alipay-box" v-if="DetailList.debitAccountMerchantTwin == '支付宝'">
-                  <p class="alipay-box-title">
-                    <i class="i-alipay" v-if="DetailList.debitAccountMerchantTwin == '支付宝'"></i>
-                    <i class="i-wechat" v-if="DetailList.debitAccountMerchantTwin == '微信'"></i>
-                    {{DetailList.debitAccountNameTwin}}<br> {{DetailList.debitAccountTwin}}</p>
-                  <div class="alipay-qrcode">
-                    <img src="~images/qrcode.jpg"  :src="DetailList.debitAccountQrCodeUrlTwin">
-                    <p>打开{{DetailList.debitAccountMerchantTwin}} [扫一扫] </p>
-                  </div>
-                </div>
-                <div class="alipay-box" v-else-if="DetailList.debitAccountMerchantTwin == '微信'">
-                  <p class="alipay-box-title">
-                    <i class="i-wechat" v-if="DetailList.debitAccountMerchantTwin == '微信'"></i>
-                    {{DetailList.debitAccountNameTwin}}<br> {{DetailList.debitAccountTwin}}</p>
-                  <div class="alipay-qrcode">
-                    <img src="~images/qrcode.jpg"  :src="DetailList.debitAccountQrCodeUrlTwin">
-                    <p>打开{{DetailList.debitAccountMerchantTwin}} [扫一扫] </p>
-                  </div>
-                </div>
-                <div class="alipay-box" v-else>
                   <p class="alipay-box-title text-center bank-title">
-                    <i class="i-bank" :class="DetailList.debitAccountMerchantTwin | bankIcon"></i>{{DetailList.debitAccountMerchantTwin}} </p>
+                    <i class="i-bank" :class="DetailList.debitAccountMerchantTwin | bankIcon"></i>{{DetailList.debitAccountMerchantTwin}}
+                  </p>
                   <div class="alipay-qrcode text-left bank-txt-box">
                     <div class="bank-list-p">
                       <h3>银行卡号:</h3>
-                    {{DetailList.debitAccountTwin}}
-                      <button class="copyBtn btn-copy" :data-clipboard-text="DetailList.debitAccountTwin" @click="copy">复制卡号</button>
+                      {{DetailList.debitAccountTwin}}
+                      <button class="copyBtn btn-copy" @click="copystr(DetailList.debitAccountTwin)">复制卡号</button>
                       <br>
                     </div>
                     <div class="bank-list-p">
-                    <h3>开户姓名：</h3>
-                    {{DetailList.debitAccountNameTwin}}
-                      <button class="copyBtn btn-copy" :data-clipboard-text="DetailList.debitAccountNameTwin" @click="copy">复制姓名</button>
+                      <h3>开户姓名：</h3>
+                      {{DetailList.debitName}} ({{DetailList.debitAccountNameTwin}})
+                      <button class="copyBtn btn-copy" @click="copystr(DetailList.debitAccountNameTwin)">复制姓名</button>
                       <br>
                     </div>
+                    <div class="bank-list-p">
+                      <h3>银行类别：</h3>
+                      {{DetailList.debitAccountMerchantTwin}} (储蓄卡)<br>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div v-else-if="isDebit" class="col-33">
+                <h4  class="bank-title">买家付款方式 : </h4>
 
+                <div class="alipay-box" v-if="DetailList.creditAccountMerchantTwin == '支付宝' || DetailList.creditAccountMerchantTwin == '微信'" >
+                  <p class="alipay-box-title">
+                    <i class="i-alipay" v-if="DetailList.creditAccountMerchantTwin == '支付宝'"></i>
+                    <i class="i-wechat" v-else-if="DetailList.creditAccountMerchantTwin == '微信'"></i>
+                    {{DetailList.creditName}}（{{DetailList.creditAccountNameTwin}}）<br>{{DetailList.creditAccountTwin}}
+                  </p>
+                  <div class="alipay-qrcode">
+                    <img src="~images/qrcode.jpg" :src="DetailList.creditAccountQrCodeUrlTwin"  class="qrcode-img" />
+                    <p>打开 {{DetailList.creditAccountMerchantTwin}} [扫一扫] </p>
+                  </div>
+                </div>
+
+                <div class="alipay-box" v-else>
+                  <p class="alipay-box-title text-center bank-title">
+                    <i class="i-bank" :class="DetailList.creditAccountMerchantTwin | bankIcon"></i>{{DetailList.creditAccountMerchantTwin}}
+                  </p>
+                  <div class="alipay-qrcode text-left bank-txt-box">
                     <div class="bank-list-p">
-                    <h3>银行类别：</h3>
-                    {{DetailList.debitAccountMerchantTwin}} (储蓄卡)<br>
+                      <h3>银行卡号:</h3>
+                      {{DetailList.creditAccountTwin}}
+                      <button class="copyBtn btn-copy" @click="copystr(DetailList.creditAccountTwin)">复制卡号</button>
+                      <br>
+                    </div>
+                    <div class="bank-list-p">
+                      <h3>开户姓名：</h3>
+                      {{DetailList.creditName}}（{{DetailList.creditAccountNameTwin}}）
+                      <button class="copyBtn btn-copy" @click="copystr(DetailList.creditAccountNameTwin)">复制姓名</button>
+                      <br>
+                    </div>
+                    <div class="bank-list-p">
+                      <h3>银行类别：</h3>
+                      {{DetailList.creditAccountMerchantTwin}} (储蓄卡)<br>
                     </div>
                   </div>
                 </div>
               </div>
               <div class="col-33">
                 <div class="order-time">
-                  <p class="text-center time-stame">等待释放UET  <span class="red">{{DetailList.intervalTime | formatDateMs}}</span></p>
-
-                  <input type="button" class="btn btn-normal" @click="payCompleted" value="我已付款">
-                  <p>请在付款后，点击“我已付款”</p>
-                  <br/>
-                  <input type="button" class="btn btn-orange" @click="cancelOrder" value="取消交易">
-                  <p class="text-center">
-                    <span class="red">如果您已向卖家付款，千万不要取消</span><br>
-                    取消规则：买方当日连续取消2笔，或累计取消6笔，将限制交易24小时。
+                  <p class="red order-status-title">
+                    <span v-if="DetailList.status =='45'">等待付款</span>
+                    <span v-else-if="DetailList.status =='47'">等待释放UET</span>
+                    <span v-else-if="DetailList.status =='61'">申诉锁定</span>
+                    <span v-else-if="DetailList.status =='41'">订单已发布</span>
+                    <span v-else-if="DetailList.status =='43'">订单已下架</span>
+                    <span v-else>
+                      {{DetailList.status}}
+                    </span>
                   </p>
+                  <p class="text-center time-stame">
+                    <span v-if="DetailList.status =='45' && isCredit">请在倒计时结束前完成付款</span>
+                    <span v-else-if="DetailList.status =='47' && isCredit">等待卖家释放UET倒计时</span>
+                    <span v-else-if="DetailList.status =='45' && isDebit">等待买家付款倒计时</span>
+                    <span v-else-if="DetailList.status =='47' && isDebit">释放UET倒计时</span>
 
+                    <count-down v-if="DetailList.status !='61'"
+                                :end-time="DetailList.intervalTime-DetailList.elapsedTime<=0 ? 0 : DetailList.intervalTime-DetailList.elapsedTime "
+                                @callBack="countDownEnd">
+                    </count-down>
+                  </p>
+                  <div class="btn-group" v-if="DetailList.status =='45' && isCredit">
+                    <input type="button" class="btn btn-block btn-normal" @click="showConfirm=true" value="我已完成付款">
+                    <p class="payment-tips">
+                      警告：为了您能快速完成交易，请尽量使用 <span class="red">您所绑定的银行卡/支付宝付款。</span>付款成功后，点击“我已完成付款”。
+                    </p>
+                    <input type="button" class="btn btn-block btn-orange" @click="cancelOrder" value="取消订单">
+                    <p class="text-center">
+                      <span class="red">如果您已向卖家付款，千万不要取消</span><br>
+                      取消规则：买方当日连续取消2笔，或累计取消6笔，将限制交易24小时。
+                    </p>
+                  </div>
+                  <div v-if="DetailList.status =='47' && isCredit">
+                    <p  class="text-center red">您已确认付款，请勿重复付款</p>
+                  </div>
+                  <div class="btn-group" v-if="DetailList.status =='47' && isDebit">
+                    <input type="button" class="btn btn-block btn-normal" @click="showConfirmPayment=true" value="确认收款">
+                    <p class="payment-tips">
+                      确认收款前，请务必检查是否有收到买方付款
+                    </p>
+                    <input type="button" class="btn btn-block btn-orange" @click="createAppeal"  value="我要申诉">
+                    <p class="text-center">
+                      申诉规则：申诉后，该笔订单将会被锁定。若仲裁结果为买方获胜，系统将会自动释放该笔订单的UET给买方。若仲裁结果为您获胜，则该笔订单交易失败。
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
           </div>
-          <div class="detail-tips detail-tips-sell">
-              <p class="tips-title0">买方付款说明：买方已付款至您的  {{DetailList.debitAccountMerchantTwin}}</p>
-              <ul class="pic-ul">
-                <li v-for="proofImg in DetailList.creditProofUrlTwin">
-                  <img :src="proofImg">
-                </li>
-              </ul>
-            <span class="fl friend-txt">友情提示：点击可查看大图</span>
-
-          </div>
-          <div class="detail-tips">
-              <p class="tips-title tips-title-i">温馨提示</p>
+          <div class="detail-tips" v-if="isCredit">
+              <p class="tips-title">温馨提示</p>
               <p>1.您的汇款将直接进入卖方账户，交易过程中卖方出售的UET由平台托管保护。<br>
-                2.请在规定时间内完成付款，并务必点击“我已付款”，卖方确认收款后，系统会将UET划转到您的账户。</p>
+                2.请在规定时间内完成付款，并务必点击“我已完成付款”，卖方确认收款后，系统会将UET划转到您的账户。</p>
+          </div>
+          <div class="detail-tips detail-tips-sell" v-if="DetailList.creditProofUrlTwin && isDebit">
+            <p class="tips-title0">买家付款截图:</p>
+            <ul class="pic-ul">
+              <li v-for="proofImg in DetailList.creditProofUrlTwin||[]">
+                <viewer :images="DetailList.creditProofUrlTwin">
+                  <img :src="proofImg" alt="买家付款截图">
+                </viewer>
+              </li>
+            </ul>
+            <span class="fl friend-txt">提示：点击缩略图可放大查看</span>
+          </div>
+          <div class="detail-tips" v-if="isDebit">
+            <p class="tips-title tips-title-i">温馨提示</p>
+            <p>1.买方的汇款将直接进入您的账户，交易过程中您出售的UET由平台托管保护。<br>
+              2.您在确认收款后，系统会将UET划转到您的账户，如果您申诉，订单将会被锁定。</p>
           </div>
         </div>
+
       </div>
-      <div class="container" v-else>
+      <div class="container min-width" v-else>
         <no-data-tip></no-data-tip>
       </div>
+    </div>
+
+    <confirm-dialog v-model="showConfirm" :is-pc="true">
+      <div slot="title">{{$t('orderDetailPay.alreadyPaidTitle')}}</div>
+      <div slot="content">{{$t('orderDetailPay.alreadyPaidCont')}}</div>
+      <div slot="leftBtn" class="confirm-btn-cancel">{{$t('orderDetailPay.alreadyPaidCancelBtn')}}</div>
+      <div slot="rightBtn" @click="payOrder">{{$t('orderDetailPay.alreadyPaidBtn')}}</div>
+    </confirm-dialog>
+
+    <confirm-dialog v-model="showConfirmPayment" :is-pc="true">
+      <div slot="title">{{$t('orderDetailPay.confirmPayTitle')}}</div>
+      <div slot="content">{{$t('orderDetailPay.confirmPayCont')}}</div>
+      <div slot="leftBtn" class="confirm-btn-cancel">{{$t('postPend.cancel')}}</div>
+      <div slot="rightBtn" @click="payCompleted">{{$t('orderDetailPay.confirmPayBtn')}}</div>
+    </confirm-dialog>
+
+    <div class="modal fade in" v-if="payOrderStep==2 && isCredit">
+      <div class="modal-dialog popup modal-payorder">
+        <div type="button" class="close close-w" @click="payOrderStep=1">
+          <i class="iconfont icon-close"></i>
+        </div>
+
+     <div class="pop-con">
+       <h2 class="alert-title txt-imcenter">充值订单</h2>
+       <div  class="recharge-payinst">
+
+      <div class="payinst-order">
+        <p>根据卖家要求，您需要对该笔订单补充付款说明</p>
+        <p class="cfx">
+          <span class="order-title fl">订单号：</span>
+          <span class="order-id fr">{{orderId}}</span>
+        </p>
+      </div>
+      <div class="payord-group cfx border-bot">
+        <label>您的付款方式</label>
+        <get-bankcard :setBankcard="setBankcard" @selCardChange="selCardChange" ></get-bankcard>
+      </div>
+      <div class="payinst-tips">
+        请您提供真实的付款信息，否则您将可能无法顺利买入UET
+      </div>
+      <ul class="payord-form" v-show="showPayDetail">
+        <li class="payord-group">
+          <label>付款方式</label>
+          <select class="payord-control" v-model="payOrderParam.creditAccountTypeTwin">
+            <option value="">请选择付款方式</option>
+            <option value="3">银行卡</option>
+            <option value="1">支付宝</option>
+            <option value="2">微信</option>
+          </select>
+        </li>
+        <li class="payord-group" v-show="showPayBankName">
+          <label>付款银行名称</label>
+          <input class="payord-control" type="text" placeholder="银行名称" v-model="payOrderParam.creditAccountMerchantTwin">
+        </li>
+        <li class="payord-group">
+          <label>付款账号</label>
+          <input class="payord-control" type="text" placeholder="银行卡号/支付宝/微信账号" v-model="payOrderParam.creditAccountTwin">
+        </li>
+        <li class="payord-group posit-rel">
+          <label>付款金额</label>
+          <input class="payord-control" type="number" placeholder="请输入实际付款金额" v-model="payOrderParam.creditAmountTwin">
+          <span class="tips-info">CNY</span>
+        </li>
+        <li class="payord-group">
+          <label>付款的户名</label>
+          <input class="payord-control" type="text" placeholder="银行卡/支付宝/微信认证实名" v-model="payOrderParam.creditAccountNameTwin">
+        </li>
+      </ul>
+      <div class="payscreen-part">
+        <p class="title">您的付款截图 <span>（选填项）</span> </p>
+        <upload-img :uploadImgSet="uploadImgSet" @gitPicUrl="gitPicUrl" ></upload-img>
+      </div>
+      <div class="paybtn-group">
+        <input type="button" class="btn cancel" value="取消" @click="payOrderStep=1" />
+        <input type="button" class="btn paycomfirm" value="提交" @click="payOrder" />
+      </div>
+    </div>
+
+     </div>
+     </div>
+
     </div>
 
     <v-footer ></v-footer>
@@ -237,111 +280,272 @@
 
 <script>
   import navMenu from 'components/nav';
+  import breadCrumbs from 'components/bread-crumbs';
   import vFooter from 'components/footer';
+  import CountDown from 'components/countdown'
+  import getBankcard from 'components/get-bankcard'
+  import uploadImg from 'components/upload-img'
   import { generateTitle } from '@/util/i18n'
   import { transaction } from 'api'
   import {mapGetters,mapActions,mapMutations} from 'vuex'
-  import Clipboard from 'clipboard';
   import NoDataTip from 'components/no-data-tip'
+  import confirmDialog from 'components/confirm'
 
   export default {
     data() {
       return {
+        breadList: [
+          {
+            urlName: 'transaction',
+            name: 'navbar.tradingHall'
+          },
+          {
+            urlName: 'tranRecord',
+            name: 'transactionHome.orderRecord'
+          },
+          {
+            urlName:'orderDetail',
+            name: 'transactionRecord.orderDetails'
+          }
+        ],
+        orderId:'',
+        gameID:'',
         DetailList: {
-
         },
-        orderData:{
-          orderId:this.$route.params.id,
-          debitName:'', // 交易买方
-
-        }
+        chatState:'',
+        payOrderStep:1,
+        payOrderParam:{
+          id:'',
+          creditProofTypeTwin:0,      // 卖方要求买方的付款证明
+          creditProofUrlTwin:'',      // 买方支付证明截图，多个地址逗号分隔
+          creditAccountTypeTwin:'',   // 买方法币账户类型
+          creditAccountNameTwin:'',   // 买方法币账户名
+          creditAccountTwin:'',       // 买方法币账户
+          creditAccountMerchantTwin:'',   // 买方法币机构名
+          creditAmountTwin:''           // 买方实际支付金额
+        },
+        uploadImgSet:{
+          maxUploadNum:3,       // 最大上传数量，如果没有最大上传数量，传 -1
+          uploadImgTips:'component.uploadUpThree',  // 上传图片提示文字
+          isShowUploadTip:true             // 是否有上传文件提示信息
+        },
+        setBankcard:{
+          pleaseSelTitle:'component.pleaseSelPayMet',         // 请选择标题文字
+          addOption:[                                  // 添加的选项
+            {type:-1,account:'component.otherPayMethod'}
+          ]
+        },
+        selAccountTypeTwin:{},
+        showPayDetail:false,
+        showPayBankName:false,
+        isCredit: false,
+        isDebit: false,
+        showConfirm: false,
+        showConfirmPayment:false
       };
     },
     methods: {
       generateTitle,
-        fetchData(){
-          this.loading = true;
-          this.request={
-            orderId:this.$route.params.id
+      fetchData(){
+        this.request={
+          orderId:this.orderId
+        }
+        transaction.getOrderx(this.request).then(res => {
+          console.log('res.data:'+res.data);
+          if(res.data == '' || res.data == null){
+            this.$router.push({name: 'transaction'});
+            return;
           }
-          transaction.getOrderx(this.request).then(res => {
-            this.loading = false;
-            console.log('订单详情记录:');
-            console.log(res.data);
-            this.DetailList = res.data;
+          if(res.data.status =='61'){
+            this.$router.push({name: 'orderDetailAppeal',params:{ id: this.orderId}});
+            return;
+          }
+          if(res.data.intervalTime - res.data.elapsedTime <= 0){
+            toast('您好订单已过期');
+            this.$router.back();
+            return;
+          }
+          this.DetailList = res.data;
+          if(this.DetailList.credit == this.userId){
+            this.isCredit = true;
+          }else if(this.DetailList.debit == this.userId){
+            this.isDebit = true;
+          }
+
+          console.log(this.DetailList,'速度')
+          if(res.data.creditProofUrlTwin && res.data.creditProofUrlTwin.length > 1){
             this.DetailList.creditProofUrlTwin = res.data.creditProofUrlTwin.split(',');
+          }
 
-            console.log('图片分解')
-            console.log(res.data.creditProofUrlTwin.split(','))
-          }).catch(error => {
-            this.reset(res.message);
-          });
+          if(res.code == '10000'){
+            if(this.DetailList.credit == this.userId){
+              toast('您已下单成功，请进入列表查询');
+            }else{
+              if(this.DetailList.status =='47' || this.DetailList.status =='48'){
+                toast('对方已确认付款，请查收是否到账');
+              }
+              // toast('对方已确认付款，请查收是否到账');
+            }
 
-          this.loading = false;
-        },
+          }
+        }).catch(err => {
+          toast(err.message);
+        });
+
+      },
       cancelOrder(){
         this.loading = true;
         this.request={
-          orderId:this.$route.params.id
+          orderId:this.orderId
         }
         transaction.cancelOrder(this.request).then(res => {
           this.loading = false;
-
-        }).catch(error => {
-          this.reset(res.message);
+          if(res.code == '10000'){
+            toast('您已取消，请勿重复操作');
+            Vue.$global.bus.$emit('update:tranList');
+            this.$router.push({name: 'tranRecord'});
+          }
+        }).catch(err => {
+          toast(err.message);
         });
-
         this.loading = false;
       },
+      selCardChange(selCard){
+        this.selAccountTypeTwin=selCard;
+        if(this.selAccountTypeTwin && JSON.stringify(this.selAccountTypeTwin) != "{}" && this.selAccountTypeTwin.type==-1){
+          this.showPayDetail=true;
+        }else {
+          this.showPayDetail=false;
+        }
+      },
+      gitPicUrl(picUrlArr){
+        this.payOrderParam.creditProofUrlTwin = picUrlArr.join(',');
+      },
+      checkPayDetail(){
+        if(this.payOrderParam.creditAccountTypeTwin=="" || !this.payOrderParam.creditAccountTypeTwin){
+          toast("请选择付款方式");
+        }else if(this.payOrderParam.creditAccountTypeTwin==3 && (this.payOrderParam.creditAccountMerchantTwin=="" || !this.payOrderParam.creditAccountMerchantTwin) ){
+          toast("请输入付款银行名称");
+        }else if(this.payOrderParam.creditAccountTwin=="" || !this.payOrderParam.creditAccountTwin){
+          toast("请输入付款账号");
+        }else if(this.payOrderParam.creditAmountTwin=="" || !this.payOrderParam.creditAmountTwin){
+          toast("请输入付款金额");
+        }else if(this.payOrderParam.creditAccountNameTwin=="" || !this.payOrderParam.creditAccountNameTwin){
+          toast("请输入付款的户名");
+        }else {
+          return true;
+        }
+      },
+      payOrder(){
+        this.showConfirm = false;
+
+        if(this.DetailList.creditProofTypeTwin==1 && this.DetailList.creditProofStatusTwin==0 ){
+          if(this.payOrderStep==1){
+            this.payOrderStep = 2;
+            return;
+          }else if(this.payOrderStep==2){
+            if(!this.selAccountTypeTwin || JSON.stringify(this.selAccountTypeTwin) == "{}"){
+              toast('请选择您的付款方式');
+              return;
+            }
+            if(this.selAccountTypeTwin.type==-1){
+              if(!this.checkPayDetail())return;
+            }else {
+              this.payOrderParam.creditAccountTypeTwin=this.selAccountTypeTwin.type;
+              this.payOrderParam.creditAccountNameTwin=this.selAccountTypeTwin.name;
+              this.payOrderParam.creditAccountTwin=this.selAccountTypeTwin.account;
+              this.payOrderParam.creditAccountMerchantTwin=this.selAccountTypeTwin.bank;
+              this.payOrderParam.creditAmountTwin=this.DetailList.debitAmountTwin;
+            }
+          }
+        }
+        this.payOrderParam.id = this.orderId;
+        this.payOrderParam.creditProofTypeTwin = this.DetailList.creditProofTypeTwin;
+        transaction.payOrderV2(this.payOrderParam).then(res => {
+          if(res.code == '10000'){
+            toast('您已确认付款，请勿重复付款');
+            this.fetchData();
+            this.payOrderStep=1;
+          }
+
+        }).catch(err => {
+          toast(err.message);
+        });
+      },
       payCompleted(){
-        this.loading = true;
+        this.showConfirmPayment=false;
         this.request={
-          orderId:this.$route.params.id
+          orderId:this.orderId
         }
         transaction.payCompleted(this.request).then(res => {
           this.loading = false;
+          if(res.code == '10000'){
+            Vue.$global.bus.$emit('update:balance');
+            Vue.$global.bus.$emit('update:tranList');
+            toast('您已确认收款，请勿重复操作');
+            this.$router.push({name: 'tranRecord'});
+          }else{
+            toast(res.message)
+          }
 
-        }).catch(error => {
-          this.reset(res.message);
+        }).catch(err => {
+          toast(err.message);
         });
-        toast(res.message);
         this.loading = false;
       },
-      copy() {
-        var clipboard = new Clipboard('.copyBtn')
-        clipboard.on('success', e => {
-          toast('复制成功')
-          console.log('复制成功')
-          // 释放内存
-          clipboard.destroy()
-        })
-        clipboard.on('error', e => {
-          // 不支持复制
-          console.log('该浏览器不支持自动复制')
-          // 释放内存
-          clipboard.destroy()
-        })
+      createAppeal(){
+        this.loading = true;
+        this.request={
+          orderId:this.orderId,
+          userId:this.userId,
+          type:2
+        }
+        transaction.createAppeal(this.request).then(res => {
+          this.loading = false;
+          if(res.code == '10000'){
+            toast('申诉创建成功');
+            this.$router.push({name: 'orderDetailAppeal',params:{ id: this.orderId}});
+          }
+        }).catch(err => {
+          toast(err.message);
+        });
+        this.loading = false;
+      },
+      countDownEnd() {
+        this.fetchData();
+      },
+      copystr(text) {
+        text.$copy();
+        toast(this.$t('transactionHome.successCopy'));
       }
-
 
     },
     created() {
-      this.fetchData();
+      if (this.$route.params.id) {
+        this.orderId = this.$route.params.id;
+        this.fetchData();
+      }
     },
     watch: {
-
+      "$route"(val) {
+        this.orderId = val.params.id;
+        this.fetchData();
+      },
+      "payOrderParam.creditAccountTypeTwin"(val){
+        if(val==3){
+          this.showPayBankName=true;
+        }else {
+          this.showPayBankName=false;
+        }
+      }
     },
     computed: {
-      ...mapGetters(["userData","islogin"]),
+      ...mapGetters(["userData","islogin","userId"])
     },
     components: {
-      navMenu, vFooter, NoDataTip
+      navMenu, breadCrumbs, vFooter, NoDataTip, getBankcard, uploadImg, CountDown, confirmDialog
     },
     filters: {
-      formatDateMs(time) {
-        var date = new Date(time);
-        return formatDate(date, "mm:ss");
-      },
       bankIcon: function (value) {
         if (!value) return 'icbc';
         if(value == '工商银行'){
@@ -355,33 +559,133 @@
       }
     }
   };
-// 时间格式过滤
-  export function formatDate(date, fmt) {
-    if (/(y+)/.test(fmt)) {
-      fmt = fmt.replace(RegExp.$1, (date.getFullYear() + '').substr(4 - RegExp.$1.length));
-    }
-    let o = {
-      'M+': date.getMonth() + 1,
-      'd+': date.getDate(),
-      'h+': date.getHours(),
-      'm+': date.getMinutes(),
-      's+': date.getSeconds()
-    };
-    for (let k in o) {
-      if (new RegExp(`(${k})`).test(fmt)) {
-        let str = o[k] + '';
-        fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? str : padLeftZero(str));
-      }
-    }
-    return fmt;
-  };
-
-  function padLeftZero(str) {
-    return ('00' + str).substr(str.length);
-  }
 </script>
 
 <style lang="scss" scoped>
+  .txt-imcenter{
+    text-align: center!important;
+  }
+  .modal-payorder{
+     margin: 20px auto 0;
+  }
+  div.pop-con{
+    padding-bottom: 10px;
+  }
+  .order-status-title {
+    text-align: center;
+    span{
+      font-size: 18px;
+    }
+  }
+
+  .recharge-payinst{
+    padding: 0 40px;
+    .payinst-order{
+      background: #FFFFFF;
+      padding: 10px 10px 0;
+      p{
+        line-height:30px;
+        font-size: 15px;
+        color:#333333;
+        span{
+          display: block;
+        }
+        .order-id{
+          color: #787876;
+          line-height:20px;
+          word-break: break-all;
+          width: 80%;
+        }
+      }
+    }
+    .payord-group{
+      background: #FFFFFF;
+      line-height:40px;
+      padding: 0 10px;
+      font-size: 15px;
+      color:#333333;
+      display: flex;
+      .payord-control,.my-input{
+        height: 40px;
+        line-height: 40px;
+        width: auto;
+        display: inline-block;
+        font-size: 15px;
+        color:#333333;
+        padding: 0 30px 0 10px;
+        border: none;
+        outline: none;
+        flex-grow: 1;
+      }
+      .tips-info{
+        position: absolute;
+        top: 0;
+        right:10px;
+        display: block;
+      }
+    }
+    .border-bot{
+      border-bottom: 1px solid #EBEBEB;
+    }
+    .payord-form{
+      margin-bottom: 9px;
+      li{
+        border-bottom: 1px solid #EBEBEB;
+      }
+    }
+    .payinst-tips{
+      padding: 0 10px;
+      font-size: 15px;
+      color: #8F8F8F;
+      line-height: 30px;
+    }
+    .payscreen-part{
+      background: #FFFFFF;
+      font-size: 15px;
+      color:#333333;
+      .title{
+        padding: 0 10px;
+        line-height:36px;
+        span{
+          color: #FF0000;
+        }
+      }
+      .upload-imgpart{
+        padding: 0 10px;
+      }
+    }
+    .paybtn-group{
+      padding: 0 10px;
+      .btn{
+         display: inline-block;
+         height: 40px;
+         line-height: 40px;
+         width: 48%;
+         text-align: center;
+         border: 1px solid #ccc;
+         border-radius: 5px;
+         cursor: pointer;
+         font-size: 15px;
+        color: #333333;
+        &:first-child{
+          margin-right: 2%;
+        }
+      }
+      .cancel:hover{
+         background: #eeeeee;
+      }
+      .paycomfirm{
+        background: #619eff;
+        border: 1px solid #619eff;
+        color: #fff;
+        &:hover{
+          background: rgb(255, 166, 60);
+          border: 1px solid rgb(255, 166, 60);
+        }
+      }
+    }
+  }
+
 .transell-main-box{
   padding-top:100px;
 }
@@ -393,8 +697,8 @@
 .detail-box{
   border:1px solid #d4d4d4;
   input{
-    height:50px;
-    line-height: 50px;
+    height:40px;
+    line-height: 40px;
     border:1px solid #d4d4d4;
     width:100%;
     padding:0 20px;
@@ -409,13 +713,17 @@
   .time-stame{
     font-size:22px;
     padding:10px 0;
+    span:last-child{
+      color: red;
+    }
   }
   .col-33{
-    display:inline-block;
+    display: block;
+    float: left;
     width:33%;
     border-right:1px solid #d4d4d4;
     margin:0;
-    min-height:427px;
+    min-height:435px;
     min-width:350px;
     &:last-child{
       border:0;
@@ -428,7 +736,7 @@
   }
    .red{color:red;}
   .alipay-box{
-    margin:50px;
+    margin: 20px 50px;
     .alipay-box-title{
       border:1px solid #d4d4d4;
       padding:10px 10px 10px 10px;
@@ -476,6 +784,7 @@
         padding:12px;
         background: url('~images/j.png') no-repeat;
         margin-bottom:5px;
+        display: inline-block;
       }
     }
   }
@@ -525,7 +834,7 @@
   padding:18px 30px 20px;
   overflow: hidden;
 }
-.h3{
+.h3,.bank-title{
   font-weight:normal;
   color:#333;
   font-size:22px;
@@ -534,7 +843,7 @@
 .details-data{
  padding:0 30px 30px;
   li{
-    padding:20px 0 0 0;
+    padding:16px 0 0 0;
   }
   p{
     font-size:16px;
@@ -577,12 +886,6 @@ input[type="button"]{
     color:#5087FF;
   }
 
-.tranred-headnav {
-  /*height: 56px;*/
-  line-height: 56px;
-  height: auto;
-  border-bottom: 1px solid #D4D4D4;
-}
   .text-center{
     text-align: center;
   }
@@ -610,6 +913,8 @@ input[type="button"]{
     height:40px;
     width:46px;
     vertical-align: -13px;
+    background: url(~images/bankIcon/juan-bank.png) no-repeat;
+    background-size: contain;
     &.icbc{
        background: url(~images/bankIcon/icbc.png) no-repeat;
        background-size: 40px;
@@ -619,14 +924,4 @@ input[type="button"]{
        background-size: 40px;
      }
   }
-
-@media(max-width:1330px){
-    .detail-box .col-33{
-      width:50%;
-        border-right:1px solid #d4d4d4;
-      border-bottom:1px solid #d4d4d4;
-        height:430px;
-
-  }
-}
 </style>

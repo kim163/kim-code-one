@@ -409,6 +409,7 @@ ul, ol {
     padding-left: 20px;
     border:0;
     border-right: 1px solid #e0e0e0;
+    font-size: 16px;
     color:#666;
     cursor: pointer;
   }
@@ -723,7 +724,7 @@ span.icon-close,i.icon-close{
     }
     .tran-contpart{
        background: #F8F8F8;
-       border-top: 1px solid #D4D4D4;
+       border-bottom: 1px solid #D4D4D4;
        padding:20px 0;
        overflow:hidden;
        transition: all 0.3s ease-out;
@@ -731,6 +732,7 @@ span.icon-close,i.icon-close{
         display:inline-block;
         margin-top:12px;
         input{
+          width: 150px;
           height:40px;
           border:1px solid #ddd;
           padding:0 10px;
@@ -743,9 +745,13 @@ span.icon-close,i.icon-close{
         float:left;
 
       }
-      .s1{padding:20px;  width:140px;}
+      .s1{padding:20px 8px;}
       .s2{margin-top:20px;}
       .s1 p{font-size:15px;}
+      .btns{
+        float: right;
+        padding-right: 20px;
+      }
       .btn {
         display: inline-block;
         height:40px;

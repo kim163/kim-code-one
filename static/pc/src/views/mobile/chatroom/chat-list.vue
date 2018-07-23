@@ -191,7 +191,6 @@
           }
         });
       },
-
       formatMsgTime(timespan) {
         var dateTime = new Date(timespan);
         var month = dateTime.getMonth() + 1 >= 10 ? dateTime.getMonth() + 1 : '0' + dateTime.getMonth();
@@ -210,7 +209,6 @@
           onSuccess: (count) => {
             const arr = []
             arr.push(count)
-            console.log(count,'为什么为什么为什么我们是明晚上')
             for (let i = 0; i < arr.length; i++) {
               this.countUnreadNum.push({count: arr[i]})
             }
