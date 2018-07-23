@@ -2,7 +2,7 @@
   <div class="recent-orders">
     <h3 class="title"> {{$t('transactionHome.recentOrders')}} </h3>
     <ul v-if="OrderList.data.length > 0">
-      <router-link tag="li" :to="orderDetailLink(order)" v-for="(order,i) in OrderList.data||[]">
+      <router-link tag="li" :to="orderDetailLink(order)" v-for="(order,i) in OrderList.data||[]" :key="i">
         <div class="fl">
           <div class="info">
             <span class="btn btn-border" v-show="order.credit == userData.userId">{{$t('transactionRecord.buy')}}</span>
