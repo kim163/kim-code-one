@@ -31,7 +31,7 @@
           </div>
         </div>
         <div class="conversation_num">
-          <span>交易数量: {{JSON.parse(list.latestMessage.content.extra).amount}}UET</span>
+          <span>交易数量: {{JSON.parse(list.latestMessage.content.extra).amount}}</span> <span>{{JSON.parse(list.latestMessage.content.extra).assetCode}}</span>
         </div>
       </div>
     </div>
