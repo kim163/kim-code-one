@@ -535,6 +535,7 @@
     padding:12px;
     background: url('~images/j.png') no-repeat;
     margin-bottom:5px;
+    display: inline-block;
   }
   }
   }
