@@ -30,9 +30,9 @@ Vue.use(Rongyun)
 
 import VueLazyload from 'vue-lazyload'
 Vue.use(VueLazyload, {
-  preLoad:2,
-  // error: require('static/images/bank_loading.gif'),
-  loading:   require('static/images/reload.gif'),
+  preLoad:1.3,
+   error: require('static/images/broken.png'),
+  loading:  require('./assets/images/loading.gif'),
 })
 require("@/assets/scss/base.scss")
 require("@/assets/scss/font.scss")

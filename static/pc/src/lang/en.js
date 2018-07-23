@@ -17,7 +17,8 @@ export default {
     busineList: 'My business list',
     onlineService: 'Online service',
     juanApp: 'Juan APP',
-    juanWallet: 'Juan wallet'
+    juanWallet: 'Juan wallet',
+    userCenter:'User Center',
   },
   login: {
     title: 'Welcome back',
@@ -124,6 +125,7 @@ export default {
     appealRecord: 'Appeal record',
     buy:'Buy',
     sale:'Sell',
+    fastSale:'Fast sale',
     talkhistory:'Conversation list',
     buyer:'Buy coins',
     seller:'Sell coins',
@@ -235,5 +237,12 @@ export default {
     pleaseSelPayMet:'Select payment method',
     otherPayMethod:'Other payment methods',
     uploadUpThree:'Upload up to three'
+  },
+  userCenter:{
+    bindCard:'Binding bank card',
+    bindAlipay:'Binding Alipay',
+    bindWeChat:'Binding WeChat',
+    uploadQrcode:'Click to upload your receipt QR code',
+    completeMaterial:'Complete material',
   }
 }

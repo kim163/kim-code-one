@@ -249,5 +249,49 @@ export default [
       noCache:true,
       isMobilePage:'mobile-body'
     }
+  },
+  {
+    path:'/m/bindCard/:id',
+    name:'mBindCard',
+    component(resolve){ //绑定银行卡
+      return resolve(require('views/mobile/bind-payment/card-bind'))
+    },
+    meta:{
+      noCache:true,
+      isMobilePage:'mobile-body'
+    }
+  },
+  {
+    path:'/m/cardList',
+    name:'mCardList',
+    component(resolve){ //银行卡列表
+      return resolve(require('views/mobile/bind-payment/card-list'))
+    },
+    meta:{
+      noCache:true,
+      isMobilePage:'mobile-body'
+    }
+  },
+  {
+    path:'/m/userCenter',
+    name:'mUserCenter',
+    component(resolve){ //个人中心
+      return resolve(require('views/mobile/user-center'))
+    },
+    meta:{
+      noCache:true,
+      isMobilePage:'mobile-body'
+    }
+  },
+  {
+    path:'/m/setUserInfo',
+    name:'mSetUserInfo',
+    component(resolve){ //完善信息
+      return resolve(require('views/mobile/user-center/set-user-info'))
+    },
+    meta:{
+      noCache:true,
+      isMobilePage:'mobile-body'
+    }
   }
 ]

@@ -1,6 +1,7 @@
 <template>
   <div class="transell-main0 transell-main-box">
     <m-header>申诉订单详情</m-header>
+    <div></div>
     <div class="m-order-details">
       <div class="trade-time-bar">
         <span class="c-blue" >
@@ -234,16 +235,27 @@
       </div>
 
     </div>
-
+    <div class="Rongyunchatroom" @click="goChatroom()">
+      <img src="../../../assets/images/chat.png" alt="">
+      <p class="chatroom_num">{{unreadCountUpdate}}<!--<span class="chatroom_num" v-if="unreadCount>99">+</span>--></p>
+    </div>
+    <transition name="toolSlideRight">
+      <chat v-show="chatState" class="chatWindow"
+            :detail="gameID"
+            :debitNum="DetailList.debitAmount"
+            :historyState="DetailList.historyState"
+      ></chat>
+    </transition>
   </div>
 </template>
 
 <script>
   import mHeader from "components/m-header"
   import { generateTitle } from '@/util/i18n'
-  import { transaction } from 'api'
+  import { transaction,chatWith } from 'api'
   import {mapGetters,mapActions,mapMutations} from 'vuex'
   import Clipboard from 'clipboard';
+  import chat from '../chatroom/chat'
   export default {
     data() {
       return {
@@ -260,7 +272,9 @@
         orderData:{
           orderId:this.$route.params.id,
           debitName:'', // 交易买方
-        }
+        },
+        gameID:'',
+        chatState:''
       };
     },
     methods: {
@@ -382,7 +396,32 @@
           // 释放内存
           clipboard.destroy()
         })
-      }
+      },
+      goChatroom() {
+        if(!this.connectState){
+          toast('聊天功能正在初始化,请稍后片刻!')
+          return
+        }
+        //先获取订单号
+        this.gameID = this.$route.params.id;
+        //
+        let params = {
+          groupId: this.gameID,
+          founderId: this.$store.state.userData.userId,
+          type: 3,
+          founderNickname: this.$store.state.userData.nickname
+        }
+        chatWith.createChatGroup(params).then(res => {
+          if (res.code === 10000) {
+            this.chatState = true
+            this.DetailList.historyState = 4
+          } else {
+            toast(res.message)
+          }
+        }).catch(res => {
+          toast(res.message)
+        })
+      },
     },
     created() {
       this.fetchData();
@@ -391,15 +430,24 @@
       "$route":"fetchData"
     },
     computed: {
-      ...mapGetters(["userData","islogin"]),
-      ...mapGetters(["userId"]),
+      ...mapGetters(["userData","islogin",'userId','connectState']),
       reverseAppealList() {
       // 按照时间倒序显示数据
         return this.AppealList.appealDetailList.reverse();
+      },
+      unreadCountUpdate() {
+        if (this.unreadCount < 0) {
+          return 0
+        } else if (this.unreadCount > 99) {
+          return 99
+        } else {
+          return this.unreadCount
+        }
       }
     },
     components: {
       mHeader,
+      chat
     }
   };
 
@@ -605,7 +653,7 @@
     padding:r(10);
     word-break: break-all;
   }
-  .chatroom{
+  .Rongyunchatroom{
     width: r(50);
     height: r(50);
     background-color: #fff;
@@ -627,5 +675,14 @@
       color: #4982FF;
       line-height: r(12);
     }
+  }
+  .chatWindow {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    width: 100%;
+    height: 100%;
+    background-color: #F5F5F5;
   }
 </style>

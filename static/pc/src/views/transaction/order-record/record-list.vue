@@ -37,7 +37,7 @@
             {{item.statusText}}
           </span>
           <span class="unit">
-            <router-link :to="{name:'orderDetail',params:{id: item.id}}" class="btn btn-primary">详情</router-link>
+            <router-link :to='orderDetailLink(item)' class="btn btn-primary">详情</router-link>
           </span>
         </div>
         <paging-by :data="pageInfo" @search="getDataList"></paging-by>
@@ -169,7 +169,16 @@
         }).finally(() => {
           this.$emit('change',false)
         })
-      }
+      },
+      orderDetailLink(item){
+        let routerName = ''
+        if(this.type === 0){
+          routerName = item.status === 61 ? 'orderDetailAppeal' : 'orderDetail'
+        }else{
+          routerName = 'orderDetailOver'
+        }
+        return {name: routerName, params:{ id: item.id}}
+      },
     },
     mounted(){
       this.getDataList()

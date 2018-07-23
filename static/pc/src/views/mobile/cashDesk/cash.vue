@@ -441,7 +441,7 @@
       background: #86A5F8;
       color: #fff;
       @include f(18px);
-      position: fixed;
+      /*position: fixed;*/
       width: 100%;
       bottom: 0;
     }
@@ -468,7 +468,7 @@
   .pay-info {
     width: 90%;
     padding-top: r(20);
-    padding-bottom: r(50);
+    padding-bottom: r(20);
     margin: 0 auto;
   }
 
