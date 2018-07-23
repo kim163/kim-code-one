@@ -176,6 +176,7 @@ export default {
       onSuccess:(count)=>{
         // count => 多个会话的总未读数。
       store.commit('GET_UNREADCOUNT',count)
+
       },
       onError: (error)=> {
         // error => 获取多个会话未读数错误码。
