@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="group-head">
-      <span class="unit" v-if="tabType != 3">订单类型</span>
+      <span class="unit">订单类型</span>
       <span class="unit">对方</span>
       <span class="unit">交易数量</span>
       <span class="unit">交易单价</span>
@@ -13,10 +13,10 @@
       <div v-if="!noData">
         <div class="group-tr" v-for="(item,index) in dataList" :key="index">
           <span class="unit" v-if="tabType != 3">
-            <span class="c-blue" v-show="item.credit == userData.userId">{{$t('transactionRecord.buy')}}</span>
-            <span class="c-orange" v-show="item.debit == userData.userId">{{$t('transactionRecord.sale')}}</span>
+            <span class="c-blue type blue-border" v-if="item.credit == userData.userId">{{$t('transactionRecord.buy')}}</span>
+            <span class="c-orange type orange-border" v-if="item.debit == userData.userId">{{$t('transactionRecord.sale')}}</span>
           </span>
-          <span class="unit">{{tabType === 3 ? item.creditUserName : item.creditAccountNameTwin}}</span>
+          <span class="unit">{{getUserName(item)}}</span>
           <span class="unit"> {{tabType === 3 ? item.amount : item.creditAmount}}   UET</span>
           <span class="unit"> 0.01 CNY</span>
           <span class="unit red">{{tabType === 3 ? item.amountTwin : item.creditAmountTwin}} CNY</span>
@@ -172,20 +172,51 @@
       },
       orderDetailLink(item){
         let routerName = ''
-        if(this.type === 0){
-          routerName = item.status === 61 ? 'orderDetailAppeal' : 'orderDetail'
-        }else{
+        if(this.tabType === 1){
+          routerName = 'orderDetail'
+        }else if(this.tabType === 2){
           routerName = 'orderDetailOver'
+        }else{
+          routerName = 'orderDetailAppeal'
         }
         return {name: routerName, params:{ id: item.id}}
       },
+      getUserName(item){
+        if(this.tabType === 3){
+          return item.credit == this.userData.userId ? item.debitName : item.creditName
+        }else{
+          return item.credit == this.userData.userId ? item.debitName : item.creditName
+        }
+      }
     },
     mounted(){
       this.getDataList()
+    },
+    activated() {
+      Vue.$global.bus.$on('update:tranList',() => {
+        this.getDataList()
+      })
+    },
+    deactivated(){
+      Vue.$global.bus.$off('update:tranList')
     }
   }
 </script>
 
 <style lang="scss" scoped>
-
+  .red{
+  }
+  .type{
+    display: block;
+    width: 80%;
+    border-radius: 5px;
+    margin: 0 auto;
+  }
+  .blue-border{
+    border: 1px solid #5087ff;
+  }
+  .orange-border{
+    border: 1px solid #ff9600;
+  }
 </style>
+
