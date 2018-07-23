@@ -67,12 +67,7 @@
         });
       },
       orderDetailLink(item){
-        let routerName = ''
-        if(this.type === 0){
-          routerName = item.status === 61 ? 'orderDetailAppeal' : 'orderDetail'
-        }else{
-          routerName = 'orderDetailOver'
-        }
+        const routerName = item.status === 61 ? 'orderDetailAppeal' : 'orderDetail'
         return {name: routerName, params:{ id: item.id}}
       },
 
