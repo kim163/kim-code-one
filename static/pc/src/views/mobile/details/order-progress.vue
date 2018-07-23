@@ -337,6 +337,7 @@
             :detail="gameID"
             :debitNum="DetailList.debitAmount"
             :historyState="DetailList.historyState"
+            :noTime="false"
             @chatShow="chatStateUpdate"
       ></chat>
     </transition>

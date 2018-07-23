@@ -50,10 +50,14 @@
           </div>
         </div>
       </div>
-      <p class="countdown">
+      <p class="countdown" v-if="noTime">
+        申诉锁定
+      </p>
+      <p class="countdown" v-if="!noTime">
         等待倒计时:
         <count-down :end-time="startTime-endTime<=0?0:startTime-endTime"></count-down>
       </p>
+
       <b-scroll
         ref="scroll"
         :autoUpdate="true"
@@ -251,6 +255,10 @@
       userInfoId: {
         type: String,
         default: ''
+      },
+      noTime:{
+        type:Boolean,
+        default:true
       }
     },
     computed: {
