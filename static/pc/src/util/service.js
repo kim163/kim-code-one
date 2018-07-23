@@ -38,6 +38,7 @@ service.interceptors.request.use(config => {
     }
   }
   config.headers['Authorization'] = `Bearer ${store.getters.tokenInfo ? store.getters.tokenInfo.accessToken : ''}`
+
   showLoading ? $load.open("loading...") : '';
 
   // if (promiseArr[config.url]) {

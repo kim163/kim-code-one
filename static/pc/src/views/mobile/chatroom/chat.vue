@@ -359,7 +359,6 @@
       doClick(){
         this.$store.commit('CHANGE_CONNECTSTATE', 3)
         this.$emit('chatShow',false)
-
       },
       fetchOrder() {
         const requestData = {

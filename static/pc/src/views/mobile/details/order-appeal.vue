@@ -245,6 +245,7 @@
             :debitNum="DetailList.debitAmount"
             :historyState="DetailList.historyState"
             :noTime="true"
+            @chatShow="chatStateUpdate"
       ></chat>
     </transition>
   </div>
