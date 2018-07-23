@@ -312,7 +312,7 @@
               "credit": res.data.credit, //买方id
               "debit": res.data.debit,  //卖方id
               "amount": res.data.amount, //交易数量
-              "assetCod": res.data.assetCode, //资产编码
+              "assetCode": res.data.assetCode, //资产编码
               "founderNickname": res.data.founderNickname,  //发起人昵称
               "founderRoleType": res.data.founderRoleType,  //发起角色类型
               "founderId": res.data.founderId  //会话发起人id
