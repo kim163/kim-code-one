@@ -19,7 +19,7 @@
           <span class="unit">{{getUserName(item)}}</span>
           <span class="unit"> {{tabType === 3 ? item.amount : item.creditAmount}}   UET</span>
           <span class="unit"> 0.01 CNY</span>
-          <span class="unit red">{{tabType === 3 ? item.amountTwin : item.creditAmountTwin}} CNY</span>
+          <span class="unit cl-red">{{tabType === 3 ? item.amountTwin : item.creditAmountTwin}} CNY</span>
           <span class="unit" v-if="tabType === 1">
             <span v-if="item.status != 61">
               {{(item.status === 45 ? $t('transactionRecord.waitingForPayment') : $t('transactionRecord.waitingForRelease'))}}
@@ -204,8 +204,6 @@
 </script>
 
 <style lang="scss" scoped>
-  .red{
-  }
   .type{
     display: block;
     width: 80%;
