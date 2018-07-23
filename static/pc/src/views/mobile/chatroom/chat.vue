@@ -50,10 +50,14 @@
           </div>
         </div>
       </div>
-      <p class="countdown">
+      <p class="countdown" v-if="status==61">
+        申诉锁定
+      </p>
+      <p class="countdown" v-else>
         等待倒计时:
         <count-down :end-time="startTime-endTime<=0?0:startTime-endTime"></count-down>
       </p>
+
       <b-scroll
         ref="scroll"
         :autoUpdate="true"
@@ -210,6 +214,7 @@
         uploadState: '',
         RongIMEmoji: '',
         dataURL: '',
+        type:'',
         src: 'http://img1.vued.vanthink.cn/vued0a233185b6027244f9d43e653227439a.png',
         shadowDomList: [],
         base64: '',
@@ -228,6 +233,7 @@
         founderId: '',
         portrait: '',
         extraData: '',
+        status:'',
         config: {
           size: 24, // 大小, 默认 24, 建议15 - 55
           url: '//f2e.cn.ronghub.com/sdk/emoji-48.png', // 所有 emoji 的背景图片
@@ -251,6 +257,10 @@
       userInfoId: {
         type: String,
         default: ''
+      },
+      noTime:{
+        type:Boolean,
+        default:true
       }
     },
     computed: {
@@ -308,6 +318,7 @@
             this.creditNickname = res.data.creditNickname
             this.debitNickname = res.data.debitNickname
             this.founderRoleType = res.data.founderRoleType
+            this.type = res.data.type
             this.extraData = {
               "credit": res.data.credit, //买方id
               "debit": res.data.debit,  //卖方id
@@ -355,6 +366,7 @@
           orderId: this.detail
         }
         transaction.getOrderx(requestData).then(res => {
+          this.status = res.data.status
           this.startTime = res.data.intervalTime;
           this.endTime = res.data.elapsedTime;
         })

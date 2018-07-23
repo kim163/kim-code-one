@@ -244,6 +244,7 @@
             :detail="gameID"
             :debitNum="DetailList.debitAmount"
             :historyState="DetailList.historyState"
+            :noTime="true"
       ></chat>
     </transition>
   </div>

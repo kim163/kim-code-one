@@ -75,6 +75,7 @@ service.interceptors.response.use(
     //   return response.data
     // }
     if (response && response.data && response.data.code) {
+      console.log(response.data.code,'深刻的逻辑斯达康阿斯顿',response.data.data)
       if (response.data.code === 15016) {    // 没有在线
         store.dispatch('INIT_INFO');
         $localStorage.remove('tokenInfo');
