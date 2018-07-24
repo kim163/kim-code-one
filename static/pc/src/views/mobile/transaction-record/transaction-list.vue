@@ -35,7 +35,7 @@
           </div>
         </div>
         <div class="user-amount">
-          <div class="user">{{item.creditAccountNameTwin}}</div>
+          <div class="user">{{item.credit === userId ? item.debitName : item.creditName}}</div>
           <div class="amount">
             <span class="text-red">{{item.creditAmount}}</span> UET
           </div>
