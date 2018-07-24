@@ -95,9 +95,14 @@
       padding: 0 19px;
     }
     ul {
-      height: 660px;
-      overflow-y: auto;
-      overflow-x: hidden;
+      /*height: 660px;*/
+      position: absolute;
+      width: calc(100% - 72%);
+      height: calc(100% - 569px);
+      bottom: 0;
+      right: 0;
+      /*overflow-y: auto;*/
+      /*overflow-x: hidden;*/
       li {
         height: 110px;
         padding: 20px 19px;

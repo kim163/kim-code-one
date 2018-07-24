@@ -7,7 +7,7 @@
 
     <div class="section transaction-content" v-if="islogin">
       <div class="container min-width">
-        <div class="row">
+        <div class="row relative">
           <div class="col-18 fl">
                <tranbuy-list></tranbuy-list>
           </div>
@@ -87,6 +87,8 @@
          font-weight: normal;
        }
      }
-
+    .relative{
+      position: relative;
+    }
   }
 </style>
