@@ -44,8 +44,9 @@ input[type="submit"], input[type="button"], button {
   background: none;
   -webkit-appearance:none;
 }
-input:read-only{
+input[readonly]{
   background: #f0f0f0;
+  cursor: not-allowed;
 }
 
 ul, ol {
@@ -268,6 +269,11 @@ ul, ol {
   .a-login{
     display:inline-block;
     color:#4c74ed;
+    cursor: pointer;
+    &:hover{
+      color: orange;
+      border-bottom: none;
+    }
   }
   .tab-box{
     margin:0 50px;
@@ -366,6 +372,23 @@ ul, ol {
     margin-bottom:6px;
     width: 100%;
   }
+  .link-fogroup{
+    line-height: 24px;
+    margin-top: 10px;
+    font-size: 18px;
+    color: #6b6b6b;
+    a{
+      display: inline-block;
+      color: #4c74ed;
+      &:hover{
+        color: orange;
+        border-bottom: none;
+      }
+      &.forget-btn{
+        display: none;
+      }
+    }
+  }
   .validate {
     display: block;
     margin: 10px 0;
@@ -393,17 +416,21 @@ ul, ol {
   }
   .form-input{
     height: 50px;
+    line-height: 50px;
     border: 1px solid #ccc;
     .captcha-code{
       float:right;
       color:#555;
       line-height: 49px;
       height: 49px;
+      padding: 0 10px;
+      position: absolute;
+      right: 0;
     }
   }
   .select-country{
     float: left;
-    width: 87px;
+    width: 15%;
     height: 48px;
     line-height: 48px;
     padding-left: 20px;
@@ -414,15 +441,19 @@ ul, ol {
     cursor: pointer;
   }
   .ps-input {
-    width: 300px;
+    width: 100%;
     height: 50px;
-    border: 0;
-    background: 0 0;
-    outline: 0;
     line-height: 50px;
+    border: 0;
+    background: none;
+    outline: none;
     font-size: 16px;
     color: #333;
     padding: 0 20px;
+    float: left;
+    &.ps-phoneput{
+      width: 85%;
+    }
   }
   .ps-input2 {
     width: 210px;
@@ -705,6 +736,7 @@ span.icon-close,i.icon-close{
     .tran-message{
       line-height: 110px;
       border-bottom: 1px solid #D4D4D4;
+      padding-right: 10px;
       &:hover{
         background: #F8F8F8;
       }

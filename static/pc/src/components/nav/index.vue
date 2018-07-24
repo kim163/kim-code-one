@@ -24,6 +24,9 @@
           <div class="col-2">
             <a href="/static/contact.html">{{$t('navbar.navContactus')}}</a>
           </div>
+          <div class="col-2">
+            <get-live800></get-live800>
+          </div>
           <v-header></v-header>
 
           <div class="lang-icons">
@@ -37,6 +40,8 @@
 <script>
   import {SETTING} from "@/assets/data"
   import vHeader from 'components/header'
+  import getLive800 from 'components/get-live800'
+
   export default {
     name: "",
     data() {
@@ -75,7 +80,8 @@
     activated() {
     },
     components: {
-      vHeader
+      vHeader,
+      getLive800
     }
   }
 </script>
@@ -111,11 +117,11 @@
   }
   .navbar .link-part .col-2{
     width: auto;
-    margin: 15px 18px 0;
+    margin: 15px 15px 0;
   }
   .nav-start .link-part .col-2{
     width: auto;
-    margin: 25px 18px 0;
+    margin: 25px 15px 0;
   }
   .navbar .link-part .col-2 a{
     font-size: 20px;
@@ -123,9 +129,13 @@
   .navbar .link-part .lang-icons{
     margin: 8px 0 0 20px;
     float: right;
+    display: none;
   }
   .nav-start .link-part .lang-icons{
     margin: 18px 0 0 20px;
+  }
+  .navbar .link-part .iconfont{
+    margin-right: 5px;
   }
   a.lang-en{
     font-size: 18px;

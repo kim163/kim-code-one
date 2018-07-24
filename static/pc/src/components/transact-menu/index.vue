@@ -13,7 +13,7 @@
     </div>
   </div>
 
-   <post-pendord v-model="isShowPostPend"></post-pendord>
+   <post-pendord v-model="isShowPostPend" url-name="tranRecord"></post-pendord>
   </div>
 </template>
 <script>

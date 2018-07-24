@@ -30,6 +30,12 @@ export default new Vuex.Store({
       return state.language;
     },
     tokenInfo(state,getters){
+      if(!state.tokenInfo){
+        if($localStorage.get('tokenInfo')){
+          Object.assign(state.tokenInfo,JSON.parse($localStorage.get('tokenInfo')));
+        }
+      }
+
       return state.tokenInfo;
     },
     connectState(state,getters){
@@ -109,6 +115,7 @@ export default new Vuex.Store({
         router.replace({name:'mobileLogin'});
       }else{
         state.showLogin=val;
+        router.replace({name:'transaction'});
       }
     },
     [types.GET_UNREADCOUNT](state,val){
@@ -145,7 +152,7 @@ export default new Vuex.Store({
            //  router.replace({name:'mobileLogin'});
            window.location.href = "/m/login";
          }else{
-           router.replace({name:'aindex'});
+           router.replace({name:'transaction'});
          }
        }
     },
