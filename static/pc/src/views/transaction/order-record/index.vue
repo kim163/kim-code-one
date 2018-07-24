@@ -52,7 +52,7 @@
         navListData: [
           {name: 'transactionRecord.tranProgress', value: 'tranProgress'},
           {name: 'transactionRecord.tranComplete', value: 'tranComplete'},
-          {name: 'transactionRecord.appealRecord', value: 'appealRecord'}
+          // {name: 'transactionRecord.appealRecord', value: 'appealRecord'}
         ],
         tabItem: 'tranProgress',
         tabType: 1,
