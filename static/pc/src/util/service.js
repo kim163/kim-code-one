@@ -32,8 +32,9 @@ service.interceptors.request.use(config => {
   if (config.data && config.data.multipart) {
     config.headers['content-type'] = 'multipart/form-data'
   } else {
+
     config.data = {
-      nodeId: process.env.NODE_ID,
+      nodeId: config.data.nodeId || process.env.NODE_ID,
       requestData: aesutil.encrypt(JSON.stringify(config.data))
     }
   }

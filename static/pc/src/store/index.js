@@ -94,6 +94,9 @@ export default new Vuex.Store({
     },
     [types.SET_USERDATA](state,val={}){
       if(val != ''){
+        if(val.node && val.node.customer){
+          aesutil.updateKey(val.node.customer.aesKey)
+        }
         $localStorage.set('userData', aesutil.encrypt(JSON.stringify(val)))
       }
       Object.assign(state.userData,val||{});
