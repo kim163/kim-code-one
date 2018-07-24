@@ -399,6 +399,9 @@
           clipboard.destroy()
         })
       },
+      chatStateUpdate(){
+        this.chatState = false
+      },
       goChatroom() {
         if(!this.connectState){
           toast('聊天功能正在初始化,请稍后片刻!')
