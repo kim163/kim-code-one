@@ -728,13 +728,16 @@ span.icon-close,i.icon-close{
       line-height: 50px;
       .head-item{
         display: inline-block;
-        width: 14%;
+        width: 11.5%;
       }
       p.sellers{
         width: 25%;
       }
       p.tranCountOrRate{
-        width: 16%;
+        width: 20%;
+      }
+      p.quantity{
+        width: 17%;
       }
     }
     .tranlist-body{
@@ -749,15 +752,16 @@ span.icon-close,i.icon-close{
       }
       .item{
         display: inline-block;
-        width: 14%;
+        width: 11.5%;
       }
       p.sellers{
         width: 25%;
       }
       p.tranCountOrRate{
-        width: 16%;
+        width: 20%;
       }
-      .quantity{
+      p.quantity{
+        width: 17%;
         color: #ff2a00;
       }
     }
@@ -816,7 +820,7 @@ span.icon-close,i.icon-close{
       .btn-block{width:100%;}
     }
     .transaction-btn{
-      width: 120px;
+      width: 105px;
       height: 38px;
       line-height: 38px;
       border: 1px solid #5087FF;
