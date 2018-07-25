@@ -16,7 +16,7 @@
   import { aesutil } from '@/util';
   import {$alert} from "./base/msgbox/msgbox";
   import {chatWith} from 'api'
-
+  import {$localStorage} from '@/util/storage';
   export default {
     data(){
       return {
@@ -39,6 +39,13 @@
       }
     },
     created() {
+      const userData = $localStorage.get('userData')
+      if(!_.isUndefined(userData) && !_.isNull(userData)){
+        const userDataInfo = JSON.parse(aesutil.decrypt(userData))
+        if(userDataInfo.node && userDataInfo.node.customer){
+          aesutil.updateKey(userDataInfo.node.customer.aesKey)
+        }
+      }
       this.$store.dispatch("UPDATE_USERDATA");
       this.dwMobilePage();
     },
@@ -124,7 +131,7 @@
         console.log('STOMP: Attempting connection')
         if(this.connectUrl != ''){
           let ws = new WebSocket(this.connectUrl);
-          this.client = Stomp.over(ws,{debug:process.env.NODE_ENV != 'production'});
+          this.client = Stomp.over(ws,{debug:false});
           this.client.heartbeat.outgoing = 30000;
           this.client.heartbeat.incoming = 30000;
           this.client.connect(this.connectUser, this.connectPsw, this.stompSuccessCallback, this.stompFailureCallback);
