@@ -245,6 +245,7 @@
             :debitNum="DetailList.debitAmount"
             :historyState="DetailList.historyState"
             :noTime="true"
+            @chatShow="chatStateUpdate"
       ></chat>
     </transition>
   </div>
@@ -397,6 +398,9 @@
           // 释放内存
           clipboard.destroy()
         })
+      },
+      chatStateUpdate(){
+        this.chatState = false
       },
       goChatroom() {
         if(!this.connectState){

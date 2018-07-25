@@ -10,7 +10,7 @@
             <span v-if="isCredit" class="title-btn btn-primary">买入</span>
             <span v-else-if="isDebit" class="title-btn btn-sell">卖出</span>
             <span class="order-num">
-              订单号：   {{orderId}}
+              订单号： {{orderId}}
             </span>
           </div>
           <div class="detail-in cfx">
@@ -273,7 +273,9 @@
      </div>
 
     </div>
-
+      <div class="chatRoom">
+       <span class="iconfont icon-tab-talk"></span> 在线聊天
+      </div>
     <v-footer ></v-footer>
   </div>
 </template>
@@ -920,5 +922,16 @@ input[type="button"]{
        background: url(~images/bankIcon/cmbc.png) no-repeat;
        background-size: 40px;
      }
+  }
+  .chatRoom{
+    color: #fff;
+    width: 150px;
+    height: 50px;
+    background-color: #FF6666;
+    border-radius: 10px 10px 0 0;
+    font-size: 18px;
+    line-height: 50px;
+    text-align: center;
+    float: right;
   }
 </style>

@@ -164,7 +164,6 @@ export default new Vuex.Store({
       }else {
         dispatch(types.CHECK_ONLINE, false);
       }
-
       return show.implicitLogin({}).then(res =>{
         if(res.code == 10000){
           console.log('implicitLogin res:', res);
