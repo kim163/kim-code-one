@@ -152,7 +152,8 @@ export default new Vuex.Store({
            //  router.replace({name:'mobileLogin'});
            window.location.href = "/m/login";
          }else{
-           router.replace({name:'transaction'});
+          // router.replace({name:'transaction'});
+           window.location.href = "/transaction";
          }
        }
     },

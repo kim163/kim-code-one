@@ -565,9 +565,6 @@
   .txt-imcenter{
     text-align: center!important;
   }
-  .modal-payorder{
-     margin: 20px auto 0;
-  }
   div.pop-con{
     padding-bottom: 10px;
   }
