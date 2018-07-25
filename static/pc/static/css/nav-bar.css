@@ -38,6 +38,7 @@
 .navbar .link-part .lang-icons{
   margin: 8px 0 0 20px;
   float: right;
+  display: none;
 }
 a.lang-en{
   font-size: 18px;
