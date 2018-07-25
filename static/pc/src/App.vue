@@ -41,7 +41,7 @@
     created() {
       const userData = $localStorage.get('userData')
       if(!_.isUndefined(userData) && !_.isNull(userData)){
-        const userDataInfo = JSON.parse(aesutil.decrypt(userData))
+        const userDataInfo = JSON.parse(aesutil.decrypt(userData,true))
         if(userDataInfo.node && userDataInfo.node.customer){
           aesutil.updateKey(userDataInfo.node.customer.aesKey)
         }

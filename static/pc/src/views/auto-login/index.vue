@@ -34,18 +34,17 @@
         merchantId: this.merchantId
       }
       console.log(request)
-
       login(request).then(res => {
         if(res.code === 10000){
           $localStorage.set('tokenInfo', JSON.stringify(res.data.tokenVo));
-          $localStorage.set('userData', aesutil.encrypt(JSON.stringify(res.data)));
+          //$localStorage.set('userData', aesutil.encrypt(JSON.stringify(res.data)));
+          this.$store.commit('SET_USERDATA',res.data);
           this.$store.dispatch('CHECK_ONLINE', true);
           this.$store.dispatch('UPDATE_TOKEN_INFO', res.data.tokenVo);
-          this.$store.commit('SET_USERDATA',res.data);
           this.jumpLink(true)
         }else{
           toast(res.message)
-          if(this.nodeId > 10000){
+          if(this.nodeId && this.nodeId > 10000){
             this.showTip = true
           }else{
             $localStorage.set('needBind', aesutil.encrypt(JSON.stringify({merchantId: this.$route.query.merchantId})));
@@ -55,7 +54,7 @@
         }
       }).catch(err => {
         toast(err)
-        if(this.nodeId > 10000){
+        if(this.nodeId && this.nodeId > 10000){
           this.showTip = true
         }else{
           this.jumpLink(false)
@@ -64,11 +63,11 @@
     },
     methods:{
       jumpLink(success){
-        const tranAddress = _.isMobile() ? 'mIndex' : 'transaction'
+        const tranAddress = _.isMobile() ? (!_.isUndefined(this.mode) && this.mode > 1 ? 'mPendingBuy' : 'mIndex') : 'transaction'
         const loginAddress = _.isMobile() ? 'mobileLogin' : 'aindex'
         if(success){
           if(this.mode){
-            this.$router.replace({name:tranAddress,params:{mode: this.mode}})
+            this.$router.replace({name:tranAddress,query:{mode: this.mode}})
           }else{
             this.$router.replace({name:tranAddress})
           }

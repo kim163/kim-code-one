@@ -50,14 +50,18 @@ export default new Vuex.Store({
     userData(state,getters){ //其有可能进行过滤
       if(state.userData.userId === ''){
         if($localStorage.get('userData')){
-          Object.assign(state.userData,JSON.parse(aesutil.decrypt($localStorage.get('userData'))));
+          Object.assign(state.userData,JSON.parse(aesutil.decrypt($localStorage.get('userData'),true)));
         }
       }
-      // return $localStorage.get('userData') ? JSON.parse(aesutil.decrypt($localStorage.get('userData'))) : state.userData;
       return state.userData;
     },
     userId(state,getters){
-      return $localStorage.get('userData') ? JSON.parse(aesutil.decrypt($localStorage.get('userData'))).userId : state.userData.userId;
+      if(state.userData.userId === ''){
+        if($localStorage.get('userData')){
+          Object.assign(state.userData,JSON.parse(aesutil.decrypt($localStorage.get('userData'),true)));
+        }
+      }
+      return state.userData.userId;
     },
     islogin(state,getters){  // 根据是否有 tokenVo 并且请求返回值不为 15016
       let tokenInfo = JSON.parse($localStorage.get('tokenInfo'));
@@ -97,7 +101,7 @@ export default new Vuex.Store({
         if(val.node && val.node.customer){
           aesutil.updateKey(val.node.customer.aesKey)
         }
-        $localStorage.set('userData', aesutil.encrypt(JSON.stringify(val)))
+        $localStorage.set('userData', aesutil.encrypt(JSON.stringify(val),true))
       }
       Object.assign(state.userData,val||{});
     },
