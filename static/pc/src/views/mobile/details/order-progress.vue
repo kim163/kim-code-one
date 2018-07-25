@@ -310,7 +310,7 @@
 
         <div class="pic-box pic-box2" v-if="DetailList.creditProofUrlTwin">
           <p>买家付款截图:</p>
-          <ul class="pic-ul">
+          <ul class="mpic-ul">
             <li v-for="proofImg in DetailList.creditProofUrlTwin||[]">
               <viewer :images="DetailList.creditProofUrlTwin">
                 <img :src="proofImg" alt="买家付款截图">
@@ -919,7 +919,7 @@
     }
   }
 
-  .pic-ul {
+  .mpic-ul {
     padding: r(10) 0;
     overflow: hidden;
     li {
