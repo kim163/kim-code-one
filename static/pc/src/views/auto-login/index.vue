@@ -28,16 +28,19 @@
           this.$store.dispatch('CHECK_ONLINE', true);
           this.$store.dispatch('UPDATE_TOKEN_INFO', res.data.tokenVo);
           this.$store.commit('SET_USERDATA',res.data);
-          this.$router.replace({name:'mIndex'})
+          // this.$router.replace({name:'mIndex'})
+          this.jumpLink(true)
         }else{
           toast(res.message)
           $localStorage.set('needBind', aesutil.encrypt(JSON.stringify({merchantId: this.$route.query.merchantId})));
           this.$store.dispatch('LOGIN_OUT')
-          this.$router.replace({name:'mobileLogin'})
+          // this.$router.replace({name:'mobileLogin'})
+          this.jumpLink(false)
         }
       }).catch(err => {
         toast(err)
-        this.$router.replace({name:'mobileLogin'})
+        // this.$router.replace({name:'mobileLogin'})
+        this.jumpLink(false)
       })
     },
     methods:{

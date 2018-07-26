@@ -19,7 +19,7 @@
           <div class="pay-btn" :class="{disabled: !amountStatus || !payBtn}" @click="amountStatus && payBtn ? payment() : ''">{{$t('cash.confirmPayment')}}</div>
           <div class="btn-sec-list">
             <a class="sec-btn" @click="showQuickBuy = true">{{$t('postPend.quickBuy')}}</a>
-            <router-link :to="{name: 'mIndex'}" class="sec-btn">{{$t('cash.goTran')}}</router-link>
+            <router-link :to="{name: 'transaction'}" class="sec-btn">{{$t('cash.goTran')}}</router-link>
           </div>
         </div>
       </div>

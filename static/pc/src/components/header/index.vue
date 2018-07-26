@@ -2,7 +2,7 @@
   <div class="header ">
     <div v-if="!islogin">
       <div class="col-2">
-        <a href="javascript:void(0);" @click="showLogin">{{$t('navbar.login')}}</a>
+        <a href="javascript:void(0);" @click="showLoginEvt">{{$t('navbar.login')}}</a>
       </div>
       <div class="col-2">
         <a href="javascript:void(0);" @click="showRegisterDialog=true">{{$t('navbar.register')}}</a>
@@ -33,8 +33,8 @@
       <span class="login-line"></span>
       <a href="javascript:void(0);" @click="$store.dispatch('LOGIN_OUT')" class="btn-other">{{$t('navbar.logOut')}}</a>
     </div>
-    <v-login v-if="!islogin" v-model="showLoginDialog"></v-login>
-    <v-register @showLogin="showLogin" v-if="!islogin" v-model="showRegisterDialog"></v-register>
+    <v-login @loginGoReg="showRegisterDialog=true" v-if="!islogin" v-model="showLoginDialog"></v-login>
+    <v-register @showLogin="showLoginEvt" v-if="!islogin" v-model="showRegisterDialog"></v-register>
 
   </div>
 </template>
@@ -55,18 +55,27 @@
       };
     },
     methods: {
-      showLogin() {
+      showLoginEvt() {
         if (!this.showLoginDialog) {
           this.showLoginDialog = true;
         }
       },
 
     },
-    watch: {},
+    watch: {
+      showLogin(val){
+        this.showLoginDialog = val;
+      }
+    },
     computed: {
-      ...mapGetters(["userData", "islogin"])
+      ...mapGetters(["userData", "islogin", "showLogin"])
     },
     created() {
+      if(this.showLogin){
+        this.showLoginDialog = true;
+      }else {
+        this.showLoginDialog = false;
+      }
     },
     components: {
       vLogin, vRegister, balance
@@ -129,8 +138,10 @@
           margin-top: 9px;
         }
         &.link-item{
+          height: 40px;
           line-height: 40px;
           cursor: pointer;
+          padding-top: 0;
           .iconfont{
             font-size: 20px;
             margin-right: 15px;
