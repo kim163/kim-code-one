@@ -11,7 +11,8 @@
     data() {
       return {
         balance: '0',
-        assetCode: '',
+        assetCode: 'UET',
+        address:'',
         hasOnBus:false,
         needUpdate:true,
       }
@@ -28,11 +29,14 @@
       getBalance(order) {
         let userId = this.userId;
         const userData = this.userData
-        this.assetCode = userData.accountChainVos[0].assetCode
+        if(userData.accountChainVos && userData.accountChainVos.length > 0){
+          this.assetCode = userData.accountChainVos[0].assetCode
+          this.address = userData.accountChainVos[0].address
+        }
         this.request = {
           userId: userId,
           assetCode: this.assetCode,
-          address: userData.accountChainVos[0].address,
+          address: this.address,
         }
         transaction.getRealBalance(this.request).then(res => {
           console.log(res)
