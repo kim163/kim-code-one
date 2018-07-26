@@ -215,8 +215,6 @@
             toast(err)
             return false
           })
-        }else{
-          toast('请输入银行卡号')
         }
       }
     },
