@@ -19,7 +19,7 @@
             <div class="tool-item-href">
               {{$t('navbar.accountBalance')}} <span class="fr"><balance></balance></span>
             </div>
-            <router-link :to="{name:'mBindList'}" class="tool-item-href"><i class="iconfont icon-busine-list"></i>{{$t('navbar.busineList')}}</router-link>
+            <router-link :to="{name:'mBindList'}" v-if="userData.nodeId < 10000" class="tool-item-href"><i class="iconfont icon-busine-list"></i>{{$t('navbar.busineList')}}</router-link>
             <router-link :to="{name:'mUserCenter'}" class="tool-item-href"><i class="iconfont icon-useravat"></i>{{$t('navbar.userCenter')}}</router-link>
             <get-live800></get-live800>
             <a class="tool-item-href" target="_blank" :href="SETTING.appUrl">

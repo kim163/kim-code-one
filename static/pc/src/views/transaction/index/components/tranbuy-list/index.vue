@@ -4,7 +4,7 @@
           <div class="tranlist-head">
               <p v-for="(item,i) in dataHead" :class="['head-item',item.value]">  {{generateTitle(item.name)}}  </p>
           </div>
-          <div class="tranlist-body">
+          <div class="tranlist-body" v-if="!noData">
              <div class="tranlist-item" v-for="(item,i) in dataList.data||[]">
                  <div class="tran-message">
                    <p class="txt-left item sellers">
@@ -52,6 +52,7 @@
              </div>
 
           </div>
+          <no-data-tip v-else></no-data-tip>
       </div>
 
     <paging-by :data="dataList.pageInfo" @search="searchDataList"></paging-by>
@@ -64,6 +65,7 @@
   import  {SETTING} from "@/assets/data";
   import tranbuyOrder from "./tranbuy-order";
   import {mapGetters,mapActions,mapMutations} from 'vuex';
+  import NoDataTip from 'components/no-data-tip';
 
   let dataHead = [
     {name: "table.sellers", value: "sellers"},
@@ -88,7 +90,8 @@
           offset:0,
           type: 11,
           startBalance:0
-        }
+        },
+        noData:false
       }
     },
     computed: {
@@ -107,12 +110,17 @@
 
         transaction.getOrderxPendingPage(this.reqData).then(res => {
           console.log('买入UET get OrderxPageForHallSell data:',res);
+         if(res.data.length === 0 && this.reqData.offset === 0){
+            this.noData = true;
+         }else{
+          this.noData = false;
           this.dataList.data = res.data.map(item => {
             let mathRand = parseInt(Math.random()*this.avatarDealw,10);
             item.already = false;
             item.avatarColor = this.SETTING.avatarColor[mathRand];
             return item;
           });
+         }
           this.dataList.pageInfo = res.pageInfo;
         }).catch(error => {
           toast(error.message);
@@ -140,7 +148,7 @@
     activated() {
     },
     components: {
-      pagingBy, tranbuyOrder
+      pagingBy, tranbuyOrder, NoDataTip
     }
   };
 </script>

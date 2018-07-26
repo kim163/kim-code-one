@@ -20,7 +20,7 @@ export default {
     this.getToken()
   },
    getToken() {
-      const userData = JSON.parse(aesutil.decrypt($localStorage.get('userData')))
+      const userData = JSON.parse(aesutil.decrypt($localStorage.get('userData'),true))
       let params = {
         userId: userData.userId,
         nickName: userData.nickname

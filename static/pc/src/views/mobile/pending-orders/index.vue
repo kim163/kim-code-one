@@ -305,6 +305,10 @@
       }
     },
     created() {
+      const mode = this.$route.query.mode
+      if(!_.isUndefined(mode) && Number(mode) === 3){ // 判断用户意图  mode=3是想打开我要卖币 其他默认是买币
+        this.pendingItem = 'seller'
+      }
       this.getBankInfo()
     },
 
