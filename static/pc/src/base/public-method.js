@@ -365,6 +365,7 @@ _.mixin(
       }
     },
     initRongyun(){
+      // window.location.reload()
       Vue.$global.bus.$emit('initRongyun')
     }
   }

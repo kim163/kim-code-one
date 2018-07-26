@@ -134,7 +134,7 @@
             this.$emit('input',false);
             this.SHOW_LOGIN(false);
             console.log(this.$route)
-            const rquest = this.$route.name;
+            // const rquest = this.$route.name;
             $localStorage.set('tokenInfo', JSON.stringify(res.data.tokenVo));
             //$localStorage.set('userData', aesutil.encrypt(JSON.stringify(res.data)));
             this.$store.dispatch('CHECK_ONLINE', true);
@@ -143,7 +143,7 @@
             this.$store.commit('SET_USERDATA',res.data);
             _.checkUserBind({userId: res.data.userId})
             _.initRongyun()
-            this.$router.push({path:rquest});
+            // this.$router.push({path:rquest});
           }else {
             toast(res.message);
           }
