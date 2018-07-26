@@ -163,6 +163,9 @@
   transition: 0.5s, opacity 1s;
   font-weight: 400;
 }
+.j-languageSel{
+  display: none;
+}
 .nav-item:nth-child(1) {
   transition-delay: 0s;
 }

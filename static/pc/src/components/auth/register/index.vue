@@ -18,7 +18,7 @@
               <select class="select-country"  v-model="data.areaCode">
                 <option v-for="areacd in areaCodeData" :value="areacd.value" :key="areacd.value" > {{areacd.name}} </option>
               </select>
-              <input type="text" class="ps-input cl-blue fl" v-model="data.phone" :placeholder="$t('register.inputPlaceholder1')" maxlength="20" />
+              <input type="text" class="ps-input cl-blue ps-phoneput" v-model="data.phone" :placeholder="$t('register.inputPlaceholder1')" maxlength="20" />
             </div>
 
           </div>
@@ -31,7 +31,7 @@
           </div>
           <div class="form-group">
             <p class="form-subtitle">{{$t('register.Code')}}</p>
-            <div class="form-input">
+            <div class="form-input posit-rel">
             <input ref="code" type="text" autocomplete="off" class="ps-input fl inpt-pwd"
                    v-model="data.imageCode" :placeholder="$t('register.inputPlaceholder2')" maxlength="16" />
               <a href="javascript:;" @click.prevent="getCaptcha" class="captcha-code">
@@ -61,7 +61,7 @@
             <!--<a href="javascript:;" class="captcha-code icon_popup">-->
               <!--<img @click="getimg" :src="authImg"></a>-->
           <!--</div>-->
-          <div class="agreement">
+          <div class="agreement hide">
             <input type="checkbox" checked>
             {{$t('register.readAgreenment')}} <a class="a-login">{{$t('register.agreenment')}}</a>
           </div>

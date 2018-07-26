@@ -1,13 +1,18 @@
 <template>
-  <div class="chatList_container box box-ver">
-    <mHeader>交易会话</mHeader>
+  <div class="chatList_container box box-ver" :class="{'pcChatList':isPC}">
+    <div class="mainTitle" v-if="isPC">
+
+      <span class="left_title">会话列表</span>
+      <span class="close_symbol iconfont icon-close" @click="closeChatList"></span>
+    </div>
+    <mHeader v-else>交易会话</mHeader>
     <div class="conversation_list box-f1">
       <div v-if="chatArr.length==0" class="noMessage">
         <img src="~images/chatWith/no_message.png" alt="" class="noMessage_pic">
         <span class="no_message">暂无聊天信息</span>
       </div>
-      <div v-else class="conversation_item" v-for="(list,num) in chatArr" :key="num"
-         @click="goChatRoom(list.targetId,list.latestMessage.content.user.id)">
+      <div v-else-if="chatArr.length>0" class="conversation_item" v-for="(list,num) in chatArr" :key="num"
+         @click="goChatRoom(list.targetId,list.latestMessage.content.user.id)" :class="{'pcState':isPC}">
         <div class="converstation_info box">
           <div class="user_symbol"
                :class="{'user_symbolNext':userId==JSON.parse(list.latestMessage.content.extra).debit}"
@@ -21,7 +26,6 @@
               <span v-else class="buy_in">买入</span>
             </p>
             <!--区分图片和文本消息 目前就这两种-->
-
            <p class="user_content"
                v-if="list.latestMessage.content.messageName=='TextMessage'">{{list.latestMessage.content.user.name+': '+symolEmoji.symbolToEmoji(list.latestMessage.content.content)}}</p>
             <p class="user_content" v-else>{{list.latestMessage.content.user.name}}: [图片]</p>
@@ -41,9 +45,14 @@
             :historyState="DetailList.historyState"
             :userInfoId ="userInfoId"
             @chatShow="chatStateUpdate"
+            @openList="openListUpdate"
+            :isPc="isPC"
+            :formList="formListState"
+            @closeChatroom="closeChatList"
       ></chat>
     </transition>
-    <mFooter :unreadCount="unreadTotalCount"></mFooter>
+
+    <mFooter :unreadCount="unreadTotalCount" v-if="!isPC"></mFooter>
   </div>
 
 </template>
@@ -69,6 +78,8 @@
         unreadTotalCount:0,
         countUnreadNum: [],
         userInfoId:'',
+        /*区别是否是从从列表进聊天还是一开始进来*/
+        formListState:'',
         config: {
           size: 24, // 大小, 默认 24, 建议15 - 55
           url: '//f2e.cn.ronghub.com/sdk/emoji-48.png', // 所有 emoji 的背景图片
@@ -90,8 +101,13 @@
         'userId',
         'userData',
         'connectState',
-
       ])
+    },
+    props:{
+      isPC:{
+        type:Boolean,
+        default:false
+      }
     },
     watch:{
       connectState(val){
@@ -105,7 +121,6 @@
         return this.countUnreadNum.length > 0 && !_.isUndefined(this.countUnreadNum[n]) ? this.countUnreadNum[n].count : ''
       },
       chatStateUpdate(value){
-        console.log(value,'晚上，')
         this.chatState = value
       },
       getConversationList() {
@@ -124,6 +139,9 @@
           }
         }, null);
       },
+      openListUpdate(val){
+        this.chatState = false
+      },
       clearConversationList() {
         RongIMClient.getInstance().clearConversations({
           onSuccess: function () {
@@ -134,6 +152,9 @@
             // error => 清除会话错误码。
           }
         });
+      },
+      closeChatList(){
+        this.$emit('closeChatroom',false)
       },
       goChatRoom(id,userId) {
         const requestData = {
@@ -159,6 +180,7 @@
             this.DetailList.targetId = id;
             this.DetailList.historyState = 3;
             this.userInfoId= userId
+            this.formListState= true
             /*清楚未读绘画*/
             const conversationType = RongIMLib.ConversationType.GROUP
             RongIMClient.getInstance().clearUnreadCount(conversationType,id,{
@@ -242,7 +264,15 @@
   .box-ver {
     flex-direction: column;
   }
-
+  .mainTitle{
+    background: $main-color;
+    width: 350px;
+    height: 40px;
+    padding: 10px 10px 0 0;
+    font-size: 18px;
+    color: $font-chatroom-color;
+    line-height: 40px;
+  }
   .conversation_list {
     background-color: #f5f5f5;
     height: -webkit-fill-available;
@@ -369,7 +399,7 @@
     z-index: 1000;
     width: 100%;
     height: 100%;
-    background-color: #F5F5F5;
+
   }
 
   .unread_num {
@@ -406,4 +436,54 @@
       opacity: 1;
     }
   }
+
+  .pcChatList{
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 350px;
+    border-radius: 10px 10px 0 0 ;
+
+    .mainTitle{
+      background-color: $main-color;
+      border-radius: 10px 10px 0 0;
+      padding-left: 10px;
+      text-align: center;
+      height: 40px;
+      line-height: 20px;
+      .left_title{
+        color: $font-chatroom-color;
+        font-size: 18px;
+        cursor: pointer;
+      }
+      .close_symbol{
+        color: $font-chatroom-color;
+        font-size: 12px;
+        float: right;
+        cursor: pointer;
+        &::after{
+          content:'';
+          clear:both;
+        }
+      }
+    }
+    .conversation_list{
+      height: 290px;
+      overflow-y:scroll;
+      border: 1px solid #F1F6FF;
+      ::-webkit-scrollbar-track-piece{margin-top: 0 !important;}
+      background-color: #F1F6FF;
+    }
+    .pcState{
+      height: 86px;
+    }
+    .conversation_item{
+      padding: r(3) r(10) r(3) r(10);
+    }
+    .conversation_num{
+      height: auto;
+      line-height: 1.5rem;
+    }
+  }
+
 </style>

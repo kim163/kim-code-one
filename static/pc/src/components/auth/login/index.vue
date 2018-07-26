@@ -25,7 +25,7 @@
                <select class="select-country" v-model="data.areaCode">
                      <option v-for="areacd in areaCodeData" :value="areacd.value" :key="areacd.value" > {{areacd.name}} </option>
                </select>
-               <input type="text" class="ps-input ps-input1" v-model="data.phone"
+               <input type="text" class="ps-input ps-input1 ps-phoneput" v-model="data.phone"
                    :placeholder="$t('login.mobileNumPhd')" maxlength="11" name="phone">
             </div>
           </div>
@@ -45,8 +45,11 @@
 
           <span class="validate"></span>
           <input type="button" class="submit btn btn-block" @click.enter="login" id="submit_user" :value="$t('login.logIn')">
-          <div>
+          <div class="link-fogroup">
             <a href="javascript:void(0);" class="forget-btn" @click="openFindPWD">{{$t('login.forgotpwd')}}</a>
+            <span class="right-part fr">
+              还没有久安账户？<a href="javascript:void(0);" class="register-btn" @click="loginGoRegEvt" >立即注册</a>
+            </span>
           </div>
         </div>
       </div>
@@ -137,9 +140,9 @@
 
               let {rquest} = this.$route.query;
               $localStorage.set('tokenInfo', JSON.stringify(res.data.tokenVo));
-              $localStorage.set('userData', JSON.stringify(aesutil.encrypt(res.data.userId)))
+              $localStorage.set('userData', JSON.stringify(aesutil.encrypt(res.data.userId)));
               this.$store.dispatch('UPDATE_USERDATA');
-
+              _.initRongyun()
               this.$router.push({path:rquest});
             }else {
               toast(res.message);
@@ -154,12 +157,12 @@
             if (res.code == 10000) {
               this.$emit('input',false);
               this.SHOW_LOGIN(false);
-
+              window.location.reload();
+              _.initRongyun()
               let {rquest} = this.$route.query;
               $localStorage.set('tokenInfo', JSON.stringify(res.data.tokenVo));
               $localStorage.set('userData', JSON.stringify(aesutil.encrypt(res.data.userId)))
               this.$store.dispatch('UPDATE_USERDATA');
-
               this.$router.push({path:rquest});
             } else {
               toast(res.message)
@@ -197,6 +200,10 @@
             return true;
           }
         }
+      },
+      loginGoRegEvt(){
+        this.$emit('input',false);
+        this.$emit('loginGoReg');
       }
     },
     created(){
@@ -211,10 +218,5 @@
   };
 </script>
 <style lang="scss" scoped>
-
-  .forget-btn{
-     font-size: 18px;
-     color: #4c74ed !important;
-  }
 
 </style>

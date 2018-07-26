@@ -302,15 +302,13 @@
                 </count-down>
               </span>
         </div>
-
         <div class="btn-group" v-if="DetailList.status =='47'">
           <input type="button" class="btn btn-block btn-primary" @click="payCompleted" value="确认收款">
           <input type="button" class="btn btn-block btn-primary" @click="createAppeal" value="我要申诉">
         </div>
-
         <div class="pic-box pic-box2" v-if="DetailList.creditProofUrlTwin">
           <p>买家付款截图:</p>
-          <ul class="pic-ul">
+          <ul class="mpic-ul">
             <li v-for="proofImg in DetailList.creditProofUrlTwin||[]">
               <viewer :images="DetailList.creditProofUrlTwin">
                 <img :src="proofImg" alt="买家付款截图">
@@ -337,7 +335,6 @@
             :detail="gameID"
             :debitNum="DetailList.debitAmount"
             :historyState="DetailList.historyState"
-            :noTime="false"
             @chatShow="chatStateUpdate"
       ></chat>
     </transition>
@@ -920,7 +917,7 @@
     }
   }
 
-  .pic-ul {
+  .mpic-ul {
     padding: r(10) 0;
     overflow: hidden;
     li {

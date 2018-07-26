@@ -2,16 +2,13 @@
   <div class="transell-main transell-main-box">
     <nav-menu></nav-menu>
     <bread-crumbs :bread-list="breadList"></bread-crumbs>
-
     <div class="section detail-content">
       <div class="container min-width" v-if="DetailList">
-
         <div class="detailapp-navtabs cfx">
           <span v-for="(item,i) in detailType" @click="detailTypeItem=item.value" :class="{active:detailTypeItem==item.value}" :key="item.value">
               {{generateTitle(item.name)}}
           </span>
         </div>
-
         <div class="row00 detail-box" v-if="detailTypeItem=='orderDetails'">
           <div class="detail-title cfx">
             <span v-if="isCredit" class="title-btn btn-primary">买入</span>
@@ -250,8 +247,6 @@
         console.log(this.request)
         console.log(this.userData)
         transaction.getAppealDetailPage(this.request).then(res => {
-          console.log('申诉详情记录:');
-          console.log(res.data);
           // data.orderx   订单详情
           // data.appealDetailList   申诉消息列表
           // data.appeal   申诉状态
