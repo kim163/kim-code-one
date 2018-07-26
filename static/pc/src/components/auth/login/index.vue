@@ -128,46 +128,27 @@
            password: this.data.password
          }
        }
-
-        if(this.loginItem=='account'){
-          show.loginByUserNameAndPwd(this.requestda).then(res => {
-            if (res.code == 10000) {
-              this.$emit('input',false);
-              this.SHOW_LOGIN(false);
-
-              let {rquest} = this.$route.query;
-              $localStorage.set('tokenInfo', JSON.stringify(res.data.tokenVo));
-              $localStorage.set('userData', JSON.stringify(aesutil.encrypt(res.data.userId)))
-              this.$store.dispatch('UPDATE_USERDATA');
-
-              this.$router.push({path:rquest});
-            }else {
-              toast(res.message);
-            }
-          }).catch(err => {
-            toast(err.message);
-          });
-
-        }else if(this.loginItem=='phone' || this.loginItem=='email') {
-          show.login(this.requestda).then(res => {
-            console.log('login res: ', res);
-            if (res.code == 10000) {
-              this.$emit('input',false);
-              this.SHOW_LOGIN(false);
-
-              let {rquest} = this.$route.query;
-              $localStorage.set('tokenInfo', JSON.stringify(res.data.tokenVo));
-              $localStorage.set('userData', JSON.stringify(aesutil.encrypt(res.data.userId)))
-              this.$store.dispatch('UPDATE_USERDATA');
-
-              this.$router.push({path:rquest});
-            } else {
-              toast(res.message)
-            }
-          }).catch(error => {
-             toast(error.message);
-          });
-        }
+        const api = this.loginItem=='account' ?  show.loginByUserNameAndPwd : show.login
+        api(this.requestda).then(res => {
+          if (res.code == 10000) {
+            this.$emit('input',false);
+            this.SHOW_LOGIN(false);
+            const rquest = this.$route.query;
+            $localStorage.set('tokenInfo', JSON.stringify(res.data.tokenVo));
+            //$localStorage.set('userData', aesutil.encrypt(JSON.stringify(res.data)));
+            this.$store.commit('SET_USERDATA',res.data);
+            this.$store.dispatch('CHECK_ONLINE', true);
+            this.$store.dispatch('UPDATE_TOKEN_INFO', res.data.tokenVo);
+            this.$store.dispatch('INIT_INFO');
+            _.checkUserBind({userId: res.data.userId})
+            _.initRongyun()
+            this.$router.push({path:rquest});
+          }else {
+            toast(res.message);
+          }
+        }).catch(err => {
+          toast(err);
+        })
       },
       check() {
         if(this.loginItem=='account'){
