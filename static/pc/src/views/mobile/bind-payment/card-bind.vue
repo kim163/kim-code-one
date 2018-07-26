@@ -123,7 +123,6 @@
           toast('请点击上传您的收款二维码')
           return false
         }
-
         if(this.type === 3){
           this.getBankName(true)
         }else{
@@ -170,29 +169,31 @@
         })
       },
       getBankName(isToBind){
-        if(this.account != '') {
+        if(this.account != ''){
           const data = {
-            bankNo: this.account
+            bankNo:this.account
           }
           autoRecognize(data).then(res => {
             console.log(res)
-            if (res.code === 10000) {
-              if (res.data && !_.isEmpty(res.data)) {
+            if(res.code === 10000){
+              if(res.data && !_.isEmpty(res.data)){
                 this.bank = res.data.bankName
-                if (isToBind) {
+                if(isToBind){
                   this.toBind()
                 }
-              } else {
-                this.bank = ''
+              }else{
                 toast('您输入的银行卡号不能识别，请重新输入')
+                this.bank = ''
               }
-            } else {
+            }else{
               toast(res.message)
               this.bank = ''
             }
           }).catch(err => {
             toast(err)
           })
+        }else{
+          toast('请输入银行卡号')
         }
       },
       getBindInfo(){
