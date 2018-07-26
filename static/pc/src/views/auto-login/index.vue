@@ -22,12 +22,16 @@
         showTip:false,
         token: this.$route.query.token,
         merchantId: this.$route.query.merchantId,
-        nodeId: this.$route.query.nodeId,   //定制版需要的参数 nodeId
+        nodeId: Number(this.$route.query.nodeId),   //定制版需要的参数 nodeId
         mode: this.$route.query.mode, //定制版需要的参数 mode=1, 打开钱包到首页，mode=2 打开快速买币， mode=3 打开快速卖币
+        bankURL: this.$route.query.bankURL  //商户返回地址
       }
     },
     created(){
       this.$store.dispatch('LOGIN_OUT', false)
+      if(!_.isUndefined(this.bankURL)){
+        $localStorage.set('bankURL', JSON.stringify(this.bankURL));
+      }
       const request = {
         type:11,
         token: this.token,
