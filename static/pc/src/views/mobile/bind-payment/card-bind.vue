@@ -11,7 +11,7 @@
           </div>
           <div class="card-item">
             <label class="title">银行名称:</label>
-            <input class="card-input" type="text" v-model.trim="bank" @focus="getBankName"/>
+            <input class="card-input" type="text" v-model.trim="bank" @focus="getBankName(false)"/>
           </div>
           <div class="card-item">
             <label class="title">持卡人姓名:</label>
@@ -123,6 +123,14 @@
           toast('请点击上传您的收款二维码')
           return false
         }
+
+        if(this.type === 3){
+          this.getBankName(true)
+        }else{
+          this.toBind()
+        }
+      },
+      toBind(){
         const data = {
           userId: this.userData.userId,
           account: this.account,
@@ -161,24 +169,31 @@
           toast(err)
         })
       },
-      getBankName(){
-        const data = {
-          bankNo:this.account
-        }
-        autoRecognize(data).then(res => {
-          console.log(res)
-          if(res.code === 10000){
-            if(res.data && !_.isEmpty(res.data)){
-              this.bank = res.data.bankName
-            }else{
-              toast('您输入的银行卡号不能识别，请重新输入')
-            }
-          }else{
-            toast(res.message)
+      getBankName(isToBind){
+        if(this.account != '') {
+          const data = {
+            bankNo: this.account
           }
-        }).catch(err => {
-          toast(err)
-        })
+          autoRecognize(data).then(res => {
+            console.log(res)
+            if (res.code === 10000) {
+              if (res.data && !_.isEmpty(res.data)) {
+                this.bank = res.data.bankName
+                if (isToBind) {
+                  this.toBind()
+                }
+              } else {
+                this.bank = ''
+                toast('您输入的银行卡号不能识别，请重新输入')
+              }
+            } else {
+              toast(res.message)
+              this.bank = ''
+            }
+          }).catch(err => {
+            toast(err)
+          })
+        }
       },
       getBindInfo(){
         this.name = this.userData.name
@@ -193,16 +208,15 @@
               if(!_.isEmpty(this.hasBindInfo) && !_.isUndefined(this.hasBindInfo)){
                 this.hasBind = true
               }
-            }else{
+            }else {
               toast(res.message)
             }
           }).catch(err => {
             toast(err)
-          }).finally(() => {
-            this.showRes = true
+            return false
           })
         }else{
-          this.showRes = true
+          toast('请输入银行卡号')
         }
       }
     },
