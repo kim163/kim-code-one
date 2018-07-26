@@ -13,7 +13,7 @@
     </div>
   </div>
 
-   <post-pendord v-model="isShowPostPend" url-name="tranRecord"></post-pendord>
+   <post-pendord v-model="isShowPostPend" url-name="tranRecord" :type="getType"></post-pendord>
   </div>
 </template>
 <script>
@@ -28,13 +28,27 @@
     data() {
       return {
         transactMenuData: transactMenuData,
-        isShowPostPend: false
+        isShowPostPend: false,
+      }
+    },
+    props:{
+      mode:{ //用户判断用户意图 1是默认不打开买卖弹窗 2是打开我要买币弹窗  3是打开我要卖币
+        type:Number,
+        default:1
       }
     },
     methods: {
       generateTitle
     },
+    computed:{
+      getType(){
+        return this.mode === 1 ? 1 : (this.mode === 3 ? 2 : 1)
+      }
+    },
     created() {
+      if(this.mode > 1){
+        this.isShowPostPend = true
+      }
     },
     mounted() {
     },
