@@ -83,6 +83,15 @@
   }
 </script>
 
-<style scoped>
-
+<style lang="scss" scoped>
+  .main{
+    position: absolute;
+    width: 80%;
+    left: 10%;
+    text-align: center;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 </style>
