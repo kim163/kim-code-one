@@ -22,18 +22,11 @@ export default new Vuex.Store({
     language: $localStorage.get('language-sel') || 'zh',
     tokenInfo: null,
     checkOnline: false,
-<<<<<<< HEAD
     connectState:false,
     RongIMEmoji:'',
     timeOver:false,
     unreadCount:0,
     historyState:'',
-=======
-    connectState: false,
-    RongIMEmoji: '',
-    timeOver: false,
-    unreadCount: 0,
->>>>>>> 205ceb24dbce9fdd32e5168ae03df234cfbf4d9f
   },
   getters: {     // 用来从 store 获取 Vue 组件数据
     language(state, getters) {
