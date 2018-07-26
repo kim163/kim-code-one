@@ -208,13 +208,16 @@
               if(!_.isEmpty(this.hasBindInfo) && !_.isUndefined(this.hasBindInfo)){
                 this.hasBind = true
               }
-            }else {
+            }else{
               toast(res.message)
             }
           }).catch(err => {
             toast(err)
-            return false
+          }).finally(() => {
+            this.showRes = true
           })
+        }else{
+          this.showRes = true
         }
       }
     },
