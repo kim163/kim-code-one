@@ -26,16 +26,17 @@ export default {
         nickName: userData.nickname
       }
        chatWith.getToken(params).then(res => {
-        this.token = res.data.token;
-        this.connect();
-        this.setConnectStatusListener();
-        this.setOnReceiveMessageListener();
-        Vue.$global.bus.$emit('portrait',res.data.portrait)
-        Vue.prototype.$loadScript('https://cdn.ronghub.com/RongEmoji-2.2.6.min.js')
-          .then(() => {
-            this.initEmoji();
-          })
-
+         if(res.code==10000){
+           this.token = res.data.token;
+           this.connect();
+           this.setConnectStatusListener();
+           this.setOnReceiveMessageListener();
+           Vue.$global.bus.$emit('portrait',res.data.portrait)
+           Vue.prototype.$loadScript('https://cdn.ronghub.com/RongEmoji-2.2.6.min.js')
+             .then(() => {
+               this.initEmoji();
+             })
+         }
       })
 
   },

@@ -1,15 +1,21 @@
 <template>
+  <div class="origin_box" :class="{'pcContainer':isPc}">
   <div class=" wrapper_box  box box-ver">
-    <header class="mobile-header">
+    <div class="mainTitle" v-if="isPc">
+      <span class="iconfont icon-left-arrow return_back" @click="returnList()">返回列表</span>
+      <span class="middle_title">会话列表</span>
+      <span class="close_symbol iconfont icon-close" @click="closeChatList"></span>
+    </div>
+    <header class="mobile-header" v-else>
       <a @click="doClick" class="back-link"> <i class="iconfont icon-left-arrow"></i></a>
       <span>会话详情</span>
     </header>
     <!--付款倒计时-->
     <!--聊天框-->
-    <div class="chatbox box-f1 box box-ver" :class="{'displayState':!isDisplay,'hiddenState':isDisplay}"
+    <div class="chatbox box-f1 box box-ver" :class="{'displayState':!isDisplay,'hiddenState':isDisplay,'pcchatbox':isPc}"
          id="chatMessage">
       <div class="order_info">
-        <div class="order_state">
+        <div class="order_state" :class="{'pcOrder':isPc}">
           <div class="state_b">
             <span class="state_d" v-if="userId!==debit">买入</span>
             <span class="state_n" v-else>卖出</span>
@@ -38,13 +44,13 @@
               <span>交易数量:</span>
               <span class="fr lineColor">{{amount}} UET</span>
             </div>
-            <div class="display" @click="showDisplay">
-              <img src="~images/chatWith/hidden.png" alt="" >
+            <div class="display" @click="showDisplay" :class="{'displayboxPC':isPc}">
+              <img src="~images/chatWith/hidden.png" alt="">
             </div>
           </div>
           <!--隐藏-->
           <div class="hidden-box" v-if="!isDisplay">
-            <div class="hiddenbox" @click="showDisplay">
+            <div class="hiddenbox" :class="{'hiddenboxPC':isPc}" @click="showDisplay">
               <img src="~images/chatWith/display.png" alt="">
             </div>
           </div>
@@ -57,12 +63,12 @@
         等待倒计时:
         <count-down :end-time="startTime-endTime<=0?0:startTime-endTime"></count-down>
       </p>
-
       <b-scroll
         ref="scroll"
         :autoUpdate="true"
         :pullUp="false"
         :pullDown="false"
+        :class="{'pcState':isPc}"
       >
         <!--历史消息-->
         <div v-for="list in historyArr" class="msg-item">
@@ -71,10 +77,10 @@
           <div class="chat_container"
                v-show="list.messageType=='TextMessage'&&list.senderUserId==userId">
             <div style="flex:1"></div>
-              <div>
-                <div class="sendname" style="text-align: right">{{userData.name?userData.name:'null'}}</div>
-                <div class="contents">{{symolEmoji.symbolToEmoji(list.content.content)}}</div>
-              </div>
+            <div>
+              <div class="sendname" style="text-align: right">{{userData.name?userData.name:'null'}}</div>
+              <div class="contents">{{symolEmoji.symbolToEmoji(list.content.content)}}</div>
+            </div>
             <div class="user_symbol"></div>
           </div>
           <!--别人发的文本消息-->
@@ -83,7 +89,8 @@
             <div class="user_symbol_next" :class="{'isSeller':userId!==debit, 'iskefu':JSON.parse(list.content.extra).credit!==list.content.user.id
             &&JSON.parse(list.content.extra).debit!==list.content.user.id}"></div>
             <div>
-              <div class="sendname" style="text-align: left">{{list.content.user.name?list.content.user.name:'null'}}</div>
+              <div class="sendname" style="text-align: left">{{list.content.user.name?list.content.user.name:'null'}}
+              </div>
               <div class="contents_next" v-html="symolEmoji.symbolToEmoji(list.content.content)"></div>
             </div>
             <div style="flex: 1"></div>
@@ -94,7 +101,7 @@
             <div style="flex:1;"></div>
             <div class="contents">
               <viewer :images="list.picArr" style="padding: .5rem">
-                <img  alt="" class="contents_image" v-lazy="list.content.imageUri">
+                <img alt="" class="contents_image" v-lazy="list.content.imageUri">
               </viewer>
             </div>
             <div class="user_symbol"></div>
@@ -105,12 +112,12 @@
             <div class="user_symbol_next" :class="{'isSeller':userId==debit, 'iskefu':JSON.parse(list.content.extra).credit!==list.content.user.id
             &&JSON.parse(list.content.extra).debit!==list.content.user.id}"></div>
             <div>
-            <div class="sendname" style="text-align: left">{{userData.name?userData.name:'null'}}</div>
-            <div class="contents_next">
-              <viewer :images="list.img" style="padding: .5rem">
-                <img   class="contents_image" v-lazy="list.content.imageUri">
-              </viewer>
-            </div>
+              <div class="sendname" style="text-align: left">{{userData.name?userData.name:'null'}}</div>
+              <div class="contents_next">
+                <viewer :images="list.img" style="padding: .5rem">
+                  <img class="contents_image" v-lazy="list.content.imageUri">
+                </viewer>
+              </div>
             </div>
             <div class="" style="flex: 1"></div>
           </div>
@@ -132,11 +139,10 @@
               <div class="sendname" style="text-align: right">{{userData.name?userData.name:'null'}}</div>
               <div class="contents">
                 <viewer :images="list.img" style="padding: .5rem">
-                  <img  alt="" class="contents_image" v-lazy="list.msg">
+                  <img alt="" class="contents_image" v-lazy="list.msg">
                 </viewer>
               </div>
             </div>
-
             <div class="user_symbol"></div>
           </div>
           <!--接收文字消息-->
@@ -155,7 +161,7 @@
               <div class="sendname" style="text-align: left">{{list.sendName?list.sendName:'null'}}</div>
               <div class="contents_next">
                 <viewer :images="list.img" style="padding: .5rem">
-                  <img  alt="" class="contents_image" v-lazy="list.msg">
+                  <img alt="" class="contents_image" v-lazy="list.msg">
                 </viewer>
               </div>
             </div>
@@ -167,7 +173,8 @@
     <!--输入框-->
     <div class="input_chatbox ">
       <div class="chatboxNext">
-        <input type="text" class="input_message" v-model="messageValue" id="inputMessage">
+        <!--PC上加入按回车键也可以发送消息-->
+        <input type="text" class="input_message" v-model="messageValue" id="inputMessage" @keydown="sendInfo($event)">
         <div class="smile" @click="sendEmoji" :class="{emoji:isChangeValue,input:!isChangeValue}"></div>
         <div class="more demo1" v-if="!needSend" @click="showMoreFunction"></div>
         <input type="button" value="发送" class="sendMessage" v-if="needSend" @click="sendMessage">
@@ -185,6 +192,8 @@
       </div>
     </div>
   </div>
+
+  </div>
 </template>
 
 <script>
@@ -199,7 +208,7 @@
     data() {
       return {
         imgSrc: '~images/chatWith/more.png',
-        isDisplay: true,
+        isDisplay: false,
         messageValue: '',
         needSend: false,
         token: '',
@@ -214,7 +223,7 @@
         uploadState: '',
         RongIMEmoji: '',
         dataURL: '',
-        type:'',
+        type: '',
         src: 'http://img1.vued.vanthink.cn/vued0a233185b6027244f9d43e653227439a.png',
         shadowDomList: [],
         base64: '',
@@ -233,7 +242,7 @@
         founderId: '',
         portrait: '',
         extraData: '',
-        status:'',
+        status: '',
         config: {
           size: 24, // 大小, 默认 24, 建议15 - 55
           url: '//f2e.cn.ronghub.com/sdk/emoji-48.png', // 所有 emoji 的背景图片
@@ -258,9 +267,13 @@
         type: String,
         default: ''
       },
-      noTime:{
-        type:Boolean,
-        default:true
+      isPc: {
+        type: Boolean,
+        default: false,
+      },
+      noTime: {
+        type: Boolean,
+        default: true
       }
     },
     computed: {
@@ -284,32 +297,29 @@
           this.sendPic()
         }
       },
-      detail(val) {
-        if (val) {
-          this.fetchOrder()
-        }
-      },
+
       historyState(val) {
         if (val) {
           this.symolEmoji = RongIMLib.RongIMEmoji;
           this.getHistoryMessage();
           const conversationType = RongIMLib.ConversationType.GROUP
           const id = this.detail
-          RongIMClient.getInstance().clearUnreadCount(conversationType,id,{
-            onSuccess:(res)=>{
+          RongIMClient.getInstance().clearUnreadCount(conversationType, id, {
+            onSuccess: (res) => {
               RongIMClient.getInstance().getTotalUnreadCount({
-                onSuccess:(count)=>{
-                  this.$store.commit('GET_UNREADCOUNT',count)
+                onSuccess: (count) => {
+                  this.$store.commit('GET_UNREADCOUNT', count)
                 },
-                onError:(error)=>{
+                onError: (error) => {
                   // error => 获取总未读数错误码。
                 }
               });
             },
-            onError:()=>{
+            onError: () => {
             }
           })
           let groupId = {'groupId': this.detail}
+          this.fetchOrder()
           chatWith.getOrderxInfo(groupId).then(res => {
             this.amount = res.data.amount
             this.founderId = res.data.founderId
@@ -356,19 +366,28 @@
     },
     methods: {
       ...mapMutations(['CHANGE_CONNECTSTATE']),
-      doClick(){
+      doClick() {
         this.$store.commit('CHANGE_CONNECTSTATE', 3)
-        this.$emit('chatShow',false)
+        this.$emit('chatShow', false)
+      },
+      sendInfo(ev){
+        if(ev.keyCode===13){
+          this.sendMessage()
+        }
       },
       fetchOrder() {
         const requestData = {
           orderId: this.detail
         }
         transaction.getOrderx(requestData).then(res => {
+          console.log(res,'速度乌克兰和')
           this.status = res.data.status
           this.startTime = res.data.intervalTime;
           this.endTime = res.data.elapsedTime;
         })
+      },
+      closeChatList(){
+        this.$emit('closeChatroom')
       },
       scrollToBot() {
         this.$nextTick(() => {
@@ -378,10 +397,10 @@
           const imgArr = document.getElementsByClassName('msg-item')
           const len = imgArr.length
           for (let i = 0; i <= len; i++) {
-            if(this.scroll){
+            if (this.scroll) {
               this.scroll.refresh();
               this.scroll.scrollToElement(document.querySelectorAll('.msg-item')[(this.chatArr.length + this.historyArr.length) - 1], 333)
-            }else {
+            } else {
             }
           }
         })
@@ -472,13 +491,16 @@
           onSuccess: ((list, hasMsg) => {
             /*区分图片和消息*/
             this.historyArr = list;
-             console.log(list,'这是历史消息')
+            console.log(list, '这是历史消息')
             this.scrollToBot()
           }),
           onError: function (error) {
             console.log(error, '失败记录；')
           }
         })
+      },
+      returnList(){
+          this.$emit('openList',true)
       },
       dataURItoBlob(base64Data) {
         var byteString;
@@ -570,7 +592,7 @@
         RongIMClient.getInstance().sendMessage(conversationtype, targetId, msg, {
             onSuccess: (message) => {
               //message 为发送的消息对象并且包含服务器返回的消息唯一Id和发送消息时间戳
-              this.chatArr.push({msg: this.messageValue, user: 1,userName:this.userData.name})
+              this.chatArr.push({msg: this.messageValue, user: 1, userName: this.userData.name})
               this.messageValue = ''
               this.scrollToBot()
               this.clearUnreadCount()
@@ -756,7 +778,7 @@
   }
 
   .hiddenbox {
-    background-color: #F5F5F5;
+    background-color: #f5f5f5;
   }
 
   .hiddenbox img {
@@ -767,7 +789,6 @@
   }
 
   .countdown {
-    margin-top: r(10);
     font-size: r(15);
     color: #F43531;
     letter-spacing: 0;
@@ -782,6 +803,9 @@
     width: 100%;
     overflow: auto;
     margin-bottom: .5rem;
+    &.pcchatbox{
+
+    }
     .chat_container {
       display: flex;
       flex-direction: row;
@@ -848,16 +872,16 @@
         background-size: 100%;
         margin-right: 1rem;
       }
-      &.iskefu{
+      &.iskefu {
         width: r(45);
         height: r(48);
-        background: url('~images/chatWith/kefu.png')no-repeat;
+        background: url('~images/chatWith/kefu.png') no-repeat;
         background-size: 100%;
       }
-      &.isMy{
+      &.isMy {
         width: r(45);
         height: r(45);
-        background: url("~images/chatWith/my.png~")no-repeat;
+        background: url("~images/chatWith/my.png~") no-repeat;
         background-size: 100%;
       }
     }
@@ -970,36 +994,97 @@
     max-width: r(190);
     max-height: 8rem;
   }
-  .sendname{
+
+  .sendname {
     color: #787876;
     font-size: r(13);
   }
-  header.mobile-header{
+
+  header.mobile-header {
     position: relative;
     z-index: 99;
     height: r($header-hg);
     line-height: r($header-hg);
     background: $main-color;
-    @include  f(18px);
+    @include f(18px);
     color: $white;
     text-align: center;
-    .back-link{
+    .back-link {
       position: absolute;
       height: 100%;
-      left:0;
-      width:r(66);
-      top:50%;
-      transform:translateY(-50%);
+      left: 0;
+      width: r(66);
+      top: 50%;
+      transform: translateY(-50%);
       text-align: left;
       padding-left: r(8);
     }
-    .icon-left-arrow{
+    .icon-left-arrow {
       @include f(18px)
     }
   }
-  header.mobile-header-fixed{
+
+  header.mobile-header-fixed {
     position: fixed;
     width: 100%;
     height: r($header-hg);
+  }
+  .origin_box{
+    background-color: #F5F5F5;
+  }
+  .pcContainer {
+    position: absolute !important;
+    bottom: 0 !important;
+    right: 0 !important;
+    top:auto !important;
+    width: 350px !important;
+    overflow: hidden;
+    z-index: 100 !important;
+    height: 500px !important;
+    border-radius: 10px 10px 0 0;
+    background-color: transparent;
+
+    .mainTitle {
+      background-color: $main-color;
+      border-radius: 10px 10px 0 0;
+      line-height: 40px;
+      padding-left: 10px;
+      padding-right: 10px;
+      text-align: center;
+      height: 40px;
+      .middle_title {
+        color: $font-chatroom-color;
+        font-size: 18px;
+      }
+      .return_back{
+        color: $font-chatroom-color;
+        font-size: 12px;
+        float: left;
+        cursor: pointer;
+      }
+      .close_symbol {
+        color: $font-chatroom-color;
+        font-size: 12px;
+        float: right;
+        cursor: pointer;
+      }
+    }
+    .order_state{
+      padding: r(5) r(10);
+    }
+    .chatbox{
+      border-left: 1px solid #F1F6FF;
+      border-right: 1px solid #F1F6FF;
+      margin-bottom: 0;
+    }
+    .pcState{
+      background-color: #F1F6FF;
+    }
+    .hiddenboxPC{
+      background-color: #f1f6ff;
+    }
+    .displayboxPC{
+      background-color: #f1f6ff;
+    }
   }
 </style>

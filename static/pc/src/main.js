@@ -2,7 +2,6 @@ import Vue from 'vue'; //引入vue
 import store from './store';	//加载状态管理器
 import router from './router';//加载路由器
 import i18n from './lang' // 国际化插件
-
 import 'viewerjs/dist/viewer.css'
 /*import 'vue-croppa/dist/vue-croppa.css' //上传图片*/
 import LoadScript from 'vue-plugin-load-script' //加载文件;

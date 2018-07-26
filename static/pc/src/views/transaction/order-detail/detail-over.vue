@@ -2,11 +2,9 @@
   <div class="transell-main transell-main-box">
     <nav-menu></nav-menu>
     <bread-crumbs :bread-list="breadList"></bread-crumbs>
-
     <div class="section detail-content">
       <div class="container min-width" v-if="DetailList">
         <div class="row00 detail-box" >
-
           <div class="detail-title">
             <span v-if="isCredit" class="title-btn btn-primary">买入</span>
             <span v-else-if="isDebit" class="title-btn btn-sell">卖出</span>
@@ -52,7 +50,6 @@
                   <p>打开 {{DetailList.debitAccountMerchantTwin}} [扫一扫] </p>
                 </div>
               </div>
-
               <div class="alipay-box" v-else>
                 <p class="alipay-box-title text-center bank-title">
                   <i class="i-bank" :class="DetailList.debitAccountMerchantTwin | bankIcon"></i>{{DetailList.debitAccountMerchantTwin}}
@@ -79,7 +76,6 @@
             </div>
             <div v-else-if="isDebit" class="col-33">
               <h4  class="bank-title">买家付款方式 : </h4>
-
               <div class="alipay-box" v-if="DetailList.creditAccountMerchantTwin == '支付宝' || DetailList.creditAccountMerchantTwin == '微信'" >
                 <p class="alipay-box-title">
                   <i class="i-alipay" v-if="DetailList.creditAccountMerchantTwin == '支付宝'"></i>
