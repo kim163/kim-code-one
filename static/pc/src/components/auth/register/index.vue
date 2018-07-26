@@ -160,7 +160,7 @@
               this.$emit('input',false);
               this.SHOW_LOGIN(false);
 
-              let {rquest} = this.$route.query;
+              let {rquest} = this.$route.name;
               $localStorage.set('tokenInfo', JSON.stringify(res.data.tokenVo));
               $localStorage.set('userData', JSON.stringify(aesutil.encrypt(res.data.userId)))
               this.$store.dispatch('UPDATE_USERDATA');
