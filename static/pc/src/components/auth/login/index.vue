@@ -142,7 +142,7 @@
               $localStorage.set('tokenInfo', JSON.stringify(res.data.tokenVo));
               $localStorage.set('userData', JSON.stringify(aesutil.encrypt(res.data.userId)));
               this.$store.dispatch('UPDATE_USERDATA');
-
+              _.initRongyun()
               this.$router.push({path:rquest});
             }else {
               toast(res.message);
@@ -157,12 +157,12 @@
             if (res.code == 10000) {
               this.$emit('input',false);
               this.SHOW_LOGIN(false);
-
+              window.location.reload();
+              _.initRongyun()
               let {rquest} = this.$route.query;
               $localStorage.set('tokenInfo', JSON.stringify(res.data.tokenVo));
               $localStorage.set('userData', JSON.stringify(aesutil.encrypt(res.data.userId)))
               this.$store.dispatch('UPDATE_USERDATA');
-
               this.$router.push({path:rquest});
             } else {
               toast(res.message)

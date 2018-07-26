@@ -2,7 +2,7 @@
   <div class="transaction-main">
     <nav-menu></nav-menu>
     <bread-crumbs :bread-list="breadList"></bread-crumbs>
-    <transact-menu v-if="islogin"></transact-menu>
+    <transact-menu v-if="islogin" :mode="mode"></transact-menu>
     <guide-page v-if="!islogin"></guide-page>
 
     <div class="section transaction-content" v-if="islogin">
@@ -45,7 +45,8 @@
             urlName:'transaction',
             name:'navbar.tradingHall'
           }
-        ]
+        ],
+        mode: Number(this.$route.query.mode)
       };
     },
     methods: {
