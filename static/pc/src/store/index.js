@@ -24,6 +24,7 @@ export default new Vuex.Store({
     RongIMEmoji:'',
     timeOver:false,
     unreadCount:0,
+    historyState:'',
   },
   getters:{     // 用来从 store 获取 Vue 组件数据
     language( state,getters){
@@ -82,6 +83,9 @@ export default new Vuex.Store({
     },
     unreadCount(state,getters){
       return state.unreadCount
+    },
+    historyState(state,getters){
+      return state.historyState
     }
   },
   mutations:{         // 事件处理器用来驱动状态的变化
@@ -120,6 +124,9 @@ export default new Vuex.Store({
     },
     [types.GET_UNREADCOUNT](state,val){
       state.unreadCount = val
+    },
+    [types.GET_HISTORYSTATE](state,val){
+      state.historyState = val
     }
   },
   actions:{    // 可以给组件使用的函数，以此用来驱动事件处理器 mutations

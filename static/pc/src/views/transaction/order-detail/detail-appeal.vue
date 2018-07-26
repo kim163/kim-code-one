@@ -183,7 +183,23 @@
       <div slot="leftBtn" class="confirm-btn-cancel">{{$t('postPend.cancel')}}</div>
       <div slot="rightBtn" @click="payCompleted">{{$t('orderDetailPay.confirmPayBtn')}}</div>
     </confirm-dialog>
-
+    <div class="chatRoom" @click="showChatList()" v-if="chatOnline">
+      <span class="iconfont icon-tab-talk"></span> 在线聊天
+    </div>
+    <div v-show="isPCstate" style="position: relative">
+      <chatList :isPC="isPCstate" v-if="openListState" @closeChatroom="iscloseChatroom"></chatList>
+      <chat
+        class="chatWindow"
+        v-show="chatState"
+        :detail="orderId"
+        :debitNum="DetailList.debitAmount"
+        :historyState="DetailList.historyState"
+        @chatShow="chatStateUpdate"
+        :isPc="isPCstate"
+        @openList="openListUpdate"
+        @closeChatroom="iscloseChatroom"
+      ></chat>
+    </div>
     <v-footer ></v-footer>
   </div>
 </template>
@@ -195,9 +211,10 @@
   import confirmDialog from 'components/confirm'
   import vFooter from 'components/footer';
   import { generateTitle } from '@/util/i18n'
-  import { transaction } from 'api'
+  import { transaction,chatWith } from 'api'
   import {mapGetters,mapActions,mapMutations} from 'vuex'
-
+  import chatList from '../../../views/mobile/chatroom/chat-list'
+  import chat from '../../../views/mobile/chatroom/chat'
   export default {
     data() {
       return {
@@ -230,7 +247,12 @@
         request:{},
         isCredit: false,
         isDebit: false,
-        showConfirmPayment:false
+        showConfirmPayment:false,
+        isPCstate:'',
+        chatState:'',
+        chatOnline:true,
+        openListState:false,
+        typeState:3
       };
     },
     methods: {
@@ -265,6 +287,17 @@
           toast(error.message);
         });
       },
+      chatStateUpdate(){
+        this.chatState = false
+      },
+      openListUpdate() {
+        this.openListState = true
+        this.chatState = false
+      },
+      iscloseChatroom(){
+          this.isPCstate = false
+          this.chatOnline = true
+      },
       payCompleted(){
         this.showConfirmPayment=false;
         this.request={
@@ -287,7 +320,31 @@
       copystr(text) {
         text.$copy();
         toast(this.$t('transactionHome.successCopy'));
-      }
+      },
+      showChatList() {
+        if (!this.connectState) {
+          toast('聊天功能正在初始化,请稍后片刻！')
+          return
+        }
+        let params = {
+          groupId: this.orderId,
+          founderId: this.userData.userId,
+          type: this.typeState,
+          founderNickname: this.userData.nickname
+        }
+        chatWith.createChatGroup(params).then(res => {
+          if (res.code === 10000) {
+            this.chatState = true
+            this.DetailList.historyState = 2
+            this.isPCstate = !this.isPCstate
+            this.chatOnline = false
+          } else {
+            toast(res.message)
+          }
+        }).catch(res => {
+          toast(res.message)
+        })
+      },
     },
     created() {
       if (this.$route.params.id) {
@@ -302,7 +359,7 @@
       }
     },
     computed: {
-      ...mapGetters(["userData","islogin","userId"]),
+      ...mapGetters(["userData","islogin","userId",'connectState']),
       reverseAppealList() {
         // 按照时间倒序显示数据
         if(this.AppealList.appealDetailList.length>0){
@@ -318,7 +375,7 @@
       }
     },
     components: {
-      navMenu, breadCrumbs, NoDataTip, confirmDialog, vFooter
+      navMenu, breadCrumbs, NoDataTip, confirmDialog, vFooter,chatList,chat
     },
     filters: {
       bankIcon: function (value) {
@@ -669,5 +726,16 @@
      background: url(~images/bankIcon/cmbc.png) no-repeat;
      background-size: 40px;
    }
+  }
+  .chatRoom {
+    color: #fff;
+    width: 150px;
+    height: 50px;
+    background-color: #FF6666;
+    border-radius: 10px 10px 0 0;
+    font-size: 18px;
+    line-height: 50px;
+    text-align: center;
+    float: right;
   }
 </style>

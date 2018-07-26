@@ -13,3 +13,4 @@ export const IS_LOGIN = 'IS_LOGIN' //是否登录名称
 export const IS_TIMEOVER = 'IS_TIMEOVER' //是否倒计时结束
 export const CHANGE_CONNECTSTATE = 'CHANGE_CONNECTSTATE'      //改变融云链接状态
 export const GET_UNREADCOUNT = 'GET_UNREADCOUNT'  //获取总的未读会话数
+export const GET_HISTORYSTATE = 'GET_HISTORYSTATE' //获取历史会话状态
