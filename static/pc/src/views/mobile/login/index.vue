@@ -132,10 +132,10 @@
             this.SHOW_LOGIN(false);
             $localStorage.set('tokenInfo', JSON.stringify(res.data.tokenVo));
             //$localStorage.set('userData', aesutil.encrypt(JSON.stringify(res.data)));
-            this.$store.commit('SET_USERDATA',res.data);
             this.$store.dispatch('CHECK_ONLINE', true);
             this.$store.dispatch('UPDATE_TOKEN_INFO', res.data.tokenVo);
             this.$store.dispatch('INIT_INFO');
+            this.$store.commit('SET_USERDATA',res.data);
             _.checkUserBind({userId: res.data.userId})
             _.initRongyun()
             this.$router.replace({name: 'mIndex'});
