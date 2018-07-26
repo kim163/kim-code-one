@@ -1,197 +1,198 @@
 <template>
   <div class="origin_box" :class="{'pcContainer':isPc}">
-  <div class=" wrapper_box  box box-ver">
-    <div class="mainTitle" v-if="isPc">
-      <span class="iconfont icon-left-arrow return_back" @click="returnList()">返回列表</span>
-      <span class="middle_title">会话列表</span>
-      <span class="close_symbol iconfont icon-close" @click="closeChatList"></span>
-    </div>
-    <header class="mobile-header" v-else>
-      <a @click="doClick" class="back-link"> <i class="iconfont icon-left-arrow"></i></a>
-      <span>会话详情</span>
-    </header>
-    <!--付款倒计时-->
-    <!--聊天框-->
-    <div class="chatbox box-f1 box box-ver" :class="{'displayState':!isDisplay,'hiddenState':isDisplay,'pcchatbox':isPc}"
-         id="chatMessage">
-      <div class="order_info">
-        <div class="order_state" :class="{'pcOrder':isPc}">
-          <div class="state_b">
-            <span class="state_d" v-if="userId!==debit">买入</span>
-            <span class="state_n" v-else>卖出</span>
-            <span class="order_num">UET订单编号:</span>
-            <span class="order_d">订单详情</span>
-          </div>
-          <div class="order_c">{{detail}}</div>
-        </div>
-        <div>
-          <!--展开-->
-          <div class="display-box" v-if="isDisplay">
-            <!---->
-            <div class="line" v-if="userId!==debit">
-              <span>卖家:</span>
-              <span class="fr lineColor">{{debitNickname}}</span>
-            </div>
-            <div class="line" v-else>
-              <span>买家</span>
-              <span class="fr lineColor">{{creditNickname}}</span>
-            </div>
-            <div class="line">
-              <span>交易金额:</span>
-              <span class="fr lineColor">{{amount*0.01}} CNY</span>
-            </div>
-            <div class="line">
-              <span>交易数量:</span>
-              <span class="fr lineColor">{{amount}} UET</span>
-            </div>
-            <div class="display" @click="showDisplay" :class="{'displayboxPC':isPc}">
-              <img src="~images/chatWith/hidden.png" alt="">
-            </div>
-          </div>
-          <!--隐藏-->
-          <div class="hidden-box" v-if="!isDisplay">
-            <div class="hiddenbox" :class="{'hiddenboxPC':isPc}" @click="showDisplay">
-              <img src="~images/chatWith/display.png" alt="">
-            </div>
-          </div>
-        </div>
+    <div class=" wrapper_box  box box-ver">
+      <div class="mainTitle" v-if="isPc">
+        <span class="iconfont icon-left-arrow return_back" @click="returnList()">返回列表</span>
+        <span class="middle_title">会话列表</span>
+        <span class="close_symbol iconfont icon-close" @click="closeChatList"></span>
       </div>
-      <p class="countdown" v-if="status==61">
-        申诉锁定
-      </p>
-      <p class="countdown" v-else>
-        等待倒计时:
-        <count-down :end-time="startTime-endTime<=0?0:startTime-endTime"></count-down>
-      </p>
-      <b-scroll
-        ref="scroll"
-        :autoUpdate="true"
-        :pullUp="false"
-        :pullDown="false"
-        :class="{'pcState':isPc}"
-      >
-        <!--历史消息-->
-        <div v-for="list in historyArr" class="msg-item">
-          <!--文字消息 和图片消息   区分是否是自己发的-->
-          <!--自己发的文本消息-->
-          <div class="chat_container"
-               v-show="list.messageType=='TextMessage'&&list.senderUserId==userId">
-            <div style="flex:1"></div>
-            <div>
-              <div class="sendname" style="text-align: right">{{userData.name?userData.name:'null'}}</div>
-              <div class="contents">{{symolEmoji.symbolToEmoji(list.content.content)}}</div>
+      <header class="mobile-header" v-else>
+        <a @click="doClick" class="back-link"> <i class="iconfont icon-left-arrow"></i></a>
+        <span>会话详情</span>
+      </header>
+      <!--付款倒计时-->
+      <!--聊天框-->
+      <div class="chatbox box-f1 box box-ver"
+           :class="{'displayState':!isDisplay,'hiddenState':isDisplay,'pcchatbox':isPc}"
+           id="chatMessage">
+        <div class="order_info">
+          <div class="order_state" :class="{'pcOrder':isPc}">
+            <div class="state_b">
+              <span class="state_d" v-if="userId!==debit">买入</span>
+              <span class="state_n" v-else>卖出</span>
+              <span class="order_num">UET订单编号:</span>
+              <span class="order_d">订单详情</span>
             </div>
-            <div class="user_symbol"></div>
+            <div class="order_c">{{detail}}</div>
           </div>
-          <!--别人发的文本消息-->
-          <div v-if="list.messageType=='TextMessage'&&list.senderUserId!==userId"
-               class="chat_container">
-            <div class="user_symbol_next" :class="{'isSeller':userId!==debit, 'iskefu':JSON.parse(list.content.extra).credit!==list.content.user.id
-            &&JSON.parse(list.content.extra).debit!==list.content.user.id}"></div>
-            <div>
-              <div class="sendname" style="text-align: left">{{list.content.user.name?list.content.user.name:'null'}}
+          <div>
+            <!--展开-->
+            <div class="display-box" v-if="isDisplay">
+              <!---->
+              <div class="line" v-if="userId!==debit">
+                <span>卖家:</span>
+                <span class="fr lineColor">{{debitNickname}}</span>
               </div>
-              <div class="contents_next" v-html="symolEmoji.symbolToEmoji(list.content.content)"></div>
-            </div>
-            <div style="flex: 1"></div>
-          </div>
-          <!--自己发的图片消息-->
-          <div class="chat_container"
-               v-if="list.messageType=='ImageMessage'&&list.senderUserId==userId">
-            <div style="flex:1;"></div>
-            <div class="contents">
-              <viewer :images="list.picArr" style="padding: .5rem">
-                <img alt="" class="contents_image" v-lazy="list.content.imageUri">
-              </viewer>
-            </div>
-            <div class="user_symbol"></div>
-          </div>
-          <!--别人发的图片消息-->
-          <div class="chat_container"
-               v-if="list.messageType=='ImageMessage'&&list.senderUserId!==userId">
-            <div class="user_symbol_next" :class="{'isSeller':userId==debit, 'iskefu':JSON.parse(list.content.extra).credit!==list.content.user.id
-            &&JSON.parse(list.content.extra).debit!==list.content.user.id}"></div>
-            <div>
-              <div class="sendname" style="text-align: left">{{userData.name?userData.name:'null'}}</div>
-              <div class="contents_next">
-                <viewer :images="list.img" style="padding: .5rem">
-                  <img class="contents_image" v-lazy="list.content.imageUri">
-                </viewer>
+              <div class="line" v-else>
+                <span>买家</span>
+                <span class="fr lineColor">{{creditNickname}}</span>
+              </div>
+              <div class="line">
+                <span>交易金额:</span>
+                <span class="fr lineColor">{{amount*0.01}} CNY</span>
+              </div>
+              <div class="line">
+                <span>交易数量:</span>
+                <span class="fr lineColor">{{amount}} UET</span>
+              </div>
+              <div class="display" @click="showDisplay" :class="{'displayboxPC':isPc}">
+                <img src="~images/chatWith/hidden.png" alt="">
               </div>
             </div>
-            <div class="" style="flex: 1"></div>
+            <!--隐藏-->
+            <div class="hidden-box" v-if="!isDisplay">
+              <div class="hiddenbox" :class="{'hiddenboxPC':isPc}" @click="showDisplay">
+                <img src="~images/chatWith/display.png" alt="">
+              </div>
+            </div>
           </div>
         </div>
-        <div v-for="list in chatArr" class="msg-item">
-          <!--发送消息-->
-          <div v-if="list.user==1" class="chat_container">
-            <div class="" style="flex: 1"></div>
-            <div>
-              <div class="sendname" style="text-align: right">{{userData.name?userData.name:'null'}}</div>
-              <div class="contents">{{list.msg}}</div>
+        <p class="countdown" v-if="status==61">
+          申诉锁定
+        </p>
+        <p class="countdown" v-else>
+          等待倒计时:
+          <count-down :end-time="startTime-endTime<=0?0:startTime-endTime"></count-down>
+        </p>
+        <b-scroll
+          ref="scroll"
+          :autoUpdate="true"
+          :pullUp="false"
+          :pullDown="false"
+          :class="{'pcState':isPc}"
+        >
+          <!--历史消息-->
+          <div v-for="list in historyArr" class="msg-item">
+            <!--文字消息 和图片消息   区分是否是自己发的-->
+            <!--自己发的文本消息-->
+            <div class="chat_container"
+                 v-show="list.messageType=='TextMessage'&&list.senderUserId==userId">
+              <div style="flex:1"></div>
+              <div>
+                <div class="sendname" style="text-align: right">{{userData.name?userData.name:'null'}}</div>
+                <div class="contents">{{symolEmoji.symbolToEmoji(list.content.content)}}</div>
+              </div>
+              <div class="user_symbol"></div>
             </div>
-            <div class="user_symbol"></div>
-          </div>
-          <!--发送图片消息-->
-          <div v-if="list.user==3" class="chat_container">
-            <div class="" style="flex: 1"></div>
-            <div>
-              <div class="sendname" style="text-align: right">{{userData.name?userData.name:'null'}}</div>
+            <!--别人发的文本消息-->
+            <div v-if="list.messageType=='TextMessage'&&list.senderUserId!==userId"
+                 class="chat_container">
+              <div class="user_symbol_next" :class="{'isSeller':userId!==debit, 'iskefu':JSON.parse(list.content.extra).credit!==list.content.user.id
+            &&JSON.parse(list.content.extra).debit!==list.content.user.id}"></div>
+              <div>
+                <div class="sendname" style="text-align: left">{{list.content.user.name?list.content.user.name:'null'}}
+                </div>
+                <div class="contents_next" v-html="symolEmoji.symbolToEmoji(list.content.content)"></div>
+              </div>
+              <div style="flex: 1"></div>
+            </div>
+            <!--自己发的图片消息-->
+            <div class="chat_container"
+                 v-if="list.messageType=='ImageMessage'&&list.senderUserId==userId">
+              <div style="flex:1;"></div>
               <div class="contents">
-                <viewer :images="list.img" style="padding: .5rem">
-                  <img alt="" class="contents_image" v-lazy="list.msg">
+                <viewer :images="list.picArr" style="padding: .5rem">
+                  <img alt="" class="contents_image" v-lazy="list.content.imageUri">
                 </viewer>
               </div>
+              <div class="user_symbol"></div>
             </div>
-            <div class="user_symbol"></div>
-          </div>
-          <!--接收文字消息-->
-          <div v-if="list.user==2" class="chat_container">
-            <div class="user_symbol_next" :class="{'isSeller':userId!==list.debit,'isMy':userId==list.userId}"></div>
-            <div>
-              <div class="sendname" style="text-align: left">{{list.sendName?list.sendName:'null'}}</div>
-              <div class="contents_next">{{list.msg}}</div>
-            </div>
-            <div class="" style="flex: 1"></div>
-          </div>
-          <!--接收图片消息-->
-          <div v-if="list.user==4" class="chat_container">
-            <div class="user_symbol_next" :class="{'isSeller':userId!==list.debit}"></div>
-            <div>
-              <div class="sendname" style="text-align: left">{{list.sendName?list.sendName:'null'}}</div>
-              <div class="contents_next">
-                <viewer :images="list.img" style="padding: .5rem">
-                  <img alt="" class="contents_image" v-lazy="list.msg">
-                </viewer>
+            <!--别人发的图片消息-->
+            <div class="chat_container"
+                 v-if="list.messageType=='ImageMessage'&&list.senderUserId!==userId">
+              <div class="user_symbol_next" :class="{'isSeller':userId==debit, 'iskefu':JSON.parse(list.content.extra).credit!==list.content.user.id
+            &&JSON.parse(list.content.extra).debit!==list.content.user.id}"></div>
+              <div>
+                <div class="sendname" style="text-align: left">{{userData.name?userData.name:'null'}}</div>
+                <div class="contents_next">
+                  <viewer :images="list.img" style="padding: .5rem">
+                    <img class="contents_image" v-lazy="list.content.imageUri">
+                  </viewer>
+                </div>
               </div>
+              <div class="" style="flex: 1"></div>
             </div>
-            <div class="" style="flex: 1"></div>
+          </div>
+          <div v-for="list in chatArr" class="msg-item">
+            <!--发送消息-->
+            <div v-if="list.user==1" class="chat_container">
+              <div class="" style="flex: 1"></div>
+              <div>
+                <div class="sendname" style="text-align: right">{{userData.name?userData.name:'null'}}</div>
+                <div class="contents">{{list.msg}}</div>
+              </div>
+              <div class="user_symbol"></div>
+            </div>
+            <!--发送图片消息-->
+            <div v-if="list.user==3" class="chat_container">
+              <div class="" style="flex: 1"></div>
+              <div>
+                <div class="sendname" style="text-align: right">{{userData.name?userData.name:'null'}}</div>
+                <div class="contents">
+                  <viewer :images="list.img" style="padding: .5rem">
+                    <img alt="" class="contents_image" v-lazy="list.msg">
+                  </viewer>
+                </div>
+              </div>
+              <div class="user_symbol"></div>
+            </div>
+            <!--接收文字消息-->
+            <div v-if="list.user==2" class="chat_container">
+              <div class="user_symbol_next" :class="{'isSeller':userId!==list.debit,'isMy':userId==list.userId}"></div>
+              <div>
+                <div class="sendname" style="text-align: left">{{list.sendName?list.sendName:'null'}}</div>
+                <div class="contents_next">{{list.msg}}</div>
+              </div>
+              <div class="" style="flex: 1"></div>
+            </div>
+            <!--接收图片消息-->
+            <div v-if="list.user==4" class="chat_container">
+              <div class="user_symbol_next" :class="{'isSeller':userId!==list.debit}"></div>
+              <div>
+                <div class="sendname" style="text-align: left">{{list.sendName?list.sendName:'null'}}</div>
+                <div class="contents_next">
+                  <viewer :images="list.img" style="padding: .5rem">
+                    <img alt="" class="contents_image" v-lazy="list.msg">
+                  </viewer>
+                </div>
+              </div>
+              <div class="" style="flex: 1"></div>
+            </div>
+          </div>
+        </b-scroll>
+      </div>
+      <!--输入框-->
+      <div class="input_chatbox ">
+        <div class="chatboxNext">
+          <!--PC上加入按回车键也可以发送消息-->
+          <input type="text" class="input_message" v-model="messageValue" id="inputMessage" @keydown="sendInfo($event)">
+          <div class="smile" @click="sendEmoji" :class="{emoji:isChangeValue,input:!isChangeValue}"></div>
+          <div class="more demo1" v-if="!needSend" @click="showMoreFunction"></div>
+          <input type="button" value="发送" class="sendMessage" v-if="needSend" @click="sendMessage">
+        </div>
+        <!--照片 照相机-->
+        <div class="photo_area" v-if="isShowMore">
+          <div class="take_photo take_box" style="position: relative">
+            <img src="~images/chatWith/photo.png" alt="" style="display: block">
+            <span>照片</span>
+            <input type="file" accept="image/*" value="打开照相机" class="openCamera" @change="upload">
           </div>
         </div>
-      </b-scroll>
-    </div>
-    <!--输入框-->
-    <div class="input_chatbox ">
-      <div class="chatboxNext">
-        <!--PC上加入按回车键也可以发送消息-->
-        <input type="text" class="input_message" v-model="messageValue" id="inputMessage" @keydown="sendInfo($event)">
-        <div class="smile" @click="sendEmoji" :class="{emoji:isChangeValue,input:!isChangeValue}"></div>
-        <div class="more demo1" v-if="!needSend" @click="showMoreFunction"></div>
-        <input type="button" value="发送" class="sendMessage" v-if="needSend" @click="sendMessage">
-      </div>
-      <!--照片 照相机-->
-      <div class="photo_area" v-if="isShowMore">
-        <div class="take_photo take_box" style="position: relative">
-          <img src="~images/chatWith/photo.png" alt="" style="display: block">
-          <span>照片</span>
-          <input type="file" accept="image/*" value="打开照相机" class="openCamera" @change="upload">
+        <!--表情-->
+        <div class="emoji_area">
         </div>
       </div>
-      <!--表情-->
-      <div class="emoji_area">
-      </div>
     </div>
-  </div>
 
   </div>
 </template>
@@ -259,10 +260,6 @@
         type: Number,
         default: 0
       },
-      historyState: {
-        type: Number,
-        default: 0
-      },
       userInfoId: {
         type: String,
         default: ''
@@ -280,7 +277,8 @@
       ...mapGetters([
         'userData',
         'userId',
-        'connectState'
+        'connectState',
+        'historyState'
       ]),
 
     },
@@ -297,9 +295,10 @@
           this.sendPic()
         }
       },
-
       historyState(val) {
+        debugger;
         if (val) {
+          debugger;
           this.symolEmoji = RongIMLib.RongIMEmoji;
           this.getHistoryMessage();
           const conversationType = RongIMLib.ConversationType.GROUP
@@ -318,8 +317,11 @@
             onError: () => {
             }
           })
+          debugger;
+          alert(this.detail)
           let groupId = {'groupId': this.detail}
           this.fetchOrder()
+          debugger;
           chatWith.getOrderxInfo(groupId).then(res => {
             this.amount = res.data.amount
             this.founderId = res.data.founderId
@@ -339,10 +341,12 @@
               "founderId": res.data.founderId  //会话发起人id
             }
           })
+          debugger;
           this.scroll = this.$refs.scroll;
           this.scrollToBot()
+          debugger;
         }
-      }
+      },
     },
     created() {
       /*加载bettorScroll*/
@@ -365,13 +369,13 @@
       })
     },
     methods: {
-      ...mapMutations(['CHANGE_CONNECTSTATE']),
+      ...mapMutations(['CHANGE_CONNECTSTATE', 'GET_HISTORYSTATE']),
       doClick() {
-        this.$store.commit('CHANGE_CONNECTSTATE', 3)
+        this.$store.commit('GET_HISTORYSTATE', 0)
         this.$emit('chatShow', false)
       },
-      sendInfo(ev){
-        if(ev.keyCode===13){
+      sendInfo(ev) {
+        if (ev.keyCode === 13) {
           this.sendMessage()
         }
       },
@@ -380,13 +384,12 @@
           orderId: this.detail
         }
         transaction.getOrderx(requestData).then(res => {
-          console.log(res,'速度乌克兰和')
           this.status = res.data.status
           this.startTime = res.data.intervalTime;
           this.endTime = res.data.elapsedTime;
         })
       },
-      closeChatList(){
+      closeChatList() {
         this.$emit('closeChatroom')
       },
       scrollToBot() {
@@ -491,7 +494,6 @@
           onSuccess: ((list, hasMsg) => {
             /*区分图片和消息*/
             this.historyArr = list;
-            console.log(list, '这是历史消息')
             this.scrollToBot()
           }),
           onError: function (error) {
@@ -499,8 +501,10 @@
           }
         })
       },
-      returnList(){
-          this.$emit('openList',true)
+      returnList() {
+        this.$emit('openList', true)
+
+        this.$emit('')
       },
       dataURItoBlob(base64Data) {
         var byteString;
@@ -803,7 +807,7 @@
     width: 100%;
     overflow: auto;
     margin-bottom: .5rem;
-    &.pcchatbox{
+    &.pcchatbox {
 
     }
     .chat_container {
@@ -1029,14 +1033,16 @@
     width: 100%;
     height: r($header-hg);
   }
-  .origin_box{
+
+  .origin_box {
     background-color: #F5F5F5;
   }
+
   .pcContainer {
     position: absolute !important;
     bottom: 0 !important;
     right: 0 !important;
-    top:auto !important;
+    top: auto !important;
     width: 350px !important;
     overflow: hidden;
     z-index: 100 !important;
@@ -1056,7 +1062,7 @@
         color: $font-chatroom-color;
         font-size: 18px;
       }
-      .return_back{
+      .return_back {
         color: $font-chatroom-color;
         font-size: 12px;
         float: left;
@@ -1069,21 +1075,21 @@
         cursor: pointer;
       }
     }
-    .order_state{
+    .order_state {
       padding: r(5) r(10);
     }
-    .chatbox{
+    .chatbox {
       border-left: 1px solid #F1F6FF;
       border-right: 1px solid #F1F6FF;
       margin-bottom: 0;
     }
-    .pcState{
+    .pcState {
       background-color: #F1F6FF;
     }
-    .hiddenboxPC{
+    .hiddenboxPC {
       background-color: #f1f6ff;
     }
-    .displayboxPC{
+    .displayboxPC {
       background-color: #f1f6ff;
     }
   }

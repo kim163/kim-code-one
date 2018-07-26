@@ -1,7 +1,6 @@
 <template>
   <div class="chatList_container box box-ver" :class="{'pcChatList':isPC}">
     <div class="mainTitle" v-if="isPC">
-
       <span class="left_title">会话列表</span>
       <span class="close_symbol iconfont icon-close" @click="closeChatList"></span>
     </div>
@@ -12,7 +11,7 @@
         <span class="no_message">暂无聊天信息</span>
       </div>
       <div v-else-if="chatArr.length>0" class="conversation_item" v-for="(list,num) in chatArr" :key="num"
-         @click="goChatRoom(list.targetId,list.latestMessage.content.user.id)" :class="{'pcState':isPC}">
+           @click="goChatRoom(list.targetId,list.latestMessage.content.user.id)" :class="{'pcState':isPC}">
         <div class="converstation_info box">
           <div class="user_symbol"
                :class="{'user_symbolNext':userId==JSON.parse(list.latestMessage.content.extra).debit}"
@@ -42,7 +41,6 @@
     <transition name="toolSideRight">
       <chat v-show="chatState" class="chatWindow"
             :detail="DetailList.targetId"
-            :historyState="DetailList.historyState"
             :userInfoId ="userInfoId"
             @chatShow="chatStateUpdate"
             @openList="openListUpdate"
@@ -62,7 +60,7 @@
   import mHeader from "components/m-headnav"
   import mFooter from 'components/m-navbar'
   import {chatWith} from 'api'
-  import {mapGetters} from 'vuex'
+  import {mapGetters,mapMutations} from 'vuex'
 
   export default {
     name: "chatList",
@@ -101,6 +99,7 @@
         'userId',
         'userData',
         'connectState',
+
       ])
     },
     props:{
@@ -117,9 +116,7 @@
       }
     },
     methods: {
-      getCount(n) {
-        return this.countUnreadNum.length > 0 && !_.isUndefined(this.countUnreadNum[n]) ? this.countUnreadNum[n].count : ''
-      },
+      ...mapMutations(['GET_HISTORYSTATE']),
       chatStateUpdate(value){
         this.chatState = value
       },
@@ -157,6 +154,8 @@
         this.$emit('closeChatroom',false)
       },
       goChatRoom(id,userId) {
+
+        debugger
         const requestData = {
           userId: this.userId,
           groupId: id
@@ -176,11 +175,13 @@
             });
             return
           } else {
+            debugger;
             /!*先情调未读消息数*!/
+            debugger;
             this.DetailList.targetId = id;
-            this.DetailList.historyState = 3;
             this.userInfoId= userId
             this.formListState= true
+            this.$store.commit('GET_HISTORYSTATE',3)
             /*清楚未读绘画*/
             const conversationType = RongIMLib.ConversationType.GROUP
             RongIMClient.getInstance().clearUnreadCount(conversationType,id,{
@@ -188,6 +189,7 @@
                 RongIMClient.getInstance().getTotalUnreadCount({
                   onSuccess:(count)=>{
                     this.$store.commit('GET_UNREADCOUNT',count)
+                    debugger;
                     this.chatState = true;
                     this.$store.commit('CHANGE_CONNECTSTATE', true)
                   },
@@ -440,7 +442,7 @@
   .pcChatList{
     position: absolute;
     bottom: 0;
-    right: 0;
+    right: 15px;
     width: 350px;
     border-radius: 10px 10px 0 0 ;
 
