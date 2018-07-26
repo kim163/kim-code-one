@@ -16,7 +16,8 @@ export default new Vuex.Store({
       nickname: '',
       amount: '',
       userId: '',
-      accountChainVos: []
+      accountChainVos: [],
+      nodeId:'0'
     },
     language: $localStorage.get('language-sel') || 'zh',
     tokenInfo: null,

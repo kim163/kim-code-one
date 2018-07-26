@@ -33,7 +33,7 @@ service.interceptors.request.use(config => {
     config.headers['content-type'] = 'multipart/form-data'
   } else {
     const userData = store.getters.userData
-    const nodeId = userData.nodeId > 0 ? `${userData.nodeId}_${userData.merchantId}` : userData.nodeId
+    const nodeId = Number(userData.nodeId) > 0 ? `${userData.nodeId}_${userData.merchantId}` : userData.nodeId
     config.data = {
       nodeId,
       requestData: aesutil.encrypt(JSON.stringify(config.data))
