@@ -288,7 +288,6 @@
         v-show="chatState"
         :detail="orderId"
         :debitNum="DetailList.debitAmount"
-        :historyState="DetailList.historyState"
         @chatShow="chatStateUpdate"
         :isPc="isPCstate"
         @openList="openListUpdate"
