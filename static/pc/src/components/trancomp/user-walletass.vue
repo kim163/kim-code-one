@@ -6,10 +6,10 @@
           <balance></balance>
         </h3>
         <div class="qrcode">
-           <qrcode :text="item.address" v-if="item.address" :logoSrc="Logo" :logoScale="0.2" :size="188"></qrcode>
+           <qrcode :text="'UET,'+item.address" v-if="item.address" :logoSrc="Logo" :logoScale="0.2" :size="188"></qrcode>
         </div>
-        <p class="address"> {{item.address}} </p>
-        <a href="javascript:void(0);" class="copy-btn" @click="copystr(item.address)" >{{$t('transactionHome.copyBtn')}}</a>
+        <p class="address"> {{'UET,'+item.address}} </p>
+        <a href="javascript:void(0);" class="copy-btn" @click="copystr('UET,'+item.address)" >{{$t('transactionHome.copyBtn')}}</a>
      </div>
 
   </div>
