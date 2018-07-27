@@ -494,11 +494,14 @@
         }
         this.payOrderParam.id = this.orderId;
         this.payOrderParam.creditProofTypeTwin = this.DetailList.creditProofTypeTwin;
+        console.log('payOrderV2 param:', this.payOrderParam);
         transaction.payOrderV2(this.payOrderParam).then(res => {
           if (res.code == '10000') {
             toast('您已确认付款，请勿重复付款');
             this.fetchData();
             this.payOrderStep = 1;
+          }else {
+            toast(res.message);
           }
 
         }).catch(err => {
@@ -562,6 +565,8 @@
           if (res.code == '10000') {
             toast('申诉创建成功');
             this.$router.push({name: 'orderDetailAppeal', params: {id: this.orderId}});
+          }else {
+            toast(res.message);
           }
         }).catch(err => {
           toast(err.message);
@@ -621,10 +626,6 @@
 <style lang="scss" scoped>
   .txt-imcenter {
     text-align: center !important;
-  }
-
-  .modal-payorder {
-    margin: 20px auto 0;
   }
 
   div.pop-con {
