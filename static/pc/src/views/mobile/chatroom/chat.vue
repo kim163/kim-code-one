@@ -3,7 +3,7 @@
     <div class=" wrapper_box  box box-ver">
       <div class="mainTitle" v-if="isPc">
         <span class="iconfont icon-left-arrow return_back" @click="returnList()">返回列表</span>
-        <span class="middle_title">会话列表</span>
+        <span class="middle_title">会话详情</span>
         <span class="close_symbol iconfont icon-close" @click="closeChatList"></span>
       </div>
       <header class="mobile-header" v-else>
@@ -1093,7 +1093,7 @@
   }
 
   .pcContainer {
-    position: absolute !important;
+    position: fixed !important;
     bottom: 0 !important;
     right: 0 !important;
     top: auto !important;
