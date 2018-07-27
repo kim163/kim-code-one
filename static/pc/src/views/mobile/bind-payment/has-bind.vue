@@ -3,7 +3,7 @@
     <div class="main">
       <div class="qr-code">
         <div class="qr-img">
-          <img :src="dataInfo[0].qrCodeUrl"/>
+          <img v-lazy="dataInfo[0].qrCodeUrl"/>
         </div>
       </div>
       <div class="info">
@@ -49,7 +49,7 @@
         width: 50%;
         min-height: r(100);
         margin: 0 auto;
-        background: url("~images/logo.png") no-repeat center #e1e1e1;
+        /*background: url("~images/logo.png") no-repeat center #e1e1e1;*/
         img{
           width: 100%;
         }

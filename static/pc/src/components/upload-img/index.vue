@@ -179,8 +179,9 @@
       },
       removeImg(item){
         const index = _(this.picListArr).findIndex((pic) => {
-          return pic = item
+          return pic === item
         })
+        debugger
         this.picListArr.splice(index,1)
         this.picUrlArr.splice(index,1)
         this.$emit("gitPicUrl", this.picUrlArr);
