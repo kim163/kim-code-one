@@ -71,7 +71,7 @@
     word-break: break-all;
     font-size: 16px;
     color: #333333;
-    max-width: 230px;
+    max-width: 280px;
     text-align: center;
     margin: 10px auto 15px;
     line-height: 24px;
