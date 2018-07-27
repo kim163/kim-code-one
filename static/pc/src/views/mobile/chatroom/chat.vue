@@ -305,6 +305,7 @@
             return
           }
           let groupId = {'groupId': this.detail}
+          console.log(this.detail,'as')
           chatWith.getOrderxInfo(groupId).then(res => {
             this.amount = res.data.amount
             this.founderId = res.data.founderId
@@ -326,7 +327,7 @@
           })
           this.$nextTick(()=>{
             this.scroll = this.$refs.scroll;
-            this.scrollToBot()
+         //   this.scrollToBot()
           })
 
         }
@@ -348,7 +349,7 @@
       historyState(val) {
         if (val) {
           this.symolEmoji = RongIMLib.RongIMEmoji;
-          this.getHistoryMessage();
+          this.getHistoryMessage();j
           const conversationType = RongIMLib.ConversationType.GROUP
           const id = this.detail
           RongIMClient.getInstance().clearUnreadCount(conversationType, id, {
@@ -395,7 +396,9 @@
     created() {
       /*加载bettorScroll*/
       Vue.$global.bus.$on('textMessage', (message) => {
+        console.log(message,'圣诞节啊速度加快')
         this.chatArr.push(message)
+        console.log(this.chatArr,'四大皆空打算')
         this.symolEmoji = RongIMLib.RongIMEmoji;
         this.clearUnreadCount()
         this.scrollToBot()
@@ -434,11 +437,9 @@
           orderId: this.detail
         }
         transaction.getOrderx(requestData).then(res => {
-          console.log(res,'晚上')
           this.status = res.data.status
           this.startTime = res.data.intervalTime;
           this.endTime = res.data.elapsedTime;
-          console.log(this.startTime,this.endTime,'圣诞节嘎嘎嘎嘎嘎嘎')
         })
       },
       closeChatList() {
@@ -547,7 +548,7 @@
           onSuccess: ((list, hasMsg) => {
             /*区分图片和消息*/
             console.log(list,'这是历史兄啊西')
-            this.historyArr = list;
+            this.historyArr=list;
             this.$forceUpdate()
             this.scrollToBot()
           }),
