@@ -267,7 +267,7 @@
             </ul>
             <div class="payscreen-part">
               <p class="title">您的付款截图 <span>（选填项）</span></p>
-              <upload-img :uploadImgSet="uploadImgSet" @gitPicUrl="gitPicUrl"></upload-img>
+              <upload-img :uploadImgSet="uploadImgSet" @gitPicUrl="gitPicUrl" :showClose="true"></upload-img>
             </div>
             <div class="paybtn-group">
               <input type="button" class="btn cancel" value="取消" @click="payOrderStep=1"/>
@@ -279,15 +279,21 @@
       </div>
     </div>
     <div class="chatRoom" @click="showChatList()" v-if="chatOnline">
-      <span class="iconfont icon-tab-talk"></span> 在线聊天
+      <div class="chatRoom_content">
+        <span class="iconfont icon-tab-talk"></span> 在线聊天
+        <div class="unread-count" v-show="unreadCountUpdate>0" :class="{'upMax':unreadCountUpdate>99}">{{unreadCountUpdate}}
+        <span class="add_symbol" v-show="unreadCountUpdate>99">+</span>
+        </div>
+      </div>
     </div>
     <div v-show="isPCstate" style="position: relative">
       <chatList :isPC="isPCstate" v-if="openListState" @closeChatroom="iscloseChatroom"></chatList>
       <chat
         class="chatWindow"
-        v-show="chatState"
+        v-if="chatState"
         :detail="orderId"
         :debitNum="DetailList.debitAmount"
+        :historyState="DetailList.historyState"
         @chatShow="chatStateUpdate"
         :isPc="isPCstate"
         @openList="openListUpdate"
@@ -348,7 +354,9 @@
         uploadImgSet: {
           maxUploadNum: 3,       // 最大上传数量，如果没有最大上传数量，传 -1
           uploadImgTips: 'component.uploadUpThree',  // 上传图片提示文字
-          isShowUploadTip: true             // 是否有上传文件提示信息
+          isShowUploadTip: true,             // 是否有上传文件提示信息
+          maxWidth: 600,
+          maxHeight: 600
         },
         setBankcard: {
           pleaseSelTitle: 'component.pleaseSelPayMet',         // 请选择标题文字
@@ -365,7 +373,8 @@
         showConfirmPayment: false,
         typeState: 1,
         openListState: false,
-        chatOnline:true
+        chatOnline:true,
+        buyTypeBuyBank: ''
       };
     },
     methods: {
@@ -433,6 +442,8 @@
             toast('您已取消，请勿重复操作');
             Vue.$global.bus.$emit('update:tranList');
             this.$router.push({name: 'tranRecord'});
+          }else {
+            toast(res.message);
           }
         }).catch(err => {
           toast(err.message);
@@ -482,22 +493,41 @@
             }
             if (this.selAccountTypeTwin.type == -1) {
               if (!this.checkPayDetail()) return;
+              if (this.payOrderParam.creditAccountTypeTwin == 1) {
+                this.buyTypeBuyBank = '支付宝';
+              } else if (this.payOrderParam.creditAccountTypeTwin == 2) {
+                this.buyTypeBuyBank = '微信';
+              } else{
+                this.buyTypeBuyBank = this.payOrderParam.creditAccountMerchantTwin;
+              }
             } else {
+              if (this.selAccountTypeTwin.type == 1) {
+                this.buyTypeBuyBank = '支付宝';
+              } else if (this.selAccountTypeTwin.type == 2) {
+                this.buyTypeBuyBank = '微信';
+              } else {
+                this.buyTypeBuyBank = this.selAccountTypeTwin.bank;
+              }
+
               this.payOrderParam.creditAccountTypeTwin = this.selAccountTypeTwin.type;
               this.payOrderParam.creditAccountNameTwin = this.selAccountTypeTwin.name;
               this.payOrderParam.creditAccountTwin = this.selAccountTypeTwin.account;
-              this.payOrderParam.creditAccountMerchantTwin = this.selAccountTypeTwin.bank;
               this.payOrderParam.creditAmountTwin = this.DetailList.debitAmountTwin;
             }
           }
         }
+
+        this.payOrderParam.creditAccountMerchantTwin = this.buyTypeBuyBank;
         this.payOrderParam.id = this.orderId;
         this.payOrderParam.creditProofTypeTwin = this.DetailList.creditProofTypeTwin;
+        console.log('payOrderV2 param:', this.payOrderParam);
         transaction.payOrderV2(this.payOrderParam).then(res => {
           if (res.code == '10000') {
             toast('您已确认付款，请勿重复付款');
             this.fetchData();
             this.payOrderStep = 1;
+          }else {
+            toast(res.message);
           }
 
         }).catch(err => {
@@ -517,10 +547,10 @@
         }
         chatWith.createChatGroup(params).then(res => {
           if (res.code === 10000) {
-            this.chatState = true
             this.DetailList.historyState = 2
             this.isPCstate = !this.isPCstate
             this.chatOnline = false
+            this.chatState = true
           } else {
             toast(res.message)
           }
@@ -561,6 +591,8 @@
           if (res.code == '10000') {
             toast('申诉创建成功');
             this.$router.push({name: 'orderDetailAppeal', params: {id: this.orderId}});
+          }else {
+            toast(res.message);
           }
         }).catch(err => {
           toast(err.message);
@@ -596,7 +628,16 @@
       }
     },
     computed: {
-      ...mapGetters(["userData", "islogin", "userId", 'connectState'])
+      ...mapGetters(["userData", "islogin", "userId", 'connectState','unreadCount']),
+      unreadCountUpdate(){
+        if(this.unreadCount<0){
+          return 0
+        }else if(this.unreadCount>99){
+          return 99
+        }else {
+          return this.unreadCount
+        }
+      }
     },
     components: {
       navMenu, breadCrumbs, vFooter, NoDataTip, getBankcard, uploadImg, CountDown, confirmDialog, chatList, chat
@@ -620,10 +661,6 @@
 <style lang="scss" scoped>
   .txt-imcenter {
     text-align: center !important;
-  }
-
-  .modal-payorder {
-    margin: 20px auto 0;
   }
 
   div.pop-con {
@@ -1014,6 +1051,9 @@
   }
 
   .chatRoom {
+    position: fixed;
+    right: 0;
+    bottom: 0;
     color: #fff;
     width: 150px;
     height: 50px;
@@ -1023,5 +1063,35 @@
     line-height: 50px;
     text-align: center;
     float: right;
+    .chatRoom_content{
+      position: relative;
+    }
   }
+
+    .unread-count {
+      display: inline-block;
+      border-radius: 50%;
+      padding: 0 5px;
+      background-color: red;
+      font-size: 12px;
+      text-align: center;
+      margin: 0 auto;
+      color: #fff;
+      line-height: 17px;
+      vertical-align: top;
+      margin-top: 7px;
+      position: relative;
+      &.upMax{
+        padding: 0 10px 0 5px;
+      }
+      .add_symbol {
+        position: absolute;
+        top: -3px;
+        right: 0;
+        margin-top: -1px;
+        font-size: 14px;
+        font-weight: bold;
+      }
+    }
+
 </style>

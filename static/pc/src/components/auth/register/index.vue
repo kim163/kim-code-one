@@ -159,13 +159,15 @@
             if(res.code == 10000){
               this.$emit('input',false);
               this.SHOW_LOGIN(false);
-
-              let {rquest} = this.$route.name;
+              console.log(this.$route)
+              // const rquest = this.$route.name;
               $localStorage.set('tokenInfo', JSON.stringify(res.data.tokenVo));
-              $localStorage.set('userData', JSON.stringify(aesutil.encrypt(res.data.userId)))
-              this.$store.dispatch('UPDATE_USERDATA');
-
-              this.$router.push({path:rquest});
+              //$localStorage.set('userData', aesutil.encrypt(JSON.stringify(res.data)));
+              this.$store.dispatch('CHECK_ONLINE', true);
+              this.$store.dispatch('UPDATE_TOKEN_INFO', res.data.tokenVo);
+              this.$store.dispatch('INIT_INFO');
+              this.$store.commit('SET_USERDATA',res.data);
+              _.initRongyun()
             }else{
               toast(res.message);
             }

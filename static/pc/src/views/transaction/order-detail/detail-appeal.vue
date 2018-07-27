@@ -183,14 +183,20 @@
       <div slot="leftBtn" class="confirm-btn-cancel">{{$t('postPend.cancel')}}</div>
       <div slot="rightBtn" @click="payCompleted">{{$t('orderDetailPay.confirmPayBtn')}}</div>
     </confirm-dialog>
+    <!--聊天部分-->
     <div class="chatRoom" @click="showChatList()" v-if="chatOnline">
-      <span class="iconfont icon-tab-talk"></span> 在线聊天
+      <div class="chatRoom_content">
+        <span class="iconfont icon-tab-talk"></span> 在线聊天
+        <div class="unread-count" v-show="unreadCountUpdate>0" :class="{'upMax':unreadCountUpdate>99}">{{unreadCountUpdate}}
+          <span class="add_symbol" v-show="unreadCountUpdate>99">+</span>
+        </div>
+      </div>
     </div>
     <div v-show="isPCstate" style="position: relative">
       <chatList :isPC="isPCstate" v-if="openListState" @closeChatroom="iscloseChatroom"></chatList>
       <chat
         class="chatWindow"
-        v-show="chatState"
+        v-if="chatState"
         :detail="orderId"
         :debitNum="DetailList.debitAmount"
         :historyState="DetailList.historyState"
@@ -202,6 +208,7 @@
     </div>
     <v-footer ></v-footer>
   </div>
+
 </template>
 
 <script>
@@ -334,10 +341,10 @@
         }
         chatWith.createChatGroup(params).then(res => {
           if (res.code === 10000) {
-            this.chatState = true
             this.DetailList.historyState = 2
-            this.isPCstate = !this.isPCstate
+            this.isPCstate = true
             this.chatOnline = false
+            this.chatState = true
           } else {
             toast(res.message)
           }
@@ -359,7 +366,7 @@
       }
     },
     computed: {
-      ...mapGetters(["userData","islogin","userId",'connectState']),
+      ...mapGetters(["userData","islogin","userId",'connectState','unreadCount']),
       reverseAppealList() {
         // 按照时间倒序显示数据
         if(this.AppealList.appealDetailList.length>0){
@@ -372,6 +379,15 @@
         }
 
         return this.AppealList.appealDetailList.reverse();
+      },
+      unreadCountUpdate(){
+        if(this.unreadCount<0){
+          return 0
+        }else if(this.unreadCount>99){
+          return 99
+        }else {
+          return this.unreadCount
+        }
       }
     },
     components: {
@@ -737,5 +753,33 @@
     line-height: 50px;
     text-align: center;
     float: right;
+    position: fixed;
+    right: 0;
+    bottom: 0;
+  }
+  .unread-count {
+    display: inline-block;
+    border-radius: 50%;
+    padding: 0 5px;
+    background-color: red;
+    font-size: 12px;
+    text-align: center;
+    margin: 0 auto;
+    color: #fff;
+    line-height: 17px;
+    vertical-align: top;
+    margin-top: 7px;
+    position: relative;
+    &.upMax{
+      padding: 0 10px 0 5px;
+    }
+    .add_symbol {
+      position: absolute;
+      top: -3px;
+      right: 0;
+      margin-top: -1px;
+      font-size: 14px;
+      font-weight: bold;
+    }
   }
 </style>

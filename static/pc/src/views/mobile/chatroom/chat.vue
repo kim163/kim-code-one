@@ -3,7 +3,7 @@
     <div class=" wrapper_box  box box-ver">
       <div class="mainTitle" v-if="isPc">
         <span class="iconfont icon-left-arrow return_back" @click="returnList()">返回列表</span>
-        <span class="middle_title">会话列表</span>
+        <span class="middle_title">会话详情</span>
         <span class="close_symbol iconfont icon-close" @click="closeChatList"></span>
       </div>
       <header class="mobile-header" v-else>
@@ -280,25 +280,8 @@
         'connectState',
         'historyState'
       ]),
-
-    },
-    watch: {
-      messageValue(newParm, oldParm) {
-        if (newParm) {
-          this.needSend = true
-        } else {
-          this.needSend = false
-        }
-      },
-      uploadState(newParm, oldParm) {
-        if (newParm) {
-          this.sendPic()
-        }
-      },
-      historyState(val) {
-        debugger;
-        if (val) {
-          debugger;
+      /*PC上需要*/
+      historyState(){
           this.symolEmoji = RongIMLib.RongIMEmoji;
           this.getHistoryMessage();
           const conversationType = RongIMLib.ConversationType.GROUP
@@ -317,11 +300,11 @@
             onError: () => {
             }
           })
-          debugger;
-          alert(this.detail)
-          let groupId = {'groupId': this.detail}
           this.fetchOrder()
-          debugger;
+          if(!this.detail){
+            return
+          }
+          let groupId = {'groupId': this.detail}
           chatWith.getOrderxInfo(groupId).then(res => {
             this.amount = res.data.amount
             this.founderId = res.data.founderId
@@ -341,13 +324,74 @@
               "founderId": res.data.founderId  //会话发起人id
             }
           })
-          debugger;
+          this.$nextTick(()=>{
+            this.scroll = this.$refs.scroll;
+            this.scrollToBot()
+          })
+
+        }
+
+    },
+    watch: {
+      messageValue(newParm, oldParm) {
+        if (newParm) {
+          this.needSend = true
+        } else {
+          this.needSend = false
+        }
+      },
+      uploadState(newParm, oldParm) {
+        if (newParm) {
+          this.sendPic()
+        }
+      },
+      historyState(val) {
+        if (val) {
+          this.symolEmoji = RongIMLib.RongIMEmoji;
+          this.getHistoryMessage();
+          const conversationType = RongIMLib.ConversationType.GROUP
+          const id = this.detail
+          RongIMClient.getInstance().clearUnreadCount(conversationType, id, {
+            onSuccess: (res) => {
+              RongIMClient.getInstance().getTotalUnreadCount({
+                onSuccess: (count) => {
+                  this.$store.commit('GET_UNREADCOUNT', count)
+                },
+                onError: (error) => {
+                  // error => 获取总未读数错误码。
+                }
+              });
+            },
+            onError: () => {
+            }
+          })
+          this.fetchOrder()
+          let groupId = {'groupId': this.detail}
+          chatWith.getOrderxInfo(groupId).then(res => {
+            this.amount = res.data.amount
+            this.founderId = res.data.founderId
+            this.credit = res.data.credit
+            this.debit = res.data.debit
+            this.creditNickname = res.data.creditNickname
+            this.debitNickname = res.data.debitNickname
+            this.founderRoleType = res.data.founderRoleType
+            this.type = res.data.type
+            this.extraData = {
+              "credit": res.data.credit, //买方id
+              "debit": res.data.debit,  //卖方id
+              "amount": res.data.amount, //交易数量
+              "assetCode": res.data.assetCode, //资产编码
+              "founderNickname": res.data.founderNickname,  //发起人昵称
+              "founderRoleType": res.data.founderRoleType,  //发起角色类型
+              "founderId": res.data.founderId  //会话发起人id
+            }
+          })
           this.scroll = this.$refs.scroll;
           this.scrollToBot()
-          debugger;
         }
       },
     },
+
     created() {
       /*加载bettorScroll*/
       Vue.$global.bus.$on('textMessage', (message) => {
@@ -368,6 +412,9 @@
         this.portrait = val
       })
     },
+    mounted(){
+      this.fetchOrder()
+    },
     methods: {
       ...mapMutations(['CHANGE_CONNECTSTATE', 'GET_HISTORYSTATE']),
       doClick() {
@@ -380,13 +427,18 @@
         }
       },
       fetchOrder() {
+        if(!this.detail){
+          return
+        }
         const requestData = {
           orderId: this.detail
         }
         transaction.getOrderx(requestData).then(res => {
+          console.log(res,'晚上')
           this.status = res.data.status
           this.startTime = res.data.intervalTime;
           this.endTime = res.data.elapsedTime;
+          console.log(this.startTime,this.endTime,'圣诞节嘎嘎嘎嘎嘎嘎')
         })
       },
       closeChatList() {
@@ -486,6 +538,7 @@
         }
       },
       getHistoryMessage() {
+        this.historyArr=[]
         let conversationType = RongIMLib.ConversationType.GROUP //eslint-disable-line
         let targetId = this.detail
         let timestrap = 0 // 默认传 null，若从头开始获取历史消息，请赋值为 0 ,timestrap = 0;
@@ -493,7 +546,9 @@
         RongIMLib.RongIMClient.getInstance().getHistoryMessages(conversationType, targetId, timestrap, count, {
           onSuccess: ((list, hasMsg) => {
             /*区分图片和消息*/
+            console.log(list,'这是历史兄啊西')
             this.historyArr = list;
+            this.$forceUpdate()
             this.scrollToBot()
           }),
           onError: function (error) {
@@ -503,8 +558,7 @@
       },
       returnList() {
         this.$emit('openList', true)
-
-        this.$emit('')
+        this.$store.commit('GET_HISTORYSTATE', 0)
       },
       dataURItoBlob(base64Data) {
         var byteString;
@@ -1039,7 +1093,7 @@
   }
 
   .pcContainer {
-    position: absolute !important;
+    position: fixed !important;
     bottom: 0 !important;
     right: 0 !important;
     top: auto !important;
@@ -1049,7 +1103,7 @@
     height: 500px !important;
     border-radius: 10px 10px 0 0;
     background-color: transparent;
-
+    left: auto !important;
     .mainTitle {
       background-color: $main-color;
       border-radius: 10px 10px 0 0;
