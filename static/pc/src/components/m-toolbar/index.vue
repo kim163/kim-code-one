@@ -6,7 +6,7 @@
 
           <div @click="myValue=false" class="tool-user-info">
             <div class="account-img">
-               <img src="./images/juan-logo.svg" >
+               <img :src="getLogo" >
             </div>
           </div>
           <div v-if="islogin" @click="myValue=false">
@@ -51,6 +51,9 @@
   import {mapGetters} from 'vuex'
   import Balance from 'components/balance'
   import getLive800 from 'components/get-live800'
+  import {$localStorage} from '@/util/storage'
+
+  import jiuanLogo from './images/juan-logo.svg'
 
   export default {
     data() {
@@ -67,6 +70,14 @@
       ...mapGetters(["userData", 'islogin']),
       language() {
           return this.$store.getters.language
+      },
+      getLogo(){
+        const menuStyle = JSON.parse($localStorage.get('menuStyle'))
+        let logoSrc = jiuanLogo
+        if(menuStyle){
+          logoSrc = menuStyle.icon
+        }
+        return logoSrc
       }
     },
     watch: {
@@ -144,6 +155,11 @@
       .mt-line{
         margin-top: r(10);
       }
+    }
+    .tool-custom{ //定制版头部
+      width: 100%;
+      background: #3573fa;
+      min-height: r(100);
     }
   }
 </style>
