@@ -39,7 +39,7 @@
       </div>
     </div>
     <transition name="toolSideRight">
-      <chat v-show="chatState" class="chatWindow"
+      <chat v-if="chatState" class="chatWindow"
             :detail="DetailList.targetId"
             :userInfoId ="userInfoId"
             @chatShow="chatStateUpdate"
@@ -441,7 +441,7 @@
     right: 15px;
     width: 350px;
     border-radius: 10px 10px 0 0 ;
-
+    height: 300px;
     .mainTitle{
       background-color: $main-color;
       border-radius: 10px 10px 0 0;

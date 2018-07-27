@@ -152,10 +152,8 @@
         show.register(this.requestdata).then(res => {
             if(res.code == 10000){
               console.log('register success :', res);
-
               this.$emit('input',false);
               this.SHOW_LOGIN(false);
-
               $localStorage.set('tokenInfo', JSON.stringify(res.data.tokenVo));
               $localStorage.set('userData', JSON.stringify(aesutil.encrypt(res.data.userId)));
               this.$store.dispatch('CHECK_ONLINE', true);
