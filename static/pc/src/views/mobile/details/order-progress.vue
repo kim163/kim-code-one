@@ -175,7 +175,7 @@
         </ul>
         <div class="payscreen-part">
           <p class="title">您的付款截图 <span>（选填项）</span></p>
-          <upload-img :uploadImgSet="uploadImgSet" @gitPicUrl="gitPicUrl"></upload-img>
+          <upload-img :uploadImgSet="uploadImgSet" @gitPicUrl="gitPicUrl" :showClose="true"></upload-img>
         </div>
         <div class="paybtn-group">
           <input type="button" class="mobile-pubtn" value="提交" @click="payOrder"/>
@@ -287,7 +287,7 @@
               v-if="DetailList.creditAccountMerchantTwin == '支付宝' || DetailList.creditAccountMerchantTwin == '微信'">
             <span class="l-title">付款二维码 : </span>
             <div class="qrcode-box">
-              <img src="~images/qrcode.jpg" :src="DetailList.debitAccountQrCodeUrlTwin" class="qrcode-img"/>
+              <img src="~images/qrcode.jpg" :src="DetailList.creditAccountQrCodeUrlTwin" class="qrcode-img"/>
             </div>
           </li>
 
@@ -379,7 +379,9 @@
         uploadImgSet: {
           maxUploadNum: 3,       // 最大上传数量，如果没有最大上传数量，传 -1
           uploadImgTips: 'component.uploadUpThree',  // 上传图片提示文字
-          isShowUploadTip: true             // 是否有上传文件提示信息
+          isShowUploadTip: true,             // 是否有上传文件提示信息
+          maxWidth: 600,
+          maxHeight: 600
         },
         setBankcard: {
           pleaseSelTitle: 'component.pleaseSelPayMet',         // 请选择标题文字
@@ -396,6 +398,7 @@
         },
         countDownTime: 0,
         typeState: 1,
+        buyTypeBuyBank: ''
       };
     },
     methods: {
@@ -451,6 +454,8 @@
             toast('您已取消，请勿重复操作');
             Vue.$global.bus.$emit('update:tranList');
             this.$router.push({name: 'mTranRecord'});
+          }else {
+            toast(res.message);
           }
         }).catch(err => {
           toast(err.message);
@@ -495,15 +500,31 @@
             }
             if (this.selAccountTypeTwin.type == -1) {
               if (!this.checkPayDetail()) return;
+              if (this.payOrderParam.creditAccountTypeTwin == 1) {
+                this.buyTypeBuyBank = '支付宝';
+              } else if (this.payOrderParam.creditAccountTypeTwin == 2) {
+                this.buyTypeBuyBank = '微信';
+              } else{
+                this.buyTypeBuyBank = this.payOrderParam.creditAccountMerchantTwin;
+              }
             } else {
+              if (this.selAccountTypeTwin.type == 1) {
+                this.buyTypeBuyBank = '支付宝';
+              } else if (this.selAccountTypeTwin.type == 2) {
+                this.buyTypeBuyBank = '微信';
+              } else {
+                this.buyTypeBuyBank = this.selAccountTypeTwin.bank;
+              }
+
               this.payOrderParam.creditAccountTypeTwin = this.selAccountTypeTwin.type;
               this.payOrderParam.creditAccountNameTwin = this.selAccountTypeTwin.name;
               this.payOrderParam.creditAccountTwin = this.selAccountTypeTwin.account;
-              this.payOrderParam.creditAccountMerchantTwin = this.selAccountTypeTwin.bank;
               this.payOrderParam.creditAmountTwin = this.DetailList.debitAmountTwin;
             }
           }
         }
+
+        this.payOrderParam.creditAccountMerchantTwin = this.buyTypeBuyBank;
         this.payOrderParam.id = this.orderId;
         this.payOrderParam.creditProofTypeTwin = this.DetailList.creditProofTypeTwin;
         transaction.payOrderV2(this.payOrderParam).then(res => {
@@ -511,6 +532,8 @@
             toast('您已确认付款，请勿重复付款');
             this.fetchData();
             this.payOrderStep = 1;
+          }else {
+            toast(res.message);
           }
 
         }).catch(err => {
@@ -559,6 +582,8 @@
           if (res.code == '10000') {
             toast('申诉创建成功');
             this.$router.push({name: 'mOrderAppeal', params: {id: this.orderId}});
+          }else {
+            toast(res.message);
           }
         }).catch(err => {
           toast(err.message);

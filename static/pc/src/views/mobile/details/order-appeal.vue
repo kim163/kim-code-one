@@ -170,66 +170,34 @@
         </div>
 
         <div class="appeal-list">
-            <ul class="appeal-list-ul"  v-if="DetailList.credit == userId">
-              <li v-for="(item,i) in reverseAppealList" >
-                <!-- 我是买家 DetailList.credit == userId-->
-                <!-- 我是卖家 DetailList.debit == userId-->
-                <div v-if="item.sourceType == 4" class="you-msg">
+          <ul class="appeal-list-ul" v-if="reverseAppealList.length>0">
+            <li v-for="(item,i) in reverseAppealList" >
+              <!-- 我是买家 DetailList.credit == userId-->
+              <!-- 我是卖家 DetailList.debit == userId-->
+              <div :class="{'you-msg':isCredit}">
                   <span class="userAvator">
                     {{item.sourceTypeText }}
                   </span>
-                  <div class="mes-box">
-                    <p class="msg-time">{{item.createtime | Date('yyyy-MM-dd hh:mm:ss') }}</p>
-                    <div class="mes-box-in">
-                      <img v-if="item.attachmentUrls"  :src="item.attachmentUrls" class="mes-img">
-                      <p class="msg-details">{{item.content }}</p>
+                <div class="mes-box">
+                  <p class="msg-time">{{item.createtime | Date('yyyy-MM-dd hh:mm:ss') }}</p>
+                  <div class="mes-box-in">
+                    <div v-if="item.attachmentUrls">
+                       <span v-for="proofImg in item.attachmentUrls||[]" class="attach-img">
+                         <viewer :images="item.attachmentUrls">
+                           <img :src="proofImg" class="mes-img">
+                         </viewer>
+                       </span>
                     </div>
+
+                    <p class="msg-details">{{item.content }}</p>
                   </div>
                 </div>
-                <div v-else >
-                  <span class="userAvator">{{item.sourceTypeText }}</span>
-                  <div class="mes-box">
-                    <p class="msg-time">{{item.createtime | Date('yyyy-MM-dd hh:mm:ss') }}</p>
-                    <div class="mes-box-in">
-                      <img v-if="item.attachmentUrls"  :src="item.attachmentUrls" class="mes-img">
-                      <p class="msg-details">{{item.content }}</p>
-                    </div>
-                  </div>
-                </div>
-              </li>
-            </ul>
-            <ul class="appeal-list-ul" v-if="DetailList.debit == userId">
-              <li v-for="(item,i) in reverseAppealList" >
-                <!-- 我是买家 DetailList.credit == userId-->
-
-                <!-- 我是卖家 DetailList.debit == userId-->
-                <div v-if="item.sourceType == 4"  >
-                  <span class="userAvator">
-                    {{item.sourceTypeText }}
-                  </span>
-                  <div class="mes-box">
-                    <p class="msg-time">{{item.createtime | Date('yyyy-MM-dd hh:mm:ss') }}</p>
-                    <div class="mes-box-in">
-                      <img v-if="item.attachmentUrls"  :src="item.attachmentUrls" class="mes-img">
-                      <p class="msg-details">{{item.content }}</p>
-                    </div>
-                  </div>
-                </div>
-                <div v-else class="you-msg">
-                  <span class="userAvator">{{item.sourceTypeText }}</span>
-                  <div class="mes-box">
-                    <p class="msg-time">{{item.createtime | Date('yyyy-MM-dd hh:mm:ss') }}</p>
-                    <div class="mes-box-in">
-                      <img v-if="item.attachmentUrls"  :src="item.attachmentUrls" class="mes-img">
-                      <p class="msg-details">{{item.content }}</p>
-                    </div>
-                  </div>
-                </div>
-
-
-              </li>
-            </ul>
-
+              </div>
+            </li>
+          </ul>
+          <div v-else>
+            <no-data-tip></no-data-tip>
+          </div>
         </div>
 
       </div>
@@ -253,6 +221,7 @@
 
 <script>
   import mHeader from "components/m-header"
+  import NoDataTip from 'components/no-data-tip'
   import { generateTitle } from '@/util/i18n'
   import { transaction,chatWith } from 'api'
   import {mapGetters,mapActions,mapMutations} from 'vuex'
@@ -276,7 +245,9 @@
           debitName:'', // 交易买方
         },
         gameID:'',
-        chatState:''
+        chatState:'',
+        isCredit: false,
+        isDebit: false
       };
     },
     methods: {
@@ -303,38 +274,17 @@
 
           this.DetailList = res.data.orderx ;
           this.AppealList = res.data ;
+          if(this.DetailList.credit == this.userId){
+            this.isCredit = true;
+          }else if(this.DetailList.debit == this.userId){
+            this.isDebit = true;
+          }
         //statusText
 //          this.DetailList.creditProofUrlTwin = res.data.creditProofUrlTwin.split(',');
 
         }).catch(error => {
           toast(error.message);
         });
-
-        this.loading = false;
-      },
-      getAppealDetailHistoryPage(){
-        this.loading = true;
-        this.request={
-          limit:10,
-          offset:0,
-          orderId:this.$route.params.id,
-          userId:this.userId,
-          type:''
-        }
-        transaction.getAppealHistoryDetail(this.request).then(res => {
-          this.loading = false;
-          console.log('申诉记录:');
-          console.log(res.data);
-          if(res.code == '10000'){
-            this.AppealList = res.data;
-          }else{
-            toast(res.message);
-          }
-
-
-      }).catch(error => {
-          toast(error.message);
-      });
 
         this.loading = false;
       },
@@ -374,6 +324,8 @@
         transaction.payCompleted(this.request).then(res => {
           this.loading = false;
           if(res.code == '10000'){
+            Vue.$global.bus.$emit('update:balance');
+            Vue.$global.bus.$emit('update:tranList');
             toast('您已确认收款，请勿重复操作');
             this.$router.push({name: 'mTranRecord'});
           }else{
@@ -383,8 +335,6 @@
         }).catch(err => {
           toast(err.message);
         });
-        toast(res.message);
-        this.loading = false;
       },
       copy() {
         var clipboard = new Clipboard('.copy-btn')
@@ -437,7 +387,16 @@
     computed: {
       ...mapGetters(["userData","islogin",'userId','connectState']),
       reverseAppealList() {
-      // 按照时间倒序显示数据
+        // 按照时间倒序显示数据
+        if(this.AppealList.appealDetailList.length>0){
+          this.AppealList.appealDetailList = this.AppealList.appealDetailList.map(item => {
+            if(item.attachmentUrls && item.attachmentUrls.length>1){
+              item.attachmentUrls = item.attachmentUrls.split(',');
+            }
+            return item;
+          });
+        }
+
         return this.AppealList.appealDetailList.reverse();
       },
       unreadCountUpdate() {
@@ -452,7 +411,8 @@
     },
     components: {
       mHeader,
-      chat
+      chat,
+      NoDataTip
     }
   };
 
