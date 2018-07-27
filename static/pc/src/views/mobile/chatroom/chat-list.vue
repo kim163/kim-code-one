@@ -11,7 +11,7 @@
         <span class="no_message">暂无聊天信息</span>
       </div>
       <div v-else-if="chatArr.length>0" class="conversation_item" v-for="(list,num) in chatArr" :key="num"
-           @click="goChatRoom(list.targetId,list.latestMessage.content.user.id)" :class="{'pcState':isPC}">
+         @click="goChatRoom(list.targetId,list.latestMessage.content.user.id)" :class="{'pcState':isPC}">
         <div class="converstation_info box">
           <div class="user_symbol"
                :class="{'user_symbolNext':userId==JSON.parse(list.latestMessage.content.extra).debit}"
@@ -124,6 +124,7 @@
         this.symolEmoji = RongIMLib.RongIMEmoji
         RongIMClient.getInstance().getConversationList({
           onSuccess: (list) => {
+            console.log(list,'圣诞节快乐撒低级')
             this.chatArr = list
             for (let i = 0; i < list.length; i++) {
               this.getUnreadCount(list[i].targetId)
@@ -154,8 +155,6 @@
         this.$emit('closeChatroom',false)
       },
       goChatRoom(id,userId) {
-
-        debugger
         const requestData = {
           userId: this.userId,
           groupId: id
@@ -175,13 +174,12 @@
             });
             return
           } else {
-            debugger;
             /!*先情调未读消息数*!/
-            debugger;
+            this.chatState = true
+            this.$store.commit('GET_HISTORYSTATE',3)
             this.DetailList.targetId = id;
             this.userInfoId= userId
             this.formListState= true
-            this.$store.commit('GET_HISTORYSTATE',3)
             /*清楚未读绘画*/
             const conversationType = RongIMLib.ConversationType.GROUP
             RongIMClient.getInstance().clearUnreadCount(conversationType,id,{
@@ -189,8 +187,6 @@
                 RongIMClient.getInstance().getTotalUnreadCount({
                   onSuccess:(count)=>{
                     this.$store.commit('GET_UNREADCOUNT',count)
-                    debugger;
-                    this.chatState = true;
                     this.$store.commit('CHANGE_CONNECTSTATE', true)
                   },
                   onError:(error)=>{

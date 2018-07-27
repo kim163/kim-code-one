@@ -26,7 +26,7 @@ export default new Vuex.Store({
     RongIMEmoji:'',
     timeOver:false,
     unreadCount:0,
-    historyState:'',
+    historyState:0,
   },
   getters: {     // 用来从 store 获取 Vue 组件数据
     language(state, getters) {

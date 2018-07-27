@@ -285,9 +285,10 @@
       <chatList :isPC="isPCstate" v-if="openListState" @closeChatroom="iscloseChatroom"></chatList>
       <chat
         class="chatWindow"
-        v-show="chatState"
+        v-if="chatState"
         :detail="orderId"
         :debitNum="DetailList.debitAmount"
+        :historyState="DetailList.historyState"
         @chatShow="chatStateUpdate"
         :isPc="isPCstate"
         @openList="openListUpdate"
@@ -517,10 +518,10 @@
         }
         chatWith.createChatGroup(params).then(res => {
           if (res.code === 10000) {
-            this.chatState = true
             this.DetailList.historyState = 2
             this.isPCstate = !this.isPCstate
             this.chatOnline = false
+            this.chatState = true
           } else {
             toast(res.message)
           }

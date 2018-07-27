@@ -190,7 +190,7 @@
       <chatList :isPC="isPCstate" v-if="openListState" @closeChatroom="iscloseChatroom"></chatList>
       <chat
         class="chatWindow"
-        v-show="chatState"
+        v-if="chatState"
         :detail="orderId"
         :debitNum="DetailList.debitAmount"
         :historyState="DetailList.historyState"
