@@ -92,6 +92,7 @@
       if(this.connectState){
         this.getConversationList()
         this.symolEmoji = RongIMLib.RongIMEmoji
+
       }else {
         toast('聊天正在系统化配置,请耐心等待')
         return
@@ -124,7 +125,10 @@
         this.chatState = value
       },
       getConversationList() {
-
+        if(!RongIMLib. RongIMEmoji){
+          window.location.reload()
+        }
+        this.symolEmoji = RongIMLib.RongIMEmoji
         RongIMClient.getInstance().getConversationList({
           onSuccess: (list) => {
             this.chatArr = list

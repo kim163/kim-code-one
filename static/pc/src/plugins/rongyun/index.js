@@ -65,7 +65,6 @@ export default {
           case RongIMLib.ConnectionStatus.CONNECTED:  //eslint-disable-line
             info = '链接成功'
             store.commit('CHANGE_CONNECTSTATE',true)
-            this.getConversationList()
             break;
           case RongIMLib.ConnectionStatus.CONNECTING:  //eslint-disable-line
             info = '正在链接'
@@ -100,7 +99,6 @@ export default {
         switch (message.messageType) {
           case RongIMClient.MessageType.TextMessage: //eslint-disable-line
            /*因为有可能APP和h5或者PC同时发*/
-
               Vue.$global.bus.$emit('textMessage', {msg: RongIMLib.RongIMEmoji.symbolToEmoji(message.content.content), user: 2,
                 sendName:message.content.user.name,userId:message.content.user.id,debit:JSON.parse(message.content.extra).debit})
             this.getConversationList()
