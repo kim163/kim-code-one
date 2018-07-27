@@ -436,12 +436,13 @@
   }
 
   .pcChatList{
-    position: absolute;
+    position: fixed;
     bottom: 0;
-    right: 15px;
+    right: 0;
     width: 350px;
     border-radius: 10px 10px 0 0 ;
     height: 300px;
+    z-index: 100;
     .mainTitle{
       background-color: $main-color;
       border-radius: 10px 10px 0 0;
