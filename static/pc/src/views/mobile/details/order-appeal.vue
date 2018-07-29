@@ -365,11 +365,11 @@
           founderId: this.$store.state.userData.userId,
           type: 3,
           founderNickname: this.$store.state.userData.nickname
+
         }
         chatWith.createChatGroup(params).then(res => {
           if (res.code === 10000) {
             this.chatState = true
-            this.DetailList.historyState = 4
             this.$store.commit('GET_HISTORYSTATE',3)
           } else {
             toast(res.message)

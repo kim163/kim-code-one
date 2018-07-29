@@ -335,7 +335,7 @@
       },
       sendInfo(ev) {
         if (ev.keyCode === 13) {
-          if(!this.messageValue==''){
+          if (!this.messageValue == '') {
             this.sendMessage()
           }
         }
@@ -351,6 +351,7 @@
           this.status = res.data.status
           this.startTime = res.data.intervalTime;
           this.endTime = res.data.elapsedTime;
+
         })
       },
       closeChatList() {
@@ -457,7 +458,7 @@
         RongIMLib.RongIMClient.getInstance().getHistoryMessages(conversationType, targetId, timestrap, count, {
           onSuccess: ((list, hasMsg) => {
             /*区分图片和消息*/
-            console.log(list, '这是历史兄啊西')
+            console.log(list,'这是历史记录')
             this.historyArr = list;
             this.$forceUpdate()
             this.scrollToBot()
@@ -468,8 +469,7 @@
         })
       },
       historyStateUpdate() {
-
-        if(this.historyState==3){
+        if (this.historyState == 3) {
           this.symolEmoji = RongIMLib.RongIMEmoji;
           this.getHistoryMessage();
           const conversationType = RongIMLib.ConversationType.GROUP
