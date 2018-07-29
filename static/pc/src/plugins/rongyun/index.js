@@ -34,7 +34,9 @@ export default {
            Vue.$global.bus.$emit('portrait',res.data.portrait)
            Vue.prototype.$loadScript('https://cdn.ronghub.com/RongEmoji-2.2.6.min.js')
              .then(() => {
-               this.initEmoji();
+               debugger;
+               console.log(RongIMLib)
+               RongIMLib.RongIMEmoji.init();
              })
          }
       })
@@ -54,9 +56,7 @@ export default {
     })
 
   },
-  initEmoji() {
-    RongIMLib.RongIMEmoji.init(this.config);
-  },
+
   setConnectStatusListener() {
     RongIMClient.setConnectionStatusListener({  //eslint-disable-line
       onChanged:(status) => {

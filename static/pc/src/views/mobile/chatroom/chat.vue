@@ -520,6 +520,7 @@
         })
       },
       historyStateUpdate() {
+
         if(this.historyState==3){
           this.symolEmoji = RongIMLib.RongIMEmoji;
           this.getHistoryMessage();
@@ -544,7 +545,6 @@
             return
           }
           let groupId = {'groupId': this.detail}
-          console.log(this.detail, 'as')
           chatWith.getOrderxInfo(groupId).then(res => {
             this.amount = res.data.amount
             this.founderId = res.data.founderId

@@ -331,7 +331,7 @@
       <p class="chatroom_num">{{unreadCountUpdate}}<!--<span class="chatroom_num" v-if="unreadCount>99">+</span>--></p>
     </div>
     <transition name="toolSlideRight">
-      <chat v-show="chatState" class="chatWindow"
+      <chat v-if="chatState" class="chatWindow"
             :detail="gameID"
             :debitNum="DetailList.debitAmount"
 
@@ -607,7 +607,7 @@
         chatWith.createChatGroup(params).then(res => {
           if (res.code === 10000) {
             this.chatState = true
-            this.$store.commit('GET_HISTORYSTATE',2)
+            this.$store.commit('GET_HISTORYSTATE',3)
           } else {
             toast(res.message)
           }

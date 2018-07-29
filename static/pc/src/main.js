@@ -39,7 +39,8 @@ require("@/assets/scss/animate.scss")
 require("@/assets/scss/simple-grid.scss")
 Vue.config.productionTip = false;
 import App from './App.vue';//引入app.vue
-
+Vue.prototype.$loadScript('https://cdn.ronghub.com/RongIMLib-2.3.0.js')
+Vue.prototype.$loadScript('https://cdn.ronghub.com/RongEmoji-2.2.6.min.js')
 let vm= new Vue({
   el:"#app",
   router,
