@@ -65,7 +65,6 @@ export default {
           case RongIMLib.ConnectionStatus.CONNECTED:  //eslint-disable-line
             info = '链接成功'
             store.commit('CHANGE_CONNECTSTATE',true)
-            this.getConversationList()
             break;
           case RongIMLib.ConnectionStatus.CONNECTING:  //eslint-disable-line
             info = '正在链接'
@@ -100,13 +99,8 @@ export default {
         switch (message.messageType) {
           case RongIMClient.MessageType.TextMessage: //eslint-disable-line
            /*因为有可能APP和h5或者PC同时发*/
-            if(message.content.user.id == store.state.userData.userId){
-              Vue.$global.bus.$emit('textMessage', {msg: RongIMLib.RongIMEmoji.symbolToEmoji(message.content.content), user: 1,
-                sendName:message.content.user.name,userId:message.content.user.id})
-            }else {
               Vue.$global.bus.$emit('textMessage', {msg: RongIMLib.RongIMEmoji.symbolToEmoji(message.content.content), user: 2,
                 sendName:message.content.user.name,userId:message.content.user.id,debit:JSON.parse(message.content.extra).debit})
-            }
             this.getConversationList()
             break
           case RongIMClient.MessageType.VoiceMessage: //eslint-disable-line
@@ -114,13 +108,8 @@ export default {
             // message.content.content 格式为 AMR 格式的 base64 码
             break
           case RongIMClient.MessageType.ImageMessage: //eslint-disable-line
-            if(message.content.user.id == store.state.userData.userId){
-              Vue.$global.bus.$emit('picMessage', {msg: message.content.imageUri, user: 3, img: [message.content.imageUri],sendName:message.content.user.name,
-                userId:message.content.user.id})
-            }else {
               Vue.$global.bus.$emit('picMessage', {msg: message.content.imageUri, user: 4, img: [message.content.imageUri],sendName:message.content.user.name,
                 userId:message.content.user.id,debit:JSON.parse(message.content.extra).debit})
-            }
             this.getConversationList()
             break
           case RongIMClient.MessageType.DiscussionNotificationMessage: //eslint-disable-line

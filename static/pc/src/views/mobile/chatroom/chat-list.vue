@@ -91,6 +91,11 @@
       })
       if(this.connectState){
         this.getConversationList()
+        this.symolEmoji = RongIMLib.RongIMEmoji
+
+      }else {
+        toast('聊天正在系统化配置,请耐心等待')
+        return
       }
     }
     ,
@@ -99,7 +104,6 @@
         'userId',
         'userData',
         'connectState',
-
       ])
     },
     props:{
@@ -121,10 +125,12 @@
         this.chatState = value
       },
       getConversationList() {
+        if(!RongIMLib. RongIMEmoji){
+          window.location.reload()
+        }
         this.symolEmoji = RongIMLib.RongIMEmoji
         RongIMClient.getInstance().getConversationList({
           onSuccess: (list) => {
-            console.log(list,'圣诞节快乐撒低级')
             this.chatArr = list
             for (let i = 0; i < list.length; i++) {
               this.getUnreadCount(list[i].targetId)
