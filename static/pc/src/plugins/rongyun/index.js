@@ -26,17 +26,12 @@ export default {
            this.setConnectStatusListener();
            this.setOnReceiveMessageListener();
            Vue.$global.bus.$emit('portrait',res.data.portrait)
-           Vue.prototype.$loadScript('https://cdn.ronghub.com/RongEmoji-2.2.6.min.js')
-             .then(() => {
-               debugger;
-               console.log(RongIMLib)
-               RongIMLib.RongIMEmoji.init();
-             })
          }
       })
 
   },
   connect() {
+
     RongIMClient.connect(this.token, {
       onSuccess: () => {
         console.log('加载成功')

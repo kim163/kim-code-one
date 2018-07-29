@@ -92,9 +92,6 @@
       if(this.connectState){
         this.getConversationList()
         this.symolEmoji = RongIMLib.RongIMEmoji
-
-      }else {
-        return
       }
     }
     ,
@@ -125,7 +122,7 @@
       },
       getConversationList() {
         if(!RongIMLib. RongIMEmoji){
-          window.location.reload()
+          return
         }
         this.symolEmoji = RongIMLib.RongIMEmoji
         RongIMClient.getInstance().getConversationList({

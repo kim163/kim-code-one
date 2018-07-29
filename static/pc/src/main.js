@@ -24,7 +24,6 @@ Vue.use(BusPlugin)
 Vue.use(Viewer)
 Vue.use(LoadScript)
 Vue.use(Croppa)
-Vue.use(Rongyun)
 //在所有组件里可调用函数
 
 import VueLazyload from 'vue-lazyload'
@@ -40,8 +39,11 @@ require("@/assets/scss/simple-grid.scss")
 Vue.config.productionTip = false;
 import App from './App.vue';//引入app.vue
 Vue.prototype.$loadScript('https://cdn.ronghub.com/RongIMLib-2.3.0.js').then(()=>{
-  Vue.prototype.$loadScript('https://cdn.ronghub.com/RongEmoji-2.2.6.min.js')
+  Vue.prototype.$loadScript('https://cdn.ronghub.com/RongEmoji-2.2.6.min.js').then(()=>{
+    RongIMLib.RongIMEmoji.init();
+  })
   RongIMLib.RongIMClient.init('x18ywvq85ahuc', null, {navi: 'http://dc-jiuan-im-nav-pro.com'})
+  Vue.use(Rongyun)
 })
 
 let vm= new Vue({
