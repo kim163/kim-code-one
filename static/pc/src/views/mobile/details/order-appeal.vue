@@ -370,6 +370,7 @@
           if (res.code === 10000) {
             this.chatState = true
             this.DetailList.historyState = 4
+            this.$store.commit('GET_HISTORYSTATE',3)
           } else {
             toast(res.message)
           }
