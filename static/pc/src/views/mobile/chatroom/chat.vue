@@ -281,60 +281,6 @@
         'connectState',
         'historyState',
       ]),
-      /*PC上需要*/
-      // historyState(){
-      //    if(this.isPc){
-      //      this.symolEmoji = RongIMLib.RongIMEmoji;
-      //      this.getHistoryMessage();
-      //      const conversationType = RongIMLib.ConversationType.GROUP
-      //      const id = this.detail
-      //      RongIMClient.getInstance().clearUnreadCount(conversationType, id, {
-      //        onSuccess: (res) => {
-      //          RongIMClient.getInstance().getTotalUnreadCount({
-      //            onSuccess: (count) => {
-      //              this.$store.commit('GET_UNREADCOUNT', count)
-      //            },
-      //            onError: (error) => {
-      //              // error => 获取总未读数错误码。
-      //            }
-      //          });
-      //        },
-      //        onError: () => {
-      //        }
-      //      })
-      //      this.fetchOrder()
-      //      if(!this.detail){
-      //        return
-      //      }
-      //      let groupId = {'groupId': this.detail}
-      //      console.log(this.detail,'as')
-      //      chatWith.getOrderxInfo(groupId).then(res => {
-      //        this.amount = res.data.amount
-      //        this.founderId = res.data.founderId
-      //        this.credit = res.data.credit
-      //        this.debit = res.data.debit
-      //        this.creditNickname = res.data.creditNickname
-      //        this.debitNickname = res.data.debitNickname
-      //        this.founderRoleType = res.data.founderRoleType
-      //        this.type = res.data.type
-      //        this.extraData = {
-      //          "credit": res.data.credit, //买方id
-      //          "debit": res.data.debit,  //卖方id
-      //          "amount": res.data.amount, //交易数量
-      //          "assetCode": res.data.assetCode, //资产编码
-      //          "founderNickname": res.data.founderNickname,  //发起人昵称
-      //          "founderRoleType": res.data.founderRoleType,  //发起角色类型
-      //          "founderId": res.data.founderId  //会话发起人id
-      //        }
-      //      })
-      //      this.$nextTick(()=>{
-      //        this.scroll = this.$refs.scroll;
-      //        //   this.scrollToBot()
-      //      })
-      //    }
-      //
-      //
-      //   }
 
     },
     watch: {
@@ -389,7 +335,9 @@
       },
       sendInfo(ev) {
         if (ev.keyCode === 13) {
-          this.sendMessage()
+          if(!this.messageValue==''){
+            this.sendMessage()
+          }
         }
       },
       fetchOrder() {
