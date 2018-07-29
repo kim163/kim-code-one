@@ -83,7 +83,7 @@
       stompSuccessCallback(frame) {
         console.log('STOMP: Connection successful')
         this.client.subscribe('/exchange/walletCustomOperation/'+this.userId, (data) => {
-          let msgData=JSON.parse(aesutil.decrypt(data.body));
+          let msgData=JSON.parse(aesutil.decrypt(data.body,true));
           console.log('msgData.type：'+msgData.type)
           if(msgData.type == 5){
             // C2C_ORDER_ONLINE(5, "C2C订单发起人在线检测"),
