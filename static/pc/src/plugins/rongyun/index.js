@@ -5,19 +5,13 @@ import store from '../../store';	//加载状态管理器
 export default {
   install(Vue) {
     if(store.getters.islogin){
-      Vue.prototype.$loadScript('https://cdn.ronghub.com/RongIMLib-2.3.0.js')
-        .then(() => {
-          this.callback()
-        })
-    }else{
+          this.getToken()
+        }
+    else{
       Vue.$global.bus.$on('initRongyun',()=>{
         this.install(Vue)
       })
     }
-  },
-  callback() {
-    RongIMLib.RongIMClient.init('x18ywvq85ahuc', null, {navi: 'http://dc-jiuan-im-nav-pro.com'}) //eslint-disable-line
-    this.getToken()
   },
    getToken() {
       const userData = JSON.parse(aesutil.decrypt($localStorage.get('userData'),true))
