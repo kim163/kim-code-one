@@ -271,66 +271,70 @@
       noTime: {
         type: Boolean,
         default: true
-      }
+      },
+
     },
     computed: {
       ...mapGetters([
         'userData',
         'userId',
         'connectState',
-        'historyState'
+        'historyState',
       ]),
       /*PC上需要*/
-      historyState(){
-          this.symolEmoji = RongIMLib.RongIMEmoji;
-          this.getHistoryMessage();
-          const conversationType = RongIMLib.ConversationType.GROUP
-          const id = this.detail
-          RongIMClient.getInstance().clearUnreadCount(conversationType, id, {
-            onSuccess: (res) => {
-              RongIMClient.getInstance().getTotalUnreadCount({
-                onSuccess: (count) => {
-                  this.$store.commit('GET_UNREADCOUNT', count)
-                },
-                onError: (error) => {
-                  // error => 获取总未读数错误码。
-                }
-              });
-            },
-            onError: () => {
-            }
-          })
-          this.fetchOrder()
-          if(!this.detail){
-            return
-          }
-          let groupId = {'groupId': this.detail}
-          console.log(this.detail,'as')
-          chatWith.getOrderxInfo(groupId).then(res => {
-            this.amount = res.data.amount
-            this.founderId = res.data.founderId
-            this.credit = res.data.credit
-            this.debit = res.data.debit
-            this.creditNickname = res.data.creditNickname
-            this.debitNickname = res.data.debitNickname
-            this.founderRoleType = res.data.founderRoleType
-            this.type = res.data.type
-            this.extraData = {
-              "credit": res.data.credit, //买方id
-              "debit": res.data.debit,  //卖方id
-              "amount": res.data.amount, //交易数量
-              "assetCode": res.data.assetCode, //资产编码
-              "founderNickname": res.data.founderNickname,  //发起人昵称
-              "founderRoleType": res.data.founderRoleType,  //发起角色类型
-              "founderId": res.data.founderId  //会话发起人id
-            }
-          })
-          this.$nextTick(()=>{
-            this.scroll = this.$refs.scroll;
-         //   this.scrollToBot()
-          })
-
-        }
+      // historyState(){
+      //    if(this.isPc){
+      //      this.symolEmoji = RongIMLib.RongIMEmoji;
+      //      this.getHistoryMessage();
+      //      const conversationType = RongIMLib.ConversationType.GROUP
+      //      const id = this.detail
+      //      RongIMClient.getInstance().clearUnreadCount(conversationType, id, {
+      //        onSuccess: (res) => {
+      //          RongIMClient.getInstance().getTotalUnreadCount({
+      //            onSuccess: (count) => {
+      //              this.$store.commit('GET_UNREADCOUNT', count)
+      //            },
+      //            onError: (error) => {
+      //              // error => 获取总未读数错误码。
+      //            }
+      //          });
+      //        },
+      //        onError: () => {
+      //        }
+      //      })
+      //      this.fetchOrder()
+      //      if(!this.detail){
+      //        return
+      //      }
+      //      let groupId = {'groupId': this.detail}
+      //      console.log(this.detail,'as')
+      //      chatWith.getOrderxInfo(groupId).then(res => {
+      //        this.amount = res.data.amount
+      //        this.founderId = res.data.founderId
+      //        this.credit = res.data.credit
+      //        this.debit = res.data.debit
+      //        this.creditNickname = res.data.creditNickname
+      //        this.debitNickname = res.data.debitNickname
+      //        this.founderRoleType = res.data.founderRoleType
+      //        this.type = res.data.type
+      //        this.extraData = {
+      //          "credit": res.data.credit, //买方id
+      //          "debit": res.data.debit,  //卖方id
+      //          "amount": res.data.amount, //交易数量
+      //          "assetCode": res.data.assetCode, //资产编码
+      //          "founderNickname": res.data.founderNickname,  //发起人昵称
+      //          "founderRoleType": res.data.founderRoleType,  //发起角色类型
+      //          "founderId": res.data.founderId  //会话发起人id
+      //        }
+      //      })
+      //      this.$nextTick(()=>{
+      //        this.scroll = this.$refs.scroll;
+      //        //   this.scrollToBot()
+      //      })
+      //    }
+      //
+      //
+      //   }
 
     },
     watch: {
@@ -346,59 +350,15 @@
           this.sendPic()
         }
       },
-      historyState(val) {
-        if (val) {
-          this.symolEmoji = RongIMLib.RongIMEmoji;
-          this.getHistoryMessage();j
-          const conversationType = RongIMLib.ConversationType.GROUP
-          const id = this.detail
-          RongIMClient.getInstance().clearUnreadCount(conversationType, id, {
-            onSuccess: (res) => {
-              RongIMClient.getInstance().getTotalUnreadCount({
-                onSuccess: (count) => {
-                  this.$store.commit('GET_UNREADCOUNT', count)
-                },
-                onError: (error) => {
-                  // error => 获取总未读数错误码。
-                }
-              });
-            },
-            onError: () => {
-            }
-          })
-          this.fetchOrder()
-          let groupId = {'groupId': this.detail}
-          chatWith.getOrderxInfo(groupId).then(res => {
-            this.amount = res.data.amount
-            this.founderId = res.data.founderId
-            this.credit = res.data.credit
-            this.debit = res.data.debit
-            this.creditNickname = res.data.creditNickname
-            this.debitNickname = res.data.debitNickname
-            this.founderRoleType = res.data.founderRoleType
-            this.type = res.data.type
-            this.extraData = {
-              "credit": res.data.credit, //买方id
-              "debit": res.data.debit,  //卖方id
-              "amount": res.data.amount, //交易数量
-              "assetCode": res.data.assetCode, //资产编码
-              "founderNickname": res.data.founderNickname,  //发起人昵称
-              "founderRoleType": res.data.founderRoleType,  //发起角色类型
-              "founderId": res.data.founderId  //会话发起人id
-            }
-          })
-          this.scroll = this.$refs.scroll;
-          this.scrollToBot()
-        }
-      },
+
     },
 
     created() {
       /*加载bettorScroll*/
       Vue.$global.bus.$on('textMessage', (message) => {
-        console.log(message,'圣诞节啊速度加快')
+        console.log(message, '圣诞节啊速度加快')
         this.chatArr.push(message)
-        console.log(this.chatArr,'四大皆空打算')
+        console.log(this.chatArr, '四大皆空打算')
         this.symolEmoji = RongIMLib.RongIMEmoji;
         this.clearUnreadCount()
         this.scrollToBot()
@@ -414,9 +374,12 @@
       Vue.$global.bus.$on('portrait', (val) => {
         this.portrait = val
       })
+
     },
-    mounted(){
+
+    mounted() {
       this.fetchOrder()
+      this.historyStateUpdate()
     },
     methods: {
       ...mapMutations(['CHANGE_CONNECTSTATE', 'GET_HISTORYSTATE']),
@@ -430,7 +393,7 @@
         }
       },
       fetchOrder() {
-        if(!this.detail){
+        if (!this.detail) {
           return
         }
         const requestData = {
@@ -539,7 +502,6 @@
         }
       },
       getHistoryMessage() {
-        this.historyArr=[]
         let conversationType = RongIMLib.ConversationType.GROUP //eslint-disable-line
         let targetId = this.detail
         let timestrap = 0 // 默认传 null，若从头开始获取历史消息，请赋值为 0 ,timestrap = 0;
@@ -547,8 +509,8 @@
         RongIMLib.RongIMClient.getInstance().getHistoryMessages(conversationType, targetId, timestrap, count, {
           onSuccess: ((list, hasMsg) => {
             /*区分图片和消息*/
-            console.log(list,'这是历史兄啊西')
-            this.historyArr=list;
+            console.log(list, '这是历史兄啊西')
+            this.historyArr = list;
             this.$forceUpdate()
             this.scrollToBot()
           }),
@@ -556,6 +518,58 @@
             console.log(error, '失败记录；')
           }
         })
+      },
+      historyStateUpdate() {
+        if(this.historyState==3){
+          this.symolEmoji = RongIMLib.RongIMEmoji;
+          this.getHistoryMessage();
+          const conversationType = RongIMLib.ConversationType.GROUP
+          const id = this.detail
+          RongIMClient.getInstance().clearUnreadCount(conversationType, id, {
+            onSuccess: (res) => {
+              RongIMClient.getInstance().getTotalUnreadCount({
+                onSuccess: (count) => {
+                  this.$store.commit('GET_UNREADCOUNT', count)
+                },
+                onError: (error) => {
+                  // error => 获取总未读数错误码。
+                }
+              });
+            },
+            onError: () => {
+            }
+          })
+          this.fetchOrder()
+          if (!this.detail) {
+            return
+          }
+          let groupId = {'groupId': this.detail}
+          console.log(this.detail, 'as')
+          chatWith.getOrderxInfo(groupId).then(res => {
+            this.amount = res.data.amount
+            this.founderId = res.data.founderId
+            this.credit = res.data.credit
+            this.debit = res.data.debit
+            this.creditNickname = res.data.creditNickname
+            this.debitNickname = res.data.debitNickname
+            this.founderRoleType = res.data.founderRoleType
+            this.type = res.data.type
+            this.extraData = {
+              "credit": res.data.credit, //买方id
+              "debit": res.data.debit,  //卖方id
+              "amount": res.data.amount, //交易数量
+              "assetCode": res.data.assetCode, //资产编码
+              "founderNickname": res.data.founderNickname,  //发起人昵称
+              "founderRoleType": res.data.founderRoleType,  //发起角色类型
+              "founderId": res.data.founderId  //会话发起人id
+            }
+          })
+          this.$nextTick(() => {
+            this.scroll = this.$refs.scroll;
+            this.scrollToBot()
+          })
+        }
+
       },
       returnList() {
         this.$emit('openList', true)

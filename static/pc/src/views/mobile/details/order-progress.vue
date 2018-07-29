@@ -334,7 +334,7 @@
       <chat v-show="chatState" class="chatWindow"
             :detail="gameID"
             :debitNum="DetailList.debitAmount"
-            :historyState="DetailList.historyState"
+
             @chatShow="chatStateUpdate"
       ></chat>
     </transition>
@@ -607,7 +607,7 @@
         chatWith.createChatGroup(params).then(res => {
           if (res.code === 10000) {
             this.chatState = true
-            this.DetailList.historyState = 2
+            this.$store.commit('GET_HISTORYSTATE',2)
           } else {
             toast(res.message)
           }

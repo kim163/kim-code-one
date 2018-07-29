@@ -94,7 +94,6 @@
         this.symolEmoji = RongIMLib.RongIMEmoji
 
       }else {
-        toast('聊天正在系统化配置,请耐心等待')
         return
       }
     }

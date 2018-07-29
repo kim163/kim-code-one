@@ -135,7 +135,8 @@ export default new Vuex.Store({
     },
     [types.GET_HISTORYSTATE](state,val){
       state.historyState = val
-    }
+    },
+
   },
   actions: {    // 可以给组件使用的函数，以此用来驱动事件处理器 mutations
     [types.SET_LANGUAGE]({commit}, language) {
