@@ -1,6 +1,6 @@
 <template>
   <div class="transell-main0 transell-main-box">
-    <m-header>申诉订单详情</m-header>
+    <m-header :back="goBack">申诉订单详情</m-header>
     <div></div>
     <div class="m-order-details">
       <div class="trade-time-bar">
@@ -378,6 +378,9 @@
           toast(res.message)
         })
       },
+      goBack(){
+        this.$router.replace({name:'mTranRecord'})
+      }
     },
     created() {
       this.fetchData();
