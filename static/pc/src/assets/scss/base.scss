@@ -56,6 +56,9 @@ ul, ol {
 .min-width{
   min-width: 1190px;
 }
+.min-height{
+  min-height: 680px;
+}
 
 .txt-center {
   text-align: center;
@@ -756,6 +759,10 @@ span.icon-close,i.icon-close{
       }
       p.sellers{
         width: 25%;
+        overflow: hidden;
+        text-overflow:ellipsis;
+        white-space: nowrap;
+        float: left;
       }
       p.tranCountOrRate{
         width: 20%;

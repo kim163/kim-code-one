@@ -6,7 +6,7 @@
 
     <div class="section transaction-content">
       <div class="container min-width">
-        <div class="row">
+        <div class="row min-height">
           <div class="col-18 fl">
              <transell-list></transell-list>
           </div>
