@@ -302,9 +302,7 @@
     created() {
       /*加载bettorScroll*/
       Vue.$global.bus.$on('textMessage', (message) => {
-        console.log(message, '圣诞节啊速度加快')
         this.chatArr.push(message)
-        console.log(this.chatArr, '四大皆空打算')
         this.symolEmoji = RongIMLib.RongIMEmoji;
         this.clearUnreadCount()
         this.scrollToBot()
@@ -458,7 +456,6 @@
         RongIMLib.RongIMClient.getInstance().getHistoryMessages(conversationType, targetId, timestrap, count, {
           onSuccess: ((list, hasMsg) => {
             /*区分图片和消息*/
-            console.log(list,'这是历史记录')
             this.historyArr = list;
             this.$forceUpdate()
             this.scrollToBot()
@@ -575,7 +572,6 @@
         var e = event || window.event;
         var targer = e.target || e.srcElement;
         if (document.all && !document.addEventListener === false) {
-          console.log(target);
         }
         var chatbox = document.getElementById('inputMessage');
         this.messageValue = chatbox.value + targer.innerHTML;
