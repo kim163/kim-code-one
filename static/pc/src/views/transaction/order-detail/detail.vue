@@ -654,6 +654,13 @@
         //value = value.toString()
         return value
       }
+    },
+    beforeRouteEnter(to,from,next){
+      if(from.name === 'orderDetailAppeal'){
+        next({name:'tranRecord'})
+      }else{
+        next()
+      }
     }
   };
 </script>
