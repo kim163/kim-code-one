@@ -27,24 +27,6 @@ export default [
       return resolve(require('views/transaction/tran-pending'))
     }
   },
-  // {
-  //   path: "/tranPending2",
-  //   name: "tranPending2",
-  //   //component: tranRecord,
-  //   redirect: "/tranPending2/tranPendingOrder",
-  //   children:[
-  //     {
-  //       path: "tranPendingOrder", name: "tranPendingOrder", component(resolve){
-  //        return resolve(require('views/transaction/tran-pending/pending-buy'))
-  //       }
-  //     },
-  //     {
-  //       path: "tranPendingRemoved", name: "tranPendingRemoved", component(resolve){
-  //        return resolve(require('views/transaction/tran-pending/pending-order'))
-  //       }
-  //     },
-  //   ]
-  // },
   {
     path: "/tranRecord",
     name: "tranRecord",
@@ -86,6 +68,5 @@ export default [
       noCache: true
     }
   },
-
 
 ]
