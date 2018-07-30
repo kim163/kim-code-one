@@ -261,12 +261,10 @@
           userId:this.userId,
           type:3   //默认为3
         }
-        console.log('传参数')
         console.log(this.request)
         console.log(this.userData)
         transaction.getAppealDetailPage(this.request).then(res => {
           this.loading = false;
-          console.log('申诉详情记录:');
           console.log(res.data);
            // data.orderx   订单详情
            // data.appealDetailList   申诉消息列表
@@ -299,7 +297,6 @@
         }
         transaction.addAppealDetail(this.request).then(res => {
           this.loading = false;
-          console.log('增加证据申诉记录:');
           console.log(res.data);
           if(res.code == '10000'){
               this.AppealList = res.data;

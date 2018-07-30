@@ -508,7 +508,6 @@
               } else {
                 this.buyTypeBuyBank = this.selAccountTypeTwin.bank;
               }
-
               this.payOrderParam.creditAccountTypeTwin = this.selAccountTypeTwin.type;
               this.payOrderParam.creditAccountNameTwin = this.selAccountTypeTwin.name;
               this.payOrderParam.creditAccountTwin = this.selAccountTypeTwin.account;
@@ -520,7 +519,6 @@
         this.payOrderParam.creditAccountMerchantTwin = this.buyTypeBuyBank;
         this.payOrderParam.id = this.orderId;
         this.payOrderParam.creditProofTypeTwin = this.DetailList.creditProofTypeTwin;
-        console.log('payOrderV2 param:', this.payOrderParam);
         transaction.payOrderV2(this.payOrderParam).then(res => {
           if (res.code == '10000') {
             toast('您已确认付款，请勿重复付款');
@@ -547,7 +545,7 @@
         }
         chatWith.createChatGroup(params).then(res => {
           if (res.code === 10000) {
-            this.DetailList.historyState = 2
+            this.$store.commit('GET_HISTORYSTATE',3)
             this.isPCstate = !this.isPCstate
             this.chatOnline = false
             this.chatState = true
