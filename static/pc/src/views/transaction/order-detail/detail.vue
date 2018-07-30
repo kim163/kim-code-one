@@ -547,7 +547,7 @@
         }
         chatWith.createChatGroup(params).then(res => {
           if (res.code === 10000) {
-            this.DetailList.historyState = 2
+            this.$store.commit('GET_HISTORYSTATE',3)
             this.isPCstate = !this.isPCstate
             this.chatOnline = false
             this.chatState = true
