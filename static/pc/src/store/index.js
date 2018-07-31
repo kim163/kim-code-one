@@ -153,6 +153,7 @@ export default new Vuex.Store({
       $localStorage.remove('tokenInfo');
       $localStorage.remove('userData');
       $localStorage.remove('bankURL');
+      $localStorage.remove('menuStyle');
       dispatch(types.UPDATE_TOKEN_INFO, null);
       dispatch(types.CHECK_ONLINE, false);
       if (val) {
