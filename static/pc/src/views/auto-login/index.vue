@@ -24,14 +24,14 @@
         merchantId: this.$route.query.merchantId,
         nodeId: this.$route.query.nodeId,   //定制版需要的参数 nodeId
         mode: this.$route.query.mode, //定制版需要的参数 mode=1, 打开钱包到首页，mode=2 打开快速买币， mode=3 打开快速卖币
-        bankURL: this.$route.query.bankURL,  //商户返回地址
+        backURL: this.$route.query.backURL,  //商户返回地址
         menuStyle: this.$route.query.menuStyle, //定制版皮肤颜色
       }
     },
     created(){
       this.$store.dispatch('LOGIN_OUT', false)
-      if(!_.isUndefined(this.bankURL)){
-        $localStorage.set('bankURL', JSON.stringify(this.bankURL))
+      if(!_.isUndefined(this.backURL)){
+        $localStorage.set('backURL', JSON.stringify(this.backURL))
       }
       if(!_.isUndefined(this.menuStyle)){
         const style = JSON.parse(_.b64DecodeUnicode(this.menuStyle))
