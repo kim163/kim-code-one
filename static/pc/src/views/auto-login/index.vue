@@ -83,7 +83,7 @@
         const tranAddress = _.isMobile() ? (!_.isUndefined(this.mode) && this.mode > 1 ? 'mPendingBuy' : 'mIndex') : 'transaction'
         const loginAddress = _.isMobile() ? 'mobileLogin' : 'aindex'
         if(success){
-          if(this.mode){
+          if(!_.isUndefined(this.mode)){
             this.$router.replace({name:tranAddress,query:{mode: this.mode}})
           }else{
             this.$router.replace({name:tranAddress})
