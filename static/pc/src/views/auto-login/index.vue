@@ -36,10 +36,10 @@
       if(!_.isUndefined(this.menuStyle)){
         const style = JSON.parse(_.b64DecodeUnicode(this.menuStyle))
         $localStorage.set('menuStyle', JSON.stringify(style))
-        // const styleText = `.main-bg-color:{background-color: ${style.mainColor} !import;
-        //                     .main-color:{color:${style.mainColor}} !import;
-        //                     .sec-bg-color:{background-color: ${style.secColor} !import;
-        //                     .sec-color:{color:${style.secColor}} !import;`
+        // const styleText = `.main-bg-color{background-color: ${style.mainColor} !important;}
+        //                     .main-color{color:${style.mainColor} !important;}
+        //                     .sec-bg-color{background-color: ${style.secColor} !important;}
+        //                     .sec-color{color:${style.secColor} !important;}`
         // _.loadCssCode(styleText)
       }
       const request = {
