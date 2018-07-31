@@ -73,7 +73,7 @@
         >
           <!--历史消息-->
           <div v-for="list in historyArr" class="msg-item">
-            <!--文字消息 和图片消息   区分是否是自己发的-->
+            <!--文字消息 和图片消息 区分是否是自己发的-->
             <!--自己发的文本消息-->
             <div class="chat_container"
                  v-show="list.messageType=='TextMessage'&&list.senderUserId==userId">
@@ -101,7 +101,7 @@
                  v-if="list.messageType=='ImageMessage'&&list.senderUserId==userId">
               <div style="flex:1;"></div>
               <div class="contents">
-                <viewer :images="list.picArr" style="padding: .5rem">
+                <viewer :images="list.picArr" style="padding: .5rem 0">
                   <img alt="" class="contents_image" v-lazy="list.content.imageUri">
                 </viewer>
               </div>
@@ -110,12 +110,12 @@
             <!--别人发的图片消息-->
             <div class="chat_container"
                  v-if="list.messageType=='ImageMessage'&&list.senderUserId!==userId">
-              <div class="user_symbol_next" :class="{'isSeller':userId==debit, 'iskefu':JSON.parse(list.content.extra).credit!==list.content.user.id
+              <div class="user_symbol_next" :class="{'isSeller':userId!==debit, 'iskefu':JSON.parse(list.content.extra).credit!==list.content.user.id
             &&JSON.parse(list.content.extra).debit!==list.content.user.id}"></div>
               <div>
                 <div class="sendname" style="text-align: left">{{userData.name?userData.name:'null'}}</div>
-                <div class="contents_next">
-                  <viewer :images="list.img" style="padding: .5rem">
+                <div class="contents_img_next">
+                  <viewer :images="list.img" style="padding: .5rem 0">
                     <img class="contents_image" v-lazy="list.content.imageUri">
                   </viewer>
                 </div>
@@ -160,7 +160,7 @@
               <div class="user_symbol_next" :class="{'isSeller':userId!==list.debit}"></div>
               <div>
                 <div class="sendname" style="text-align: left">{{list.sendName?list.sendName:'null'}}</div>
-                <div class="contents_next">
+                <div class="contents_img_next">
                   <viewer :images="list.img" style="padding: .5rem">
                     <img alt="" class="contents_image" v-lazy="list.msg">
                   </viewer>
@@ -203,7 +203,6 @@
   import mHeader from "components/m-header"
   import {chatWith, transaction} from 'api'
   import {mapGetters, mapMutations} from 'vuex'
-  import {$alert} from "../../../base/msgbox/msgbox";
 
   export default {
     data() {
@@ -302,14 +301,13 @@
     created() {
       /*加载bettorScroll*/
       Vue.$global.bus.$on('textMessage', (message) => {
-        console.log(message, '圣诞节啊速度加快')
         this.chatArr.push(message)
-        console.log(this.chatArr, '四大皆空打算')
         this.symolEmoji = RongIMLib.RongIMEmoji;
         this.clearUnreadCount()
         this.scrollToBot()
       })
       Vue.$global.bus.$on('picMessage', (val) => {
+        console.log(val,'收到了就')
         this.chatArr.push(val)
         this.symolEmoji = RongIMLib.RongIMEmoji;
         this.clearUnreadCount()
@@ -368,6 +366,7 @@
             if (this.scroll) {
               this.scroll.refresh();
               this.scroll.scrollToElement(document.querySelectorAll('.msg-item')[(this.chatArr.length + this.historyArr.length) - 1], 333)
+              console.log(document.querySelectorAll('.msg-item')[(this.chatArr.length + this.historyArr.length) - 1],333)
             } else {
             }
           }
@@ -458,7 +457,7 @@
         RongIMLib.RongIMClient.getInstance().getHistoryMessages(conversationType, targetId, timestrap, count, {
           onSuccess: ((list, hasMsg) => {
             /*区分图片和消息*/
-            console.log(list,'这是历史记录')
+            console.log(list,'这是历史')
             this.historyArr = list;
             this.$forceUpdate()
             this.scrollToBot()
@@ -575,7 +574,6 @@
         var e = event || window.event;
         var targer = e.target || e.srcElement;
         if (document.all && !document.addEventListener === false) {
-          console.log(target);
         }
         var chatbox = document.getElementById('inputMessage');
         this.messageValue = chatbox.value + targer.innerHTML;
@@ -872,6 +870,25 @@
         border-color: transparent #fff transparent transparent;
       }
     }
+    .contents_img_next{
+      background-color: #fff;
+      color: #000000;
+      border-radius: r(5.8);
+      position: relative;
+      word-break: break-all;
+      max-width: 15rem;
+      max-height: 8rem;
+      &::after {
+        display: block;
+        content: '';
+        position: absolute;
+        left: r(-20);
+        top: r(4);
+        border-width: r(14);
+        border-style: solid;
+        border-color: transparent #fff transparent transparent;
+      }
+    }
     .user_symbol {
       width: r(45);
       height: r(48);
@@ -1013,7 +1030,7 @@
 
   .contents_image {
     max-width: r(190);
-    max-height: 8rem;
+    max-height: 7rem;
   }
 
   .sendname {
