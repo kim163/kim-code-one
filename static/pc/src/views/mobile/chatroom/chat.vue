@@ -446,7 +446,7 @@
               var fd = new FormData();
               this.uploadState = '';
               fd.append("file", blob, `${RamdomValue}.png`);
-              fd.append('nodeId', process.env.NODE_ID)
+              fd.append('nodeId', this.userData.node && this.userData.node.customer ? `${this.userData.nodeId}_${this.userData.merchantId}` : process.env.NODE_ID)
               chatWith.uploadFile(fd).then(res => {
                 if (res.code == 10000) {
                   this.picUrl = res.data.url;
