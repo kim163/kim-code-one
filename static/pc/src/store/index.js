@@ -155,10 +155,10 @@ export default new Vuex.Store({
       $localStorage.remove('bankURL');
       dispatch(types.UPDATE_TOKEN_INFO, null);
       dispatch(types.CHECK_ONLINE, false);
-      if (nodeId > 10000) {
-        window.location.href = bankURL;
-      } else {
-        if (val) {
+      if (val) {
+        if (nodeId > 10000) {
+          window.location.href = bankURL;
+        } else {
           if (_.isMobile()) {
             //  router.replace({name:'mobileLogin'});
             window.location.href = "/m/login";
