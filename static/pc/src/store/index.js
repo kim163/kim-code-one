@@ -162,17 +162,17 @@ export default new Vuex.Store({
       if ($localStorage.get('userData')) {
         nodeId = Number(JSON.parse(aesutil.decrypt($localStorage.get('userData'), true)).nodeId)
       }
-      const bankURL = JSON.parse($localStorage.get('bankURL'))
+      const backURL = JSON.parse($localStorage.get('backURL'))
       dispatch(types.INIT_INFO);
       $localStorage.remove('tokenInfo');
       $localStorage.remove('userData');
-      $localStorage.remove('bankURL');
+      $localStorage.remove('backURL');
       $localStorage.remove('menuStyle');
       dispatch(types.UPDATE_TOKEN_INFO, null);
       dispatch(types.CHECK_ONLINE, false);
       if (val) {
         if (nodeId > 10000) {
-          window.location.href = bankURL;
+          window.location.href = backURL;
         } else {
           if (_.isMobile()) {
             //  router.replace({name:'mobileLogin'});

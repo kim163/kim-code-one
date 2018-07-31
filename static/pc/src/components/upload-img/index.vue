@@ -23,7 +23,7 @@
 
 <script>
   import {chatWith} from 'api'
-
+  import {mapGetters} from 'vuex'
   export default {
     name: "uploadImg",
     data() {
@@ -71,7 +71,10 @@
           }
           return true;
         }
-      }
+      },
+      ...mapGetters([
+        'userData'
+      ])
     },
     watch: {
       reset(val){
@@ -145,7 +148,7 @@
               var fd = new FormData();
 
               fd.append("file", blob, `${RamdomValue}.png`);
-              fd.append('nodeId', process.env.NODE_ID)
+              fd.append('nodeId', this.userData.node && this.userData.node.customer ? `${this.userData.nodeId}_${this.userData.merchantId}` : process.env.NODE_ID)
               chatWith.uploadFile(fd).then(res => {
                 console.log('文件上传', res);
                 if (res.code == 10000) {
