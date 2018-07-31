@@ -7,7 +7,7 @@
 
     <div class="section transaction-content" v-if="islogin">
       <div class="container min-width">
-        <div class="row relative">
+        <div class="row relative min-height">
           <div class="col-18 fl">
                <tranbuy-list></tranbuy-list>
           </div>
