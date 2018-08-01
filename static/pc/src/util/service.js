@@ -77,7 +77,6 @@ service.interceptors.response.use(
     //   }
     //   return response.data
     // }
-    const routerName = router.currentRoute.name
     if (response && response.data && response.data.code) {
       if (response.data.code === 15016) {    // 没有在线
         store.dispatch('INIT_INFO');
@@ -85,13 +84,13 @@ service.interceptors.response.use(
         $localStorage.remove('userData');
         store.dispatch('UPDATE_TOKEN_INFO', null);
         store.dispatch('CHECK_ONLINE',false);
+        const routerName = router.currentRoute.name
         if(filterRouterName.indexOf(routerName) === -1){
           store.commit("SHOW_LOGIN",true);
         }
       }
       if (response.data.data) {
-        const userDef = routerName === 'autoLogin' ? true : false
-        response.data.data = JSON.parse(aesutil.decrypt(response.data.data,userDef))
+        response.data.data = JSON.parse(aesutil.decrypt(response.data.data, config.encryptDef ? true : false))
       }
       return response.data
     } else{
