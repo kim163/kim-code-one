@@ -31,7 +31,6 @@ export default {
 
   },
   connect() {
-
     RongIMClient.connect(this.token, {
       onSuccess: () => {
         console.log('加载成功')
