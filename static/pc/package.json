@@ -7,6 +7,7 @@
   "scripts": {
     "dev": "node build/dev-server.js",
     "start": "node build/dev-server.js",
+    "analysis": "node MODE=analyse npm start",
     "build": "node build/build.js"
   },
   "dependencies": {
