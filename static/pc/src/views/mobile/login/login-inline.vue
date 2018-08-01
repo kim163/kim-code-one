@@ -111,9 +111,10 @@
         }
         const api = this.loginItem=='account' ?  show.loginByUserNameAndPwd : show.login
         api(this.requestda).then(res => {
+          debugger
           if (res.code == 10000) {
-            this.$emit('input',false);
-            this.$store.commit('SHOW_LOGIN',false);
+            // this.$emit('input',false);
+            // this.$store.commit('SHOW_LOGIN',false);
 
             $localStorage.set('tokenInfo', JSON.stringify(res.data.tokenVo));
             //$localStorage.set('userData', aesutil.encrypt(JSON.stringify(res.data)));

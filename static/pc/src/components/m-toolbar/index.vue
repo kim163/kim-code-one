@@ -75,7 +75,7 @@
         const menuStyle = JSON.parse($localStorage.get('menuStyle'))
         let logoSrc = jiuanLogo
         if(this.userData.nodeId > 10000 && menuStyle){
-          logoSrc = menuStyle.icon
+          logoSrc = menuStyle.iconUrl
         }
         return logoSrc
       }

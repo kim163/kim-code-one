@@ -22,24 +22,24 @@
         showTip:false,
         token: this.$route.query.token,
         merchantId: this.$route.query.merchantId,
-        nodeId: Number(this.$route.query.nodeId),   //定制版需要的参数 nodeId
+        nodeId: this.$route.query.nodeId,   //定制版需要的参数 nodeId
         mode: this.$route.query.mode, //定制版需要的参数 mode=1, 打开钱包到首页，mode=2 打开快速买币， mode=3 打开快速卖币
-        bankURL: this.$route.query.bankURL,  //商户返回地址
+        backURL: this.$route.query.backURL,  //商户返回地址
         menuStyle: this.$route.query.menuStyle, //定制版皮肤颜色
       }
     },
     created(){
       this.$store.dispatch('LOGIN_OUT', false)
-      if(!_.isUndefined(this.bankURL)){
-        $localStorage.set('bankURL', JSON.stringify(this.bankURL))
+      if(!_.isUndefined(this.backURL)){
+        $localStorage.set('backURL', JSON.stringify(this.backURL))
       }
       if(!_.isUndefined(this.menuStyle)){
         const style = JSON.parse(_.b64DecodeUnicode(this.menuStyle))
         $localStorage.set('menuStyle', JSON.stringify(style))
-        // const styleText = `.main-bg-color:{background-color: ${style.mainColor} !import;
-        //                     .main-color:{color:${style.mainColor}} !import;
-        //                     .sec-bg-color:{background-color: ${style.secColor} !import;
-        //                     .sec-color:{color:${style.secColor}} !import;`
+        // const styleText = `.main-bg-color{background-color: ${style.mainColor} !important;}
+        //                     .main-color{color:${style.mainColor} !important;}
+        //                     .sec-bg-color{background-color: ${style.secColor} !important;}
+        //                     .sec-color{color:${style.secColor} !important;}`
         // _.loadCssCode(styleText)
       }
       const request = {
@@ -61,7 +61,7 @@
           this.jumpLink(true)
         }else{
           toast(res.message)
-          if(this.nodeId && this.nodeId > 10000){
+          if(this.nodeId && Number(this.nodeId) > 10000){
             this.showTip = true
           }else{
             $localStorage.set('needBind', aesutil.encrypt(JSON.stringify({merchantId: this.$route.query.merchantId})));
@@ -71,7 +71,7 @@
         }
       }).catch(err => {
         toast(err)
-        if(this.nodeId && this.nodeId > 10000){
+        if(this.nodeId && Number(this.nodeId) > 10000){
           this.showTip = true
         }else{
           this.jumpLink(false)
@@ -80,10 +80,10 @@
     },
     methods:{
       jumpLink(success){
-        const tranAddress = _.isMobile() ? (!_.isUndefined(this.mode) && this.mode > 1 ? 'mPendingBuy' : 'mIndex') : 'transaction'
+        const tranAddress = _.isMobile() ? (!_.isUndefined(this.mode) && Number(this.mode) > 1 ? 'mPendingBuy' : 'mIndex') : 'transaction'
         const loginAddress = _.isMobile() ? 'mobileLogin' : 'aindex'
         if(success){
-          if(this.mode){
+          if(!_.isUndefined(this.mode)){
             this.$router.replace({name:tranAddress,query:{mode: this.mode}})
           }else{
             this.$router.replace({name:tranAddress})

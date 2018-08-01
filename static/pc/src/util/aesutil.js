@@ -29,7 +29,7 @@ export default {
    }
   },
   updateKey(data){
-    // newKey = CryptoJS.enc.Utf8.parse(data)
+    newKey = CryptoJS.enc.Utf8.parse(data)
   }
 
 }
