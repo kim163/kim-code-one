@@ -4,7 +4,7 @@
     <div class="container center f-white">
       <div class="row foot-part">
         <div class="col-7 left">
-          <a class="p-goup-title" href="index.html">
+          <a class="p-goup-title" href="static/index.html">
             <img src="~images/logo.png" alt="">
           </a>
           <p class="p-goup-subtitle" v-html="$t('footer.description')"> </p>

@@ -7,7 +7,8 @@ let numversionNew = '/api/v2/';   // 版本信息
 export const login = jsonData => service({
   url: numversion + `user/chain/login2`,
   method: 'post',
-  data: jsonData
+  data: jsonData,
+  encryptDef:true,  //使用默认加密规则
 });  // 登录：手机登录/邮箱登录
 
 export const implicitLogin = jsonData => service({

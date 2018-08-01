@@ -36,7 +36,7 @@ service.interceptors.request.use(config => {
     const nodeId = userData.node && userData.node.customer ? `${userData.nodeId}_${userData.merchantId}` : userData.nodeId
     config.data = {
       nodeId,
-      requestData: aesutil.encrypt(JSON.stringify(config.data))
+      requestData: aesutil.encrypt(JSON.stringify(config.data),config.encryptDef ? true : false)
     }
   }
   config.headers['Authorization'] = `Bearer ${store.getters.tokenInfo ? store.getters.tokenInfo.accessToken : ''}`
@@ -90,7 +90,7 @@ service.interceptors.response.use(
         }
       }
       if (response.data.data) {
-        response.data.data = JSON.parse(aesutil.decrypt(response.data.data))
+        response.data.data = JSON.parse(aesutil.decrypt(response.data.data, response.config.encryptDef ? true : false))
       }
       return response.data
     } else{
