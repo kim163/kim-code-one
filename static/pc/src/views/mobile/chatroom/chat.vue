@@ -101,7 +101,7 @@
                  v-if="list.messageType=='ImageMessage'&&list.senderUserId==userId">
               <div style="flex:1;"></div>
               <div class="contents">
-                <viewer :images="list.picArr" style="padding: .5rem 0">
+                <viewer :images="list.picArr" style="padding: .5rem">
                   <img alt="" class="contents_image" v-lazy="list.content.imageUri">
                 </viewer>
               </div>
@@ -115,7 +115,7 @@
               <div>
                 <div class="sendname" style="text-align: left">{{userData.name?userData.name:'null'}}</div>
                 <div class="contents_img_next">
-                  <viewer :images="list.img" style="padding: .5rem 0">
+                  <viewer :images="list.img" style="padding: .5rem">
                     <img class="contents_image" v-lazy="list.content.imageUri">
                   </viewer>
                 </div>
@@ -1031,6 +1031,7 @@
   .contents_image {
     max-width: r(190);
     max-height: 7rem;
+    height: 400px;
   }
 
   .sendname {
