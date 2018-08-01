@@ -55,6 +55,7 @@
           this.$store.commit('SET_USERDATA',res.data);
           this.$store.dispatch('CHECK_ONLINE', true);
           this.$store.dispatch('UPDATE_TOKEN_INFO', res.data.tokenVo);
+          _.initRongyun()
           // if(this.nodeId && this.nodeId > 10000){
           //   this.saveCustomUser(res.data)
           // }
