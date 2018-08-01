@@ -90,7 +90,7 @@ service.interceptors.response.use(
         }
       }
       if (response.data.data) {
-        response.data.data = JSON.parse(aesutil.decrypt(response.data.data, config.encryptDef ? true : false))
+        response.data.data = JSON.parse(aesutil.decrypt(response.data.data, response.config.encryptDef ? true : false))
       }
       return response.data
     } else{
