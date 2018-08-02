@@ -169,12 +169,14 @@ ul, ol {
 .cl-red {
   color: #ff1e1e !important;
 }
-
 .cl-yelow {
   color: #ffd924 !important;
 }
 .cl-blue{
   color:#94bdff !important;
+}
+.cl-sky-blue{
+  color:#619eff;
 }
 ::-webkit-input-placeholder {
   color: #afafaf;
@@ -363,7 +365,7 @@ ul, ol {
   .form-input-box{
     padding:5px 100px;
   }
-  .ps-input{
+  .ps-input,.my-input{
     height:45px;
     line-height: 45px;
     border-radius:3px;

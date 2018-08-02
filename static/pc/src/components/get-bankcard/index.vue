@@ -1,4 +1,5 @@
 <template>
+  <p class="bind-card-part">
      <select class="my-input" v-model="selBankCard">
          <option value="">{{$t(setBankcard.pleaseSelTitle)}}</option>
          <option v-for="item in bankList.data||[]" :value="item">
@@ -8,6 +9,11 @@
             <span  v-else>{{$t(item.account)}}</span>
          </option>
      </select>
+
+     <span class="nocard-tips cl-sky-blue" v-if="noCardTips">
+        没绑卡?去<router-link :to="userCenterLink()" class="link-item cl-red">{{$t('navbar.userCenter')}}</router-link>绑定
+     </span>
+  </p>
 </template>
 <script>
   import { show } from 'api'
@@ -20,7 +26,8 @@
         bankList: {
           data: []
         },
-        requestdata:{}
+        requestdata:{},
+        noCardTips:false
       };
     },
     props: {
@@ -28,15 +35,30 @@
         type: Object,
         default() {
           return {
-            pleaseSelTitle:'component.pleaseSelCard',
-            addOption:[]
+            pleaseSelTitle:'component.pleaseSelCard',    // 请选择标题文字
+            addOption:[]                  // 添加的选项
           }
         }
+      },
+      reset:{
+        type:Boolean,
+        default:false
       }
+    },
+    model:{
+      prop: 'reset',
+      event: 'change'
     },
     watch: {
       "selBankCard"(val){
         this.$emit("selCardChange", val);
+      },
+      reset(val){
+        if(val){
+          this.selBankCard = '';
+          this.$emit("selCardChange", this.selBankCard);
+          this.$emit('change',false);
+        }
       }
     },
     methods: {
@@ -46,6 +68,9 @@
         }
         show.getBankInfo(this.requestdata).then((res) => {
           this.bankList = res;
+          if(this.bankList.data.length<1){
+            this.noCardTips = true;
+          }
           if(this.setBankcard.addOption.length>0){
             for (let i in this.setBankcard.addOption){
               this.bankList.data.push(this.setBankcard.addOption[i]);
@@ -57,6 +82,15 @@
       },
       subData(item){
         return (item.substring(item.length-4))
+      },
+      userCenterLink(){
+        let routerName = '';
+        if(_.isMobile()){
+          routerName = 'mUserCenter';
+        }else {
+          routerName = 'pcUserCenter';
+        }
+        return {name: routerName};
       }
     },
     computed: {
@@ -71,5 +105,14 @@
   };
 </script>
 <style lang="scss">
+  .bind-card-part{
+    display: inline-block;
+    .nocard-tips{
+      a{
+        padding: 5px 2px;
+        border-bottom: 1px solid #ff1e1e;
+      }
+    }
+  }
 
 </style>
