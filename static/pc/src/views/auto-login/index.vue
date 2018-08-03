@@ -26,6 +26,7 @@
         mode: this.$route.query.mode, //定制版需要的参数 mode=1, 打开钱包到首页，mode=2 打开快速买币， mode=3 打开快速卖币
         backURL: this.$route.query.backURL,  //商户返回地址
         menuStyle: this.$route.query.menuStyle, //定制版皮肤颜色
+        amount: this.$route.query.menuStyle,// 定制版 用户快速卖币金额
       }
     },
     created(){
@@ -85,7 +86,13 @@
         const loginAddress = _.isMobile() ? 'mobileLogin' : 'aindex'
         if(success){
           if(!_.isUndefined(this.mode)){
-            this.$router.replace({name:tranAddress,query:{mode: this.mode}})
+            const query = {mode: this.mode}
+            if(!_.isUndefined(this.amount)){
+              Object.assign(query,{
+                amount: this.amount
+              })
+            }
+            this.$router.replace({name:tranAddress,query})
           }else{
             this.$router.replace({name:tranAddress})
           }

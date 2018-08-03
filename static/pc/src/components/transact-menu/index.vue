@@ -13,7 +13,7 @@
     </div>
   </div>
 
-   <post-pendord v-model="isShowPostPend" url-name="tranPending" :type="getType"></post-pendord>
+   <post-pendord v-model="isShowPostPend" url-name="tranPending" :type="getType" :amount="amount"></post-pendord>
   </div>
 </template>
 <script>
@@ -35,6 +35,10 @@
       mode:{ //用户判断用户意图 1是默认不打开买卖弹窗 2是打开我要买币弹窗  3是打开我要卖币
         type:Number,
         default:1
+      },
+      amount:{ //买卖币金额
+        type: Number,
+        default: 0
       }
     },
     methods: {

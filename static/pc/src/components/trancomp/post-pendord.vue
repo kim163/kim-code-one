@@ -105,7 +105,7 @@
     },
     watch: {
       postItem() {
-        this.buyAmount = '';
+        this.buyAmount = this.amount;
         this.payType = '';
         this.minAmount = '';
       }
@@ -134,6 +134,10 @@
       type: {  // 1代表买入 2代表卖出
         type: Number,
         default: 1
+      },
+      amount:{ //买卖币金额
+        type: Number,
+        default: 0
       }
     },
     computed: {
@@ -243,6 +247,7 @@
 
     created() {
       this.postItem = this.type === 1 ? 'buyer' : 'seller'
+      this.buyAmount = this.amount
     },
     mounted() {
       this.getBankInfo()
