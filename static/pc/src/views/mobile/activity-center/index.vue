@@ -1,5 +1,6 @@
 <template>
   <div>
+    <m-headnav></m-headnav>
     <div class="header">
       <div class="activity-balance">
         <div class="title">赠币活动剩余</div>
@@ -19,12 +20,16 @@
 </template>
 
 <script>
+  import mHeadnav from 'components/m-headnav';
   export default {
     name: "activity-center",
     data(){
       return{
         activityList:[],
       }
+    },
+    components:{
+      mHeadnav
     },
     methods:{
 
