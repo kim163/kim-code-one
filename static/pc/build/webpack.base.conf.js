@@ -4,7 +4,7 @@ var config = require('../config')
 var vueLoaderConfig = require('./vue-loader.conf')
 const _ = require('lodash')
 const webpack = require('webpack')
-
+const HappyPack = require('happypack')
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
 }
@@ -57,7 +57,8 @@ module.exports = {
       },
       {
         test: /\.js$/,
-        loader: 'babel-loader?cacheDirectory=true',
+        loader: 'babel-loader?cacheDirectory',  //缓存loader执行结果
+        exclude: /node_modules/,
         include: [resolve('src'), resolve('test')]
       },
       {
@@ -96,6 +97,13 @@ module.exports = {
     new webpack.ProvidePlugin({
       Vue: ['vue/dist/vue.esm.js', 'default'],
       _: 'lodash',
+    }),
+    new HappyPack({ // 基础参数设置
+      id: 'babel', // 上面loader?后面指定的id
+      loaders: ['babel-loader?cacheDirectory'], // 实际匹配处理的loader
+      threadPool: happyThreadPool,
+      // cache: true // 已被弃用
+      verbose: true
     })
   ],
   /*隐藏warning*/
