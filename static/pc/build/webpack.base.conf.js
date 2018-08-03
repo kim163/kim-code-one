@@ -1,10 +1,10 @@
 var path = require('path')
 var utils = require('./utils')
 var config = require('../config')
-var vueLoaderConfig = require('./vue-loader.conf')
+const { VueLoaderPlugin } = require('vue-loader')
 const _ = require('lodash')
 const webpack = require('webpack')
-
+const vueLoaderConfig = require('./vue-loader.conf')
 
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
@@ -91,14 +91,12 @@ module.exports = {
             name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
           }
         }
-      }
+      },
+
     ]
   },
   plugins:[
-    new webpack.ProvidePlugin({
-      Vue: ['vue/dist/vue.esm.js', 'default'],
-      _: 'lodash',
-    }),
+    new VueLoaderPlugin()
 
   ],
   /*隐藏warning*/
