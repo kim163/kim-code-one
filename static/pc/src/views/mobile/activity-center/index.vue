@@ -71,6 +71,9 @@
       .msg-list{
         width: calc(100% - #{r(14)});
         height: 100%;
+        @include f(14px);
+        line-height: r(40);
+        padding-left: r(10);
       }
     }
   }
