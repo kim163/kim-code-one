@@ -293,5 +293,16 @@ export default [
       noCache:true,
       isMobilePage:'mobile-body'
     }
+  },
+  {
+    path:'/m/activity',
+    name:'mActivity',
+    component(resolve){ //活动中心
+      return resolve(require('views/mobile/activity-center'))
+    },
+    meta:{
+      noCache:true,
+      isMobilePage:'mobile-body'
+    }
   }
 ]
