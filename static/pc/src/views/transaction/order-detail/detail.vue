@@ -226,7 +226,7 @@
                 <span class="order-id fr">{{orderId}}</span>
               </p>
             </div>
-            <div class="payord-group cfx border-bot">
+            <div class="payord-group cfx border-bot pcdetail-paymethod">
               <label>您的付款方式</label>
               <get-bankcard :setBankcard="setBankcard" v-model="bindCardReset" @selCardChange="selCardChange"></get-bankcard>
             </div>
