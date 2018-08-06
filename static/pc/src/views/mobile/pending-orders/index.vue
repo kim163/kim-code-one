@@ -309,6 +309,15 @@
       if(!_.isUndefined(mode) && Number(mode) === 3){ // 判断用户意图  mode=3是想打开我要卖币 其他默认是买币
         this.pendingItem = 'seller'
       }
+      const amount = this.$route.query.amount
+      if(!_.isUndefined(amount) && Number(amount) > 0){
+        if(this.pendingItem === 'seller'){
+          this.sellAmount = amount
+        }else{
+          this.buyAmount = amount
+        }
+
+      }
       this.getBankInfo()
     },
 
