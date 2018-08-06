@@ -228,7 +228,7 @@
             </div>
             <div class="payord-group cfx border-bot">
               <label>您的付款方式</label>
-              <get-bankcard :setBankcard="setBankcard" @selCardChange="selCardChange"></get-bankcard>
+              <get-bankcard :setBankcard="setBankcard" v-model="bindCardReset" @selCardChange="selCardChange"></get-bankcard>
             </div>
             <div class="payinst-tips">
               请您提供真实的付款信息，否则您将可能无法顺利买入UET
@@ -364,6 +364,7 @@
             {type: -1, account: 'component.otherPayMethod'}
           ]
         },
+        bindCardReset:false,
         selAccountTypeTwin: {},
         showPayDetail: false,
         showPayBankName: false,
@@ -706,7 +707,12 @@
       font-size: 15px;
       color: #333333;
       display: flex;
-      .payord-control, .my-input {
+      p.bind-card-part{
+        flex-grow: 1;
+        width: auto;
+        display: flex;
+      }
+      .payord-control,.my-input {
         height: 40px;
         line-height: 40px;
         width: auto;

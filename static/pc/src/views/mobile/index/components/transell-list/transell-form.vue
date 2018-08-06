@@ -25,7 +25,7 @@
            <span> UET </span>
          </div>
          <div  class="input-div no-mb">
-            <input class="my-input readonly-txt" type="text" :value="buyAmountCny" :placeholder="$t('transactionHome.tranAmount')" readonly>
+            <input class="my-input" type="text" :value="buyAmountCny" :placeholder="$t('transactionHome.tranAmount')" readonly>
             <span> CNY </span>
          </div>
          <div class="transell-tips cfx">
@@ -33,14 +33,7 @@
            <a href="javascript:void(0);" @click="allTransact" class="all-transact">全部卖出</a>
          </div>
          <div  class="input-div">
-           <select class="my-input" v-model="buyTypeBuy">
-             <option value="">{{$t('postPend.selectPay')}}</option>
-             <option v-for="bank in bankList.data" :value="bank">
-               <span  v-if="bank.type == '1'">支付宝 {{bank.account}}</span>
-               <span  v-if="bank.type == '2'">微信 {{bank.account}}</span>
-               <span  v-if="bank.type == '3'">{{bank.bank}} {{subData(bank.account)}}</span>
-             </option>
-           </select>
+           <get-bankcard :setBankcard="setBankcard" v-model="bindCardReset" @selCardChange="selCardChange"></get-bankcard>
          </div>
 
        </div>
@@ -59,6 +52,7 @@
   import mHeader from "components/m-header";
   import balance from 'components/balance';
   import {mapGetters, mapActions, mapMutations} from 'vuex';
+  import getBankcard from 'components/get-bankcard'
 
   export default {
     data() {
@@ -72,14 +66,18 @@
         },
         orderId: '',
         buyTypeBuy:'',
-        buyTypeBuyBank:''
+        buyTypeBuyBank:'',
+        setBankcard: {
+          pleaseSelTitle: 'component.pleaseSelPayMet',         // 请选择标题文字
+          addOption:[]
+        },
+        bindCardReset:false
       };
     },
     watch: {
       "$route"(val) {
         this.orderId = val.params.id;
         this.searchTranDetail();
-        this.getBankInfo();
       }
     },
     props: {},
@@ -97,25 +95,9 @@
           toast(err.message);
         })
       },
-
-      getBankInfo(){
-        let requestdata={
-          userId: this.userId
-        }
-        show.getBankInfo(requestdata).then(res => {
-          if (res.code == 10000) {
-            this.bankList = res;
-          }
-          console.log('bankList:', res);
-        }).catch(err => {
-          toast(err.message);
-        })
+      selCardChange(selCard) {
+         this.buyTypeBuy = selCard;
       },
-
-      subData(bank){
-        return (bank.substring(bank.length-4))
-      },
-
       allTransact(){
         this.buyAmountUet = this.item.balance;
       },
@@ -199,14 +181,12 @@
     },
     created() {
       if (this.$route.params.id) {
-        console.log('created')
         this.orderId = this.$route.params.id;
         this.searchTranDetail();
-        this.getBankInfo();
       }
     },
     components: {
-      mHeader, balance
+      mHeader, balance, getBankcard
     }
   };
 </script>
@@ -258,15 +238,19 @@
                padding: 0 r(11);
                @include  f(15px);
             }
-           .readonly-txt{
-             background: transparent;
-           }
             span{
               position: absolute;
               display: block;
               width: 13%;
               top: 0;
               right: 0;
+              &.nocard-tips{
+                position: relative;
+                top: auto;
+                right: auto;
+                width: 100%;
+                @include  f(15px);
+              }
             }
          }
          .no-mb{

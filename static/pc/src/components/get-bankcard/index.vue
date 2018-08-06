@@ -107,6 +107,11 @@
 <style lang="scss">
   .bind-card-part{
     display: inline-block;
+    width: 100%;
+    .my-input{
+      border: none;
+      width: 100%;
+    }
     .nocard-tips{
       a{
         padding: 5px 2px;

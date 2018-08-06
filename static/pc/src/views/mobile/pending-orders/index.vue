@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="pending-orders-page">
     <m-headnav>{{$t('postPend.postTitle')}}</m-headnav>
     <div class="mobilenav-tabs">
       <ul class="cfx">
@@ -18,16 +18,9 @@
         </div>
         <div class="input-box">
           <div class="input-div"><input class="my-input" type="number" placeholder="挂单买入数量" v-model.number="buyAmount" min="1" max="200000000" > UET</div>
-          <div  class="input-div"><input class="my-input readonly-txt" type="number" :value="buyAmountCny" placeholder="=总数量" readonly> CNY</div>
-          <div  class="input-div">
-            <select class="my-input" v-model="buyTypeBuy">
-              <option value="">{{$t('postPend.selectPay')}}</option>
-              <option v-for="item in bankList.data" :value="item">
-                <span  v-if="item.type == '1'">支付宝 {{item.account}}</span>
-                <span  v-if="item.type == '2'">微信 {{item.account}}</span>
-                <span  v-if="item.type == '3'">{{item.bank}} {{subData(item.account)}}</span>
-              </option>
-            </select>
+          <div  class="input-div"><input class="my-input" type="number" :value="buyAmountCny" placeholder="=总数量" readonly> CNY</div>
+          <div  class="input-div get-bankcard">
+            <get-bankcard :setBankcard="setBankcard" v-model="buyBindCardReset" @selCardChange="buySelCardChange"></get-bankcard>
           </div>
           <div >
             <p class="s-title">{{$t('postPend.buyerRequest')}}</p>
@@ -51,16 +44,9 @@
         </div>
         <div class="input-box">
           <div class="input-div"><input class="my-input" placeholder="挂单卖出数量" v-model.number="sellAmount" min="1" max="200000000"> UET</div>
-          <div  class="input-div"><input class="my-input readonly-txt" :value="sellAmountCny" placeholder="=总数量" readonly> CNY</div>
+          <div  class="input-div"><input class="my-input" :value="sellAmountCny" placeholder="=总数量" readonly> CNY</div>
           <div  class="input-div">
-            <select class="my-input" v-model="buyTypeSell">
-              <option value="">{{$t('postPend.selectPay')}}</option>
-              <option v-for="item in bankList.data" :value="item">
-                <span  v-if="item.type == '1'">支付宝 {{item.account}}</span>
-                <span  v-if="item.type == '2'">微信 {{item.account}}</span>
-                <span  v-if="item.type == '3'">{{item.bank}} {{subData(item.account)}}</span>
-              </option>
-            </select>
+            <get-bankcard :setBankcard="setBankcard" v-model="sellBindCardReset" @selCardChange="sellSelCardChange"></get-bankcard>
           </div>
           <div >
             <p class="s-title">{{$t('postPend.sellerRequest')}}</p>
@@ -95,6 +81,7 @@
   import balance from 'components/balance';
   import { generateTitle } from '@/util/i18n'
   import {mapGetters,mapActions,mapMutations} from 'vuex'
+  import getBankcard from 'components/get-bankcard'
 
   export default {
     name: "transaction-record",
@@ -102,7 +89,8 @@
     components: {
       MobileNavBar,
       mHeadnav,
-      balance
+      balance,
+      getBankcard
     },
 
     data(){
@@ -127,6 +115,18 @@
         accountCashVo:{},
         buyTypeBuyBank:'',
         userBalance:'',
+        buyBindCardReset:false,
+        sellBindCardReset:false,
+        setBankcard: {
+          pleaseSelTitle: 'component.pleaseSelPayMet',         // 请选择标题文字
+          addOption:[]
+        }
+      }
+    },
+    watch: {
+      pendingItem() {
+        this.buyBindCardReset=true;
+        this.sellBindCardReset=true;
       }
     },
     computed: {
@@ -143,16 +143,8 @@
     },
     methods: {
       generateTitle,
-      getBankInfo(){
-        this.requestdata={
-          userId: this.userId
-        }
-        show.getBankInfo(this.requestdata).then((res) => {
-          this.bankList = res;
-
-        }).catch(err => {
-
-        })
+      buySelCardChange(selCard){
+         this.buyTypeBuy = selCard;
       },
       publishBuy(){
         if(this.buyAmount =='' || !this.buyAmount){
@@ -208,7 +200,7 @@
           console.log(res)
           if(res.code == '10000'){
             this.buyAmount='';
-            this.buyTypeBuy='';
+            this.buyBindCardReset=true;
             this.minBuyAmount = '';
             toast('您已下单成功，请进入列表查询');
             Vue.$global.bus.$emit('update:balance')
@@ -220,6 +212,9 @@
           toast(err.message);
         })
 
+      },
+      sellSelCardChange(selCard){
+         this.buyTypeSell = selCard;
       },
       publishSell(){
         if(this.sellAmount =='' || !this.sellAmount){
@@ -281,7 +276,7 @@
           if(res.code == '10000'){
             toast('您已下单成功，请进入列表查询');
             this.sellAmount='';
-            this.buyTypeSell='';
+            this.sellBindCardReset=true;
             this.minSellAmount = '';
             this.proofType='';
             Vue.$global.bus.$emit('update:balance');
@@ -293,9 +288,6 @@
           toast(err.message);
         })
 
-      },
-      subData:function(item){
-        return (item.substring(item.length-4))
       },
       getBalance(data){
         this.userBalance = data
@@ -309,15 +301,15 @@
       if(!_.isUndefined(mode) && Number(mode) === 3){ // 判断用户意图  mode=3是想打开我要卖币 其他默认是买币
         this.pendingItem = 'seller'
       }
-      this.getBankInfo()
-    },
-
+    }
 
   }
 </script>
 
-<style lang="scss" scoped>
-  @import "~assets/scss/mobile";
+<style lang="scss">
+ @import "~assets/scss/mobile";
+ .pending-orders-page{
+   padding-bottom: r(50);
   .white-box{
     background: #fff;
   }
@@ -334,12 +326,12 @@
   .input-div{
     background: #FFFFFF;
     border: 1px solid #D8D8D8;
-    height:r(41);
     margin-bottom:r(20);
     padding:0 r(10)
   }
   .my-input{
     height:r(39);
+    line-height:r(39);
     border:0;
     width:84%;
   @include  f(15px);
@@ -347,13 +339,13 @@
              outline: none;
            }
   }
-  .readonly-txt{
-    background: transparent;
-  }
   select.my-input{
     width:100%;
   }
-
+  .nocard-tips{
+    line-height: r(30);
+    padding-left: 3%;
+  }
   .s-title{
     font-size: r(15);
     color: #333333;
@@ -379,4 +371,5 @@
   .c-blue{
     color: #4982FF;
   }
+ }
 </style>

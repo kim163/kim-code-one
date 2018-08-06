@@ -146,18 +146,6 @@ export default [
     }
   },
   {
-    path: "/m/pendingSell",
-    name: 'mPendingSell',
-    component(resolve) {
-      // 挂单-卖出
-      return resolve(require('views/mobile/pending-orders/pending-sell'))
-    },
-    meta: {
-      isMobilePage: "mobile-bodyFtPd",
-      noCache: true
-    }
-  },
-  {
     path: "/m/order/:id",
     name: 'mOrder',
     component(resolve) {
