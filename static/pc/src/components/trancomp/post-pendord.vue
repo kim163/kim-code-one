@@ -35,16 +35,7 @@
             </div>
             <div class="form-input-box">
               <span class="left">支付方式：</span>
-              <span class="fl">
-              <select class="ps-input" v-model="payType">
-                <option value="">请选择您要支付的方式</option>
-                <option v-for="item in bankList.data" :value="item">
-                  <span v-if="item.type == '1'">支付宝 {{item.account}}</span>
-                  <span v-if="item.type == '2'">微信 {{item.account}}</span>
-                  <span v-if="item.type == '3'">{{item.bank}} {{subData(item.account)}}</span>
-                </option>
-              </select>
-            </span>
+              <get-bankcard :setBankcard="setBankcard" v-model="bindCardReset" @selCardChange="selCardChange"></get-bankcard>
             </div>
             <div class="form-input-box">
               <span class="left">{{postItem == 'buyer' ? $t('postPend.buyerRequest') : $t('postPend.sellerRequest')}}：</span>
@@ -82,6 +73,7 @@
   import {transaction} from 'api'
   import {generateTitle} from '@/util/i18n'
   import {mapGetters} from 'vuex'
+  import getBankcard from 'components/get-bankcard'
 
   export default {
 
@@ -91,9 +83,6 @@
           {name: "transactionRecord.buyer", value: "buyer"},
           {name: "transactionRecord.seller", value: "seller"}
         ],
-        bankList: {
-          data: []
-        },
         postItem: 'buyer',
         buyAmount: '',
         payType: '',
@@ -101,12 +90,17 @@
         buyTypeBuyBank: '',
         minAmount: '',
         proofType: '',
+        setBankcard: {
+          pleaseSelTitle: 'component.pleaseSelPayMet',         // 请选择标题文字
+          addOption:[]
+        },
+        bindCardReset:false
       }
     },
     watch: {
       postItem() {
         this.buyAmount = this.amount;
-        this.payType = '';
+        this.bindCardReset=true;
         this.minAmount = this.auto === 1 ? 1 : '';
       }
     },
@@ -159,16 +153,8 @@
       hide() {
         this.$emit('change', false)
       },
-      getBankInfo() {
-        this.requestdata = {
-          userId: this.userData.userId
-        }
-        show.getBankInfo(this.requestdata).then((res) => {
-          this.bankList = res;
-
-        }).catch(err => {
-
-        })
+      selCardChange(selCard) {
+         this.payType = selCard;
       },
       publishBuyOrSell() {
         if (this.buyAmount == '' || !this.buyAmount) {
@@ -234,7 +220,7 @@
           console.log(res)
           if (res.code == '10000') {
             this.buyAmount = '';
-            this.payType = '';
+            this.bindCardReset=true;
             this.minAmount = '';
             toast('您已下单成功，请进入列表查询');
             this.hide()
@@ -247,9 +233,6 @@
         }).catch(err => {
           toast(err.message);
         })
-      },
-      subData: function (item) {
-        return (item.substring(item.length - 4))
       }
     },
 
@@ -262,11 +245,12 @@
       }
     },
     mounted() {
-      this.getBankInfo()
     },
     activated() {
     },
-    components: {}
+    components: {
+      getBankcard
+    }
   };
 </script>
 <style lang="scss" scoped>
@@ -282,6 +266,10 @@
     height: 45px;
     line-height: 45px;
     margin: 0 0 15px 0;
+    padding: 5px 10px 5px 100px !important;
+    .bind-card-part{
+      width: 75% !important;
+    }
   }
 
   .popup .pop-con .ps-input {
