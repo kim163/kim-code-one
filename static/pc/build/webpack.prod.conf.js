@@ -9,27 +9,40 @@ var HtmlWebpackPlugin = require('html-webpack-plugin')
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-
 var env = config.build.env
 
 var webpackConfig = merge(baseWebpackConfig, {
   mode:'production',
-  optimization:{
-    minimizer:[
-      new UglifyJsPlugin({})
-    ],
-    runtimeChunk: { name: 'manifest' },
-    splitChunks: {
-      cacheGroups: {
-        commons: {
-          test: /[\\/]node_modules[\\/]/,
-          name: "vendor",
-          chunks: "all"
+  optimization: {
+    minimizer: [
+      new UglifyJsPlugin({
+        exclude: /\.min\.js$/, //已经压缩的代码不用再压缩了
+        uglifyOptions:{
+        compress: {
+          warning: false,
+          drop_console: true,
+          // 内嵌定义了但是只用到一次的变量
+          collapse_vars: true,
+          // 提取出出现多次但是没有定义成变量去引用的静态值
+          reduce_vars: true,
+        },
+        output: {
+          /*最紧凑的输出*/
+          beautify: false,
+          comments: false
+        }}
+      })],
+      runtimeChunk: {name: 'manifest'},
+      splitChunks: {
+        cacheGroups: {
+          commons: {
+            test: /[\\/]node_modules[\\/]/,
+            name: "vendor",
+            chunks: "all"
+          }
         }
       }
-    }
-  },
-
+    },
   module: {
     rules: utils.styleLoaders({
         sourceMap: config.build.productionSourceMap,

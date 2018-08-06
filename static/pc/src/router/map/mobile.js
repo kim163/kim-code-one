@@ -2,13 +2,39 @@
  * Created by clover on 2018/5/21.
  */
 
+const mLogin = ()=> import('views/mobile/login') //登陆
+const mRegister =()=>import('views/mobile/register') //注册
+const mIndex = ()=>import('views/mobile/index') //首页
+const mTranbuyForm = ()=> import('views/mobile/index/components/tranbuy-list/tranbuy-form')
+const mRechargeOrder = ()=>import('views/mobile/index/components/tranbuy-list/recharge-order')
+const mRechWechatOrder = ()=>import('views/mobile/index/components/tranbuy-list/rechwechat-order')
+const mTransellForm = ()=>import('views/mobile/index/components/transell-list/transell-form')
+const mWithdrawOrder = ()=>import('views/mobile/index/components/transell-list/withdraw-orders')
+const mCashDesk = ()=>import('views/mobile/cashDesk/cash')
+const mTranRecord = ()=>import('views/mobile/transaction-record')
+const mPendingBuy = ()=>import('views/mobile/pending-orders')
+const mMyPending = ()=>import('views/mobile/my-pending-orders')
+const mPendingSell =()=>import('views/mobile/pending-orders/pending-sell')
+const mOrder =()=>import('views/mobile/details/order-progress')
+const mOrderOver=()=>import('views/mobile/details/order-compeleted')
+const mOrderAppeal=()=>import('views/mobile/details/order-appeal')
+const mUserBind =()=>import('views/mobile/business-bind')
+const mBindList =()=>import('views/mobile/business-bind/bind-list')
+const mQuickCreate=()=>import('views/mobile/quick-create')
+const mchatWith=()=>import('views/mobile/chatroom/chat')  //聊天室
+const mtalkList=()=>import('views/mobile/chatroom/chat-list') //聊天列表
+const mBindCard=()=>import('views/mobile/bind-payment/card-bind')
+const mCardList=()=>import('views/mobile/bind-payment/card-list')
+const mUserCenter=()=>import('views/mobile/user-center') //个人中心
+const mSetUserInfo=()=>import('views/mobile/user-center/set-user-info') //完善信息
+
+
+
 export default [
   {
     path: "/m/login",
     name: "mobileLogin",
-    component(resolve) {
-      return resolve(require('views/mobile/login'))
-    },
+    component:mLogin,
     meta: {
       isMobilePage: "mobile-body"
     }
@@ -16,9 +42,7 @@ export default [
   {
     path: "/m/register",
     name: "mobileRegister",
-    component(resolve) {
-      return resolve(require('views/mobile/register'))
-    },
+    component:mRegister,
     meta: {
       isMobilePage: "mobile-body"
     }
@@ -31,9 +55,7 @@ export default [
   {
     path: "/mh/",
     name: 'mIndex',
-    component(resolve) {
-      return resolve(require('views/mobile/index'))
-    },
+    component:mIndex,
     meta: {
       isMobilePage: "mobile-body"
     }
@@ -41,10 +63,7 @@ export default [
   {
     path: "/m/tranbuyFm/:id?",
     name: 'tranbuyForm',
-    component(resolve) {
-      // 购买UET
-      return resolve(require('views/mobile/index/components/tranbuy-list/tranbuy-form'))
-    },
+    component:mTranbuyForm,
     meta: {
       noCache: true,
       isMobilePage: "mobile-body"
@@ -53,10 +72,7 @@ export default [
   {
     path: "/m/rechargeOrder/:id?",
     name: 'rechargeOrder',
-    component(resolve) {
-      // UET充值
-      return resolve(require('views/mobile/index/components/tranbuy-list/recharge-order'))
-    },
+    component:mRechargeOrder,
     meta: {
       noCache: true,
       isMobilePage: "mobile-body"
@@ -65,10 +81,7 @@ export default [
   {
     path: "/m/rechWechatOrder/:id?",
     name: 'rechWechatOrder',
-    component(resolve) {
-      // UET微信充值
-      return resolve(require('views/mobile/index/components/tranbuy-list/rechwechat-order'))
-    },
+    component:mRechWechatOrder,
     meta: {
       noCache: true,
       isMobilePage: "mobile-body"
@@ -77,10 +90,7 @@ export default [
   {
     path: "/m/transellFm/:id?",
     name: 'transellForm',
-    component(resolve) {
-      // 出售UET
-      return resolve(require('views/mobile/index/components/transell-list/transell-form'))
-    },
+    component:mTransellForm,
     meta: {
       noCache: true,
       isMobilePage: "mobile-body"
@@ -89,10 +99,7 @@ export default [
   {
     path: "/m/withdrawOrder/:id?",
     name: 'withdrawOrder',
-    component(resolve) {
-      // 提现订单
-      return resolve(require('views/mobile/index/components/transell-list/withdraw-orders'))
-    },
+    component:mWithdrawOrder,
     meta: {
       noCache: true,
       isMobilePage: "mobile-body"
@@ -101,10 +108,7 @@ export default [
   {
     path: "/m/cash",
     name: 'mCashDesk',
-    component(resolve) {
-      // 收银台
-      return resolve(require('views/mobile/cashDesk/cash'))
-    },
+    component:mCashDesk,
     meta: {
       noCache: true,
       isMobilePage: "mobile-body"
@@ -113,10 +117,7 @@ export default [
   {
     path: "/m/tranRecord",
     name: 'mTranRecord',
-    component(resolve) {
-      // 手机交易记录
-      return resolve(require('views/mobile/transaction-record'))
-    },
+    component:mTranRecord,
     meta: {
       isMobilePage: "mobile-bodyFtPd",
     }
@@ -124,10 +125,7 @@ export default [
   {
     path: "/m/pendingBuy",
     name: 'mPendingBuy',
-    component(resolve) {
-      // 手机交易记录
-      return resolve(require('views/mobile/pending-orders'))
-    },
+    component:mPendingBuy,
     meta: {
       isMobilePage: "mobile-bodyFtPd",
       noCache: true
@@ -136,10 +134,7 @@ export default [
   {
     path: "/m/myPending",
     name: 'mMyPending',
-    component(resolve) {
-      //我的挂单
-      return resolve(require('views/mobile/my-pending-orders'))
-    },
+    component:mMyPending,
     meta: {
       isMobilePage: "mobile-body",
       noCache: true
@@ -148,10 +143,7 @@ export default [
   {
     path: "/m/pendingSell",
     name: 'mPendingSell',
-    component(resolve) {
-      // 挂单-卖出
-      return resolve(require('views/mobile/pending-orders/pending-sell'))
-    },
+    component:mPendingSell,
     meta: {
       isMobilePage: "mobile-bodyFtPd",
       noCache: true
@@ -160,10 +152,7 @@ export default [
   {
     path: "/m/order/:id",
     name: 'mOrder',
-    component(resolve) {
-      // 交易中-订单详情
-      return resolve(require('views/mobile/details/order-progress'))
-    },
+    component:mOrder,
     meta: {
       isMobilePage: "mobile-body",
       noCache: true
@@ -172,10 +161,7 @@ export default [
   {
     path: "/m/orderOver/:id",
     name: 'mOrderOver',
-    component(resolve) {
-      // 已完成-订单详情
-      return resolve(require('views/mobile/details/order-compeleted'))
-    },
+    component:mOrderOver,
     meta: {
       isMobilePage: "mobile-body",
       noCache: true
@@ -184,10 +170,7 @@ export default [
   {
     path: "/m/orderAppeal/:id",
     name: 'mOrderAppeal',
-    component(resolve) {
-      // 申诉订单-订单详情
-      return resolve(require('views/mobile/details/order-appeal'))
-    },
+    component:mOrderAppeal,
     meta: {
       isMobilePage: "mobile-body",
       noCache: true
@@ -196,10 +179,7 @@ export default [
   {
     path: "/m/userBind",
     name: 'mUserBind',
-    component(resolve) {
-      // 商户绑定
-      return resolve(require('views/mobile/business-bind'))
-    },
+    component:mUserBind,
     meta: {
       isMobilePage: "mobile-body"
     },
@@ -207,10 +187,7 @@ export default [
   {
     path: "/m/userBind/list",
     name: 'mBindList',
-    component(resolve) {
-      // 商户绑定--绑定列表
-      return resolve(require('views/mobile/business-bind/bind-list'))
-    },
+    component:mBindList,
     meta: {
       isMobilePage: "mobile-body",
       noCache: true
@@ -219,10 +196,7 @@ export default [
   {
     path: "/m/quickCreate",
     name: 'mQuickCreate',
-    component(resolve) {
-      // 商户绑定--绑定列表
-      return resolve(require('views/mobile/quick-create'))
-    },
+    component:mQuickCreate,
     meta: {
       isMobilePage: "mobile-body",
       noCache: true
@@ -231,9 +205,7 @@ export default [
   {
     path:'/m/chatWith',
     name:'mchatWith',
-    component(resolve){
-      return resolve(require('views/mobile/chatroom/chat'))
-    },
+    component:mchatWith,
     meta:{
       noCache:true,
       isMobilePage:"mobile-body"
@@ -242,9 +214,7 @@ export default [
   {
     path:'/m/talk-list',
     name:'mtalkList',
-    component(resolve){
-      return resolve(require('views/mobile/chatroom/chat-list'))
-    },
+    component:mtalkList,
     meta:{
       noCache:true,
       isMobilePage:'mobile-body'
@@ -253,9 +223,7 @@ export default [
   {
     path:'/m/bindCard/:id',
     name:'mBindCard',
-    component(resolve){ //绑定银行卡
-      return resolve(require('views/mobile/bind-payment/card-bind'))
-    },
+    component:mBindCard,
     meta:{
       noCache:true,
       isMobilePage:'mobile-body'
@@ -264,9 +232,7 @@ export default [
   {
     path:'/m/cardList',
     name:'mCardList',
-    component(resolve){ //银行卡列表
-      return resolve(require('views/mobile/bind-payment/card-list'))
-    },
+    component:mCardList,
     meta:{
       noCache:true,
       isMobilePage:'mobile-body'
@@ -275,9 +241,7 @@ export default [
   {
     path:'/m/userCenter',
     name:'mUserCenter',
-    component(resolve){ //个人中心
-      return resolve(require('views/mobile/user-center'))
-    },
+    component:mUserCenter, //个人中心
     meta:{
       noCache:true,
       isMobilePage:'mobile-body'
@@ -286,9 +250,7 @@ export default [
   {
     path:'/m/setUserInfo',
     name:'mSetUserInfo',
-    component(resolve){ //完善信息
-      return resolve(require('views/mobile/user-center/set-user-info'))
-    },
+    component:mSetUserInfo,//完善信息
     meta:{
       noCache:true,
       isMobilePage:'mobile-body'

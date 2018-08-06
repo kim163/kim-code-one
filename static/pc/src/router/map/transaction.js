@@ -1,8 +1,10 @@
-import tranRecord from 'views/transaction/order-record'; // 订单记录模板
-
-let index = (resolve) => resolve(require('views/transaction/index'));  //交易大厅首页
-let transell = (resolve) => resolve(require('views/transaction/transell'));  // 交易大厅 -- 卖出 UET
-
+const tranRecord =()=> import('views/transaction/order-record'); // 订单记录模板
+const index = () => import('views/transaction/index');  //交易大厅首页
+const transell = () => import('views/transaction/transell');  // 交易大厅 -- 卖出 UET
+const tranPending =()=> import('views/transaction/tran-pending')
+const orderDetail =()=> import('views/transaction/order-detail/detail') //// 订单详情页-已完成
+const orderDetailAppeal=()=>import('views/transaction/order-detail/detail-appeal')
+const orderDetailOver=()=>import('views/transaction/order-detail/detail-over')    // 订单详情页
 export default [
   {
     path: "/transaction",
@@ -23,9 +25,7 @@ export default [
   {
     path: "/tranPending",
     name: "tranPending",
-    component(resolve){
-      return resolve(require('views/transaction/tran-pending'))
-    }
+    component:tranPending
   },
   {
     path: "/tranRecord",
@@ -38,10 +38,7 @@ export default [
   {
     path: "/orderDetail/:id",
     name: 'orderDetail',
-    component(resolve){
-      // 订单详情页-交易中
-      return resolve(require('views/transaction/order-detail/detail'))
-    },
+    component:orderDetail,
     meta: {
       noCache: true
     }
@@ -49,10 +46,7 @@ export default [
   {
     path: "/orderDetailAppeal/:id",
     name: 'orderDetailAppeal',
-    component(resolve){
-      // 订单详情页-已完成
-      return resolve(require('views/transaction/order-detail/detail-appeal'))
-    },
+    component:orderDetailAppeal,
     meta: {
       noCache: true
     }
@@ -60,10 +54,7 @@ export default [
   {
     path: "/orderDetailOver/:id",
     name: 'orderDetailOver',
-    component(resolve){
-      // 订单详情页
-      return resolve(require('views/transaction/order-detail/detail-over'))
-    },
+    component:orderDetailOver,
     meta: {
       noCache: true
     }

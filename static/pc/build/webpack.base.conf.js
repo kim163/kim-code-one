@@ -96,8 +96,11 @@ module.exports = {
     ]
   },
   plugins:[
-    new VueLoaderPlugin()
-
+    new VueLoaderPlugin(),
+    new webpack.ProvidePlugin({
+      Vue: ['vue/dist/vue.esm.js', 'default'],
+      _: 'lodash',
+    })
   ],
   /*隐藏warning*/
   performance:{
