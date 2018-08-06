@@ -83,9 +83,6 @@
           {name: "transactionRecord.buyer", value: "buyer"},
           {name: "transactionRecord.seller", value: "seller"}
         ],
-        bankList: {
-          data: []
-        },
         postItem: 'buyer',
         buyAmount: '',
         payType: '',
@@ -253,6 +250,9 @@
     line-height: 45px;
     margin: 0 0 15px 0;
     padding: 5px 10px 5px 100px !important;
+    .bind-card-part{
+      width: 75% !important;
+    }
   }
 
   .popup .pop-con .ps-input {

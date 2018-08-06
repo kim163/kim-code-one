@@ -100,9 +100,6 @@
           {name: "transactionRecord.seller", value: "seller"}
         ],
         pendingItem: 'buyer',
-        bankList: {
-          data: []
-        },
         requestdata:{},
         requestda:{},
         buyAmount:'',

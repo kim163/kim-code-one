@@ -64,9 +64,6 @@
           amount: 0
         },
         orderId: '',
-        bankList: {
-          data: []
-        },
         buyTypeBuy:'',
         buyTypeBuyBank:'',
         setBankcard: {

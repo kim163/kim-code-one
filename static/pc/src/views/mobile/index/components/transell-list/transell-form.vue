@@ -58,9 +58,6 @@
     data() {
       return {
         buyAmountUet: '',
-        bankList: {
-          data: []
-        },
         item: {
           amount: 0
         },
