@@ -316,7 +316,13 @@
         }else{
           this.buyAmount = amount
         }
-
+      }
+      const withdraw = this.$route.query.withdraw
+      if(!_.isUndefined(withdraw) && withdraw === 'true'){
+        if(this.pendingItem === 'seller'){
+          this.minSellAmount = 1
+          this.proofType = 1
+        }
       }
       this.getBankInfo()
     },

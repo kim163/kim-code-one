@@ -107,7 +107,7 @@
       postItem() {
         this.buyAmount = this.amount;
         this.payType = '';
-        this.minAmount = '';
+        this.minAmount = this.auto === 1 ? 1 : '';
       }
     },
     model: {
@@ -138,6 +138,14 @@
       amount:{ //买卖币金额
         type: Number,
         default: 0
+      },
+      auto:{ //自动填写挂单信息 商户提款会用到 0表示不填写 1表示填写
+        type:Number,
+        default:0
+      },
+      bankNo:{  //银行卡号
+        type:Number,
+        default:0
       }
     },
     computed: {
@@ -248,6 +256,10 @@
     created() {
       this.postItem = this.type === 1 ? 'buyer' : 'seller'
       this.buyAmount = this.amount
+      if(this.auto === 1){
+        this.minAmount = 1
+        this.proofType = 1
+      }
     },
     mounted() {
       this.getBankInfo()
