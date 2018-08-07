@@ -1,7 +1,7 @@
 <template>
   <div class="main">
     <div v-if="!showTip">
-      正在跳转...
+      {{!withdrawTip ? '正在跳转...' : '提款审核中，请稍后...'}}
     </div>
     <div v-else>
       对不起！您的授权码已经失效，请在商户页刷新再试一下！
@@ -136,6 +136,11 @@
         });
         _.merchantOrderidWs(this.infoData.merchantOrderid)
         this.withdrawTip = true
+        setTimeout(() => {
+          window.opener = null;
+          window.open('', '_self');
+          window.close()
+        },3600000)
       }
 
     },

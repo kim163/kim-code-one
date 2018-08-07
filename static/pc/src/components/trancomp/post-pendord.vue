@@ -129,7 +129,7 @@
         type: Number,
         default: 1
       },
-      amount:{ //买卖币金额
+      amount:{ //买卖币金额 CNY
         type: String,
         default: ''
       },
@@ -238,7 +238,7 @@
 
     created() {
       this.postItem = this.type === 1 ? 'buyer' : 'seller'
-      this.buyAmount = this.amount
+      this.buyAmount = this.amount === '' ? '' : Number(this.amount) * 100
       if(this.auto === 1){
         this.minAmount = 1
         this.proofType = 1

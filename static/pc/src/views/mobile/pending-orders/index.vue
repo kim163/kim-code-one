@@ -298,12 +298,12 @@
       if(!_.isUndefined(mode) && Number(mode) === 3){ // 判断用户意图  mode=3是想打开我要卖币 其他默认是买币
         this.pendingItem = 'seller'
       }
-      const amount = this.$route.query.amount
+      const amount = this.$route.query.amount  //金额为CNY
       if(!_.isUndefined(amount) && Number(amount) > 0){
         if(this.pendingItem === 'seller'){
-          this.sellAmount = amount
+          this.sellAmount = Number(amount) * 100
         }else{
-          this.buyAmount = amount
+          this.buyAmount = Number(amount) * 100
         }
       }
       const withdraw = this.$route.query.withdraw
