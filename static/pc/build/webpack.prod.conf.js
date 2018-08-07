@@ -9,40 +9,50 @@ var HtmlWebpackPlugin = require('html-webpack-plugin')
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+
 var env = config.build.env
 
 var webpackConfig = merge(baseWebpackConfig, {
-  mode:'production',
+  mode: 'production',
   optimization: {
     minimizer: [
       new UglifyJsPlugin({
-        exclude: /\.min\.js$/, //已经压缩的代码不用再压缩了
-        uglifyOptions:{
-        compress: {
-          warning: false,
+        uglifyOptions: {
+          warnings: false,
           drop_console: true,
           // 内嵌定义了但是只用到一次的变量
           collapse_vars: true,
           // 提取出出现多次但是没有定义成变量去引用的静态值
           reduce_vars: true,
-        },
-        output: {
-          /*最紧凑的输出*/
-          beautify: false,
-          comments: false
-        }}
-      })],
-      runtimeChunk: {name: 'manifest'},
-      splitChunks: {
-        cacheGroups: {
-          commons: {
-            test: /[\\/]node_modules[\\/]/,
-            name: "vendor",
-            chunks: "all"
+          compress: true,
+          output: {
+            /**/
+            beautify: false
           }
+        },
+
+      })
+    ],
+    runtimeChunk: {name: 'manifest'},
+    splitChunks: {
+      cacheGroups: {
+        commons: {
+          chunks: 'initial',
+          minChunks: 2,
+          maxInitialRequests: 5,
+          minSize: 0
+        },
+        vendor: { // 将第三方模块提取出来
+          test: /node_modules/,
+          chunks: 'initial',
+          name: 'vendor',
+          priority: 10, // 优先
+          enforce: true
         }
       }
-    },
+    }
+  },
+
   module: {
     rules: utils.styleLoaders({
         sourceMap: config.build.productionSourceMap,
@@ -66,7 +76,7 @@ var webpackConfig = merge(baseWebpackConfig, {
                 require("postcss-import")(),
                 require("postcss-cssnext")({
                   features: {
-                    customProperties: { warnings: false }
+                    customProperties: {warnings: false}
                   }
                 }),
                 require("postcss-font-magician")()
@@ -90,7 +100,7 @@ var webpackConfig = merge(baseWebpackConfig, {
       'process.env': env
     }),
     new MiniCssExtractPlugin({
-      filename:'css/[name].[contenthash].css'
+      filename: 'css/[name].[contenthash].css'
     }),
     // extract css into its own file
 
@@ -116,7 +126,7 @@ var webpackConfig = merge(baseWebpackConfig, {
         // https://github.com/kangax/html-minifier#options-quick-reference
       },
       // necessary to consistently work with multiple chunks via CommonsChunkPlugin
-      chunksSortMode: 'dependency'
+      chunksSortMode: 'none'
     }),
 
     new CopyWebpackPlugin([
