@@ -84,6 +84,7 @@ service.interceptors.response.use(
         $localStorage.remove('userData');
         store.dispatch('UPDATE_TOKEN_INFO', null);
         store.dispatch('CHECK_ONLINE',false);
+        console.log(router)
         const routerName = router.currentRoute.name
         if(filterRouterName.indexOf(routerName) === -1){
           store.commit("SHOW_LOGIN",true);
