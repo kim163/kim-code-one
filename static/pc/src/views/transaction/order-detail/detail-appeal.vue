@@ -313,9 +313,8 @@
         transaction.payCompleted(this.request).then(res => {
           if(res.code == '10000'){
             Vue.$global.bus.$emit('update:balance');
-            Vue.$global.bus.$emit('update:tranList');
             toast('您已确认收款，请勿重复操作');
-            this.$router.push({name: 'tranRecord'});
+            this.$router.push({name: 'orderDetailOver', params: {id: this.orderId}});
           }else{
             toast(res.message)
           }
