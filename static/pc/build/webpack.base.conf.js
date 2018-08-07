@@ -11,7 +11,6 @@ function resolve (dir) {
 }
 
 module.exports = {
-
   entry: {
     app: ["babel-polyfill", "./src/main.js"],
   },
@@ -20,7 +19,8 @@ module.exports = {
   },
   output: {
     path: config.build.assetsRoot,
-    filename: '[name].js',
+    filename: '[name].bundle.js',
+    chunkFilename: "[name].bundle.js",
     publicPath: process.env.NODE_ENV === 'production'
       ? config.build.assetsPublicPath
       : config.dev.assetsPublicPath
