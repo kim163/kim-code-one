@@ -43,6 +43,10 @@
       reset:{
         type:Boolean,
         default:false
+      },
+      defSelect:{
+        type:String,
+        default:''
       }
     },
     model:{
@@ -75,6 +79,11 @@
             for (let i in this.setBankcard.addOption){
               this.bankList.data.push(this.setBankcard.addOption[i]);
             }
+          }
+          if(this.defSelect != ''){
+            this.selBankCard = _(this.bankList.data).find((item) => {
+              return item.account === this.defSelect
+            })
           }
         }).catch(err => {
           toast(err.message);

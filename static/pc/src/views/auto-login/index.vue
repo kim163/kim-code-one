@@ -30,6 +30,7 @@
         bankNo: this.$route.query.bankNo,// 定制版 银行卡号
         merchantOrderid: this.$route.query.merchantOrderid, //定制版 商户提款订单号
         withdraw: this.$route.query.withdraw, //定制版 提现标识
+        withdrawTip:false, //定制版 提现提示
       }
     },
     created(){
@@ -134,6 +135,7 @@
           this.jumpLink(true)
         });
         _.merchantOrderidWs(this.infoData.merchantOrderid)
+        this.withdrawTip = true
       }
 
     },
