@@ -43,7 +43,8 @@ export default [
     name: "mobileRegister",
     component:mRegister,
     meta: {
-      isMobilePage: "mobile-body"
+      isMobilePage: "mobile-body",
+      noLogin: true
     }
   },
   {
@@ -110,7 +111,8 @@ export default [
     component:mCashDesk,
     meta: {
       noCache: true,
-      isMobilePage: "mobile-body"
+      isMobilePage: "mobile-body",
+      noLogin: true
     }
   },
   {
@@ -171,7 +173,8 @@ export default [
     name: 'mUserBind',
     component:mUserBind,
     meta: {
-      isMobilePage: "mobile-body"
+      isMobilePage: "mobile-body",
+      noLogin: true
     },
   },
   {
@@ -189,7 +192,8 @@ export default [
     component:mQuickCreate,
     meta: {
       isMobilePage: "mobile-body",
-      noCache: true
+      noCache: true,
+      noLogin: true
     },
   },
   {

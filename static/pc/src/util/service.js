@@ -1,19 +1,8 @@
 import axios from 'axios';
 import aesutil from './aesutil';
 import store from '@/store';	//加载状态管理器
-import router from '@/router';
 import {$localStorage, $sessionStorage} from './storage';
 
-const filterRouterName = [  //过滤路由 无需跳转到登录页
-  'mUserBind',
-  'mQuickCreate',
-  'autoLogin',
-  'mobileRegister',
-  'mCashDesk',
-  'pcCashDesk',
-  'pcUserBind',
-  'pcQuickCreate',
-]
 // var promiseArr = {}
 // let cancel
 const service = axios.create({
@@ -85,11 +74,6 @@ service.interceptors.response.use(
         store.dispatch('UPDATE_TOKEN_INFO', null);
         store.dispatch('CHECK_ONLINE',false);
         store.commit("SHOW_LOGIN",true);
-        // console.log(router)
-        // const routerName = router.currentRoute.name
-        // if(filterRouterName.indexOf(routerName) === -1){
-        //   store.commit("SHOW_LOGIN",true);
-        // }
       }
       if (response.data.data) {
         response.data.data = JSON.parse(aesutil.decrypt(response.data.data, response.config.encryptDef ? true : false))

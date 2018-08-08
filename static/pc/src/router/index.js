@@ -9,17 +9,6 @@ let error404 = () => import('views/error/404');
 let error403 = () => import('views/error/403');
 let error500 = () => import('views/error/500');
 
-const filterRouterName = [  //过滤路由 无需跳转到登录页
-  'mUserBind',
-  'mQuickCreate',
-  'autoLogin',
-  'mobileRegister',
-  'mCashDesk',
-  'pcCashDesk',
-  'pcUserBind',
-  'pcQuickCreate',
-]
-
 const router = new VueRouter({
   mode: 'history', //路由的 history 模式
   base: "/",
@@ -55,10 +44,11 @@ const router = new VueRouter({
   ])
 });
 // router.beforeEach(filters);
-// router.beforeEach((to,from,next) => {
-//   debugger
-//   if(filterRouterName.indexOf(to.name) === -1){
-//     next()
-//   }
-// })
+router.beforeEach((to,from,next) => {
+  if(from.meta.noLogin){
+    next(false)
+  }else{
+    next()
+  }
+})
 export default router;
