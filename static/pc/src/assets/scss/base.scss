@@ -169,12 +169,14 @@ ul, ol {
 .cl-red {
   color: #ff1e1e !important;
 }
-
 .cl-yelow {
   color: #ffd924 !important;
 }
 .cl-blue{
   color:#94bdff !important;
+}
+.cl-sky-blue{
+  color:#619eff;
 }
 ::-webkit-input-placeholder {
   color: #afafaf;
@@ -363,15 +365,21 @@ ul, ol {
   .form-input-box{
     padding:5px 100px;
   }
-  .ps-input{
+  .ps-input,.my-input{
     height:45px;
     line-height: 45px;
     border-radius:3px;
     border:1px solid #ddd;
     padding:0 10px;
     width:210px;
+    font-size: 15px;
   }
   //select.ps-input{width:200px;}
+}
+
+.recharge-payinst .pcdetail-paymethod .my-input{
+  border: none !important;
+  width: 100% !important;
 }
 
 .popup .form-box {
@@ -775,17 +783,36 @@ span.icon-close,i.icon-close{
     .tran-contpart{
        background: #F8F8F8;
        border-bottom: 1px solid #D4D4D4;
-       padding:20px 0;
+       padding:15px 0;
        overflow:hidden;
        transition: all 0.3s ease-out;
       .input-box{
         display:inline-block;
-        margin-top:12px;
+        margin-bottom: 9px;
         input{
           width: 150px;
           height:40px;
           border:1px solid #ddd;
           padding:0 10px;
+          font-size: 15px;
+        }
+      }
+      .tran-input-part{
+         width: 44%;
+         float: left;
+         text-align: left;
+        .bind-card-part{
+          display: block;
+          .my-input{
+            width: 180px;
+            height:40px;
+            border:1px solid #ddd;
+            padding:0 10px;
+            font-size: 15px;
+          }
+          .nocard-tips{
+            font-size: 14px;
+          }
         }
       }
 
@@ -795,19 +822,19 @@ span.icon-close,i.icon-close{
         float:left;
 
       }
-      .s1{padding:20px 8px;}
+      .s1{padding:20px 0 20px 8px;}
       .s2{margin-top:20px;}
       .s1 p{font-size:15px;}
       .btns{
         float: right;
-        padding-right: 20px;
+        padding-right: 10px;
       }
       .btn {
         display: inline-block;
         height:40px;
         line-height: 40px;
         padding: 0 15px;
-        margin-top: 6px;
+        margin-top: 25px;
         font-size: 18px;
         background: orange;
         border:0;
@@ -816,12 +843,18 @@ span.icon-close,i.icon-close{
         border-radius: 3px;
         color: #fff;
         transition: all .3s;
+        &:hover{
+          background: #FA504B;
+        }
         &.blue{
           background: #5087ff;
         }
         &.gray{
           background: #fff;
           color:#333;
+          &:hover{
+            background: #dedede;
+          }
         }
       }
       .btn-block{width:100%;}
