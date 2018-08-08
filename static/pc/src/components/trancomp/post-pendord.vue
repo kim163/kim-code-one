@@ -35,7 +35,7 @@
             </div>
             <div class="form-input-box">
               <span class="left">支付方式：</span>
-              <get-bankcard :setBankcard="setBankcard" v-model="bindCardReset" @selCardChange="selCardChange"></get-bankcard>
+              <get-bankcard :setBankcard="setBankcard" v-model="bindCardReset" :def-select="bankNo" @selCardChange="selCardChange"></get-bankcard>
             </div>
             <div class="form-input-box">
               <span class="left">{{postItem == 'buyer' ? $t('postPend.buyerRequest') : $t('postPend.sellerRequest')}}：</span>
@@ -99,9 +99,9 @@
     },
     watch: {
       postItem() {
-        this.buyAmount = '';
+        this.buyAmount = this.amount;
         this.bindCardReset=true;
-        this.minAmount = '';
+        this.minAmount = this.auto === 1 ? 1 : '';
       }
     },
     model: {
@@ -128,6 +128,18 @@
       type: {  // 1代表买入 2代表卖出
         type: Number,
         default: 1
+      },
+      amount:{ //买卖币金额 CNY
+        type: String,
+        default: ''
+      },
+      auto:{ //自动填写挂单信息 商户提款会用到 0表示不填写 1表示填写
+        type:Number,
+        default:0
+      },
+      bankNo:{  //银行卡号
+        type:String,
+        default:''
       }
     },
     computed: {
@@ -226,6 +238,11 @@
 
     created() {
       this.postItem = this.type === 1 ? 'buyer' : 'seller'
+      this.buyAmount = this.amount === '' ? '' : Number(this.amount) * 100
+      if(this.auto === 1){
+        this.minAmount = 1
+        this.proofType = 1
+      }
     },
     mounted() {
     },
