@@ -108,6 +108,8 @@
             toast(msgData.describe)
             window.location.href=this.detailAppeal + msgData.text;
             //console.log(msgData);
+          }else if(msgData.type == 23){  //商户提款
+            Vue.$global.bus.$emit('update:withdrawSuccess');
           }else{
             toast(msgData.describe)
             //console.log(msgData);

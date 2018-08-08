@@ -28,7 +28,6 @@
         menuStyle: this.$route.query.menuStyle, //定制版皮肤颜色 logo等参数集合
         amount: this.$route.query.menuStyle,// 定制版 用户快速卖币金额
         bankNo: this.$route.query.bankNo,// 定制版 银行卡号
-        merchantOrderid: this.$route.query.merchantOrderid, //定制版 商户提款订单号
         withdraw: this.$route.query.withdraw, //定制版 提现标识
         withdrawTip:false, //定制版 提现提示
       }
@@ -63,7 +62,7 @@
           // if(this.nodeId && this.nodeId > 10000){
           //   this.saveCustomUser(res.data)
           // }
-          if(this.withdraw){
+          if(this.withdraw && this.withdraw === 'true'){
             this.merchantWithdrawal()
           }else{
             this.jumpLink(true)
@@ -134,7 +133,6 @@
         Vue.$global.bus.$on('update:withdrawSuccess',() => {
           this.jumpLink(true)
         });
-        _.merchantOrderidWs(this.infoData.merchantOrderid)
         this.withdrawTip = true
         setTimeout(() => {
           window.opener = null;
