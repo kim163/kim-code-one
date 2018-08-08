@@ -169,7 +169,7 @@
           bindUserid: this.formatParameter(this.infoData.bindUserid),
           bindPhone: this.formatParameter(this.infoData.bindPhone),
           bindName: this.formatParameter(this.infoData.bindName),
-          bindAreacode: this.formatParameter(this.infoData.bindAreacode),
+          bindAreacode: this.formatParameter(this.infoData.bindAreacode.replace(' ','+')),
           bindUserLevel: this.formatParameter(this.infoData.bindUserLevel),
           spareFields: this.formatParameter(this.infoData.spareFields),
         }
