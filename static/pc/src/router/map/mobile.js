@@ -27,8 +27,6 @@ const mCardList = () => import(/* webpackChunkName: 'mCardList' */ 'views/mobile
 const mUserCenter = () => import(/* webpackChunkName: 'mUserCenter' */ 'views/mobile/user-center') //个人中心
 const mSetUserInfo = () => import(/* webpackChunkName: 'mSetUserInfo' */ 'views/mobile/user-center/set-user-info') //完善信息
 
-
-
 export default [
   {
     path: "/m/login",
