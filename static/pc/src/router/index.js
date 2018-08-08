@@ -9,7 +9,6 @@ let error404 = () => import('views/error/404');
 let error403 = () => import('views/error/403');
 let error500 = () => import('views/error/500');
 
-
 const router = new VueRouter({
   mode: 'history', //路由的 history 模式
   base: "/",
@@ -45,4 +44,11 @@ const router = new VueRouter({
   ])
 });
 // router.beforeEach(filters);
+router.beforeEach((to,from,next) => {
+  if(from.meta.noLogin){
+    next(false)
+  }else{
+    next()
+  }
+})
 export default router;

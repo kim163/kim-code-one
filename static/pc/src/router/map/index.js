@@ -21,14 +21,18 @@ export default [
   {
     path: "/autoLogin",
     name: "autoLogin",
-    component: autoLogin
+    component: autoLogin,
+    meta:{
+      noLogin: true,
+    }
   },
   {
     path: "/cash",
     name: "pcCashDesk",
     component: cash,
     meta:{
-      noCache: true
+      noCache: true,
+      noLogin: true
     }
   },
   {
@@ -39,7 +43,8 @@ export default [
       type:1
     },
     meta:{
-      noCache: true
+      noCache: true,
+      noLogin: true
     }
   },
   {
@@ -58,7 +63,8 @@ export default [
       type:2
     },
     meta:{
-      noCache: true
+      noCache: true,
+      noLogin: true
     }
   },
   {
