@@ -29,6 +29,7 @@
         amount: this.$route.query.amount,// 定制版 用户快速卖币金额
         bankNo: this.$route.query.bankNo,// 定制版 银行卡号
         withdraw: this.$route.query.withdraw, //定制版 提现标识
+        merchantOrderid: this.$route.query.merchantOrderid, //定制版 提现订单id
         withdrawTip:false, //定制版 提现提示
       }
     },
@@ -133,6 +134,7 @@
         Vue.$global.bus.$on('update:withdrawSuccess',() => {
           this.jumpLink(true)
         });
+        _.merchantOrderidWs(this.merchantOrderid)
         this.withdrawTip = true
         setTimeout(() => {
           window.opener = null;
