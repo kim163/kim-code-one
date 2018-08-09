@@ -44,11 +44,12 @@ const router = new VueRouter({
   ])
 });
 // router.beforeEach(filters);
-router.beforeEach((to,from,next) => {
-  if(from.meta.noLogin){
-    next(false)
-  }else{
-    next()
-  }
-})
+// router.beforeEach((to,from,next) => {
+//   debugger
+//   if(from.meta.noLogin){
+//     next(false)
+//   }else{
+//     next()
+//   }
+// })
 export default router;
