@@ -26,6 +26,7 @@ const mBindCard = () => import(/* webpackChunkName: 'mBindCard' */ 'views/mobile
 const mCardList = () => import(/* webpackChunkName: 'mCardList' */ 'views/mobile/bind-payment/card-list')
 const mUserCenter = () => import(/* webpackChunkName: 'mUserCenter' */ 'views/mobile/user-center') //个人中心
 const mSetUserInfo = () => import(/* webpackChunkName: 'mSetUserInfo' */ 'views/mobile/user-center/set-user-info') //完善信息
+const mMyGift = () => import('views/mobile/user-center/my-gift') //我的获赠
 
 export default [
   {
@@ -243,6 +244,15 @@ export default [
     path:'/m/setUserInfo',
     name:'mSetUserInfo',
     component:mSetUserInfo,//完善信息
+    meta:{
+      noCache:true,
+      isMobilePage:'mobile-body'
+    }
+  },
+  {
+    path:'/m/myGift',
+    name:'mMyGift',
+    component:mMyGift,//我的获赠
     meta:{
       noCache:true,
       isMobilePage:'mobile-body'
