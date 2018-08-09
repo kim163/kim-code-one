@@ -26,7 +26,7 @@
         mode: this.$route.query.mode, //定制版需要的参数 mode=1, 打开钱包到首页，mode=2 打开快速买币， mode=3 打开快速卖币
         backURL: this.$route.query.backURL,  //定制版需要的参数 商户返回地址
         menuStyle: this.$route.query.menuStyle, //定制版皮肤颜色 logo等参数集合
-        amount: this.$route.query.menuStyle,// 定制版 用户快速卖币金额
+        amount: this.$route.query.amount,// 定制版 用户快速卖币金额
         bankNo: this.$route.query.bankNo,// 定制版 银行卡号
         withdraw: this.$route.query.withdraw, //定制版 提现标识
         withdrawTip:false, //定制版 提现提示
@@ -139,6 +139,9 @@
           window.open('', '_self');
           window.close()
         },3600000)
+        setTimeout(() => {
+          this.jumpLink(true)
+        },3000)
       }
 
     },
