@@ -139,9 +139,6 @@
           window.open('', '_self');
           window.close()
         },3600000)
-        setTimeout(() => {
-          this.jumpLink(true)
-        },3000)
       }
 
     },
