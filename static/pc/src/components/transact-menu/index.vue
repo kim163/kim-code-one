@@ -37,7 +37,7 @@
         mode: Number(this.$route.query.mode) || 1, //判断用户意图 1是默认不打开买卖弹窗 2是打开我要买币弹窗  3是打开我要卖币
         amount: this.$route.query.amount, //商户提现 金额
         bankNo: this.$route.query.bankNo, //商户提现 银行卡号
-        auto: 0, //商户提现 自动填写信息
+        auto: this.$route.query.auto || 0, //商户提现 自动填写信息
       }
     },
     props:{
@@ -54,7 +54,6 @@
     created() {
       if(this.mode > 1){
         this.isShowPostPend = true
-        this.auto = this.$route.query.withdraw && this.$route.query.withdraw === 'true' ? 1 : 0
       }
     },
     mounted() {
