@@ -151,7 +151,10 @@
           this.initWsData();
           this.stompConnect();
         }
-      }
+      },
+      // "userData.configVos"(){
+      //   this.initWsData();
+      // }
     },
     components:{
 
