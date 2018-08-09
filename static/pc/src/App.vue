@@ -149,7 +149,7 @@
           this.initWsData();
           this.stompConnect();
         }
-      }
+      },
     },
     components:{
 
