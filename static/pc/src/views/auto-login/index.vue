@@ -47,6 +47,7 @@
         //                     .sec-color{color:${style.secColor} !important;}`
         // _.loadCssCode(styleText)
       }
+      debugger
       const request = {
         type:11,
         token: this.token,
@@ -64,10 +65,15 @@
           //   this.saveCustomUser(res.data)
           // }
           if(this.withdraw && this.withdraw === 'true'){
-            this.merchantWithdrawal()
-          }else{
-            this.jumpLink(true)
+            _.merchantOrderidWs(this.merchantOrderId)
+            const data = {
+              amount: this.amount,
+              bankNo: this.bankNo
+            }
+            $localStorage.set(`withdraw_${res.data.userId}`,
+              aesutil.encrypt(JSON.stringify(data)))
           }
+          this.jumpLink(true)
         }else{
           toast(res.message)
           if(this.nodeId && Number(this.nodeId) > 10000){
@@ -94,15 +100,9 @@
         if(success){
           if(!_.isUndefined(this.mode)){
             const query = {mode: this.mode}
-            if(!_.isUndefined(this.amount)){
+            if(this.withdraw && this.withdraw === 'true'){
               Object.assign(query,{
-                amount: this.amount
-              })
-            }
-            if(this.withdraw){
-              Object.assign(query,{
-                bankNo: this.bankNo,
-                auto: 1
+                withdraw: this.withdraw
               })
             }
             this.$router.replace({name:tranAddress,query})

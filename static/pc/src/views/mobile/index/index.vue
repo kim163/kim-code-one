@@ -17,6 +17,7 @@
       </div>
 
      <m-navbar></m-navbar>
+     <withdraw-tip v-model="withdrawTip"></withdraw-tip>
   </div>
 </template>
 <script>
@@ -24,6 +25,7 @@
   import mHeadnav from 'components/m-headnav';
   import mNavbar from 'components/m-navbar';
   import balance from 'components/balance';
+  import WithdrawTip from 'components/withdraw-tip';
   import tranbuyList from './components/tranbuy-list';
   import transellList from './components/transell-list';
 
@@ -37,6 +39,7 @@
           {name:'transactionHome.saleUet', value: 'saleUet' }
         ],
         transactItem: 'buyUet',
+        withdrawTip:false
       };
     },
     props: {
@@ -61,9 +64,13 @@
         this.$router.push({name: 'mobileLogin'});
       }
       console.log('m index create');
+      const withdraw = this.$route.query.withdraw
+      if(withdraw && !_.isUndefined(withdraw) && withdraw === 'true'){
+        this.withdrawTip = true
+      }
     },
     components: {
-      mHeadnav, mNavbar,balance, tranbuyList, transellList
+      mHeadnav, mNavbar,balance, tranbuyList, transellList,WithdrawTip
     }
   };
 </script>
