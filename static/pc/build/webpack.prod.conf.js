@@ -24,7 +24,9 @@ var webpackConfig = merge(baseWebpackConfig, {
           collapse_vars: true,
           // 提取出出现多次但是没有定义成变量去引用的静态值
           reduce_vars: true,
-          compress: true,
+          compress:{
+            drop_console:true
+          },
           output: {
             /**/
             beautify: false
