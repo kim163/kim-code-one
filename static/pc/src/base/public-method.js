@@ -89,7 +89,7 @@ _.mixin(
       let stompSuccessCallback = (frame) => {
         console.log('STOMP: Connection successful')
         subscription = client.subscribe('/exchange/walletCustomOperation/'+orderid, function (data) {
-            let msgData=JSON.parse(aesutil.decrypt(data.body));
+            let msgData=JSON.parse(aesutil.decrypt(data.body,true));
             if(msgData.type == 21){  //收银台 支付中  用于二维码显示
               Vue.$global.bus.$emit('update:paying');
             }else if(msgData.type == 22){  //收银台 支付完成
