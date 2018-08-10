@@ -14,21 +14,22 @@
       </div>
     </div>
     <div class="activity-list p-def">
-      <div class="activity-item" v-for="(item,index) in 4" :key="index">
+      <div class="activity-item" v-for="(item,index) in activityList" :key="index">
         <div class="title" :class="`item-${index}`" @click="showDetail(index + 1)">
           <div class="left">
             <div class="main-title">
               <span class="icon-hot"></span>
-              每笔快速卖币赠币
+              {{item.title}}
             </div>
-            <div class="des-title">赠币力度大</div>
+            <div class="des-title">{{item.subtitle}}</div>
           </div>
-          <img class="icon" src="~images/activity-buy.png">
+          <img class="icon" :src="item.iconUrl">
         </div>
-        <transition name="">
+        <transition name="panel">
           <div class="detail" v-show="showIndex === index + 1">
-            <div class="content-info">每一笔快速卖币的成功交易，在限定时间内都可以获得赠币优惠!</div>
-            <router-link class="link" :class="`link-${index}`" to="{name: 'aindex'}">买币</router-link>
+            <div class="content-info" v-for="(info,i) in item.contentList" :key="i">{{info}}</div>
+            <router-link class="link" :class="`link-${index}`"
+                         v-if="item.schemeUrl" :to="checkLink(item.type)">买币</router-link>
           </div>
         </transition>
       </div>
@@ -58,12 +59,34 @@
     },
     methods:{
       getActivityList(){
-        getAwardInfo().then(res => {
+        getAwardInfo({}).then(res => {
           console.log(res)
+          if(res.code === 10000){
+            this.activityList = [...res.data.awardList]
+            this.announcementList = [...res.data.announcementList]
+          }else{
+            toast(res.message)
+          }
+        }).catch(err => {
+          toast(err)
         })
       },
       showDetail(num){
         this.showIndex = this.showIndex === num ? 0 : num
+      },
+      checkLink(type){
+        let routerTo = ''
+        switch (type){
+          case 'sellCoins':
+            routerTo = {name:'mPendingBuy',query:{mode:3}}
+            break
+          case 'buyCoins':
+            routerTo = {name:'mPendingBuy'}
+            break
+          default:
+            break
+        }
+        return routerTo
       }
     },
     mounted(){
@@ -74,6 +97,12 @@
 
 <style lang="scss" scoped>
   @import "~assets/scss/mobile";
+  .panel-enter{
+    opacity: 0;
+  }
+  .panel-enter-active{
+    transition: all .5s;
+  }
   .header{
     width: 100%;
     .activity-balance{
@@ -117,6 +146,12 @@
       width: 100%;
       margin-bottom: r(15);
       background: $white;
+      &:nth-child(odd){
+        animation: fadeInLeft .5s forwards;
+      }
+      &:nth-child(even){
+        animation: fadeInRight .5s forwards;
+      }
       .title{
         height: r(90);
         border-radius: r(6);
@@ -173,7 +208,7 @@
         line-height: r(22);
         color: #787876;
         position: relative;
-        padding-bottom: r(10);
+        padding: r(10) 0;
         &:after{
           content: '';
           display: block;
