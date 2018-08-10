@@ -130,18 +130,18 @@
         $localStorage.set('customUserList', aesutil.encrypt(JSON.stringify(arr), true))
       },
 
-      merchantWithdrawal(){ //商户提款
-        Vue.$global.bus.$on('update:withdrawSuccess',() => {
-          this.jumpLink(true)
-        });
-        _.merchantOrderidWs(this.merchantOrderId)
-        this.withdrawTip = true
-        setTimeout(() => {
-          window.opener = null;
-          window.open('', '_self');
-          window.close()
-        },3600000)
-      }
+      // merchantWithdrawal(){ //商户提款
+      //   Vue.$global.bus.$on('update:withdrawSuccess',() => {
+      //     this.jumpLink(true)
+      //   });
+      //   _.merchantOrderidWs(this.merchantOrderId)
+      //   this.withdrawTip = true
+      //   setTimeout(() => {
+      //     window.opener = null;
+      //     window.open('', '_self');
+      //     window.close()
+      //   },3600000)
+      // }
 
     },
     destroyed(){
