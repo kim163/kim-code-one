@@ -5,7 +5,7 @@
       <div class="activity-balance">
         <div class="title">赠币活动剩余</div>
         <div>
-          <span class="balance">239104</span> UET
+          <span class="balance">{{coinBalance}}</span> UET
         </div>
       </div>
       <div class="adv-marquee">
@@ -49,8 +49,9 @@
     data(){
       return{
         activityList:[],
-        announcementList:[],
-        showIndex:0
+        awardLiveInfoList:[],
+        showIndex:0,
+        coinBalance:0,
       }
     },
     components:{
@@ -62,8 +63,9 @@
         getAwardInfo({}).then(res => {
           console.log(res)
           if(res.code === 10000){
+            this.coinBalance = res.data.coinBalance
             this.activityList = [...res.data.awardList]
-            this.announcementList = [...res.data.announcementList]
+            this.awardLiveInfoList = [...res.data.awardLiveInfoList]
           }else{
             toast(res.message)
           }
