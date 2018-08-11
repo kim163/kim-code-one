@@ -24,6 +24,7 @@ export default [
     component: autoLogin,
     meta:{
       noLogin: true,
+      noCache: true
     }
   },
   {
