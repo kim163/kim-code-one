@@ -57,9 +57,9 @@
       toQuickSell(){
         $localStorage.remove(`withdraw_${this.userId}`)
         if(_.isMobile()){
-          this.$route.push({name:'mPendingBuy',query:{mode:3,amount: this.amount,bankNo: this.bankNo,withdraw: true}})
+          this.$router.push({name:'mPendingBuy',query:{mode:3,amount: this.amount,bankNo: this.bankNo,withdraw: true}})
         }else{
-          this.$route.push({name:'transaction',query:{mode:3,amount: this.amount,bankNo: this.bankNo,auto: 1}})
+          this.$router.push({name:'transaction',query:{mode:3,amount: this.amount,bankNo: this.bankNo,auto: 1}})
         }
       }
     },
