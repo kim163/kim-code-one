@@ -44,7 +44,14 @@
 
     },
     methods: {
-      generateTitle
+      generateTitle,
+      toSell(data){
+        this.mode = data.mode
+        this.amount = data.amount
+        this.bankNo = data.bankNo
+        this.auto = data.auto
+        this.isShowPostPend = true
+      }
     },
     computed:{
       getType(){
@@ -55,6 +62,9 @@
       if(this.mode > 1){
         this.isShowPostPend = true
       }
+      Vue.$global.bus.$on('open:QuickSell',(data) => {
+        this.toSell(data)
+      });
     },
     mounted() {
     },
@@ -62,6 +72,9 @@
     },
     components: {
       postPendord
+    },
+    destroyed(){
+      Vue.$global.bus.$off('open:QuickSell')
     }
   };
 </script>

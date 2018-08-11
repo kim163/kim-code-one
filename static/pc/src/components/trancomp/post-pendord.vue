@@ -94,14 +94,32 @@
           pleaseSelTitle: 'component.pleaseSelPayMet',         // 请选择标题文字
           addOption:[]
         },
-        bindCardReset:false
+        bindCardReset:false,
       }
     },
     watch: {
-      postItem() {
-        this.buyAmount = this.amount;
-        this.bindCardReset=true;
-        this.minAmount = this.auto === 1 ? 1 : '';
+      postItem(val) {
+        if(val === 'seller' && this.auto === 1){
+          this.buyAmount = Number(this.amount) * 100;
+          this.minAmount = this.auto === 1 ? 1 : '';
+        }else{
+          this.buyAmount = '';
+          this.bindCardReset = true;
+          this.minAmount = '';
+        }
+      },
+      type(val){
+        if(val === 2){
+          this.postItem = 'seller'
+        }
+      },
+      show(val){
+        if(!val){
+          this.buyAmount = ''
+          this.bindCardReset = true
+          this.minAmount = ''
+          this.postItem = 'buyer'
+        }
       }
     },
     model: {
@@ -233,7 +251,7 @@
         }).catch(err => {
           toast(err.message);
         })
-      }
+      },
     },
 
     created() {
