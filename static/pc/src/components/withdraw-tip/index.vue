@@ -55,12 +55,12 @@
         }
       },
       toQuickSell(){
+        $localStorage.remove(`withdraw_${this.userId}`)
         if(_.isMobile()){
           this.$route.push({name:'mPendingBuy',query:{mode:3,amount: this.amount,bankNo: this.bankNo,withdraw: true}})
         }else{
           this.$route.push({name:'transaction',query:{mode:3,amount: this.amount,bankNo: this.bankNo,auto: 1}})
         }
-        $localStorage.remove(`withdraw_${this.userId}`)
       }
     },
     created(){
@@ -70,8 +70,8 @@
       });
       if(!this.time){
         this.time = setTimeout(() => {
-          this.show = false
-        })
+          this.$emit('change', false)
+        },3600000)
       }
     },
     destroyed(){

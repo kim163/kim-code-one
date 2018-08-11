@@ -47,7 +47,6 @@
         //                     .sec-color{color:${style.secColor} !important;}`
         // _.loadCssCode(styleText)
       }
-      debugger
       const request = {
         type:11,
         token: this.token,
@@ -144,11 +143,6 @@
       // }
 
     },
-    destroyed(){
-      if(this.withdraw){
-        Vue.$global.bus.$off('update:withdrawSuccess')
-      }
-    }
   }
 </script>
 
