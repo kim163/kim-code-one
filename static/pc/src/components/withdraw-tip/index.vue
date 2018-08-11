@@ -68,11 +68,11 @@
           this.$router.push({name:'mPendingBuy',query:{mode:3,amount: this.amount,bankNo: this.bankNo,withdraw: true}})
         }else{
           const query = {mode:3,amount: this.amount,bankNo: this.bankNo,auto: 1}
-          if(this.$route.name === 'transaction'){
+          // if(this.$route.name === 'transaction'){
             Vue.$global.bus.$emit('open:QuickSell',query);
-          }else{
-            this.$router.push({name:'transaction',query})
-          }
+          // }else{
+          //   this.$router.push({name:'transaction',query})
+          // }
         }
       }
     },
@@ -82,9 +82,6 @@
         toast('提款审核已通过！')
         this.toQuickSell()
       });
-      setTimeout(() => {
-        this.toQuickSell()
-      },5000)
       if(!this.time){
         this.time = setTimeout(() => {
           this.$emit('change', false)

@@ -94,14 +94,32 @@
           pleaseSelTitle: 'component.pleaseSelPayMet',         // 请选择标题文字
           addOption:[]
         },
-        bindCardReset:false
+        bindCardReset:false,
       }
     },
     watch: {
-      postItem() {
-        this.buyAmount = this.amount;
-        this.bindCardReset=true;
-        this.minAmount = this.auto === 1 ? 1 : '';
+      postItem(val) {
+        if(val === 'seller' && this.auto === 1){
+          this.buyAmount = Number(this.amount) * 100;
+          this.minAmount = this.auto === 1 ? 1 : '';
+        }else{
+          this.buyAmount = '';
+          this.bindCardReset = true;
+          this.minAmount = '';
+        }
+      },
+      type(val){
+        if(val === 2){
+          this.postItem = 'seller'
+        }
+      },
+      show(val){
+        if(!val){
+          this.buyAmount = ''
+          this.bindCardReset = true
+          this.minAmount = ''
+          this.postItem = 'buyer'
+        }
       }
     },
     model: {
@@ -233,7 +251,7 @@
         }).catch(err => {
           toast(err.message);
         })
-      }
+      },
     },
 
     created() {
@@ -243,14 +261,6 @@
         this.minAmount = 1
         this.proofType = 1
       }
-      Vue.$global.bus.$on('open:QuickSell',(data) => {
-        this.postItem = data.mode === 3 ? 'seller' : 'buyer'
-        this.buyAmount = Number(data.amount) * 100
-        if(data.auto === 1){
-          this.minAmount = 1
-          this.proofType = 1
-        }
-      });
     },
     mounted() {
     },
