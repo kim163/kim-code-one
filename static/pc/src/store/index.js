@@ -123,12 +123,14 @@ export default new Vuex.Store({
       state.timeOver = val
     },
     [types.SHOW_LOGIN](state,val){
-      if(_.isMobile() && val){
-        router.replace({name:'mobileLogin'});
-      }else{
-        state.showLogin=val;
-        router.replace({name:'transaction'});
+      if(val){
+        if(_.isMobile() && val){
+          router.replace({name:'mobileLogin'});
+        }else{
+          router.replace({name:'transaction'});
+        }
       }
+      state.showLogin=val;
     },
     [types.GET_UNREADCOUNT](state, val) {
       state.unreadCount = val
