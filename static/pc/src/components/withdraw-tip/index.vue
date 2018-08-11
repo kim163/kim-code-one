@@ -42,6 +42,13 @@
         default:false
       }
     },
+    watch:{
+      show(val){
+        if(!val){
+          clearTimeout(this.time)
+        }
+      }
+    },
     methods:{
       hideDialog(){
         this.$emit('change', false)
@@ -56,18 +63,28 @@
       },
       toQuickSell(){
         $localStorage.remove(`withdraw_${this.userId}`)
+        this.$emit('change', false)
         if(_.isMobile()){
           this.$router.push({name:'mPendingBuy',query:{mode:3,amount: this.amount,bankNo: this.bankNo,withdraw: true}})
         }else{
-          this.$router.push({name:'transaction',query:{mode:3,amount: this.amount,bankNo: this.bankNo,auto: 1}})
+          const query = {mode:3,amount: this.amount,bankNo: this.bankNo,auto: 1}
+          if(this.$route.name === 'transaction'){
+            Vue.$global.bus.$emit('open:QuickSell',query);
+          }else{
+            this.$router.push({name:'transaction',query})
+          }
         }
       }
     },
     created(){
       this.getWithdrawInfo()
       Vue.$global.bus.$on('update:withdrawSuccess',() => {
+        toast('提款审核已通过！')
         this.toQuickSell()
       });
+      setTimeout(() => {
+        this.toQuickSell()
+      },5000)
       if(!this.time){
         this.time = setTimeout(() => {
           this.$emit('change', false)

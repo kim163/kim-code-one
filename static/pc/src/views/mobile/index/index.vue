@@ -17,7 +17,7 @@
       </div>
 
      <m-navbar></m-navbar>
-     <withdraw-tip v-model="withdrawTip"></withdraw-tip>
+     <withdraw-tip v-if="withdrawTip" v-model="withdrawTip"></withdraw-tip>
   </div>
 </template>
 <script>

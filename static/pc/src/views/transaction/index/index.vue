@@ -22,7 +22,7 @@
     </div>
 
     <v-footer ></v-footer>
-    <withdraw-tip v-model="withdrawTip" :is-pc="true"></withdraw-tip>
+    <withdraw-tip v-if="withdrawTip" v-model="withdrawTip" :is-pc="true"></withdraw-tip>
   </div>
 </template>
 <script>

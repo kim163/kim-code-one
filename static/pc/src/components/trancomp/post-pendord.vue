@@ -243,6 +243,14 @@
         this.minAmount = 1
         this.proofType = 1
       }
+      Vue.$global.bus.$on('open:QuickSell',(data) => {
+        this.postItem = data.mode === 3 ? 'seller' : 'buyer'
+        this.buyAmount = Number(data.amount) * 100
+        if(data.auto === 1){
+          this.minAmount = 1
+          this.proofType = 1
+        }
+      });
     },
     mounted() {
     },
