@@ -1,7 +1,6 @@
 import transaction from './transaction';
 import mobileUrl from './mobile';
 
-let head_userpart = () => import('components/header');
 let index = () => import('views/show/index');//首页
 const autoLogin = () => import('views/auto-login'); //商户自动登录
 const cash = () => import('views/cash'); //收银台
@@ -20,15 +19,11 @@ export default [
     redirect:"/index"
   },
   {
-    path: "/headerUser",
-    name: "header_user",
-    component: head_userpart
-  },
-  {
     path: "/autoLogin",
     name: "autoLogin",
     component: autoLogin,
     meta:{
+      noLogin: true,
       noCache: true
     }
   },
@@ -37,7 +32,8 @@ export default [
     name: "pcCashDesk",
     component: cash,
     meta:{
-      noCache: true
+      noCache: true,
+      noLogin: true
     }
   },
   {
@@ -48,7 +44,8 @@ export default [
       type:1
     },
     meta:{
-      noCache: true
+      noCache: true,
+      noLogin: true
     }
   },
   {
@@ -67,7 +64,8 @@ export default [
       type:2
     },
     meta:{
-      noCache: true
+      noCache: true,
+      noLogin: true
     }
   },
   {

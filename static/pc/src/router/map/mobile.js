@@ -2,32 +2,31 @@
  * Created by clover on 2018/5/21.
  */
 
-const mLogin = ()=> import(/*webpackChunkName:'mLogin'*/ 'views/mobile/login') //登陆
-const mRegister =()=>import(/*webpackChunkName:'mRegister'*/ 'views/mobile/register') //注册
-const mIndex = ()=>import(/*webpackChunkName:'mIndex'*/ 'views/mobile/index') //首页
-const mTranbuyForm = ()=> import(/*webpackChunkName:'mTranbuyForm'*/ 'views/mobile/index/components/tranbuy-list/tranbuy-form')
-const mRechargeOrder = ()=>import(/*webpackChunkName:'mRechargeOrder'*/ 'views/mobile/index/components/tranbuy-list/recharge-order')
-const mRechWechatOrder = ()=>import(/*webpackChunkName:'mRechWechatOrder'*/ 'views/mobile/index/components/tranbuy-list/rechwechat-order')
-const mTransellForm = ()=>import(/*webpackChunkName:'mTransellForm'*/ 'views/mobile/index/components/transell-list/transell-form')
-const mWithdrawOrder = ()=>import(/*webpackChunkName:'mWithdrawOrder'*/ 'views/mobile/index/components/transell-list/withdraw-orders')
-const mCashDesk = ()=>import(/*webpackChunkName:'mCashDesk'*/ 'views/mobile/cashDesk/cash')
-const mTranRecord = ()=>import(/*webpackChunkName:'mTranRecord'*/ 'views/mobile/transaction-record')
-const mPendingBuy = ()=>import(/*webpackChunkName:'mPendingBuy'*/ 'views/mobile/pending-orders')
-const mMyPending = ()=>import(/*webpackChunkName:'mMyPending'*/ 'views/mobile/my-pending-orders')
-const mOrder =()=>import(/*webpackChunkName:'mOrder'*/ 'views/mobile/details/order-progress')
-const mOrderOver=()=>import(/*webpackChunkName:'mOrderOver'*/ 'views/mobile/details/order-compeleted')
-const mOrderAppeal=()=>import(/*webpackChunkName:'mOrderAppeal'*/ 'views/mobile/details/order-appeal')
-const mUserBind =()=>import(/*webpackChunkName:'mUserBind'*/ 'views/mobile/business-bind')
-const mBindList =()=>import(/*webpackChunkName:'mBindList'*/ 'views/mobile/business-bind/bind-list')
-const mQuickCreate=()=>import(/*webpackChunkName:'mQuickCreate'*/ 'views/mobile/quick-create')
-const mchatWith=()=>import(/*webpackChunkName:'mchatWith'*/ 'views/mobile/chatroom/chat')  //聊天室
-const mtalkList=()=>import(/*webpackChunkName:'mtalkList'*/ 'views/mobile/chatroom/chat-list') //聊天列表
-const mBindCard=()=>import(/*webpackChunkName:'mBindCard'*/ 'views/mobile/bind-payment/card-bind')
-const mCardList=()=>import(/*webpackChunkName:'mCardList'*/ 'views/mobile/bind-payment/card-list')
-const mUserCenter=()=>import(/*webpackChunkName:'mUserCenter'*/ 'views/mobile/user-center') //个人中心
-const mSetUserInfo=()=>import(/*webpackChunkName:'mSetUserInfo'*/ 'views/mobile/user-center/set-user-info') //完善信息
-
-
+const mLogin = () => import(/* webpackChunkName: 'mLogin' */ 'views/mobile/login') //登陆
+const mRegister = () => import(/* webpackChunkName: 'mRegister' */ 'views/mobile/register') //注册
+const mIndex = () => import(/* webpackChunkName: 'mIndex' */ 'views/mobile/index') //首页
+const mTranbuyForm = ()=> import(/* webpackChunkName: 'mTranbuyForm' */ 'views/mobile/index/components/tranbuy-list/tranbuy-form')
+const mRechargeOrder = () => import(/* webpackChunkName: 'mRechargeOrder' */ 'views/mobile/index/components/tranbuy-list/recharge-order')
+const mRechWechatOrder = () => import(/* webpackChunkName: 'mRechWechatOrder' */ 'views/mobile/index/components/tranbuy-list/rechwechat-order')
+const mTransellForm = () => import(/* webpackChunkName: 'mTransellForm' */ 'views/mobile/index/components/transell-list/transell-form')
+const mWithdrawOrder = () => import(/* webpackChunkName: 'mWithdrawOrder' */ 'views/mobile/index/components/transell-list/withdraw-orders')
+const mCashDesk = () => import(/* webpackChunkName: 'mCashDesk' */ 'views/mobile/cashDesk/cash')
+const mTranRecord = () => import(/* webpackChunkName: 'mTranRecord' */ 'views/mobile/transaction-record')
+const mPendingBuy = () => import(/* webpackChunkName: 'mPendingBuy' */ 'views/mobile/pending-orders')
+const mMyPending = () => import(/* webpackChunkName: 'mMyPending' */ 'views/mobile/my-pending-orders')
+const mOrder = () => import(/* webpackChunkName: 'mOrder' */ 'views/mobile/details/order-progress')
+const mOrderOver = () => import(/* webpackChunkName: 'mOrderOver' */ 'views/mobile/details/order-compeleted')
+const mOrderAppeal = () => import(/* webpackChunkName: 'mOrderAppeal' */ 'views/mobile/details/order-appeal')
+const mUserBind  = () => import(/* webpackChunkName: 'mUserBind' */ 'views/mobile/business-bind')
+const mBindList  = () => import(/* webpackChunkName: 'mBindList' */ 'views/mobile/business-bind/bind-list')
+const mQuickCreate = () => import(/* webpackChunkName: 'mQuickCreate' */ 'views/mobile/quick-create')
+const mchatWith = () => import(/* webpackChunkName: 'mchatWith' */ 'views/mobile/chatroom/chat')  //聊天室
+const mtalkList = () => import(/* webpackChunkName: 'mtalkList' */ 'views/mobile/chatroom/chat-list') //聊天列表
+const mBindCard = () => import(/* webpackChunkName: 'mBindCard' */ 'views/mobile/bind-payment/card-bind')
+const mCardList = () => import(/* webpackChunkName: 'mCardList' */ 'views/mobile/bind-payment/card-list')
+const mUserCenter = () => import(/* webpackChunkName: 'mUserCenter' */ 'views/mobile/user-center') //个人中心
+const mSetUserInfo = () => import(/* webpackChunkName: 'mSetUserInfo' */ 'views/mobile/user-center/set-user-info') //完善信息
+const mMyGift = () => import('views/mobile/user-center/my-gift') //我的获赠
 
 export default [
   {
@@ -43,7 +42,8 @@ export default [
     name: "mobileRegister",
     component:mRegister,
     meta: {
-      isMobilePage: "mobile-body"
+      isMobilePage: "mobile-body",
+      noLogin: true
     }
   },
   {
@@ -110,7 +110,8 @@ export default [
     component:mCashDesk,
     meta: {
       noCache: true,
-      isMobilePage: "mobile-body"
+      isMobilePage: "mobile-body",
+      noLogin: true
     }
   },
   {
@@ -171,7 +172,8 @@ export default [
     name: 'mUserBind',
     component:mUserBind,
     meta: {
-      isMobilePage: "mobile-body"
+      isMobilePage: "mobile-body",
+      noLogin: true
     },
   },
   {
@@ -189,7 +191,8 @@ export default [
     component:mQuickCreate,
     meta: {
       isMobilePage: "mobile-body",
-      noCache: true
+      noCache: true,
+      noLogin: true
     },
   },
   {
@@ -241,6 +244,15 @@ export default [
     path:'/m/setUserInfo',
     name:'mSetUserInfo',
     component:mSetUserInfo,//完善信息
+    meta:{
+      noCache:true,
+      isMobilePage:'mobile-body'
+    }
+  },
+  {
+    path:'/m/myGift',
+    name:'mMyGift',
+    component:mMyGift,//我的获赠
     meta:{
       noCache:true,
       isMobilePage:'mobile-body'
