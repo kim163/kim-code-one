@@ -25,7 +25,7 @@
             <a class="tool-item-href" target="_blank" :href="SETTING.appUrl">
               <i class="iconfont icon-download"></i>{{$t('navbar.juanApp')}}
             </a>
-            <div class="tool-item-href border-bot" @click="$store.dispatch('LOGIN_OUT')">
+            <div class="tool-item-href border-bot" v-if="userData.nodeId < 10000" @click="$store.dispatch('LOGIN_OUT')">
               <i class="iconfont icon-log-out"></i>{{$t('navbar.logOut')}}
             </div>
           </div>

@@ -170,6 +170,13 @@ _.mixin(
       var head = document.getElementsByTagName('head')[0];
       head.appendChild(style);
     },
+    customize(){ //久安定制版域名判断
+      const host = window.location.host
+      if(host.indexOf('localhost') > -1){
+        return true
+      }
+      return false
+    }
   }
 )
 
