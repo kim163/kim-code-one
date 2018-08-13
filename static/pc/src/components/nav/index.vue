@@ -19,9 +19,6 @@
             <a href="/static/help.html">{{$t('navbar.navHelp')}}</a>
           </div>
           <div class="col-2">
-            <a href="/static/white-paper.html">{{$t('navbar.navWhitepaper')}}</a>
-          </div>
-          <div class="col-2">
             <a href="/static/contact.html">{{$t('navbar.navContactus')}}</a>
           </div>
           <div class="col-2">
