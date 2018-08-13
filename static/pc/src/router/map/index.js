@@ -1,5 +1,6 @@
 import transaction from './transaction';
 import mobileUrl from './mobile';
+import displayUrl from './display';
 
 let head_userpart = () => import('components/header');
 let index = () => import('views/show/index');//首页
@@ -76,5 +77,6 @@ export default [
     }
   },
   ...transaction,
-  ...mobileUrl
+  ...mobileUrl,
+  ...displayUrl
 ]
