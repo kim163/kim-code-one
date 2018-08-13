@@ -62,7 +62,7 @@ export default {
     sendCode: '发送验证码',
   },
   footer: {
-    description: '国内早期区块链从业者 <br/> 团队落地瑞士，专注数字资产钱包，智能合约方向'
+    description: '国内早期区块链从业者 <br/>专注数字资产钱包，智能合约方向'
   },
   transactionHome: {
     buyUet: '买入UET',

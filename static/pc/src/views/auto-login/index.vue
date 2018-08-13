@@ -1,7 +1,7 @@
 <template>
   <div class="main">
     <div v-if="!showTip">
-      正在跳转...
+      {{!withdrawTip ? '正在跳转...' : '提款审核中，请稍后...'}}
     </div>
     <div v-else>
       对不起！您的授权码已经失效，请在商户页刷新再试一下！
@@ -24,8 +24,13 @@
         merchantId: this.$route.query.merchantId,
         nodeId: this.$route.query.nodeId,   //定制版需要的参数 nodeId
         mode: this.$route.query.mode, //定制版需要的参数 mode=1, 打开钱包到首页，mode=2 打开快速买币， mode=3 打开快速卖币
-        backURL: this.$route.query.backURL,  //商户返回地址
-        menuStyle: this.$route.query.menuStyle, //定制版皮肤颜色
+        backURL: this.$route.query.backURL,  //定制版需要的参数 商户返回地址
+        menuStyle: this.$route.query.menuStyle, //定制版皮肤颜色 logo等参数集合
+        amount: this.$route.query.amount,// 定制版 用户快速卖币金额
+        bankNo: this.$route.query.bankNo,// 定制版 银行卡号
+        withdraw: this.$route.query.withdraw, //定制版 提现标识
+        merchantOrderId: this.$route.query.merchantOrderId, //定制版 提现订单id
+        withdrawTip:false, //定制版 提现提示
       }
     },
     created(){
@@ -51,7 +56,6 @@
       login(request).then(res => {
         if(res.code === 10000){
           $localStorage.set('tokenInfo', JSON.stringify(res.data.tokenVo));
-          //$localStorage.set('userData', aesutil.encrypt(JSON.stringify(res.data)));
           this.$store.commit('SET_USERDATA',res.data);
           this.$store.dispatch('CHECK_ONLINE', true);
           this.$store.dispatch('UPDATE_TOKEN_INFO', res.data.tokenVo);
@@ -59,6 +63,15 @@
           // if(this.nodeId && this.nodeId > 10000){
           //   this.saveCustomUser(res.data)
           // }
+          if(this.withdraw && this.withdraw === 'true'){
+            _.merchantOrderidWs(this.merchantOrderId)
+            const data = {
+              amount: this.amount,
+              bankNo: this.bankNo
+            }
+            $localStorage.set(`withdraw_${res.data.userId}`,
+              aesutil.encrypt(JSON.stringify(data)))
+          }
           this.jumpLink(true)
         }else{
           toast(res.message)
@@ -85,7 +98,13 @@
         const loginAddress = _.isMobile() ? 'mobileLogin' : 'aindex'
         if(success){
           if(!_.isUndefined(this.mode)){
-            this.$router.replace({name:tranAddress,query:{mode: this.mode}})
+            const query = {mode: this.mode}
+            if(this.withdraw && this.withdraw === 'true'){
+              Object.assign(query,{
+                withdraw: this.withdraw
+              })
+            }
+            this.$router.replace({name:tranAddress,query})
           }else{
             this.$router.replace({name:tranAddress})
           }
@@ -108,9 +127,22 @@
         }
         arr.push(customUserInfo)
         $localStorage.set('customUserList', aesutil.encrypt(JSON.stringify(arr), true))
-      }
+      },
 
-    }
+      // merchantWithdrawal(){ //商户提款
+      //   Vue.$global.bus.$on('update:withdrawSuccess',() => {
+      //     this.jumpLink(true)
+      //   });
+      //   _.merchantOrderidWs(this.merchantOrderId)
+      //   this.withdrawTip = true
+      //   setTimeout(() => {
+      //     window.opener = null;
+      //     window.open('', '_self');
+      //     window.close()
+      //   },3600000)
+      // }
+
+    },
   }
 </script>
 

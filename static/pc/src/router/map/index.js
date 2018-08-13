@@ -27,7 +27,10 @@ export default [
   {
     path: "/autoLogin",
     name: "autoLogin",
-    component: autoLogin
+    component: autoLogin,
+    meta:{
+      noCache: true
+    }
   },
   {
     path: "/cash",

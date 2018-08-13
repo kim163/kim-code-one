@@ -35,7 +35,7 @@
             </div>
             <div class="form-input-box">
               <span class="left">支付方式：</span>
-              <get-bankcard :setBankcard="setBankcard" v-model="bindCardReset" @selCardChange="selCardChange"></get-bankcard>
+              <get-bankcard :setBankcard="setBankcard" v-model="bindCardReset" :def-select="bankNo" @selCardChange="selCardChange"></get-bankcard>
             </div>
             <div class="form-input-box">
               <span class="left">{{postItem == 'buyer' ? $t('postPend.buyerRequest') : $t('postPend.sellerRequest')}}：</span>
@@ -58,7 +58,7 @@
             </div>
             <div class="btn-groups">
               <span class="btn" @click="hide">取消</span>
-              <span class="btn btn-primary" @click="publishBuyOrSell">发布</span>
+              <span class="btn btn-primary" @click="publishBuyOrSell">快速{{postItem === 'buyer' ? '买' : '卖'}}币</span>
             </div>
           </div>
         </div>
@@ -94,14 +94,32 @@
           pleaseSelTitle: 'component.pleaseSelPayMet',         // 请选择标题文字
           addOption:[]
         },
-        bindCardReset:false
+        bindCardReset:false,
       }
     },
     watch: {
-      postItem() {
-        this.buyAmount = '';
-        this.bindCardReset=true;
-        this.minAmount = '';
+      postItem(val) {
+        if(val === 'seller' && this.auto === 1){
+          this.buyAmount = Number(this.amount) * 100;
+          this.minAmount = this.auto === 1 ? 1 : '';
+        }else{
+          this.buyAmount = '';
+          this.bindCardReset = true;
+          this.minAmount = '';
+        }
+      },
+      type(val){
+        if(val === 2){
+          this.postItem = 'seller'
+        }
+      },
+      show(val){
+        if(!val){
+          this.buyAmount = ''
+          this.bindCardReset = true
+          this.minAmount = ''
+          this.postItem = 'buyer'
+        }
       }
     },
     model: {
@@ -128,6 +146,18 @@
       type: {  // 1代表买入 2代表卖出
         type: Number,
         default: 1
+      },
+      amount:{ //买卖币金额 CNY
+        type: String,
+        default: ''
+      },
+      auto:{ //自动填写挂单信息 商户提款会用到 0表示不填写 1表示填写
+        type:Number,
+        default:0
+      },
+      bankNo:{  //银行卡号
+        type:String,
+        default:''
       }
     },
     computed: {
@@ -221,11 +251,16 @@
         }).catch(err => {
           toast(err.message);
         })
-      }
+      },
     },
 
     created() {
       this.postItem = this.type === 1 ? 'buyer' : 'seller'
+      this.buyAmount = this.amount === '' ? '' : Number(this.amount) * 100
+      if(this.auto === 1){
+        this.minAmount = 1
+        this.proofType = 1
+      }
     },
     mounted() {
     },

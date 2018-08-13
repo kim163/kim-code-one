@@ -20,7 +20,7 @@
           <div class="input-div"><input class="my-input" type="number" placeholder="挂单买入数量" v-model.number="buyAmount" min="1" max="200000000" > UET</div>
           <div  class="input-div"><input class="my-input" type="number" :value="buyAmountCny" placeholder="=总数量" readonly> CNY</div>
           <div  class="input-div get-bankcard">
-            <get-bankcard :setBankcard="setBankcard" v-model="buyBindCardReset" @selCardChange="buySelCardChange"></get-bankcard>
+            <get-bankcard :setBankcard="setBankcard" :def-select="bankNo" v-model="buyBindCardReset" @selCardChange="buySelCardChange"></get-bankcard>
           </div>
           <div >
             <p class="s-title">{{$t('postPend.buyerRequest')}}</p>
@@ -46,7 +46,7 @@
           <div class="input-div"><input class="my-input" placeholder="挂单卖出数量" v-model.number="sellAmount" min="1" max="200000000"> UET</div>
           <div  class="input-div"><input class="my-input" :value="sellAmountCny" placeholder="=总数量" readonly> CNY</div>
           <div  class="input-div">
-            <get-bankcard :setBankcard="setBankcard" v-model="sellBindCardReset" @selCardChange="sellSelCardChange"></get-bankcard>
+            <get-bankcard :setBankcard="setBankcard" :def-select="bankNo" v-model="sellBindCardReset" @selCardChange="sellSelCardChange"></get-bankcard>
           </div>
           <div >
             <p class="s-title">{{$t('postPend.sellerRequest')}}</p>
@@ -117,7 +117,8 @@
         setBankcard: {
           pleaseSelTitle: 'component.pleaseSelPayMet',         // 请选择标题文字
           addOption:[]
-        }
+        },
+        bankNo:'',
       }
     },
     watch: {
@@ -298,7 +299,24 @@
       if(!_.isUndefined(mode) && Number(mode) === 3){ // 判断用户意图  mode=3是想打开我要卖币 其他默认是买币
         this.pendingItem = 'seller'
       }
-    }
+      const amount = this.$route.query.amount  //金额为CNY
+      if(!_.isUndefined(amount) && Number(amount) > 0){
+        if(this.pendingItem === 'seller'){
+          this.sellAmount = Number(amount) * 100
+        }else{
+          this.buyAmount = Number(amount) * 100
+        }
+      }
+      this.bankNo = this.$route.query.bankNo
+      const withdraw = this.$route.query.withdraw
+      if(!_.isUndefined(withdraw) && withdraw === 'true'){
+        if(this.pendingItem === 'seller'){
+          this.minSellAmount = 1
+          this.proofType = 1
+        }
+      }
+    },
+
 
   }
 </script>
