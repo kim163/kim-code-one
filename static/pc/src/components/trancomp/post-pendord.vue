@@ -58,7 +58,7 @@
             </div>
             <div class="btn-groups">
               <span class="btn" @click="hide">取消</span>
-              <span class="btn btn-primary" @click="publishBuyOrSell">发布</span>
+              <span class="btn btn-primary" @click="publishBuyOrSell">快速{{postItem === 'buyer' ? '买' : '卖'}}币</span>
             </div>
           </div>
         </div>

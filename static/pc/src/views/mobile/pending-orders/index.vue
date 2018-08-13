@@ -315,7 +315,6 @@
           this.proofType = 1
         }
       }
-      this.getBankInfo()
     },
 
 
