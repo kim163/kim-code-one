@@ -172,7 +172,7 @@ _.mixin(
     },
     customize(){ //久安定制版域名判断
       const host = window.location.host
-      if(host.indexOf('localhost') > -1){
+      if(host.indexOf('9anwallet') > -1){
         return true
       }
       return false
