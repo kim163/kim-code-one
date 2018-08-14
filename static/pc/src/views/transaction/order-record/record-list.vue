@@ -123,7 +123,7 @@
           Object.assign(request,{
             credit: this.userId,
             debit: this.userId,
-            types:[11,12,41,42,43]
+            types:[11, 12, 41, 42, 43, 51, 52, 53, 54]
           })
         }else {
           Object.assign(request,{
