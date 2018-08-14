@@ -16,8 +16,8 @@
       <router-link tag="li" :to="orderDetailLink(item)" class="tran-item" v-for="(item,index) in tranList"
                    :key="index">
         <div class="type-status">
-          <div class="type blue-text" v-show="item.credit === userId">{{$t('transactionRecord.buy')}}</div>
-          <div class="type red-text" v-show="item.debit === userId">{{$t('transactionRecord.sale')}}</div>
+          <div class="type" :class="getType(item).className">{{getType(item).text}}</div>
+          <!--<div class="type red-text" v-show="item.debit === userId">{{$t('transactionRecord.sale')}}</div>-->
           <div class="status-time" v-if="type === 0">
             <div class="status" v-if="item.status != 61">
               {{(item.status === 45 ? $t('transactionRecord.waitingForPayment') : $t('transactionRecord.waitingForRelease'))}}
@@ -152,6 +152,44 @@
       },
       getScroll(e){
         this.scrollY = e.y
+      },
+      getType(data){
+        const obj = {
+          text:'',
+          className:''
+        }
+        switch (data.type){
+          case 11:
+            obj.text = '买入'
+            obj.className = 'c-blue'
+            break
+          case 12:
+            obj.text = '卖出'
+            obj.className = 'c-orange'
+            break
+          case 41:
+            obj.text = '转账'
+            break
+          case 42:
+            obj.text = '商户充值'
+            break
+          case 43:
+            obj.text = '商户提现'
+            break
+          case 51:
+            obj.text = '交易奖励'
+            break
+          case 52:
+            obj.text = '商户充值奖励'
+            break
+          case 53:
+            obj.text = '商户提现奖励'
+            break
+          case 54:
+            obj.text = '活动奖励'
+            break
+        }
+        return obj
       }
     },
     mounted() {

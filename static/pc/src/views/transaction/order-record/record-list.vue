@@ -14,12 +14,12 @@
         <div class="group-tr" v-for="(item,index) in dataList" :key="index">
           <span class="unit">
             <span v-if="tabType != 3">
-              <span class="c-blue type blue-border" v-if="item.credit == userData.userId">{{$t('transactionRecord.buy')}}</span>
-              <span class="c-orange type orange-border" v-if="item.debit == userData.userId">{{$t('transactionRecord.sale')}}</span>
+              <span class="type" :class="getType(item).className">{{getType(item).text}}</span>
+              <!--<span class="c-orange type" v-if="item.debit == userData.userId">{{$t('transactionRecord.sale')}}</span>-->
             </span>
             <span v-else>
-              <span class="c-blue type blue-border" v-if="item.userId == userData.userId">我方发起申诉</span>
-              <span class="c-orange type orange-border" v-else>对方发起申诉</span>
+              <span class="c-blue type" v-if="item.userId == userData.userId">我方发起申诉</span>
+              <span class="c-orange type" v-else>对方发起申诉</span>
             </span>
           </span>
           <span class="unit">{{getUserName(item)}}</span>
@@ -195,6 +195,44 @@
         }else{
           return item.credit == this.userData.userId ? item.debitName : item.creditName
         }
+      },
+      getType(data){
+        const obj = {
+          text:'',
+          className:''
+        }
+        switch (data.type){
+          case 11:
+            obj.text = '买入'
+            obj.className = 'c-blue'
+            break
+          case 12:
+            obj.text = '卖出'
+            obj.className = 'c-orange'
+            break
+          case 41:
+            obj.text = '转账'
+            break
+          case 42:
+            obj.text = '商户充值'
+            break
+          case 43:
+            obj.text = '商户提现'
+            break
+          case 51:
+            obj.text = '交易奖励'
+            break
+          case 52:
+            obj.text = '商户充值奖励'
+            break
+          case 53:
+            obj.text = '商户提现奖励'
+            break
+          case 54:
+            obj.text = '活动奖励'
+            break
+        }
+        return obj
       }
     },
     mounted(){
