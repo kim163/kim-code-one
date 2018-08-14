@@ -109,7 +109,7 @@
           offset: (this.currentPage - 1) * this.limit,
           credit: this.userId,
           debit: this.userId,
-          types: [11, 12]
+          types: [11, 12, 41, 42, 43]
         }
         console.log(request)
         api(request).then(res => {
