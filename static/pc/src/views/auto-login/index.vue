@@ -5,6 +5,7 @@
     </div>
     <div v-else>
       对不起！您的授权码已经失效，请在商户页刷新再试一下！
+      <div class="back-link" v-if="backURL && isMobile">{{countDownTime}}s后自动返回商户 <a class="c-blue" :href="backURL">立即返回</a></div>
     </div>
   </div>
 </template>
@@ -31,6 +32,8 @@
         withdraw: this.$route.query.withdraw, //定制版 提现标识
         merchantOrderId: this.$route.query.merchantOrderId, //定制版 提现订单id
         withdrawTip:false, //定制版 提现提示
+        countDownTime:30,//倒计时
+        isMobile: _.isMobile(),
       }
     },
     created(){
@@ -77,6 +80,9 @@
           toast(res.message)
           if(this.nodeId && Number(this.nodeId) > 10000){
             this.showTip = true
+            if(this.isMobile && this.backURL && !_.isUndefined(this.backURL)){
+              this.conutDown()
+            }
           }else{
             $localStorage.set('needBind', aesutil.encrypt(JSON.stringify({merchantId: this.$route.query.merchantId})));
             this.$store.dispatch('LOGIN_OUT')
@@ -87,6 +93,9 @@
         toast(err)
         if(this.nodeId && Number(this.nodeId) > 10000){
           this.showTip = true
+          if(this.isMobile && this.backURL && !_.isUndefined(this.backURL)){
+            this.conutDown()
+          }
         }else{
           this.jumpLink(false)
         }
@@ -128,7 +137,15 @@
         arr.push(customUserInfo)
         $localStorage.set('customUserList', aesutil.encrypt(JSON.stringify(arr), true))
       },
-
+      conutDown(){
+        setTimeout(() => {
+          this.countDownTime -= 1
+          if(this.countDownTime === 0){
+            window.location.href = this.backURL
+          }
+          this.conutDown()
+        },1000)
+      }
       // merchantWithdrawal(){ //商户提款
       //   Vue.$global.bus.$on('update:withdrawSuccess',() => {
       //     this.jumpLink(true)
@@ -156,5 +173,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+  .back-link{
+    margin-top: 5%;
   }
 </style>
