@@ -16,6 +16,11 @@
             </span>
           </div>
           <div class="form-input-content">
+            <div class="form-input-box user-balace">
+              <span class="left">我的{{userData.accountChainVos[0].assetCode}}余额：</span>
+              <balance @getBalance="getBalance"></balance>
+              <a class="c-blue all-in" @click="allSell()" v-show="postItem === 'seller'">{{$t('postPend.allsell')}}</a>
+            </div>
             <div class="form-input-box">
               <span class="left">{{postItem == 'buyer' ? '买入' : '卖出'}}价格：</span>
               <span class="fl">
@@ -74,6 +79,7 @@
   import {generateTitle} from '@/util/i18n'
   import {mapGetters} from 'vuex'
   import getBankcard from 'components/get-bankcard'
+  import balance from 'components/balance';
 
   export default {
 
@@ -95,6 +101,7 @@
           addOption:[]
         },
         bindCardReset:false,
+        userBalance:0,//用户余额
       }
     },
     watch: {
@@ -252,6 +259,12 @@
           toast(err.message);
         })
       },
+      getBalance(data){
+        this.userBalance = data
+      },
+      allSell(){
+        this.buyAmount = this.userBalance
+      }
     },
 
     created() {
@@ -267,7 +280,8 @@
     activated() {
     },
     components: {
-      getBankcard
+      getBankcard,
+      balance
     }
   };
 </script>
@@ -324,5 +338,11 @@
     /*position: absolute;*/
     /*left: 350px;*/
     color: #777;
+  }
+  .user-balace{
+    .all-in{
+      margin-left: 20px;
+      cursor: pointer;
+    }
   }
 </style>

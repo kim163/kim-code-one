@@ -64,7 +64,7 @@ module.exports = {
         include: [resolve('src'), resolve('test')]
       },
       {
-        test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
+        test: /\.(png|jpe?g|gif)(\?.*)?$/,
         use: {
           loader: 'url-loader',
           options: {
@@ -84,7 +84,7 @@ module.exports = {
         }
       },
       {
-        test: /\.(woff2?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
+        test: /\.(woff2?|ttf|eot)(\?v=\d+\.\d+\.\d+)?$/,
         use: {
           loader: 'url-loader',
           options: {
@@ -93,7 +93,12 @@ module.exports = {
           }
         }
       },
-
+      {
+        test: /\.svg$/,
+        use: {
+          loader: 'file-loader'
+        }
+      },
     ]
   },
   plugins:[
