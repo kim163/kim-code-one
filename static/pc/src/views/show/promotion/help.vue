@@ -1,7 +1,14 @@
 <template>
   <div class="prom-helpcent">
      <display-nav></display-nav>
-     <div class="helpcent-banner-part"></div>
+     <div class="helpcent-banner-part">
+       <div class="container max-width context">
+         <div class="row">
+             <h2>如有疑问 我们帮您解答</h2>
+             <h3>请点击每个问题获取答案。<br>如果你的问题不在这里，请不要犹豫与我们联系。</h3>
+         </div>
+       </div>
+     </div>
 
      <div class="helpcent-content-part">
        <div class="container max-width">
@@ -86,6 +93,9 @@
    min-height: 420px;
    background: url(~images/prom/help-banner.jpg) no-repeat center center;
    background-size: cover;
+   .context{
+     display: none;
+   }
  }
 
  .helpcent-content-part{
@@ -136,7 +146,77 @@
    }
  }
 
+ @media only screen and (max-width: 1199px) and (min-width: 1000px) {
+   .helpcent-banner-part{
+     min-height: 340px;
+   }
+ }
+
+ @media only screen and (max-width: 999px) and (min-width: 800px) {
+   .helpcent-banner-part{
+     min-height: 270px;
+   }
+ }
+
  @media only screen and (max-width: 799px) {
+   .helpcent-banner-part{
+     min-height: 244px;
+     background: #4982FF url(~images/prom/base-map.png) no-repeat center bottom;
+     background-size: cover;
+     .context{
+       display: block;
+       padding-top: 68px;
+       h2{
+         font-size: 24px;
+         color: #FFFFFF;
+         line-height: 54px;
+         font-weight: normal;
+       }
+       h3{
+         font-size: 18px;
+         color: #FFFFFF;
+         line-height: 28px;
+         font-weight: normal;
+       }
+     }
+   }
+   .helpcent-content-part{
+      background: #FFFFFF;
+      padding: 0 0 20px;
+     .helpcent-nav{
+       width: 100%;
+       float: none;
+       padding-top: 0;
+       height: 58px;
+       border-bottom: 2px solid #E7E7E7;
+       a{
+         width: 50%;
+         float: left;
+         line-height: 56px;
+         font-size: 18px;
+         color: #787876;
+         border-right: none;
+         margin-bottom:0;
+         &:hover,&.active{
+           color: #3573FA;
+           border-right: none;
+           border-bottom: 2px solid #3573FA;;
+         }
+       }
+     }
+     .context{
+       width: 100%;
+       float: none;
+       border-left:none;
+       padding:16px 0;
+       h2{
+         font-size: 20px;
+       }
+       .width-100{
+         margin: 15px 0 28px;
+       }
+     }
+   }
 
  }
 

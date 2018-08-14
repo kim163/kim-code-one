@@ -346,7 +346,7 @@
    .advcont-context{
      .advcont-item{
        margin: 0 1.3% 30px;
-       padding: 59px 20px 10px;
+       padding: 59px 20px 5px;
        border: 1px solid #DADADA;
        border-radius: 10px;
        text-align: center;
@@ -392,40 +392,75 @@
 
  }
 
+ @media only screen and (max-width: 1199px) and (min-width: 1000px) {
+   .advantage-banner-part{
+     min-height: 340px;
+     .qrcode-part{
+       margin-top: 150px;
+     }
+   }
+ }
+
+ @media only screen and (max-width: 999px) and (min-width: 800px) {
+   .advantage-banner-part{
+     min-height: 270px;
+     .qrcode-part{
+       margin-top: 130px;
+     }
+   }
+   .advantage-content-part .merchantAdvCont .advcont-item{
+     min-height: 388px;
+   }
+
+ }
+
  @media only screen and (max-width: 799px) {
    .advantage-banner-part{
      background: #4982FF;
-     padding: 70px 0 27px;
+     padding: 67px 0 27px;
      .title{
        display: block;
        font-size: 18px;
        color: #FFFFFF;
-       line-height: 40px;
+       line-height: 32px;
        text-align: center;
+       font-weight: normal;
      }
      .subTitle{
        display: block;
        font-size: 20px;
        color: #FFFFFF;
-       line-height: 40px;
+       line-height: 30px;
        text-align: center;
+     }
+     .appdown-part{
+       margin: 10px 0 16px;
      }
      .qrcode-part{
        float: none;
        margin: 0 auto;
+       width: 86px;
+       height: 86px;
+       img{
+         width: 98px;
+       }
      }
      .context{
        display: block;
        p{
          font-size: 14px;
          color: #FFFFFF;
-         line-height: 30px;
+         line-height: 24px;
+         margin-top: 6px;
        }
        .logo{
          display: block;
          .iconfont{
            font-size: 20px;
            color: #FFFFFF;
+           &:last-child{
+             margin-left: 13px;
+           }
          }
        }
      }
@@ -433,15 +468,83 @@
        display: block;
      }
    }
+   .advantage-payment-part{
+     padding: 10px 0;
+     .pay-item{
+       padding:19px 5px 5px;
+       min-height: 190px;
+       .pay-logo{
+         line-height: 60px;
+         .iconfont{
+           font-size: 60px;
+         }
+       }
+       h2{
+         font-size: 16px;
+         line-height: 26px;
+         margin: 14px 0 0;
+       }
+       h3{
+         font-size: 12px;
+       }
+     }
+   }
    .advantage-content-part{
+      padding: 20px 0 25px;
       .advcont-nav{
         padding: 0;
+        margin-bottom: 26px;
         a{
-          width: 150px;
-          height: 80px;
+          width: 148px;
+          height: 78px;
+          .cont-logo{
+            margin-top: 15px;
+            .iconfont{
+              font-size: 25px;
+            }
+          }
+          p{
+            font-size: 12px;
+            line-height: 14px;
+            margin-top: 8px;
+          }
+          .down-jiantou{
+            bottom: -13px;
+            margin-left: -8px;
+            line-height: 16px;
+            .iconfont{
+              font-size: 16px;
+            }
+          }
         }
       }
-
+     .advcont-context{
+        &.userAdvCont{
+          .advcont-item{
+            min-height: 236px;
+          }
+        }
+         .advcont-item{
+           margin: 0 1.3% 10px;
+           padding: 21px 10px 10px;
+           min-height: 260px;
+           .advcont-logo{
+             line-height: 60px;
+             .iconfont{
+               font-size: 60px;
+             }
+           }
+           h2{
+             font-size: 16px;
+             line-height: 26px;
+             margin: 12px 0 0px;
+           }
+           h3{
+             font-size: 12px;
+             line-height: 18px;
+           }
+         }
+     }
    }
 
  }

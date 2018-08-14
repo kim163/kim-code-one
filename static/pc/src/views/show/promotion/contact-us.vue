@@ -1,13 +1,20 @@
 <template>
   <div class="prom-contactus">
      <display-nav></display-nav>
-     <div class="contactus-banner-part"></div>
+     <div class="contactus-banner-part">
+       <div class="container max-width context">
+         <div class="row">
+           <h2>这里有久安持续进化的创作团队</h2>
+           <h3>未来我们继续专注数字钱包的服务，在金融行业深耕， 结合最新的技术为企业提供更优良的服务。</h3>
+         </div>
+       </div>
+     </div>
 
      <div class="contact-content-part">
        <div class="container max-width">
          <div class="row">
            <h1 class="contact-title">联系我们</h1>
-           <p class="conttact-context">2017.09 久安钱包项目启动，落地瑞士。   2018.01 经过团队两个月日日夜夜不断努力的研发设计，久安钱包测试上线。
+           <p class="conttact-context">2017.09 久安钱包项目启动。   2018.01 经过团队两个月日日夜夜不断努力的研发设计，久安钱包测试上线。
              2018.03久安发行UET，开始流通，逐渐接入平台和项目，并作为主要代币进行流通使用</p>
            <div class="contact-info cfx">
              <a href="javascript:void(0);" v-for="(item,i) in contactInfor" :key="i" class="col-23 info-item">
@@ -61,6 +68,9 @@
    min-height: 420px;
    background: url(~images/prom/contactus-banner.jpg) no-repeat center center;
    background-size: cover;
+   .context{
+     display: none;
+   }
  }
 
  .contact-content-part{
@@ -134,7 +144,63 @@
 
  }
 
+ @media only screen and (max-width: 1199px) and (min-width: 1000px) {
+   .contactus-banner-part{
+     min-height: 340px;
+   }
+ }
+
+ @media only screen and (max-width: 999px) and (min-width: 800px) {
+   .contactus-banner-part{
+     min-height: 270px;
+   }
+ }
+
  @media only screen and (max-width: 799px) {
+   .contactus-banner-part{
+     min-height: 244px;
+     background: #4982FF url(~images/prom/base-map.png) no-repeat center bottom;
+     background-size: cover;
+     .context{
+       display: block;
+       padding-top: 68px;
+       h2{
+         font-size: 24px;
+         color: #FFFFFF;
+         line-height: 54px;
+         font-weight: normal;
+       }
+       h3{
+         font-size: 18px;
+         color: #FFFFFF;
+         line-height: 28px;
+         font-weight: normal;
+       }
+     }
+   }
+
+   .contact-content-part{
+     background: #FFFFFF;
+     padding: 0 0 20px;
+     .row{
+       padding: 0;
+     }
+     .contact-title{
+       font-size: 24px;
+       color: #212121;
+       line-height: 40px;
+       margin-top: 11px;
+     }
+     .contact-info{
+       margin: 20px 0 0;
+       .info-item{
+         margin-bottom: 20px;
+       }
+     }
+     .maps-part{
+       height: 300px;
+     }
+   }
 
  }
 
