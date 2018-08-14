@@ -1,6 +1,6 @@
 <template>
   <div class="prom-helpcent">
-     <display-nav></display-nav>
+     <display-nav :isOfficialWeb="isOfficialWeb"></display-nav>
      <div class="helpcent-banner-part">
        <div class="container max-width context">
          <div class="row">
@@ -12,7 +12,7 @@
 
      <div class="helpcent-content-part">
        <div class="container max-width">
-         <div class="row">
+         <div class="row" :class="{isOfficialWeb:isOfficialWeb}">
            <div class="helpcent-nav">
              <a href="javascript:void(0);" v-for="(item,i) in helpcentNav" :key="i" @click="helpcentType=item.value" :class="{active:helpcentType==item.value}">
                {{item.name}}
@@ -63,15 +63,13 @@
              <h2>12.如何申诉</h2>
              <p>交易关闭后的订单/正常交易时间内的订单，不能进行申诉；超出正常交易时间后未解决的订单，可以发起申诉；
                进行中的订单里，点击进去查看详情，满足申诉订单条件的会有申诉按钮，申诉之后会有人工客服联系您进行核对。</p>
-             <h2>*13.联系在线客服</h2>
-             <p> MYURL:[jiuanapp://customerservice?url=xxxx]</p>
            </div>
 
          </div>
        </div>
      </div>
 
-     <v-footer :isDisplayFoot="true" ></v-footer>
+     <v-footer :isDisplayFoot="true" :isOfficialWeb="isOfficialWeb" ></v-footer>
   </div>
 </template>
 <script>
@@ -94,10 +92,18 @@
         helpcentType:"howAccess"
       };
     },
-    props: {},
+    props: {
+      isOfficialWeb:{
+        type:Boolean,
+        default:false
+      }
+    },
     methods: {},
     computed: {},
     created() {
+      if(this.isOfficialWeb){
+        this.helpcentType = 'commonProblem';
+      }
     },
     components: {
       displayNav, vFooter
@@ -119,6 +125,16 @@
    padding: 30px 0;
    .row{
      background: #FFFFFF;
+   }
+   .isOfficialWeb {
+     .helpcent-nav{
+       display: none;
+     }
+     .context{
+       width: 100%;
+       float: none;
+       border-left: none;
+     }
    }
    .helpcent-nav{
       width: 15%;

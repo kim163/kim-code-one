@@ -1,6 +1,6 @@
 <template>
   <div class="prom-advantage">
-     <display-nav></display-nav>
+     <display-nav :isOfficialWeb="isOfficialWeb"></display-nav>
      <div class="advantage-banner-part">
        <div class="container max-width">
          <div class="row">
@@ -48,7 +48,7 @@
      <div class="advantage-content-part">
        <div class="container max-width">
          <div class="row">
-            <div class="advcont-nav cfx">
+            <div class="advcont-nav cfx" v-show="!isOfficialWeb">
                <div class="col-21" v-for="(item,i) in advantageNav" :key="i">
                   <a href="javascript:void(0);" @click="advantageType=item.value" :class="[{active:advantageType==item.value},item.value]">
                      <span class="cont-logo">
@@ -86,7 +86,7 @@
        </div>
      </div>
 
-     <v-footer :isDisplayFoot="true" ></v-footer>
+     <v-footer :isDisplayFoot="true" :isOfficialWeb="isOfficialWeb" ></v-footer>
   </div>
 </template>
 <script>
@@ -117,7 +117,7 @@
           {
             contLogo:"icon-prom-secure",
             contTitle:"安全 Secure",
-            contSubTitle:"数万用户为您分担金流风险，玩家对玩家交易，一百万个用户相当于给您一百万张银行卡充值提现；商户充值提现零银行卡金流，零资金冻结风险！"
+            contSubTitle:"数万用户为您分担金流风险，玩家对玩家交易，一百万个用户相当于给您一百万张银行卡充值提现！"
           },
           {
             contLogo:"icon-prom-powerful",
@@ -194,10 +194,18 @@
         ]
       };
     },
-    props: {},
+    props: {
+      isOfficialWeb:{
+        type:Boolean,
+        default:false
+      }
+    },
     methods: {},
     computed: {},
     created() {
+      if(this.isOfficialWeb){
+        this.advantageType = 'userAdv';
+      }
     },
     components: {
       qrcode: VueQrcode,

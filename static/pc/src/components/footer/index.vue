@@ -4,9 +4,9 @@
     <div class="container center f-white">
       <div class="row foot-part">
         <div class="col-7 left">
-          <a class="p-goup-title" href="static/index.html">
-            <img src="~images/logo.png" alt="">
-          </a>
+          <router-link :to="gotoIndex()" class="p-goup-title">
+            <i class="iconfont icon-juan-logo1"></i>
+          </router-link>
           <p class="p-goup-subtitle" v-html="$t('footer.description')"> </p>
         </div>
         <div class="col-5 right">
@@ -36,9 +36,27 @@
           isDisplayFoot:{
             type:Boolean,
             default:false
+          },
+          isOfficialWeb:{
+            type:Boolean,
+            default:false
           }
         },
-        methods:{},
+        methods:{
+          gotoIndex(){
+            let routerName = '';
+            if(this.isDisplayFoot){
+              if(this.isOfficialWeb){
+                routerName = 'index';
+              }else {
+                routerName = 'promIndex';
+              }
+            }else {
+              routerName = 'index';
+            }
+            return {name: routerName};
+          }
+        },
         computed:{},
         created(){
         },
@@ -53,6 +71,11 @@
       a {
         display: block;
         float: left;
+        text-decoration:none;
+        .icon-juan-logo1{
+          font-size: 80px;
+          color: #FFFFFF;
+        }
       }
       p {
         display: block;
