@@ -39,7 +39,7 @@
             </span>
             </div>
             <div class="form-input-box">
-              <span class="left">支付方式：</span>
+              <span class="left">{{postItem == 'buyer' ? '支付' : '收款'}}方式：</span>
               <get-bankcard :setBankcard="setBankcard" v-model="bindCardReset" :def-select="bankNo" @selCardChange="selCardChange"></get-bankcard>
             </div>
             <div class="form-input-box">
@@ -114,6 +114,7 @@
           this.bindCardReset = true;
           this.minAmount = '';
         }
+        this.setBankcard.pleaseSelTitle = val === 'seller' ? 'component.pleaseSelRecMet' : 'component.pleaseSelPayMet'
       },
       type(val){
         if(val === 2){

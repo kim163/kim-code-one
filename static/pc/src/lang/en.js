@@ -235,6 +235,7 @@ export default {
   component:{
     pleaseSelCard:'Select bank card',
     pleaseSelPayMet:'Select payment method',
+    pleaseSelRecMet:'Select payment method',
     otherPayMethod:'Other payment methods',
     uploadUpThree:'Upload up to three'
   },
