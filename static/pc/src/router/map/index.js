@@ -1,5 +1,6 @@
 import transaction from './transaction';
 import mobileUrl from './mobile';
+import displayUrl from './display';
 
 let index = () => import('views/show/index');//首页
 const autoLogin = () => import('views/auto-login'); //商户自动登录
@@ -77,5 +78,6 @@ export default [
     }
   },
   ...transaction,
-  ...mobileUrl
+  ...mobileUrl,
+  ...displayUrl
 ]
