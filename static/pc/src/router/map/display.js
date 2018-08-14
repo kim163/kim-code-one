@@ -11,16 +11,25 @@ export default [
   {
     path: "/prom",
     name: "promIndex",
-    component: promIndex
+    component: promIndex,
+    meta:{
+      noLogin: true
+    }
   },
   {
     path: "/promHelp",
     name: "promHelp",
-    component: promHelp
+    component: promHelp,
+    meta:{
+      noLogin: true
+    }
   },
   {
     path: "/promContact",
     name: "promContact",
-    component: promContactUs
+    component: promContactUs,
+    meta:{
+      noLogin: true
+    }
   }
 ]
