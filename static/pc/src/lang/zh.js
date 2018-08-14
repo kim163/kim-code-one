@@ -236,6 +236,7 @@ export default {
   component:{
     pleaseSelCard:'请选择银行卡',
     pleaseSelPayMet:'请选择您的支付方式',
+    pleaseSelRecMet:'请选择您的收款方式',
     otherPayMethod:'其他支付方式',
     uploadUpThree:'最多可上传三张'
   },
