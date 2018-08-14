@@ -272,7 +272,7 @@
       this.buyAmount = this.amount === '' ? '' : Number(this.amount) * 100
       if(this.auto === 1){
         this.minAmount = 1
-        this.proofType = 1
+        this.proofType = '1'
       }
     },
     mounted() {
