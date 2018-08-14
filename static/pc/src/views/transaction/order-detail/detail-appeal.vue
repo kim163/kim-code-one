@@ -19,7 +19,7 @@
           </div>
           <div class="detail-in cfx">
               <div class="col-33" >
-                <h3 v-if="isCredit" class="h3">卖方 : {{DetailList.debitName}} ({{DetailList.debitAccountNameTwin}} )</h3>
+                <h3 v-if="isCredit" class="h3">卖方 : {{DetailList.debitName}} ({{DetailList.debitAccountNameTwin}})</h3>
                 <h3 v-else-if="isDebit" class="h3">买方 : {{DetailList.creditName}} ({{DetailList.creditAccountNameTwin}})</h3>
                 <ul class="details-data">
                   <li>
@@ -313,9 +313,8 @@
         transaction.payCompleted(this.request).then(res => {
           if(res.code == '10000'){
             Vue.$global.bus.$emit('update:balance');
-            Vue.$global.bus.$emit('update:tranList');
             toast('您已确认收款，请勿重复操作');
-            this.$router.push({name: 'tranRecord'});
+            this.$router.push({name: 'orderDetailOver', params: {id: this.orderId}});
           }else{
             toast(res.message)
           }

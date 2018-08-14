@@ -16,6 +16,11 @@
             </span>
           </div>
           <div class="form-input-content">
+            <div class="form-input-box user-balace">
+              <span class="left">我的{{userData.accountChainVos[0].assetCode}}余额：</span>
+              <balance @getBalance="getBalance"></balance>
+              <a class="c-blue all-in" @click="allSell()" v-show="postItem === 'seller'">{{$t('postPend.allsell')}}</a>
+            </div>
             <div class="form-input-box">
               <span class="left">{{postItem == 'buyer' ? '买入' : '卖出'}}价格：</span>
               <span class="fl">
@@ -35,16 +40,7 @@
             </div>
             <div class="form-input-box">
               <span class="left">支付方式：</span>
-              <span class="fl">
-              <select class="ps-input" v-model="payType">
-                <option value="">请选择您要支付的方式</option>
-                <option v-for="item in bankList.data" :value="item">
-                  <span v-if="item.type == '1'">支付宝 {{item.account}}</span>
-                  <span v-if="item.type == '2'">微信 {{item.account}}</span>
-                  <span v-if="item.type == '3'">{{item.bank}} {{subData(item.account)}}</span>
-                </option>
-              </select>
-            </span>
+              <get-bankcard :setBankcard="setBankcard" v-model="bindCardReset" :def-select="bankNo" @selCardChange="selCardChange"></get-bankcard>
             </div>
             <div class="form-input-box">
               <span class="left">{{postItem == 'buyer' ? $t('postPend.buyerRequest') : $t('postPend.sellerRequest')}}：</span>
@@ -67,7 +63,7 @@
             </div>
             <div class="btn-groups">
               <span class="btn" @click="hide">取消</span>
-              <span class="btn btn-primary" @click="publishBuyOrSell">发布</span>
+              <span class="btn btn-primary" @click="publishBuyOrSell">快速{{postItem === 'buyer' ? '买' : '卖'}}币</span>
             </div>
           </div>
         </div>
@@ -82,6 +78,8 @@
   import {transaction} from 'api'
   import {generateTitle} from '@/util/i18n'
   import {mapGetters} from 'vuex'
+  import getBankcard from 'components/get-bankcard'
+  import balance from 'components/balance';
 
   export default {
 
@@ -91,9 +89,6 @@
           {name: "transactionRecord.buyer", value: "buyer"},
           {name: "transactionRecord.seller", value: "seller"}
         ],
-        bankList: {
-          data: []
-        },
         postItem: 'buyer',
         buyAmount: '',
         payType: '',
@@ -101,13 +96,37 @@
         buyTypeBuyBank: '',
         minAmount: '',
         proofType: '',
+        setBankcard: {
+          pleaseSelTitle: 'component.pleaseSelPayMet',         // 请选择标题文字
+          addOption:[]
+        },
+        bindCardReset:false,
+        userBalance:0,//用户余额
       }
     },
     watch: {
-      postItem() {
-        this.buyAmount = '';
-        this.payType = '';
-        this.minAmount = '';
+      postItem(val) {
+        if(val === 'seller' && this.auto === 1){
+          this.buyAmount = Number(this.amount) * 100;
+          this.minAmount = this.auto === 1 ? 1 : '';
+        }else{
+          this.buyAmount = '';
+          this.bindCardReset = true;
+          this.minAmount = '';
+        }
+      },
+      type(val){
+        if(val === 2){
+          this.postItem = 'seller'
+        }
+      },
+      show(val){
+        if(!val){
+          this.buyAmount = ''
+          this.bindCardReset = true
+          this.minAmount = ''
+          this.postItem = 'buyer'
+        }
       }
     },
     model: {
@@ -134,6 +153,18 @@
       type: {  // 1代表买入 2代表卖出
         type: Number,
         default: 1
+      },
+      amount:{ //买卖币金额 CNY
+        type: String,
+        default: ''
+      },
+      auto:{ //自动填写挂单信息 商户提款会用到 0表示不填写 1表示填写
+        type:Number,
+        default:0
+      },
+      bankNo:{  //银行卡号
+        type:String,
+        default:''
       }
     },
     computed: {
@@ -147,16 +178,8 @@
       hide() {
         this.$emit('change', false)
       },
-      getBankInfo() {
-        this.requestdata = {
-          userId: this.userData.userId
-        }
-        show.getBankInfo(this.requestdata).then((res) => {
-          this.bankList = res;
-
-        }).catch(err => {
-
-        })
+      selCardChange(selCard) {
+         this.payType = selCard;
       },
       publishBuyOrSell() {
         if (this.buyAmount == '' || !this.buyAmount) {
@@ -222,7 +245,7 @@
           console.log(res)
           if (res.code == '10000') {
             this.buyAmount = '';
-            this.payType = '';
+            this.bindCardReset=true;
             this.minAmount = '';
             toast('您已下单成功，请进入列表查询');
             this.hide()
@@ -236,20 +259,30 @@
           toast(err.message);
         })
       },
-      subData: function (item) {
-        return (item.substring(item.length - 4))
+      getBalance(data){
+        this.userBalance = data
+      },
+      allSell(){
+        this.buyAmount = this.userBalance
       }
     },
 
     created() {
       this.postItem = this.type === 1 ? 'buyer' : 'seller'
+      this.buyAmount = this.amount === '' ? '' : Number(this.amount) * 100
+      if(this.auto === 1){
+        this.minAmount = 1
+        this.proofType = '1'
+      }
     },
     mounted() {
-      this.getBankInfo()
     },
     activated() {
     },
-    components: {}
+    components: {
+      getBankcard,
+      balance
+    }
   };
 </script>
 <style lang="scss" scoped>
@@ -265,6 +298,10 @@
     height: 45px;
     line-height: 45px;
     margin: 0 0 15px 0;
+    padding: 5px 10px 5px 100px !important;
+    .bind-card-part{
+      width: 75% !important;
+    }
   }
 
   .popup .pop-con .ps-input {
@@ -301,5 +338,11 @@
     /*position: absolute;*/
     /*left: 350px;*/
     color: #777;
+  }
+  .user-balace{
+    .all-in{
+      margin-left: 20px;
+      cursor: pointer;
+    }
   }
 </style>

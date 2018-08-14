@@ -10,16 +10,13 @@
             <a href="/static/index.html">{{$t('navbar.navHome')}}</a>
           </div>
           <div class="col-2">
-            <a href="/transaction">{{$t('navbar.tradingHall')}}</a>
+            <router-link :to="{name:'transaction'}">{{$t('navbar.tradingHall')}}</router-link>
           </div>
           <div class="col-2">
             <a href="/static/about.html">{{$t('navbar.navAbout')}}</a>
           </div>
           <div class="col-2">
             <a href="/static/help.html">{{$t('navbar.navHelp')}}</a>
-          </div>
-          <div class="col-2">
-            <a href="/static/white-paper.html">{{$t('navbar.navWhitepaper')}}</a>
           </div>
           <div class="col-2">
             <a href="/static/contact.html">{{$t('navbar.navContactus')}}</a>

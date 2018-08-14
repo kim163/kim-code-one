@@ -89,11 +89,13 @@ _.mixin(
       let stompSuccessCallback = (frame) => {
         console.log('STOMP: Connection successful')
         subscription = client.subscribe('/exchange/walletCustomOperation/'+orderid, function (data) {
-            let msgData=JSON.parse(aesutil.decrypt(data.body));
+            let msgData=JSON.parse(aesutil.decrypt(data.body,true));
             if(msgData.type == 21){  //收银台 支付中  用于二维码显示
               Vue.$global.bus.$emit('update:paying');
             }else if(msgData.type == 22){  //收银台 支付完成
               Vue.$global.bus.$emit('update:paySuccess');
+            }else if(msgData.type == 23){  //商户提款
+              Vue.$global.bus.$emit('update:withdrawSuccess');
             }
           })
       }
@@ -168,6 +170,13 @@ _.mixin(
       var head = document.getElementsByTagName('head')[0];
       head.appendChild(style);
     },
+    customize(){ //久安定制版域名判断
+      const host = window.location.host
+      if(host.indexOf('9anwallet') > -1){
+        return true
+      }
+      return false
+    }
   }
 )
 

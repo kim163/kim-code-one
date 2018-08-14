@@ -1,19 +1,9 @@
 import axios from 'axios';
 import aesutil from './aesutil';
 import store from '@/store';	//加载状态管理器
-import router from '@/router';
 import {$localStorage, $sessionStorage} from './storage';
+import router from '@/router';
 
-const filterRouterName = [  //过滤路由 无需跳转到登录页
-  'mUserBind',
-  'mQuickCreate',
-  'autoLogin',
-  'mobileRegister',
-  'mCashDesk',
-  'pcCashDesk',
-  'pcUserBind',
-  'pcQuickCreate',
-]
 // var promiseArr = {}
 // let cancel
 const service = axios.create({
@@ -62,21 +52,6 @@ service.interceptors.request.use(config => {
 service.interceptors.response.use(
   response => {
     $load.close();
-    // if (response && response.data && response.data.code && response.data.code !== 10000) {
-    //   if (response.data.code === 15016) {    // 没有在线
-    //     store.dispatch('INIT_INFO');
-    //     $localStorage.remove('tokenInfo');
-    //     store.dispatch('UPDATE_TOKEN_INFO', null);
-    //     store.dispatch('CHECK_ONLINE',false);
-    //     store.commit("SHOW_LOGIN",true);
-    //   }
-    //   return Promise.reject(response.data.message)
-    // } else {
-    //   if (response.data.data) {
-    //     response.data.data = JSON.parse(aesutil.decrypt(response.data.data))
-    //   }
-    //   return response.data
-    // }
     if (response && response.data && response.data.code) {
       if (response.data.code === 15016) {    // 没有在线
         store.dispatch('INIT_INFO');
@@ -84,8 +59,16 @@ service.interceptors.response.use(
         $localStorage.remove('userData');
         store.dispatch('UPDATE_TOKEN_INFO', null);
         store.dispatch('CHECK_ONLINE',false);
-        const routerName = router.currentRoute.name
-        if(filterRouterName.indexOf(routerName) === -1){
+        console.log(router)
+        let noNeedLogin = false
+        if(_.isNull(router.currentRoute.name)){
+          if(!_.isNull(router.history.pending)){
+            noNeedLogin = _.isUndefined(router.history.pending.meta.noLogin) ? false : router.history.pending.meta.noLogin
+          }
+        }else{
+          noNeedLogin = _.isUndefined(router.currentRoute.meta.noLogin) ? false : router.currentRoute.meta.noLogin
+        }
+        if(!noNeedLogin){
           store.commit("SHOW_LOGIN",true);
         }
       }

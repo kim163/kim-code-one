@@ -13,7 +13,12 @@
     </div>
   </div>
 
-   <post-pendord v-model="isShowPostPend" url-name="tranPending" :type="getType"></post-pendord>
+   <post-pendord v-model="isShowPostPend" url-name="tranPending"
+                 :type="getType"
+                 :amount="amount"
+                 :bank-no="bankNo"
+                 :auto="auto"
+                 ></post-pendord>
   </div>
 </template>
 <script>
@@ -29,16 +34,24 @@
       return {
         transactMenuData: transactMenuData,
         isShowPostPend: false,
+        mode: Number(this.$route.query.mode) || 1, //判断用户意图 1是默认不打开买卖弹窗 2是打开我要买币弹窗  3是打开我要卖币
+        amount: this.$route.query.amount, //商户提现 金额
+        bankNo: this.$route.query.bankNo, //商户提现 银行卡号
+        auto: Number(this.$route.query.auto) || 0, //商户提现 自动填写信息
       }
     },
     props:{
-      mode:{ //用户判断用户意图 1是默认不打开买卖弹窗 2是打开我要买币弹窗  3是打开我要卖币
-        type:Number,
-        default:1
-      }
+
     },
     methods: {
-      generateTitle
+      generateTitle,
+      toSell(data){
+        this.mode = data.mode
+        this.amount = data.amount
+        this.bankNo = data.bankNo
+        this.auto = data.auto
+        this.isShowPostPend = true
+      }
     },
     computed:{
       getType(){
@@ -49,6 +62,9 @@
       if(this.mode > 1){
         this.isShowPostPend = true
       }
+      Vue.$global.bus.$on('open:QuickSell',(data) => {
+        this.toSell(data)
+      });
     },
     mounted() {
     },
@@ -56,6 +72,9 @@
     },
     components: {
       postPendord
+    },
+    destroyed(){
+      Vue.$global.bus.$off('open:QuickSell')
     }
   };
 </script>

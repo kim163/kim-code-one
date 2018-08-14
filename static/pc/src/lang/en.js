@@ -62,7 +62,7 @@ export default {
     sendCode: 'Send verification code',
   },
   footer: {
-    description: 'Early domestic block chain practitioners<br/>Team landing Switzerland, focus on digital assets wallet, smart contract direction'
+    description: 'Early domestic block chain practitioners<br/>focus on digital assets wallet, smart contract direction'
   },
   transactionHome: {
     buyUet: 'Buy UET',
@@ -244,5 +244,6 @@ export default {
     bindWeChat:'Binding WeChat',
     uploadQrcode:'Click to upload your receipt QR code',
     completeMaterial:'Complete material',
+    myGift:'My Gift'
   }
 }

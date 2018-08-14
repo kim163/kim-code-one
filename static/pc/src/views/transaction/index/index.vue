@@ -2,7 +2,7 @@
   <div class="transaction-main">
     <nav-menu></nav-menu>
     <bread-crumbs :bread-list="breadList"></bread-crumbs>
-    <transact-menu v-if="islogin" :mode="mode"></transact-menu>
+    <transact-menu v-if="islogin"></transact-menu>
     <guide-page v-if="!islogin"></guide-page>
 
     <div class="section transaction-content" v-if="islogin">
@@ -22,6 +22,7 @@
     </div>
 
     <v-footer ></v-footer>
+    <withdraw-tip v-if="withdrawTip" v-model="withdrawTip" :is-pc="true"></withdraw-tip>
   </div>
 </template>
 <script>
@@ -34,6 +35,7 @@
 
   import userWalletass from 'components/trancomp/user-walletass';
   import recentOrders from 'components/trancomp/recent-orders';
+  import WithdrawTip from 'components/withdraw-tip';
 
   import {mapGetters,mapActions,mapMutations} from 'vuex'
 
@@ -46,14 +48,17 @@
             name:'navbar.tradingHall'
           }
         ],
-        mode: Number(this.$route.query.mode)
+        withdrawTip:false
       };
     },
     methods: {
 
     },
     created() {
-
+      const withdraw = this.$route.query.withdraw
+      if(withdraw && !_.isUndefined(withdraw) && withdraw === 'true'){
+        this.withdrawTip = true
+      }
     },
     watch: {
 
@@ -62,7 +67,21 @@
       ...mapGetters([ "islogin" ])
     },
     components: {
-      navMenu, vFooter, BreadCrumbs, transactMenu, guidePage, tranbuyList, userWalletass, recentOrders
+      navMenu, vFooter, BreadCrumbs, transactMenu, guidePage, tranbuyList, userWalletass, recentOrders,
+      WithdrawTip
+    },
+    beforeRouteEnter(to,from,next){
+      next(vm => {
+        if(vm.islogin){
+          next()
+        }else{
+          if(_.customize()){
+            next('/')
+          }else{
+            next()
+          }
+        }
+      })
     }
   };
 </script>
