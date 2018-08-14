@@ -105,7 +105,7 @@
           {payLogo:"icon-prom-pcpay",payTitle:"电脑网站支付",paySubTitle:"用户在商家网站上完成付款"},
           {payLogo:"icon-prom-mobilepay",payTitle:"手机网站支付",paySubTitle:"用户在商家手机网站进行付款"},
           {payLogo:"icon-prom-apppay",payTitle:"APP支付",paySubTitle:"用户在商家app内进行付款"},
-          {payLogo:"icon-prom-facepay",payTitle:"当面付",paySubTitle:"只需扫描用户的付款码，或用户扫描商家的二维码完成付款"},
+          {payLogo:"icon-prom-facepay",payTitle:"当面付",paySubTitle:"扫描用户的付款码或商家的二维码付款"},
           {payLogo:"icon-prom-moneycode",payTitle:"收钱码",paySubTitle:"久安最新收钱工具，快速收钱、提钱"}
         ],
         advantageNav:[
@@ -471,8 +471,8 @@
    .advantage-payment-part{
      padding: 10px 0;
      .pay-item{
-       padding:19px 5px 5px;
-       min-height: 190px;
+       padding: 19px 5px 2px;
+       min-height: 170px;
        .pay-logo{
          line-height: 60px;
          .iconfont{

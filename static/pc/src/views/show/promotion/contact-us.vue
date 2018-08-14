@@ -159,7 +159,7 @@
  @media only screen and (max-width: 799px) {
    .contactus-banner-part{
      min-height: 244px;
-     background: #4982FF url(~images/prom/base-map.png) no-repeat center bottom;
+     background: #4982FF url(~images/prom/base-map.jpg) no-repeat center bottom;
      background-size: cover;
      .context{
        display: block;
