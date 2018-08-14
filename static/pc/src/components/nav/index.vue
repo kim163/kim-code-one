@@ -3,23 +3,20 @@
     <div class="container min-width">
       <div class="row cfx">
         <div class="logo">
-          <a class="nav-logo-link" href="/static/index.html"></a>
+          <router-link :to="{name:'index'}" class="nav-logo-link"></router-link>
         </div>
         <div class="link-part">
           <div class="col-2">
-            <a href="/static/index.html">{{$t('navbar.navHome')}}</a>
+            <router-link :to="{name:'index'}">{{$t('navbar.navHome')}}</router-link>
           </div>
           <div class="col-2">
             <router-link :to="{name:'transaction'}">{{$t('navbar.tradingHall')}}</router-link>
           </div>
           <div class="col-2">
-            <a href="/static/about.html">{{$t('navbar.navAbout')}}</a>
+            <router-link :to="{name:'helpCenter'}">{{$t('navbar.navHelp')}}</router-link>
           </div>
           <div class="col-2">
-            <a href="/static/help.html">{{$t('navbar.navHelp')}}</a>
-          </div>
-          <div class="col-2">
-            <a href="/static/contact.html">{{$t('navbar.navContactus')}}</a>
+            <router-link :to="{name:'contactUs'}">{{$t('navbar.navContactus')}}</router-link>
           </div>
           <div class="col-2">
             <get-live800></get-live800>

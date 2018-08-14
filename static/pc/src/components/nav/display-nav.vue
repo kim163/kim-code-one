@@ -15,14 +15,15 @@
       <input id="toggle" type="checkbox">
       <label class="toggle-container" for="toggle"><span class="button button-toggle"></span></label>
       <div class="m-nav-title">
-        <router-link :to="{name:'promIndex'}">
+        <router-link :to="gotoIndex()">
           <i class="iconfont icon-prom-logo"></i>
         </router-link>
       </div>
       <div class="mobile-nav-bar">
-        <router-link :to="{name:'promIndex'}" class="nav-item">久安优势</router-link>
-        <router-link :to="{name:'promHelp'}" class="nav-item">帮助中心</router-link>
-        <router-link :to="{name:'promContact'}" class="nav-item">联系我们</router-link>
+        <router-link :to="gotoIndex()" class="nav-item">久安优势</router-link>
+        <router-link :to="{name:'mIndex'}" v-show="isOfficialWeb" class="nav-item">{{$t('navbar.tradingHall')}}</router-link>
+        <router-link :to="gotoHelp()" class="nav-item">帮助中心</router-link>
+        <router-link :to="gotoContact()" class="nav-item">联系我们</router-link>
       </div>
     </div>
 
@@ -31,16 +32,19 @@
       <div class="container max-width">
         <div class="row cfx">
           <div class="logo fl">
-            <router-link :to="{name:'promIndex'}">
+            <router-link :to="gotoIndex()">
               <i class="iconfont icon-prom-logo"></i>
             </router-link>
           </div>
           <div class="link-part fr">
             <div class="col-2">
-              <router-link :to="{name:'promIndex'}">久安优势</router-link>
+              <router-link :to="gotoIndex()">久安优势</router-link>
+            </div>
+            <div class="col-2" v-show="isOfficialWeb">
+              <router-link :to="{name:'transaction'}">{{$t('navbar.tradingHall')}}</router-link>
             </div>
             <div class="col-2">
-              <router-link :to="{name:'promHelp'}">帮助中心</router-link>
+              <router-link :to="gotoHelp()">帮助中心</router-link>
             </div>
             <div class="col-2 posit-rel" @mouseover="showAppDown=true" @mouseout="showAppDown=false">
               <a href="javascript:void(0);">APP下载</a>
@@ -55,7 +59,7 @@
               </div>
             </div>
             <div class="col-2">
-              <router-link :to="{name:'promContact'}">联系我们</router-link>
+              <router-link :to="gotoContact()">联系我们</router-link>
             </div>
           </div>
         </div>
@@ -77,8 +81,42 @@
         showAppDown:false
       };
     },
-    props: {},
-    methods: {},
+    props: {
+      isOfficialWeb:{
+        type:Boolean,
+        default:false
+      }
+    },
+    methods: {
+      gotoIndex(){
+        let routerName = '';
+        if(this.isOfficialWeb){
+          routerName = 'index';
+        }else {
+          routerName = 'promIndex';
+        }
+        return {name: routerName};
+      },
+      gotoHelp(){
+        let routerName = '';
+        if(this.isOfficialWeb){
+          routerName = 'helpCenter';
+        }else {
+          routerName = 'promHelp';
+        }
+        return {name: routerName};
+      },
+      gotoContact(){
+        let contactName = '';
+        if(this.isOfficialWeb){
+          contactName = 'contactUs';
+        }else {
+          contactName = 'promContact';
+        }
+        return {name: contactName};
+      }
+
+    },
     computed: {},
     created() {
     },
