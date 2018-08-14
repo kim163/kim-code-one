@@ -122,9 +122,10 @@
       }
     },
     watch: {
-      pendingItem() {
+      pendingItem(val) {
         this.buyBindCardReset=true;
         this.sellBindCardReset=true;
+        this.setBankcard.pleaseSelTitle = val === 'seller' ? 'component.pleaseSelRecMet' : 'component.pleaseSelPayMet'
       }
     },
     computed: {
