@@ -22,6 +22,10 @@
       content:{
         required: true
       },
+      focusStop:{ //鼠标悬停停止滚动
+        type:Boolean,
+        default:true
+      }
     },
     data(){
       return{
@@ -70,8 +74,10 @@
         })
       },
       stopScoll(){
-        this.currentLeft = this.$refs.container.offsetLeft
-        Velocity(this.$refs.container, 'stop', true)
+        if(this.focusStop){
+          this.currentLeft = this.$refs.container.offsetLeft
+          Velocity(this.$refs.container, 'stop', true)
+        }
       }
     },
     // mounted(){
@@ -92,7 +98,6 @@
     position: relative;
     .content{
       position: absolute;
-      width: 100%;
       left: 100%;
       /*min-width: 100%;*/
       height: 100%;

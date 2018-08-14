@@ -11,9 +11,13 @@
       <div class="adv-marquee">
         <i class="iconfont"></i>
         <div class="msg-list" ref="msgList">
-          <marquee :speed="40000" :scroll-width="scrollWidth" v-if="awardLiveInfoList.length" :content="awardLiveInfoList">
+          <marquee :speed="40000"
+                   :scroll-width="scrollWidth"
+                   v-if="awardLiveInfoList.length"
+                   :content="awardLiveInfoList"
+                   :focus-stop="false">
             <template slot-scope="props">
-              <a v-for="(item, index) in props.content" :key="index">
+              <a v-for="(item, index) in props.content" :key="index" @click="showBulletinDetail(item)">
                 {{item.title}}
                 <span class="m-LR-sm" v-if="index <  props.content.length -1">/</span>
               </a>
@@ -44,6 +48,7 @@
       </div>
     </div>
     <m-navbar></m-navbar>
+    <bulletin-detail :detail="bulletinDetail" v-model="showBullDetail"></bulletin-detail>
   </div>
 </template>
 
@@ -51,6 +56,7 @@
   import mHeadnav from 'components/m-headnav';
   import mNavbar from 'components/m-navbar';
   import Marquee from 'components/marquee'
+  import BulletinDetail from 'components/m-bulletin-detail'
   import { getAwardInfo } from 'api/activity'
 
   export default {
@@ -61,12 +67,15 @@
         awardLiveInfoList:[],
         showIndex:0,
         coinBalance:0,
+        showBullDetail:false,
+        bulletinDetail:{},
       }
     },
     components:{
       mHeadnav,
       mNavbar,
       Marquee,
+      BulletinDetail,
     },
     computed:{
       scrollWidth(){
@@ -104,6 +113,10 @@
             break
         }
         return routerTo
+      },
+      showBulletinDetail(data){
+        this.bulletinDetail = data
+        this.showBullDetail = true
       }
     },
     mounted(){
