@@ -10,7 +10,16 @@
       </div>
       <div class="adv-marquee">
         <i class="iconfont"></i>
-        <div class="msg-list">用户“我是周星驰”在快速交易中获得优惠券1000...</div>
+        <div class="msg-list" ref="msgList">
+          <marquee :speed="40000" :scroll-width="scrollWidth" v-if="awardLiveInfoList.length" :content="awardLiveInfoList">
+            <template slot-scope="props">
+              <a v-for="(item, index) in props.content" :key="index">
+                {{item.title}}
+                <span class="m-LR-sm" v-if="index <  props.content.length -1">/</span>
+              </a>
+            </template>
+          </marquee>
+        </div>
       </div>
     </div>
     <div class="activity-list p-def">
@@ -41,7 +50,7 @@
 <script>
   import mHeadnav from 'components/m-headnav';
   import mNavbar from 'components/m-navbar';
-
+  import Marquee from 'components/marquee'
   import { getAwardInfo } from 'api/activity'
 
   export default {
@@ -56,7 +65,13 @@
     },
     components:{
       mHeadnav,
-      mNavbar
+      mNavbar,
+      Marquee,
+    },
+    computed:{
+      scrollWidth(){
+        return this.$refs.msgList.offsetWidth
+      }
     },
     methods:{
       getActivityList(){
