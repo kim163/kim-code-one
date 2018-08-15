@@ -1,12 +1,12 @@
 <template>
   <!--底部内容-->
-  <div class="footer section">
+  <div :class="['footer section',{'display-footer':isDisplayFoot}]">
     <div class="container center f-white">
       <div class="row foot-part">
         <div class="col-7 left">
-          <a class="p-goup-title" href="static/index.html">
-            <img src="~images/logo.png" alt="">
-          </a>
+          <router-link :to="gotoIndex()" class="p-goup-title">
+            <i class="iconfont icon-juan-logo1"></i>
+          </router-link>
           <p class="p-goup-subtitle" v-html="$t('footer.description')"> </p>
         </div>
         <div class="col-5 right">
@@ -32,8 +32,31 @@
         data() {
             return {};
         },
-        props:{},
-        methods:{},
+        props:{
+          isDisplayFoot:{
+            type:Boolean,
+            default:false
+          },
+          isOfficialWeb:{
+            type:Boolean,
+            default:false
+          }
+        },
+        methods:{
+          gotoIndex(){
+            let routerName = '';
+            if(this.isDisplayFoot){
+              if(this.isOfficialWeb){
+                routerName = 'index';
+              }else {
+                routerName = 'promIndex';
+              }
+            }else {
+              routerName = 'index';
+            }
+            return {name: routerName};
+          }
+        },
         computed:{},
         created(){
         },
@@ -48,6 +71,11 @@
       a {
         display: block;
         float: left;
+        text-decoration:none;
+        .icon-juan-logo1{
+          font-size: 80px;
+          color: #FFFFFF;
+        }
       }
       p {
         display: block;
@@ -102,5 +130,40 @@
       font-size: 35px;
     }
 
+  }
+
+  div.display-footer{
+    .foot-part {
+      padding: 75px 0 77px !important;
+    }
+  }
+
+  @media only screen and (max-width: 799px) {
+    div.footer .foot-part{
+      a,p{
+        float: none;
+        text-align: center;
+      }
+      p{
+        font-size: 16px;
+        color: #FFFFFF;
+        padding: 16px 0 0 0;
+        letter-spacing: 0.5px;
+      }
+      .col-5{
+        text-align: center;
+      }
+      .icon-sm{
+        margin:0 0 0 20px;
+        &:first-child{
+          margin: 0;
+        }
+      }
+    }
+    div.display-footer{
+      .foot-part {
+        padding: 13px 0 25px !important;
+      }
+    }
   }
 </style>

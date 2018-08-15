@@ -122,9 +122,10 @@
       }
     },
     watch: {
-      pendingItem() {
+      pendingItem(val) {
         this.buyBindCardReset=true;
         this.sellBindCardReset=true;
+        this.setBankcard.pleaseSelTitle = val === 'seller' ? 'component.pleaseSelRecMet' : 'component.pleaseSelPayMet'
       }
     },
     computed: {
@@ -312,7 +313,7 @@
       if(!_.isUndefined(withdraw) && withdraw === 'true'){
         if(this.pendingItem === 'seller'){
           this.minSellAmount = 1
-          this.proofType = 1
+          this.proofType = '1'
         }
       }
     },

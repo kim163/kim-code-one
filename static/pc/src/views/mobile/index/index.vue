@@ -71,6 +71,19 @@
     },
     components: {
       mHeadnav, mNavbar,balance, tranbuyList, transellList,WithdrawTip
+    },
+    beforeRouteEnter(to,from,next){
+      next(vm => {
+        if(vm.islogin){
+          next()
+        }else{
+          if(!_.customize()){
+            next({name: 'mobileLogin',replace: true})
+          }else{
+            next({name: 'mobileCusLogin',replace: true})
+          }
+        }
+      })
     }
   };
 </script>
