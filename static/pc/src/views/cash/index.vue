@@ -165,7 +165,7 @@
           assetCode: this.formatParameter(this.infoData.assetCode),
           merchantId: this.formatParameter(this.infoData.merchantId),
           merchantCallbackurl: this.formatParameter(this.infoData.merchantCallbackurl),
-          sign: this.formatParameter(this.infoData.sign),
+          sign: this.formatParameter(this.infoData.sign.replace(/\s/g,'+')),
           bindUserid: this.formatParameter(this.infoData.bindUserid),
           bindPhone: this.formatParameter(this.infoData.bindPhone),
           bindName: this.formatParameter(this.infoData.bindName),
