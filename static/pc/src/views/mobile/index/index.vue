@@ -77,7 +77,7 @@
         if(vm.islogin){
           next()
         }else{
-          if(_.customize()){
+          if(!_.customize()){
             next({name: 'mobileLogin',replace: true})
           }else{
             next({name: 'mobileCusLogin',replace: true})
