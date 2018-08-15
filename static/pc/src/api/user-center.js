@@ -38,4 +38,9 @@ export const bindUserInfo = jsonData => service({
   data: jsonData
 });
 
-//我的
+//我的获赠
+export const myGift = jsonData => service({
+  url:numversion+`coupon/getCouponDetailPage`,
+  method:'post',
+  data:jsonData
+})

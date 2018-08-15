@@ -1,26 +1,54 @@
 <template>
-  <div class="transell-main0 transell-main-box">
-    <m-header :back="goBack">申诉订单详情</m-header>
-    <div></div>
-    <div class="m-order-details">
-      <div class="trade-time-bar">
-        <span class="c-blue" >
-          <!--申诉订单-->
-          <span v-if="DetailList.credit == userId" class="c-blue">买入</span>
-          <span v-if="DetailList.debit == userId" class="c-red">卖出</span>
-        </span>
-        <span class="fr c-gray">
-          申诉锁定中
-          <!--{{DetailList.intervalTime - DetailList.elapsedTime | Date('hh:mm:ss')}}-->
-        </span>
+  <div>
+    <div class="transell-main0 transell-main-box">
+      <m-header v-if="DetailList.credit==userData.userId" >我的买币订单</m-header>
+      <m-header v-else-if="DetailList.debit==userData.userId" >我的卖币订单</m-header>
+      <div class="m-order-details">
+        <!--买家流程图-->
+        <div class="payOrder_progress" v-if="DetailList.credit==userData.userId">
+          <div class="progress_state">
+            <img src="~images/startpay.png" alt="">
+            <p class="defaultColor">等待我付款</p>
+            <span class="line"></span>
+          </div>
+          <div class="progress_state">
+            <img src="~images/waitpay_next.png" alt="">
+            <p class="defaultColor">等待对方放币</p>
+            <span class="line"></span>
+          </div>
+          <div class="progress_state">
+            <img src="~images/order_appeal.png" alt="">
+            <p class="defaultColor">交易进入申诉</p>
+          </div>
+        </div>
+        <!--卖家流程图-->
+        <div class="payOrder_progress" v-else-if="DetailList.debit==userData.userId">
+          <div class="progress_state">
+            <img src="~images/startpay.png" alt="">
+            <p class="defaultColor">等待对方付款</p>
+            <span class="line"></span>
+          </div>
+          <div class="progress_state">
+            <img src="~images/waitpay_next.png" alt="">
+            <p class="defaultColor">等待我放币</p>
+            <span class="line"></span>
+          </div>
+          <div class="progress_state">
+            <img src="~images/order_appeal.png" alt="">
+            <p class="defaultColor">交易进入申诉</p>
+          </div>
+        </div>
+        <div class="trade-time-bar">
+          <div>
+            <p class="pay_send">申诉中</p>
+          </div>
+        </div>
       </div>
-
-      <div class="mobilenav-tabs">
-          <span v-for="(item,i) in detailType" @click="detailTypeItem=item.value" :class="{active:detailTypeItem==item.value}" :key="item.value">
-              {{item.value}}
-          </span>
-      </div>
-
+      <!--      <div class="mobilenav-tabs">
+                <span v-for="(item,i) in detailType" @click="detailTypeItem=item.value" :class="{active:detailTypeItem==item.value}" :key="item.value">
+                    {{item.value}}
+                </span>
+            </div>-->
       <div v-if="detailTypeItem =='订单详情'">
         <div v-if="DetailList.credit == userId">
           <!--买-->
@@ -53,8 +81,10 @@
             <li>
               <span class="l-title">卖家收款 : </span>
               <div class="fr0">
-                <span v-if="DetailList.debitAccountMerchantTwin == '支付宝'"><i class="iconfont icon-pay-alipay"></i></span>
-                <span v-else-if="DetailList.debitAccountMerchantTwin == '微信'"><i class="iconfont icon-pay-wechat"></i></span>
+                <span v-if="DetailList.debitAccountMerchantTwin == '支付宝'"><i
+                  class="iconfont icon-pay-alipay"></i></span>
+                <span v-else-if="DetailList.debitAccountMerchantTwin == '微信'"><i
+                  class="iconfont icon-pay-wechat"></i></span>
                 <span v-else><i class="iconfont icon-pay-bank"></i></span>
                 {{DetailList.debitAccountMerchantTwin}}
               </div>
@@ -62,7 +92,8 @@
             <li>
               <span class="l-title">收款姓名 : </span>
               <div class="fr0">{{DetailList.debitAccountNameTwin}}
-                <a href="javascript:void(0);" class="copy-btn" :data-clipboard-text="DetailList.debitAccountNameTwin" @click="copy">{{$t('transactionHome.copyBtn')}}</a>
+                <a href="javascript:void(0);" class="copy-btn" :data-clipboard-text="DetailList.debitAccountNameTwin"
+                   @click="copy">{{$t('transactionHome.copyBtn')}}</a>
 
               </div>
             </li>
@@ -70,11 +101,13 @@
               <span class="l-title">收款账号 : </span>
               <div class="fr0">
                 <span class="">{{DetailList.debitAccountTwin}}</span>
-                <a href="javascript:void(0);" class="copy-btn" :data-clipboard-text="DetailList.debitAccountTwin" @click="copy">{{$t('transactionHome.copyBtn')}}</a>
+                <a href="javascript:void(0);" class="copy-btn" :data-clipboard-text="DetailList.debitAccountTwin"
+                   @click="copy">{{$t('transactionHome.copyBtn')}}</a>
 
               </div>
             </li>
-            <li class="heightauto"  v-if="DetailList.debitAccountMerchantTwin == '支付宝' || DetailList.debitAccountMerchantTwin == '微信'">
+            <li class="heightauto"
+                v-if="DetailList.debitAccountMerchantTwin == '支付宝' || DetailList.debitAccountMerchantTwin == '微信'">
               <span class="l-title">收款二维码 : </span>
               <div class="qrcode-box">
                 <img src="~images/qrcode.jpg" :src="DetailList.debitAccountQrCodeUrlTwin" class="qrcode-img">
@@ -84,7 +117,7 @@
 
           </ul>
           <div class="btn-group">
-            <input type="button" class="btn btn-block btn-primary" @click="detailTypeItem='申诉与仲裁'"  value="提出反证">
+            <input type="button" class="btn btn-block btn-primary" @click="detailTypeItem='申诉与仲裁'" value="提出反证">
             <!--<input type="button" class="btn btn-block btn-gray"  value="我已付款">-->
             <!--<input type="button" class="btn btn-block btn-primary"  value="确定收款">-->
             <!--<input type="button" class="btn btn-block btn-primary"  value="我要申诉">-->
@@ -94,18 +127,8 @@
           <!--卖-->
           <ul class="details-ul">
             <li>
-              <span class="l-title">订单号 :</span>
+              <span class="l-title">订单:</span>
               <span class="fr order-id-li">{{$route.params.id}}</span>
-            </li>
-            <li>
-              <span class="l-title">买方 :</span>
-              <span class="fr">{{DetailList.creditName}}</span>
-            </li>
-            <li>
-              <span class="l-title">交易金额 :</span>
-              <span class="fr">
-                       <span class="red">{{DetailList.debitAmountTwin}} CNY</span>
-                 </span>
             </li>
             <li>
               <span class="l-title">交易数量 :</span>
@@ -121,8 +144,10 @@
             <li>
               <span class="l-title">卖家收款 : </span>
               <div class="fr0">
-                <span v-if="DetailList.debitAccountMerchantTwin == '支付宝'"><i class="iconfont icon-pay-alipay"></i></span>
-                <span v-else-if="DetailList.debitAccountMerchantTwin == '微信'"><i class="iconfont icon-pay-wechat"></i></span>
+                <span v-if="DetailList.debitAccountMerchantTwin == '支付宝'"><i
+                  class="iconfont icon-pay-alipay"></i></span>
+                <span v-else-if="DetailList.debitAccountMerchantTwin == '微信'"><i
+                  class="iconfont icon-pay-wechat"></i></span>
                 <span v-else><i class="iconfont icon-pay-bank"></i></span>
                 {{DetailList.debitAccountMerchantTwin}}
               </div>
@@ -130,7 +155,8 @@
             <li>
               <span class="l-title">收款姓名 : </span>
               <div class="fr0">{{DetailList.debitAccountNameTwin}}
-                <a href="javascript:void(0);" class="copy-btn" :data-clipboard-text="DetailList.debitAccountNameTwin" @click="copy">{{$t('transactionHome.copyBtn')}}</a>
+                <a href="javascript:void(0);" class="copy-btn" :data-clipboard-text="DetailList.debitAccountNameTwin"
+                   @click="copy">{{$t('transactionHome.copyBtn')}}</a>
 
               </div>
             </li>
@@ -138,11 +164,13 @@
               <span class="l-title">收款账号 : </span>
               <div class="fr0">
                 <span class="">{{DetailList.debitAccountTwin}}</span>
-                <a href="javascript:void(0);" class="copy-btn" :data-clipboard-text="DetailList.debitAccountTwin" @click="copy">{{$t('transactionHome.copyBtn')}}</a>
+                <a href="javascript:void(0);" class="copy-btn" :data-clipboard-text="DetailList.debitAccountTwin"
+                   @click="copy">{{$t('transactionHome.copyBtn')}}</a>
 
               </div>
             </li>
-            <li class="heightauto"  v-if="DetailList.debitAccountMerchantTwin == '支付宝' || DetailList.debitAccountMerchantTwin == '微信'">
+            <li class="heightauto"
+                v-if="DetailList.debitAccountMerchantTwin == '支付宝' || DetailList.debitAccountMerchantTwin == '微信'">
               <span class="l-title">收款二维码 : </span>
               <div class="qrcode-box">
                 <img src="~images/qrcode.jpg" :src="DetailList.debitAccountQrCodeUrlTwin" class="qrcode-img">
@@ -152,19 +180,19 @@
 
           </ul>
           <div class="btn-group">
-            <input type="button" class="btn btn-block btn-border" @click="payCompleted"  value="释放UET">
-            <input type="button" class="btn btn-block btn-primary" @click="detailTypeItem='申诉与仲裁'"  value="继续留言">
+            <input type="button" class="btn btn-block btn-border" @click="payCompleted" value="释放UET">
+            <input type="button" class="btn btn-block btn-primary" @click="detailTypeItem='申诉与仲裁'" value="继续留言">
           </div>
         </div>
 
       </div>
 
-      <div v-if="detailTypeItem =='申诉与仲裁'">
+      <!--<div v-if="detailTypeItem =='申诉与仲裁'">
 
         <div class="trade-time-bar">
           申诉与仲裁
           <span class="fr">
-            <!--<span class="red">卖方获胜</span>-->
+            &lt;!&ndash;<span class="red">卖方获胜</span>&ndash;&gt;
             <span>{{AppealList.appeal.statusText}}</span>
           </span>
         </div>
@@ -172,8 +200,8 @@
         <div class="appeal-list">
           <ul class="appeal-list-ul" v-if="reverseAppealList.length>0">
             <li v-for="(item,i) in reverseAppealList" >
-              <!-- 我是买家 DetailList.credit == userId-->
-              <!-- 我是卖家 DetailList.debit == userId-->
+              &lt;!&ndash; 我是买家 DetailList.credit == userId&ndash;&gt;
+              &lt;!&ndash; 我是卖家 DetailList.debit == userId&ndash;&gt;
               <div :class="{'you-msg':isCredit}">
                   <span class="userAvator">
                     {{item.sourceTypeText }}
@@ -199,13 +227,10 @@
             <no-data-tip></no-data-tip>
           </div>
         </div>
-
-      </div>
-
+-->
     </div>
     <div class="Rongyunchatroom" @click="goChatroom()">
-      <img src="../../../assets/images/chat.png" alt="">
-      <p class="chatroom_num">{{unreadCountUpdate}}<!--<span class="chatroom_num" v-if="unreadCount>99">+</span>--></p>
+      <p>跟对方会话<span style="color:#ec3a4e" v-if="unreadCountUpdate>0">(未读{{unreadCountUpdate}})</span></p>
     </div>
     <transition name="toolSlideRight">
       <chat v-if="chatState" class="chatWindow"
@@ -217,67 +242,66 @@
       ></chat>
     </transition>
   </div>
-</template>
 
+</template>
 <script>
   import mHeader from "components/m-header"
   import NoDataTip from 'components/no-data-tip'
-  import { generateTitle } from '@/util/i18n'
-  import { transaction,chatWith } from 'api'
-  import {mapGetters,mapActions,mapMutations} from 'vuex'
+  import {generateTitle} from '@/util/i18n'
+  import {chatWith, transaction} from 'api'
+  import {mapGetters} from 'vuex'
   import Clipboard from 'clipboard';
   import chat from '../chatroom/chat'
+
   export default {
     data() {
       return {
-        detailType:[
-          {name:'detail.buyUet', value: '订单详情' },
-          {name:'detail.saleUet', value: '申诉与仲裁' }
-        ],
-        detailTypeItem:'订单详情',
-        DetailList: {
+        /*   detailType:[
+             {name:'detail.buyUet', value: '订单详情' },
+             {name:'detail.saleUet', value: '申诉与仲裁' }
+           ],*/
+        detailTypeItem: '订单详情',
+        DetailList: {},
+        AppealList: {},
+        myMessage: '',
+        orderData: {
+          orderId: this.$route.params.id,
+          debitName: '', // 交易买方
         },
-        AppealList: {
-        },
-        myMessage:'',
-        orderData:{
-          orderId:this.$route.params.id,
-          debitName:'', // 交易买方
-        },
-        gameID:'',
-        chatState:'',
+        gameID: '',
+        chatState: '',
         isCredit: false,
         isDebit: false
       };
     },
     methods: {
       generateTitle,
-      fetchData(){
+      fetchData() {
         this.loading = true;
-        this.request={
-          limit:'20',
-          offset:'0',
-          orderId:this.$route.params.id,
-          userId:this.userId,
-          type:3   //默认为3
+        this.request = {
+          limit: '20',
+          offset: '0',
+          orderId: this.$route.params.id,
+          userId: this.userId,
+          type: 3   //默认为3
         }
         console.log(this.request)
         console.log(this.userData)
         transaction.getAppealDetailPage(this.request).then(res => {
           this.loading = false;
           console.log(res.data);
-           // data.orderx   订单详情
-           // data.appealDetailList   申诉消息列表
-           // data.appeal   申诉状态
+          // data.orderx   订单详情
+          // data.appealDetailList   申诉消息列表
+          // data.appeal   申诉状态
 
-          this.DetailList = res.data.orderx ;
-          this.AppealList = res.data ;
-          if(this.DetailList.credit == this.userId){
+          this.DetailList = res.data.orderx;
+          this.AppealList = res.data;
+          if (this.DetailList.credit == this.userId) {
             this.isCredit = true;
-          }else if(this.DetailList.debit == this.userId){
+          } else if (this.DetailList.debit == this.userId) {
             this.isDebit = true;
           }
-        //statusText
+          //statusText
 //          this.DetailList.creditProofUrlTwin = res.data.creditProofUrlTwin.split(',');
 
         }).catch(error => {
@@ -286,45 +310,45 @@
 
         this.loading = false;
       },
-      addAppealDetail(){
+      addAppealDetail() {
         this.loading = true;
-        this.request={
-          orderId:this.$route.params.id,
-          userId:this.userId,
-          userName:this.userData.nickname,
-          attachmentUrls:'',
-          content:this.myMessage
+        this.request = {
+          orderId: this.$route.params.id,
+          userId: this.userId,
+          userName: this.userData.nickname,
+          attachmentUrls: '',
+          content: this.myMessage
         }
         transaction.addAppealDetail(this.request).then(res => {
           this.loading = false;
           console.log(res.data);
-          if(res.code == '10000'){
-              this.AppealList = res.data;
-              toast('消息发送成功');
-              this.fetchData();
-              this.myMessage='';
-              this.fetchData();
-          }else{
+          if (res.code == '10000') {
+            this.AppealList = res.data;
+            toast('消息发送成功');
+            this.fetchData();
+            this.myMessage = '';
+            this.fetchData();
+          } else {
             toast(res.message);
           }
 
 
-      }).catch(error => {
+        }).catch(error => {
           toast(error.message);
-      });
+        });
         this.loading = false;
       },
-      payCompleted(){
-        this.request={
-          orderId:this.$route.params.id
+      payCompleted() {
+        this.request = {
+          orderId: this.$route.params.id
         }
         transaction.payCompleted(this.request).then(res => {
           this.loading = false;
-          if(res.code == '10000'){
+          if (res.code == '10000') {
             Vue.$global.bus.$emit('update:balance');
             toast('您已确认收款，请勿重复操作');
             this.$router.push({name: 'mOrderOver', params: {id: this.orderId}});
-          }else{
+          } else {
             toast(res.message)
           }
 
@@ -345,11 +369,11 @@
           clipboard.destroy()
         })
       },
-      chatStateUpdate(){
+      chatStateUpdate() {
         this.chatState = false
       },
       goChatroom() {
-        if(!this.connectState){
+        if (!this.connectState) {
           toast('聊天功能正在初始化,请稍后片刻!')
           return
         }
@@ -366,7 +390,7 @@
         chatWith.createChatGroup(params).then(res => {
           if (res.code === 10000) {
             this.chatState = true
-            this.$store.commit('GET_HISTORYSTATE',3)
+            this.$store.commit('GET_HISTORYSTATE', 3)
           } else {
             toast(res.message)
           }
@@ -374,23 +398,24 @@
           toast(res.message)
         })
       },
-      goBack(){
-        this.$router.replace({name:'mTranRecord'})
-      }
+      goBack() {
+        this.$router.replace({name: 'mTranRecord'})
+      },
+
     },
     created() {
       this.fetchData();
     },
     watch: {
-      "$route":"fetchData"
+      "$route": "fetchData"
     },
     computed: {
-      ...mapGetters(["userData","islogin",'userId','connectState']),
+      ...mapGetters(["userData", "islogin", 'userId', 'connectState', 'unreadCount']),
       reverseAppealList() {
         // 按照时间倒序显示数据
-        if(this.AppealList.appealDetailList.length>0){
+        if (this.AppealList.appealDetailList.length > 0) {
           this.AppealList.appealDetailList = this.AppealList.appealDetailList.map(item => {
-            if(item.attachmentUrls && item.attachmentUrls.length>1){
+            if (item.attachmentUrls && item.attachmentUrls.length > 1) {
               item.attachmentUrls = item.attachmentUrls.split(',');
             }
             return item;
@@ -420,227 +445,253 @@
 
 <style lang="scss">
   @import "~assets/scss/mobile";
-  .cas-main{
+
+  .cas-main {
     background: #F5F5F5;
   }
-  .order-id-li{
-    width:79%;
-    text-align: right;
+
+  .order-id-li {
+    width: 100%;
+    text-align: left;
     word-break: break-all;
   }
-  .c-red,.red{color:red;}
-  .c-blue{color:#5087FF;}
-  .c-orange{color:orange;}
-  .trade-time-bar{
-    background: #fff;
-    padding:r(10) r(15);
-    height:r(40);
-    border-bottom:1px solid #d8d8d8;
-    margin-bottom:r(10);
-  }
-  .appeal-list{
-    padding:0 0 70px 0;
-  }
-  .details-ul{
-    border-bottom:1px solid #d8d8d8;
-    border-top:1px solid #d8d8d8;
-    margin-bottom:r(10);
-  li{
-    background: #fff;
-    min-height:r(35);
-    padding:r(8) r(15);
-    @include  f(16px);
-    color:#8f8f8f;
-    overflow:hidden;
-  &.heightauto{
-     height:180px;
-   }
-  .qrcode-img{
-    width:130px;
-  }
-  .fr0{
-    display:inline-block;
-    /*width:50%;*/
-    padding:0 0 0 r(10);
-  }
-  .qrcode-tips{
-    display:inline-block;
-    width:r(99);
-    word-break: break-all;
-    font-size:r(12);
-  }
-  .l-title{
-    display:inline-block;
-    float:left;
-    color:#333;
-  }
-  }
+
+  .c-red, .red {
+    color: red;
   }
 
+  .c-blue {
+    color: #5087FF;
+  }
 
-  .btn-group{
-    padding:r(6) r(15) r(10);
-  .btn {
-    display: inline-block;
-    color: #5087ff;
-    border-radius: 4px;
-    height: r(45);
-    line-height: r(45);
-    padding: 0 r(20);
-    margin: r(10)0 0 0;
-    cursor: pointer;
-    font-size: r(18);
+  .c-orange {
+    color: orange;
   }
-  .btn-primary {
-    border: 1px solid #5087ff;
-    background: #5087ff;
-    color: #fff;
-  }
-  .btn-border{
-    border: 1px solid #5087ff;
+
+  .trade-time-bar {
     background: #fff;
-    color: #5087ff;
+    padding: r(10) r(15);
+    height: auto;
+    border-bottom: 1px solid #d8d8d8;
+    margin-bottom: r(10);
+    text-align: center;
   }
-  .btn-cancel {
-    color: #787876;
+
+  .appeal-list {
+    padding: 0 0 70px 0;
   }
-  .btn-block{
-    display:block;
-    width:100%;
+
+  .details-ul {
+    border-bottom: 1px solid #d8d8d8;
+    border-top: 1px solid #d8d8d8;
+    margin-bottom: r(10);
+    li {
+      background: #fff;
+      min-height: r(35);
+      padding: r(8) r(15);
+      @include f(16px);
+      color: #8f8f8f;
+      overflow: hidden;
+      &.heightauto {
+        height: 180px;
+      }
+      .qrcode-img {
+        width: 130px;
+      }
+      .fr0 {
+        display: inline-block;
+        /*width:50%;*/
+        padding: 0 0 0 r(10);
+      }
+      .qrcode-tips {
+        display: inline-block;
+        width: r(99);
+        word-break: break-all;
+        font-size: r(12);
+      }
+      .l-title {
+        display: inline-block;
+        color: #333;
+      }
+    }
   }
-  .btn-gray{
-    background: #E4E4E4;
-    color:#787876;
+
+  .btn-group {
+    padding: r(6) r(15) r(10);
+    .btn {
+      display: inline-block;
+      color: #5087ff;
+      border-radius: 4px;
+      height: r(45);
+      line-height: r(45);
+      padding: 0 r(20);
+      margin: r(10) 0 0 0;
+      cursor: pointer;
+      font-size: r(18);
+    }
+    .btn-primary {
+      border: 1px solid #5087ff;
+      background: #5087ff;
+      color: #fff;
+    }
+    .btn-border {
+      border: 1px solid #5087ff;
+      background: #fff;
+      color: #5087ff;
+    }
+    .btn-cancel {
+      color: #787876;
+    }
+    .btn-block {
+      display: block;
+      width: 100%;
+    }
+    .btn-gray {
+      background: #E4E4E4;
+      color: #787876;
+    }
   }
-  }
-  .icon-pay-bank{
+
+  .icon-pay-bank {
     color: #B764FE;
   }
-  .icon-pay-wechat{
-    color:#14CA39;
+
+  .icon-pay-wechat {
+    color: #14CA39;
   }
-  .icon-pay-alipay{
-    color:#03A9F3;
+
+  .icon-pay-alipay {
+    color: #03A9F3;
   }
-  .mes-img{
-    max-width:100%;
+
+  .mes-img {
+    max-width: 100%;
   }
-  .appeal-list-ul{
-    li{
-      padding:r(10) r(10) 0;
+
+  .appeal-list-ul {
+    li {
+      padding: r(10) r(10) 0;
       overflow: hidden;
     }
-    .userAvator{
+    .userAvator {
       background: #E9BA52;
-      height:r(45);
-      width:r(45);
+      height: r(45);
+      width: r(45);
       line-height: r(45);
       text-align: center;
       border-radius: 50px;
       display: inline-block;
-      float:left;
-      margin:r(15) r(10) 0 0;
-      color:#fff;
+      float: left;
+      margin: r(15) r(10) 0 0;
+      color: #fff;
     }
-    .mes-box{
+    .mes-box {
       display: inline-block;
-      width:calc(100% - #{r(85)});
+      width: calc(100% - #{r(85)});
       line-height: 25px;
-      @include  f(15px);
+      @include f(15px);
     }
-    .mes-box-in{
-      border:1px solid #ddd;
+    .mes-box-in {
+      border: 1px solid #ddd;
       border-radius: 5px;
       background: #fff;
       display: inline-block;
     }
-    .msg-time{
-      color:#787876;
-      @include  f(14px);
+    .msg-time {
+      color: #787876;
+      @include f(14px);
     }
-    .you-msg{
-      .userAvator{
+    .you-msg {
+      .userAvator {
         background: #0ABB07;
-        height:r(45);
-        width:r(45);
+        height: r(45);
+        width: r(45);
         line-height: r(45);
         text-align: center;
         border-radius: 50px;
         display: inline-block;
-        color:#fff;
-        float:right;
+        color: #fff;
+        float: right;
       }
-      .msg-time{
+      .msg-time {
         text-align: right;
       }
-      .mes-box{
-        float:right;
-        margin-right:r(15);
+      .mes-box {
+        float: right;
+        margin-right: r(15);
       }
-      .mes-box-in{
+      .mes-box-in {
         float: right;
         background: #A0E75A;
       }
     }
   }
 
-  .bottom-keyboard{
+  .pay_send {
+    font-size: r(16);
+    color: #ec3a4e;
+  }
+
+  .bottom-keyboard {
     position: fixed;
-    bottom:0;
-    left:0;
-    width:100%;
-    padding:r(8) r(10);
-    border-top:1px solid #ddd;
-    background:#F5F5F5;
-    .my-input{
-      height:42px;
-      width:80%;
-      padding:0 2%;
-      display:inline-block;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: r(8) r(10);
+    border-top: 1px solid #ddd;
+    background: #F5F5F5;
+    .my-input {
+      height: 42px;
+      width: 80%;
+      padding: 0 2%;
+      display: inline-block;
       border-radius: 6px;
-      border:1px solid #ddd;
+      border: 1px solid #ddd;
       @include f(16px);
     }
-    .btn-send{
-      display:inline-block;
-      width:17.5%;
-      margin:0 0 0 2.5%;
+    .btn-send {
+      display: inline-block;
+      width: 17.5%;
+      margin: 0 0 0 2.5%;
       text-align: center;
-      height:42px;
+      height: 42px;
       line-height: 42px;
       background: #4982FF;
-      color:#fff;
+      color: #fff;
       border-radius: 6px;
-      float:right;
+      float: right;
     }
   }
-  .msg-details{
-    padding:r(10);
+
+  .msg-details {
+    padding: r(10);
     word-break: break-all;
   }
-  .Rongyunchatroom{
-    width: r(50);
+
+  .Rongyunchatroom {
+    width: 100%;
     height: r(50);
-    background-color: #fff;
     position: fixed;
     right: 0;
-    top: r(300);
-    border-radius: 50%;
-    background: url("../../../assets/images/chatbg.png")no-repeat;
-    background-size: 100%;
-    img{
-      padding-top: r(7);
+    bottom: 0;
+    background-color: #fff;
+    text-align: center;
+    line-height: r(50);
+    img {
+      padding-top: r(9);
       display: block;
       width: r(20);
       height: r(20);
       margin: 0 auto;
     }
-    .chatroom_num{
+    .chatroom_num {
       font-size: r(12);
       color: #4982FF;
       line-height: r(12);
+      padding-top: r(3);
     }
   }
+
   .chatWindow {
     position: fixed;
     top: 0;
@@ -649,5 +700,37 @@
     width: 100%;
     height: 100%;
     background-color: #F5F5F5;
+  }
+
+  .payOrder_progress {
+    display: flex;
+    flex-direction: row;
+    background-color: #fff;
+    .progress_state {
+      padding-top: r(20);
+      width: 33%;
+      text-align: center;
+      position: relative;
+      img {
+        width: r(33);
+        height: r(30);
+      }
+      p {
+        font-size: r(16);
+        color: #333;
+      }
+      .line {
+        position: absolute;
+        right: r(-15);
+        top: r(35);
+        display: inline-block;
+        width: r(40);
+        height: r(1);
+        background-color: #3573FA;
+      }
+      .defaultColor {
+        color: #3573FA;
+      }
+    }
   }
 </style>

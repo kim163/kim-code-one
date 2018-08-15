@@ -164,3 +164,17 @@ export const getRealBalance = jsonData => service({
   method: 'post',
   data: jsonData
 });
+
+//查询订单实时赠送的UET数量
+export const getCouponAmount = jsonData => service({
+  url: numversion +`coupon/getCouponAmountByOrderId`,
+  method:'post',
+  data:jsonData,
+  loading:false
+})
+//查询订单最终赠送的UET数量
+export const getFinallyAmount = jsonData=>service({
+  url: numversion +`conpon/getCouponByOrderId`,
+  method:'post',
+  data:jsonData
+})
