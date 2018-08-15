@@ -5,7 +5,7 @@ var $localStorage=false,$sessionStorage = false,
 
 let $cookie={
   set(key,val,time=365){
-      document.cookie=key+ "=" +escape(val)+((time==null) ?"":";expires="+new Date().addDay(expiredays).toGMTString())
+      document.cookie=key+ "=" +escape(val)+((time==null) ?"":";expires="+new Date().addDay(time).toGMTString())
   },
   get(key){
     if (document.cookie.length>0){

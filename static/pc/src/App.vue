@@ -8,6 +8,7 @@
     <transition :name="transitionName">
       <router-view v-if="$route.meta.noCache"></router-view>
     </transition>
+    <sys-bullentin v-if="islogin && isMobile"></sys-bullentin>
   </div>
 </template>
 <script type="text/ecmascript-6">
@@ -17,6 +18,7 @@
   import {$alert} from "./base/msgbox/msgbox";
   import {chatWith} from 'api'
   import {$localStorage} from '@/util/storage';
+  import SysBullentin from 'views/sys-bullentin'
   export default {
     data(){
       return {
@@ -29,7 +31,8 @@
         connectPsw: '',
         detailNormal: '',
         detailOver: '',
-        detailAppeal: ''
+        detailAppeal: '',
+        isMobile:_.isMobile()
       }
     },
     computed:{
@@ -152,7 +155,7 @@
       },
     },
     components:{
-
+      SysBullentin
     },
     mounted() {
       if (this.islogin) {
