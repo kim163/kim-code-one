@@ -1,6 +1,6 @@
 <template>
   <div class="prom-contactus">
-     <display-nav></display-nav>
+     <display-nav :isOfficialWeb="isOfficialWeb"></display-nav>
      <div class="contactus-banner-part">
        <div class="container max-width context">
          <div class="row">
@@ -35,7 +35,7 @@
        </div>
      </div>
 
-     <v-footer :isDisplayFoot="true" ></v-footer>
+     <v-footer :isDisplayFoot="true" :isOfficialWeb="isOfficialWeb" ></v-footer>
   </div>
 </template>
 <script>
@@ -53,7 +53,12 @@
         ]
       };
     },
-    props: {},
+    props: {
+      isOfficialWeb:{
+        type:Boolean,
+        default:false
+      }
+    },
     methods: {},
     computed: {},
     created() {

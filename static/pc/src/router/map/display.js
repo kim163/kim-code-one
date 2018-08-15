@@ -9,6 +9,44 @@ const promContactUs = () => import('views/show/promotion/contact-us');  // æŽ¨å¹
 
 export default [
   {
+    path: "/",
+    name: "aindex",
+    redirect:"/index"
+  },
+  {
+    path: "/index",
+    name: "index",
+    component: promIndex,
+    props:{
+      isOfficialWeb:true
+    },
+    meta:{
+      noLogin: true
+    }
+  },
+  {
+    path: "/helpCenter",
+    name: "helpCenter",
+    component: promHelp,
+    props:{
+      isOfficialWeb:true
+    },
+    meta:{
+      noLogin: true
+    }
+  },
+  {
+    path: "/contactUs",
+    name: "contactUs",
+    component: promContactUs,
+    props:{
+      isOfficialWeb:true
+    },
+    meta:{
+      noLogin: true
+    }
+  },
+  {
     path: "/prom",
     name: "promIndex",
     component: promIndex,
