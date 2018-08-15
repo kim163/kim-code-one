@@ -425,14 +425,12 @@
 
       },
       fetchDiscountNum(){
-        console.log(this.DetailList.credit)
-        console.log(this.userId)
         const request={
             'orderId': this.orderId,
             'traderType': this.DetailList.credit == this.userId ? 1 : 2　
         }
         transaction.getCouponAmount(request).then((res)=>{
-            if(res.code = 10000){
+            if(res.code == '10000'){
               if(res.data.isAward){
                 this.showDiscountInfo = true;
                 this.couponValueStr = res.data.couponValueStr

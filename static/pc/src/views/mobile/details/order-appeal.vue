@@ -1,8 +1,8 @@
 <template>
   <div>
     <div class="transell-main0 transell-main-box">
-      <m-header v-if="DetailList.credit==userData.userId" >我的买币订单</m-header>
-      <m-header v-else-if="DetailList.debit==userData.userId" >我的卖币订单</m-header>
+      <m-header v-if="DetailList.credit==userData.userId">我的买币订单</m-header>
+      <m-header v-else-if="DetailList.debit==userData.userId">我的卖币订单</m-header>
       <div class="m-order-details">
         <!--买家流程图-->
         <div class="payOrder_progress" v-if="DetailList.credit==userData.userId">
@@ -289,17 +289,19 @@
         console.log(this.userData)
         transaction.getAppealDetailPage(this.request).then(res => {
           this.loading = false;
-          console.log(res.data);
           // data.orderx   订单详情
           // data.appealDetailList   申诉消息列表
           // data.appeal   申诉状态
-
-          this.DetailList = res.data.orderx;
-          this.AppealList = res.data;
-          if (this.DetailList.credit == this.userId) {
-            this.isCredit = true;
-          } else if (this.DetailList.debit == this.userId) {
-            this.isDebit = true;
+          if(res.code===10000){
+            this.DetailList = res.data.orderx;
+            this.AppealList = res.data;
+            if (this.DetailList.credit == this.userId) {
+              this.isCredit = true;
+            } else if (this.DetailList.debit == this.userId) {
+              this.isDebit = true;
+            }
+          }else {
+            toast(res.message)
           }
           //statusText
 //          this.DetailList.creditProofUrlTwin = res.data.creditProofUrlTwin.split(',');
@@ -339,15 +341,20 @@
         this.loading = false;
       },
       payCompleted() {
+
         this.request = {
           orderId: this.$route.params.id
         }
+        debugger;
         transaction.payCompleted(this.request).then(res => {
           this.loading = false;
           if (res.code == '10000') {
+            debugger;
             Vue.$global.bus.$emit('update:balance');
             toast('您已确认收款，请勿重复操作');
-            this.$router.push({name: 'mOrderOver', params: {id: this.orderId}});
+
+            this.$router.push({name: 'mOrderOver', params: {id: this.request.orderId}});
+            debugger;
           } else {
             toast(res.message)
           }

@@ -3,8 +3,9 @@
     <m-header v-if="DetailList.credit==userData.userId">我的买币订单</m-header>
     <m-header v-else-if="DetailList.debit==userData.userId">我的卖币订单</m-header>
     <div class="m-order-details">
+      <div class="character_choose" v-if="DetailList.credit==userData.userId">
       <!--买家流程图-->
-      <div class="payOrder_progress" v-if="DetailList.credit==userData.userId">
+      <div class="payOrder_progress">
         <div class="progress_state">
           <img src="~images/startpay.png" alt="">
           <p class="defaultColor">等待我付款</p>
@@ -20,27 +21,36 @@
           <p class="defaultColor">交易成功</p>
         </div>
       </div>
-      <!--卖家流程图-->
-      <div class="payOrder_progress" v-else-if="DetailList.debit==userData.userId">
-        <div class="progress_state">
-          <img src="~images/startpay.png" alt="">
-          <p class="defaultColor">等待对方付款</p>
-          <span class="line"></span>
-        </div>
-        <div class="progress_state">
-          <img src="~images/waitpay_next.png" alt="">
-          <p class="defaultColor">等待我放币</p>
-          <span class="line"></span>
-        </div>
-        <div class="progress_state">
-          <img src="~images/trade_success_next.png" alt="">
-          <p class="defaultColor">交易成功</p>
-        </div>
-      </div>
       <div class="trade-time-bar">
         <p class="pay_send">订单完成</p>
-        <p class="pay_send">交易成功获赠{{}}UET</p>
+        <p class="pay_send" v-if="isShowpopup">交易成功获赠{{}}UET</p>
       </div>
+      </div>
+      <!--卖家流程图-->
+      <div v-else-if="DetailList.debit==userData.userId">
+        <div class="payOrder_progress" >
+          <div class="progress_state">
+            <img src="~images/startpay.png" alt="">
+            <p class="defaultColor">等待对方付款</p>
+            <span class="line"></span>
+          </div>
+          <div class="progress_state">
+            <img src="~images/waitpay_next.png" alt="">
+            <p class="defaultColor">等待我放币</p>
+            <span class="line"></span>
+          </div>
+          <div class="progress_state">
+            <img src="~images/trade_success_next.png" alt="">
+            <p class="defaultColor">交易成功</p>
+          </div>
+        </div>
+        <div class="trade-time-bar">
+          <p class="pay_send">订单完成</p>
+          <p class="pay_send" v-if="isShowpopup">交易成功获赠{{}}UET</p>
+        </div>
+      </div>
+
+
       <!--  申诉订单显示 -->
       <!--<div class="mobilenav-tabs">-->
       <!--<span v-for="(item,i) in detailType" @click="detailTypeItem=item.value" :class="{active:detailTypeItem==item.value}" :key="item.value">-->
@@ -137,7 +147,8 @@
         orderData: {
           orderId: this.$route.params.id,
           debitName: '', // 交易买方
-        }
+        },
+        isShowpopup:false
       };
     },
     methods: {
@@ -160,10 +171,19 @@
         });
 //        this.loading = false;
       },
-      fetchDiscountInfo(){
+      fetchFinallyDiscount(){
         const request ={
-
+           'orderId':this.orderData.orderId
         }
+        transaction.getFinallyAmount(request).then((res)=>{
+           if(res.code=='10000'){
+             if(res.couponValueStr){
+                this.isShowpopup = true
+             }else {
+               this.isShowpopup = false
+             }
+           }
+        })
       },
       copy() {
         var clipboard = new Clipboard('.copy-btn')
@@ -181,6 +201,9 @@
     },
     created() {
       this.fetchData();
+       setTimeout(()=>{
+         this.fetchFinallyDiscount()
+       },2000)
     },
     watch: {
       "$route": "fetchData"
@@ -198,37 +221,29 @@
 
 <style lang="scss">
   @import "~assets/scss/mobile";
-
   .cas-main {
     background: #F5F5F5;
   }
-
   .order-id-li {
     text-align: left;
     word-break: break-all;
     color: #333;
   }
-
   .c-red, .red {
     color: red;
   }
-
   .c-blue {
     color: #5087FF;
   }
-
   .c-orange {
     color: orange;
   }
-
   .trade-time-bar {
     background: #fff;
     padding: r(10) r(15);
     height: auto;
   }
-
   .details-ul {
-    border-top: 1px solid #d8d8d8;
     li {
       background: #fff;
       min-height: r(35);

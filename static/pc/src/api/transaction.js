@@ -174,7 +174,7 @@ export const getCouponAmount = jsonData => service({
 })
 //查询订单最终赠送的UET数量
 export const getFinallyAmount = jsonData=>service({
-  url: numversion +`conpon/getCouponByOrderId`,
+  url: numversion +`coupon/getCouponByOrderId`,
   method:'post',
   data:jsonData
 })
