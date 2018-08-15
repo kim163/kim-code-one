@@ -9,7 +9,7 @@
         </div>
       </div>
       <div class="adv-marquee">
-        <i class="iconfont"></i>
+        <i class="iconfont icon-sys-msg"></i>
         <div class="msg-list" ref="msgList">
           <marquee :speed="40000"
                    :scroll-width="scrollWidth"
@@ -31,7 +31,7 @@
         <div class="title" :class="`item-${index}`" @click="showDetail(index + 1)">
           <div class="left">
             <div class="main-title">
-              <span class="icon-hot"></span>
+              <i class="iconfont icon-hot-fire"></i>
               {{item.title}}
             </div>
             <div class="des-title">{{item.subtitle}}</div>
@@ -156,10 +156,7 @@
       display: flex;
       align-items: center;
       .iconfont{
-        width: r(14);
-        height: r(16);
-        background: url("~images/system-info.png") no-repeat;
-        background-size: cover;
+
       }
       .msg-list{
         width: calc(100% - #{r(14)});
@@ -210,17 +207,13 @@
           color: $white;
           @include f(18px);
         }
-        .icon-hot{
-          display: inline-block;
-          width: r(14);
-          height: r(16);
-          background: url(~images/hot-activity.png);
-          background-size: cover;
+        .iconfont{
+          vertical-align: top;
         }
         .des-title{
           color: $white;
           @include f(14px);
-          padding-left: r(20);
+          padding-left: r(25);
         }
         .icon{
           width: 30%;
