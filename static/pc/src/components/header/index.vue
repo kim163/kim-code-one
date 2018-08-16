@@ -1,6 +1,6 @@
 <template>
   <div class="header ">
-    <div v-if="!islogin">
+    <div v-if="!islogin" class="cfx">
       <div class="col-2">
         <a href="javascript:void(0);" @click="showLoginEvt">{{$t('navbar.login')}}</a>
       </div>
@@ -8,28 +8,17 @@
         <a href="javascript:void(0);" @click="showRegisterDialog=true">{{$t('navbar.register')}}</a>
       </div>
     </div>
-    <div v-if="islogin">
-      <span class="islogin-info login-user" @mouseover="showUserInfo = true" @mouseout="showUserInfo = false">
-        {{userData.nickname}}
-        <i class="iconfont icon-jiantou"></i>
-        <div class="info-list" v-show="showUserInfo">
-          <div class="info-item">
-            <div class="info-title">{{$t('navbar.nickName')}}</div>
-            <div class="info-content">{{userData.nickname}}</div>
-          </div>
-          <div class="info-item">
-            <div class="info-title">{{$t('navbar.accountBalance')}}</div>
-            <div class="info-content">
-               <balance></balance>
-            </div>
-          </div>
-          <router-link tag="div" :to="{name:'pcUserCenter'}" class="info-item link-item">
-            <i class="iconfont icon-useravat"></i>
-            {{$t('navbar.userCenter')}}
-          </router-link>
-          <router-link tag="div" class="info-link" :to="{name:'transaction'}">{{$t('navbar.tradingHall')}}</router-link>
-        </div>
+    <div v-if="islogin" class="islogin-part">
+      <span class="islogin-info login-user">
+        {{$t('navbar.nickName')}}：{{userData.nickname}}
       </span>
+      <span class="balance-part">
+        {{$t('navbar.accountBalance')}}：<balance></balance>
+      </span>
+      <router-link :to="{name:'pcUserCenter'}" class="info-item link-item">
+        <i class="iconfont icon-useravat"></i>
+        {{$t('navbar.userCenter')}}
+      </router-link>
       <span class="login-line"></span>
       <a href="javascript:void(0);" @click="$store.dispatch('LOGIN_OUT')" class="btn-other">{{$t('navbar.logOut')}}</a>
     </div>
@@ -50,8 +39,7 @@
       return {
         SETTING,
         showLoginDialog: false,
-        showRegisterDialog: false,
-        showUserInfo:false
+        showRegisterDialog: false
       };
     },
     methods: {
@@ -86,6 +74,9 @@
 <style lang="scss">
 
   .header {
+    a.link-item{
+      display: inline-block;
+    }
     .xuanzhuan {
       animation: rotate11 2s linear infinite;
       display: inline-block;
@@ -94,70 +85,27 @@
     .fl > a {
       margin: 0 15px;
     }
-    .islogin-info {
-      background: url('~images/user.png') no-repeat;
-      padding-left: 45px;
+    .islogin-part{
       height: 50px;
-      line-height: 40px;
+      line-height: 50px;
+      font-size: 18px;
+    }
+    .islogin-info {
+      background: url('~images/user.png') no-repeat left center;
+      padding-left: 45px;
       display: inline-block;
       color: #333;
-      margin-top: 6px;
       position: relative;
-      .iconfont{
-        transform: translateY(-2px);
-        display: inline-block;
-      }
-      .info-list {
-        position: absolute;
-        width: 178px;
-        /*height: 188px;*/
-        background-color: #ffffff;
-        box-shadow: 0px 3px 7px 0px
-        rgba(0, 0, 0, 0.35);
-        border-radius: 5px;
-        left: 0;
-        top: 50px;
-      }
-      .info-item{
-        width: 100%;
-        height: 75px;
-        padding-top: 15px;
-        padding-left: 20px;
-        font-size: 16px;
-        color: #787876;
-        margin: 0 auto;
-        line-height: 20px;
-        border-bottom: 1px solid #d4d4d4;
-        &:last-child{
-          border-bottom: none;
-        }
-        .info-title{
-          color: #333333;
-        }
-        .info-content{
-          margin-top: 9px;
-        }
-        &.link-item{
-          height: 40px;
-          line-height: 40px;
-          cursor: pointer;
-          padding-top: 0;
-          .iconfont{
-            font-size: 20px;
-            margin-right: 15px;
-          }
-        }
-      }
-      .info-link{
-        width: 178px;
-        height: 40px;
-        background-color: #4aa9e9;
-        text-align: center;
-        cursor: pointer;
-        border-bottom-left-radius: 5px;
-        border-bottom-right-radius: 5px;
-      }
+      overflow: hidden;
+      text-overflow:ellipsis;
+      white-space: nowrap;
+      max-width:230px;
+      float: left;
+      margin-right: 12px;
     }
+   .balance-part{
+     margin-right: 12px;
+   }
     .login-line{
       width: 2px;
       height: 25px;
@@ -264,7 +212,9 @@
   .nav-start {
     .islogin-info {
       color: #fff;
-      margin-top: 16px;
+    }
+    .balance-part{
+      color: #fff;
     }
   }
 

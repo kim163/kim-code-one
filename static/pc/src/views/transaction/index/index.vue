@@ -1,5 +1,5 @@
 <template>
-  <div class="transaction-main">
+  <div class="transaction-main header-padding">
     <nav-menu></nav-menu>
     <bread-crumbs :bread-list="breadList"></bread-crumbs>
     <transact-menu v-if="islogin"></transact-menu>
@@ -74,7 +74,6 @@
 </script>
 <style lang="scss">
   .transaction-main {
-     padding-top: 100px;
      .transaction-content{
        margin-bottom: 30px;
        .row{

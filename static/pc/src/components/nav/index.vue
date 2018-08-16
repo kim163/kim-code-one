@@ -3,28 +3,18 @@
     <div class="container min-width">
       <div class="row cfx">
         <div class="logo">
-          <a class="nav-logo-link" href="/static/index.html"></a>
+          <router-link :to="{name:'transaction'}" class="nav-logo-link">
+            <i class="iconfont icon-prom-logo"></i>
+          </router-link>
         </div>
         <div class="link-part">
-          <div class="col-2">
-            <a href="/static/index.html">{{$t('navbar.navHome')}}</a>
-          </div>
-          <div class="col-2">
-            <router-link :to="{name:'transaction'}">{{$t('navbar.tradingHall')}}</router-link>
-          </div>
-          <div class="col-2">
-            <a href="/static/about.html">{{$t('navbar.navAbout')}}</a>
-          </div>
-          <div class="col-2">
-            <a href="/static/help.html">{{$t('navbar.navHelp')}}</a>
-          </div>
-          <div class="col-2">
-            <a href="/static/contact.html">{{$t('navbar.navContactus')}}</a>
-          </div>
           <div class="col-2">
             <get-live800></get-live800>
           </div>
           <v-header></v-header>
+          <div class="col-2 tran-btn fr">
+            <router-link :to="{name:'index'}" target="_blank">前往久安首页</router-link>
+          </div>
 
           <div class="lang-icons">
             <a href="javascript:void(0);" class="lang-en j-languageSel" @click="handleSetLanguage" >{{$t('navbar.languageSel')}}</a>
@@ -102,6 +92,7 @@
   }
   .navbar .logo {
     float: left;
+    height: 50px;
   }
   .navbar a {
     font-weight: 300;
@@ -115,13 +106,12 @@
   .navbar .link-part .col-2{
     width: auto;
     margin: 15px 15px 0;
-  }
-  .nav-start .link-part .col-2{
-    width: auto;
-    margin: 25px 15px 0;
+    &.tran-btn{
+      margin: 5px 0 0 15px;
+    }
   }
   .navbar .link-part .col-2 a{
-    font-size: 20px;
+    font-size: 18px;
   }
   .navbar .link-part .lang-icons{
     margin: 8px 0 0 20px;
@@ -133,6 +123,10 @@
   }
   .navbar .link-part .iconfont{
     margin-right: 5px;
+    vertical-align: top;
+    &.icon-online-service{
+      vertical-align: middle;
+    }
   }
   a.lang-en{
     font-size: 18px;
@@ -161,7 +155,7 @@
     top: -200px;
   }
   .nav-start {
-    padding: 10px 0;
+    padding: 15px 0;
     transition: all 0.2s ease-in-out;
     background: #5087FF;
     box-shadow: 1px 1px 4px rgba(0,0,0,0);
@@ -178,22 +172,38 @@
     border-bottom: 1px solid white;
     color: white;
   }
-  .nav-start .nav-logo-link{
-    width: 80px;
-    height: 80px;
-    background: url(~images/logo.png) no-repeat center center;
-    background-size: contain;
+  .nav-start .nav-logo-link .iconfont{
+    font-size:50px;
+    color: white;
   }
-  .nav-logo-link{
-    width: 60px;
-    height: 60px;
-    background: url(~images/logo-blue.png) no-repeat center center;
-    background-size: contain;
+  .nav-logo-link .iconfont{
+    font-size:50px;
+    color: #5087FF;
   }
+  .navbar .link-part .tran-btn{
+    a{
+      padding: 8px 16px;
+      background: transparent;
+      border: 1px solid #14171a;
+      border-radius: 3px;
+      font-size: 16px;
+    }
+  }
+  .navbar.nav-start .link-part .tran-btn{
+     a{
+        background: #FFFFFF;
+        border: 1px solid #FFFFFF;
+        font-size: 16px;
+        color: #5087ff;
+       border-radius: 35px;
+     }
+  }
+
+
   .nav-logo-link:hover, .nav-start .nav-logo-link:hover{
     border-bottom:none;
   }
-  .lang-icons a:hover , a.btn-other:hover{
+  .lang-icons a:hover , a.btn-other:hover,.navbar .link-part .tran-btn a:hover{
     box-shadow: 1px 1px 4px rgba(0,0,0,0.5);
     -moz-box-shadow: 1px 1px 4px rgba(0,0,0,0.5);
     -webkit-box-shadow: 1px 1px 4px rgba(0,0,0,0.5);

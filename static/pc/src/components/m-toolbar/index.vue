@@ -25,6 +25,9 @@
             <a class="tool-item-href" target="_blank" :href="SETTING.appUrl">
               <i class="iconfont icon-download"></i>{{$t('navbar.juanApp')}}
             </a>
+            <router-link :to="{name:'index'}" class="tool-item-href" target="_blank">
+              <i class="iconfont icon-juan-logo1"></i>前往久安首页
+            </router-link>
             <div class="tool-item-href border-bot" @click="$store.dispatch('LOGIN_OUT')">
               <i class="iconfont icon-log-out"></i>{{$t('navbar.logOut')}}
             </div>
@@ -34,9 +37,12 @@
             <router-link :to="{name:'mobileRegister'}" class="tool-item-href"><i class="iconfont icon-user-register"></i>{{$t('login.iWantRegister')}}
             </router-link>
             <get-live800></get-live800>
-            <a class="tool-item-href border-bot" target="_blank" :href="SETTING.appUrl">
+            <a class="tool-item-href" target="_blank" :href="SETTING.appUrl">
               <i class="iconfont icon-download"></i>{{$t('navbar.juanApp')}}
             </a>
+            <router-link :to="{name:'index'}" class="tool-item-href border-bot" target="_blank">
+              <i class="iconfont icon-juan-logo1"></i>前往久安首页
+            </router-link>
           </div>
           <div class="tool-item-href border-bot hidden" @click="handleSetLanguage" > {{$t('navbar.languageSel')}} </div>
 
@@ -141,7 +147,7 @@
           margin-right: r(10);
           color: #ABABAB;
         }
-        i.icon-download{
+        i.icon-download,i.icon-juan-logo1{
           @include f(20px);
           margin-right: r(8);
         }

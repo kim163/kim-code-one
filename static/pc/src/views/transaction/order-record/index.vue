@@ -1,5 +1,5 @@
 <template>
-  <div class="tranrecord-main">
+  <div class="tranrecord-main header-padding">
     <nav-menu></nav-menu>
     <BreadCrumbs :bread-list="breadList"></BreadCrumbs>
     <transact-menu></transact-menu>
@@ -71,9 +71,5 @@
   };
 </script>
 <style lang="scss">
-  .tranrecord-main {
-    padding-top: 100px;
-
-  }
 
 </style>

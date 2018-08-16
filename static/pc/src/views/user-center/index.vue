@@ -1,5 +1,5 @@
 <template>
-  <div class="main">
+  <div class="main header-padding">
     <nav-menu></nav-menu>
     <bread-crumbs :bread-list="breadList"></bread-crumbs>
     <div class="container min-width">
@@ -64,7 +64,7 @@
         ],
         breadList: [
           {
-            urlName: 'index',
+            urlName: 'transaction',
             name: 'navbar.navHome'
           },
           {
@@ -125,7 +125,6 @@
 
 <style lang="scss" scoped>
   .main{
-    padding-top: 100px;
     .container{
       width: 80%;
       /*height: 883px;*/
