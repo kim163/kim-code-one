@@ -49,7 +49,7 @@
                     {{item.value}}
                 </span>
             </div>-->
-      <div v-if="detailTypeItem =='订单详情'">
+      <div>
         <div v-if="DetailList.credit == userId">
           <!--买-->
           <ul class="details-ul">
@@ -259,7 +259,6 @@
              {name:'detail.buyUet', value: '订单详情' },
              {name:'detail.saleUet', value: '申诉与仲裁' }
            ],*/
-        detailTypeItem: '订单详情',
         DetailList: {},
         AppealList: {},
         myMessage: '',

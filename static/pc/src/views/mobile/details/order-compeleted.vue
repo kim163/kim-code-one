@@ -50,15 +50,6 @@
         </div>
       </div>
 
-
-      <!--  申诉订单显示 -->
-      <!--<div class="mobilenav-tabs">-->
-      <!--<span v-for="(item,i) in detailType" @click="detailTypeItem=item.value" :class="{active:detailTypeItem==item.value}" :key="item.value">-->
-      <!--{{item.value}}-->
-      <!--</span>-->
-      <!--</div>-->
-
-      <div v-if="detailTypeItem =='订单详情'" >
         <ul class="details-ul">
           <li>
             <p class="l-title">订单 :</p>
@@ -71,6 +62,8 @@
                  </span>
           </li>
         </ul>
+        <div v-if="filterType">
+
         <!--卖币订单-->
         <ul class="details-ul pay-detail my-paymethod" v-if="DetailList.debit==userData.userId">
           <li>
@@ -115,17 +108,8 @@
             </div>
           </li>
         </ul>
-        <div class="btn-group">
-          <!--<input type="button" class="btn btn-block btn-gray" readonly  value="我已付款">-->
-        </div>
-      </div>
-      <div v-if="detailTypeItem =='申诉与仲裁'">
-        <div class="trade-time-bar">
-          申诉与仲裁
-          <span class="fr red">卖方获胜</span>
-        </div>
-      </div>
 
+        </div>
     </div>
     <div class="btn-group">
       <input type="button" class="btn btn-block btn-primary" value="关闭页面" @click="closePage">
@@ -167,14 +151,15 @@
           {name: 'detail.buyUet', value: '订单详情'},
           {name: 'detail.saleUet', value: '申诉与仲裁'}
         ],
-        detailTypeItem: '订单详情',
         DetailList: {},
         orderData: {
           orderId: this.$route.params.id,
           debitName: '', // 交易买方
         },
         isShowpopup: false,
-        isShowDiscount: false
+        isShowDiscount: false,
+        type:'',
+        typeArr:[41, 42, 43, 51, 52, 53, 54]
       };
     },
     methods: {
@@ -193,7 +178,7 @@
         transaction.getCoinTransactionHistory(this.request).then(res => {
           this.loading = false;
           this.DetailList = res.data;
-          console.log(res.data, '速度十大科技')
+          this.type = res.data.type;
           //  多个图片分解
           if (res.data.creditProofUrlTwin && res.data.creditProofUrlTwin.length > 1) {
             this.DetailList.creditProofUrlTwin = res.data.creditProofUrlTwin.split(',');
@@ -251,6 +236,13 @@
     },
     computed: {
       ...mapGetters(["userData", "islogin", 'userId', 'isShowCoupon']),
+      filterType(){
+        if(this.type=='11'||this.type=='22'){
+          return true
+        }else {
+          return false
+        }
+      }
     },
     components: {
       mHeader
