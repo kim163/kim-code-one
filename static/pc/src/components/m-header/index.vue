@@ -1,6 +1,6 @@
 <template>
   <header class="mobile-header" :class="{'mobile-header-fixed': fixed}">
-    <a @click="doClick" class="back-link"><i class="iconfont icon-left-arrow"></i></a>
+    <a @click="doClick" v-if="showLeftBtn" class="back-link"><i class="iconfont icon-left-arrow"></i></a>
     <slot></slot>
   </header>
 </template>
@@ -16,6 +16,10 @@
       fixed:{
         type:Boolean,
         default:false
+      },
+      showLeftBtn:{
+        type:Boolean,
+        default: true
       },
       mheadSet: {
         type: Object,

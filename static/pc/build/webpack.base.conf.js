@@ -11,6 +11,7 @@ function resolve (dir) {
 }
 
 module.exports = {
+
   entry: {
     app: ["babel-polyfill", "./src/main.js"],
   },
@@ -19,8 +20,8 @@ module.exports = {
   },
   output: {
     path: config.build.assetsRoot,
-    filename: '[name].bundle.js',
-    chunkFilename: "[name].bundle.js",
+    filename: '[name].js',
+    chunkFilename: '[name].bundle.js',
     publicPath: process.env.NODE_ENV === 'production'
       ? config.build.assetsPublicPath
       : config.dev.assetsPublicPath
@@ -63,7 +64,7 @@ module.exports = {
         include: [resolve('src'), resolve('test')]
       },
       {
-        test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
+        test: /\.(png|jpe?g|gif)(\?.*)?$/,
         use: {
           loader: 'url-loader',
           options: {
@@ -83,7 +84,7 @@ module.exports = {
         }
       },
       {
-        test: /\.(woff2?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
+        test: /\.(woff2?|ttf|eot)(\?v=\d+\.\d+\.\d+)?$/,
         use: {
           loader: 'url-loader',
           options: {
@@ -92,7 +93,12 @@ module.exports = {
           }
         }
       },
-
+      {
+        test: /\.svg$/,
+        use: {
+          loader: 'file-loader'
+        }
+      },
     ]
   },
   plugins:[

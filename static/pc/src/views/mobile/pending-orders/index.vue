@@ -22,10 +22,10 @@
           <div  class="input-div get-bankcard">
             <get-bankcard :setBankcard="setBankcard" :def-select="bankNo" v-model="buyBindCardReset" @selCardChange="buySelCardChange"></get-bankcard>
           </div>
-          <div >
-            <p class="s-title">{{$t('postPend.buyerRequest')}}</p>
-            <div  class="input-div"><input class="my-input" type="number" v-model.number="minBuyAmount" :placeholder="$t('postPend.minSell')" min="1" max="200000000"> UET</div>
-          </div>
+          <!--<div >-->
+            <!--<p class="s-title">{{$t('postPend.buyerRequest')}}</p>-->
+            <!--<div  class="input-div"><input class="my-input" type="number" v-model.number="minBuyAmount" :placeholder="$t('postPend.minSell')" min="1" max="200000000"> UET</div>-->
+          <!--</div>-->
         </div>
         <div class="line-box"></div>
       </div>
@@ -49,8 +49,8 @@
             <get-bankcard :setBankcard="setBankcard" :def-select="bankNo" v-model="sellBindCardReset" @selCardChange="sellSelCardChange"></get-bankcard>
           </div>
           <div >
-            <p class="s-title">{{$t('postPend.sellerRequest')}}</p>
-            <div  class="input-div"><input class="my-input" v-model.number="minSellAmount" :placeholder="$t('postPend.minBuy')" min="1" max="200000000"> UET</div>
+            <!--<p class="s-title">{{$t('postPend.sellerRequest')}}</p>-->
+            <!--<div  class="input-div"><input class="my-input" v-model.number="minSellAmount" :placeholder="$t('postPend.minBuy')" min="1" max="200000000"> UET</div>-->
             <div  class="input-div">
               <select class="my-input" v-model="proofType">
                  <option value="">请选择付款说明</option>
@@ -106,8 +106,8 @@
         sellAmount:'',
         buyTypeBuy:'',
         buyTypeSell:'',
-        minBuyAmount:'',
-        minSellAmount:'',
+        minBuyAmount:1,
+        minSellAmount:1,
         proofType:'',
         accountCashVo:{},
         buyTypeBuyBank:'',
@@ -122,9 +122,10 @@
       }
     },
     watch: {
-      pendingItem() {
+      pendingItem(val) {
         this.buyBindCardReset=true;
         this.sellBindCardReset=true;
+        this.setBankcard.pleaseSelTitle = val === 'seller' ? 'component.pleaseSelRecMet' : 'component.pleaseSelPayMet'
       }
     },
     computed: {
@@ -157,7 +158,7 @@
           toast('支付方式不能为空');
           return;
         }
-        if(this.minBuyAmount =='' || !this.minBuyAmount || this.minBuyAmount < 1){
+        if(this.minBuyAmount =='' || this.minBuyAmount < 1){
           toast('卖家最低卖出数量输入不正确');
           return;
         }
@@ -199,7 +200,7 @@
           if(res.code == '10000'){
             this.buyAmount='';
             this.buyBindCardReset=true;
-            this.minBuyAmount = '';
+            // this.minBuyAmount = '';
             toast('您已下单成功，请进入列表查询');
             Vue.$global.bus.$emit('update:balance')
             this.$router.push({name: 'mTranRecord'});
@@ -227,7 +228,7 @@
           toast('支付方式不能为空');
           return;
         }
-        if(this.minSellAmount =='' || !this.minSellAmount || this.minSellAmount < 1){
+        if(this.minSellAmount =='' || this.minSellAmount < 1){
           toast('买家最低买入数量输入不正确');
           return;
         }
@@ -275,7 +276,7 @@
             toast('您已下单成功，请进入列表查询');
             this.sellAmount='';
             this.sellBindCardReset=true;
-            this.minSellAmount = '';
+            // this.minSellAmount = '';
             this.proofType='';
             Vue.$global.bus.$emit('update:balance');
             this.$router.push({name: 'mTranRecord'});
@@ -291,7 +292,7 @@
         this.userBalance = data
       },
       allSell(){
-        this.sellAmount = this.userBalance
+        this.sellAmount = Number(this.userBalance)
       }
     },
     created() {
@@ -312,7 +313,7 @@
       if(!_.isUndefined(withdraw) && withdraw === 'true'){
         if(this.pendingItem === 'seller'){
           this.minSellAmount = 1
-          this.proofType = 1
+          this.proofType = '1'
         }
       }
     },

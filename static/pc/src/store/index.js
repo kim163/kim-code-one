@@ -124,7 +124,11 @@ export default new Vuex.Store({
     },
     [types.SHOW_LOGIN](state,val){
       if(_.isMobile() && val){
-        router.replace({name:'mobileLogin'});
+        if(!_.customize()){
+          router.replace({name:'mobileLogin'});
+        }else{
+          router.replace({name:'mobileCusLogin'});
+        }
       }else{
         state.showLogin=val;
         router.replace({name:'transaction'});

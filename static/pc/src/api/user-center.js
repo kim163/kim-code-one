@@ -37,3 +37,5 @@ export const bindUserInfo = jsonData => service({
   method: 'post',
   data: jsonData
 });
+
+//我的

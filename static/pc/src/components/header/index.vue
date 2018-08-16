@@ -1,6 +1,6 @@
 <template>
   <div class="header ">
-    <div v-if="!islogin" class="cfx">
+    <div v-if="!islogin && !isCustomize" class="cfx">
       <div class="col-2">
         <a href="javascript:void(0);" @click="showLoginEvt">{{$t('navbar.login')}}</a>
       </div>
@@ -19,8 +19,9 @@
         <i class="iconfont icon-useravat"></i>
         {{$t('navbar.userCenter')}}
       </router-link>
-      <span class="login-line"></span>
-      <a href="javascript:void(0);" @click="$store.dispatch('LOGIN_OUT')" class="btn-other">{{$t('navbar.logOut')}}</a>
+
+      <span class="login-line" v-if="userData.nodeId < 10000"></span>
+      <a href="javascript:void(0);" v-if="userData.nodeId < 10000" @click="$store.dispatch('LOGIN_OUT')" class="btn-other">{{$t('navbar.logOut')}}</a>
     </div>
     <v-login @loginGoReg="showRegisterDialog=true" v-if="!islogin" v-model="showLoginDialog"></v-login>
     <v-register @showLogin="showLoginEvt" v-if="!islogin" v-model="showRegisterDialog"></v-register>
@@ -39,7 +40,8 @@
       return {
         SETTING,
         showLoginDialog: false,
-        showRegisterDialog: false
+        showRegisterDialog: false,
+        isCustomize: _.customize()
       };
     },
     methods: {

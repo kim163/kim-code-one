@@ -235,6 +235,7 @@ export default {
   component:{
     pleaseSelCard:'Select bank card',
     pleaseSelPayMet:'Select payment method',
+    pleaseSelRecMet:'Select payment method',
     otherPayMethod:'Other payment methods',
     uploadUpThree:'Upload up to three'
   },
@@ -244,5 +245,6 @@ export default {
     bindWeChat:'Binding WeChat',
     uploadQrcode:'Click to upload your receipt QR code',
     completeMaterial:'Complete material',
+    myGift:'My Gift'
   }
 }

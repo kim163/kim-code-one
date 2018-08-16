@@ -6,7 +6,7 @@ module.exports = {
     index: path.resolve(__dirname, '../../dist/index.html'),
     assetsRoot: path.resolve(__dirname, '../../dist'),
     assetsSubDirectory: './static',
-    assetsPublicPath: './',
+    assetsPublicPath: '/',
     productionSourceMap: true,
     productionGzip: false,
     productionGzipExtensions: ['js', 'css'],
@@ -14,7 +14,7 @@ module.exports = {
   },
   dev: {
     env: require('./dev.env'),
-    port: 9990,
+    port: 9999,
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {

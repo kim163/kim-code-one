@@ -28,13 +28,13 @@
             <router-link :to="{name:'index'}" class="tool-item-href" target="_blank">
               <i class="iconfont icon-juan-logo1"></i>前往久安首页
             </router-link>
-            <div class="tool-item-href border-bot" @click="$store.dispatch('LOGIN_OUT')">
+            <div class="tool-item-href border-bot" v-if="userData.nodeId < 10000" @click="$store.dispatch('LOGIN_OUT')">
               <i class="iconfont icon-log-out"></i>{{$t('navbar.logOut')}}
             </div>
           </div>
           <div v-else @click="myValue=false">
-            <router-link :to="{name:'mobileLogin'}" class="tool-item-href"><i class="iconfont icon-user-login"></i>{{$t('login.iWantLogin')}}</router-link>
-            <router-link :to="{name:'mobileRegister'}" class="tool-item-href"><i class="iconfont icon-user-register"></i>{{$t('login.iWantRegister')}}
+            <router-link :to="{name:'mobileLogin'}" v-if="!isCustomize" class="tool-item-href"><i class="iconfont icon-user-login"></i>{{$t('login.iWantLogin')}}</router-link>
+            <router-link :to="{name:'mobileRegister'}" v-if="!isCustomize" class="tool-item-href"><i class="iconfont icon-user-register"></i>{{$t('login.iWantRegister')}}
             </router-link>
             <get-live800></get-live800>
             <a class="tool-item-href" target="_blank" :href="SETTING.appUrl">
@@ -65,7 +65,8 @@
     data() {
       return {
         SETTING,
-        myValue: false
+        myValue: false,
+        isCustomize: _.customize()
       }
     },
     props: ["value"],

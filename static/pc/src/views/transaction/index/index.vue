@@ -69,6 +69,19 @@
     components: {
       navMenu, vFooter, BreadCrumbs, transactMenu, guidePage, tranbuyList, userWalletass, recentOrders,
       WithdrawTip
+    },
+    beforeRouteEnter(to,from,next){
+      next(vm => {
+        if(vm.islogin){
+          next()
+        }else{
+          if(_.customize()){
+            next('/')
+          }else{
+            next()
+          }
+        }
+      })
     }
   };
 </script>
