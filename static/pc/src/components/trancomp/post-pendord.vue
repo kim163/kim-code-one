@@ -42,15 +42,15 @@
               <span class="left">{{postItem == 'buyer' ? '支付' : '收款'}}方式：</span>
               <get-bankcard :setBankcard="setBankcard" v-model="bindCardReset" :def-select="bankNo" @selCardChange="selCardChange"></get-bankcard>
             </div>
-            <div class="form-input-box">
-              <span class="left">{{postItem == 'buyer' ? $t('postPend.buyerRequest') : $t('postPend.sellerRequest')}}：</span>
-              <span class="ps-input fl">
-                <input type="text" class="ps-input-in"
-                       :placeholder="postItem == 'buyer' ? $t('postPend.minSell') : $t('postPend.minBuy')"
-                       v-model.number="minAmount">
-                <span class="i-uet">UET</span>
-              </span>
-            </div>
+            <!--<div class="form-input-box">-->
+              <!--<span class="left">{{postItem == 'buyer' ? $t('postPend.buyerRequest') : $t('postPend.sellerRequest')}}：</span>-->
+              <!--<span class="ps-input fl">-->
+                <!--<input type="text" class="ps-input-in"-->
+                       <!--:placeholder="postItem == 'buyer' ? $t('postPend.minSell') : $t('postPend.minBuy')"-->
+                       <!--v-model.number="minAmount">-->
+                <!--<span class="i-uet">UET</span>-->
+              <!--</span>-->
+            <!--</div>-->
             <div class="form-input-box" v-if="postItem == 'seller'">
               <span class="left">付款说明：</span>
               <span class="fl">
@@ -94,7 +94,7 @@
         payType: '',
         accountCashVo: {},
         buyTypeBuyBank: '',
-        minAmount: '',
+        minAmount: 1,
         proofType: '',
         setBankcard: {
           pleaseSelTitle: 'component.pleaseSelPayMet',         // 请选择标题文字
@@ -108,11 +108,11 @@
       postItem(val) {
         if(val === 'seller' && this.auto === 1){
           this.buyAmount = Number(this.amount) * 100;
-          this.minAmount = this.auto === 1 ? 1 : '';
+          //this.minAmount = this.auto === 1 ? 1 : '';
         }else{
           this.buyAmount = '';
           this.bindCardReset = true;
-          this.minAmount = '';
+          //this.minAmount = '';
         }
         this.setBankcard.pleaseSelTitle = val === 'seller' ? 'component.pleaseSelRecMet' : 'component.pleaseSelPayMet'
       },
@@ -125,7 +125,7 @@
         if(!val){
           this.buyAmount = ''
           this.bindCardReset = true
-          this.minAmount = ''
+          //this.minAmount = ''
           this.postItem = 'buyer'
         }
       }
@@ -195,7 +195,7 @@
           toast('支付方式不能为空');
           return;
         }
-        if (this.minAmount == '' || !this.minAmount || this.minAmount < 0) {
+        if (this.minAmount == '' || this.minAmount < 0) {
           toast('最低买入数量输入不正确');
           return;
         }
@@ -247,7 +247,7 @@
           if (res.code == '10000') {
             this.buyAmount = '';
             this.bindCardReset=true;
-            this.minAmount = '';
+            // this.minAmount = '';
             toast('您已下单成功，请进入列表查询');
             this.hide()
             if (this.urlName != '') {
