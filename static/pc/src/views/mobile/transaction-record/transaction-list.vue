@@ -147,6 +147,8 @@
           routerName = item.status === 61 ? 'mOrderAppeal' : 'mOrder'
         }else{
           routerName = 'mOrderOver'
+         /*如果是从交易记录里面去mOrderOver的话那么不用发送请求*/
+          this.$store.commit('GET_ISNEEDCOUPON',false)
         }
         return {name: routerName, params:{ id: item.id}}
       },
@@ -197,11 +199,11 @@
     },
     activated() {
       if(this.$refs.scroll){
-        setTimeout(() => {
+        setTimeout(()=>{
           if(this.$refs){
             this.$refs.scroll.scrollTo(0,this.scrollY,0)
           }
-        }, 100)
+        },1000)
       }
       Vue.$global.bus.$on('update:tranList',() => {
         this.getTranList()

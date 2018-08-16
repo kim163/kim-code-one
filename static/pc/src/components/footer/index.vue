@@ -52,7 +52,7 @@
                 routerName = 'promIndex';
               }
             }else {
-              routerName = 'index';
+              routerName = 'transaction';
             }
             return {name: routerName};
           }

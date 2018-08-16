@@ -26,7 +26,6 @@
                      <span v-if="item.tradeTotal">{{ ((item.finishedTotal/item.tradeTotal)*100).toFixed(2)}}</span>
                      <span v-if="!item.tradeTotal">0 </span>％
                    </p>
-
                    <p class="item">0.01 CNY</p>
                    <p class="item quantity"> {{item.balance}} UET </p>
                    <p class="item">
@@ -50,7 +49,6 @@
                                  :key="item.id"
                                  ></transell-order>
              </div>
-
           </div>
           <no-data-tip v-else></no-data-tip>
       </div>

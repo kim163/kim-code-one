@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="top-header"></div>
+    <div class="top-header header-padding"></div>
     <nav-menu></nav-menu>
     <bread-crumbs :bread-list="breadList"></bread-crumbs>
     <transact-menu></transact-menu>
@@ -113,9 +113,6 @@
   }
   .list-animate-leave-active{
     transition: all .5s;
-  }
-  .top-header {
-    padding-top: 100px;
   }
   .percent-bar{
     display:inline-block;

@@ -1,5 +1,5 @@
 <template>
-  <div class="transell-main transell-main-box">
+  <div class="transell-main header-padding">
     <nav-menu></nav-menu>
     <bread-crumbs :bread-list="breadList"></bread-crumbs>
     <div class="section detail-content">
@@ -253,9 +253,6 @@
 </script>
 
 <style lang="scss" scoped>
-  .transell-main-box{
-    padding-top:100px;
-  }
   .detail-content{
     min-height:300px;
     margin:30px 0;

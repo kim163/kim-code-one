@@ -1,5 +1,5 @@
 <template>
-  <div class="transell-main transell-main-box">
+  <div class="transell-main header-padding">
     <nav-menu></nav-menu>
     <bread-crumbs :bread-list="breadList"></bread-crumbs>
     <div class="section detail-content">
@@ -286,7 +286,7 @@
         </div>
       </div>
     </div>
-    <div v-show="isPCstate" style="position: relative">
+    <div v-if="isPCstate" style="position: relative">
       <chatList :isPC="isPCstate" v-if="openListState" @closeChatroom="iscloseChatroom"></chatList>
       <chat
         class="chatWindow"
@@ -790,11 +790,6 @@
         }
       }
     }
-  }
-
-  .transell-main-box {
-    padding-top: 100px;
-    position: relative;
   }
 
   .detail-content {
