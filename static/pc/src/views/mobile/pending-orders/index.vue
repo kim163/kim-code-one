@@ -1,6 +1,9 @@
 <template>
   <div class="pending-orders-page">
     <m-headnav>{{$t('postPend.postTitle')}}</m-headnav>
+    <div class="balance">
+      <balance @getBalance="getBalance"></balance> ≈ &yen;{{}}
+    </div>
     <div class="mobilenav-tabs">
       <ul class="cfx">
         <li v-for="item in pendingType" @click="pendingItem=item.value" class="s" :class="{active:pendingItem==item.value}" :key="item.value">
@@ -111,7 +114,7 @@
         proofType:'',
         accountCashVo:{},
         buyTypeBuyBank:'',
-        userBalance:'',
+        userBalance:0,
         buyBindCardReset:false,
         sellBindCardReset:false,
         setBankcard: {
@@ -323,6 +326,12 @@
 
 <style lang="scss">
  @import "~assets/scss/mobile";
+ .balance{
+   width: 100%;
+   height: r(40);
+   background: $white;
+   line-height: r(40);
+ }
  .pending-orders-page{
    padding-bottom: r(50);
   .white-box{
