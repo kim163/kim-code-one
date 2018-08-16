@@ -4,31 +4,31 @@
     <m-header v-else-if="DetailList.debit==userData.userId">我的卖币订单</m-header>
     <div class="m-order-details">
       <div class="character_choose" v-if="DetailList.credit==userData.userId">
-      <!--买家流程图-->
-      <div class="payOrder_progress">
-        <div class="progress_state">
-          <img src="~images/startpay.png" alt="">
-          <p class="defaultColor">等待我付款</p>
-          <span class="line"></span>
+        <!--买家流程图-->
+        <div class="payOrder_progress">
+          <div class="progress_state">
+            <img src="~images/startpay.png" alt="">
+            <p class="defaultColor">等待我付款</p>
+            <span class="line"></span>
+          </div>
+          <div class="progress_state">
+            <img src="~images/waitpay_next.png" alt="">
+            <p class="defaultColor">等待对方放币</p>
+            <span class="line"></span>
+          </div>
+          <div class="progress_state">
+            <img src="~images/trade_success_next.png" alt="">
+            <p class="defaultColor">交易成功</p>
+          </div>
         </div>
-        <div class="progress_state">
-          <img src="~images/waitpay_next.png" alt="">
-          <p class="defaultColor">等待对方放币</p>
-          <span class="line"></span>
+        <div class="trade-time-bar">
+          <p class="pay_send">订单完成</p>
+          <p class="pay_send" v-if="isShowDiscount">交易成功获赠{{couponValueStr}}UET</p>
         </div>
-        <div class="progress_state">
-          <img src="~images/trade_success_next.png" alt="">
-          <p class="defaultColor">交易成功</p>
-        </div>
-      </div>
-      <div class="trade-time-bar">
-        <p class="pay_send">订单完成</p>
-        <p class="pay_send" v-if="isShowpopup">交易成功获赠{{}}UET</p>
-      </div>
       </div>
       <!--卖家流程图-->
       <div v-else-if="DetailList.debit==userData.userId">
-        <div class="payOrder_progress" >
+        <div class="payOrder_progress">
           <div class="progress_state">
             <img src="~images/startpay.png" alt="">
             <p class="defaultColor">等待对方付款</p>
@@ -46,7 +46,7 @@
         </div>
         <div class="trade-time-bar">
           <p class="pay_send">订单完成</p>
-          <p class="pay_send" v-if="isShowpopup">交易成功获赠{{}}UET</p>
+          <p class="pay_send" v-if="isShowDiscount">交易成功获赠{{couponValueStr}}UET</p>
         </div>
       </div>
 
@@ -58,7 +58,7 @@
       <!--</span>-->
       <!--</div>-->
 
-      <div v-if="detailTypeItem =='订单详情'">
+      <div v-if="detailTypeItem =='订单详情'" >
         <ul class="details-ul">
           <li>
             <p class="l-title">订单 :</p>
@@ -72,7 +72,7 @@
           </li>
         </ul>
         <!--卖币订单-->
-        <ul class="details-ul pay-detail my-paymethod">
+        <ul class="details-ul pay-detail my-paymethod" v-if="DetailList.debit==userData.userId">
           <li>
               <span class="l-title">
                  <img src="~images/chatWith/buyer.png" alt="" class="character">
@@ -80,8 +80,13 @@
           </li>
         </ul>
         <ul class="details-ul pay-detail">
-          <li>
+          <li v-if="DetailList.credit==userData.userId">
               <span class="l-title">
+                 <img src="~images/chatWith/seller.png" alt="" class="character">
+               {{DetailList.debitName}} </span>
+          </li>
+          <li v-else>
+               <span class="l-title">
                  <img src="~images/chatWith/seller.png" alt="" class="character">
                 我</span>
           </li>
@@ -123,7 +128,27 @@
 
     </div>
     <div class="btn-group">
-      <input type="button" class="btn btn-block btn-primary" value="关闭页面">
+      <input type="button" class="btn btn-block btn-primary" value="关闭页面" @click="closePage">
+    </div>
+    <!--弹窗-->
+    <div class="popup_container" v-if="isShowpopup">
+      <div class="popup_content">
+        <div class="discount_info">
+          <div class="left_side">
+            <p>赠</p>
+          </div>
+          <div class="right_side">
+            <p class="rmb_value">¥ {{couponValueStr*0.01}}</p>
+            <p class="uet_value">= <span>{{couponValueStr}}</span>UET</p>
+            <div class="middle_line"></div>
+          </div>
+        </div>
+        <p class="discount_uet">您此次的交易获赠 <span>{{couponValueStr}}UET</span></p>
+        <div class="btn go_watch" @click="goWatch">前去查看</div>
+        <div class="btn define_ok" @click="defineOk">确定</div>
+        <p class="close_btn" @click="defineOk"></p>
+      </div>
+
     </div>
   </div>
 </template>
@@ -148,11 +173,18 @@
           orderId: this.$route.params.id,
           debitName: '', // 交易买方
         },
-        isShowpopup:false
+        isShowpopup: false,
+        isShowDiscount: false
       };
     },
     methods: {
       generateTitle,
+      goWatch() {
+        this.$router.push('/m/myGift')
+      },
+      defineOk() {
+        this.isShowpopup = false
+      },
       fetchData() {
         this.loading = true;
         this.request = {
@@ -161,6 +193,7 @@
         transaction.getCoinTransactionHistory(this.request).then(res => {
           this.loading = false;
           this.DetailList = res.data;
+          console.log(res.data, '速度十大科技')
           //  多个图片分解
           if (res.data.creditProofUrlTwin && res.data.creditProofUrlTwin.length > 1) {
             this.DetailList.creditProofUrlTwin = res.data.creditProofUrlTwin.split(',');
@@ -171,19 +204,25 @@
         });
 //        this.loading = false;
       },
-      fetchFinallyDiscount(){
-        const request ={
-           'orderId':this.orderData.orderId
+      fetchFinallyDiscount() {
+        const request = {
+          'orderId': this.orderData.orderId
         }
-        transaction.getFinallyAmount(request).then((res)=>{
-           if(res.code=='10000'){
-             if(res.couponValueStr){
-                this.isShowpopup = true
-             }else {
-               this.isShowpopup = false
-             }
-           }
+        transaction.getFinallyAmount(request).then((res) => {
+          if (res.code == '10000') {
+            if (res.data) {
+              this.isShowpopup = true
+              this.couponValueStr = res.data.couponValueStr
+              this.isShowDiscount = true
+            } else {
+              this.isShowpopup = false
+              this.isShowDiscount = false
+            }
+          }
         })
+      },
+      closePage() {
+        this.$router.push('/mh/')
       },
       copy() {
         var clipboard = new Clipboard('.copy-btn')
@@ -201,16 +240,17 @@
     },
     created() {
       this.fetchData();
-       setTimeout(()=>{
-         this.fetchFinallyDiscount()
-       },2000)
+      if (this.isShowCoupon) {
+        setTimeout(() => {
+          this.fetchFinallyDiscount()
+        }, 1000)
+      }
     },
     watch: {
       "$route": "fetchData"
     },
     computed: {
-      ...mapGetters(["userData", "islogin"]),
-      ...mapGetters(["userId"]),
+      ...mapGetters(["userData", "islogin", 'userId', 'isShowCoupon']),
     },
     components: {
       mHeader
@@ -221,29 +261,37 @@
 
 <style lang="scss">
   @import "~assets/scss/mobile";
+
   .cas-main {
     background: #F5F5F5;
   }
+
   .order-id-li {
     text-align: left;
     word-break: break-all;
     color: #333;
   }
+
   .c-red, .red {
     color: red;
   }
+
   .c-blue {
     color: #5087FF;
   }
+
   .c-orange {
     color: orange;
   }
+
   .trade-time-bar {
     background: #fff;
     padding: r(10) r(15);
     height: auto;
   }
+
   .details-ul {
+    border-top: 1px solid #D8D8D8;
     li {
       background: #fff;
       min-height: r(35);
@@ -271,11 +319,11 @@
       .l-title {
         display: inline-block;
         color: #333;
-          .character{
-            width: r(30);
-            height: r(30);
-            vertical-align: - r(8);
-          }
+        .character {
+          width: r(30);
+          height: r(30);
+          vertical-align: - r(8);
+        }
       }
     }
   }
@@ -374,7 +422,7 @@
         font-size: r(16);
         color: #333;
       }
-      .line{
+      .line {
         position: absolute;
         right: r(-15);
         top: r(35);
@@ -383,8 +431,106 @@
         height: r(1);
         background-color: #3573FA;
       }
-      .defaultColor{
+      .defaultColor {
         color: #3573FA;
+      }
+    }
+  }
+
+  .popup_container {
+    background: rgba(0, 0, 0, 0.6);
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    .popup_content {
+      background-color: #fff;
+      width: r(250);
+      height: r(274);
+      position: absolute;
+      top: 20%;
+      left: 50%;
+      transform: translate(-50%);
+      padding: r(20);
+      .discount_info {
+        width: r(210);
+        height: r(108);
+        background-color: #ff8b8b;
+        border-radius: r(10);
+        display: flex;
+        .left_side {
+          width: r(60);
+          font-size: r(30);
+          color: #fff;
+          line-height: r(108);
+          text-align: center;
+          position: relative;
+
+        }
+        .right_side {
+          flex: 1;
+          font-size: r(16);
+          color: #fff;
+          height: r(108);
+          position: relative;
+          .middle_line {
+            position: absolute;
+            top: 0;
+            left: r(-8);
+            width: r(15);
+            height: r(108);
+            background: url('~images/discount_pink.png') no-repeat;
+            background-size: 100%;
+            background-color: transparent;
+          }
+          .rmb_value {
+            text-align: center;
+            padding-top: r(25);
+          }
+          .uet_value {
+            text-align: center;
+            padding-top: r(10);
+          }
+        }
+      }
+      .discount_uet {
+        font-size: r(14);
+        color: #333;
+        padding-top: r(20);
+        text-align: center;
+        span {
+          font-size: r(14);
+          color: #ec3a4e;
+        }
+      }
+      .go_watch {
+        border-radius: r(3);
+        background-color: #3573FA;
+        color: #fff;
+        text-align: center;
+        margin-top: r(20);
+        height: r(30);
+        line-height: r(30);
+      }
+      .define_ok {
+        margin-top: r(10);
+        border-radius: r(3);
+        background-color: #84a4e9;
+        color: #fff;
+        text-align: center;
+        height: r(30);
+        line-height: r(30);
+      }
+      .close_btn {
+        width: r(25);
+        height: r(25);
+        text-align: center;
+        background: url("~images/close_btn.png") no-repeat;
+        background-size: 100%;
+        margin: 0 auto;
+        margin-top: r(40);
       }
     }
   }

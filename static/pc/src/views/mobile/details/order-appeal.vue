@@ -166,7 +166,6 @@
                 <span class="">{{DetailList.debitAccountTwin}}</span>
                 <a href="javascript:void(0);" class="copy-btn" :data-clipboard-text="DetailList.debitAccountTwin"
                    @click="copy">{{$t('transactionHome.copyBtn')}}</a>
-
               </div>
             </li>
             <li class="heightauto"

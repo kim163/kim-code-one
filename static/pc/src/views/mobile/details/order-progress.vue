@@ -215,7 +215,7 @@
                       :end-time="DetailList.intervalTime-DetailList.elapsedTime<=0 ? 0 : DetailList.intervalTime-DetailList.elapsedTime"
                       @callBack="countDownEnd" class="count_time">
           </count-down>
-          <p class="pay_send">立即付款后预计获赠 {{couponValueStr}} UET</p>
+          <p class="pay_send" v-if="showDiscountInfo">立即付款后预计获赠 {{couponValueStr}} UET</p>
         </div>
       </div>
       <div v-if="detailTypeItem =='订单详情'">
@@ -279,8 +279,11 @@
             </div>
           </li>
         </ul>
-        <div class="payment-tips">
+        <div class="payment-tips" v-if="DetailList.status=='47'">
           对方已付款,请及时查看账户,确认收款后立即点击下方按钮,放币给买家
+        </div>
+        <div class="payment-tips" v-else>
+          请等待对方付款,等待时间在20分钟内,如果买家超时未付款,将为您匹配其他买家,请收到付款后立即给对方放币
         </div>
         <div class="btn-group" v-if="DetailList.status =='47'">
           <input type="button" class="btn btn-block btn-primary" @click="payCompleted" value="我要放币">
@@ -434,15 +437,16 @@
               if(res.data.isAward){
                 this.showDiscountInfo = true;
                 this.couponValueStr = res.data.couponValueStr
-                setInterval(()=>{
-                  this.fetchDiscountNum()
-                },10000)
               }
             }else {
               toast(res.message)
             }
         })
-
+        if(this.showDiscountInfo){
+          setTimeout(() => {
+            this.fetchDiscountNum()
+          },10000)
+        }
       },
 
       cancelOrder() {
@@ -558,10 +562,13 @@
         }
         transaction.payCompleted(this.request).then(res => {
           this.loading = false;
+
           if (res.code == '10000') {
             Vue.$global.bus.$emit('update:balance');
             toast('您已确认收款，请勿重复操作');
             this.$router.push({name: 'mOrderOver', params: {id: this.orderId}});
+            /*从该入口进去需要弹窗*/
+            this.$store.commit('GET_ISNEEDCOUPON',false)
           } else {
             toast(res.message)
           }
