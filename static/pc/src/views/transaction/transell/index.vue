@@ -1,5 +1,5 @@
 <template>
-  <div class="transell-main">
+  <div class="transell-main header-padding">
     <nav-menu></nav-menu>
     <bread-crumbs :bread-list="breadList"></bread-crumbs>
     <transact-menu></transact-menu>
@@ -63,7 +63,6 @@
 </script>
 <style lang="scss">
   .transell-main{
-     padding-top: 100px;
     .transaction-content{
       margin-bottom: 30px;
       .row{

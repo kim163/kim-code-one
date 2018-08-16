@@ -21,9 +21,9 @@
       </div>
       <div class="mobile-nav-bar">
         <router-link :to="gotoIndex()" class="nav-item">久安优势</router-link>
-        <router-link :to="{name:'mIndex'}" v-show="isOfficialWeb" class="nav-item">{{$t('navbar.tradingHall')}}</router-link>
         <router-link :to="gotoHelp()" class="nav-item">帮助中心</router-link>
         <router-link :to="gotoContact()" class="nav-item">联系我们</router-link>
+        <router-link :to="{name:'mIndex'}" v-show="isOfficialWeb" class="nav-item tran-btn" target="_blank">前往久安钱包</router-link>
       </div>
     </div>
 
@@ -39,9 +39,6 @@
           <div class="link-part fr">
             <div class="col-2">
               <router-link :to="gotoIndex()">久安优势</router-link>
-            </div>
-            <div class="col-2" v-show="isOfficialWeb">
-              <router-link :to="{name:'transaction'}">{{$t('navbar.tradingHall')}}</router-link>
             </div>
             <div class="col-2">
               <router-link :to="gotoHelp()">帮助中心</router-link>
@@ -60,6 +57,9 @@
             </div>
             <div class="col-2">
               <router-link :to="gotoContact()">联系我们</router-link>
+            </div>
+            <div class="col-2 tran-btn" v-show="isOfficialWeb">
+              <router-link :to="{name:'transaction'}" target="_blank">前往久安钱包</router-link>
             </div>
           </div>
         </div>
@@ -162,6 +162,20 @@
         margin: 0 0 0 32px;
       }
     }
+   .tran-btn a{
+     padding: 7px 12px;
+     margin-top: 11.5px;
+     background: #D33474;
+     border-radius: 4px;
+     color: #FFFFFF;
+     height: auto;
+     line-height: normal;
+     &.active,&:hover{
+       color: #FFFFFF;
+       background: #FF0067;
+       border-bottom: none;
+     }
+   }
     a{
       display: block;
       height: 58px;
@@ -209,11 +223,11 @@
   }
 }
 
- @media only screen and (max-width: 900px) and (min-width: 800px) {
+ @media only screen and (max-width: 1180px) and (min-width: 800px) {
    .dispnav-content .link-part [class^="col"]{
-     margin: 0 14px;
+     margin: 0 3px;
      &:last-child{
-       margin: 0 0 0 14px;
+       margin: 0 0 0 3px;
      }
    }
  }
