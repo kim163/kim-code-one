@@ -84,7 +84,6 @@
           orderId: this.orderId
         };
         transaction.getOrderxPending(requestda).then(res => {
-          console.log(res)
           if (res.code == 10000) {
             this.item = res.data;
           }
@@ -148,7 +147,7 @@
           console.log(res)
           if (res.code == 10000) {
             Vue.$global.bus.$emit('update:balance');
-            this.$router.push({name: 'withdrawOrder',params:{ id: res.data.key}});
+            this.$router.push({name: 'mOrder',params:{ id: res.data.key}});
           }else {
             toast(res.message);
           }

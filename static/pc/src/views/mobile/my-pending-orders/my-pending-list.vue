@@ -8,7 +8,6 @@
             :pullUpConfig="pullUpCfg"
             @pullingDown="loadRefresh"
             @pullingUp="loadMore" v-if="!noData">
-
       <transition-group name="list" tag="ul">
         <li v-for="(item,i) in orderList" :key="i" class="order-item">
           <div class="order-info">
