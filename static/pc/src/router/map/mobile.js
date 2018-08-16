@@ -4,7 +4,7 @@
 
 const mLogin = () => import(/* webpackChunkName: 'mLogin' */ 'views/mobile/login') //登陆
 const mRegister = () => import(/* webpackChunkName: 'mRegister' */ 'views/mobile/register') //注册
-const mIndex = () => import(/* webpackChunkName: 'mIndex' */ 'views/mobile/index') //首页
+const mTran = () => import(/* webpackChunkName: 'mIndex' */ 'views/mobile/index') //首页
 const mTranbuyForm = ()=> import(/* webpackChunkName: 'mTranbuyForm' */ 'views/mobile/index/components/tranbuy-list/tranbuy-form')
 const mRechargeOrder = () => import(/* webpackChunkName: 'mRechargeOrder' */ 'views/mobile/index/components/tranbuy-list/recharge-order')
 const mRechWechatOrder = () => import(/* webpackChunkName: 'mRechWechatOrder' */ 'views/mobile/index/components/tranbuy-list/rechwechat-order')
@@ -62,8 +62,8 @@ export default [
   },
   {
     path: "/mh/",
-    name: 'mIndex',
-    component:mIndex,
+    name: 'mTransaction',
+    component:mTran,
     meta: {
       isMobilePage: "mobile-body"
     }
@@ -269,7 +269,7 @@ export default [
   },
   {
     path:'/m/activity',
-    name:'mActivity',
+    name:'mIndex',
     component(resolve){ //活动中心
       return resolve(require('views/mobile/activity-center'))
     },

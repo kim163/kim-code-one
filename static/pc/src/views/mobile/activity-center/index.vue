@@ -156,7 +156,7 @@
       display: flex;
       align-items: center;
       .iconfont{
-
+        color: $main-color;
       }
       .msg-list{
         width: calc(100% - #{r(14)});

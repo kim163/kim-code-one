@@ -4,6 +4,7 @@
                  tag="div" v-for="(item,num) in linkList"
                  :key="num" v-on:click.native="isConversationList(item.name)"
                  :class="{'talk-list':num == 3,'hot': item.hot}"
+                 @click="tabIndex = num"
     >
       <i class="iconfont" :class="tabIndex === num ? item.iconAct : item.iconDef"></i>
       <p class="unread-count" v-show="num == 3 && unreadCountUpdate > 0">{{unreadCountUpdate}}</p>
@@ -31,7 +32,7 @@
             iconDef: 'icon-tran-def',
             iconAct: 'icon-tran-active',
             name: 'navbar.mTradingHall',
-            link: 'mIndex'
+            link: 'mTransaction'
           },
           {
             iconDef: 'icon-car-red',
@@ -81,6 +82,11 @@
         }
       }
     },
+    created(){
+      this.tabIndex = _.findIndex(this.linkList,(item) => {
+        return item.link === this.$route.name
+      })
+    }
   }
 </script>
 
@@ -99,7 +105,7 @@
     z-index: 99;
     .link-item {
       flex-grow: 1;
-      width: 20%;
+      width: calc((100% - #{r(70)}) / 4);
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -117,11 +123,14 @@
         position: relative;
         top: r(-25);
         height: r(70);
-        /*width: r(70);*/
-        padding-top: r(10);
+        width: r(70);
+        padding-top: r(8);
         color: $white;
         .link-name {
           color: $white;
+        }
+        &.active{
+          background: #305cfd;
         }
       }
     }
