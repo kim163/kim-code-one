@@ -286,7 +286,7 @@
         </div>
       </div>
     </div>
-    <div v-show="isPCstate" style="position: relative">
+    <div v-if="isPCstate" style="position: relative">
       <chatList :isPC="isPCstate" v-if="openListState" @closeChatroom="iscloseChatroom"></chatList>
       <chat
         class="chatWindow"
