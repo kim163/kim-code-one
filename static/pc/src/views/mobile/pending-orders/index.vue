@@ -292,7 +292,7 @@
         this.userBalance = data
       },
       allSell(){
-        this.sellAmount = this.userBalance
+        this.sellAmount = Number(this.userBalance)
       }
     },
     created() {
