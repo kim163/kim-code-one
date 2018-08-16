@@ -264,7 +264,7 @@
         this.userBalance = data
       },
       allSell(){
-        this.buyAmount = this.userBalance
+        this.buyAmount = Number(this.userBalance)
       }
     },
 
