@@ -19,6 +19,9 @@ export default {
     juanApp: '久安APP',
     juanWallet: '久安钱包',
     userCenter:'个人中心',
+    mNavHome:'首页',
+    mTradingHall:'大厅',
+    mNavMy:'我的',
   },
   login: {
     title: '欢迎回来',
@@ -128,7 +131,7 @@ export default {
     buyer:'我要买币',
     fastSale:'快速买卖',
     seller:'我要卖币',
-    talkhistory:'会话列表',
+    talkhistory:'会话',
     waitingForPayment:'等待付款',
     waitingForRelease:'等待释放',
     tranPendingOrder: '挂单中',

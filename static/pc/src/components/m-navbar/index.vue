@@ -3,10 +3,11 @@
     <router-link :to="{name: item.link}" class="link-item"
                  tag="div" v-for="(item,num) in linkList"
                  :key="num" v-on:click.native="isConversationList(item.name)"
-                 :class="{'talk-list':num==2}"
+                 :class="{'talk-list':num == 3,'hot': item.hot}"
+                 @click="tabIndex = num"
     >
-      <i class="iconfont" :class="item.icon"></i>
-      <p class="unread-count" v-show="num==2&&unreadCountUpdate>0">{{unreadCountUpdate}}</p>
+      <i class="iconfont" :class="tabIndex === num ? item.iconAct : item.iconDef"></i>
+      <p class="unread-count" v-show="num == 3 && unreadCountUpdate > 0">{{unreadCountUpdate}}</p>
       <div class="link-name">{{generateTitle(item.name)}}</div>
     </router-link>
   </div>
@@ -22,27 +23,38 @@
       return {
         linkList: [
           {
-            icon: 'icon-tab-home',
-            name: 'navbar.tradingHall',
+            iconDef: 'icon-home-def',
+            iconAct: 'icon-home-active',
+            name: 'navbar.mNavHome',
             link: 'mIndex'
           },
           {
-            icon: 'icon-tab-shop',
-            name: 'transactionRecord.fastSale',
-            link: 'mPendingBuy'
+            iconDef: 'icon-tran-def',
+            iconAct: 'icon-tran-active',
+            name: 'navbar.mTradingHall',
+            link: 'mTransaction'
           },
           {
-            icon: 'icon-tab-talk',
+            iconDef: 'icon-car-red',
+            iconAct: 'icon-car-red',
+            name: 'transactionRecord.fastSale',
+            link: 'mPendingBuy',
+            hot: true
+          },
+          {
+            iconDef: 'icon-msg-def',
+            iconAct: 'icon-msg-active',
             name: 'transactionRecord.talkhistory',
             link: 'mtalkList'
           },
           {
-            icon: 'icon-tab-money',
-            name: 'navbar.transactionRecord',
-            link: 'mTranRecord'
+            iconDef: 'icon-my-def',
+            iconAct: 'icon-my-active',
+            name: 'navbar.mNavMy',
+            link: 'mUserCenter' //mTranRecord
           }
         ],
-
+        tabIndex:0,//当前导航
       }
     },
 
@@ -70,6 +82,11 @@
         }
       }
     },
+    created(){
+      this.tabIndex = _.findIndex(this.linkList,(item) => {
+        return item.link === this.$route.name
+      })
+    }
   }
 </script>
 
@@ -88,6 +105,7 @@
     z-index: 99;
     .link-item {
       flex-grow: 1;
+      width: calc((100% - #{r(70)}) / 4);
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -98,7 +116,23 @@
           color: $main-color;
         }
       }
-
+      &.hot{
+        border: r(2) solid $white;
+        border-radius: 50%;
+        background: #ff7cac;
+        position: relative;
+        top: r(-25);
+        height: r(70);
+        width: r(70);
+        padding-top: r(8);
+        color: $white;
+        .link-name {
+          color: $white;
+        }
+        &.active{
+          background: #305cfd;
+        }
+      }
     }
     .unread-count {
       display: inline-block;
@@ -120,11 +154,11 @@
     .link-name {
       @include f(12px);
       color: #787876;
-      margin-top: r(5);
+      margin-top: r(3);
     }
     .iconfont {
-      @include f(18px);
-      margin-top: r(5);
+      @include f(24px);
+      margin-top: r(2);
     }
   }
 </style>

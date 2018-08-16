@@ -134,9 +134,9 @@ export default new Vuex.Store({
           router.replace({name:'mobileCusLogin'});
         }
       }else{
-        state.showLogin=val;
         router.replace({name:'transaction'});
       }
+      state.showLogin=val;
     },
     [types.GET_UNREADCOUNT](state, val) {
       state.unreadCount = val
@@ -169,15 +169,20 @@ export default new Vuex.Store({
     },
     [types.LOGIN_OUT]({commit, dispatch}, val = true) { //退出登录
       let nodeId = ''
+      let userData = ''
+      let userId = ''
       if ($localStorage.get('userData')) {
-        nodeId = Number(JSON.parse(aesutil.decrypt($localStorage.get('userData'), true)).nodeId)
+        userData = JSON.parse(aesutil.decrypt($localStorage.get('userData'), true))
+        nodeId = Number(userData.nodeId)
+        userId = userData.userId
       }
       const backURL = JSON.parse($localStorage.get('backURL'))
-      dispatch(types.INIT_INFO);
+      $localStorage.remove(`sysb-${userId}`);
       $localStorage.remove('tokenInfo');
       $localStorage.remove('userData');
       $localStorage.remove('backURL');
       $localStorage.remove('menuStyle');
+      dispatch(types.INIT_INFO);
       dispatch(types.UPDATE_TOKEN_INFO, null);
       dispatch(types.CHECK_ONLINE, false);
       if (val) {
