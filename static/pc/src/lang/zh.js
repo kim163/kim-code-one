@@ -22,6 +22,7 @@ export default {
     mNavHome:'首页',
     mTradingHall:'大厅',
     mNavMy:'我的',
+    manualTrad:'手动买卖',
   },
   login: {
     title: '欢迎回来',
