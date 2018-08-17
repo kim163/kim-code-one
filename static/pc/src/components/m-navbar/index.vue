@@ -22,8 +22,8 @@
       return {
         linkList: [
           {
-            icon: 'icon-tab-home',
-            name: 'navbar.tradingHall',
+            icon: 'icon-tran-def',
+            name: 'navbar.manualTrad',
             link: 'mIndex'
           },
           {
@@ -91,11 +91,18 @@
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: space-between;
       position: relative;
       &.active {
         color: $main-color;
         .link-name {
           color: $main-color;
+        }
+      }
+      &:first-child{
+        .iconfont{
+          @include f(22px);
+          margin-top: r(3);
         }
       }
 
@@ -120,7 +127,7 @@
     .link-name {
       @include f(12px);
       color: #787876;
-      margin-top: r(5);
+      /*margin-top: r(5);*/
     }
     .iconfont {
       @include f(18px);

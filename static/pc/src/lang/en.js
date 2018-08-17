@@ -19,6 +19,7 @@ export default {
     juanApp: 'Juan APP',
     juanWallet: 'Juan wallet',
     userCenter:'User Center',
+    manualTrad:'Manual trading',
   },
   login: {
     title: 'Welcome back',
