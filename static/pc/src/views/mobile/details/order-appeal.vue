@@ -152,7 +152,7 @@
 
           </ul>
           <div class="btn-group">
-            <input type="button" class="btn btn-block btn-border" @click="payCompleted"  value="释放UET">
+            <input type="button" class="btn btn-block btn-border"  @click="showConfirmPayment=true" value="释放UET">
             <input type="button" class="btn btn-block btn-primary" @click="detailTypeItem='申诉与仲裁'"  value="继续留言">
           </div>
         </div>
@@ -203,6 +203,17 @@
       </div>
 
     </div>
+
+    <confirm-dialog v-model="showConfirmPayment">
+      <div slot="title">释放数额 {{DetailList.debitAmount}} UET</div>
+      <div slot="content">
+        <div class="dialog-content">{{$t('orderDetailPay.confirmPayTitle')}}</div>
+        <div class="dialog-content color-red">{{$t('orderDetailPay.confirmPayCont')}}</div>
+      </div>
+      <div slot="leftBtn" class="confirm-btn-cancel bg-gray">{{$t('postPend.cancel')}}</div>
+      <div slot="rightBtn" @click="payCompleted" class="bg-blue">{{$t('orderDetailPay.confirmPayBtn')}}</div>
+    </confirm-dialog>
+
     <div class="Rongyunchatroom" @click="goChatroom()">
       <img src="../../../assets/images/chat.png" alt="">
       <p class="chatroom_num">{{unreadCountUpdate}}<!--<span class="chatroom_num" v-if="unreadCount>99">+</span>--></p>
@@ -240,6 +251,7 @@
         AppealList: {
         },
         myMessage:'',
+        request:{},
         orderData:{
           orderId:this.$route.params.id,
           debitName:'', // 交易买方
@@ -247,7 +259,8 @@
         gameID:'',
         chatState:'',
         isCredit: false,
-        isDebit: false
+        isDebit: false,
+        showConfirmPayment:false
       };
     },
     methods: {
@@ -315,6 +328,7 @@
         this.loading = false;
       },
       payCompleted(){
+        this.showConfirmPayment=false;
         this.request={
           orderId:this.$route.params.id
         }
@@ -323,7 +337,7 @@
           if(res.code == '10000'){
             Vue.$global.bus.$emit('update:balance');
             toast('您已确认收款，请勿重复操作');
-            this.$router.push({name: 'mOrderOver', params: {id: this.orderId}});
+            this.$router.push({name: 'mOrderOver', params: {id: this.request.orderId}});
           }else{
             toast(res.message)
           }
