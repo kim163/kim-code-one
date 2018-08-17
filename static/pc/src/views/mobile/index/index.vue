@@ -1,6 +1,6 @@
 <template>
   <div class="mtrading-hall">
-     <m-headnav>{{$t('navbar.tradingHall')}}</m-headnav>
+     <m-headnav>{{$t('navbar.mTradingHall')}}</m-headnav>
      <div class="mobilenav-tabs">
         <span v-for="(item,i) in transactType" @click="transactItem=item.value" :class="{active:transactItem==item.value}" :key="item.value">
             {{generateTitle(item.name)}}

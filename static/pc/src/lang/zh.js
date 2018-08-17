@@ -20,7 +20,7 @@ export default {
     juanWallet: '久安钱包',
     userCenter:'个人中心',
     mNavHome:'首页',
-    mTradingHall:'大厅',
+    mTradingHall:'手动买卖',
     mNavMy:'我的',
   },
   login: {

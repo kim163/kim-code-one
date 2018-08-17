@@ -21,9 +21,10 @@
       <div class="buy-sell">
         <div class="buy">
           <div class="buy-num">
-            <span>购买数量：</span>
-            <input type="range" class="range" min="1000" max="100000" step="100"/>
+            <range :min="1000" :max="100000" :step="1000" tip="购买数量：" v-model="buyAmount"></range>
           </div>
+          <input type="text" class="my-input" v-model="buyAmount"> {{userData.accountChainVos[0].assetCode}}
+          <div class="to-cny">≈ &yen;{{formatCny(2)}}</div>
         </div>
       </div>
     </div>
@@ -101,6 +102,7 @@
   import { generateTitle } from '@/util/i18n'
   import {mapGetters,mapActions,mapMutations} from 'vuex'
   import getBankcard from 'components/get-bankcard'
+  import Range from 'components/range'
 
   export default {
     name: "transaction-record",
@@ -109,7 +111,8 @@
       MobileNavBar,
       mHeadnav,
       balance,
-      getBankcard
+      getBankcard,
+      Range
     },
 
     data(){
@@ -129,8 +132,8 @@
         pendingItem: 'buyer',
         requestdata:{},
         requestda:{},
-        buyAmount:'',
-        sellAmount:'',
+        buyAmount:0,
+        sellAmount:0,
         buyTypeBuy:'',
         buyTypeSell:'',
         minBuyAmount:'',
@@ -413,6 +416,26 @@
       color: #FF8B8B;
      }
    }
+   .buy-num{
+     margin: r(20) 0 r(15) 0;
+   }
+   .my-input{
+     height:r(39);
+     line-height:r(39);
+     width:84%;
+     background: #FFFFFF;
+     border: 1px solid #D3D3D3;
+     padding-left: r(5);
+     @include  f(15px);
+     &:hover,&:focus{
+       outline: none;
+     }
+   }
+   .to-cny{
+     margin: r(15) 0;
+     color: #EC3A4E;
+     @include f(16px);
+   }
  }
 
 
@@ -436,16 +459,6 @@
     border: 1px solid #D8D8D8;
     margin-bottom:r(20);
     padding:0 r(10)
-  }
-  .my-input{
-    height:r(39);
-    line-height:r(39);
-    border:0;
-    width:84%;
-  @include  f(15px);
-  &:hover,&:focus{
-             outline: none;
-           }
   }
   select.my-input{
     width:100%;
