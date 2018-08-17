@@ -25,7 +25,7 @@
             <a class="tool-item-href" target="_blank" :href="SETTING.appUrl">
               <i class="iconfont icon-download"></i>{{$t('navbar.juanApp')}}
             </a>
-            <router-link :to="{name:'index'}" class="tool-item-href" target="_blank">
+            <router-link :to="{name:'index'}" class="tool-item-href">
               <i class="iconfont icon-juan-logo1"></i>前往久安首页
             </router-link>
             <div class="tool-item-href border-bot" v-if="userData.nodeId < 10000" @click="$store.dispatch('LOGIN_OUT')">
@@ -40,7 +40,7 @@
             <a class="tool-item-href" target="_blank" :href="SETTING.appUrl">
               <i class="iconfont icon-download"></i>{{$t('navbar.juanApp')}}
             </a>
-            <router-link :to="{name:'index'}" class="tool-item-href border-bot" target="_blank">
+            <router-link :to="{name:'index'}" class="tool-item-href border-bot">
               <i class="iconfont icon-juan-logo1"></i>前往久安首页
             </router-link>
           </div>
