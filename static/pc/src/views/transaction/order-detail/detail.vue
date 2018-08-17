@@ -154,7 +154,7 @@
                   <p class="text-center red">您已确认付款，请勿重复付款</p>
                 </div>
                 <div class="btn-group" v-if="DetailList.status =='47' && isDebit">
-                  <input type="button" class="btn btn-block btn-normal" @click="showConfirmPayment=true" value="确认收款">
+                  <input type="button" class="btn btn-block btn-normal" @click="showConfirmPayment=true" value="释放UET">
                   <p class="payment-tips">
                     确认收款前，请务必检查是否有收到买方付款
                   </p>
@@ -197,16 +197,19 @@
 
     <confirm-dialog v-model="showConfirm" :is-pc="true">
       <div slot="title">{{$t('orderDetailPay.alreadyPaidTitle')}}</div>
-      <div slot="content">{{$t('orderDetailPay.alreadyPaidCont')}}</div>
-      <div slot="leftBtn" class="confirm-btn-cancel">{{$t('orderDetailPay.alreadyPaidCancelBtn')}}</div>
-      <div slot="rightBtn" @click="payOrder">{{$t('orderDetailPay.alreadyPaidBtn')}}</div>
+      <div slot="content" class="color-red">{{$t('orderDetailPay.alreadyPaidCont')}}</div>
+      <div slot="leftBtn" class="confirm-btn-cancel bg-gray">{{$t('orderDetailPay.alreadyPaidCancelBtn')}}</div>
+      <div slot="rightBtn" @click="payOrder" class="bg-blue">{{$t('orderDetailPay.alreadyPaidBtn')}}</div>
     </confirm-dialog>
 
     <confirm-dialog v-model="showConfirmPayment" :is-pc="true">
-      <div slot="title">{{$t('orderDetailPay.confirmPayTitle')}}</div>
-      <div slot="content">{{$t('orderDetailPay.confirmPayCont')}}</div>
-      <div slot="leftBtn" class="confirm-btn-cancel">{{$t('postPend.cancel')}}</div>
-      <div slot="rightBtn" @click="payCompleted">{{$t('orderDetailPay.confirmPayBtn')}}</div>
+      <div slot="title">释放数额 {{DetailList.debitAmount}} UET</div>
+      <div slot="content">
+        <div class="dialog-content">{{$t('orderDetailPay.confirmPayTitle')}}</div>
+        <div class="dialog-content color-red">{{$t('orderDetailPay.confirmPayCont')}}</div>
+      </div>
+      <div slot="leftBtn" class="confirm-btn-cancel bg-gray">{{$t('postPend.cancel')}}</div>
+      <div slot="rightBtn" @click="payCompleted" class="bg-blue">{{$t('orderDetailPay.confirmPayBtn')}}</div>
     </confirm-dialog>
 
     <div class="modal fade in" v-if="payOrderStep==2 && isCredit">
