@@ -13,33 +13,36 @@
         </li>
       </ul>
     </div>
-    <div v-if="pendingItem=='buyer'">
-
-      <div class="white-box">
-        <div class="line-box"></div>
-        <div class="balance-box">
-          <p>{{$t('postPend.balance')}} <balance @getBalance="getBalance"></balance> </p>
-          <p class="c-gray">{{$t('postPend.unit')}} 0.01 CNY</p>
-        </div>
-        <div class="input-box">
-          <div class="input-div"><input class="my-input" type="number" placeholder="挂单买入数量" v-model.number="buyAmount" min="1" max="200000000" > UET</div>
-          <div  class="input-div"><input class="my-input" type="number" :value="buyAmountCny" placeholder="=总数量" readonly> CNY</div>
-          <div  class="input-div get-bankcard">
-            <get-bankcard :setBankcard="setBankcard" :def-select="bankNo" v-model="buyBindCardReset" @selCardChange="buySelCardChange"></get-bankcard>
-          </div>
-          <div >
-            <p class="s-title">{{$t('postPend.buyerRequest')}}</p>
-            <div  class="input-div"><input class="my-input" type="number" v-model.number="minBuyAmount" :placeholder="$t('postPend.minSell')" min="1" max="200000000"> UET</div>
-          </div>
-        </div>
-        <div class="line-box"></div>
-      </div>
-
-      <div class="btn-box">
-        <input type="button" class="btn btn-primary" @click="publishBuy()" value="快速买币" />
-      </div>
+    <div class="container">
 
     </div>
+    <!--<div v-if="pendingItem=='buyer'">-->
+
+      <!--<div class="white-box">-->
+        <!--<div class="line-box"></div>-->
+        <!--<div class="balance-box">-->
+          <!--<p>{{$t('postPend.balance')}} <balance @getBalance="getBalance"></balance> </p>-->
+          <!--<p class="c-gray">{{$t('postPend.unit')}} 0.01 CNY</p>-->
+        <!--</div>-->
+        <!--<div class="input-box">-->
+          <!--<div class="input-div"><input class="my-input" type="number" placeholder="挂单买入数量" v-model.number="buyAmount" min="1" max="200000000" > UET</div>-->
+          <!--<div  class="input-div"><input class="my-input" type="number" :value="buyAmountCny" placeholder="=总数量" readonly> CNY</div>-->
+          <!--<div  class="input-div get-bankcard">-->
+            <!--<get-bankcard :setBankcard="setBankcard" :def-select="bankNo" v-model="buyBindCardReset" @selCardChange="buySelCardChange"></get-bankcard>-->
+          <!--</div>-->
+          <!--<div >-->
+            <!--<p class="s-title">{{$t('postPend.buyerRequest')}}</p>-->
+            <!--<div  class="input-div"><input class="my-input" type="number" v-model.number="minBuyAmount" :placeholder="$t('postPend.minSell')" min="1" max="200000000"> UET</div>-->
+          <!--</div>-->
+        <!--</div>-->
+        <!--<div class="line-box"></div>-->
+      <!--</div>-->
+
+      <!--<div class="btn-box">-->
+        <!--<input type="button" class="btn btn-primary" @click="publishBuy()" value="快速买币" />-->
+      <!--</div>-->
+
+    <!--</div>-->
     <div v-if="pendingItem=='seller'">
       <div class="white-box">
         <div class="line-box"></div>
@@ -357,16 +360,39 @@
    ul{
      width: 100%;
      border: 1px solid #D3D3D3;
-     border-radius: r(10);
+     border-radius: r(5);
      display: flex;
      background: $white;
      li{
        width: 50%;
        text-align: center;
-        padding: r(10) 0;
+       padding: r(15) 0;
+       color: #333333;
+       @include f(16px);
+       &.active{
+         color: $white;
+         background: $main-color;
+       }
+       &:first-child{
+         border-radius: r(5) 0 0 r(5);
+       }
+       &:last-child{
+         border-radius: 0 r(5) r(5) 0;
+       }
+     }
+     .iconfont{
+       @include f(25px);
+     }
+     p{
+       margin-top: r(10);
      }
    }
  }
+ .container{
+
+ }
+
+
  .pending-orders-page{
    padding-bottom: r(50);
   .white-box{
