@@ -19,12 +19,20 @@
         匹配成功之后便可快速交易。<span class="red">注意：随意发布订单而不交易的，将被禁用账户。</span>
       </div>
       <div class="buy-sell">
-        <div class="buy">
+        <div class="buy" v-show="pendingItem=='buyer'">
           <div class="buy-num">
             <range :min="1000" :max="100000" :step="1000" tip="购买数量：" v-model="buyAmount"></range>
           </div>
           <input type="text" class="my-input" v-model="buyAmount"> {{userData.accountChainVos[0].assetCode}}
           <div class="to-cny">≈ &yen;{{formatCny(2)}}</div>
+        </div>
+        <div class="sell" v-show="pendingItem=='seller'">
+          <div class="sell-info">
+            <span>卖出数量：</span>
+            <input type="text" class="sell-input" v-model="sellAmount">
+            <span class="all-in-btn">全</span>
+          </div>
+          <div class="to-cny">≈ &yen;{{formatCny(3)}}</div>
         </div>
       </div>
     </div>
@@ -435,6 +443,32 @@
      margin: r(15) 0;
      color: #EC3A4E;
      @include f(16px);
+   }
+   .sell-info{
+     display: flex;
+     margin: r(20) 0 r(15) 0;
+     .sell-input{
+        flex-grow: 1;
+       height:r(39);
+       line-height:r(39);
+       background: #FFFFFF;
+       border: 1px solid #D3D3D3;
+       padding-left: r(5);
+       @include  f(15px);
+       &:hover,&:focus{
+         outline: none;
+       }
+     }
+     .all-in-btn{
+       display: inline-block;
+       width: r(41);
+       height: r(40);
+       text-align: center;
+       line-height: r(40);
+       background: #3573FA;
+       @include f(16px);
+       color: $white;
+     }
    }
  }
 
