@@ -19,6 +19,9 @@ export default {
     juanApp: 'Juan APP',
     juanWallet: 'Juan wallet',
     userCenter:'User Center',
+    mNavHome:'Home',
+    mTradingHall:'Hall',
+    mNavMy:'Mine',
   },
   login: {
     title: 'Welcome back',

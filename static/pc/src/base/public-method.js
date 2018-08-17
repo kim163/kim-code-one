@@ -140,7 +140,7 @@ _.mixin(
     checkUserBind(data){ //校验已绑定用户是否需要更换授权token
       const needBind = $localStorage.get('needBind')
       if(!_.isUndefined(needBind) && !_.isNull(needBind)){
-        const needData = JSON.parse(aesutil.decrypt(needBind))
+        const needData = JSON.parse(aesutil.decrypt(needBind,true))
         const requestData = Object.assign(needData,data)
         bindMerchantLoginRelation(requestData).finally(() => {
           $localStorage.remove('needBind')

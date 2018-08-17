@@ -106,6 +106,7 @@ module.exports = {
     new webpack.ProvidePlugin({
       Vue: ['vue/dist/vue.esm.js', 'default'],
       _: 'lodash',
+      Velocity: 'velocity-animate',
     })
   ],
   /*隐藏warning*/

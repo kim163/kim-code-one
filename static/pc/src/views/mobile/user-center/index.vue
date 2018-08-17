@@ -18,6 +18,7 @@
         <i class="iconfont icon-right-arrow"></i>
       </router-link>
     </div>
+    <m-navbar></m-navbar>
     <confirm-dialog v-model="showConfirm">
       <div slot="title">温馨提示</div>
       <div slot="content">
@@ -33,6 +34,7 @@
   import MobileHeader from 'components/m-header'
   import {mapGetters} from 'vuex'
   import ConfirmDialog from 'components/confirm'
+  import mNavbar from 'components/m-navbar';
   export default {
     name: "m-user-center",
     data() {
@@ -42,7 +44,8 @@
     },
     components:{
       MobileHeader,
-      ConfirmDialog
+      ConfirmDialog,
+      mNavbar,
     },
     watch:{
       'userData.name':function(val){
