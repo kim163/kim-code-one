@@ -54,7 +54,9 @@
     },
     watch: {
       showLogin(val){
-        this.showLoginDialog = val;
+        if(!this.isCustomize){
+          this.showLoginDialog = val;
+        }
       }
     },
     computed: {
@@ -62,7 +64,9 @@
     },
     created() {
       if(this.showLogin){
-        this.showLoginDialog = true;
+        if(!this.isCustomize){
+          this.showLoginDialog = true;
+        }
       }else {
         this.showLoginDialog = false;
       }
