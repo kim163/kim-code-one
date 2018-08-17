@@ -14,7 +14,18 @@
       </ul>
     </div>
     <div class="container">
-
+      <div class="tip">
+        您发布买币之后，钱包将会扫描所有用户需求进行配对，快速匹配买卖双方，请您注意查看APP提醒，
+        匹配成功之后便可快速交易。<span class="red">注意：随意发布订单而不交易的，将被禁用账户。</span>
+      </div>
+      <div class="buy-sell">
+        <div class="buy">
+          <div class="buy-num">
+            <span>购买数量：</span>
+            <input type="range" class="range" min="1000" max="100000" step="100"/>
+          </div>
+        </div>
+      </div>
     </div>
     <!--<div v-if="pendingItem=='buyer'">-->
 
@@ -43,38 +54,38 @@
       <!--</div>-->
 
     <!--</div>-->
-    <div v-if="pendingItem=='seller'">
-      <div class="white-box">
-        <div class="line-box"></div>
-        <div class="balance-box">
-          <p>{{$t('postPend.balance')}}  <balance @getBalance="getBalance"></balance></p>
-          <p class="c-gray">{{$t('postPend.unit')}} 0.01 CNY <a class="c-blue" @click="allSell()">{{$t('postPend.allsell')}}</a></p>
-        </div>
-        <div class="input-box">
-          <div class="input-div"><input class="my-input" placeholder="挂单卖出数量" v-model.number="sellAmount" min="1" max="200000000"> UET</div>
-          <div  class="input-div"><input class="my-input" :value="sellAmountCny" placeholder="=总数量" readonly> CNY</div>
-          <div  class="input-div">
-            <get-bankcard :setBankcard="setBankcard" :def-select="bankNo" v-model="sellBindCardReset" @selCardChange="sellSelCardChange"></get-bankcard>
-          </div>
-          <div >
-            <p class="s-title">{{$t('postPend.sellerRequest')}}</p>
-            <div  class="input-div"><input class="my-input" v-model.number="minSellAmount" :placeholder="$t('postPend.minBuy')" min="1" max="200000000"> UET</div>
-            <div  class="input-div">
-              <select class="my-input" v-model="proofType">
-                 <option value="">请选择付款说明</option>
-                 <option value="1">要求提供付款说明</option>
-                 <option value="0">不要求提供付款说明</option>
-              </select>
-            </div>
-          </div>
-        </div>
-        <div class="line-box"></div>
-      </div>
-      <div class="btn-box">
-        <input type="button" class="btn btn-primary"  value="快速卖币" @click="publishSell()" />
-      </div>
+    <!--<div v-if="pendingItem=='seller'">-->
+      <!--<div class="white-box">-->
+        <!--<div class="line-box"></div>-->
+        <!--<div class="balance-box">-->
+          <!--<p>{{$t('postPend.balance')}}  <balance @getBalance="getBalance"></balance></p>-->
+          <!--<p class="c-gray">{{$t('postPend.unit')}} 0.01 CNY <a class="c-blue" @click="allSell()">{{$t('postPend.allsell')}}</a></p>-->
+        <!--</div>-->
+        <!--<div class="input-box">-->
+          <!--<div class="input-div"><input class="my-input" placeholder="挂单卖出数量" v-model.number="sellAmount" min="1" max="200000000"> UET</div>-->
+          <!--<div  class="input-div"><input class="my-input" :value="sellAmountCny" placeholder="=总数量" readonly> CNY</div>-->
+          <!--<div  class="input-div">-->
+            <!--<get-bankcard :setBankcard="setBankcard" :def-select="bankNo" v-model="sellBindCardReset" @selCardChange="sellSelCardChange"></get-bankcard>-->
+          <!--</div>-->
+          <!--<div >-->
+            <!--<p class="s-title">{{$t('postPend.sellerRequest')}}</p>-->
+            <!--<div  class="input-div"><input class="my-input" v-model.number="minSellAmount" :placeholder="$t('postPend.minBuy')" min="1" max="200000000"> UET</div>-->
+            <!--<div  class="input-div">-->
+              <!--<select class="my-input" v-model="proofType">-->
+                 <!--<option value="">请选择付款说明</option>-->
+                 <!--<option value="1">要求提供付款说明</option>-->
+                 <!--<option value="0">不要求提供付款说明</option>-->
+              <!--</select>-->
+            <!--</div>-->
+          <!--</div>-->
+        <!--</div>-->
+        <!--<div class="line-box"></div>-->
+      <!--</div>-->
+      <!--<div class="btn-box">-->
+        <!--<input type="button" class="btn btn-primary"  value="快速卖币" @click="publishSell()" />-->
+      <!--</div>-->
 
-    </div>
+    <!--</div>-->
 
 
     <mobile-nav-bar></mobile-nav-bar>
@@ -389,7 +400,19 @@
    }
  }
  .container{
-
+   width: 90%;
+   margin: 0 auto;
+   background: $white;
+   border: 1px solid #D3D3D3;
+   border-radius: r(5);
+   padding: r(15) r(20);
+   .tip{
+     @include f(14px);
+     line-height: r(22);
+     .red{
+      color: #FF8B8B;
+     }
+   }
  }
 
 
