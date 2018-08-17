@@ -23,7 +23,7 @@
         <router-link :to="gotoIndex()" class="nav-item">久安优势</router-link>
         <router-link :to="gotoHelp()" class="nav-item">帮助中心</router-link>
         <router-link :to="gotoContact()" class="nav-item">联系我们</router-link>
-        <router-link :to="{name:'mIndex'}" v-show="isOfficialWeb" class="nav-item tran-btn" target="_blank">前往久安钱包</router-link>
+        <router-link :to="{name:'mIndex'}" v-show="isOfficialWeb" class="nav-item tran-btn">前往久安钱包</router-link>
       </div>
     </div>
 
@@ -59,7 +59,7 @@
               <router-link :to="gotoContact()">联系我们</router-link>
             </div>
             <div class="col-2 tran-btn" v-show="isOfficialWeb">
-              <router-link :to="{name:'transaction'}" target="_blank">前往久安钱包</router-link>
+              <router-link :to="{name:'transaction'}">前往久安钱包</router-link>
             </div>
           </div>
         </div>

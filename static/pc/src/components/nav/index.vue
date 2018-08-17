@@ -13,7 +13,7 @@
           </div>
           <v-header></v-header>
           <div class="col-2 tran-btn fr">
-            <router-link :to="{name:'index'}" target="_blank">前往久安首页</router-link>
+            <router-link :to="{name:'index'}">前往久安首页</router-link>
           </div>
 
           <div class="lang-icons">

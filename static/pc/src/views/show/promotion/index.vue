@@ -233,6 +233,7 @@
      overflow: hidden;
      margin-top: 210px;
      float: left;
+     border-radius: 5px;
    }
    .context{
      display: none;
