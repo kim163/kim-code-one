@@ -237,7 +237,9 @@
   import { transaction,chatWith } from 'api'
   import {mapGetters,mapActions,mapMutations} from 'vuex'
   import Clipboard from 'clipboard';
-  import chat from '../chatroom/chat'
+  import chat from '../chatroom/chat';
+  import confirmDialog from 'components/confirm';
+
   export default {
     data() {
       return {
@@ -426,7 +428,8 @@
     components: {
       mHeader,
       chat,
-      NoDataTip
+      NoDataTip,
+      confirmDialog
     }
   };
 
