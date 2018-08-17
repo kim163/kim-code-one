@@ -2,12 +2,14 @@
   <div class="pending-orders-page">
     <m-headnav>{{$t('postPend.postTitle')}}</m-headnav>
     <div class="balance">
-      <balance @getBalance="getBalance"></balance> ≈ &yen;{{}}
+      <i class="iconfont icon-wallet"></i>
+      <balance @getBalance="getBalance"></balance> ≈ &yen;{{formatCny(1)}}
     </div>
-    <div class="mobilenav-tabs">
-      <ul class="cfx">
+    <div class="tabs">
+      <ul>
         <li v-for="item in pendingType" @click="pendingItem=item.value" class="s" :class="{active:pendingItem==item.value}" :key="item.value">
-          {{generateTitle(item.name)}}
+          <i class="iconfont" :class="item.icon"></i>
+          <p>{{generateTitle(item.name)}}</p>
         </li>
       </ul>
     </div>
@@ -99,8 +101,16 @@
     data(){
       return{
         pendingType:[
-          {name: "transactionRecord.buyer", value: "buyer"},
-          {name: "transactionRecord.seller", value: "seller"}
+          {
+            name: "transactionRecord.buyer",
+            value: "buyer",
+            icon: 'icon-car-add'
+          },
+          {
+            name: "transactionRecord.seller",
+            value: "seller",
+            icon: 'icon-car-sub'
+          }
         ],
         pendingItem: 'buyer',
         requestdata:{},
@@ -144,6 +154,10 @@
     },
     methods: {
       generateTitle,
+      formatCny(type){ // type 1表示用户余额 2表示买入金额 3表示卖出金额
+        const amount = type === 1 ? this.userBalance : (type === 2 ? this.buyAmount : this.sellAmount)
+        return (Number(amount)*0.01).toFixed(2)
+      },
       buySelCardChange(selCard){
          this.buyTypeBuy = selCard;
       },
@@ -331,6 +345,27 @@
    height: r(40);
    background: $white;
    line-height: r(40);
+   padding-left: r(10);
+   .iconfont{
+     margin-right: r(10);
+     vertical-align: top;
+   }
+ }
+ .tabs{
+   width: 90%;
+   margin: r(20) auto;
+   ul{
+     width: 100%;
+     border: 1px solid #D3D3D3;
+     border-radius: r(10);
+     display: flex;
+     background: $white;
+     li{
+       width: 50%;
+       text-align: center;
+        padding: r(10) 0;
+     }
+   }
  }
  .pending-orders-page{
    padding-bottom: r(50);
