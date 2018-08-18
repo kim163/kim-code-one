@@ -1,10 +1,13 @@
 <template>
   <div class="text-scroll-content">
-    <transition-group tag="ul" :name="scrollType">
+    <transition-group tag="ul" :name="scrollType" v-if="dataList.length>0">
         <li v-for="(item,index) in dataList" :key='index' v-show="index==count">
           {{item.content}}
         </li>
     </transition-group>
+    <span v-else>
+      抱歉！暂时找不到相关数据！
+    </span>
   </div>
 </template>
 <script>
@@ -13,7 +16,7 @@
       return {
         count: 0, // 当前索引  当v-for中的index等于count时 v-show=true 即显示当前元素
         intervalId: null, // 定时器ID
-        playTime: 2000 // 定时器执行间隔
+        playTime: 3000 // 定时器执行间隔
       };
     },
     props: {
