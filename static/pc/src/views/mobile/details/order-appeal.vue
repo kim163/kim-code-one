@@ -181,6 +181,8 @@
             <ul>
               <li>
               <div>
+                  <span v-if="DetailList.debitAccountMerchantTwin == '支付宝'"><i
+                    class="iconfont icon-pay-alipay"></i></span>
               <span v-else-if="DetailList.debitAccountMerchantTwin == '微信'"><i
                 class="iconfont icon-pay-wechat"></i></span>
               <span v-else><i class="iconfont icon-pay-bank"></i></span>
