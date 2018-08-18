@@ -20,9 +20,8 @@ export default {
     juanWallet: 'Juan wallet',
     userCenter:'User Center',
     mNavHome:'Home',
-    mTradingHall:'Hall',
+    mTradingHall:'Manual trading',
     mNavMy:'Mine',
-    manualTrad:'Manual trading',
   },
   login: {
     title: 'Welcome back',

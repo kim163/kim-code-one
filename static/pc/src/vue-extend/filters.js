@@ -62,4 +62,7 @@ Vue.filter('formatDateMs',function(time){
   var date = new Date(time);
   return formatDate(date, "mm:ss");
 });
+Vue.filter('sliceString',function(str, start, length) {
+  return str.slice(start, length);
+});
 export  default {}
