@@ -19,6 +19,7 @@ export default {
     juanApp: '久安APP',
     juanWallet: '久安钱包',
     userCenter:'个人中心',
+    manualTrad:'手动买卖',
   },
   login: {
     title: '欢迎回来',
