@@ -3,9 +3,7 @@
     <div class="dispnav-announce">
       <div class="container f-white max-width">
         <div class="row">
-          <div class="col-12 left">
-             中心化区块链记账，钱包账目无法篡改造假，再也不用担心支付厂商做假账了
-          </div>
+           <text-scroll :dataList="dataList" ></text-scroll>
         </div>
       </div>
     </div>
@@ -69,16 +67,23 @@
   </div>
 </template>
 <script>
-  import {SETTING} from "@/assets/data"
+  import {SETTING} from "@/assets/data";
   import VueQrcode from 'vue-qr';
-  import Logo from '@/assets/images/logo-blue.png'
+  import Logo from '@/assets/images/logo-blue.png';
+  import textScroll from 'components/text-scroll';
 
   export default {
     data() {
       return {
         SETTING,
         Logo,
-        showAppDown:false
+        showAppDown:false,
+        dataList: [
+          {content:"久安钱包坐落新加坡花园城市，拥有百人技术团队，专注区块链技术研发和运用"},
+          {content:"久安钱包是一个数字货币钱包，更是解决金流瓶颈的全球化解决方案"},
+          {content:"百万用户，交易更快，加入久安，一起打造数字货币王国"},
+          {content:"加密技术有效保障用户隐私，结合区块链账本更加有效保障交易的真实性，解决交易的信任危机"}
+        ]
       };
     },
     props: {
@@ -121,6 +126,7 @@
     created() {
     },
     components: {
+      textScroll,
       qrcode: VueQrcode
     }
   };
