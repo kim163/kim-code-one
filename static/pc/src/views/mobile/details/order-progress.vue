@@ -340,7 +340,7 @@
         <div class="dialog-content color-red">{{$t('orderDetailPay.confirmPayCont')}}</div>
       </div>
       <div slot="leftBtn" class="confirm-btn-cancel bg-gray">{{$t('postPend.cancel')}}</div>
-      <div slot="rightBtn" @click="payCompleted" class="bg-blue">{{$t('orderDetailPay.confirmPayBtn')}}</div>
+      <div slot="rightBtn" @click="payCompleted" class="bg-blue">确认释放UET</div>
     </confirm-dialog>
 
     <div class="Rongyunchatroom" @click="goChatroom()">
