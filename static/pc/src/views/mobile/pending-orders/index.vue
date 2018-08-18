@@ -111,7 +111,7 @@
       }
     },
     watch: {
-      pendingItem() {
+      pendingItem(val) {
         // this.bindCardReset=true;
         // this.sellBindCardReset=true;
           this.setBankcard.pleaseSelTitle = val === 'seller' ? 'component.pleaseSelRecMet' : 'component.pleaseSelPayMet'

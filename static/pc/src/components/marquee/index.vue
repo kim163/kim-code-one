@@ -40,7 +40,8 @@
         handler() {
           if(this.content !== ''){
             this.$nextTick(() => {
-              this.currentLeft = this.initialLeft = this.$refs.container.offsetWidth
+              this.currentLeft = this.scrollWidth
+              this.initialLeft = this.$refs.container.offsetWidth
               this.stopScoll()
               this.startScoll()
             })
