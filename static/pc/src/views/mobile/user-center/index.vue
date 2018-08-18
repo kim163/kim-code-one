@@ -2,6 +2,11 @@
   <div>
     <mobile-header>个人中心</mobile-header>
     <div class="panel-item">
+      <router-link :to="{name:'mMyGift'}" class="item-href">
+        <i class="iconfont icon-gift"></i>
+        {{$t('userCenter.myGift')}}
+        <i class="iconfont icon-right-arrow"></i>
+      </router-link>
       <router-link :to="{name:'mCardList'}" class="item-href">
         <i class="iconfont icon-pay-bank"></i>
         {{$t('userCenter.bindCard')}}

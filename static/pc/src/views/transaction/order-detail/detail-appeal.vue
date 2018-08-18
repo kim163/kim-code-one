@@ -124,7 +124,7 @@
                   <p class="red order-status-title">
                     <span> 申诉锁定中</span>
                   </p>
-                  <input type="button" v-if="isCredit" class="btn btn-normal" @click="detailTypeItem='appealArbitrat'" value="提出反证">
+                  <input type="button" v-if="isCredit" class="btn btn-normal " @click="detailTypeItem='appealArbitrat'" value="提出反证">
                   <div class="btn-group" v-else-if="isDebit">
                     <input type="button" class="btn btn-block btn-normal" @click="showConfirmPayment=true" value="释放UET">
                     <input type="button" class="btn btn-block btn-orange" @click="detailTypeItem='appealArbitrat'"  value="继续留言">

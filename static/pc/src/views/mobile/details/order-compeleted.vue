@@ -50,27 +50,23 @@
         </div>
       </div>
 
-
-      <!--  申诉订单显示 -->
-      <!--<div class="mobilenav-tabs">-->
-      <!--<span v-for="(item,i) in detailType" @click="detailTypeItem=item.value" :class="{active:detailTypeItem==item.value}" :key="item.value">-->
-      <!--{{item.value}}-->
-      <!--</span>-->
-      <!--</div>-->
-
-      <div v-if="detailTypeItem =='订单详情'" >
-        <ul class="details-ul">
-          <li>
-            <p class="l-title">订单 :</p>
-            <p class="order-id-li">{{orderData.orderId}}</p>
-          </li>
-          <li>
-            <span class="l-title">交易数量 :</span>
-            <span>
-                     <span class="l-title">{{DetailList.debitAmount}} UET</span> <span class="equal_money"> ≈ ¥ {{DetailList.debitAmount*0.01}} </span>
+      <ul class="details-ul">
+        <li>
+          <p class="l-title">订单:</p>
+          <p class="order-id-li extra_order"><span class="order_info">{{orderData.orderId}}</span>
+            <a href="javascript:void(0);" class="copy-btn-next" :data-clipboard-text="orderData.orderId"
+               @click="copy">{{$t('transactionHome.copyBtn')}}</a>
+          </p>
+        </li>
+        <li>
+          <span class="l-title">交易数量 :</span>
+          <span>
+                     <span class="l-title">{{DetailList.debitAmount}} UET</span> <span class="equal_money"> ≈ ¥ {{(DetailList.debitAmount*0.01).toFixed(2)}} </span>
                  </span>
-          </li>
-        </ul>
+        </li>
+      </ul>
+      <div v-if="filterType">
+
         <!--卖币订单-->
         <ul class="details-ul pay-detail my-paymethod" v-if="DetailList.debit==userData.userId">
           <li>
@@ -103,7 +99,6 @@
           <li>
             <span class="l-title">收款姓名 : </span>
             <div class="fr0">{{DetailList.debitAccountNameTwin}}
-              <!--<a href="javascript:void(0);" class="copy-btn" @click="copystr(DetailList.debitAccountNameTwin)" >{{$t('transactionHome.copyBtn')}}</a>-->
             </div>
           </li>
           <li class="heightauto"
@@ -115,17 +110,7 @@
             </div>
           </li>
         </ul>
-        <div class="btn-group">
-          <!--<input type="button" class="btn btn-block btn-gray" readonly  value="我已付款">-->
-        </div>
       </div>
-      <div v-if="detailTypeItem =='申诉与仲裁'">
-        <div class="trade-time-bar">
-          申诉与仲裁
-          <span class="fr red">卖方获胜</span>
-        </div>
-      </div>
-
     </div>
     <div class="btn-group">
       <input type="button" class="btn btn-block btn-primary" value="关闭页面" @click="closePage">
@@ -138,7 +123,7 @@
             <p>赠</p>
           </div>
           <div class="right_side">
-            <p class="rmb_value">¥ {{couponValueStr*0.01}}</p>
+            <p class="rmb_value">¥ {{(couponValueStr*0.01).toFixed(2)}}</p>
             <p class="uet_value">= <span>{{couponValueStr}}</span>UET</p>
             <div class="middle_line"></div>
           </div>
@@ -148,7 +133,6 @@
         <div class="btn define_ok" @click="defineOk">确定</div>
         <p class="close_btn" @click="defineOk"></p>
       </div>
-
     </div>
   </div>
 </template>
@@ -167,14 +151,15 @@
           {name: 'detail.buyUet', value: '订单详情'},
           {name: 'detail.saleUet', value: '申诉与仲裁'}
         ],
-        detailTypeItem: '订单详情',
         DetailList: {},
         orderData: {
           orderId: this.$route.params.id,
           debitName: '', // 交易买方
         },
         isShowpopup: false,
-        isShowDiscount: false
+        isShowDiscount: false,
+        type: '',
+        typeArr: [41, 42, 43, 51, 52, 53, 54]
       };
     },
     methods: {
@@ -193,7 +178,7 @@
         transaction.getCoinTransactionHistory(this.request).then(res => {
           this.loading = false;
           this.DetailList = res.data;
-          console.log(res.data, '速度十大科技')
+          this.type = res.data.type;
           //  多个图片分解
           if (res.data.creditProofUrlTwin && res.data.creditProofUrlTwin.length > 1) {
             this.DetailList.creditProofUrlTwin = res.data.creditProofUrlTwin.split(',');
@@ -243,7 +228,7 @@
       if (this.isShowCoupon) {
         setTimeout(() => {
           this.fetchFinallyDiscount()
-        }, 1000)
+        }, 2000)
       }
     },
     watch: {
@@ -251,7 +236,15 @@
     },
     computed: {
       ...mapGetters(["userData", "islogin", 'userId', 'isShowCoupon']),
+      filterType() {
+        if (this.type == '11' || this.type == '22') {
+          return true
+        } else {
+          return false
+        }
+      }
     },
+
     components: {
       mHeader
     }
@@ -292,6 +285,7 @@
 
   .details-ul {
     border-top: 1px solid #D8D8D8;
+    border-bottom: transparent;
     li {
       background: #fff;
       min-height: r(35);
@@ -324,6 +318,12 @@
           height: r(30);
           vertical-align: - r(8);
         }
+      }
+      .copy-btn {
+        position: absolute;
+        top: r(7);
+        right: r(15);
+        color: #5087ff;
       }
     }
   }
@@ -366,7 +366,7 @@
   }
 
   .icon-pay-bank {
-    color: #B764FE;
+    color: red;
   }
 
   .icon-pay-wechat {
@@ -434,6 +434,19 @@
       .defaultColor {
         color: #3573FA;
       }
+    }
+  }
+
+  .extra_order {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    .order_info {
+      flex: 1;
+    }
+    .copy-btn-next {
+      color: #5087ff;
+
     }
   }
 

@@ -24,6 +24,7 @@ const router = new VueRouter({
       return { x: 0, y: to.meta.savedPosition || 0 }
     }
   },
+
   routes: maps.concat([
     {
       path: "/404",
@@ -44,4 +45,6 @@ const router = new VueRouter({
   ])
 });
 // router.beforeEach(filters);
+
+
 export default router;

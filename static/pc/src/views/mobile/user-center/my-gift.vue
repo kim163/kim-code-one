@@ -18,7 +18,7 @@
               <div class="middle_line"></div>
             </div>
             <div class="right_side">
-              <div class="side_money">¥ {{list.couponValueStr*0.01}}</div>
+              <div class="side_money">¥ {{(list.couponValueStr*0.01).toFixed(2)}}</div>
               <div class="side_num"> ={{list.couponValueStr}}UET</div>
             </div>
         </div>
@@ -36,7 +36,7 @@
               <div class="middle_line_next"></div>
             </div>
             <div class="right_side">
-              <div class="side_money">¥ {{list.couponValueStr*0.01}}</div>
+              <div class="side_money">¥ {{(list.couponValueStr*0.01).toFixed(2)}}</div>
               <div class="side_num"> ={{list.couponValueStr}}UET</div>
             </div>
           </div>
@@ -81,7 +81,6 @@
       this.getInfonext()
       window.addEventListener('scroll', this.scroll)
     },
-
     methods: {
       getInfo() {
         const requestData = {
