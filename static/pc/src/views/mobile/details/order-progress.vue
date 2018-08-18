@@ -110,7 +110,7 @@
             <p class="payment-tips">
                请在倒计时内完成付款,并点击下方的按钮,为了能快速完成交易,请尽量真实付款,切勿造假,一经发现将被禁用
             </p>
-            <input type="button" class="btn btn-block btn-primary" @click="payOrder" value="付款后,请点击这里">
+            <input type="button" class="btn btn-block btn-primary" @click="showConfirm=true" value="我已完成付款">
             <input type="button" class="btn btn-block btn-cancel gray-black" @click="cancelOrder" v-if="DetailList.status =='45'"
                    value="取消订单">
             <input type="button" class="btn btn-block btn-primary"
@@ -286,7 +286,7 @@
           请等待对方付款,等待时间在20分钟内,如果买家超时未付款,将为您匹配其他买家,请收到付款后立即给对方放币
         </div>
         <div class="btn-group" v-if="DetailList.status =='47'">
-          <input type="button" class="btn btn-block btn-primary" @click="payCompleted" value="我要放币">
+          <input type="button" class="btn btn-block btn-primary" @click="showConfirmPayment=true" value="释放UET">
           <input type="button" class="btn btn-block c-black" @click="createAppeal" value="没收到对方付款,点此申诉">
         </div>
         <div class="pic-box pic-box2" v-if="DetailList.creditProofUrlTwin">
@@ -308,6 +308,24 @@
         </div>
       </div>
     </div>
+
+    <confirm-dialog v-model="showConfirm">
+      <div slot="title">{{$t('orderDetailPay.alreadyPaidTitle')}}</div>
+      <div slot="content" class="color-red">{{$t('orderDetailPay.alreadyPaidCont')}}</div>
+      <div slot="leftBtn" class="confirm-btn-cancel bg-gray">{{$t('orderDetailPay.alreadyPaidCancelBtn')}}</div>
+      <div slot="rightBtn" @click="payOrder" class="bg-blue">{{$t('orderDetailPay.alreadyPaidBtn')}}</div>
+    </confirm-dialog>
+
+    <confirm-dialog v-model="showConfirmPayment">
+      <div slot="title">释放数额 {{DetailList.debitAmount}} UET</div>
+      <div slot="content">
+        <div class="dialog-content">{{$t('orderDetailPay.confirmPayTitle')}}</div>
+        <div class="dialog-content color-red">{{$t('orderDetailPay.confirmPayCont')}}</div>
+      </div>
+      <div slot="leftBtn" class="confirm-btn-cancel bg-gray">{{$t('postPend.cancel')}}</div>
+      <div slot="rightBtn" @click="payCompleted" class="bg-blue">确认释放UET</div>
+    </confirm-dialog>
+
     <div class="Rongyunchatroom" @click="goChatroom()">
       <p>跟对方会话<span style="color: #ec3a4e" v-if="unreadCountUpdate>0">(未读{{unreadCountUpdate}})</span></p>
     </div>
@@ -330,8 +348,8 @@
   import {chatWith, transaction} from 'api'
   import {mapGetters} from 'vuex'
   import Clipboard from 'clipboard';
-  import chat from '../chatroom/chat'
-  import PcCash from "../../cash/index";
+  import chat from '../chatroom/chat';
+  import confirmDialog from 'components/confirm';
 
   export default {
     data() {
@@ -374,6 +392,8 @@
         selAccountTypeTwin: {},
         showPayDetail: false,
         showPayBankName: false,
+        showConfirm: false,
+        showConfirmPayment: false,
         mheadSet: {                      // 头部返回事件
           returnBtnFun: false,
           returnBtnEvent: 'returnBtnEvent'
@@ -495,6 +515,7 @@
         }
       },
       payOrder() {
+        this.showConfirm = false;
         if (this.DetailList.creditProofTypeTwin == 1 && this.DetailList.creditProofStatusTwin == 0) {
           if (this.payOrderStep == 1) {
             this.payOrderStep = 2;
@@ -557,6 +578,7 @@
         this.chatState = false
       },
       payCompleted() {
+        this.showConfirmPayment = false;
         this.request = {
           orderId: this.orderId
         }
@@ -674,12 +696,12 @@
       }
     },
     components: {
-      PcCash,
       mHeader,
       getBankcard,
       uploadImg,
       CountDown,
-      chat
+      chat,
+      confirmDialog
     }
   };
 
