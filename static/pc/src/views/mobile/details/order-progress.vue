@@ -21,11 +21,6 @@
           </div>
         </div>
         <div class="trade-time-bar">
-          <!--   <span class="c-blue">买入</span>-->
-          <!--       <span class="fr">-->
-          <!--   <span v-if="DetailList.status =='45'">等待付款</span>
-             <span v-if="DetailList.status =='47'">等待释放UET</span>
-             <span v-if="DetailList.status =='61'">申诉锁定</span>-->
           <div>
             <img src="~images/order_time.png" alt="" class="order_time">
             <count-down v-if="DetailList.status !='61'"
@@ -34,7 +29,6 @@
             </count-down>
           </div>
           <p class="pay_send" v-if="showDiscountInfo&&couponValueStr>0">立即付款后预计获赠 {{couponValueStr}} UET</p>
-          <!-- </span>-->
         </div>
         <div>
           <ul class="details-ul">
@@ -325,7 +319,7 @@
   import {mapGetters} from 'vuex'
   import Clipboard from 'clipboard';
   import chat from '../chatroom/chat'
-  import PcCash from "../../cash/index";
+
 
   export default {
     data() {
@@ -675,7 +669,6 @@
     },
 
     components: {
-      PcCash,
       mHeader,
       getBankcard,
       uploadImg,

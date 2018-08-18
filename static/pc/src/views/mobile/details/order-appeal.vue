@@ -41,16 +41,12 @@
           <p class="pay_send">申诉中</p>
         </div>
       </div>
-      <!--      <div class="mobilenav-tabs">
-                <span v-for="(item,i) in detailType" @click="detailTypeItem=item.value" :class="{active:detailTypeItem==item.value}" :key="item.value">
-                    {{item.value}}
-                </span>
-            </div>-->
       <div v-if="DetailList.credit == userId">
         <!--买-->
         <ul class="details-ul">
+
           <li>
-            <span class="l-title">订单</span>
+            <span class="l-title">订单:</span>
             <p class="order-id-li extra_order"><span class="order_info">{{orderData.orderId}}</span>
               <a href="javascript:void(0);" class="copy-btn-next" :data-clipboard-text="orderData.orderId"
                  @click="copy">{{$t('transactionHome.copyBtn')}}</a>
@@ -66,7 +62,13 @@
         </ul>
         <ul class="details-ul pay-detail">
           <li>
-            <span class="l-title">卖家</span>
+            <span class="l-title">
+              <img src="~images/chatWith/seller.png" alt="" class="character">
+              {{DetailList.debitName}}
+            </span>
+          </li>
+          <li>
+            <span class="l-title">收款</span>
             <div class="fr0">
                 <span v-if="DetailList.debitAccountMerchantTwin == '支付宝'"><i
                   class="iconfont icon-pay-alipay"></i></span>
@@ -81,7 +83,6 @@
             <div class="fr0">{{DetailList.debitAccountNameTwin}}
               <a href="javascript:void(0);" class="copy-btn" :data-clipboard-text="DetailList.debitAccountNameTwin"
                  @click="copy">{{$t('transactionHome.copyBtn')}}</a>
-
             </div>
           </li>
           <li>
@@ -90,7 +91,6 @@
               <span class="">{{DetailList.debitAccountTwin}}</span>
               <a href="javascript:void(0);" class="copy-btn" :data-clipboard-text="DetailList.debitAccountTwin"
                  @click="copy">{{$t('transactionHome.copyBtn')}}</a>
-
             </div>
           </li>
           <li class="heightauto"
@@ -101,9 +101,8 @@
               <span class="qrcode-tips">长按二维码保存</span>
             </div>
           </li>
-
         </ul>
-        <div class="payment-tips">该订单已进入申诉,请进入申诉会话提交您的证据,申诉失败一方将被处罚!</div>
+        <div class="payment-tips credit" >该订单已进入申诉,请进入申诉会话提交您的证据,申诉失败一方将被处罚!</div>
       </div>
       <div v-if="DetailList.debit == userId">
         <!--卖-->
@@ -116,13 +115,18 @@
             </p>
           </li>
           <li>
-            <span class="l-title">交易数量 :</span>
-            <span class="fr">
-                       <span class="red">{{DetailList.debitAmount}} UET</span>
-                   </span>
+            <span class="l-title">交易</span>
+            <span>
+                     <span class="l-title">{{DetailList.debitAmount}} UET</span>
+              <span class="equal_money">≈ ¥ {{(DetailList.debitAmount*0.01).toFixed(2)}} </span>
+                 </span>
           </li>
+        </ul>
+        <ul class="details-ul">
           <li>
-            <span class="l-title">交易单价 :</span> <span class="fr">0.01 CNY</span>
+              <span class="l-title">
+                 <img src="~images/chatWith/buyer.png" alt="" class="character">
+                {{DetailList.creditName}} </span>
           </li>
         </ul>
         <ul class="details-ul pay-detail">
@@ -152,7 +156,7 @@
             </div>
           </li>
           <li>
-            <span class="l-title">卡号</span>
+            <span class="l-title">账号</span>
             <div class="fr0">
               <span class="">{{DetailList.debitAccountTwin}}</span>
               <a href="javascript:void(0);" class="copy-btn" :data-clipboard-text="DetailList.debitAccountTwin"
@@ -167,13 +171,12 @@
               <span class="qrcode-tips">长按二维码保存</span>
             </div>
           </li>
-
         </ul>
-        <div class="btn-group">
-          <input type="button" class="btn btn-block btn-border" @click="payCompleted" value="释放UET">
-        </div>
         <div class="payment-tips">
           该订单已被申诉,请进入申诉会话提交您的证据,申诉失败一方将被处罚!
+        </div>
+        <div class="btn btn-block btn-primary btn-group">
+          <input type="button" class="btn btn-block btn-border" @click="payCompleted" value="我要放币">
         </div>
       </div>
 
@@ -220,7 +223,6 @@
         chatState: '',
         isCredit: false,
         isDebit: false,
-        detailTypeItem: '订单详情',
       };
     },
     methods: {
@@ -437,6 +439,7 @@
 
   .details-ul {
     border-top: 1px solid #d8d8d8;
+    border-bottom: transparent;
     li {
       background: #fff;
       min-height: r(35);
@@ -464,6 +467,18 @@
       .l-title {
         display: inline-block;
         color: #333;
+        .character {
+          width: r(30);
+          height: r(30);
+          vertical-align: - r(8);
+        }
+      }
+      .remind_info {
+        font-size: r(12);
+        color: #ec3a4e;
+        vertical-align: - r(8);
+        padding-top: r(3);
+        text-align: right;
       }
       .copy-btn {
         position: absolute;
@@ -476,6 +491,7 @@
 
   .btn-group {
     padding: r(6) r(15) r(10);
+    margin-bottom: r(90);
     .btn {
       display: inline-block;
       color: #5087ff;
@@ -698,6 +714,7 @@
     flex-wrap: wrap;
     .order_info {
       flex: 1;
+      color: #333;
     }
     .copy-btn-next {
       color: #5087ff;
@@ -711,8 +728,12 @@
     margin: r(13) 0;
     color: #ec3a4e;
     padding: r(0) r(15);
+
     span {
       color: #FF0000;
+    }
+    &.credit{
+      margin-bottom: r(90);
     }
   }
 </style>
