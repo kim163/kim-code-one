@@ -21,7 +21,6 @@
               <span class="state_d" v-if="userId!==debit">买入</span>
               <span class="state_n" v-else>卖出</span>
               <span class="order_num">UET订单编号:</span>
-              <span class="order_d">订单详情</span>
             </div>
             <div class="order_c">{{detail}}</div>
           </div>
