@@ -33,19 +33,22 @@
                         @callBack="countDownEnd" class="count_time">
             </count-down>
           </div>
-          <p class="pay_send" v-if="showDiscountInfo">立即付款后预计获赠 {{couponValueStr}} UET</p>
+          <p class="pay_send" v-if="showDiscountInfo&&couponValueStr>0">立即付款后预计获赠 {{couponValueStr}} UET</p>
           <!-- </span>-->
         </div>
-        <div v-if="detailTypeItem =='订单详情'">
+        <div>
           <ul class="details-ul">
             <li>
               <p class="l-title">订单 :</p>
-              <p class="order-id-li">{{orderId}}</p>
+              <p class="order-id-li extra_order"><span class="order_info">{{orderId}}</span>
+                <a href="javascript:void(0);" class="copy-btn-next" :data-clipboard-text="orderId"
+                   @click="copy">{{$t('transactionHome.copyBtn')}}</a>
+              </p>
             </li>
             <li>
               <span class="l-title">交易数量 :</span>
               <span>
-                     <span class="l-title">{{DetailList.debitAmount}} UET</span> <span class="equal_money"> ≈ ¥ {{DetailList.debitAmount*0.01}} </span>
+                     <span class="l-title">{{DetailList.debitAmount}} UET</span> <span class="equal_money"> ≈ ¥ {{(DetailList.debitAmount*0.01).toFixed(2)}} </span>
                  </span>
             </li>
           </ul>
@@ -124,12 +127,6 @@
           </div>
         </div>
 
-        <div v-if="detailTypeItem =='申诉与仲裁'">
-          <div class="trade-time-bar">
-            申诉与仲裁
-            <span class="fr red">卖方获胜</span>
-          </div>
-        </div>
       </div>
       <!--payOrderStep==2-->
       <div v-if="payOrderStep==2" class="recharge-payinst">
@@ -215,14 +212,17 @@
                       :end-time="DetailList.intervalTime-DetailList.elapsedTime<=0 ? 0 : DetailList.intervalTime-DetailList.elapsedTime"
                       @callBack="countDownEnd" class="count_time">
           </count-down>
-          <p class="pay_send" v-if="showDiscountInfo">立即付款后预计获赠 {{couponValueStr}} UET</p>
+          <p class="pay_send" v-if="showDiscountInfo&couponValueStr>0">立即付款后预计获赠 {{couponValueStr}} UET</p>
         </div>
       </div>
-      <div v-if="detailTypeItem =='订单详情'">
+      <div>
         <ul class="details-ul">
           <li>
             <p class="l-title">订单 :</p>
-            <p class="order-id-li">{{orderId}}</p>
+            <p class="order-id-li extra_order"><span class="order_info">{{orderId}}</span>
+              <a href="javascript:void(0);" class="copy-btn-next" :data-clipboard-text="orderId"
+                 @click="copy">{{$t('transactionHome.copyBtn')}}</a>
+            </p>
           </li>
           <li>
             <span class="l-title">交易数量 :</span>
@@ -301,12 +301,6 @@
           <p class="proof-twintip">提示：点击缩略图可放大查看</p>
         </div>
       </div>
-      <div v-if="detailTypeItem =='申诉与仲裁'">
-        <div class="trade-time-bar">
-          申诉与仲裁
-          <span class="fr red">卖方获胜</span>
-        </div>
-      </div>
     </div>
     <div class="Rongyunchatroom" @click="goChatroom()">
       <p>跟对方会话<span style="color: #ec3a4e" v-if="unreadCountUpdate>0">(未读{{unreadCountUpdate}})</span></p>
@@ -342,7 +336,6 @@
           {name: 'detail.buyUet', value: '订单详情'},
           {name: 'detail.saleUet', value: '申诉与仲裁'}
         ],
-        detailTypeItem: '订单详情',
         DetailList: {},
         chatState: '',
         payOrderStep: 1,
@@ -437,16 +430,18 @@
               if(res.data.isAward){
                 this.showDiscountInfo = true;
                 this.couponValueStr = res.data.couponValueStr
+                if(this.showDiscountInfo){
+                  setTimeout(() => {
+                    this.fetchDiscountNum()
+                  },10000)
+                }
               }
             }else {
               toast(res.message)
             }
         })
-        if(this.showDiscountInfo){
-          setTimeout(() => {
-            this.fetchDiscountNum()
-          },10000)
-        }
+
+
       },
 
       cancelOrder() {
@@ -562,13 +557,12 @@
         }
         transaction.payCompleted(this.request).then(res => {
           this.loading = false;
-
           if (res.code == '10000') {
             Vue.$global.bus.$emit('update:balance');
             toast('您已确认收款，请勿重复操作');
             this.$router.push({name: 'mOrderOver', params: {id: this.orderId}});
             /*从该入口进去需要弹窗*/
-            this.$store.commit('GET_ISNEEDCOUPON',false)
+            this.$store.commit('GET_ISNEEDCOUPON',true)
           } else {
             toast(res.message)
           }
@@ -647,7 +641,13 @@
 
       }
     },
-
+    beforeRouteEnter(to,from,next){
+      if(from.name === 'mOrder'){
+        next({name:'mTranRecord'})
+      }else{
+        next()
+      }
+    },
     watch: {
       "$route"(val) {
         this.orderId = val.params.id;
@@ -673,6 +673,7 @@
         }
       }
     },
+
     components: {
       PcCash,
       mHeader,
@@ -1000,7 +1001,7 @@
   }
 
   .icon-pay-bank {
-    color: #B764FE;
+    color: red;
   }
 
   .icon-pay-wechat {
@@ -1088,4 +1089,17 @@
     height: 100%;
     background-color: #F5F5F5;
   }
+  .extra_order{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    .order_info{
+      flex: 1;
+    }
+    .copy-btn-next{
+      color: #5087ff;
+
+    }
+  }
+
 </style>

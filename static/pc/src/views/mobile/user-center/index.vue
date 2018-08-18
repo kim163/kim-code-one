@@ -3,7 +3,7 @@
     <mobile-header>个人中心</mobile-header>
     <div class="panel-item">
       <router-link :to="{name:'mMyGift'}" class="item-href">
-        <i class="iconfont icon-pay-bank"></i>
+        <i class="iconfont icon-gift"></i>
         {{$t('userCenter.myGift')}}
         <i class="iconfont icon-right-arrow"></i>
       </router-link>

@@ -3,45 +3,42 @@
     <div class="transell-main0 transell-main-box">
       <m-header v-if="DetailList.credit==userData.userId">我的买币订单</m-header>
       <m-header v-else-if="DetailList.debit==userData.userId">我的卖币订单</m-header>
-      <div class="m-order-details">
-        <!--买家流程图-->
-        <div class="payOrder_progress" v-if="DetailList.credit==userData.userId">
-          <div class="progress_state">
-            <img src="~images/startpay.png" alt="">
-            <p class="defaultColor">等待我付款</p>
-            <span class="line"></span>
-          </div>
-          <div class="progress_state">
-            <img src="~images/waitpay_next.png" alt="">
-            <p class="defaultColor">等待对方放币</p>
-            <span class="line"></span>
-          </div>
-          <div class="progress_state">
-            <img src="~images/order_appeal.png" alt="">
-            <p class="defaultColor">交易进入申诉</p>
-          </div>
+      <div class="payOrder_progress" v-if="DetailList.credit==userData.userId">
+        <div class="progress_state">
+          <img src="~images/startpay.png" alt="">
+          <p class="defaultColor">等待我付款</p>
+          <span class="line"></span>
         </div>
-        <!--卖家流程图-->
-        <div class="payOrder_progress" v-else-if="DetailList.debit==userData.userId">
-          <div class="progress_state">
-            <img src="~images/startpay.png" alt="">
-            <p class="defaultColor">等待对方付款</p>
-            <span class="line"></span>
-          </div>
-          <div class="progress_state">
-            <img src="~images/waitpay_next.png" alt="">
-            <p class="defaultColor">等待我放币</p>
-            <span class="line"></span>
-          </div>
-          <div class="progress_state">
-            <img src="~images/order_appeal.png" alt="">
-            <p class="defaultColor">交易进入申诉</p>
-          </div>
+        <div class="progress_state">
+          <img src="~images/waitpay_next.png" alt="">
+          <p class="defaultColor">等待对方放币</p>
+          <span class="line"></span>
         </div>
-        <div class="trade-time-bar">
-          <div>
-            <p class="pay_send">申诉中</p>
-          </div>
+        <div class="progress_state">
+          <img src="~images/order_appeal.png" alt="">
+          <p class="defaultColor">交易进入申诉</p>
+        </div>
+      </div>
+      <!--卖家流程图-->
+      <div class="payOrder_progress" v-else-if="DetailList.debit==userData.userId">
+        <div class="progress_state">
+          <img src="~images/startpay.png" alt="">
+          <p class="defaultColor">等待对方付款</p>
+          <span class="line"></span>
+        </div>
+        <div class="progress_state">
+          <img src="~images/waitpay_next.png" alt="">
+          <p class="defaultColor">等待我放币</p>
+          <span class="line"></span>
+        </div>
+        <div class="progress_state">
+          <img src="~images/order_appeal.png" alt="">
+          <p class="defaultColor">交易进入申诉</p>
+        </div>
+      </div>
+      <div class="trade-time-bar">
+        <div>
+          <p class="pay_send">申诉中</p>
         </div>
       </div>
       <!--      <div class="mobilenav-tabs">
@@ -49,187 +46,140 @@
                     {{item.value}}
                 </span>
             </div>-->
-      <div>
-        <div v-if="DetailList.credit == userId">
-          <!--买-->
-          <ul class="details-ul">
-            <li>
-              <span class="l-title">订单号 :</span>
-              <span class="fr order-id-li">{{$route.params.id}}</span>
-            </li>
-            <li>
-              <span class="l-title">卖方 :</span>
-              <span class="fr">{{DetailList.debitName}}</span>
-            </li>
-            <li>
-              <span class="l-title">交易金额 :</span>
-              <span class="fr">
-                     <span class="red">{{DetailList.debitAmountTwin}} CNY</span>
-               </span>
-            </li>
-            <li>
-              <span class="l-title">交易数量 :</span>
-              <span class="fr">
-                     <span class="red">{{DetailList.debitAmount}} UET</span>
+      <div v-if="DetailList.credit == userId">
+        <!--买-->
+        <ul class="details-ul">
+          <li>
+            <span class="l-title">订单</span>
+            <p class="order-id-li extra_order"><span class="order_info">{{orderData.orderId}}</span>
+              <a href="javascript:void(0);" class="copy-btn-next" :data-clipboard-text="orderData.orderId"
+                 @click="copy">{{$t('transactionHome.copyBtn')}}</a>
+            </p>
+          </li>
+          <li>
+            <span class="l-title">交易</span>
+            <span>
+                     <span class="l-title">{{DetailList.debitAmount}} UET</span>
+              <span class="equal_money">≈ ¥ {{(DetailList.debitAmount*0.01).toFixed(2)}} </span>
                  </span>
-            </li>
-            <li>
-              <span class="l-title">交易单价 :</span> <span class="fr">0.01 CNY</span>
-            </li>
-          </ul>
-          <ul class="details-ul pay-detail">
-            <li>
-              <span class="l-title">卖家收款 : </span>
-              <div class="fr0">
+          </li>
+        </ul>
+        <ul class="details-ul pay-detail">
+          <li>
+            <span class="l-title">卖家</span>
+            <div class="fr0">
                 <span v-if="DetailList.debitAccountMerchantTwin == '支付宝'"><i
                   class="iconfont icon-pay-alipay"></i></span>
-                <span v-else-if="DetailList.debitAccountMerchantTwin == '微信'"><i
-                  class="iconfont icon-pay-wechat"></i></span>
-                <span v-else><i class="iconfont icon-pay-bank"></i></span>
-                {{DetailList.debitAccountMerchantTwin}}
-              </div>
-            </li>
-            <li>
-              <span class="l-title">收款姓名 : </span>
-              <div class="fr0">{{DetailList.debitAccountNameTwin}}
-                <a href="javascript:void(0);" class="copy-btn" :data-clipboard-text="DetailList.debitAccountNameTwin"
-                   @click="copy">{{$t('transactionHome.copyBtn')}}</a>
+              <span v-else-if="DetailList.debitAccountMerchantTwin == '微信'"><i
+                class="iconfont icon-pay-wechat"></i></span>
+              <span v-else><i class="iconfont icon-pay-bank"></i></span>
+              {{DetailList.debitAccountMerchantTwin}}
+            </div>
+          </li>
+          <li>
+            <span class="l-title">姓名</span>
+            <div class="fr0">{{DetailList.debitAccountNameTwin}}
+              <a href="javascript:void(0);" class="copy-btn" :data-clipboard-text="DetailList.debitAccountNameTwin"
+                 @click="copy">{{$t('transactionHome.copyBtn')}}</a>
 
-              </div>
-            </li>
-            <li>
-              <span class="l-title">收款账号 : </span>
-              <div class="fr0">
-                <span class="">{{DetailList.debitAccountTwin}}</span>
-                <a href="javascript:void(0);" class="copy-btn" :data-clipboard-text="DetailList.debitAccountTwin"
-                   @click="copy">{{$t('transactionHome.copyBtn')}}</a>
+            </div>
+          </li>
+          <li>
+            <span class="l-title">账号</span>
+            <div class="fr0">
+              <span class="">{{DetailList.debitAccountTwin}}</span>
+              <a href="javascript:void(0);" class="copy-btn" :data-clipboard-text="DetailList.debitAccountTwin"
+                 @click="copy">{{$t('transactionHome.copyBtn')}}</a>
 
-              </div>
-            </li>
-            <li class="heightauto"
-                v-if="DetailList.debitAccountMerchantTwin == '支付宝' || DetailList.debitAccountMerchantTwin == '微信'">
-              <span class="l-title">收款二维码 : </span>
-              <div class="qrcode-box">
-                <img src="~images/qrcode.jpg" :src="DetailList.debitAccountQrCodeUrlTwin" class="qrcode-img">
-                <span class="qrcode-tips">长按二维码保存</span>
-              </div>
-            </li>
+            </div>
+          </li>
+          <li class="heightauto"
+              v-if="DetailList.debitAccountMerchantTwin == '支付宝' || DetailList.debitAccountMerchantTwin == '微信'">
+            <span class="l-title">收款二维码</span>
+            <div class="qrcode-box">
+              <img src="~images/qrcode.jpg" :src="DetailList.debitAccountQrCodeUrlTwin" class="qrcode-img">
+              <span class="qrcode-tips">长按二维码保存</span>
+            </div>
+          </li>
 
-          </ul>
-          <div class="btn-group">
-            <input type="button" class="btn btn-block btn-primary" @click="detailTypeItem='申诉与仲裁'" value="提出反证">
-            <!--<input type="button" class="btn btn-block btn-gray"  value="我已付款">-->
-            <!--<input type="button" class="btn btn-block btn-primary"  value="确定收款">-->
-            <!--<input type="button" class="btn btn-block btn-primary"  value="我要申诉">-->
-          </div>
-        </div>
-        <div v-if="DetailList.debit == userId">
-          <!--卖-->
-          <ul class="details-ul">
-            <li>
-              <span class="l-title">订单:</span>
-              <span class="fr order-id-li">{{$route.params.id}}</span>
-            </li>
-            <li>
-              <span class="l-title">交易数量 :</span>
-              <span class="fr">
+        </ul>
+        <div class="payment-tips">该订单已进入申诉,请进入申诉会话提交您的证据,申诉失败一方将被处罚!</div>
+      </div>
+      <div v-if="DetailList.debit == userId">
+        <!--卖-->
+        <ul class="details-ul">
+          <li>
+            <span class="l-title">订单:</span>
+            <p class="order-id-li extra_order"><span class="order_info">{{orderData.orderId}}</span>
+              <a href="javascript:void(0);" class="copy-btn-next" :data-clipboard-text="orderData.orderId"
+                 @click="copy">{{$t('transactionHome.copyBtn')}}</a>
+            </p>
+          </li>
+          <li>
+            <span class="l-title">交易数量 :</span>
+            <span class="fr">
                        <span class="red">{{DetailList.debitAmount}} UET</span>
                    </span>
-            </li>
-            <li>
-              <span class="l-title">交易单价 :</span> <span class="fr">0.01 CNY</span>
-            </li>
-          </ul>
-          <ul class="details-ul pay-detail">
-            <li>
-              <span class="l-title">卖家收款 : </span>
-              <div class="fr0">
+          </li>
+          <li>
+            <span class="l-title">交易单价 :</span> <span class="fr">0.01 CNY</span>
+          </li>
+        </ul>
+        <ul class="details-ul pay-detail">
+          <li>
+            <span class="l-title">
+              <img src="~images/chatWith/seller.png" alt="" class="character">
+              我
+            </span>
+          </li>
+          <li>
+            <span class="l-title">收款</span>
+            <div class="fr0">
                 <span v-if="DetailList.debitAccountMerchantTwin == '支付宝'"><i
                   class="iconfont icon-pay-alipay"></i></span>
-                <span v-else-if="DetailList.debitAccountMerchantTwin == '微信'"><i
-                  class="iconfont icon-pay-wechat"></i></span>
-                <span v-else><i class="iconfont icon-pay-bank"></i></span>
-                {{DetailList.debitAccountMerchantTwin}}
-              </div>
-            </li>
-            <li>
-              <span class="l-title">收款姓名 : </span>
-              <div class="fr0">{{DetailList.debitAccountNameTwin}}
-                <a href="javascript:void(0);" class="copy-btn" :data-clipboard-text="DetailList.debitAccountNameTwin"
-                   @click="copy">{{$t('transactionHome.copyBtn')}}</a>
+              <span v-else-if="DetailList.debitAccountMerchantTwin == '微信'"><i
+                class="iconfont icon-pay-wechat"></i></span>
+              <span v-else><i class="iconfont icon-pay-bank"></i></span>
+              {{DetailList.debitAccountMerchantTwin}}
+            </div>
+          </li>
+          <li>
+            <span class="l-title">姓名</span>
+            <div class="fr0">{{DetailList.debitAccountNameTwin}}
+              <a href="javascript:void(0);" class="copy-btn" :data-clipboard-text="DetailList.debitAccountNameTwin"
+                 @click="copy">{{$t('transactionHome.copyBtn')}}</a>
 
-              </div>
-            </li>
-            <li>
-              <span class="l-title">收款账号 : </span>
-              <div class="fr0">
-                <span class="">{{DetailList.debitAccountTwin}}</span>
-                <a href="javascript:void(0);" class="copy-btn" :data-clipboard-text="DetailList.debitAccountTwin"
-                   @click="copy">{{$t('transactionHome.copyBtn')}}</a>
-              </div>
-            </li>
-            <li class="heightauto"
-                v-if="DetailList.debitAccountMerchantTwin == '支付宝' || DetailList.debitAccountMerchantTwin == '微信'">
-              <span class="l-title">收款二维码 : </span>
-              <div class="qrcode-box">
-                <img src="~images/qrcode.jpg" :src="DetailList.debitAccountQrCodeUrlTwin" class="qrcode-img">
-                <span class="qrcode-tips">长按二维码保存</span>
-              </div>
-            </li>
+            </div>
+          </li>
+          <li>
+            <span class="l-title">卡号</span>
+            <div class="fr0">
+              <span class="">{{DetailList.debitAccountTwin}}</span>
+              <a href="javascript:void(0);" class="copy-btn" :data-clipboard-text="DetailList.debitAccountTwin"
+                 @click="copy">{{$t('transactionHome.copyBtn')}}</a>
+            </div>
+          </li>
+          <li class="heightauto"
+              v-if="DetailList.debitAccountMerchantTwin == '支付宝' || DetailList.debitAccountMerchantTwin == '微信'">
+            <span class="l-title">收款二维码 : </span>
+            <div class="qrcode-box">
+              <img src="~images/qrcode.jpg" :src="DetailList.debitAccountQrCodeUrlTwin" class="qrcode-img">
+              <span class="qrcode-tips">长按二维码保存</span>
+            </div>
+          </li>
 
-          </ul>
-          <div class="btn-group">
-            <input type="button" class="btn btn-block btn-border" @click="payCompleted" value="释放UET">
-            <input type="button" class="btn btn-block btn-primary" @click="detailTypeItem='申诉与仲裁'" value="继续留言">
-          </div>
+        </ul>
+        <div class="btn-group">
+          <input type="button" class="btn btn-block btn-border" @click="payCompleted" value="释放UET">
         </div>
-
+        <div class="payment-tips">
+          该订单已被申诉,请进入申诉会话提交您的证据,申诉失败一方将被处罚!
+        </div>
       </div>
 
-      <!--<div v-if="detailTypeItem =='申诉与仲裁'">
-
-        <div class="trade-time-bar">
-          申诉与仲裁
-          <span class="fr">
-            &lt;!&ndash;<span class="red">卖方获胜</span>&ndash;&gt;
-            <span>{{AppealList.appeal.statusText}}</span>
-          </span>
-        </div>
-
-        <div class="appeal-list">
-          <ul class="appeal-list-ul" v-if="reverseAppealList.length>0">
-            <li v-for="(item,i) in reverseAppealList" >
-              &lt;!&ndash; 我是买家 DetailList.credit == userId&ndash;&gt;
-              &lt;!&ndash; 我是卖家 DetailList.debit == userId&ndash;&gt;
-              <div :class="{'you-msg':isCredit}">
-                  <span class="userAvator">
-                    {{item.sourceTypeText }}
-                  </span>
-                <div class="mes-box">
-                  <p class="msg-time">{{item.createtime | Date('yyyy-MM-dd hh:mm:ss') }}</p>
-                  <div class="mes-box-in">
-                    <div v-if="item.attachmentUrls">
-                       <span v-for="proofImg in item.attachmentUrls||[]" class="attach-img">
-                         <viewer :images="item.attachmentUrls">
-                           <img :src="proofImg" class="mes-img">
-                         </viewer>
-                       </span>
-                    </div>
-
-                    <p class="msg-details">{{item.content }}</p>
-                  </div>
-                </div>
-              </div>
-            </li>
-          </ul>
-          <div v-else>
-            <no-data-tip></no-data-tip>
-          </div>
-        </div>
--->
     </div>
     <div class="Rongyunchatroom" @click="goChatroom()">
-      <p>跟对方会话<span style="color:#ec3a4e" v-if="unreadCountUpdate>0">(未读{{unreadCountUpdate}})</span></p>
+      <p>进入申诉对话<span style="color:#ec3a4e" v-if="unreadCountUpdate>0">(未读{{unreadCountUpdate}})</span></p>
     </div>
     <transition name="toolSlideRight">
       <chat v-if="chatState" class="chatWindow"
@@ -269,7 +219,8 @@
         gameID: '',
         chatState: '',
         isCredit: false,
-        isDebit: false
+        isDebit: false,
+        detailTypeItem: '订单详情',
       };
     },
     methods: {
@@ -290,7 +241,7 @@
           // data.orderx   订单详情
           // data.appealDetailList   申诉消息列表
           // data.appeal   申诉状态
-          if(res.code===10000){
+          if (res.code === 10000) {
             this.DetailList = res.data.orderx;
             this.AppealList = res.data;
             if (this.DetailList.credit == this.userId) {
@@ -298,7 +249,7 @@
             } else if (this.DetailList.debit == this.userId) {
               this.isDebit = true;
             }
-          }else {
+          } else {
             toast(res.message)
           }
           //statusText
@@ -477,8 +428,6 @@
     background: #fff;
     padding: r(10) r(15);
     height: auto;
-    border-bottom: 1px solid #d8d8d8;
-    margin-bottom: r(10);
     text-align: center;
   }
 
@@ -487,9 +436,7 @@
   }
 
   .details-ul {
-    border-bottom: 1px solid #d8d8d8;
     border-top: 1px solid #d8d8d8;
-    margin-bottom: r(10);
     li {
       background: #fff;
       min-height: r(35);
@@ -517,6 +464,12 @@
       .l-title {
         display: inline-block;
         color: #333;
+      }
+      .copy-btn {
+        position: absolute;
+        top: r(7);
+        right: r(15);
+        color: #5087ff;
       }
     }
   }
@@ -736,6 +689,30 @@
       .defaultColor {
         color: #3573FA;
       }
+    }
+  }
+
+  .extra_order {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    .order_info {
+      flex: 1;
+    }
+    .copy-btn-next {
+      color: #5087ff;
+
+    }
+  }
+
+  .payment-tips {
+    @include f(15px);
+    line-height: r(30);
+    margin: r(13) 0;
+    color: #ec3a4e;
+    padding: r(0) r(15);
+    span {
+      color: #FF0000;
     }
   }
 </style>
