@@ -22,6 +22,7 @@ export default {
     mNavHome:'Home',
     mTradingHall:'Hall',
     mNavMy:'Mine',
+    manualTrad:'Manual trading',
   },
   login: {
     title: 'Welcome back',

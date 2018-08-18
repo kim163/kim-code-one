@@ -44,10 +44,6 @@
             urlName: 'transaction',
             name: 'navbar.tradingHall'
           },
-          {
-            urlName: 'tranRecord',
-            name: 'transactionHome.orderRecord'
-          },
         ],
         navListData: [
           {name: 'transactionRecord.tranProgress', value: 'tranProgress'},
