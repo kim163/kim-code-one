@@ -4,7 +4,7 @@
       <span class="left_title">会话列表</span>
       <span class="close_symbol iconfont icon-close" @click="closeChatList"></span>
     </div>
-    <mHeader v-else>交易会话</mHeader>
+    <mobile-header :show-left-btn="false" v-else>交易会话</mobile-header>
     <div class="conversation_list box-f1">
       <div v-if="chatArr.length==0" class="noMessage">
         <img src="~images/chatWith/no_message.png" alt="" class="noMessage_pic">
@@ -57,7 +57,7 @@
 
 <script>
   import chat from './chat'
-  import mHeader from "components/m-headnav"
+  import MobileHeader from 'components/m-header'
   import mFooter from 'components/m-navbar'
   import {chatWith} from 'api'
   import {mapGetters,mapMutations} from 'vuex'
@@ -242,7 +242,7 @@
       },
     },
     components: {
-      mHeader,
+      MobileHeader,
       mFooter,
       chat
     }

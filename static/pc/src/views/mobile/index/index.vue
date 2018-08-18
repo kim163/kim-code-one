@@ -1,6 +1,6 @@
 <template>
   <div class="mtrading-hall">
-     <m-headnav>{{$t('navbar.mTradingHall')}}</m-headnav>
+     <mobile-header :show-left-btn="false">{{$t('navbar.mTradingHall')}}</mobile-header>
      <div class="mobilenav-tabs">
         <span v-for="(item,i) in transactType" @click="transactItem=item.value" :class="{active:transactItem==item.value}" :key="item.value">
             {{generateTitle(item.name)}}
@@ -22,7 +22,7 @@
 </template>
 <script>
   import {mapGetters, mapActions, mapMutations} from 'vuex'
-  import mHeadnav from 'components/m-headnav';
+  import MobileHeader from 'components/m-header'
   import mNavbar from 'components/m-navbar';
   import balance from 'components/balance';
   import WithdrawTip from 'components/withdraw-tip';
@@ -70,7 +70,12 @@
       }
     },
     components: {
-      mHeadnav, mNavbar,balance, tranbuyList, transellList,WithdrawTip
+      MobileHeader,
+      mNavbar,
+      balance,
+      tranbuyList,
+      transellList,
+      WithdrawTip
     },
     beforeRouteEnter(to,from,next){
       next(vm => {

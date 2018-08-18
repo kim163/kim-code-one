@@ -1,6 +1,6 @@
 <template>
   <div class="pending-orders-page">
-    <m-headnav>{{$t('postPend.postTitle')}}</m-headnav>
+    <mobile-header :show-left-btn="false">{{$t('postPend.postTitle')}}</mobile-header>
     <div class="balance">
       <i class="iconfont icon-wallet"></i>
       <balance @getBalance="getBalance"></balance> ≈ &yen;{{formatCny(1)}}
@@ -21,10 +21,12 @@
       <div class="buy-sell">
         <div class="buy" v-show="pendingItem=='buyer'">
           <div class="buy-num">
-            <range :min="1000" :max="100000" :step="1000" tip="购买数量：" v-model="buyAmount"></range>
+            <range :min="1000" :max="100000" :step="1000" tip="购买数量：" :reset="rangeReset" v-model="buyAmount"></range>
           </div>
           <div class="flex">
-            <input type="text" class="def-input" v-number-only v-model.number="buyAmount" :maxlength="max"> {{userData.accountChainVos[0].assetCode}}
+            <input type="text" class="def-input" v-number-only
+                   v-model.number="buyAmount"
+                   :maxlength="max"> {{userData.accountChainVos[0].assetCode}}
           </div>
           <div class="to-cny">≈ &yen;{{formatCny(2)}}</div>
         </div>
@@ -48,6 +50,19 @@
       </div>
       <div class="buy-sell-btn" @click="publishBuyOrSell">{{pendingItem=='buyer' ? '买' : '卖'}}币</div>
     </div>
+    <div class="discount_ticket" v-if="couponDetail != ''">
+      <div class="left_side">
+        <p class="remark_info">{{couponDetail.remark}}</p>
+        <p class="time_date">至{{couponDetail.couponEndtime | Date('yyyy-MM-dd')}}过期</p>
+        <div class="id_num" style="display: flex"><span style="float:left" class="id">单号:</span><span
+                style="width: 70%">{{couponDetail.id}}</span></div>
+        <div class="middle_line_next"></div>
+      </div>
+      <div class="right_side">
+        <div class="side_money">¥ {{(couponDetail.couponValueStr*0.01).toFixed(2)}}</div>
+        <div class="side_num"> ={{couponDetail.couponValueStr}}UET</div>
+      </div>
+    </div>
     <mobile-nav-bar></mobile-nav-bar>
   </div>
 </template>
@@ -57,9 +72,12 @@
     publishToBuy,
     publishToSell
   } from 'api/transaction'
+  import {
+    myGift
+  } from 'api/user-center'
 
   import MobileNavBar from 'components/m-navbar'
-  import mHeadnav from 'components/m-headnav'
+  import MobileHeader from 'components/m-header'
   import balance from 'components/balance';
   import { generateTitle } from '@/util/i18n'
   import {mapGetters} from 'vuex'
@@ -71,7 +89,7 @@
 
     components: {
       MobileNavBar,
-      mHeadnav,
+      MobileHeader,
       balance,
       getBankcard,
       Range
@@ -96,24 +114,22 @@
         sellAmount:0,
         payType: '',
         minAmount:1,
-        proofType:1,
-        // accountCashVo:{},
+        proofType:0,
         typeBank:'',
         userBalance:0,
         bindCardReset:false,
-        // sellBindCardReset:false,
         setBankcard: {
           pleaseSelTitle: 'component.pleaseSelPayMet',         // 请选择标题文字
           addOption:[]
         },
         bankNo:'',
-        max:9
+        max:9,
+        couponDetail:'',
+        rangeReset:false
       }
     },
     watch: {
       pendingItem(val) {
-        // this.bindCardReset=true;
-        // this.sellBindCardReset=true;
           this.setBankcard.pleaseSelTitle = val === 'seller' ? 'component.pleaseSelRecMet' : 'component.pleaseSelPayMet'
       }
     },
@@ -198,7 +214,11 @@
           if (res.code == '10000') {
             this.buyAmount = 0;
             this.sellAmount = 0;
-            this.bindCardReset=true;
+            // this.bindCardReset=true;
+            this.rangeReset = true
+            setTimeout(() => {
+              this.rangeReset = false
+            },100)
             toast('下单成功');
           } else {
             toast(res.message)
@@ -212,6 +232,16 @@
       },
       allSell(){
         this.sellAmount = Number(this.userBalance)
+      },
+      getGift(){
+        myGift({}).then(res => {
+          console.log('myGift',res)
+          if(res.code === 10000){
+            if(res.data && res.data.length > 0){
+              this.couponDetail = res.data[0]
+            }
+          }
+        })
       }
     },
     created() {
@@ -236,7 +266,9 @@
       //   }
       // }
     },
-
+    mounted(){
+      this.getGift()
+    }
 
   }
 </script>
@@ -376,7 +408,56 @@
    }
  }
 
+ .discount_ticket {
+   width: 85%;
+   height: r(108);
+   margin: r(20) auto;
+   background-color: #fff;
+   display: flex;
+   flex-direction: row;
+   padding: r(10) r(8);
+   border-radius: r(5);
+   .left_side {
+     flex: 1;
+     word-break: break-word;
+     font-size: r(14);
+     color: #787876;
+     position: relative;
+     .time_date {
+       padding: r(8) r(0);
+     }
+     .id_num {
+       display: flex;
+       .id {
+         width: r(40);
+       }
+     }
+     .middle_line {
+       position: absolute;
+       top: - r(10);
+       right: 0;
+       width: r(15);
+       height: r(108);
+       background: url('~images/discount_white.png') no-repeat;
+       background-size: 100%;
+     }
 
+   }
+   .right_side {
+     width: r(112);
+     text-align: center;
+     .side_money {
+       font-size: 18px;
+       color: #FF8b8b;
+       padding-top: r(12);
+     }
+     .side_num {
+       font-size: 16px;
+       color: #ff8b8b;
+       padding-top: r(10);
+     }
+   }
+ }
  .pending-orders-page{
    padding-bottom: r(50);
   .c-gray{

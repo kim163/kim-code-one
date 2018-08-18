@@ -1,6 +1,6 @@
 <template>
   <div>
-    <m-headnav>优惠活动</m-headnav>
+    <mobile-header :show-left-btn="false">优惠活动</mobile-header>
     <div class="header">
       <div class="activity-balance">
         <div class="title">赠币活动剩余</div>
@@ -53,7 +53,7 @@
 </template>
 
 <script>
-  import mHeadnav from 'components/m-headnav';
+  import MobileHeader from 'components/m-header'
   import mNavbar from 'components/m-navbar';
   import Marquee from 'components/marquee'
   import BulletinDetail from 'components/m-bulletin-detail'
@@ -72,10 +72,10 @@
       }
     },
     components:{
-      mHeadnav,
       mNavbar,
       Marquee,
       BulletinDetail,
+      MobileHeader
     },
     computed:{
       scrollWidth(){

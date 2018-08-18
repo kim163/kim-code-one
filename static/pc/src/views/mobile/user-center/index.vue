@@ -1,6 +1,6 @@
 <template>
   <div>
-    <mobile-header>个人中心</mobile-header>
+    <mobile-header :show-left-btn="false">个人中心</mobile-header>
     <div class="panel-item">
       <router-link :to="{name:'mMyGift'}" class="item-href">
         <i class="iconfont icon-gift"></i>

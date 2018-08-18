@@ -16,6 +16,11 @@
     watch:{
       val(newVal){
         this.$emit('change',Number(newVal))
+      },
+      reset(val){
+        if(val){
+          this.val = 0
+        }
       }
     },
     model:{
@@ -42,6 +47,10 @@
       tip:{
         type:String,
         default:''
+      },
+      reset:{
+        type:Boolean,
+        default:false
       }
     }
   }
