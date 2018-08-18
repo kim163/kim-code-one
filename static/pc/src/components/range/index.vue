@@ -7,7 +7,7 @@
 
 <script>
   export default {
-    name: "index",
+    name: "range",
     data(){
       return{
         val:0
@@ -36,8 +36,8 @@
         default:10
       },
       rangeVal:{
-        type:Number,
-        default:0
+        type:[String,Number],
+        default:'0'
       },
       tip:{
         type:String,
@@ -59,9 +59,6 @@
   input[type=range]:focus {
     outline: none;
   }
-  /*input[type=range] {*/
-  /*-webkit-appearance: none;*/
-  /*}*/
   input[type='range']::-webkit-slider-runnable-track{
     background-image: linear-gradient(-90deg, #4634A9 0%, #F63669 100%);
     height: r(2);

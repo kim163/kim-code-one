@@ -47,6 +47,10 @@
       defSelect:{
         type:String,
         default:''
+      },
+      autoSelect:{
+        type:Boolean,
+        default:false
       }
     },
     model:{
@@ -79,6 +83,9 @@
             for (let i in this.setBankcard.addOption){
               this.bankList.data.push(this.setBankcard.addOption[i]);
             }
+          }
+          if(this.bankList.data.length > 0 && this.autoSelect){
+            this.selBankCard = this.bankList.data[0]
           }
           if(this.defSelect != ''){
             this.selBankCard = _(this.bankList.data).find((item) => {
