@@ -179,8 +179,8 @@
 
           </ul>
           <div class="btn-group">
-            <input type="button" class="btn btn-block btn-border" @click="payCompleted" value="释放UET">
-            <input type="button" class="btn btn-block btn-primary" @click="detailTypeItem='申诉与仲裁'" value="继续留言">
+            <input type="button" class="btn btn-block btn-border"  @click="showConfirmPayment=true" value="释放UET">
+            <input type="button" class="btn btn-block btn-primary" @click="detailTypeItem='申诉与仲裁'"  value="继续留言">
           </div>
         </div>
 
@@ -228,6 +228,17 @@
         </div>
 -->
     </div>
+
+    <confirm-dialog v-model="showConfirmPayment">
+      <div slot="title">释放数额 {{DetailList.debitAmount}} UET</div>
+      <div slot="content">
+        <div class="dialog-content">{{$t('orderDetailPay.confirmPayTitle')}}</div>
+        <div class="dialog-content color-red">{{$t('orderDetailPay.confirmPayCont')}}</div>
+      </div>
+      <div slot="leftBtn" class="confirm-btn-cancel bg-gray">{{$t('postPend.cancel')}}</div>
+      <div slot="rightBtn" @click="payCompleted" class="bg-blue">确认释放UET</div>
+    </confirm-dialog>
+
     <div class="Rongyunchatroom" @click="goChatroom()">
       <p>跟对方会话<span style="color:#ec3a4e" v-if="unreadCountUpdate>0">(未读{{unreadCountUpdate}})</span></p>
     </div>
@@ -250,7 +261,8 @@
   import {chatWith, transaction} from 'api'
   import {mapGetters} from 'vuex'
   import Clipboard from 'clipboard';
-  import chat from '../chatroom/chat'
+  import chat from '../chatroom/chat';
+  import confirmDialog from 'components/confirm';
 
   export default {
     data() {
@@ -267,10 +279,12 @@
           orderId: this.$route.params.id,
           debitName: '', // 交易买方
         },
-        gameID: '',
-        chatState: '',
+        request:{},
+        gameID:'',
+        chatState:'',
         isCredit: false,
-        isDebit: false
+        isDebit: false,
+        showConfirmPayment:false
       };
     },
     methods: {
@@ -339,22 +353,18 @@
         });
         this.loading = false;
       },
-      payCompleted() {
-
-        this.request = {
-          orderId: this.$route.params.id
+      payCompleted(){
+        this.showConfirmPayment=false;
+        this.request={
+          orderId:this.$route.params.id
         }
-        debugger;
         transaction.payCompleted(this.request).then(res => {
           this.loading = false;
           if (res.code == '10000') {
-            debugger;
             Vue.$global.bus.$emit('update:balance');
             toast('您已确认收款，请勿重复操作');
-
             this.$router.push({name: 'mOrderOver', params: {id: this.request.orderId}});
-            debugger;
-          } else {
+          }else{
             toast(res.message)
           }
 
@@ -443,7 +453,8 @@
     components: {
       mHeader,
       chat,
-      NoDataTip
+      NoDataTip,
+      confirmDialog
     }
   };
 

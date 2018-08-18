@@ -178,10 +178,13 @@
     </div>
 
     <confirm-dialog v-model="showConfirmPayment" :is-pc="true">
-      <div slot="title">{{$t('orderDetailPay.confirmPayTitle')}}</div>
-      <div slot="content">{{$t('orderDetailPay.confirmPayCont')}}</div>
-      <div slot="leftBtn" class="confirm-btn-cancel">{{$t('postPend.cancel')}}</div>
-      <div slot="rightBtn" @click="payCompleted">{{$t('orderDetailPay.confirmPayBtn')}}</div>
+      <div slot="title">释放数额 {{DetailList.debitAmount}} UET</div>
+      <div slot="content">
+        <div class="dialog-content">{{$t('orderDetailPay.confirmPayTitle')}}</div>
+        <div class="dialog-content color-red">{{$t('orderDetailPay.confirmPayCont')}}</div>
+      </div>
+      <div slot="leftBtn" class="confirm-btn-cancel bg-gray">{{$t('postPend.cancel')}}</div>
+      <div slot="rightBtn" @click="payCompleted" class="bg-blue">{{$t('orderDetailPay.confirmPayBtn')}}</div>
     </confirm-dialog>
     <!--聊天部分-->
     <div class="chatRoom" @click="showChatList()" v-if="chatOnline">
