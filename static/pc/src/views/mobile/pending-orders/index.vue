@@ -50,7 +50,7 @@
       </div>
       <div class="buy-sell-btn" @click="publishBuyOrSell">{{pendingItem=='buyer' ? '买' : '卖'}}币</div>
     </div>
-    <div class="discount_ticket" v-if="couponDetail != ''">
+    <div class="discount_ticket" v-if="couponDetail.length > 0">
       <div class="left_side">
         <p class="remark_info">{{couponDetail.remark}}</p>
         <p class="time_date">至{{couponDetail.couponEndtime | Date('yyyy-MM-dd')}}过期</p>
@@ -124,7 +124,7 @@
         },
         bankNo:'',
         max:9,
-        couponDetail:'',
+        couponDetail:{},
         rangeReset:false
       }
     },
@@ -412,7 +412,7 @@
    width: 85%;
    height: r(108);
    margin: r(20) auto;
-   background-color: #fff;
+   background-color: #FF8B8B;
    display: flex;
    flex-direction: row;
    padding: r(10) r(8);
@@ -421,7 +421,7 @@
      flex: 1;
      word-break: break-word;
      font-size: r(14);
-     color: #787876;
+     color: #fff;
      position: relative;
      .time_date {
        padding: r(8) r(0);
@@ -432,28 +432,28 @@
          width: r(40);
        }
      }
-     .middle_line {
+
+     .middle_line_next {
        position: absolute;
        top: - r(10);
        right: 0;
        width: r(15);
        height: r(108);
-       background: url('~images/discount_white.png') no-repeat;
+       background: url('~images/discount_pink.png') no-repeat;
        background-size: 100%;
      }
-
    }
    .right_side {
      width: r(112);
      text-align: center;
      .side_money {
        font-size: 18px;
-       color: #FF8b8b;
+       color: #fff;
        padding-top: r(12);
      }
      .side_num {
        font-size: 16px;
-       color: #ff8b8b;
+       color: #fff;
        padding-top: r(10);
      }
    }
