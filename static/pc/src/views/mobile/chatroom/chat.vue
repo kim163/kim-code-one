@@ -857,7 +857,7 @@
       word-break: break-all;
       padding: r(5) r(10) r(5) r(10);
       max-width: 15rem;
-      max-height: 8rem;
+     // max-height: 8rem;
       &::after {
         display: block;
         content: '';

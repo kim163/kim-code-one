@@ -1,8 +1,8 @@
 <template>
   <div>
     <div class="transell-main0 transell-main-box">
-      <m-header v-if="DetailList.credit==userData.userId">我的买币订单</m-header>
-      <m-header v-else-if="DetailList.debit==userData.userId">我的卖币订单</m-header>
+      <m-header v-if="DetailList.credit==userData.userId" :back="goBack">我的买币订单</m-header>
+      <m-header v-else-if="DetailList.debit==userData.userId" :back="goBack">我的卖币订单</m-header>
       <div class="payOrder_progress" v-if="DetailList.credit==userData.userId">
         <div class="progress_state">
           <img src="~images/startpay.png" alt="">
@@ -98,13 +98,13 @@
             <span class="l-title">收款二维码</span>
             <div class="qrcode-box">
               <img src="~images/qrcode.jpg" :src="DetailList.debitAccountQrCodeUrlTwin" class="qrcode-img">
-              <span class="qrcode-tips">长按二维码保存</span>
+              <span class="qrcode-tips copy-btn"></span>
             </div>
           </li>
         </ul>
         <div class="payment-tips credit" >该订单已进入申诉,请进入申诉会话提交您的证据,申诉失败一方将被处罚!</div>
       </div>
-      <div v-if="DetailList.debit == userId">
+      <div v-else-if="DetailList.debit == userId">
         <!--卖-->
         <ul class="details-ul">
           <li>
@@ -149,7 +149,7 @@
               </div>
             </li>
             <li>
-              <span class="l-title">收款姓名 : </span>
+              <span class="l-title">姓名 : </span>
               <div class="fr0">{{DetailList.debitAccountNameTwin}}
                 <a href="javascript:void(0);" class="copy-btn" :data-clipboard-text="DetailList.debitAccountNameTwin"
                    @click="copy">{{$t('transactionHome.copyBtn')}}</a>
@@ -157,7 +157,7 @@
               </div>
             </li>
             <li>
-              <span class="l-title">收款账号 : </span>
+              <span class="l-title">账号 : </span>
               <div class="fr0">
                 <span class="">{{DetailList.debitAccountTwin}}</span>
                 <a href="javascript:void(0);" class="copy-btn" :data-clipboard-text="DetailList.debitAccountTwin"
@@ -169,51 +169,11 @@
               <span class="l-title">收款二维码 : </span>
               <div class="qrcode-box">
                 <img src="~images/qrcode.jpg" :src="DetailList.debitAccountQrCodeUrlTwin" class="qrcode-img">
-                <span class="qrcode-tips">长按二维码保存</span>
+                <span class="qrcode-tips">保存二维码</span>
               </div>
             </li>
 
           </ul>
-          <div class="btn-group">
-            <input type="button" class="btn btn-block btn-border"  @click="showConfirmPayment=true" value="释放UET">
-
-          </div>
-            <ul>
-              <li>
-              <div>
-                  <span v-if="DetailList.debitAccountMerchantTwin == '支付宝'"><i
-                    class="iconfont icon-pay-alipay"></i></span>
-              <span v-else-if="DetailList.debitAccountMerchantTwin == '微信'"><i
-                class="iconfont icon-pay-wechat"></i></span>
-              <span v-else><i class="iconfont icon-pay-bank"></i></span>
-              {{DetailList.debitAccountMerchantTwin}}
-            </div>
-              </li>
-          <li>
-            <span class="l-title">姓名</span>
-            <div class="fr0">{{DetailList.debitAccountNameTwin}}
-              <a href="javascript:void(0);" class="copy-btn" :data-clipboard-text="DetailList.debitAccountNameTwin"
-                 @click="copy">{{$t('transactionHome.copyBtn')}}</a>
-
-            </div>
-          </li>
-          <li>
-            <span class="l-title">账号</span>
-            <div class="fr0">
-              <span class="">{{DetailList.debitAccountTwin}}</span>
-              <a href="javascript:void(0);" class="copy-btn" :data-clipboard-text="DetailList.debitAccountTwin"
-                 @click="copy">{{$t('transactionHome.copyBtn')}}</a>
-            </div>
-          </li>
-          <li class="heightauto"
-              v-if="DetailList.debitAccountMerchantTwin == '支付宝' || DetailList.debitAccountMerchantTwin == '微信'">
-            <span class="l-title">收款二维码 : </span>
-            <div class="qrcode-box">
-              <img src="~images/qrcode.jpg" :src="DetailList.debitAccountQrCodeUrlTwin" class="qrcode-img">
-              <span class="qrcode-tips">长按二维码保存</span>
-            </div>
-          </li>
-        </ul>
         <div class="payment-tips">
           该订单已被申诉,请进入申诉会话提交您的证据,申诉失败一方将被处罚!
 
@@ -309,7 +269,7 @@
               this.isDebit = true;
             }
           } else {
-            toast(res.message)
+             this.$router.replace({name:'mTranRecord'})
           }
           //statusText
 //          this.DetailList.creditProofUrlTwin = res.data.creditProofUrlTwin.split(',');
@@ -514,9 +474,7 @@
       }
       .qrcode-tips {
         display: inline-block;
-        width: r(99);
         word-break: break-all;
-        font-size: r(12);
       }
       .l-title {
         display: inline-block;
