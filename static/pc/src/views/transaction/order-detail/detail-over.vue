@@ -217,7 +217,6 @@
     },
     created() {
       if (this.$route.params.id) {
-        debugger;
         this.orderId = this.$route.params.id;
         this.fetchData();
       }

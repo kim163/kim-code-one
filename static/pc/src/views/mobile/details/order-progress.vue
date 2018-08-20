@@ -85,7 +85,7 @@
               <span class="l-title">收款二维码 : </span>
               <div class="qrcode-box">
                 <img src="~images/qrcode.jpg" :src="DetailList.debitAccountQrCodeUrlTwin" class="qrcode-img"/>
-                <span class="qrcode-tips">长按二维码保存</span>
+                <span class="qrcode-tips copy-btn">保存二维码</span>
               </div>
             </li>
 
@@ -269,7 +269,7 @@
             <span class="l-title">收款二维码 : </span>
             <div class="qrcode-box">
               <img src="~images/qrcode.jpg" :src="DetailList.debitAccountQrCodeUrlTwin" class="qrcode-img"/>
-              <span class="qrcode-tips">长按二维码保存</span>
+              <span class="qrcode-tips copy-btn"></span>
             </div>
           </li>
         </ul>
@@ -562,6 +562,7 @@
         } else {
           this.mheadSet.returnBtnFun = true;
         }
+
       },
       chatStateUpdate() {
         this.chatState = false
@@ -657,13 +658,7 @@
 
       }
     },
-    beforeRouteEnter(to,from,next){
-      if(from.name === 'mOrder'){
-        next({name:'mTranRecord'})
-      }else{
-        next()
-      }
-    },
+
     watch: {
       "$route"(val) {
         this.orderId = val.params.id;
@@ -904,9 +899,7 @@
       }
       .qrcode-tips {
         display: inline-block;
-        width: r(99);
         word-break: break-all;
-        font-size: r(12);
       }
       .l-title {
         display: inline-block;

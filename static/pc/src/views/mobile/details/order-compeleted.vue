@@ -106,7 +106,7 @@
             <span class="l-title">收款二维码 : </span>
             <div class="qrcode-box" v-if="DetailList.debitAccountQrCodeUrlTwin != ''">
               <img src="~images/qrcode.jpg" :src="DetailList.debitAccountQrCodeUrlTwin" class="qrcode-img"/>
-              <span class="qrcode-tips">长按二维码保存</span>
+              <span class="qrcode-tips copy-btn"></span>
             </div>
           </li>
         </ul>
@@ -306,9 +306,7 @@
       }
       .qrcode-tips {
         display: inline-block;
-        width: r(99);
         word-break: break-all;
-        font-size: r(12);
       }
       .l-title {
         display: inline-block;
