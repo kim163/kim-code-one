@@ -16,7 +16,6 @@
     watch:{
       val(newVal){
         this.$emit('change',Number(newVal))
-        cons
       },
       reset(val){
         if(val){
