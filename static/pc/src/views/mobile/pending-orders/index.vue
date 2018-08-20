@@ -49,8 +49,9 @@
         </div>
       </div>
       <div class="buy-sell-btn" @click="publishBuyOrSell">{{pendingItem=='buyer' ? '买' : '卖'}}币</div>
+      <p class="coupon-tip" v-if="Object.keys(couponDetail).length > 0">现在交易可兑现</p>
     </div>
-    <div class="discount_ticket" v-if="couponDetail.length > 0">
+    <div class="discount_ticket" v-if="Object.keys(couponDetail).length > 0">
       <div class="left_side">
         <p class="remark_info">{{couponDetail.remark}}</p>
         <p class="time_date">至{{couponDetail.couponEndtime | Date('yyyy-MM-dd')}}过期</p>
@@ -405,6 +406,11 @@
      background: #3573FA;
      border-radius: 3px;
      margin-top: r(10);
+   }
+   .coupon-tip{
+     @include f(16px);
+     margin-top: r(20);
+     text-align: center;
    }
  }
 
