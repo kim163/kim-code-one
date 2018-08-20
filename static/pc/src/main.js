@@ -38,6 +38,7 @@ require("@/assets/scss/base.scss")
 require("@/assets/scss/font.scss")
 require("@/assets/scss/animate.scss")
 require("@/assets/scss/simple-grid.scss")
+// require("@/assets/scss/mobile.scss")
 Vue.config.productionTip = false;
 import App from './App.vue';//引入app.vue
 Vue.prototype.$loadScript('https://cdn.ronghub.com/RongIMLib-2.3.0.js').then(()=>{
