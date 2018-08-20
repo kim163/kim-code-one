@@ -1,5 +1,5 @@
 <template>
-  <a class="tool-item-href live-800" target="_blank" :href="live800Url">
+  <a class="item-href live-800" target="_blank" :href="live800Url">
     <i class="iconfont icon-online-service"></i>{{$t('navbar.onlineService')}}
   </a>
 </template>

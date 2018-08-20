@@ -246,7 +246,7 @@ export default [
     component:mUserCenter, //个人中心
     meta:{
       noCache:true,
-      isMobilePage:'mobile-body'
+      isMobilePage:'mobile-bodyFtPd'
     }
   },
   {
