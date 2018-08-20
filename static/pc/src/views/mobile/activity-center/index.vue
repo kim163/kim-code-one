@@ -188,7 +188,7 @@
     }
   }
   .activity-list{
-    padding-bottom: r(49);
+    padding-bottom: r(100);
     .activity-item{
       width: 100%;
       margin-bottom: r(15);
@@ -347,12 +347,12 @@
 
       &.buy{
         background: #00B0FF;
-        right: r(-90);
+        right: r(-80);
         animation: bounceInLeft 1s forwards;
       }
       &.sell{
         background: #F06292;
-        left: r(-90);
+        left: r(-80);
         animation: bounceInRight 1s forwards;
       }
     }
