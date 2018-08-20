@@ -248,6 +248,7 @@ export default {
     bindWeChat:'Binding WeChat',
     uploadQrcode:'Click to upload your receipt QR code',
     completeMaterial:'Complete material',
-    myGift:'My Gift'
+    myGift:'My Gift',
+    transactionRecord:'Transaction Record',
   }
 }

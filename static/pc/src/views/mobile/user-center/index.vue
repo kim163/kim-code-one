@@ -2,6 +2,11 @@
   <div>
     <mobile-header :show-left-btn="false">个人中心</mobile-header>
     <div class="panel-item">
+      <router-link :to="{name:'mTranRecord'}" class="item-href">
+        <i class="iconfont icon-gift"></i>
+        {{$t('userCenter.transactionRecord')}}
+        <i class="iconfont icon-right-arrow"></i>
+      </router-link>
       <router-link :to="{name:'mMyGift'}" class="item-href">
         <i class="iconfont icon-gift"></i>
         {{$t('userCenter.myGift')}}

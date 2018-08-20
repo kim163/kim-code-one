@@ -249,6 +249,7 @@ export default {
     bindWeChat:'绑定微信',
     uploadQrcode:'点击上传您的收款二维码',
     completeMaterial:'完善资料',
-    myGift:'我的获赠'
+    myGift:'我的获赠',
+    transactionRecord:'交易记录',
   }
 }

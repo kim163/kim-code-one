@@ -1,6 +1,6 @@
 <template>
   <div class="tran-record-main">
-    <m-headnav>{{$t('navbar.transactionRecord')}}</m-headnav>
+    <mobile-header>{{$t('navbar.transactionRecord')}}</mobile-header>
     <div class="nav-list">
       <div class="nav-item" :class="{active: navIndex === 0}" @click="navIndex = 0">
         {{$t('transactionRecord.tranProgress')}}
@@ -22,13 +22,11 @@
                             v-if="navIndex === 1"></transcation-list>
       </transition>
     </div>
-    <m-navbar></m-navbar>
   </div>
 </template>
 
 <script>
-  import mHeadnav from 'components/m-headnav';
-  import mNavbar from 'components/m-navbar';
+  import MobileHeader from 'components/m-header'
   import balance from 'components/balance'
   import TranscationList from './transaction-list';
   import {mapGetters} from 'vuex'
@@ -37,8 +35,7 @@
     name: "transaction-record",
 
     components: {
-      mHeadnav,
-      mNavbar,
+      MobileHeader,
       TranscationList,
       // Scroll,
       balance
@@ -73,7 +70,7 @@
     transition: all .8s;
   }
 
-  $otherHeight: r(189);
+  $otherHeight: r(149);
   .tran-record-main {
     width: 100%;
     background: #F5F5F5;
