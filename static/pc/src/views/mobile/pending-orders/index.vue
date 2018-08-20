@@ -121,7 +121,7 @@
           }
         ],
         pendingItem: 'buyer',
-        buyAmount:0,
+        buyAmount:this.mini ? 1000 : 0,
         sellAmount:0,
         payType: '',
         minAmount:1,
