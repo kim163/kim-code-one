@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="act-main">
     <mobile-header :show-left-btn="false">优惠活动</mobile-header>
     <div class="header">
       <div class="activity-balance">
@@ -47,6 +47,18 @@
         </transition>
       </div>
     </div>
+    <div class="quick-buy-sell quick-buy" :class="{active: buySell === 'buy'}">
+      <div class="container-info buy">
+        <div class="buy-sell-btn buy" @click="buySell != 'buy' ? buySell= 'buy' : buySell = ''">买</div>
+        <quick-buy-sell :mini="true"></quick-buy-sell>
+      </div>
+    </div>
+    <div class="quick-buy-sell quick-sell" :class="{active: buySell === 'sell'}">
+      <div class="container-info sell">
+        <div class="buy-sell-btn sell" @click="buySell != 'sell' ? buySell= 'sell' : buySell = ''">卖</div>
+        <quick-buy-sell :mini="true" :tab-type="1"></quick-buy-sell>
+      </div>
+    </div>
     <m-navbar></m-navbar>
     <bulletin-detail :detail="bulletinDetail" v-model="showBullDetail"></bulletin-detail>
   </div>
@@ -58,6 +70,7 @@
   import Marquee from 'components/marquee'
   import BulletinDetail from 'components/m-bulletin-detail'
   import { getAwardInfo } from 'api/activity'
+  import QuickBuySell from '../pending-orders'
 
   export default {
     name: "activity-center",
@@ -69,13 +82,15 @@
         coinBalance:0,
         showBullDetail:false,
         bulletinDetail:{},
+        buySell:''
       }
     },
     components:{
       mNavbar,
       Marquee,
       BulletinDetail,
-      MobileHeader
+      MobileHeader,
+      QuickBuySell
     },
     computed:{
       scrollWidth(){
@@ -132,6 +147,11 @@
   }
   .panel-enter-active{
     transition: all .5s;
+  }
+  .act-main{
+    width: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
   }
   .header{
     width: 100%;
@@ -264,6 +284,76 @@
         &.link-3{
           background-image: linear-gradient(-236deg, #FB9F75 0%, #FA709A 100%);
         }
+      }
+    }
+  }
+  .quick-buy-sell{
+    width: 70%;
+    background: #FFFFFF;
+    box-shadow: 0 0 r(20) 0 rgba(0,0,0,0.60);
+    position: fixed;
+    transition: all .5s;
+    &.active{
+      .buy-sell-btn{
+        &.buy{
+          right: r(-30);
+        }
+        &.sell{
+          left: r(-30);
+        }
+      }
+    }
+    &.quick-buy{
+      border-radius: 0 r(6) r(6) 0;
+      left: -80%;
+      bottom: 16%;
+      &.active{
+        left: 0%;
+      }
+    }
+    &.quick-sell{
+      border-radius: r(6) 0 0 r(6);
+      right: -80%;
+      bottom: 15%;
+      &.active{
+        right: 0%;
+      }
+    }
+    .container-info{
+      /*position: relative;*/
+      /*width: 100%;*/
+      padding: r(20) 0;
+      &.buy{
+        padding-left: r(20);
+        padding-right: r(30);
+      }
+      &.sell{
+        padding-left: r(30);
+        padding-right: r(20);
+      }
+    }
+    .buy-sell-btn{
+      position: absolute;
+      width: r(60);
+      height: r(60);
+      border: r(2) solid #FFFFFF;
+      text-align: center;
+      line-height: r(56);
+      @include f(24px);
+      border-radius: 50%;
+      color: $white;
+      top: 50%;
+      margin-top: r(-30);
+
+      &.buy{
+        background: #00B0FF;
+        right: r(-90);
+        animation: bounceInLeft 1s forwards;
+      }
+      &.sell{
+        background: #F06292;
+        left: r(-90);
+        animation: bounceInRight 1s forwards;
       }
     }
   }
