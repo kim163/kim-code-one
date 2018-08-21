@@ -14,3 +14,9 @@ export const announcement = jsonData => service({
   method: 'post',
   data: jsonData
 });
+//获取我的优惠券详细信息
+export const getFastTraderAward = jsonData => service({
+  url: numversion+`coupon/getFastTraderAward`,
+  method: 'post',
+  data: jsonData
+});

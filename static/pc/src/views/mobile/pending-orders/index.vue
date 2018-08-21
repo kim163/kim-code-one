@@ -58,7 +58,7 @@
       <div class="buy-sell-btn" @click="publishBuyOrSell">{{pendingItem=='buyer' ? '买' : '卖'}}币</div>
       <p class="coupon-tip" v-if="!mini && Object.keys(couponDetail).length > 0">现在交易可兑现</p>
       <p class="coupon-tip-mini" v-if="mini && Object.keys(couponDetail).length > 0">
-        现在买币，可兑现赠币券 {{couponDetail.couponValueStr}} UET
+        现在{{pendingItem=='buyer' ? '买' : '卖'}}币，可兑现赠币券 {{couponDetail.couponValueStr}} UET
       </p>
     </div>
     <div class="discount_ticket" v-if="!mini && Object.keys(couponDetail).length > 0">
@@ -84,8 +84,8 @@
     publishToSell
   } from 'api/transaction'
   import {
-    myGift
-  } from 'api/user-center'
+    getFastTraderAward
+  } from 'api/activity'
 
   import MobileNavBar from 'components/m-navbar'
   import MobileHeader from 'components/m-header'
@@ -247,13 +247,7 @@
         this.sellAmount = Number(this.userBalance)
       },
       getGift(){
-        const requestDatas = {
-          "limit": 1,
-          "offset": 0,
-          "couponStatus": 2,
-          "couponType": 100
-        }
-        myGift(requestDatas).then(res => {
+        getFastTraderAward({}).then(res => {
           console.log('myGift',res)
           if(res.code === 10000){
             if(res.data && res.data.length > 0){
