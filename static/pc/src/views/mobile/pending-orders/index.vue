@@ -56,12 +56,12 @@
         </div>
       </div>
       <div class="buy-sell-btn" @click="publishBuyOrSell">{{pendingItem=='buyer' ? '买' : '卖'}}币</div>
-      <p class="coupon-tip" v-if="!mini && Object.keys(couponDetail).length > 0">现在交易可兑现</p>
-      <p class="coupon-tip-mini" v-if="mini && Object.keys(couponDetail).length > 0">
+      <p class="coupon-tip" v-if="!mini && couponDetail">现在交易可兑现</p>
+      <p class="coupon-tip-mini" v-if="mini && couponDetail">
         现在{{pendingItem=='buyer' ? '买' : '卖'}}币，可兑现赠币券 {{couponDetail.couponValueStr}} UET
       </p>
     </div>
-    <div class="discount_ticket" v-if="!mini && Object.keys(couponDetail).length > 0">
+    <div class="discount_ticket" v-if="!mini && couponDetail">
       <div class="left_side">
         <p class="remark_info">{{couponDetail.remark}}</p>
         <p class="time_date">至{{couponDetail.couponEndtime | Date('yyyy-MM-dd')}}过期</p>
@@ -141,7 +141,7 @@
         },
         bankNo:'',
         max:9,
-        couponDetail:{},
+        couponDetail:null,
         rangeReset:false,
         showBuySellRes:false
       }
@@ -258,8 +258,8 @@
         getFastTraderAward({}).then(res => {
           console.log('myGift',res)
           if(res.code === 10000){
-            if(res.data && res.data.length > 0){
-              this.couponDetail = res.data[0]
+            if(res.data && !_.isNull(res.data)){
+              this.couponDetail = res.data
             }
           }
         })
@@ -496,7 +496,7 @@
    }
  }
  .pending-orders-page{
-   padding-bottom: r(50);
+   padding-bottom: r(60);
   .c-gray{
     color:#666;
   }
