@@ -53,6 +53,7 @@
           offset: 0,
           currentPage:1,
           type: 11,
+          status:1,
           startBalance: 0
         },
         pullDownCfg:{
