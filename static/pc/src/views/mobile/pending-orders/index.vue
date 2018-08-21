@@ -75,6 +75,10 @@
       </div>
     </div>
     <mobile-nav-bar v-if="!mini"></mobile-nav-bar>
+    <confirm v-model="showBuySellRes" :show-right-btn="false">
+      <div slot="content">下单成功</div>
+      <div slot="leftBtn">关闭</div>
+    </confirm>
   </div>
 </template>
 
@@ -94,6 +98,7 @@
   import {mapGetters} from 'vuex'
   import getBankcard from 'components/get-bankcard'
   import Range from 'components/range'
+  import Confirm from 'components/confirm'
 
   export default {
     name: "transaction-record",
@@ -103,7 +108,8 @@
       MobileHeader,
       balance,
       getBankcard,
-      Range
+      Range,
+      Confirm
     },
 
     data(){
@@ -136,7 +142,8 @@
         bankNo:'',
         max:9,
         couponDetail:{},
-        rangeReset:false
+        rangeReset:false,
+        showBuySellRes:false
       }
     },
     watch: {
@@ -225,14 +232,15 @@
         api(this.requestda).then((res) => {
           console.log(res)
           if (res.code == '10000') {
-            this.buyAmount = 0;
+            this.buyAmount = this.mini ? 1000 : 0;
             this.sellAmount = 0;
             // this.bindCardReset=true;
             this.rangeReset = true
             setTimeout(() => {
               this.rangeReset = false
             },100)
-            toast('下单成功');
+            // toast('下单成功');
+            this.showBuySellRes = true
           } else {
             toast(res.message)
           }
