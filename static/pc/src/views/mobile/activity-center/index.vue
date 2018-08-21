@@ -175,6 +175,7 @@
       padding: 0 r(10);
       display: flex;
       align-items: center;
+      background: $white;
       .iconfont{
         color: $main-color;
       }
