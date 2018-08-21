@@ -48,7 +48,7 @@
           <li>
             <span class="l-title">订单:</span>
             <p class="order-id-li extra_order"><span class="order_info">{{orderData.orderId}}</span>
-              <a href="javascript:void(0);" class="copy-btn-next" :data-clipboard-text="orderData.orderId"
+              <a href="javascript:void(0);" class="copy-btn-next copy-btn" :data-clipboard-text="orderData.orderId"
                  @click="copy">{{$t('transactionHome.copyBtn')}}</a>
             </p>
           </li>
@@ -110,7 +110,7 @@
           <li>
             <span class="l-title">订单:</span>
             <p class="order-id-li extra_order"><span class="order_info">{{orderData.orderId}}</span>
-              <a href="javascript:void(0);" class="copy-btn-next" :data-clipboard-text="orderData.orderId"
+              <a href="javascript:void(0);" class="copy-btn-next copy-btn" :data-clipboard-text="orderData.orderId"
                  @click="copy">{{$t('transactionHome.copyBtn')}}</a>
             </p>
           </li>
@@ -461,6 +461,7 @@
       @include f(16px);
       color: #8f8f8f;
       overflow: hidden;
+      position: relative;
       &.heightauto {
         height: 180px;
       }
@@ -491,6 +492,10 @@
         vertical-align: - r(8);
         padding-top: r(3);
         text-align: right;
+      }
+      .equal_money {
+        color: red;
+        font-size: r(16);
       }
       .copy-btn {
         position: absolute;
@@ -730,7 +735,8 @@
     }
     .copy-btn-next {
       color: #5087ff;
-
+      top: auto !important;
+      left: auto !important;
     }
   }
 
