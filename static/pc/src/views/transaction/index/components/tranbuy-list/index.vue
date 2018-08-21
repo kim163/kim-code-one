@@ -89,7 +89,8 @@
           limit:10,
           offset:0,
           type: 11,
-          startBalance:0
+          startBalance:0,
+          status:1,
         },
         noData:false
       }
