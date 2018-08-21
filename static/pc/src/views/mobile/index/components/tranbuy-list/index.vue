@@ -135,7 +135,10 @@
     },
     activated() {
       setTimeout(() => {
-        this.$refs.scroll.scrollTo(0,this.scrollY,0)
+        if(this.$refs.scroll){
+          this.$refs.scroll.scrollTo(0,this.scrollY,0)
+        }
+
       }, 100)
     },
     components: {

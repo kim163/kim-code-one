@@ -247,7 +247,13 @@
         this.sellAmount = Number(this.userBalance)
       },
       getGift(){
-        myGift({}).then(res => {
+        const requestDatas = {
+          "limit": 1,
+          "offset": 0,
+          "couponStatus": 2,
+          "couponType": 100
+        }
+        myGift(requestDatas).then(res => {
           console.log('myGift',res)
           if(res.code === 10000){
             if(res.data && res.data.length > 0){
