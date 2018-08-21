@@ -103,4 +103,7 @@
       }
     }
   }
+  .icon-gift{
+    color: #03A9F3;
+  }
 </style>

@@ -54,7 +54,7 @@
         <li>
           <p class="l-title">订单:</p>
           <p class="order-id-li extra_order"><span class="order_info">{{orderData.orderId}}</span>
-            <a href="javascript:void(0);" class="copy-btn-next" :data-clipboard-text="orderData.orderId"
+            <a href="javascript:void(0);" class="copy-btn-next copy-btn" :data-clipboard-text="orderData.orderId"
                @click="copy">{{$t('transactionHome.copyBtn')}}</a>
           </p>
         </li>
@@ -210,6 +210,7 @@
         this.$router.push('/mh/')
       },
       copy() {
+
         var clipboard = new Clipboard('.copy-btn')
         clipboard.on('success', e => {
           toast('复制成功')
@@ -293,6 +294,7 @@
       font-size: f(16px);
       color: #8f8f8f;
       overflow: hidden;
+      position: relative;
       &.heightauto {
         height: 180px;
       }
@@ -444,7 +446,8 @@
     }
     .copy-btn-next {
       color: #5087ff;
-
+      top: auto !important;
+      left: auto !important;
     }
   }
 
