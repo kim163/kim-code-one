@@ -137,7 +137,7 @@ export default [
     name: 'mPendingBuy',
     component:mPendingBuy,
     meta: {
-      isMobilePage: "mobile-bodyFtPd",
+      isMobilePage: "mobile-body",
       noCache: true
     }
   },

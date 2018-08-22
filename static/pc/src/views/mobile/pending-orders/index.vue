@@ -1,11 +1,14 @@
 <template>
-  <div class="pending-orders-page">
-    <mobile-header :show-left-btn="false">{{$t('postPend.postTitle')}}</mobile-header>
-    <div class="balance">
+  <div :class="{'pending-orders-page':!mini, 'mini-main':mini}">
+    <mobile-header :show-left-btn="false" v-if="!mini">{{$t('postPend.postTitle')}}</mobile-header>
+    <div class="balance" v-if="!mini">
       <i class="iconfont icon-wallet"></i>
       <balance @getBalance="getBalance"></balance> ≈ &yen;{{formatCny(1)}}
     </div>
-    <div class="tabs">
+    <div class="user-balance" v-else>
+      我的余额：<balance @getBalance="getBalance"></balance>
+    </div>
+    <div class="tabs" v-if="!mini">
       <ul>
         <li v-for="item in pendingType" @click="pendingItem=item.value" class="s" :class="{active:pendingItem==item.value}" :key="item.value">
           <i class="iconfont" :class="item.icon"></i>
@@ -13,8 +16,8 @@
         </li>
       </ul>
     </div>
-    <div class="container">
-      <div class="tip">
+    <div :class="{container: !mini}">
+      <div class="tip" v-if="!mini">
         您发布买币之后，钱包将会扫描所有用户需求进行配对，快速匹配买卖双方，请您注意查看APP提醒，
         匹配成功之后便可快速交易。<span class="red">注意：随意发布订单而不交易的，将被禁用账户。</span>
       </div>
@@ -26,14 +29,18 @@
           <div class="flex">
             <input type="text" class="def-input" v-number-only
                    v-model.number="buyAmount"
-                   :maxlength="max"> {{userData.accountChainVos[0].assetCode}}
+                   :maxlength="max">
+            <span>{{userData.accountChainVos[0].assetCode}}</span>
           </div>
           <div class="to-cny">≈ &yen;{{formatCny(2)}}</div>
         </div>
         <div class="sell" v-show="pendingItem=='seller'">
           <div class="sell-info flex">
             <div class="title">卖出数量：</div>
-            <input type="text" class="def-input sell-input" v-number-only v-model.number="sellAmount">
+            <input type="text" class="def-input sell-input"
+                   v-number-only
+                   v-model.number="sellAmount"
+                   :maxlength="max">
             <span class="all-in-btn" @click="allSell()">全</span>
           </div>
           <div class="to-cny">≈ &yen;{{formatCny(3)}}</div>
@@ -49,8 +56,12 @@
         </div>
       </div>
       <div class="buy-sell-btn" @click="publishBuyOrSell">{{pendingItem=='buyer' ? '买' : '卖'}}币</div>
+      <p class="coupon-tip" v-if="!mini && couponDetail">现在交易可兑现</p>
+      <p class="coupon-tip-mini" v-if="mini && couponDetail">
+        现在{{pendingItem=='buyer' ? '买' : '卖'}}币，可兑现赠币券 {{couponDetail.couponValueStr}} UET
+      </p>
     </div>
-    <div class="discount_ticket" v-if="couponDetail.length > 0">
+    <div class="discount_ticket" v-if="!mini && couponDetail">
       <div class="left_side">
         <p class="remark_info">{{couponDetail.remark}}</p>
         <p class="time_date">至{{couponDetail.couponEndtime | Date('yyyy-MM-dd')}}过期</p>
@@ -63,7 +74,11 @@
         <div class="side_num"> ={{couponDetail.couponValueStr}}UET</div>
       </div>
     </div>
-    <mobile-nav-bar></mobile-nav-bar>
+    <mobile-nav-bar v-if="!mini"></mobile-nav-bar>
+    <confirm v-model="showBuySellRes" :show-right-btn="false">
+      <div slot="content">下单成功</div>
+      <div slot="leftBtn">关闭</div>
+    </confirm>
   </div>
 </template>
 
@@ -73,8 +88,8 @@
     publishToSell
   } from 'api/transaction'
   import {
-    myGift
-  } from 'api/user-center'
+    getFastTraderAward
+  } from 'api/activity'
 
   import MobileNavBar from 'components/m-navbar'
   import MobileHeader from 'components/m-header'
@@ -83,6 +98,7 @@
   import {mapGetters} from 'vuex'
   import getBankcard from 'components/get-bankcard'
   import Range from 'components/range'
+  import Confirm from 'components/confirm'
 
   export default {
     name: "transaction-record",
@@ -92,7 +108,8 @@
       MobileHeader,
       balance,
       getBankcard,
-      Range
+      Range,
+      Confirm
     },
 
     data(){
@@ -110,7 +127,7 @@
           }
         ],
         pendingItem: 'buyer',
-        buyAmount:0,
+        buyAmount:this.mini ? 1000 : 0,
         sellAmount:0,
         payType: '',
         minAmount:1,
@@ -124,8 +141,9 @@
         },
         bankNo:'',
         max:9,
-        couponDetail:{},
-        rangeReset:false
+        couponDetail:null,
+        rangeReset:false,
+        showBuySellRes:false
       }
     },
     watch: {
@@ -138,6 +156,16 @@
         'userId',
         'userData'
       ]),
+    },
+    props:{
+      mini:{  //迷你版
+        type:Boolean,
+        default:false
+      },
+      tabType:{
+        type:Number,
+        default:0 // 0表示买  1表示卖
+      }
     },
     methods: {
       generateTitle,
@@ -158,22 +186,14 @@
           toast('请输入整数数量');
           return;
         }
+        if(this.pendingItem === 'seller' && Number(buySellAmount) > Number(this.userBalance)){
+          toast('余额不足!请输入正确的卖出数量');
+          return;
+        }
         if (this.payType == '' || !this.payType) {
           toast(`请选择${this.pendingItem === 'seller' ? '收款' : '支付'}方式`);
           return;
         }
-        // if (this.minAmount == '' || this.minAmount <= 0) {
-        //   toast('最低买入数量输入不正确');
-        //   return;
-        // }
-        // if(!_.isInteger(this.minAmount) || this.minAmount<1){
-        //   toast('请输入整数最低买入数量');
-        //   return;
-        // }
-        // if (this.postItem === 'seller' && (this.proofType == '' || !this.proofType)) {
-        //   toast('付款说明不能为空');
-        //   return;
-        // }
         if (this.payType.type == '1') {
           this.typeBank = '支付宝'
         } else if (this.payType.type == '2') {
@@ -212,14 +232,15 @@
         api(this.requestda).then((res) => {
           console.log(res)
           if (res.code == '10000') {
-            this.buyAmount = 0;
+            this.buyAmount = this.mini ? 1000 : 0;
             this.sellAmount = 0;
             // this.bindCardReset=true;
             this.rangeReset = true
             setTimeout(() => {
               this.rangeReset = false
             },100)
-            toast('下单成功');
+            // toast('下单成功');
+            this.showBuySellRes = true
           } else {
             toast(res.message)
           }
@@ -234,17 +255,18 @@
         this.sellAmount = Number(this.userBalance)
       },
       getGift(){
-        myGift({}).then(res => {
+        getFastTraderAward({}).then(res => {
           console.log('myGift',res)
           if(res.code === 10000){
-            if(res.data && res.data.length > 0){
-              this.couponDetail = res.data[0]
+            if(res.data && !_.isNull(res.data)){
+              this.couponDetail = res.data
             }
           }
         })
       }
     },
     created() {
+      this.pendingItem = this.tabType === 1 ? 'seller' : 'buyer'
       const mode = this.$route.query.mode
       if(!_.isUndefined(mode) && Number(mode) === 3){ // 判断用户意图  mode=3是想打开我要卖币 其他默认是买币
         this.pendingItem = 'seller'
@@ -285,6 +307,9 @@
      margin-right: r(10);
      vertical-align: top;
    }
+ }
+ .mini-main{
+   @include f(14px);
  }
  .tabs{
    width: 90%;
@@ -332,80 +357,92 @@
    border: 1px solid #D3D3D3;
    border-radius: r(5);
    padding: r(15) r(20);
-   .tip{
-     @include f(14px);
-     line-height: r(22);
-     .red{
-      color: #FF8B8B;
-     }
+
+ }
+ .tip{
+   @include f(14px);
+   line-height: r(22);
+   .red{
+     color: #FF8B8B;
    }
-   .buy-num{
+ }
+ .buy-num{
+   margin: r(20) 0 r(15) 0;
+ }
+ .def-input{
+   height:r(39);
+   line-height:r(39);
+   width:84%;
+   background: #FFFFFF;
+   border: 1px solid #D3D3D3;
+   padding-left: r(5);
+   @include  f(15px);
+   flex-grow: 1;
+   &:hover,&:focus{
+     outline: none;
+   }
+ }
+ .to-cny{
+   margin: r(15) 0;
+   color: #EC3A4E;
+   @include f(16px);
+ }
+ .sell{
+   .sell-info{
      margin: r(20) 0 r(15) 0;
-   }
-   .def-input{
-     height:r(39);
-     line-height:r(39);
-     /*width:84%;*/
-     background: #FFFFFF;
-     border: 1px solid #D3D3D3;
-     padding-left: r(5);
-     @include  f(15px);
-     flex-grow: 1;
-     &:hover,&:focus{
-       outline: none;
+     .sell-input{
+       width: calc(100% - #{r(121)});
+     }
+     .all-in-btn{
+       display: inline-block;
+       width: r(41);
+       height: r(40);
+       text-align: center;
+       line-height: r(40);
+       background: #3573FA;
+       @include f(16px);
+       color: $white;
      }
    }
    .to-cny{
-     margin: r(15) 0;
-     color: #EC3A4E;
-     @include f(16px);
+     margin-left: r(80);
    }
-   .sell{
-     .sell-info{
-       margin: r(20) 0 r(15) 0;
-       .sell-input{
-         width: calc(100% - #{r(121)});
-       }
-       .all-in-btn{
-         display: inline-block;
-         width: r(41);
-         height: r(40);
-         text-align: center;
-         line-height: r(40);
-         background: #3573FA;
-         @include f(16px);
-         color: $white;
-       }
-     }
-     .to-cny{
-       margin-left: r(80);
-     }
-   }
-   .title{
-     width: r(80);
+ }
+ .title{
+   width: r(80);
+   @include f(14px);
+ }
+ .select-card{
+   .select-pay{
+     flex-grow: 1;
+     height:r(39);
+     line-height:r(39);
+     background: #FFFFFF;
+     border: 1px solid #D3D3D3;
      @include f(14px);
    }
-   .select-card{
-     .select-pay{
-       flex-grow: 1;
-       height:r(39);
-       line-height:r(39);
-       background: #FFFFFF;
-       border: 1px solid #D3D3D3;
-       @include f(14px);
-     }
-   }
-   .buy-sell-btn{
-     width: 100%;
-     height: r(40);
-     line-height: r(40);
-     text-align: center;
-     color: $white;
-     @include f(16px);
-     background: #3573FA;
-     border-radius: 3px;
-     margin-top: r(10);
-   }
+ }
+ .buy-sell-btn{
+   width: 100%;
+   height: r(40);
+   line-height: r(40);
+   text-align: center;
+   color: $white;
+   @include f(16px);
+   background: #3573FA;
+   border-radius: 3px;
+   margin-top: r(10);
+ }
+ .coupon-tip{
+   @include f(16px);
+   margin-top: r(20);
+   text-align: center;
+ }
+ .coupon-tip-mini{
+   @include f(14px);
+   color: #EC3A4E;
+   margin-top: r(15);
+   text-align: center;
  }
 
  .discount_ticket {
@@ -459,7 +496,7 @@
    }
  }
  .pending-orders-page{
-   padding-bottom: r(50);
+   padding-bottom: r(60);
   .c-gray{
     color:#666;
   }

@@ -51,8 +51,8 @@
           offset: 0,
           currentPage:1,
           type: 12,
-          startBalance: 0
-          //status: 41
+          startBalance: 0,
+          status: 1
         },
         pullDownCfg:{
           txt:this.generateTitle('scorllCfg.pullDownText'),

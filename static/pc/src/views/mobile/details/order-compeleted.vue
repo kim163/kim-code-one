@@ -54,7 +54,7 @@
         <li>
           <p class="l-title">订单:</p>
           <p class="order-id-li extra_order"><span class="order_info">{{orderData.orderId}}</span>
-            <a href="javascript:void(0);" class="copy-btn-next" :data-clipboard-text="orderData.orderId"
+            <a href="javascript:void(0);" class="copy-btn-next copy-btn" :data-clipboard-text="orderData.orderId"
                @click="copy">{{$t('transactionHome.copyBtn')}}</a>
           </p>
         </li>
@@ -106,7 +106,7 @@
             <span class="l-title">收款二维码 : </span>
             <div class="qrcode-box" v-if="DetailList.debitAccountQrCodeUrlTwin != ''">
               <img src="~images/qrcode.jpg" :src="DetailList.debitAccountQrCodeUrlTwin" class="qrcode-img"/>
-              <span class="qrcode-tips">长按二维码保存</span>
+              <span class="qrcode-tips copy-btn"></span>
             </div>
           </li>
         </ul>
@@ -210,6 +210,7 @@
         this.$router.push('/mh/')
       },
       copy() {
+
         var clipboard = new Clipboard('.copy-btn')
         clipboard.on('success', e => {
           toast('复制成功')
@@ -293,6 +294,7 @@
       font-size: f(16px);
       color: #8f8f8f;
       overflow: hidden;
+      position: relative;
       &.heightauto {
         height: 180px;
       }
@@ -306,9 +308,7 @@
       }
       .qrcode-tips {
         display: inline-block;
-        width: r(99);
         word-break: break-all;
-        font-size: r(12);
       }
       .l-title {
         display: inline-block;
@@ -446,7 +446,8 @@
     }
     .copy-btn-next {
       color: #5087ff;
-
+      top: auto !important;
+      left: auto !important;
     }
   }
 

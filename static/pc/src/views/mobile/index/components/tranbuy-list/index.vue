@@ -53,6 +53,7 @@
           offset: 0,
           currentPage:1,
           type: 11,
+          status:1,
           startBalance: 0
         },
         pullDownCfg:{
@@ -134,7 +135,10 @@
     },
     activated() {
       setTimeout(() => {
-        this.$refs.scroll.scrollTo(0,this.scrollY,0)
+        if(this.$refs.scroll){
+          this.$refs.scroll.scrollTo(0,this.scrollY,0)
+        }
+
       }, 100)
     },
     components: {

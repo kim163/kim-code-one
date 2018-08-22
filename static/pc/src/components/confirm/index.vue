@@ -15,10 +15,10 @@
         <slot name="content"></slot>
       </div>
       <div class="confirm-footer">
-        <div class="confirm-btn" :class="{'confirm-btn-pc': isPc}" @click="hideDialog">
+        <div class="confirm-btn" v-if="showLeftBtn" :class="{'confirm-btn-pc': isPc}" @click="hideDialog">
           <slot name="leftBtn">{{$t('postPend.cancel')}}</slot>
         </div>
-        <div class="confirm-btn" :class="{'confirm-btn-pc': isPc}">
+        <div class="confirm-btn" v-if="showRightBtn" :class="{'confirm-btn-pc': isPc}">
           <slot name="rightBtn"></slot>
         </div>
       </div>
@@ -48,6 +48,14 @@
       isPc:{
         type:Boolean,
         default:false
+      },
+      showLeftBtn:{
+        type:Boolean,
+        default:true
+      },
+      showRightBtn:{
+        type:Boolean,
+        default:true
       }
     },
     watch: {

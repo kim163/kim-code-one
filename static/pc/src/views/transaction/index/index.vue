@@ -70,19 +70,13 @@
       navMenu, vFooter, BreadCrumbs, transactMenu, guidePage, tranbuyList, userWalletass, recentOrders,
       WithdrawTip
     },
-    // beforeRouteEnter(to,from,next){
-    //   next(vm => {
-    //     if(vm.islogin){
-    //       next()
-    //     }else{
-    //       if(_.customize()){
-    //         next('/')
-    //       }else{
-    //         next()
-    //       }
-    //     }
-    //   })
-    // }
+    beforeRouteEnter(to,from,next){
+      if(_.isMobile()){
+        next({name:'mIndex',replace:true})
+      }else{
+        next()
+      }
+    }
   };
 </script>
 <style lang="scss">

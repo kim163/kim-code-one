@@ -35,7 +35,7 @@
             <li>
               <p class="l-title">订单 :</p>
               <p class="order-id-li extra_order"><span class="order_info">{{orderId}}</span>
-                <a href="javascript:void(0);" class="copy-btn-next" :data-clipboard-text="orderId"
+                <a href="javascript:void(0);" class="copy-btn copy-btn-next" :data-clipboard-text="orderId"
                    @click="copy">{{$t('transactionHome.copyBtn')}}</a>
               </p>
             </li>
@@ -85,7 +85,7 @@
               <span class="l-title">收款二维码 : </span>
               <div class="qrcode-box">
                 <img src="~images/qrcode.jpg" :src="DetailList.debitAccountQrCodeUrlTwin" class="qrcode-img"/>
-                <span class="qrcode-tips">长按二维码保存</span>
+                <span class="qrcode-tips copy-btn"></span>
               </div>
             </li>
 
@@ -94,21 +94,22 @@
           <ul class="morder-paymethod" v-if="DetailList.status =='45' ">
             <li class="cfx">
               <a href="alipay://">
-              <span>  <i class="iconfont icon-pay-alipay"></i> 打开支付宝 </span>
+                <span>  <i class="iconfont icon-pay-alipay"></i> 打开支付宝 </span>
               </a>
             </li>
             <li class="cfx">
               <a href="weixin://">
-              <span>  <i class="iconfont icon-pay-wechat"></i> 打开微信 </span>
+                <span>  <i class="iconfont icon-pay-wechat"></i> 打开微信 </span>
               </a>
             </li>
           </ul>
           <div class="btn-group" v-if="DetailList.status =='45' ">
             <p class="payment-tips">
-               请在倒计时内完成付款,并点击下方的按钮,为了能快速完成交易,请尽量真实付款,切勿造假,一经发现将被禁用
+              请在倒计时内完成付款,并点击下方的按钮,为了能快速完成交易,请尽量真实付款,切勿造假,一经发现将被禁用
             </p>
             <input type="button" class="btn btn-block btn-primary" @click="showConfirm=true" value="我已完成付款">
-            <input type="button" class="btn btn-block btn-cancel gray-black" @click="cancelOrder" v-if="DetailList.status =='45'"
+            <input type="button" class="btn btn-block btn-cancel gray-black" @click="cancelOrder"
+                   v-if="DetailList.status =='45'"
                    value="取消订单">
             <input type="button" class="btn btn-block btn-primary"
                    v-if="DetailList.debit == userId || DetailList.status =='47'" value="提出反证">
@@ -214,7 +215,7 @@
           <li>
             <p class="l-title">订单 :</p>
             <p class="order-id-li extra_order"><span class="order_info">{{orderId}}</span>
-              <a href="javascript:void(0);" class="copy-btn-next" :data-clipboard-text="orderId"
+              <a href="javascript:void(0);" class="copy-btn-next copy-btn" :data-clipboard-text="orderId"
                  @click="copy">{{$t('transactionHome.copyBtn')}}</a>
             </p>
           </li>
@@ -231,7 +232,7 @@
                  <img src="~images/chatWith/buyer.png" alt="" class="character">
                 {{DetailList.creditName}}</span>
             <div class="fr remind_info">如果收到款项不确定是否对方付的
-            <p>请点下方跟对方会话</p></div>
+              <p>请点下方跟对方会话</p></div>
           </li>
         </ul>
         <ul class="details-ul pay-detail">
@@ -269,7 +270,7 @@
             <span class="l-title">收款二维码 : </span>
             <div class="qrcode-box">
               <img src="~images/qrcode.jpg" :src="DetailList.debitAccountQrCodeUrlTwin" class="qrcode-img"/>
-              <span class="qrcode-tips">长按二维码保存</span>
+              <span class="qrcode-tips copy-btn"></span>
             </div>
           </li>
         </ul>
@@ -388,8 +389,8 @@
         countDownTime: 0,
         typeState: 1,
         buyTypeBuyBank: '',
-        showDiscountInfo:false,
-        couponValueStr:0
+        showDiscountInfo: false,
+        couponValueStr: 0
       };
     },
     methods: {
@@ -434,25 +435,25 @@
         });
 
       },
-      fetchDiscountNum(){
-        const request={
-            'orderId': this.orderId,
-            'traderType': this.DetailList.credit == this.userId ? 1 : 2　
+      fetchDiscountNum() {
+        const request = {
+          'orderId': this.orderId,
+          'traderType': this.DetailList.credit == this.userId ? 1 : 2
         }
-        transaction.getCouponAmount(request).then((res)=>{
-            if(res.code == '10000'){
-              if(res.data.isAward){
-                this.showDiscountInfo = true;
-                this.couponValueStr = res.data.couponValueStr
-                if(this.showDiscountInfo){
-                  setTimeout(() => {
-                    this.fetchDiscountNum()
-                  },10000)
-                }
+        transaction.getCouponAmount(request).then((res) => {
+          if (res.code == '10000') {
+            if (res.data.isAward) {
+              this.showDiscountInfo = true;
+              this.couponValueStr = res.data.couponValueStr
+              if (this.showDiscountInfo) {
+                setTimeout(() => {
+                  this.fetchDiscountNum()
+                }, 10000)
               }
-            }else {
-              toast(res.message)
             }
+          } else {
+            toast(res.message)
+          }
         })
 
 
@@ -562,6 +563,7 @@
         } else {
           this.mheadSet.returnBtnFun = true;
         }
+
       },
       chatStateUpdate() {
         this.chatState = false
@@ -578,7 +580,7 @@
             toast('您已确认收款，请勿重复操作');
             this.$router.push({name: 'mOrderOver', params: {id: this.orderId}});
             /*从该入口进去需要弹窗*/
-            this.$store.commit('GET_ISNEEDCOUPON',true)
+            this.$store.commit('GET_ISNEEDCOUPON', true)
           } else {
             toast(res.message)
           }
@@ -657,13 +659,7 @@
 
       }
     },
-    beforeRouteEnter(to,from,next){
-      if(from.name === 'mOrder'){
-        next({name:'mTranRecord'})
-      }else{
-        next()
-      }
-    },
+
     watch: {
       "$route"(val) {
         this.orderId = val.params.id;
@@ -789,40 +785,42 @@
       padding: 0 r(10);
     }
   }
-  .payOrder_progress{
+
+  .payOrder_progress {
     display: flex;
     flex-direction: row;
     background-color: #fff;
-    .progress_state{
+    .progress_state {
       padding-top: r(20);
       width: 33%;
       text-align: center;
       position: relative;
-      img{
+      img {
         width: r(33);
         height: r(30);
       }
-      p{
+      p {
         font-size: r(16);
         color: #333;
       }
-      .line{
+      .line {
         position: absolute;
         right: r(-15);
         top: r(35);
         display: inline-block;
         width: r(40);
         height: r(1);
-        background-color:#D8D8D8;
-        &.lineColor{
+        background-color: #D8D8D8;
+        &.lineColor {
           background-color: #3573FA;
         }
       }
-      .defaultColor{
+      .defaultColor {
         color: #3573FA;
       }
     }
   }
+
   .morder-page {
     padding-bottom: r(50);
   }
@@ -848,9 +846,11 @@
   .c-orange {
     color: orange;
   }
-  .c-black{
+
+  .c-black {
     color: #333 !important;
   }
+
   .trade-time-bar {
     background: #fff;
     padding: r(10) r(15);
@@ -904,20 +904,18 @@
       }
       .qrcode-tips {
         display: inline-block;
-        width: r(99);
         word-break: break-all;
-        font-size: r(12);
       }
       .l-title {
         display: inline-block;
         color: #333;
-        .character{
+        .character {
           width: r(30);
           height: r(30);
           vertical-align: - r(8);
         }
       }
-      .remind_info{
+      .remind_info {
         font-size: r(12);
         color: #ec3a4e;
         vertical-align: - r(8);
@@ -1105,16 +1103,18 @@
     height: 100%;
     background-color: #F5F5F5;
   }
-  .extra_order{
+
+  .extra_order {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    .order_info{
+    .order_info {
       flex: 1;
     }
-    .copy-btn-next{
+    .copy-btn-next {
       color: #5087ff;
-
+      top: auto !important;
+      left: auto !important;
     }
   }
 
