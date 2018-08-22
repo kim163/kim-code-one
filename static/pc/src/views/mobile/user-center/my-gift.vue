@@ -15,8 +15,8 @@
               <p class="time_date" >至{{isCashArr[num].couponEndTime |Date('yyyy-MM-dd')}}过期</p>
               <div class="id_num" style="display: flex"><span style="float:left" class="id">单号:</span><span
                class="id-content">{{list.id}}</span></div>
-              <div class="middle_line"></div>
             </div>
+            <div class="middle_line"></div>
             <div class="right_side">
               <div class="side_money">¥ {{(list.couponValueStr*0.01).toFixed(2)}}</div>
               <div class="side_num"> ={{list.couponValueStr}}UET</div>
@@ -32,8 +32,8 @@
               <p class="time_date">至{{noCacheArr[num].couponEndTime |Date('yyyy-MM-dd')}}过期</p>
               <div class="id_num" style="display: flex"><span style="float:left" class="id">单号:</span><span
                 class="id-content">{{list.id}}</span></div>
-              <div class="middle_line_next"></div>
             </div>
+            <div class="middle_line_next"></div>
             <div class="right_side">
               <div class="side_money">¥ {{(list.couponValueStr*0.01).toFixed(2)}}</div>
               <div class="side_num"> ={{list.couponValueStr}}UET</div>
@@ -250,19 +250,19 @@
         margin: r(20) auto;
         .discount_ticket {
           width: 85%;
-          min-height: r(108);
+          height: r(108);
           margin: r(20) auto;
-          background-color: #fff;
           display: flex;
           flex-direction: row;
-          padding: r(10) r(8);
-          border-radius: r(5);
           .left_side {
             flex: 1;
             word-break: break-word;
             font-size: r(14);
-            color: #787876;
+            color: #fff;
             position: relative;
+            padding: r(10) r(8);
+            background-color: #FF8B8B;
+            border-radius: r(5) 0 0 r(5);
             .time_date {
               padding: r(8) r(0);
             }
@@ -271,35 +271,28 @@
               .id {
                 width: r(40);
               }
-              .id-content{
-                width: r(140);
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-              }
             }
-            .middle_line {
-              position: absolute;
-              top: - r(10);
-              right: 0;
-              width: r(15);
-              height: r(108);
-              background: url('~images/discount_white.png') no-repeat;
-              background-size: 100%;
-            }
-
+          }
+          .middle_line {
+            width: r(15);
+            height: r(108);
+            background: url('~images/discount_pink.png') no-repeat;
+            background-size: 100% 100%;
           }
           .right_side {
             width: r(112);
             text-align: center;
+            padding: r(10) r(8);
+            background-color: #FF8B8B;
+            border-radius: 0 r(5) r(5) 0;
             .side_money {
               font-size: 18px;
-              color: #FF8b8b;
+              color: #fff;
               padding-top: r(12);
             }
             .side_num {
               font-size: 16px;
-              color: #ff8b8b;
+              color: #fff;
               padding-top: r(10);
             }
           }
@@ -311,19 +304,19 @@
         margin: r(20) auto;
         .discount_ticket {
           width: 85%;
-          min-height: r(108);
+          height: r(108);
           margin: r(20) auto;
-          background-color: #FF8B8B;
           display: flex;
           flex-direction: row;
-          padding: r(10) r(8);
-          border-radius: r(5);
           .left_side {
             flex: 1;
             word-break: break-word;
             font-size: r(14);
             color: #fff;
             position: relative;
+            padding: r(10) r(8);
+            background-color: #FF8B8B;
+            border-radius: r(5) 0 0 r(5);
             .time_date {
               padding: r(8) r(0);
             }
@@ -332,27 +325,20 @@
               .id {
                 width: r(40);
               }
-              .id-content{
-                width: r(140);
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-              }
             }
-
-            .middle_line_next {
-              position: absolute;
-              top: - r(10);
-              right: 0;
-              width: r(15);
-              height: r(108);
-              background: url('~images/discount_pink.png') no-repeat;
-              background-size: 100%;
-            }
+          }
+          .middle_line_next {
+            width: r(15);
+            height: r(108);
+            background: url('~images/discount_pink.png') no-repeat;
+            background-size: 100% 100%;
           }
           .right_side {
             width: r(112);
             text-align: center;
+            padding: r(10) r(8);
+            background-color: #FF8B8B;
+            border-radius: 0 r(5) r(5) 0;
             .side_money {
               font-size: 18px;
               color: #fff;
