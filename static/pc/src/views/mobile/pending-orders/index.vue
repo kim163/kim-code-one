@@ -460,6 +460,9 @@
      padding: r(10) r(8);
      background-color: #FF8B8B;
      border-radius: r(5) 0 0 r(5);
+     display: flex;
+     flex-direction: column;
+     justify-content: center;
      .time_date {
        padding: r(8) r(0);
      }
