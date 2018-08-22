@@ -12,9 +12,9 @@
           <div class="discount_ticket" v-for="(list,num) in isCashArr">
             <div class="left_side">
               <p class="remark_info">{{list.remark}}</p>
-              <p class="time_date">至{{timeList[num].TimeList}}过期</p>
+              <p class="time_date" >至{{isCashArr[num].couponEndTime |Date('yyyy-MM-dd')}}过期</p>
               <div class="id_num" style="display: flex"><span style="float:left" class="id">单号:</span><span
-                style="width: 70%">{{list.id}}</span></div>
+               class="id-content">{{list.id}}</span></div>
               <div class="middle_line"></div>
             </div>
             <div class="right_side">
@@ -26,13 +26,12 @@
       <!--未兑现-->
       <div class="noCash_content" v-else ref="noCash">
         <noDataTip v-if="isNullNext"></noDataTip>
-
           <div class="discount_ticket" v-for="(list,num) in noCacheArr" v-else>
             <div class="left_side">
               <p class="remark_info">{{list.remark}}</p>
-              <p class="time_date">至{{timeList[num].TimeList}}过期</p>
+              <p class="time_date">至{{noCacheArr[num].couponEndTime |Date('yyyy-MM-dd')}}过期</p>
               <div class="id_num" style="display: flex"><span style="float:left" class="id">单号:</span><span
-                style="width: 70%">{{list.id}}</span></div>
+                class="id-content">{{list.id}}</span></div>
               <div class="middle_line_next"></div>
             </div>
             <div class="right_side">
@@ -99,9 +98,7 @@
               this.total=res.pageInfo.total;
               this.pageNum = res.pageInfo.pageNum;
               this.pageSize = res.pageInfo.pageSize
-              for (let i = 0; i < this.isCashArr.length; i++) {
-                this.timeList.push({TimeList: this.formatMsgTime(this.isCashArr[i].couponEndtime)})
-              }
+
             }
           } else {
             toast(res.message)
@@ -126,9 +123,7 @@
               this.totalNext=res.pageInfo.total;
               this.pageNumNext = res.pageInfo.pageNum;
               this.pageSizeNext = res.pageInfo.pageSize
-              for (let i = 0; i < this.noCacheArr.length; i++) {
-                this.timeList.push({TimeList: this.formatMsgTime(this.noCacheArr[i].couponEndtime)})
-              }
+
             }
           } else {
             toast(res.message)
@@ -142,15 +137,8 @@
           this.currentShow = false
         }
       },
-      formatMsgTime(timespan) {
-        var dateTime = new Date(timespan);
-        var year = dateTime.getFullYear() + 1 >= 10 ? dateTime.getFullYear() + 1 : '0' + dateTime.getFullYear();
-        var month = dateTime.getMonth() + 1 >= 10 ? dateTime.getMonth() + 1 : '0' + dateTime.getMonth();
-        var day = dateTime.getDate() >= 10 ? dateTime.getDate() : '0' + dateTime.getDate();
-        var timeSpanStr;
-        timeSpanStr = year + '-' + month + '-' + day + ' '
-        return timeSpanStr;
-      },
+
+
       /*滚动条在Y轴上的滚动距离*/
       getScrollTop() {
         var scrollTop = 0, bodyScrollTop = 0, documentScrollTop = 0;
@@ -191,12 +179,10 @@
           const IshavePageNext = Number(this.totalNext)>Number(this.initPageNext+1)*Number(this.pageSizeNext)?true:false
             if(this.currentShow&&IshavePage){
               this.initPage +=1
-              debugger;
               this.getInfo()
             }
           if(!this.currentShow&&IshavePageNext){
               this.initPageNext +=1
-              debugger;
               this.getInfonext()
           }
         }
@@ -264,7 +250,7 @@
         margin: r(20) auto;
         .discount_ticket {
           width: 85%;
-          height: r(108);
+          min-height: r(108);
           margin: r(20) auto;
           background-color: #fff;
           display: flex;
@@ -284,6 +270,12 @@
               display: flex;
               .id {
                 width: r(40);
+              }
+              .id-content{
+                width: r(140);
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
               }
             }
             .middle_line {
@@ -319,7 +311,7 @@
         margin: r(20) auto;
         .discount_ticket {
           width: 85%;
-          height: r(108);
+          min-height: r(108);
           margin: r(20) auto;
           background-color: #FF8B8B;
           display: flex;
@@ -339,6 +331,12 @@
               display: flex;
               .id {
                 width: r(40);
+              }
+              .id-content{
+                width: r(140);
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
               }
             }
 

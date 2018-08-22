@@ -194,6 +194,7 @@
           'orderId': this.orderData.orderId
         }
         transaction.getFinallyAmount(request).then((res) => {
+
           if (res.code == '10000') {
             if (res.data) {
               this.isShowpopup = true

@@ -7,8 +7,10 @@
     <mobile-header :show-left-btn="false" v-else>交易会话</mobile-header>
     <div class="conversation_list box-f1">
       <div v-if="chatArr.length==0" class="noMessage">
-        <img src="~images/chatWith/no_message.png" alt="" class="noMessage_pic">
-        <span class="no_message">暂无聊天信息</span>
+        <div class="noMessage_box">
+          <img src="~images/chatWith/no_message.png" alt="" class="noMessage_pic">
+          <span class="no_message">暂无聊天信息</span>
+        </div>
       </div>
       <div v-else-if="chatArr.length>0" class="conversation_item" v-for="(list,num) in chatArr" :key="num"
          @click="goChatRoom(list.targetId,list.latestMessage.content.user.id)" :class="{'pcState':isPC}">
@@ -285,24 +287,25 @@
     height:-webkit-fill-available;
     position: relative;
   }
-  .noMessage_pic{
-    display: block;
-    margin: 0 auto;
-    width: r(150);
-    height: r(120);
+  .noMessage_box{
     position: absolute;
     top: 40%;
     left: 50%;
     transform: translate(-50%,-50%);
   }
-  .no_message{
+  .noMessage_pic{
+    display: block;
     margin: 0 auto;
-    position: absolute;
-    top: 54%;
-    left: 50%;
+    width: r(150);
+    height: r(120);
+  }
+  .no_message{
+    display: block;
+    margin: 0 auto;
     font-size: r(15);
-    transform: translate(-50%,-50%);
     color: #787876;
+    text-align: center;
+    margin-top: r(20);
   }
   .user_symbol {
     width: r(50);
