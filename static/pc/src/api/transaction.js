@@ -177,4 +177,11 @@ export const getFinallyAmount = jsonData=>service({
   url: numversion +`coupon/getCouponByOrderId`,
   method:'post',
   data:jsonData
-})
+});
+
+// 获取个人中心主页信息
+export const getHomeInfo = jsonData => service({
+  url: numversion+`getHomeInfo`,
+  method: 'post',
+  data: jsonData
+});

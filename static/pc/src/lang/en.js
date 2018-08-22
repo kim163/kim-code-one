@@ -122,7 +122,7 @@ export default {
     remainSell: 'Remaining sell'
   },
   transactionRecord: {
-    tranPending: 'Transaction Pending',
+    tranPending: 'My quick sale',
     tranProgress: 'Transaction processing',
     tranComplete: 'Transaction complete',
     appealRecord: 'Appeal record',
@@ -248,7 +248,8 @@ export default {
     bindWeChat:'Binding WeChat',
     uploadQrcode:'Click to upload your receipt QR code',
     completeMaterial:'Complete material',
-    myGift:'My Gift',
+    myGift:'My Coupons',
     transactionRecord:'Transaction Record',
+    receivcode:'Receivables Code'
   }
 }

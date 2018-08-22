@@ -28,6 +28,7 @@ const mUserCenter = () => import(/* webpackChunkName: 'mUserCenter' */ 'views/mo
 const mSetUserInfo = () => import(/* webpackChunkName: 'mSetUserInfo' */ 'views/mobile/user-center/set-user-info') //完善信息
 const mMyGift = () => import('views/mobile/user-center/my-gift') //我的获赠
 const customizeLoginTip = () => import('views/mobile/customize-login-tip')
+const mreceivcode = () => import('views/mobile/user-center/receivables-code') // 收款码
 
 export default [
   {
@@ -276,6 +277,15 @@ export default [
     meta:{
       noCache:true,
       isMobilePage:'mobile-body'
+    }
+  },
+  {
+    path:'/m/receivcode',
+    name:'mreceivcode',
+    component:mreceivcode, //收款码
+    meta:{
+      noCache:true,
+      isMobilePage:'mobile-bodyFtPd'
     }
   }
 ]

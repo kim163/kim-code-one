@@ -122,7 +122,7 @@ export default {
     remainSell: '剩余可卖'
   },
   transactionRecord: {
-    tranPending: '我的挂单',
+    tranPending: '我的快速买卖',
     tranProgress: '交易中',
     tranComplete: '交易完成',
     appealRecord: '申诉记录',
@@ -249,7 +249,8 @@ export default {
     bindWeChat:'绑定微信',
     uploadQrcode:'点击上传您的收款二维码',
     completeMaterial:'完善资料',
-    myGift:'我的获赠',
+    myGift:'我的优惠券',
     transactionRecord:'交易记录',
+    receivcode:'收款码'
   }
 }

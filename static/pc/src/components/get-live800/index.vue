@@ -1,6 +1,9 @@
 <template>
-  <a class="item-href live-800" target="_blank" :href="live800Url">
-    <i class="iconfont icon-online-service"></i>{{$t('navbar.onlineService')}}
+  <a :class="['item-href','live-800',liveSpecStyle]" target="_blank" :href="live800Url">
+    <i v-if="isRoundIcon" class="iconfont icon-online-serv"></i>
+    <i v-else class="iconfont icon-online-service"></i>
+    {{$t('navbar.onlineService')}}
+    <i class="iconfont icon-right-arrow fr" v-show="showRightArrow"></i>
   </a>
 </template>
 <script>
@@ -12,7 +15,20 @@
         live800Url: ''
       };
     },
-    props: {},
+    props: {
+      showRightArrow:{
+        type:Boolean,
+        default:false
+      },
+      isRoundIcon:{
+        type:Boolean,
+        default:false
+      },
+      liveSpecStyle:{
+        type:String,
+        default:""
+      }
+    },
     methods: {
       getLive800Url(){
         show.getLive800Url({}).then(res => {
@@ -34,5 +50,13 @@
   };
 </script>
 <style lang="scss">
+  @import "~assets/scss/mixin";
 
+  .mcenter-live{
+    .icon-online-serv{
+      @include  f(25px);
+      margin-right: r(5);
+      color: #27BD91;
+    }
+  }
 </style>

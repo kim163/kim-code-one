@@ -48,7 +48,7 @@
   import getLive800 from 'components/get-live800'
   import {$localStorage} from '@/util/storage'
 
-  import jiuanLogo from './images/juan-logo.svg'
+  import jiuanLogo from '@/assets/images/icon/juan-logo.svg'
 
   export default {
     data() {
