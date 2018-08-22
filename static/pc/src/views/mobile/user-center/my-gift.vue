@@ -12,7 +12,8 @@
           <div class="discount_ticket" v-for="(list,num) in isCashArr">
             <div class="left_side">
               <p class="remark_info">{{list.remark}}</p>
-              <p class="time_date" >至{{isCashArr[num].couponEndTime |Date('yyyy-MM-dd')}}过期</p>
+              {{isCashArr[num].couponEndTime}}
+              <p class="time_date" >至{{isCashArr[num].couponEndtime |Date('yyyy-MM-dd')}}过期</p>
               <div class="id_num" style="display: flex"><span style="float:left" class="id">单号:</span><span
                class="id-content">{{list.id}}</span></div>
             </div>
@@ -29,7 +30,8 @@
           <div class="discount_ticket" v-for="(list,num) in noCacheArr" v-else>
             <div class="left_side">
               <p class="remark_info">{{list.remark}}</p>
-              <p class="time_date">至{{noCacheArr[num].couponEndTime |Date('yyyy-MM-dd')}}过期</p>
+              {{noCacheArr[num].couponEndTime}}
+              <p class="time_date">至{{noCacheArr[num].couponEndtime |Date('yyyy-MM-dd')}}过期</p>
               <div class="id_num" style="display: flex"><span style="float:left" class="id">单号:</span><span
                 class="id-content">{{list.id}}</span></div>
             </div>
