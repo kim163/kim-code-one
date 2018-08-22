@@ -222,7 +222,7 @@
           <li>
             <span class="l-title">交易数量 :</span>
             <span>
-                     <span class="l-title">{{DetailList.debitAmount}} UET</span> <span class="equal_money"> ≈ ¥ {{DetailList.debitAmount*0.01}} </span>
+                     <span class="l-title">{{DetailList.debitAmount}} UET</span> <span class="equal_money"> ≈ ¥ {{(DetailList.debitAmount*0.01).toFixed(2)}} </span>
                  </span>
           </li>
         </ul>
