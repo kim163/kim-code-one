@@ -1,7 +1,5 @@
 <template>
   <div class="muser-center-home">
-    <mobile-header :show-left-btn="false">个人中心</mobile-header>
-
     <div class="mcenter-userinfo">
        <div class="login-user">
          <img :src="getLogo" class="logo">
@@ -117,7 +115,6 @@
 </template>
 
 <script>
-  import MobileHeader from 'components/m-header'
   import {mapGetters} from 'vuex'
   import ConfirmDialog from 'components/confirm'
   import mNavbar from 'components/m-navbar';
@@ -141,7 +138,6 @@
       }
     },
     components:{
-      MobileHeader,
       ConfirmDialog,
       mNavbar,
       getLive800
