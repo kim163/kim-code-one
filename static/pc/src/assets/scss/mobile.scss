@@ -4,13 +4,6 @@
 **/
 
 @import "./mixin.scss";
-.mobile-body{
-  background: $body-bg;
-}
-.mobile-bodyFtPd{
-  background: $body-bg;
-  padding-bottom: r($footer-hg+10);
-}
 select::-ms-expand{display:none;}
 select{
   appearance:none;

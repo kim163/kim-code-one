@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="muser-center-home">
     <mobile-header :show-left-btn="false">个人中心</mobile-header>
 
     <div class="mcenter-userinfo">
@@ -210,6 +210,10 @@
 
 <style lang="scss" scoped>
   @import "~assets/scss/mobile";
+
+  .muser-center-home{
+    padding-bottom: r($footer-hg+20);
+  }
   .mcenter-userinfo{
     background: #3573FA;
     padding: r(20) r(20) r(22);
