@@ -128,9 +128,11 @@
         font-size: 18px;
         color: #333333;
         margin-top: r(15);
+        padding: 0 r(10);
       }
       .confirm-title{
         margin-top: r(30);
+        padding: 0 r(10);
       }
     }
     .confirm-footer{
