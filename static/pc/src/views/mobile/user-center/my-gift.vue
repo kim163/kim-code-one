@@ -271,9 +271,15 @@
               .id {
                 width: r(40);
               }
+              .id-content{
+                width: r(140);
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+              }
             }
           }
-          .middle_line {
+          .middle_line{
             width: r(15);
             height: r(108);
             background: url('~images/discount_pink.png') no-repeat;
@@ -324,6 +330,12 @@
               display: flex;
               .id {
                 width: r(40);
+              }
+              .id-content{
+                width: r(140);
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
               }
             }
           }

@@ -66,7 +66,7 @@
         <p class="remark_info">{{couponDetail.remark}}</p>
         <p class="time_date">至{{couponDetail.couponEndtime | Date('yyyy-MM-dd')}}过期</p>
         <div class="id_num" style="display: flex"><span style="float:left" class="id">单号:</span><span
-                style="width: 70%">{{couponDetail.id}}</span></div>
+                class="id-content">{{couponDetail.id}}</span></div>
       </div>
       <div class="middle_line_next"></div>
       <div class="right_side">
@@ -467,6 +467,12 @@
        display: flex;
        .id {
          width: r(40);
+       }
+       .id-content{
+         width: r(140);
+         white-space: nowrap;
+         overflow: hidden;
+         text-overflow: ellipsis;
        }
      }
    }
