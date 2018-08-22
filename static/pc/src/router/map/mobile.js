@@ -129,7 +129,7 @@ export default [
     name: 'mTranRecord',
     component:mTranRecord,
     meta: {
-      isMobilePage: "mobile-bodyFtPd",
+      isMobilePage: "mobile-body",
     }
   },
   {
@@ -247,7 +247,7 @@ export default [
     component:mUserCenter, //个人中心
     meta:{
       noCache:true,
-      isMobilePage:'mobile-bodyFtPd'
+      isMobilePage:'mobile-body'
     }
   },
   {
@@ -285,7 +285,7 @@ export default [
     component:mreceivcode, //收款码
     meta:{
       noCache:true,
-      isMobilePage:'mobile-bodyFtPd'
+      isMobilePage:'mobile-body'
     }
   }
 ]

@@ -55,6 +55,9 @@
 </script>
 <style lang="scss">
   @import "~assets/scss/mobile";
+.mreceiv-code{
+  padding-bottom: r($footer-hg+20);
+}
 
 .mreceiv-code-content{
   background: #FFFFFF;
