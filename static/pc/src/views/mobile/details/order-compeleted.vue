@@ -230,7 +230,7 @@
       if (this.isShowCoupon) {
         setTimeout(() => {
           this.fetchFinallyDiscount()
-        }, 2000)
+        }, 5000)
       }
     },
     watch: {

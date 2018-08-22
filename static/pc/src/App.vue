@@ -113,7 +113,7 @@
           }
           /*接收优惠券完成*/
            else if (msgData.type){
-             
+
           }
           else{
             toast(msgData.describe)
