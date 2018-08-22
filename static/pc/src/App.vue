@@ -84,7 +84,6 @@
         }
       },
       stompSuccessCallback(frame) {
-        console.log('STOMP: Connection successful')
         this.client.subscribe('/exchange/walletCustomOperation/'+this.userId, (data) => {
           let msgData=JSON.parse(aesutil.decrypt(data.body,true));
           console.log('msgData.type：'+msgData.type)
@@ -111,7 +110,12 @@
             toast(msgData.describe)
             window.location.href=this.detailAppeal + msgData.text;
             //console.log(msgData);
-          }else{
+          }
+          /*接收优惠券完成*/
+           else if (msgData.type){
+             
+          }
+          else{
             toast(msgData.describe)
             //console.log(msgData);
           }
