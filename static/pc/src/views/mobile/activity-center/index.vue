@@ -42,7 +42,7 @@
           <div class="detail" v-show="showIndex === index + 1">
             <div class="content-info" v-for="(info,i) in item.contentList" :key="i">{{info}}</div>
             <router-link class="link" :class="`link-${index}`"
-                         v-if="item.schemeUrl" :to="checkLink(item.type)">买币</router-link>
+                         v-if="item.schemeUrl" :to="checkLink(item.type)">{{item.schemeText}}</router-link>
           </div>
         </transition>
       </div>

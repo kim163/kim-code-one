@@ -1,6 +1,6 @@
 <template>
   <div class="Mygift_container" @scroll.native="scroll">
-    <MobileHeader>我的获赠</MobileHeader>
+    <MobileHeader>我的优惠券</MobileHeader>
     <div class="gift_content">
       <div class="gift_tab">
         <div class="is_cash" :class="{'active':!currentShow}" @click="changeTab(2)">未兑现</div>

@@ -19,18 +19,7 @@
             <div class="tool-item-href">
               {{$t('navbar.accountBalance')}} <span class="fr"><balance></balance></span>
             </div>
-            <router-link :to="{name:'mBindList'}" v-if="userData.nodeId < 10000" class="tool-item-href"><i class="iconfont icon-busine-list"></i>{{$t('navbar.busineList')}}</router-link>
-            <router-link :to="{name:'mUserCenter'}" class="tool-item-href"><i class="iconfont icon-useravat"></i>{{$t('navbar.userCenter')}}</router-link>
-            <get-live800></get-live800>
-            <a class="tool-item-href" target="_blank" :href="SETTING.appUrl">
-              <i class="iconfont icon-download"></i>{{$t('navbar.juanApp')}}
-            </a>
-            <router-link :to="{name:'index'}" class="tool-item-href">
-              <i class="iconfont icon-juan-logo1"></i>前往久安首页
-            </router-link>
-            <div class="tool-item-href border-bot" v-if="userData.nodeId < 10000" @click="$store.dispatch('LOGIN_OUT')">
-              <i class="iconfont icon-log-out"></i>{{$t('navbar.logOut')}}
-            </div>
+
           </div>
           <div v-else @click="myValue=false">
             <router-link :to="{name:'mobileLogin'}" v-if="!isCustomize" class="tool-item-href"><i class="iconfont icon-user-login"></i>{{$t('login.iWantLogin')}}</router-link>
@@ -59,7 +48,7 @@
   import getLive800 from 'components/get-live800'
   import {$localStorage} from '@/util/storage'
 
-  import jiuanLogo from './images/juan-logo.svg'
+  import jiuanLogo from '@/assets/images/icon/juan-logo.svg'
 
   export default {
     data() {

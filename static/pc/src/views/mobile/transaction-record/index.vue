@@ -1,15 +1,13 @@
 <template>
   <div class="tran-record-main">
     <mobile-header>{{$t('navbar.transactionRecord')}}</mobile-header>
-    <div class="nav-list">
+    <div class="nav-list cfx">
       <div class="nav-item" :class="{active: navIndex === 0}" @click="navIndex = 0">
         {{$t('transactionRecord.tranProgress')}}
       </div>
       <div class="nav-item" :class="{active: navIndex === 1}" @click="navIndex = 1">
         {{$t('transactionRecord.tranComplete')}}
       </div>
-      <router-link tag="div" class="nav-item" :to="{name: 'mMyPending'}">{{$t('transactionRecord.tranPending')}}
-      </router-link>
     </div>
     <div class="amount-balance">{{$t('navbar.accountBalance')}}：<balance></balance></div>
     <div class="tran-list">
@@ -79,12 +77,12 @@
       height: r(50);
       line-height: r(50);
       background: #FFFFFF;
-      display: flex;
-      justify-content: space-around;
       border-bottom: 1px solid #D8D8D8;
     }
     .nav-item {
-      flex-grow: 1;
+      width: 50%;
+      float: left;
+      display: block;
       text-align: center;
       @include f(15px);
       color: #787876;
