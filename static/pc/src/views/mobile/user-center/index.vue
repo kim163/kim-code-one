@@ -32,16 +32,17 @@
       <router-link :to="{name:'mTranRecord'}" class="item-href">
         <i class="iconfont icon-tran-record1"></i>
         {{$t('userCenter.transactionRecord')}}
-        <span class="tran-num">{{homeInforma.tradingOrderCount}}</span>
+        <span class="tran-num" v-if="homeInforma.tradingOrderCount>0">{{homeInforma.tradingOrderCount}}</span>
       </router-link>
       <router-link :to="{name:'mMyPending'}" class="item-href">
         <i class="iconfont icon-mypend-order"></i>
         {{$t('transactionRecord.tranPending')}}
-        <span class="tran-num">{{homeInforma.pendingOrderCount}}</span>
+        <span class="tran-num" v-if="homeInforma.pendingOrderCount>0">{{homeInforma.pendingOrderCount}}</span>
       </router-link>
       <router-link :to="{name:'mMyGift'}" class="item-href">
         <i class="iconfont icon-my-gift"></i>
         {{$t('userCenter.myGift')}}
+        <span class="tran-num" v-if="myGiftTotal>0">{{myGiftTotal}}</span>
       </router-link>
     </div>
 
@@ -124,7 +125,7 @@
 
   import jiuanLogo from '@/assets/images/icon/juan-logo.svg';
 
-  import {transaction} from 'api';
+  import {transaction,userCenter} from 'api';
 
   export default {
     name: "m-user-center",
@@ -134,7 +135,9 @@
         showConfirm:false,
         homeInforma:{},
         requestdata:{},
-        mcenterLive:'mcenter-live'
+        mcenterLive:'mcenter-live',
+        initPageNext: 0,
+        myGiftTotal: 0
       }
     },
     components:{
@@ -185,10 +188,28 @@
       calUserBalance(type){
         const balAmount = type === 1 ? this.homeInforma.chainAmount : (this.homeInforma.pendingAmount+this.homeInforma.lockedAmount);
         return  !_.isNaN(Number(balAmount)) ? Number(balAmount) : '0.00';
+      },
+      getInfonext(){
+        const requestDatas = {
+          "limit": 10,
+          "offset": this.initPageNext,
+          "couponStatus": 2,
+          "couponType": 100
+        };
+        userCenter.myGift(requestDatas).then(res => {
+          if (res.code == 10000) {
+            this.myGiftTotal = res.pageInfo.total;
+          } else {
+            toast(res.message)
+          }
+        }).catch(err => {
+          toast(err)
+        });
       }
     },
     created() {
       this.searchHomeInfo();
+      this.getInfonext();
     },
     beforeRouteLeave (to, from , next) {
       if(to.name === 'mBindCard'){
