@@ -165,7 +165,7 @@
     methods: {
       generateTitle,
       goWatch() {
-        this.$router.push('/m/myGift')
+        this.$router.push({name:'mMyGift'})
       },
       defineOk() {
         this.isShowpopup = false
@@ -194,7 +194,6 @@
           'orderId': this.orderData.orderId
         }
         transaction.getFinallyAmount(request).then((res) => {
-
           if (res.code == '10000') {
             if (res.data) {
               this.isShowpopup = true
@@ -208,10 +207,9 @@
         })
       },
       closePage() {
-        this.$router.push('/mh/')
+        this.$router.push({name:'mTransaction'})
       },
       copy() {
-
         var clipboard = new Clipboard('.copy-btn')
         clipboard.on('success', e => {
           toast('复制成功')
