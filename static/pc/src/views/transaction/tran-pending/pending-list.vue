@@ -15,7 +15,9 @@
           <span class="s-percent">{{(item.successAmount/item.amount)*100 | toFixed(2) }}%  </span>
         </span>
         <span class="unit">
-          <a class="btn btn-primary" v-if="tabType === 1" @click="putDownUpOrder(item.id,1)">{{$t('table.remove')}}</a>
+          <a class="btn btn-primary" :class="{disable:item.balance === 0}"
+             v-if="tabType === 1"
+             @click="item.balance === 0 ? '' : putDownUpOrder(item.id,1)">{{$t('table.remove')}}</a>
           <div v-else-if="item.status != 11">
             <a class="btn btn-primary" @click="putDownUpOrder(item.id,2)">{{$t('table.restored')}}</a>
             <a class="btn btn-danger" @click="deleteOrder(item.id)">{{$t('table.deleteOrder')}}</a>
@@ -204,6 +206,10 @@
   }
   .unit2 {
     width: 26%;
+  }
+  .disable{
+    background: #9D9D9D;
+    border-color: #9D9D9D;
   }
   .pengding-orders {
     .border-box {
