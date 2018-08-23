@@ -125,7 +125,6 @@
               this.totalNext=res.pageInfo.total;
               this.pageNumNext = res.pageInfo.pageNum;
               this.pageSizeNext = res.pageInfo.pageSize
-
             }
           } else {
             toast(res.message)
