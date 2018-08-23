@@ -11,7 +11,7 @@
      </select>
 
      <span class="nocard-tips cl-sky-blue" v-if="noCardTips">
-        您尚未绑定银行卡，<router-link :to="userCenterLink()" class="link-item cl-red">立即绑定</router-link>
+        您尚未绑定银行卡 <router-link :to="userCenterLink()" class="link-item cl-red">立即绑定</router-link>
      </span>
   </p>
 </template>
@@ -126,9 +126,11 @@
 </script>
 <style lang="scss" scoped>
   .bind-card-part{
-    display: inline-block;
+    display: flex;
     width: 100%;
     height: 100%;
+    flex-direction: column;
+    justify-content: center;
     .my-input{
       /*border: none;*/
       width: 100%;
