@@ -418,7 +418,7 @@
      height:r(39);
      line-height:r(39);
      background: #FFFFFF;
-     border: 1px solid #D3D3D3;
+     /*border: 1px solid #D3D3D3;*/
      @include f(14px);
    }
  }

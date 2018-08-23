@@ -712,7 +712,7 @@
       p.bind-card-part{
         flex-grow: 1;
         width: auto;
-        display: flex;
+        /*display: flex;*/
       }
       .payord-control,.my-input {
         height: 40px;

@@ -38,9 +38,11 @@
               CNY
             </span>
             </div>
-            <div class="form-input-box">
+            <div class="form-input-box payment">
               <span class="left">{{postItem == 'buyer' ? '支付' : '收款'}}方式：</span>
-              <get-bankcard :setBankcard="setBankcard" v-model="bindCardReset" :def-select="bankNo" @selCardChange="selCardChange"></get-bankcard>
+              <span class="ps-input">
+                <get-bankcard :setBankcard="setBankcard" v-model="bindCardReset" :def-select="bankNo" @selCardChange="selCardChange"></get-bankcard>
+              </span>
             </div>
             <!--<div class="form-input-box">-->
               <!--<span class="left">{{postItem == 'buyer' ? $t('postPend.buyerRequest') : $t('postPend.sellerRequest')}}：</span>-->
@@ -300,9 +302,9 @@
     line-height: 45px;
     margin: 0 0 15px 0;
     padding: 5px 10px 5px 100px !important;
-    .bind-card-part{
-      width: 75% !important;
-    }
+    /*.bind-card-part{*/
+      /*width: 75% !important;*/
+    /*}*/
   }
 
   .popup .pop-con .ps-input {
@@ -339,6 +341,12 @@
     /*position: absolute;*/
     /*left: 350px;*/
     color: #777;
+  }
+  .payment{
+    .ps-input{
+      border: none;
+      padding: 0;
+    }
   }
   .user-balace{
     .all-in{
