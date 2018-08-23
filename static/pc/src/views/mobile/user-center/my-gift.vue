@@ -12,7 +12,8 @@
           <div class="discount_ticket" v-for="(list,num) in isCashArr">
             <div class="left_side">
               <p class="remark_info">{{list.remark}}</p>
-              <p class="time_date" >至{{isCashArr[num].couponEndTime |Date('yyyy-MM-dd')}}过期</p>
+              {{isCashArr[num].couponEndTime}}
+              <p class="time_date" >至{{isCashArr[num].couponEndtime |Date('yyyy-MM-dd')}}过期</p>
               <div class="id_num" style="display: flex"><span style="float:left" class="id">单号:</span><span
                class="id-content">{{list.id}}</span></div>
             </div>
@@ -29,7 +30,8 @@
           <div class="discount_ticket" v-for="(list,num) in noCacheArr" v-else>
             <div class="left_side">
               <p class="remark_info">{{list.remark}}</p>
-              <p class="time_date">至{{noCacheArr[num].couponEndTime |Date('yyyy-MM-dd')}}过期</p>
+              {{noCacheArr[num].couponEndTime}}
+              <p class="time_date">至{{noCacheArr[num].couponEndtime |Date('yyyy-MM-dd')}}过期</p>
               <div class="id_num" style="display: flex"><span style="float:left" class="id">单号:</span><span
                 class="id-content">{{list.id}}</span></div>
             </div>
@@ -258,10 +260,10 @@
             flex: 1;
             word-break: break-word;
             font-size: r(14);
-            color: #fff;
+            color: #787876;
             position: relative;
             padding: r(10) r(8);
-            background-color: #FF8B8B;
+            background-color: #fff;
             border-radius: r(5) 0 0 r(5);
             .time_date {
               padding: r(8) r(0);
@@ -282,23 +284,23 @@
           .middle_line{
             width: r(15);
             height: r(108);
-            background: url('~images/discount_pink.png') no-repeat;
+            background: url('~images/discount_white.png') no-repeat;
             background-size: 100% 100%;
           }
           .right_side {
             width: r(112);
             text-align: center;
             padding: r(10) r(8);
-            background-color: #FF8B8B;
+            background-color: #fff;
             border-radius: 0 r(5) r(5) 0;
             .side_money {
               font-size: 18px;
-              color: #fff;
+              color: #ff8b8b;
               padding-top: r(12);
             }
             .side_num {
               font-size: 16px;
-              color: #fff;
+              color: #ff8b8b;
               padding-top: r(10);
             }
           }

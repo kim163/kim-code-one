@@ -1112,9 +1112,11 @@
       flex: 1;
     }
     .copy-btn-next {
+      position: relative !important;
       color: #5087ff;
       top: auto !important;
       left: auto !important;
+      right: auto !important;
     }
   }
 
