@@ -24,7 +24,9 @@
           <div class="order-info">
             <div class="text-left">{{$t('table.completed')}} {{(item.successAmount/item.amount)*100 | toFixed(2) }}%</div>
             <div class="text-right">
-              <span class="btn drop-off" v-if="tabType === 1" @click="putDownUpOrder(item.id,1)">{{$t('table.remove')}}</span>
+              <span class="btn drop-off" :class="{disable:item.balance === 0}"
+                    v-if="tabType === 1"
+                    @click="item.balance === 0 ? '' : putDownUpOrder(item.id,1)">{{$t('table.remove')}}</span>
               <div v-else-if="item.status != 11">
                 <span class="btn restored" @click="putDownUpOrder(item.id,2)">{{$t('table.restored')}}</span>
                 <span class="btn delete" @click="deleteOrder(item.id)">{{$t('table.deleteOrder')}}</span>
@@ -263,7 +265,7 @@
     &.drop-off {
       background: #4982FF;
     }
-    &.restored {
+    &.restored,&.disable {
       background: #9D9D9D;
     }
     &.delete {
