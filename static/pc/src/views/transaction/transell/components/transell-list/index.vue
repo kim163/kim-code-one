@@ -88,7 +88,7 @@
           offset:0,
           type: 12,
           startBalance:0,
-          status:2,
+          status:1,
         },
         noData:false
       }

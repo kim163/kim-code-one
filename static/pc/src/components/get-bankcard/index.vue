@@ -1,6 +1,6 @@
 <template>
   <p class="bind-card-part">
-     <select class="my-input" v-model="selBankCard">
+     <select class="my-input" v-if="!noCardTips" v-model="selBankCard">
          <option value="">{{$t(setBankcard.pleaseSelTitle)}}</option>
          <option v-for="item in bankList.data||[]" :value="item">
             <span  v-if="item.type === 1">支付宝 {{item.account}}</span>
@@ -11,7 +11,7 @@
      </select>
 
      <span class="nocard-tips cl-sky-blue" v-if="noCardTips">
-        没绑卡?去<router-link :to="userCenterLink()" class="link-item cl-red">{{$t('navbar.userCenter')}}</router-link>绑定
+        您尚未绑定银行卡，<router-link :to="userCenterLink()" class="link-item cl-red">立即绑定</router-link>
      </span>
   </p>
 </template>
@@ -75,22 +75,26 @@
           userId: this.userId
         }
         show.getBankInfo(this.requestdata).then((res) => {
-          this.bankList = res;
-          if(this.bankList.data.length<1){
-            this.noCardTips = true;
-          }
-          if(this.setBankcard.addOption.length>0){
-            for (let i in this.setBankcard.addOption){
-              this.bankList.data.push(this.setBankcard.addOption[i]);
+          if(res.code === 10000){
+            this.bankList = res;
+            if(this.bankList.data.length<1){
+              this.noCardTips = true;
             }
-          }
-          if(this.bankList.data.length > 0 && this.autoSelect){
-            this.selBankCard = this.bankList.data[0]
-          }
-          if(this.defSelect != ''){
-            this.selBankCard = _(this.bankList.data).find((item) => {
-              return item.account === this.defSelect
-            })
+            if(this.setBankcard.addOption.length>0){
+              for (let i in this.setBankcard.addOption){
+                this.bankList.data.push(this.setBankcard.addOption[i]);
+              }
+            }
+            if(this.bankList.data.length > 0 && this.autoSelect){
+              this.selBankCard = this.bankList.data[0]
+            }
+            if(this.defSelect != ''){
+              this.selBankCard = _(this.bankList.data).find((item) => {
+                return item.account === this.defSelect
+              })
+            }
+          }else{
+           toast(res.message)
           }
         }).catch(err => {
           toast(err.message);
@@ -120,13 +124,16 @@
     components: {}
   };
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
   .bind-card-part{
     display: inline-block;
     width: 100%;
+    height: 100%;
     .my-input{
-      border: none;
+      /*border: none;*/
       width: 100%;
+      height: 100%;
+      border: 1px solid #D3D3D3;
     }
     .nocard-tips{
       a{
