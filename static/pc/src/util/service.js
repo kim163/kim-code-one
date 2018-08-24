@@ -59,7 +59,6 @@ service.interceptors.response.use(
         $localStorage.remove('userData');
         store.dispatch('UPDATE_TOKEN_INFO', null);
         store.dispatch('CHECK_ONLINE',false);
-        console.log(router)
         let noNeedLogin = false
         if(_.isNull(router.currentRoute.name)){
           if(!_.isNull(router.history.pending)){

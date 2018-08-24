@@ -1,6 +1,6 @@
 <template>
   <div class="act-main">
-    <mobile-header :show-left-btn="false">优惠活动</mobile-header>
+    <!--<mobile-header :show-left-btn="false">优惠活动</mobile-header>-->
     <div class="header">
       <div class="activity-balance">
         <div class="title">赠币活动剩余</div>
@@ -61,16 +61,19 @@
     </div>
     <m-navbar></m-navbar>
     <bulletin-detail :detail="bulletinDetail" v-model="showBullDetail"></bulletin-detail>
+    <withdraw-tip v-if="withdrawTip" v-model="withdrawTip"></withdraw-tip>
   </div>
 </template>
 
 <script>
-  import MobileHeader from 'components/m-header'
+  // import MobileHeader from 'components/m-header'
   import mNavbar from 'components/m-navbar';
   import Marquee from 'components/marquee'
   import BulletinDetail from 'components/m-bulletin-detail'
   import { getAwardInfo } from 'api/activity'
   import QuickBuySell from '../pending-orders'
+  import WithdrawTip from 'components/withdraw-tip';
+  import {mapGetters} from 'vuex'
 
   export default {
     name: "activity-center",
@@ -82,20 +85,26 @@
         coinBalance:0,
         showBullDetail:false,
         bulletinDetail:{},
-        buySell:''
+        buySell:'',
+        withdrawTip:false
       }
     },
     components:{
       mNavbar,
       Marquee,
       BulletinDetail,
-      MobileHeader,
-      QuickBuySell
+      // MobileHeader,
+      QuickBuySell,
+      WithdrawTip
     },
     computed:{
       scrollWidth(){
         return this.$refs.msgList.offsetWidth
-      }
+      },
+      ...mapGetters([
+        "userData",
+        "islogin"
+      ])
     },
     methods:{
       getActivityList(){
@@ -134,8 +143,27 @@
         this.showBullDetail = true
       }
     },
+    created(){
+      const withdraw = this.$route.query.withdraw
+      if(withdraw && !_.isUndefined(withdraw) && withdraw === 'true'){
+        this.withdrawTip = true
+      }
+    },
     mounted(){
       this.getActivityList()
+    },
+    beforeRouteEnter(to,from,next){
+      next(vm => {
+        if(vm.islogin){
+          next()
+        }else{
+          if(!_.customize()){
+            next({name: 'mobileLogin',replace: true})
+          }else{
+            next({name: 'mobileCusLogin',replace: true})
+          }
+        }
+      })
     }
   }
 </script>
@@ -237,7 +265,7 @@
           padding-left: r(25);
         }
         .icon{
-          width: 30%;
+          /*width: 30%;*/
           height: 80%;
           /*background: url(~images/activity-buy.png);*/
           background-size: cover;
