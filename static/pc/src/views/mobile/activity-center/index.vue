@@ -232,7 +232,7 @@
         height: r(90);
         border-radius: r(6);
         display: flex;
-        justify-content: space-around;
+        justify-content: space-between;
         align-items: center;
         &.item-0{
           background-image: linear-gradient(44deg, #FEE140 0%, #FCA96D 50%, #FCA96D 50%, #FA709A 100%);
@@ -251,6 +251,7 @@
           height: 100%;
           justify-content: center;
           flex-direction: column;
+          margin-left: 5%;
         }
         .main-title{
           color: $white;
@@ -269,6 +270,7 @@
           height: 80%;
           /*background: url(~images/activity-buy.png);*/
           background-size: cover;
+          margin-right: 5%;
         }
       }
       .detail{
