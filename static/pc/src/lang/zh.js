@@ -68,8 +68,8 @@ export default {
     description: '国内早期区块链从业者 <br/>专注数字资产钱包，智能合约方向'
   },
   transactionHome: {
-    buyUet: '买入UET',
-    saleUet: '卖出UET',
+    buyUet: '买币',
+    saleUet: '卖币',
     mBuyUet: 'UET充值',
     msaleUet: '出售UET',
     postPendOrd: '发布挂单',

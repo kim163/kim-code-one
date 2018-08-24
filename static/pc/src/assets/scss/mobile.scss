@@ -55,15 +55,15 @@ select{
 
     .tranlist-item{
       background: $white;
-      margin: r(10) 0;
+      //margin: r(10) 0;
       border-top: 1px solid #D8D8D8;
-      border-bottom: 1px solid #D8D8D8;
+      //border-bottom: 1px solid #D8D8D8;
       a{
         display: block;
       }
-      &:first-child{
-        border-top: none;
-      }
+      //&:first-child{
+      //  border-top: none;
+      //}
     }
     .mtran-itemleft{
       width: 19%;
@@ -168,12 +168,12 @@ select{
       border-radius: r(4);
     }
     .now-online{
-      color: #E9BA52;
-      border: 1px solid #F4DCA8;
+      color: #16AC00;
+      border: 1px solid #16AC00;
     }
     .not-online{
-      color: #D8D8D8;
-      border: 1px solid #EBEBEB;
+      color: #787876;
+      border: 1px solid #787876;
     }
     .avatar-onlineicon{
        position: absolute;
