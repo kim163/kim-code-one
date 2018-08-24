@@ -12,18 +12,15 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
-  import {mapGetters,mapMutations} from 'vuex'
-  import Stomp from 'webstomp-client'
+  import {mapGetters,mapMutations} from 'vuex';
+  import Stomp from 'webstomp-client';
   import { aesutil } from '@/util';
-  import {$alert} from "./base/msgbox/msgbox";
-  import {chatWith} from 'api'
   import {$localStorage} from '@/util/storage';
-  import SysBullentin from 'views/sys-bullentin'
+  import SysBullentin from 'views/sys-bullentin';
   export default {
     data(){
       return {
         transitionName:"slide",
-        mobileDevice:"0",
         client: null,
         connectMsg: [],
         connectUrl: '',
@@ -54,13 +51,14 @@
     },
     methods: {
       dwMobilePage(){
-        if(this.$route.meta.isMobilePage){
-          this.mobileDevice = '1';
-          let element = document.getElementsByTagName('body')[0];
-          let classN = this.$route.meta.isMobilePage;
+        let element = document.getElementsByTagName('body')[0];
+        let classN = this.$route.meta.isMobilePage;
+        if(!_.isUndefined(classN) && !_.isNull(classN)){
           if((' ' + element.className + ' ').indexOf(' ' + classN + ' ') < 0){
             element.className = classN;
           }
+        }else if(_.isUndefined(classN) || _.isNull(classN)){
+          element.className = '';
         }
       },
       initWsData(){
