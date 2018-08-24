@@ -17,7 +17,6 @@
       </div>
 
      <m-navbar></m-navbar>
-     <withdraw-tip v-if="withdrawTip" v-model="withdrawTip"></withdraw-tip>
   </div>
 </template>
 <script>
@@ -25,7 +24,6 @@
   import MobileHeader from 'components/m-header'
   import mNavbar from 'components/m-navbar';
   import balance from 'components/balance';
-  import WithdrawTip from 'components/withdraw-tip';
   import tranbuyList from './components/tranbuy-list';
   import transellList from './components/transell-list';
 
@@ -39,7 +37,6 @@
           {name:'transactionHome.saleUet', value: 'saleUet' }
         ],
         transactItem: 'buyUet',
-        withdrawTip:false
       };
     },
     props: {
@@ -60,36 +57,17 @@
       ...mapGetters(["userData", "islogin"])
     },
     created() {
-      if (!this.islogin) {
-        this.$router.push({name: 'mobileLogin'});
-      }
-      console.log('m index create');
-      const withdraw = this.$route.query.withdraw
-      if(withdraw && !_.isUndefined(withdraw) && withdraw === 'true'){
-        this.withdrawTip = true
-      }
+      // if (!this.islogin) {
+      //   this.$router.push({name: 'mobileLogin'});
+      // }
     },
     components: {
       MobileHeader,
       mNavbar,
       balance,
       tranbuyList,
-      transellList,
-      WithdrawTip
+      transellList
     },
-    beforeRouteEnter(to,from,next){
-      next(vm => {
-        if(vm.islogin){
-          next()
-        }else{
-          if(!_.customize()){
-            next({name: 'mobileLogin',replace: true})
-          }else{
-            next({name: 'mobileCusLogin',replace: true})
-          }
-        }
-      })
-    }
   };
 </script>
 <style lang="scss">
