@@ -67,6 +67,7 @@
 
 <script>
   // import MobileHeader from 'components/m-header'
+  import store from '@/store';	//加载状态管理器
   import mNavbar from 'components/m-navbar';
   import Marquee from 'components/marquee'
   import BulletinDetail from 'components/m-bulletin-detail'
@@ -153,17 +154,15 @@
       this.getActivityList()
     },
     beforeRouteEnter(to,from,next){
-      next(vm => {
-        if(vm.islogin){
-          next()
+      if(store.getters.islogin){
+        next()
+      }else{
+        if(!_.customize()){
+          next({name: 'mobileLogin',replace: true})
         }else{
-          if(!_.customize()){
-            next({name: 'mobileLogin',replace: true})
-          }else{
-            next({name: 'mobileCusLogin',replace: true})
-          }
+          next({name: 'mobileCusLogin',replace: true})
         }
-      })
+      }
     }
   }
 </script>
