@@ -156,6 +156,7 @@
       line-height: r(40);
       padding-left: r(10);
       background: $white;
+      border-bottom: r(1) solid #D8D8D8;
       @include f(16px);
       .iconfont{
         margin-right: r(5);

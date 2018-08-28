@@ -15,19 +15,16 @@
     >
       <div class="mobile-trandatas mtranbuy-list">
         <div class="tranlist-container">
-
-          <div class="tranlist-item" v-for="(item,i) in dataList.data||[]">
-            <!--<router-link v-if="item.userId !== userData.userId" :to="{name:'tranbuyForm',params:{ id: item.id}}" :key="i">-->
-               <tran-detail :item="item" :key="item.id" ></tran-detail>
-            <!--</router-link>-->
-            <!--<div v-else @click="tipsOwnOrder">-->
-              <!--<tran-detail :item="item" :key="item.id" ></tran-detail>-->
-            <!--</div>-->
-
+          <div class="tranlist-item" v-for="(item,i) in dataList.data||[]" :key="item.id">
+            <tran-detail :item="item" :type-info="type" @buySell="buyOrSell"></tran-detail>
           </div>
         </div>
       </div>
     </scroll>
+    <tran-buy-sell v-if="showBuySell"
+                   v-model="showBuySell"
+                   :item-info="buySellItem"
+                   :type-info="type"></tran-buy-sell>
     <no-data-tip v-else></no-data-tip>
   </div>
 </template>
@@ -40,7 +37,8 @@
   import Scroll from 'vue-slim-better-scroll';
   import NoDataTip from 'components/no-data-tip';
   import tranDetail from './tran-detail';
-  import {mapGetters,mapActions,mapMutations} from 'vuex';
+  import tranBuySell from './tran-buy-sell'
+  import {mapGetters} from 'vuex';
 
   export default {
     data() {
@@ -69,7 +67,9 @@
           }
         },
         scrollY:0,
-        noData:false
+        noData:false,
+        showBuySell:false,
+        buySellItem:{}
       }
     },
     props:{
@@ -77,6 +77,19 @@
         type:Number,
         default:1 //1买入 2卖出
       }
+    },
+    watch:{
+      showBuySell(val){
+        if(!val){
+          this.buySellItem = {}
+        }
+      }
+    },
+    components: {
+      Scroll,
+      NoDataTip,
+      tranDetail,
+      tranBuySell
     },
     computed: {
       ...mapGetters(["userData"]),
@@ -134,6 +147,10 @@
       },
       getScroll(e){
         this.scrollY = e.y
+      },
+      buyOrSell(item){
+        this.buySellItem = item
+        this.showBuySell = true
       }
     },
     created() {
@@ -149,18 +166,28 @@
         }
       }, 100)
     },
-    components: {
-      Scroll,
-      NoDataTip,
-      tranDetail
-    }
   };
 </script>
 <style lang="scss">
+  @import "~assets/scss/mobile";
   .mobile-trandatas-main{
     width: 100%;
     height: 100%;
     overflow: hidden;
+    .mobile-trandatas{
+      width: 100%;
+      .tranlist-container{
+        @include  f(12px);
+        /*color: #787876;*/
+        .tranlist-item{
+          background: $white;
+          border-bottom: r(1) solid #D8D8D8;
+          a{
+            display: block;
+          }
+        }
+      }
+    }
   }
 </style>
 
