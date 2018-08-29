@@ -35,7 +35,7 @@
       <p class="item">
         <a href="javascript:void(0);" class="transaction-btn"
            v-if="item.userId !== userData.userId"
-           @click="$emit('buySell',item)">向ta{{typeInfo === 1 ? '买' : '卖'}}币</a>
+           @click="$emit('buySell',item)">{{typeInfo === 1 ? '向ta买币' : '卖币给ta'}}</a>
       </p>
     </div>
   </div>
