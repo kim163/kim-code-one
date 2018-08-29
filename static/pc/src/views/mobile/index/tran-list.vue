@@ -25,7 +25,7 @@
                    v-model="showBuySell"
                    :item-info="buySellItem"
                    :type-info="type"></tran-buy-sell>
-    <no-data-tip v-else></no-data-tip>
+    <no-data-tip v-if="noData"></no-data-tip>
   </div>
 </template>
 <script>

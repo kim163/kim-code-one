@@ -34,6 +34,9 @@
   import Balance from 'components/balance'
   import getBankcard from 'components/get-bankcard'
   import {mapGetters} from 'vuex';
+  import {
+    placeAnOrder
+  } from 'api/transaction';
   export default {
     name: "tran-buy-sell",
     data(){
@@ -86,6 +89,15 @@
         this.amount = this.userBalance
       },
       toBuySell(){
+
+        let payTypeBank = ''
+        if(this.payType.type =='1'){
+          payTypeBank='支付宝'
+        }else if(this.payType.type =='2'){
+          payTypeBank='微信'
+        }else{
+          payTypeBank=this.payType.bank
+        }
         const requestda = {
           orderId: this.itemInfo.id,
           userId: this.userData.userId,
@@ -93,16 +105,28 @@
             name: this.userData.nickname,
             address: this.userData.accountChainVos[0].address,
             assetCode: 'UET', //资产编码 默认 UET,登录后资产的编码
-            amount: this.buyAmountUet //uet的数量
+            amount: this.amount //uet的数量
           },
           accountCashVo: {
-            account: this.buyTypeBuy.account,
-            bank: this.buyTypeBuyBank, //机构名称
-            name: this.buyTypeBuy.name,
-            type: this.buyTypeBuy.type,
-            amount: this.buyAmountUet /100
+            account: this.payType.account,
+            bank: payTypeBank, //机构名称
+            name: this.payType.name,
+            type: this.payType.type,
+            amount: this.amount /100
           }
         }
+        placeAnOrder(requestda).then(res => {
+          console.log(res)
+          if (res.code == 10000) {
+            Vue.$global.bus.$emit('update:balance');
+            this.$router.push({name: 'mOrder',params:{ id: res.data.key}});
+          }else {
+            toast(res.message);
+          }
+
+        }).catch(err => {
+          toast(err.message);
+        })
       }
     }
   }
