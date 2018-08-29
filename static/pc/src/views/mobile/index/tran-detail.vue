@@ -15,7 +15,7 @@
         <span class="user-name"> {{item.userName}}</span>
         <i class="iconfont" :class="getPayInfo(item.accountTypeTwin).className"></i>
         <span>{{$t('transactionHome.completionRate')}}</span>
-        <span > {{ item.tradeTotal ? ((item.finishedTotal/item.tradeTotal)*100).toFixed(2) : 0}}</span>%
+        <span :class="checkFinish(item)">{{ item.tradeTotal ? ((item.finishedTotal/item.tradeTotal)*100).toFixed(2) : 0}}</span>%
       </p>
       <p class="item" v-if="typeInfo === 1">
         支持<span class="m-LR-xs">{{$t(getPayInfo(item.accountTypeTwin).name)}}</span>收款
@@ -84,6 +84,16 @@
         }
         return obj
       },
+      checkFinish(item){
+        if(item.tradeTotal){
+          const res = item.finishedTotal/item.tradeTotal
+          if(item.tradeTotal){
+
+          }
+        }else{
+          return 'low'
+        }
+      }
     },
   };
 </script>

@@ -115,7 +115,7 @@
             return
           }
         }
-        if(this.payType === ''){
+        if(this.typeInfo === 2 && this.payType === ''){
           toast('请选择收款方式')
           return
         }
