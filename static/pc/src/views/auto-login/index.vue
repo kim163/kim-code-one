@@ -109,9 +109,10 @@
           if(!_.isUndefined(this.mode)){
             const query = {mode: this.mode}
             if(this.withdraw && this.withdraw === 'true'){
-              Object.assign(query,{
-                withdraw: this.withdraw
-              })
+              // Object.assign(query,{
+              //   withdraw: this.withdraw
+              // })
+              this.$store.commit('GET_WIDTHDRAW',true)
             }
             this.$router.replace({name:tranAddress,query})
           }else{
