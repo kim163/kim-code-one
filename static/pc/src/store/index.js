@@ -27,7 +27,8 @@ export default new Vuex.Store({
     timeOver:false,
     unreadCount:0,
     historyState:0,
-    isShowCoupon:false
+    isShowCoupon:false,
+    withdraw:false //提现标识
   },
   getters: {     // 用来从 store 获取 Vue 组件数据
     language(state, getters) {
@@ -95,6 +96,9 @@ export default new Vuex.Store({
     },
     isShowCoupon(state,getters){
       return state.isShowCoupon
+    },
+    getWithdraw(state,getters){
+      return state.withdraw
     }
   },
   mutations: {         // 事件处理器用来驱动状态的变化
@@ -146,6 +150,9 @@ export default new Vuex.Store({
     },
     [types.GET_ISNEEDCOUPON](state,val){
       state.isShowCoupon = val
+    },
+    [types.GET_WIDTHDRAW](state,val){
+      state.withdraw = val
     }
   },
   actions: {    // 可以给组件使用的函数，以此用来驱动事件处理器 mutations
