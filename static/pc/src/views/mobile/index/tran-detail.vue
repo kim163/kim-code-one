@@ -26,7 +26,7 @@
         订单UET总数：<span class="amount"> {{item.amount}} UET </span>
       </p>
       <p class="item">
-        {{$t('transactionHome.remainBuy')}}：
+        剩余UET：
         <span class="amount"> {{item.balance}} UET </span>
       </p>
       <p class="item" v-if="typeInfo === 2">
