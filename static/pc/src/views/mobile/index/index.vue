@@ -14,8 +14,14 @@
       <div class="text">交易时请注意检查UET是否到账，如果付款了卖家没有放币，请对订单进行申诉</div>
     </div>
     <div class="type">
-      <i class="iconfont icon-car-add" v-show="transactItem === 'buyUet'"></i>
-      <i class="iconfont icon-car-sub" v-show="transactItem === 'saleUet'"></i>
+      <!--<i class="iconfont icon-car-add" v-show="transactItem === 'buyUet'"></i>-->
+      <!--<i class="iconfont icon-car-sub" v-show="transactItem === 'saleUet'"></i>-->
+      <svg class="icon" aria-hidden="true" v-show="transactItem === 'buyUet'">
+        <use xlink:href="#icon-car-add"></use>
+      </svg>
+      <svg class="icon" aria-hidden="true" v-show="transactItem === 'saleUet'">
+        <use xlink:href="#icon-car-sub"></use>
+      </svg>
       {{transactItem === 'buyUet' ? '买' : '卖'}}币大厅
     </div>
     <!--<div class="account-balline">-->
@@ -158,8 +164,10 @@
       background: $white;
       border-bottom: r(1) solid #D8D8D8;
       @include f(16px);
-      .iconfont{
-        margin-right: r(5);
+      .icon{
+        /*margin-right: r(5);*/
+        width: r(19);
+        height: r(16);
       }
     }
     .tran-container {

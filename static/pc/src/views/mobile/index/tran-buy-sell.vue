@@ -2,12 +2,12 @@
   <div class="main" v-if="show">
     <div class="container">
       <div class="balance">
-        <template v-if="typeInfo === 1">
+        <div v-show="typeInfo === 1">
           对方剩余：<span>{{itemInfo.balance}} UET</span>
-        </template>
-        <template v-else>
-          您最高可卖：<span><balance @getBalance="getBalance"></balance></span>
-        </template>
+        </div>
+        <div v-show="typeInfo === 2">
+          您最高可卖：<span><balance @getBalance="getUserBalance"></balance></span>
+        </div>
       </div>
       <div class="buy-sell">
         <input type="text" class="input"
@@ -82,14 +82,43 @@
       selCardChange(selCard){
         this.payType = selCard;
       },
-      getBalance(data){
+      getUserBalance(data){
         this.userBalance = data
       },
       allIn(){
-        this.amount = this.userBalance
+        if(this.typeInfo === 1){
+          if(Number(this.userBalance) > Number(this.itemInfo.balance)){
+            this.amount = this.itemInfo.balance
+          }else{
+            this.amount = this.userBalance
+          }
+        }else{
+          this.amount = this.userBalance
+        }
       },
       toBuySell(){
-
+        const isBuy = this.typeInfo === 1
+        if(this.amount === '' || this.amount === '0'){
+          toast(`请输入正确${isBuy ? '买入' : '卖出'}数量`)
+          return
+        }
+        if(this.typeInfo === 1){
+          if(Number(this.amount) > Number(this.itemInfo.balance)){
+            toast('您输入的金额超出对方剩余')
+            this.amount = this.itemInfo.balance
+            return
+          }
+        }else{
+          if(Number(this.amount) > Number(this.userBalance)){
+            toast('您输入的金额已超出您的账户余额')
+            this.amount = this.userBalance
+            return
+          }
+        }
+        if(this.payType === ''){
+          toast('请选择收款方式')
+          return
+        }
         let payTypeBank = ''
         if(this.payType.type =='1'){
           payTypeBank='支付宝'
@@ -118,6 +147,7 @@
         placeAnOrder(requestda).then(res => {
           console.log(res)
           if (res.code == 10000) {
+            this.$emit('change',false)
             Vue.$global.bus.$emit('update:balance');
             this.$router.push({name: 'mOrder',params:{ id: res.data.key}});
           }else {

@@ -15,7 +15,7 @@
     >
       <div class="mobile-trandatas mtranbuy-list">
         <div class="tranlist-container">
-          <div class="tranlist-item" v-for="(item,i) in dataList.data||[]" :key="item.id">
+          <div class="tranlist-item" v-for="(item,i) in dataList.data||[]" :key="i">
             <tran-detail :item="item" :type-info="type" @buySell="buyOrSell"></tran-detail>
           </div>
         </div>

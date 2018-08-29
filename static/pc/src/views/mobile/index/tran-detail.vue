@@ -3,7 +3,6 @@
     <div class="fl mtran-itemleft">
         <span class="disp-inlblo posit-rel">
              <a class="avatars-item" :style="{'background':item.avatarColor}" href="javascript:void(0);"> {{(item.userName).substring(0, 1)}} </a>
-          <!--<a :class="['avatar-onlineicon',item.sponsorOnlineStatus === 1?'online-icon':'notonline-icon']" href="javascript:void(0);"></a>-->
         </span>
       <div v-if="item.sponsorOnlineStatus === 1" class="avatar-onlinebtn now-online">在线</div>
       <div v-else-if="item.sponsorOnlineStatus === 0" class="avatar-onlinebtn not-online">离线</div>
@@ -14,13 +13,6 @@
     <div class="fr mtran-itemright">
       <p class="item">
         <span class="user-name"> {{item.userName}}</span>
-        <!--<span v-if="item.accountTypeTwin === 1" class="mpay alipay">{{$t('transactionHome.payAlipay')}}</span>-->
-        <!--<span v-else-if="item.accountTypeTwin === 2"-->
-        <!--class="mpay wechat">{{$t('transactionHome.payWechat')}}</span>-->
-        <!--<span v-else-if="item.accountTypeTwin === 3" class="mpay bank">{{$t('transactionHome.payBank')}}</span>-->
-        <!--<span v-else class="mpay">-->
-        <!--{{item.accountTypeTwin }}-->
-        <!--</span>-->
         <i class="iconfont" :class="getPayInfo(item.accountTypeTwin).className"></i>
         <span>{{$t('transactionHome.completionRate')}}</span>
         <span > {{ item.tradeTotal ? ((item.finishedTotal/item.tradeTotal)*100).toFixed(2) : 0}}</span>%
@@ -43,9 +35,6 @@
            v-if="item.userId !== userData.userId"
            @click="$emit('buySell',item)">向ta{{typeInfo === 1 ? '买' : '卖'}}币</a>
       </p>
-      <!--<p class="right-arrow">-->
-        <!--<i class="iconfont icon-right-arrow"></i>-->
-      <!--</p>-->
     </div>
   </div>
 </template>
@@ -182,14 +171,14 @@
     color: #3573FA;
     width: r(180);
     height: r(12);
-    transition: all 1s;
   }
   progress::-moz-progress-bar {
     background: #3573FA;
   }
   progress::-webkit-progress-bar {
     background: #FFFFFF;
-    border-radius: r(10); }
+    border-radius: r(10);
+  }
   progress::-webkit-progress-value  {
     background: #3573FA;
     border-top-left-radius: r(10);
