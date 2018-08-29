@@ -36,7 +36,7 @@
             </div>
             <div class="des-title">{{item.subtitle}}</div>
           </div>
-          <img class="icon" :src="item.iconUrl">
+          <img class="icon-img" :src="item.iconUrl">
         </div>
         <transition name="panel">
           <div class="detail" v-show="showIndex === index + 1">
@@ -264,7 +264,7 @@
           @include f(14px);
           padding-left: r(25);
         }
-        .icon{
+        .icon-img{
           /*width: 30%;*/
           height: 80%;
           /*background: url(~images/activity-buy.png);*/

@@ -68,8 +68,8 @@ export default {
     description: 'Early domestic block chain practitioners<br/>focus on digital assets wallet, smart contract direction'
   },
   transactionHome: {
-    buyUet: 'Buy UET',
-    saleUet: 'Sell UET',
+    buyUet: 'Buy',
+    saleUet: 'Sell',
     mBuyUet: 'UET recharge',
     msaleUet: 'Sell UET',
     postPendOrd: 'Post pending orders',
