@@ -55,16 +55,19 @@
 
     },
     created() {
-      const withdraw = this.$route.query.withdraw
-      if(withdraw && !_.isUndefined(withdraw) && withdraw === 'true'){
+      if(this.getWithdraw){
         this.withdrawTip = true
+        this.$store.commit('GET_WIDTHDRAW',false)
       }
     },
     watch: {
 
     },
     computed: {
-      ...mapGetters([ "islogin" ])
+      ...mapGetters([
+        "islogin",
+        "getWithdraw"
+      ])
     },
     components: {
       navMenu, vFooter, BreadCrumbs, transactMenu, guidePage, tranbuyList, userWalletass, recentOrders,

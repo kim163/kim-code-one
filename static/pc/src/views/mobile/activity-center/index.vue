@@ -104,7 +104,8 @@
       },
       ...mapGetters([
         "userData",
-        "islogin"
+        "islogin",
+        "getWithdraw"
       ])
     },
     methods:{
@@ -145,9 +146,9 @@
       }
     },
     created(){
-      const withdraw = this.$route.query.withdraw
-      if(withdraw && !_.isUndefined(withdraw) && withdraw === 'true'){
+      if(this.getWithdraw){
         this.withdrawTip = true
+        this.$store.commit('GET_WIDTHDRAW',false)
       }
     },
     mounted(){
