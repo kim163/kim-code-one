@@ -228,6 +228,7 @@
       top: r(-10);
       right: r(-10);
       z-index: 999;
+      text-align: center;
       .iconfont{
         @include f(12px);
         color: $white;

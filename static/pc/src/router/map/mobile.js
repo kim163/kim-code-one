@@ -29,7 +29,8 @@ const mSetUserInfo = () => import(/* webpackChunkName: 'mSetUserInfo' */ 'views/
 const mMyGift = () => import('views/mobile/user-center/my-gift') //我的获赠
 const customizeLoginTip = () => import('views/mobile/customize-login-tip')
 const mreceivcode = () => import('views/mobile/user-center/receivables-code') // 收款码
-
+const mAppealList = () => import('views/mobile/user-center/appeal-list') //申诉列表
+const mAppealDetail = () => import('views/mobile/user-center/appeal-detail')
 export default [
   {
     path: "/m/login",
@@ -248,8 +249,9 @@ export default [
     meta:{
       noCache:true,
       isMobilePage:'mobile-body'
-    }
+    },
   },
+
   {
     path:'/m/setUserInfo',
     name:'mSetUserInfo',
@@ -287,5 +289,24 @@ export default [
       noCache:true,
       isMobilePage:'mobile-body'
     }
-  }
+  },
+  {
+    path:'/m/appealList',
+    name:'mAppealList',
+    component:mAppealList,
+    meta:{
+      noCache:true,
+      isMobilePage:'mobile-body'
+    }
+  },
+  {
+    path:'/m/appealDetail/:id',
+    name:'mAppealDetail',
+    component:mAppealDetail,
+    meta:{
+      noCache:true,
+      isMobilePage:'mobile-body'
+    }
+  },
+
 ]

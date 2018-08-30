@@ -52,6 +52,11 @@
         {{$t('navbar.busineList')}}
         <i class="iconfont icon-right-arrow"></i>
       </router-link>
+       <router-link :to="{name:'mAppealList'}" class="item-href">
+         <i class="iconfont logo icon-appeal-list"></i>
+         {{$t('userCenter.appealList')}}
+         <i class="iconfont icon-right-arrow"></i>
+       </router-link>
      </div>
 
      <div class="mcenter-linkitem">
@@ -111,6 +116,9 @@
       <div slot="leftBtn" class="confirm-btn-cancel dialog-cancel">取消</div>
       <div slot="rightBtn" class="dialog-btn-yes" @click="toSetInfo">确定</div>
     </confirm-dialog>
+    <router-view>
+
+    </router-view>
   </div>
 </template>
 
@@ -324,6 +332,9 @@
           }
           &.icon-business-list{
              color: #B0D443;
+          }
+          &.icon-appeal-list{
+            color: #db1270;
           }
           &.icon-bind-bank{
              color: #3D88E4;
