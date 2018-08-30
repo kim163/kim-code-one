@@ -13,12 +13,15 @@
         <p><span class="sub-title">买家:</span> {{creditName}}</p>
         <div><span class="sub-title">卖家:</span> {{debitName}}</div>
         <p>银行类型: {{bankCategory}}</p>
-        <p class="list_accountName"><span class="account_name">开户姓名: {{debitAccountNameTwin}} </span> <a href="javascript:void(0);" class="copy-btn copy-btn-next"
-                                                           :data-clipboard-text="debitAccountNameTwin"
-                                                           @click="copy">{{$t('transactionHome.copyBtn')}}</a></p>
-        <p class="list_number"><span class="account_num">开户卡号: {{bankNumber}} </span> <a href="javascript:void(0);" class="copy-btn copy-btn-next"
-                                                 :data-clipboard-text="bankNumber"
-                                                 @click="copy">{{$t('transactionHome.copyBtn')}}</a></p>
+        <p class="list_accountName"><span class="account_name">开户姓名: {{debitAccountNameTwin}} </span> <a
+          href="javascript:void(0);" class="copy-btn copy-btn-next"
+          :data-clipboard-text="debitAccountNameTwin"
+          @click="copy">{{$t('transactionHome.copyBtn')}}</a></p>
+        <p class="list_number"><span class="account_num">开户卡号: {{bankNumber}} </span> <a href="javascript:void(0);"
+                                                                                         class="copy-btn copy-btn-next"
+                                                                                         :data-clipboard-text="bankNumber"
+                                                                                         @click="copy">{{$t('transactionHome.copyBtn')}}</a>
+        </p>
       </div>
       <div class="open-info" @click="displayInfo(1)" v-if="!defaultState">展开内容 <i
         class="iconfont icon-down-arrow-circle"></i></div>
@@ -28,29 +31,54 @@
     <div class="leaveMessage_info">
       <p class="message_title">留言</p>
       <noDataTip v-if="appealDetailList.length==0"></noDataTip>
-      <div class="leaveMessage_content" v-else v-for="list in appealDetailList">
+      <div class="leaveMessage_content" v-else v-for="(list,key) in appealDetailList">
         <!--判断用户角色-->
+
         <div v-if="list.sourceTypeText=='卖家'" class="content_list">
           <div style="flex: 1"></div>
           <div class="user_content">
             <p class="name">卖家: {{list.userName}}</p>
             <p class="text_content">{{list.content}}</p>
-            <img :src="list.attachmentUrls" alt="pic">
-            <p class="time">{{list.modifytime|Date('yyyy-MM-dd h:m:s')}}</p>
+            <div v-for="(listNext,value) in list.attachmentUrls.split(',')" style="display: inline-block">
+              <viewer :images="list.attachmentUrls.split(',')" style="text-align: right;display: inline-block">
+                <img :src="listNext" class="pic">
+              </viewer>
+            </div>
+
+            <p class="time">{{list.modifytime|Date('yyyy-MM-dd hh:mm:ss')}}</p>
           </div>
           <div class="user_symbol"></div>
         </div>
         <div v-if="list.sourceTypeText=='买家'" class="content_list_buyer">
           <div class="user_symbol"></div>
-          <div class="user_content"></div>
+          <div class="user_content">
+            <p class="name">买家:{{list.username}}</p>
+            <p class="text_content">{{list.content}}</p>
+            <div v-for="(listNext,value) in list.attachmentUrls.split(',')" style="display: inline-block">
+              <viewer :images="list.attachmentUrls.split(',')" style="text-align: right;display: inline-block">
+                <img :src="listNext" class="pic">
+              </viewer>
+            </div>
+            <p class="time">{{list.modifytime|Date('yyyy-MM-dd hh:mm:ss')}}</p>
+          </div>
+          <div style="flex: 1"></div>
         </div>
         <div v-if="list.sourceTypeText=='钱包客服'" class="content_list_kefu">
           <div class="user_symbol"></div>
-          <div class="user_content"></div>
+          <div class="user_content"  >
+            <p class="name">客服: {{list.userName}} </p>
+            <p class="text_content">{{list.content}}</p>
+            <div v-if="list.attachmentUrls&&list.attachmentUrls!==null" style="display: inline-block">
+              <viewer :images="list.attachmentUrls.split(',')" v-for="(listNext,value) in list.attachmentUrls.split(',')" style="text-align: right;display: inline-block">
+                <img :src="listNext" class="pic">
+              </viewer>
+            </div>
+            <p class="time">{{list.modifytime|Date('yyyy-MM-dd hh:mm:ss')}}</p>
+          </div>
         </div>
       </div>
     </div>
-    <div class="write_Message" @click="sendMessage">
+    <div class="write_Message" @click="sendMessage" v-if="$route.query.num == 1">
       <i class="iconfont icon-leave-message"></i> 留言
     </div>
     <transition name="toolSlideRight" v-if="offSwitch">
@@ -66,6 +94,7 @@
   import {userCenter} from 'api'
   import {mapGetters} from 'vuex'
   import Clipboard from 'clipboard';
+  import PcCash from "../../cash/index";
 
   export default {
     data() {
@@ -82,7 +111,8 @@
         defaultState: false,
         appealDetailList: [],
         offSwitch: false,
-        orderId: ''
+        orderId: '',
+        newArr: []
       }
     },
     computed: {
@@ -118,18 +148,22 @@
             'orderId': this.$route.params.id
           }
           userCenter.getAppealDetailPage(requests).then((res) => {
-            console.log(res, '四大皆空')
-            this.textInfo = res.data.appeal.typeText
-            this.tradeMoney = res.data.appeal.amountTwin
-            this.amount = res.data.appeal.amount
-            this.createTime = res.data.appeal.modifytime
-            this.creditName = res.data.orderx.creditName
-            this.debitName = res.data.orderx.debitName
-            this.debitAccountNameTwin = res.data.orderx.debitAccountNameTwin
-            this.bankCategory = res.data.orderx.debitAccountMerchantTwin
-            this.bankNumber = res.data.orderx.debitAccountTwin
-            this.appealDetailList = res.data.appealDetailList
-            this.orderId = this.$route.params.id
+            if(res.code=='10000'){
+              this.textInfo = res.data.appeal.typeText
+              this.tradeMoney = res.data.appeal.amountTwin
+              this.amount = res.data.appeal.amount
+              this.createTime = res.data.appeal.modifytime
+              this.creditName = res.data.orderx.creditName
+              this.debitName = res.data.orderx.debitName
+              this.debitAccountNameTwin = res.data.orderx.debitAccountNameTwin
+              this.bankCategory = res.data.orderx.debitAccountMerchantTwin
+              this.bankNumber = res.data.orderx.debitAccountTwin
+              this.appealDetailList = res.data.appealDetailList
+              this.orderId = this.$route.params.id
+            }else {
+              toast(res.message)
+            }
+
           })
         } else {
           const requests = {
@@ -140,16 +174,22 @@
             'types': [1, 2, 3, 4]
           }
           userCenter.getAppealDetailHistoryPage(requests).then((res) => {
-            this.textInfo = res.data.appealHistory.typeText
-            this.tradeMoney = res.data.appealHistory.amountTwin
-            this.amount = res.data.appealHistory.amount
-            this.createTime = res.data.appealHistory.createtime
-            this.debitAccountNameTwin = res.data.transaction.debitAccountNameTwin
-            this.bankCategory = res.data.transaction.debitAccountMerchantTwin
-            this.bankNumber = res.data.transaction.debitAccountTwin
-            this.debitName = res.data.transaction.debitName
-            this.creditName = res.data.transaction.creditName
-            this.orderId = this.$route.params.id
+            if(res.code=='10000'){
+              this.textInfo = res.data.appealHistory.typeText
+              this.tradeMoney = res.data.appealHistory.amountTwin
+              this.amount = res.data.appealHistory.amount
+              this.createTime = res.data.appealHistory.createtime
+              this.debitAccountNameTwin = res.data.transaction.debitAccountNameTwin
+              this.bankCategory = res.data.transaction.debitAccountMerchantTwin
+              this.bankNumber = res.data.transaction.debitAccountTwin
+              this.debitName = res.data.transaction.debitName
+              this.creditName = res.data.transaction.creditName
+              this.orderId = this.$route.params.id
+              this.appealDetailList = res.data.appealDetailHistoryList
+            }else {
+              toast(res.message)
+            }
+
           })
         }
       },
@@ -164,7 +204,7 @@
         this.offSwitch = true
       }
     },
-    components: {MobileHeader, noDataTip, leaveMessage}
+    components: {PcCash, MobileHeader, noDataTip, leaveMessage}
   }
 </script>
 
@@ -203,23 +243,23 @@
         border-top: 1px solid #f5f5f5;
         border-bottom: 1px solid #f5f5f5;
       }
-      .list_accountName{
+      .list_accountName {
         display: flex;
         flex-direction: row;
-        .account_name{
+        .account_name {
           flex: 1;
         }
-        .copy-btn{
+        .copy-btn {
           color: #3573FA;
         }
       }
-      .list_number{
+      .list_number {
         display: flex;
         flex-direction: row;
-        .account_num{
+        .account_num {
           flex: 1;
         }
-        .copy-btn{
+        .copy-btn {
           color: #3573FA;
         }
       }
@@ -248,6 +288,7 @@
         display: flex;
         flex-direction: row;
         border-bottom: 1px solid #f5f5f5;
+        padding-top: r(20);
         .user_symbol {
           background: url('~images/chatWith/seller.png') no-repeat;
           background-size: 100%;
@@ -269,6 +310,9 @@
           }
           .pic {
             padding: r(10);
+            width: r(60);
+            height: r(60);
+            text-align: left;
           }
           .time {
             text-align: right;
@@ -278,7 +322,10 @@
         }
       }
       .content_list_buyer {
+        display: flex;
+        flex-direction: row;
         border-bottom: 1px solid #f5f5f5;
+        padding-top: r(20);
         .user_symbol {
           background: url('~images/chatWith/buyer.png') no-repeat;
           background-size: 100%;
@@ -286,11 +333,36 @@
           height: r(48);
         }
         .user_content {
-
+          padding-left: r(10);
+          .name {
+            color: #333;
+            @include f(16px);
+            text-align: left;
+          }
+          .text_content {
+            text-align: left;
+            color: #949494;
+            @include f(16);
+            padding: r(0) r(0) r(5);
+          }
+          .pic {
+            padding: r(10);
+            width: r(60);
+            height: r(60);
+            text-align: right;
+          }
+          .time {
+            text-align: left;
+            color: #949494;
+            padding-bottom: r(19);
+          }
         }
       }
       .content_list_kefu {
+        display: flex;
+        flex-direction: row;
         border-bottom: 1px solid #f5f5f5;
+        padding-top: r(20);
         .user_symbol {
           background: url('~images/chatWith/kefu.png') no-repeat;
           background-size: 100%;
@@ -298,7 +370,29 @@
           height: r(48);
         }
         .user_content {
-
+          padding-left: r(10);
+          .name {
+            color: #333;
+            @include f(16px);
+            text-align: left;
+          }
+          .text_content {
+            text-align: left;
+            color: #949494;
+            @include f(16);
+            padding: r(0) r(0) r(5);
+          }
+          .pic {
+            padding: r(10);
+            width: r(60);
+            height: r(60);
+            text-align: left;
+          }
+          .time {
+            text-align: left;
+            color: #949494;
+            padding-bottom: r(19);
+          }
         }
       }
     }

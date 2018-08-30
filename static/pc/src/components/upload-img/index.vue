@@ -1,6 +1,7 @@
 <template>
   <div class="upload-imgpart">
     <div class="cfx" :class="{'item-list': uploadImgSet.maxUploadNum === 1}">
+
       <div v-for="(item,i) in picListArr||[]" class="upload-imgitem">
         <viewer :images="item.img">
           <img :src="item.img" alt="" class="contents_image">

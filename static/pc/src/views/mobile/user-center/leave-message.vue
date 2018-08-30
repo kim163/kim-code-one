@@ -24,7 +24,7 @@
     data() {
       return {
         textValue: '',
-        attachmentUrls: ''
+        attachmentUrls: '',
       }
     },
     props:{
@@ -46,12 +46,20 @@
           'orderId': this.idInfo,
           'userId': this.userId,
           'userName': this.userData.nickname,
-          'attachmentUrls': this.attachmentUrls,
-          'context': this.textValue
+          'attachmentUrls': this.attachmentUrls.join(','),
+          'content': this.textValue
         }
-        console.log(requests,"深刻理解的")
-        userCenter.addAppealDetail(requests).then((res) => {
 
+        if(!this.textValue||this.attachmentUrls==''){
+          toast('请完善留言板内容')
+          return false
+        }
+        userCenter.addAppealDetail(requests).then((res) => {
+            if(res.code=='10000'){
+              toast("发送成功")
+            }else {
+              toast(res.message)
+            }
         })
       },
       doClick(){
