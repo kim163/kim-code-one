@@ -88,7 +88,7 @@
           <li>
             <span class="l-title">账号</span>
             <div class="fr0">
-              <span class="">{{DetailList.debitAccountTwin}}</span>
+              <span>{{DetailList.debitAccountTwin}}</span>
               <a href="javascript:void(0);" class="copy-btn" :data-clipboard-text="DetailList.debitAccountTwin"
                  @click="copy">{{$t('transactionHome.copyBtn')}}</a>
             </div>

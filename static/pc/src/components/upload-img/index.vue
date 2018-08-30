@@ -1,6 +1,7 @@
 <template>
   <div class="upload-imgpart">
     <div class="cfx" :class="{'item-list': uploadImgSet.maxUploadNum === 1}">
+
       <div v-for="(item,i) in picListArr||[]" class="upload-imgitem">
         <viewer :images="item.img">
           <img :src="item.img" alt="" class="contents_image">
@@ -228,6 +229,7 @@
       top: r(-10);
       right: r(-10);
       z-index: 999;
+      text-align: center;
       .iconfont{
         @include f(12px);
         color: $white;

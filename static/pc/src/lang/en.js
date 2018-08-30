@@ -250,6 +250,7 @@ export default {
     completeMaterial:'Complete material',
     myGift:'My Coupons',
     transactionRecord:'Transaction Record',
-    receivcode:'Receivables Code'
+    receivcode:'Receivables Code',
+    appealList:'Appeal List'
   }
 }
