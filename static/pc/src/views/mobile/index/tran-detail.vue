@@ -191,7 +191,9 @@
     right: r(10);
     bottom: r(20);
     &.disabled{
-      background: #9d9d9d;
+      background: #f1f1f1;
+      border-color: #9d9d9d;
+      color: #9d9d9d;
     }
   }
   .progress{
