@@ -18,8 +18,8 @@
                    :focus-stop="false">
             <template slot-scope="props">
               <a v-for="(item, index) in props.content" :key="index" @click="showBulletinDetail(item)">
-                {{item.title}}
-                <span class="m-LR-sm" v-if="index <  props.content.length -1">/</span>
+                {{item.title.replace('”','"')}}
+                <!--<span class="m-LR-sm" v-if="index <  props.content.length -1">/</span>-->
               </a>
             </template>
           </marquee>
@@ -213,6 +213,9 @@
         @include f(14px);
         line-height: r(40);
         padding-left: r(10);
+        a{
+          margin-right: r(10);
+        }
       }
     }
   }
