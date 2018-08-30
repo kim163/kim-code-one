@@ -309,6 +309,9 @@
             color: #949494;
             @include f(16);
             padding: r(0) r(0) r(5);
+            width: 100%;
+            word-break: break-all;
+            max-width: 15rem;
           }
           .pic {
             padding: r(10);
@@ -346,6 +349,9 @@
             color: #949494;
             @include f(16);
             padding: r(0) r(0) r(5);
+            width: 100%;
+            word-break: break-all;
+            max-width: 15rem;
           }
           .pic {
             padding: r(10);
@@ -383,6 +389,9 @@
             color: #949494;
             @include f(16);
             padding: r(0) r(0) r(5);
+            width: 100%;
+            word-break: break-all;
+            max-width: 15rem;
           }
           .pic {
             padding: r(10);
