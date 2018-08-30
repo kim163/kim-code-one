@@ -21,7 +21,8 @@
       return{
         swiperOption:{
           pagination: {
-            el: '.swiper-pagination'
+            el: '.swiper-pagination',
+            clickable: true
           },
           autoplay: {
             delay: 5000,
@@ -44,7 +45,7 @@
   .main{
     margin-top: 30px;
     .swiper-container{
-      overflow: initial;
+      height: 130px;
     }
   }
   .act-item{
@@ -64,6 +65,10 @@
     }
   }
   .swiper-pagination{
-    bottom: -20px;
+    bottom: 0px;
+    >.swiper-pagination-bullet{
+      width: 14px !important;
+      height: 14px !important;
+    }
   }
 </style>
