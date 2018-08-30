@@ -7,7 +7,7 @@
     <div class="leave_message_content">
       <p><i class="iconfont icon-leave-message"></i> 留言 </p>
       <div class="message_content"><textarea type="text" placeholder="说点什么呗..." v-model="textValue"></textarea></div>
-      <div class="upload_container">
+      <div class="upload_container" >
         <uploadPic :showClose="true" @gitPicUrl="getPicUrl"></uploadPic>
       </div>
     </div>
@@ -25,6 +25,7 @@
       return {
         textValue: '',
         attachmentUrls: '',
+        isUpload:true
       }
     },
     props:{
@@ -40,8 +41,17 @@
     methods: {
       getPicUrl(res) {
         this.attachmentUrls = res
+        if(res.length>3){
+           this.isUpload =false
+        }else {
+          this.isUpload = true
+        }
       },
       sendInfo() {
+        if(!this.isUpload){
+          toast('最多上传三张图片')
+          return
+        }
         const requests = {
           'orderId': this.idInfo,
           'userId': this.userId,

@@ -405,7 +405,7 @@
             return;
           }
           if (res.data.status == '61') {
-            this.$router.push({name: 'mOrderAppeal', params: {id: this.orderId}});
+            this.$router.replace({name: 'mOrderAppeal', params: {id: this.orderId}});
             return;
           }
           if (res.data.intervalTime - res.data.elapsedTime <= 0) {

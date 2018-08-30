@@ -6,7 +6,7 @@
       <div class="appeal_content">
         <p>申诉原因: {{textInfo}}</p>
         <p>交易金额: {{tradeMoney}} CNY</p>
-        <p>交易数量: {{amount}}</p>
+        <p>交易数量: {{amount}} UET</p>
         <p>创建时间: {{createTime|Date('yyyy-MM-dd hh:mm:ss')}}</p>
       </div>
       <div class="appeal_content" v-if="defaultState">
@@ -125,6 +125,9 @@
     methods: {
       closeState(val) {
         this.offSwitch = val
+        if(!val){
+          this.fetchData()
+        }
       },
       copy() {
         var clipboard = new Clipboard('.copy-btn')
