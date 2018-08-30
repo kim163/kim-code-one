@@ -365,7 +365,6 @@
             if (this.scroll) {
               this.scroll.refresh();
               this.scroll.scrollToElement(document.querySelectorAll('.msg-item')[(this.chatArr.length + this.historyArr.length) - 1], 333)
-              console.log(document.querySelectorAll('.msg-item')[(this.chatArr.length + this.historyArr.length) - 1],333)
             } else {
             }
           }

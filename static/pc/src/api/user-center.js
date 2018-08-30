@@ -44,3 +44,39 @@ export const myGift = jsonData => service({
   method:'post',
   data:jsonData
 })
+
+//获取进行中的申诉列表
+export const getAppealPage = jsonData => service({
+  url: numversion +`appeal/getAppealPage`,
+  method:'post',
+  data:jsonData
+})
+
+//获取历史申诉列表
+
+export const getAppealHistoryPage = jsonData => service({
+  url: numversion +`appeal/getAppealHistoryPage`,
+  method:'post',
+  data:jsonData
+})
+
+//获取历史申诉列表中的申诉详情
+export const getAppealDetailHistoryPage = jsonData => service({
+  url: numversion +`appeal/getAppealDetailHistoryPage`,
+  method:'post',
+  data:jsonData
+})
+
+//获取进行中申诉列表中的申诉详情
+export const getAppealDetailPage = jsonData => service({
+  url: numversion + `appeal/getAppealDetailPage`,
+  method:'post',
+  data:jsonData
+})
+
+//发送申诉信息
+export  const addAppealDetail = jsonData => service({
+  url: numversion + `appeal/addAppealDetailV2`,
+  method:'post',
+  data:jsonData
+})

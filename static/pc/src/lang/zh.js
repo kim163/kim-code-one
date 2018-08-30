@@ -251,6 +251,7 @@ export default {
     completeMaterial:'完善资料',
     myGift:'我的优惠券',
     transactionRecord:'交易记录',
-    receivcode:'收款码'
+    receivcode:'收款码',
+    appealList:'申诉列表'
   }
 }
