@@ -5,11 +5,6 @@
 const mLogin = () => import(/* webpackChunkName: 'mLogin' */ 'views/mobile/login') //登陆
 const mRegister = () => import(/* webpackChunkName: 'mRegister' */ 'views/mobile/register') //注册
 const mTran = () => import(/* webpackChunkName: 'mIndex' */ 'views/mobile/index') //首页
-const mTranbuyForm = ()=> import(/* webpackChunkName: 'mTranbuyForm' */ 'views/mobile/index/components/tranbuy-list/tranbuy-form')
-const mRechargeOrder = () => import(/* webpackChunkName: 'mRechargeOrder' */ 'views/mobile/index/components/tranbuy-list/recharge-order')
-const mRechWechatOrder = () => import(/* webpackChunkName: 'mRechWechatOrder' */ 'views/mobile/index/components/tranbuy-list/rechwechat-order')
-const mTransellForm = () => import(/* webpackChunkName: 'mTransellForm' */ 'views/mobile/index/components/transell-list/transell-form')
-const mWithdrawOrder = () => import(/* webpackChunkName: 'mWithdrawOrder' */ 'views/mobile/index/components/transell-list/withdraw-orders')
 const mCashDesk = () => import(/* webpackChunkName: 'mCashDesk' */ 'views/mobile/cashDesk/cash')
 const mTranRecord = () => import(/* webpackChunkName: 'mTranRecord' */ 'views/mobile/transaction-record')
 const mPendingBuy = () => import(/* webpackChunkName: 'mPendingBuy' */ 'views/mobile/pending-orders')
@@ -66,51 +61,6 @@ export default [
     name: 'mTransaction',
     component:mTran,
     meta: {
-      isMobilePage: "mobile-body"
-    }
-  },
-  {
-    path: "/m/tranbuyFm/:id?",
-    name: 'tranbuyForm',
-    component:mTranbuyForm,
-    meta: {
-      noCache: true,
-      isMobilePage: "mobile-body"
-    }
-  },
-  {
-    path: "/m/rechargeOrder/:id?",
-    name: 'rechargeOrder',
-    component:mRechargeOrder,
-    meta: {
-      noCache: true,
-      isMobilePage: "mobile-body"
-    }
-  },
-  {
-    path: "/m/rechWechatOrder/:id?",
-    name: 'rechWechatOrder',
-    component:mRechWechatOrder,
-    meta: {
-      noCache: true,
-      isMobilePage: "mobile-body"
-    }
-  },
-  {
-    path: "/m/transellFm/:id?",
-    name: 'transellForm',
-    component:mTransellForm,
-    meta: {
-      noCache: true,
-      isMobilePage: "mobile-body"
-    }
-  },
-  {
-    path: "/m/withdrawOrder/:id?",
-    name: 'withdrawOrder',
-    component:mWithdrawOrder,
-    meta: {
-      noCache: true,
       isMobilePage: "mobile-body"
     }
   },
