@@ -11,7 +11,7 @@
         <uploadPic :showClose="true" @gitPicUrl="getPicUrl"></uploadPic>
       </div>
     </div>
-    <div class="send_btn" @click="sendInfo">发送</div>
+    <div class="send_btn" v-on:click.once="sendInfo">发送</div>
   </div>
 </template>
 
@@ -25,7 +25,7 @@
       return {
         textValue: '',
         attachmentUrls: '',
-        isUpload:true
+        isUpload:true,
       }
     },
     props:{
@@ -59,7 +59,6 @@
           'attachmentUrls':this.attachmentUrls?this.attachmentUrls.join(','):'',
           'content': this.textValue
         }
-
 
         userCenter.addAppealDetail(requests).then((res) => {
             if(res.code=='10000'){
