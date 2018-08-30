@@ -39,12 +39,11 @@
           <div class="user_content">
             <p class="name">卖家: {{list.userName}}</p>
             <p class="text_content">{{list.content}}</p>
-            <div v-for="(listNext,value) in list.attachmentUrls.split(',')" style="display: inline-block">
-              <viewer :images="list.attachmentUrls.split(',')" style="text-align: right;display: inline-block">
+            <div v-if="list.attachmentUrls&&list.attachmentUrls!==null" style="display: inline-block">
+              <viewer :images="list.attachmentUrls.split(',')" v-for="(listNext,value) in list.attachmentUrls.split(',')" :key="value" style="text-align: right;display: inline-block">
                 <img :src="listNext" class="pic">
               </viewer>
             </div>
-
             <p class="time">{{list.modifytime|Date('yyyy-MM-dd hh:mm:ss')}}</p>
           </div>
           <div class="user_symbol"></div>
@@ -54,8 +53,8 @@
           <div class="user_content">
             <p class="name">买家:{{list.username}}</p>
             <p class="text_content">{{list.content}}</p>
-            <div v-for="(listNext,value) in list.attachmentUrls.split(',')" style="display: inline-block">
-              <viewer :images="list.attachmentUrls.split(',')" style="text-align: right;display: inline-block">
+            <div  v-if="list.attachmentUrls&&list.attachmentUrls!==null"  style="display: inline-block">
+              <viewer :images="list.attachmentUrls.split(',')" v-for="(listNext,value) in list.attachmentUrls.split(',')"  :key="value" style="text-align: right;display: inline-block">
                 <img :src="listNext" class="pic">
               </viewer>
             </div>
@@ -69,7 +68,7 @@
             <p class="name">客服: {{list.userName}} </p>
             <p class="text_content">{{list.content}}</p>
             <div v-if="list.attachmentUrls&&list.attachmentUrls!==null" style="display: inline-block">
-              <viewer :images="list.attachmentUrls.split(',')" v-for="(listNext,value) in list.attachmentUrls.split(',')" style="text-align: right;display: inline-block">
+              <viewer :images="list.attachmentUrls.split(',')" v-for="(listNext,value) in list.attachmentUrls.split(',')" :key="value" style="text-align: right;display: inline-block">
                 <img :src="listNext" class="pic">
               </viewer>
             </div>

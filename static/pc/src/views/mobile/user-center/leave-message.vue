@@ -46,17 +46,17 @@
           'orderId': this.idInfo,
           'userId': this.userId,
           'userName': this.userData.nickname,
-          'attachmentUrls': this.attachmentUrls.join(','),
+          'attachmentUrls':this.attachmentUrls?this.attachmentUrls.join(','):'',
           'content': this.textValue
         }
 
-        if(!this.textValue||this.attachmentUrls==''){
-          toast('请完善留言板内容')
-          return false
-        }
+
         userCenter.addAppealDetail(requests).then((res) => {
             if(res.code=='10000'){
               toast("发送成功")
+              setTimeout(()=>{
+                this.$emit('closeMessage',false)
+              },1000)
             }else {
               toast(res.message)
             }
