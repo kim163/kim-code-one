@@ -34,8 +34,10 @@
       </p>
       <p class="item">
         <a href="javascript:void(0);" class="transaction-btn"
-           v-if="item.userId !== userData.userId"
-           @click="$emit('buySell',item)">{{typeInfo === 1 ? '向ta买币' : '卖币给ta'}}</a>
+           :class="{disabled: item.userId === userData.userId}"
+           @click="item.userId !== userData.userId ? $emit('buySell',item) : ''">
+          {{typeInfo === 1 ? '向ta买币' : '卖币给ta'}}
+        </a>
       </p>
     </div>
   </div>
@@ -188,6 +190,9 @@
     position: absolute;
     right: r(10);
     bottom: r(20);
+    &.disabled{
+      background: #9d9d9d;
+    }
   }
   .progress{
     background: #FFFFFF;
