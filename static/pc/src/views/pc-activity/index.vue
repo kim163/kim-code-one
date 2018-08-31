@@ -3,7 +3,7 @@
     <div class="container min-width main" v-if="activityList.length > 0">
       <swiper ref="mySwiper" :options="swiperOption">
         <swiper-slide v-for="(item,index) in activityList" :key="index">
-          <div class="act-item" :class="`item-${index}`">
+          <div class="act-item" :class="`item-${index}`" @click="quickBuyOrSell(item)">
             <div class="info-item">
               <img class="icon-img" :src="item.iconUrl">
               <div>
@@ -47,6 +47,7 @@
             disableOnInteraction: false
           },
           loop: true,
+          simulateTouch : false,//禁止鼠标模拟
         },
         activityList: [],
         coinBalance: 0,
@@ -70,6 +71,23 @@
           toast(err)
         })
       },
+      quickBuyOrSell(data){
+        let type = ''
+        switch (data.type){
+          case 'sellCoins':
+            type = 'sell'
+            break
+          case 'buyCoins':
+            type = 'buy'
+            break
+          default:
+            break
+        }
+        console.log('优惠类型',type)
+        if(type != ''){
+          this.$emit('quickBuySell',type)
+        }
+      }
     },
     mounted() {
       this.getActivityList()
@@ -90,6 +108,7 @@
     height: 100px;
     position: relative;
     display: flex;
+    cursor: pointer;
     &:after {
       content: '';
       position: absolute;
@@ -108,11 +127,11 @@
       right: -5px;
       top: 4.5px;
     }
-    &.item-0 {
-      background-image: linear-gradient(44deg, #FEE140 0%, #FCA96D 50%, #FCA96D 50%, #FA709A 100%);
+    &.item-0{
+      background-image: linear-gradient(45deg, #AD7EFD 0%, #69EDFF 100%);
     }
-    &.item-1 {
-      background-image: linear-gradient(45deg, #69EDFF 0%, #AD7EFD 100%);
+    &.item-1{
+      background-image: linear-gradient(44deg, #FA709A 0%, #FCA96D 50%, #FCA96D 50%, #FEE140 100%);
     }
     &.item-2 {
       background-image: linear-gradient(47deg, #EE69FF 0%, #955AF9 100%);
@@ -137,6 +156,7 @@
         background: #ffffff;
         right: 0;
         top: 10px;
+        opacity: 0.3;
       }
       &.lg {
         width: 50%;

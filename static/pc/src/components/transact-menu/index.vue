@@ -1,6 +1,6 @@
 <template>
   <div>
-    <pc-activity></pc-activity>
+    <pc-activity @quickBuySell="quickBuyOrSell"></pc-activity>
     <div class="section transact-menu">
       <div class="container min-width">
         <div class="row">
@@ -52,6 +52,10 @@
         this.amount = data.amount
         this.bankNo = data.bankNo
         this.auto = data.auto
+        this.isShowPostPend = true
+      },
+      quickBuyOrSell(type){
+        this.mode = type === 'sell' ? 3 : 1
         this.isShowPostPend = true
       }
     },
