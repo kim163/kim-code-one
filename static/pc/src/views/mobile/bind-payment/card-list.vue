@@ -93,12 +93,12 @@
       },
       getBankListInfo() {
         getBankList({userId: this.userId}).then(res => {
-          console.log(res)
           if (res.code === 10000) {
             console.log('card list:',res)
             this.cardList = res.data.filter((item) => {
               return item.type === 3
-            })
+            });
+            this.$store.commit('GET_BANKCARD',res.data);
           } else {
             toast(res.message)
           }

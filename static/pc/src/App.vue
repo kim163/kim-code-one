@@ -151,6 +151,7 @@
       },
       islogin(val) {
         if (val) {
+          this.$store.dispatch("GET_BANKCARD");
           this.initWsData();
           this.stompConnect();
         }
@@ -161,6 +162,7 @@
     },
     mounted() {
       if (this.islogin) {
+        this.$store.dispatch("GET_BANKCARD");
         this.initWsData();
         this.stompConnect();
       }

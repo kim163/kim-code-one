@@ -161,6 +161,7 @@
                 this.hasBind = true
               }
             }
+            this.$store.dispatch("GET_BANKCARD");
           }else{
             toast(res.message)
           }
