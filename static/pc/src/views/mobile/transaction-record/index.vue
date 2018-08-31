@@ -1,6 +1,6 @@
 <template>
   <div class="tran-record-main">
-    <mobile-header>{{$t('navbar.transactionRecord')}}</mobile-header>
+    <mobile-header :back="goBack">{{$t('navbar.transactionRecord')}}</mobile-header>
     <div class="nav-list cfx">
       <div class="nav-item" :class="{active: navIndex === 0}" @click="navIndex = 0">
         {{$t('transactionRecord.tranProgress')}}
@@ -37,6 +37,11 @@
       TranscationList,
       // Scroll,
       balance
+    },
+    methods:{
+      goBack(){
+        this.$router.push({name:'mUserCenter'})
+      }
     },
     computed: {
       ...mapGetters([

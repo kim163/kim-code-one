@@ -1,7 +1,6 @@
 <template>
   <div class="upload-imgpart">
     <div class="cfx" :class="{'item-list': uploadImgSet.maxUploadNum === 1}">
-
       <div v-for="(item,i) in picListArr||[]" class="upload-imgitem">
         <viewer :images="item.img">
           <img :src="item.img" alt="" class="contents_image">
@@ -10,12 +9,10 @@
           <i class="iconfont icon-close"></i>
         </a>
       </div>
-
       <div class="upload-btngroup" v-show="isShowUploadBtn">
         <input type="file" accept="image/*" value="打开照相机" class="open-camera-btn" @change="upload">
       </div>
     </div>
-
     <div class="upload-tipsinfo" v-show="uploadImgSet.isShowUploadTip">
       {{$t(uploadImgSet.uploadImgTips)}}
     </div>
@@ -142,17 +139,15 @@
               context.drawImage(img, 0, 0, targetWidth, targetHeight);
               // canvas转为blob并上传
               this.dataURL = canvas.toDataURL('image/png');
-
-              this.picListArr.push({img: [this.dataURL]});
               var blob = this.dataURItoBlob(this.dataURL);
               const RamdomValue = Math.random();
               var fd = new FormData();
-
               fd.append("file", blob, `${RamdomValue}.png`);
               fd.append('nodeId', this.userData.node && this.userData.node.customer ? `${this.userData.nodeId}_${this.userData.merchantId}` : process.env.NODE_ID)
               chatWith.uploadFile(fd).then(res => {
                 console.log('文件上传', res);
                 if (res.code == 10000) {
+                  this.picListArr.push({img: [this.dataURL]});
                   this.picUrlArr.push(res.data.url);
                   this.$emit("gitPicUrl", this.picUrlArr);
                 } else {

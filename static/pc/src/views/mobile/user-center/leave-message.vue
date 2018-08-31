@@ -7,11 +7,11 @@
     <div class="leave_message_content">
       <p><i class="iconfont icon-leave-message"></i> 留言 </p>
       <div class="message_content"><textarea type="text" placeholder="说点什么呗..." v-model="textValue"></textarea></div>
-      <div class="upload_container">
+      <div class="upload_container" >
         <uploadPic :showClose="true" @gitPicUrl="getPicUrl"></uploadPic>
       </div>
     </div>
-    <div class="send_btn" @click="sendInfo">发送</div>
+    <div class="send_btn" v-on:click.once="sendInfo">发送</div>
   </div>
 </template>
 
@@ -25,6 +25,7 @@
       return {
         textValue: '',
         attachmentUrls: '',
+        isUpload:true,
       }
     },
     props:{
@@ -40,23 +41,31 @@
     methods: {
       getPicUrl(res) {
         this.attachmentUrls = res
+        if(res.length>3){
+           this.isUpload =false
+        }else {
+          this.isUpload = true
+        }
       },
       sendInfo() {
+        if(!this.isUpload){
+          toast('最多上传三张图片')
+          return
+        }
         const requests = {
           'orderId': this.idInfo,
           'userId': this.userId,
           'userName': this.userData.nickname,
-          'attachmentUrls': this.attachmentUrls.join(','),
+          'attachmentUrls':this.attachmentUrls?this.attachmentUrls.join(','):'',
           'content': this.textValue
         }
 
-        if(!this.textValue||this.attachmentUrls==''){
-          toast('请完善留言板内容')
-          return false
-        }
         userCenter.addAppealDetail(requests).then((res) => {
             if(res.code=='10000'){
               toast("发送成功")
+              setTimeout(()=>{
+                this.$emit('closeMessage',false)
+              },1000)
             }else {
               toast(res.message)
             }

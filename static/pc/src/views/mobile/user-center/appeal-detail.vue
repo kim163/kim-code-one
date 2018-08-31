@@ -6,7 +6,7 @@
       <div class="appeal_content">
         <p>申诉原因: {{textInfo}}</p>
         <p>交易金额: {{tradeMoney}} CNY</p>
-        <p>交易数量: {{amount}}</p>
+        <p>交易数量: {{amount}} UET</p>
         <p>创建时间: {{createTime|Date('yyyy-MM-dd hh:mm:ss')}}</p>
       </div>
       <div class="appeal_content" v-if="defaultState">
@@ -39,12 +39,11 @@
           <div class="user_content">
             <p class="name">卖家: {{list.userName}}</p>
             <p class="text_content">{{list.content}}</p>
-            <div v-for="(listNext,value) in list.attachmentUrls.split(',')" style="display: inline-block">
-              <viewer :images="list.attachmentUrls.split(',')" style="text-align: right;display: inline-block">
+            <div v-if="list.attachmentUrls&&list.attachmentUrls!==null" style="display: inline-block">
+              <viewer :images="list.attachmentUrls.split(',')" v-for="(listNext,value) in list.attachmentUrls.split(',')" :key="value" style="text-align: right;display: inline-block">
                 <img :src="listNext" class="pic">
               </viewer>
             </div>
-
             <p class="time">{{list.modifytime|Date('yyyy-MM-dd hh:mm:ss')}}</p>
           </div>
           <div class="user_symbol"></div>
@@ -54,8 +53,8 @@
           <div class="user_content">
             <p class="name">买家:{{list.username}}</p>
             <p class="text_content">{{list.content}}</p>
-            <div v-for="(listNext,value) in list.attachmentUrls.split(',')" style="display: inline-block">
-              <viewer :images="list.attachmentUrls.split(',')" style="text-align: right;display: inline-block">
+            <div  v-if="list.attachmentUrls&&list.attachmentUrls!==null"  style="display: inline-block">
+              <viewer :images="list.attachmentUrls.split(',')" v-for="(listNext,value) in list.attachmentUrls.split(',')"  :key="value" style="text-align: right;display: inline-block">
                 <img :src="listNext" class="pic">
               </viewer>
             </div>
@@ -69,7 +68,7 @@
             <p class="name">客服: {{list.userName}} </p>
             <p class="text_content">{{list.content}}</p>
             <div v-if="list.attachmentUrls&&list.attachmentUrls!==null" style="display: inline-block">
-              <viewer :images="list.attachmentUrls.split(',')" v-for="(listNext,value) in list.attachmentUrls.split(',')" style="text-align: right;display: inline-block">
+              <viewer :images="list.attachmentUrls.split(',')" v-for="(listNext,value) in list.attachmentUrls.split(',')" :key="value" style="text-align: right;display: inline-block">
                 <img :src="listNext" class="pic">
               </viewer>
             </div>
@@ -126,6 +125,9 @@
     methods: {
       closeState(val) {
         this.offSwitch = val
+        if(!val){
+          this.fetchData()
+        }
       },
       copy() {
         var clipboard = new Clipboard('.copy-btn')
@@ -307,6 +309,9 @@
             color: #949494;
             @include f(16);
             padding: r(0) r(0) r(5);
+            width: 100%;
+            word-break: break-all;
+            max-width: 15rem;
           }
           .pic {
             padding: r(10);
@@ -344,6 +349,9 @@
             color: #949494;
             @include f(16);
             padding: r(0) r(0) r(5);
+            width: 100%;
+            word-break: break-all;
+            max-width: 15rem;
           }
           .pic {
             padding: r(10);
@@ -381,6 +389,9 @@
             color: #949494;
             @include f(16);
             padding: r(0) r(0) r(5);
+            width: 100%;
+            word-break: break-all;
+            max-width: 15rem;
           }
           .pic {
             padding: r(10);
@@ -405,6 +416,10 @@
     color: #fff;
     text-align: center;
     line-height: r(45);
-    @include f(18px)
+    @include f(18px);
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
   }
 </style>

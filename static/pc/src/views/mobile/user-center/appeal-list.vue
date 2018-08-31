@@ -10,9 +10,9 @@
       <noDataTip v-if="isNull"></noDataTip>
       <div v-else class="processArr" v-for="list in processArr">
         <p><span class="title">订单号码:</span>{{list.orderId}}</p>
-        <p><span class="title">交易时间:</span>{{list.tradetime |Date('yyyy-MM-dd h:m:s')}}</p>
-        <p><span class="title">交易金额:</span>{{list.amountTwin}}</p>
-        <p><span class="title">交易数量:</span>{{list.amount}}</p>
+        <p><span class="title">交易时间:</span>{{list.tradetime |Date('yyyy-MM-dd hh:mm:ss')}}</p>
+        <p><span class="title">交易金额:</span>{{list.amountTwin}} CNY</p>
+        <p><span class="title">交易数量:</span>{{list.amount}} UET</p>
         <p><span class="title">申诉人:</span>{{list.userName}}</p>
         <div class="btn look-detail" @click="goDetail(list.orderId,1)">查看详细</div>
       </div>
@@ -23,8 +23,8 @@
       <div v-else class="historyArr" v-for="list in historyArr">
         <p><span class="title">订单号码:</span>{{list.orderId}}</p>
         <p><span class="title">交易时间:</span>{{list.tradetime |Date('yyyy-MM-dd hh:mm:ss')}}</p>
-        <p><span class="title">交易金额:</span>{{list.amountTwin}}</p>
-        <p><span class="title">交易数量:</span>{{list.amount}}</p>
+        <p><span class="title">交易金额:</span>{{list.amountTwin}} CNY</p>
+        <p><span class="title">交易数量:</span>{{list.amount}} UET</p>
         <p><span class="title">申诉人:</span>{{list.userName}}</p>
         <div class="btn look-detail" @click="goDetail(list.orderId,2)">查看详细</div>
       </div>
