@@ -11,7 +11,7 @@
         <uploadPic :showClose="true" @gitPicUrl="getPicUrl"></uploadPic>
       </div>
     </div>
-    <div class="send_btn" v-on:click.once="sendInfo">发送</div>
+    <div class="send_btn" @click="sendInfo">发送</div>
   </div>
 </template>
 
@@ -52,6 +52,10 @@
           toast('最多上传三张图片')
           return
         }
+        if(this.textValue==''&&this.attachmentUrls==''){
+          toast('留言信息不能为空')
+          return
+        }
         const requests = {
           'orderId': this.idInfo,
           'userId': this.userId,
@@ -59,13 +63,12 @@
           'attachmentUrls':this.attachmentUrls?this.attachmentUrls.join(','):'',
           'content': this.textValue
         }
-
         userCenter.addAppealDetail(requests).then((res) => {
             if(res.code=='10000'){
               toast("发送成功")
-              setTimeout(()=>{
-                this.$emit('closeMessage',false)
-              },1000)
+              this.textValue=''
+              this.attachmentUrls=''
+              this.$emit('closeMessage',false)
             }else {
               toast(res.message)
             }
@@ -91,7 +94,7 @@
     width: 100%;
     height: 100%;
     background-color: #fff;
-    z-index: 10000;
+    z-index: 1;
   }
   .leave_message_content {
     padding: r(20);
