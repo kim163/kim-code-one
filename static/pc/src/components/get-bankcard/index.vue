@@ -16,7 +16,6 @@
   </p>
 </template>
 <script>
-  import { show } from 'api'
   import {mapGetters} from 'vuex'
 
   export default {
@@ -71,34 +70,23 @@
     },
     methods: {
       getBankInfo(){
-        this.requestdata={
-          userId: this.userId
+        this.bankList.data = this.bankCardInfo;
+        if(this.bankList.data.length<1){
+          this.noCardTips = true;
         }
-        show.getBankInfo(this.requestdata).then((res) => {
-          if(res.code === 10000){
-            this.bankList = res;
-            if(this.bankList.data.length<1){
-              this.noCardTips = true;
-            }
-            if(this.setBankcard.addOption.length>0){
-              for (let i in this.setBankcard.addOption){
-                this.bankList.data.push(this.setBankcard.addOption[i]);
-              }
-            }
-            if(this.bankList.data.length > 0 && this.autoSelect){
-              this.selBankCard = this.bankList.data[0]
-            }
-            if(this.defSelect != ''){
-              this.selBankCard = _(this.bankList.data).find((item) => {
-                return item.account === this.defSelect
-              })
-            }
-          }else{
-           toast(res.message)
+        if(this.setBankcard.addOption.length>0){
+          for (let i in this.setBankcard.addOption){
+            this.bankList.data.push(this.setBankcard.addOption[i]);
           }
-        }).catch(err => {
-          toast(err.message);
-        })
+        }
+        if(this.bankList.data.length > 0 && this.autoSelect){
+          this.selBankCard = this.bankList.data[0]
+        }
+        if(this.defSelect != ''){
+          this.selBankCard = _(this.bankList.data).find((item) => {
+            return item.account === this.defSelect
+          })
+        }
       },
       subData(item){
         return (item.substring(item.length-4))
@@ -115,7 +103,7 @@
     },
     computed: {
       ...mapGetters([
-        'userId'
+        'bankCardInfo'
       ])
     },
     created() {

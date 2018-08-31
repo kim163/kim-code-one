@@ -16,3 +16,5 @@ export const GET_UNREADCOUNT = 'GET_UNREADCOUNT'  //获取总的未读会话数
 export const GET_HISTORYSTATE = 'GET_HISTORYSTATE' //获取历史会话状态
 export const GET_ISNEEDCOUPON = 'GET_ISNEEDCOUPON' //是否需要获取优惠弹窗
 export const GET_WIDTHDRAW = 'GET_WIDTHDRAW' //商户提款标识
+
+export const GET_BANKCARD = 'GET_BANKCARD'  // 获取用户银行卡信息
