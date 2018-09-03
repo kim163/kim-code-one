@@ -7,7 +7,7 @@
     <div class="leave_message_content">
       <p><i class="iconfont icon-leave-message"></i> 留言 </p>
       <div class="message_content"><textarea type="text" placeholder="说点什么呗..." v-model="textValue"></textarea></div>
-      <div class="upload_container">
+      <div class="upload_container" >
         <uploadPic :showClose="true" @gitPicUrl="getPicUrl"></uploadPic>
       </div>
     </div>
@@ -25,6 +25,7 @@
       return {
         textValue: '',
         attachmentUrls: '',
+        isUpload:true,
       }
     },
     props:{
@@ -40,8 +41,21 @@
     methods: {
       getPicUrl(res) {
         this.attachmentUrls = res
+        if(res.length>3){
+           this.isUpload =false
+        }else {
+          this.isUpload = true
+        }
       },
       sendInfo() {
+        if(!this.isUpload){
+          toast('最多上传三张图片')
+          return
+        }
+        if(this.textValue==''&&this.attachmentUrls==''){
+          toast('留言信息不能为空')
+          return
+        }
         const requests = {
           'orderId': this.idInfo,
           'userId': this.userId,
@@ -49,14 +63,12 @@
           'attachmentUrls':this.attachmentUrls?this.attachmentUrls.join(','):'',
           'content': this.textValue
         }
-
-
         userCenter.addAppealDetail(requests).then((res) => {
             if(res.code=='10000'){
               toast("发送成功")
-              setTimeout(()=>{
-                this.$emit('closeMessage',false)
-              },1000)
+              this.textValue=''
+              this.attachmentUrls=''
+              this.$emit('closeMessage',false)
             }else {
               toast(res.message)
             }
@@ -82,7 +94,7 @@
     width: 100%;
     height: 100%;
     background-color: #fff;
-    z-index: 10000;
+    z-index: 1;
   }
   .leave_message_content {
     padding: r(20);

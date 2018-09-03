@@ -28,7 +28,8 @@ export default new Vuex.Store({
     unreadCount:0,
     historyState:0,
     isShowCoupon:false,
-    withdraw:false //提现标识
+    withdraw:false, //提现标识
+    bankCardInfo:[]
   },
   getters: {     // 用来从 store 获取 Vue 组件数据
     language(state, getters) {
@@ -99,6 +100,9 @@ export default new Vuex.Store({
     },
     getWithdraw(state,getters){
       return state.withdraw
+    },
+    bankCardInfo(state,getters){
+      return state.bankCardInfo;
     }
   },
   mutations: {         // 事件处理器用来驱动状态的变化
@@ -153,6 +157,9 @@ export default new Vuex.Store({
     },
     [types.GET_WIDTHDRAW](state,val){
       state.withdraw = val
+    },
+    [types.GET_BANKCARD](state,val){
+      state.bankCardInfo=val
     }
   },
   actions: {    // 可以给组件使用的函数，以此用来驱动事件处理器 mutations
@@ -219,6 +226,22 @@ export default new Vuex.Store({
         }
         return Promise.resolve(res);
       });
+    },
+    [types.GET_BANKCARD]({commit, getters},val){  // 获取用户绑定的银行卡信息
+      let requestdata={
+        userId: getters.userId
+      };
+      return show.getBankInfo(requestdata).then((res) => {
+        if(res.code === 10000){
+          commit(types.GET_BANKCARD,res.data);
+        }else{
+          toast(res.message);
+        }
+        return Promise.resolve(res);
+      }).catch(err => {
+        toast(err);
+      });
     }
+
   }
 });

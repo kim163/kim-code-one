@@ -160,6 +160,7 @@
               if(!_.isEmpty(this.hasBindInfo) && !_.isNull(this.hasBindInfo)){
                 this.hasBind = true
               }
+              this.$store.dispatch("GET_BANKCARD");
             }
           }else{
             toast(res.message)

@@ -30,7 +30,7 @@
             <div class="form-input-box">
               <span class="left">{{postItem == 'buyer' ? $t('postPend.buyAmount') : $t('postPend.sellAmount')}}：</span>
               <span class="ps-input fl">
-              <input type="text" class="ps-input-in" v-model.number="buyAmount" maxlength="9">
+              <input type="text" class="ps-input-in" v-model.number="buyAmount" v-number-only maxlength="9">
               <span class="i-uet">UET</span>
             </span>
               <span class="fl">
@@ -53,16 +53,16 @@
                 <!--<span class="i-uet">UET</span>-->
               <!--</span>-->
             <!--</div>-->
-            <div class="form-input-box" v-if="postItem == 'seller'">
-              <span class="left">付款说明：</span>
-              <span class="fl">
-                <select class="ps-input" v-model="proofType">
-                  <option value="">请选择付款说明</option>
-                  <option value="1">要求提供付款说明</option>
-                  <option value="0">不要求提供付款说明</option>
-                </select>
-              </span>
-            </div>
+            <!--<div class="form-input-box" v-if="postItem == 'seller'">-->
+              <!--<span class="left">付款说明：</span>-->
+              <!--<span class="fl">-->
+                <!--<select class="ps-input" v-model="proofType">-->
+                  <!--<option value="">请选择付款说明</option>-->
+                  <!--<option value="1">要求提供付款说明</option>-->
+                  <!--<option value="0">不要求提供付款说明</option>-->
+                <!--</select>-->
+              <!--</span>-->
+            <!--</div>-->
             <div class="btn-groups">
               <span class="btn" @click="hide">取消</span>
               <span class="btn btn-primary" @click="publishBuyOrSell">快速{{postItem === 'buyer' ? '买' : '卖'}}币</span>
@@ -97,7 +97,7 @@
         accountCashVo: {},
         buyTypeBuyBank: '',
         minAmount: 1,
-        proofType: '',
+        proofType: '0',
         setBankcard: {
           pleaseSelTitle: 'component.pleaseSelPayMet',         // 请选择标题文字
           addOption:[]
@@ -199,18 +199,18 @@
           toast('支付方式不能为空');
           return;
         }
-        if (this.minAmount == '' || this.minAmount < 0) {
-          toast('最低买入数量输入不正确');
-          return;
-        }
-        if(!_.isInteger(this.minAmount) || this.minAmount<1){
-          toast('请输入整数最低买入数量');
-          return;
-        }
-        if (this.postItem === 'seller' && (this.proofType == '' || !this.proofType)) {
-          toast('付款说明不能为空');
-          return;
-        }
+        // if (this.minAmount == '' || this.minAmount < 0) {
+        //   toast('最低买入数量输入不正确');
+        //   return;
+        // }
+        // if(!_.isInteger(this.minAmount) || this.minAmount<1){
+        //   toast('请输入整数最低买入数量');
+        //   return;
+        // }
+        // if (this.postItem === 'seller' && (this.proofType == '' || !this.proofType)) {
+        //   toast('付款说明不能为空');
+        //   return;
+        // }
         if (this.payType.type == '1') {
           this.buyTypeBuyBank = '支付宝'
         } else if (this.payType.type == '2') {
@@ -277,7 +277,7 @@
       this.buyAmount = this.amount === '' ? '' : Number(this.amount) * 100
       if(this.auto === 1){
         this.minAmount = 1
-        this.proofType = '1'
+        // this.proofType = '0'
       }
     },
     mounted() {

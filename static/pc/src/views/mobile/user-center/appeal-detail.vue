@@ -6,7 +6,7 @@
       <div class="appeal_content">
         <p>申诉原因: {{textInfo}}</p>
         <p>交易金额: {{tradeMoney}} CNY</p>
-        <p>交易数量: {{amount}}</p>
+        <p>交易数量: {{amount}} UET</p>
         <p>创建时间: {{createTime|Date('yyyy-MM-dd hh:mm:ss')}}</p>
       </div>
       <div class="appeal_content" v-if="defaultState">
@@ -125,6 +125,9 @@
     methods: {
       closeState(val) {
         this.offSwitch = val
+        if(!val){
+          this.fetchData()
+        }
       },
       copy() {
         var clipboard = new Clipboard('.copy-btn')
@@ -306,6 +309,9 @@
             color: #949494;
             @include f(16);
             padding: r(0) r(0) r(5);
+            width: 100%;
+            word-break: break-all;
+            max-width: 15rem;
           }
           .pic {
             padding: r(10);
@@ -343,6 +349,9 @@
             color: #949494;
             @include f(16);
             padding: r(0) r(0) r(5);
+            width: 100%;
+            word-break: break-all;
+            max-width: 15rem;
           }
           .pic {
             padding: r(10);
@@ -380,6 +389,9 @@
             color: #949494;
             @include f(16);
             padding: r(0) r(0) r(5);
+            width: 100%;
+            word-break: break-all;
+            max-width: 15rem;
           }
           .pic {
             padding: r(10);
@@ -404,6 +416,10 @@
     color: #fff;
     text-align: center;
     line-height: r(45);
-    @include f(18px)
+    @include f(18px);
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
   }
 </style>

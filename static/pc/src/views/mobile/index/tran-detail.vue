@@ -30,7 +30,7 @@
         <span class="amount"> {{item.balance}} UET </span>
       </p>
       <p class="item" v-if="typeInfo === 2">
-        <progress class="progress" :value="item.finishedTotal" :max="item.tradeTotal"></progress>
+        <progress class="progress" :value="item.amount - item.balance" :max="item.amount"></progress>
       </p>
       <p class="item">
         <a href="javascript:void(0);" class="transaction-btn"
@@ -203,6 +203,7 @@
     color: #3573FA;
     width: r(180);
     height: r(12);
+    overflow: hidden;
   }
   progress::-moz-progress-bar {
     background: #3573FA;
