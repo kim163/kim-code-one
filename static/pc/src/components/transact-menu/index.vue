@@ -15,7 +15,7 @@
         </div>
       </div>
     </div>
-    <post-pendord v-model="isShowPostPend" url-name="tranPending"
+    <post-pendord v-if="isShowPostPend" v-model="isShowPostPend" url-name="tranPending"
                   :type="getType"
                   :amount="amount"
                   :bank-no="bankNo"
