@@ -2,7 +2,7 @@
   <transition name="fade">
     <div class="container min-width main" v-if="activityList.length > 0">
       <swiper ref="mySwiper" :options="swiperOption">
-        <swiper-slide v-for="(item,index) in activityList" :key="index">
+        <swiper-slide v-for="(item,index) in activityList" :key="index" >
           <div class="act-item" :class="`item-${index}`" @click="quickBuyOrSell(item)">
             <div class="info-item">
               <img class="icon-img" :src="item.iconUrl">
@@ -46,8 +46,9 @@
             delay: 5000,
             disableOnInteraction: false
           },
-          loop: true,
-          simulateTouch : false,//禁止鼠标模拟
+          // loop: true,
+          simulateTouch : true,//禁止鼠标模拟
+          preventLinksPropagation : false
         },
         activityList: [],
         coinBalance: 0,

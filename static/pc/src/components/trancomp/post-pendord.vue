@@ -128,7 +128,9 @@
           this.buyAmount = ''
           this.bindCardReset = true
           //this.minAmount = ''
-          this.postItem = 'buyer'
+          //this.postItem = 'buyer'
+        }else{
+          this.postItem = this.type === 1 ? 'buyer' : 'seller'
         }
       }
     },
