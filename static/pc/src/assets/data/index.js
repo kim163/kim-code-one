@@ -12,6 +12,6 @@ export let SETTING = {
   wechat: "",//微信客服
   wechatQr: "",//微信二维码
    //app
-  appUrl: "https://9apro.com/app/9anapp.html",  //app下载地址
+  appUrl: _.customize() ? "https://9apro.com/app/9anapp-customize.html" : "https://9apro.com/app/9anapp.html",  //app下载地址
   appQr: "",  //app下载二维码
 };
