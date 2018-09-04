@@ -7,6 +7,7 @@ const cash = () => import('views/cash'); //收银台
 const BindAndCreate = () => import('views/bind-and-create'); //pc商户绑定及快速创建
 const BindList = () => import('views/bind-and-create/bind-list'); //pc商户绑定列表
 const UserCenter = () => import('views/user-center'); //pc个人中心
+const pcMyGift = () => import('views/user-center/my-gift'); //PC 我的获赠
 export default [
   {
     path: "/autoLogin",
@@ -64,6 +65,14 @@ export default [
     component: UserCenter,
     meta:{
       noCache: true
+    }
+  },
+  {
+    path:"/myGift",
+    name:"pcMyGift",
+    component:pcMyGift,//我的获赠
+    meta:{
+      noCache:true
     }
   },
   ...transaction,
