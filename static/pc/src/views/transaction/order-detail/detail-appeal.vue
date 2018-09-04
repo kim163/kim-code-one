@@ -188,7 +188,6 @@
                   <div class="user_symbol"></div>
                   <div class="user_content">
                     <p class="time">{{item.modifytime|Date('yyyy-MM-dd hh:mm:ss')}}</p>
-                    <p class="name">客服: {{item.userName}}</p>
                     <p class="text_content"> {{item.content}}</p>
                     <div v-if="item.attachmentUrls&&item.attachmentUrls!==null" style="display: inline-block">
                       <viewer :images="item.attachmentUrls.split(',')"
@@ -592,7 +591,7 @@
       }
       .text_content {
         text-align: left;
-        color: #949494;
+        color: #333;
         font-size: 16px;
         padding: 10px 0 5px;
         width: 100%;
@@ -608,7 +607,6 @@
       .time {
         text-align: left;
         color: #949494;
-        padding-bottom: 19px;
       }
     }
   }
