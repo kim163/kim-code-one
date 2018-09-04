@@ -101,7 +101,7 @@
               <div style="flex:1;"></div>
               <div class="contents">
                 <viewer :images="list.picArr" style="padding: .5rem">
-                  <img alt="" class="contents_image" v-lazy="list.content.imageUri">
+                  <img  class="contents_image" v-lazy="list.content.imageUri">
                 </viewer>
               </div>
               <div class="user_symbol"></div>
