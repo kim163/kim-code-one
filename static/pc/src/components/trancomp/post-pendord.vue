@@ -1,6 +1,5 @@
 <template>
   <div v-if="show">
-
     <div class="modal fade in">
       <div class="modal-dialog popup">
         <div type="button" class="close close-w" @click="hide">
@@ -44,35 +43,19 @@
                 <get-bankcard :setBankcard="setBankcard" v-model="bindCardReset" :def-select="bankNo" @selCardChange="selCardChange"></get-bankcard>
               </span>
             </div>
-            <!--<div class="form-input-box">-->
-              <!--<span class="left">{{postItem == 'buyer' ? $t('postPend.buyerRequest') : $t('postPend.sellerRequest')}}：</span>-->
-              <!--<span class="ps-input fl">-->
-                <!--<input type="text" class="ps-input-in"-->
-                       <!--:placeholder="postItem == 'buyer' ? $t('postPend.minSell') : $t('postPend.minBuy')"-->
-                       <!--v-model.number="minAmount">-->
-                <!--<span class="i-uet">UET</span>-->
-              <!--</span>-->
-            <!--</div>-->
-            <!--<div class="form-input-box" v-if="postItem == 'seller'">-->
-              <!--<span class="left">付款说明：</span>-->
-              <!--<span class="fl">-->
-                <!--<select class="ps-input" v-model="proofType">-->
-                  <!--<option value="">请选择付款说明</option>-->
-                  <!--<option value="1">要求提供付款说明</option>-->
-                  <!--<option value="0">不要求提供付款说明</option>-->
-                <!--</select>-->
-              <!--</span>-->
-            <!--</div>-->
             <div class="btn-groups">
               <span class="btn" @click="hide">取消</span>
               <span class="btn btn-primary" @click="publishBuyOrSell">快速{{postItem === 'buyer' ? '买' : '卖'}}币</span>
             </div>
           </div>
+          <transition name="fade">
+            <div class="coupon" v-if="couponDetail.length > 0">
+              <coupon-detail :item="couponDetail"></coupon-detail>
+            </div>
+          </transition>
         </div>
       </div>
-
     </div>
-
   </div>
 </template>
 <script>
@@ -82,6 +65,10 @@
   import {mapGetters} from 'vuex'
   import getBankcard from 'components/get-bankcard'
   import balance from 'components/balance';
+  import CouponDetail from 'components/coupon-detail'
+  import {
+    getFastTraderAward
+  } from 'api/activity'
 
   export default {
 
@@ -104,6 +91,7 @@
         },
         bindCardReset:false,
         userBalance:0,//用户余额
+        couponDetail:{}
       }
     },
     watch: {
@@ -128,7 +116,9 @@
           this.buyAmount = ''
           this.bindCardReset = true
           //this.minAmount = ''
-          this.postItem = 'buyer'
+          //this.postItem = 'buyer'
+        }else{
+          this.postItem = this.type === 1 ? 'buyer' : 'seller'
         }
       }
     },
@@ -267,6 +257,16 @@
       },
       allSell(){
         this.buyAmount = Number(this.userBalance)
+      },
+      getGift(){
+        getFastTraderAward({}).then(res => {
+          console.log('myGift',res)
+          if(res.code === 10000){
+            if(res.data && !_.isNull(res.data)){
+              this.couponDetail = res.data
+            }
+          }
+        })
       }
     },
 
@@ -279,12 +279,14 @@
       }
     },
     mounted() {
+      this.getGift()
     },
     activated() {
     },
     components: {
       getBankcard,
-      balance
+      balance,
+      CouponDetail
     }
   };
 </script>
@@ -353,5 +355,9 @@
       margin-left: 20px;
       cursor: pointer;
     }
+  }
+  .coupon{
+    height: 100px;
+    margin-top: 25px;
   }
 </style>

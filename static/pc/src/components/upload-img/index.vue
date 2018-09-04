@@ -9,7 +9,7 @@
           <i class="iconfont icon-close"></i>
         </a>
       </div>
-      <div class="upload-btngroup" v-show="isShowUploadBtn">
+      <div class="upload-btngroup" v-if="isShowUploadBtn">
         <input type="file" accept="image/*" value="打开照相机" class="open-camera-btn" @change="upload">
       </div>
     </div>
@@ -77,10 +77,12 @@
     watch: {
       reset(val){
         if(val){
+          debugger;
           this.picListArr = []
           this.picUrlArr = []
           this.$emit("gitPicUrl", this.picUrlArr);
           this.$emit('change',false)
+          debugger;
         }
       }
     },

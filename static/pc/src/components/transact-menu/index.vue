@@ -1,33 +1,37 @@
 <template>
   <div>
-  <div class="section transact-menu">
-    <div class="container min-width">
-      <div class="row">
-        <router-link v-for="(item,i) in transactMenuData" class="item-info" :to="item.to" :key="i">
-          {{generateTitle(item.name)}}
-        </router-link>
-        <a href="javascript:void(0);" class="item-info" @click="isShowPostPend=true"> {{$t('postPend.postTitle')}} </a>
-        <router-link :to="{name: 'tranPending'}" class="item-info" >{{$t('transactionHome.pengdingOrder')}}</router-link>
-        <router-link :to="{name: 'tranRecord'}" class="item-info" >{{$t('transactionHome.orderRecord')}}</router-link>
-        <router-link :to="{name:'pcMyGift'}" class="item-info">{{$t('userCenter.myGift')}}</router-link>
+    <pc-activity @quickBuySell="quickBuyOrSell"></pc-activity>
+    <div class="section transact-menu">
+      <div class="container min-width">
+        <div class="row">
+          <router-link v-for="(item,i) in transactMenuData" class="item-info" :to="item.to" :key="i">
+            {{generateTitle(item.name)}}
+          </router-link>
+          <a href="javascript:void(0);" class="item-info" @click="isShowPostPend=true">
+            {{$t('postPend.postTitle')}} </a>
+          <router-link :to="{name: 'tranPending'}" class="item-info">{{$t('transactionHome.pengdingOrder')}}
+          </router-link>
+          <router-link :to="{name: 'tranRecord'}" class="item-info">{{$t('transactionHome.orderRecord')}}</router-link>
+          <router-link :to="{name:'pcMyGift'}" class="item-info">{{$t('userCenter.myGift')}}</router-link>
+        </div>
       </div>
     </div>
-  </div>
-
-   <post-pendord v-model="isShowPostPend" url-name="tranPending"
-                 :type="getType"
-                 :amount="amount"
-                 :bank-no="bankNo"
-                 :auto="auto"
-                 ></post-pendord>
+    <post-pendord v-if="isShowPostPend" v-model="isShowPostPend" url-name="tranPending"
+                  :type="getType"
+                  :amount="amount"
+                  :bank-no="bankNo"
+                  :auto="auto"
+    ></post-pendord>
   </div>
 </template>
 <script>
   import postPendord from 'components/trancomp/post-pendord'
-  import { generateTitle } from '@/util/i18n'
+  import {generateTitle} from '@/util/i18n'
+  import PcActivity from '../../views/pc-activity'
+
   let transactMenuData = [
-    {name:'transactionHome.buyUet', value: 'buyUet', to: {name: 'transaction'} },
-    {name:'transactionHome.saleUet', value: 'saleUet', to: {name: 'transell'} }
+    {name: 'transactionHome.buyUet', value: 'buyUet', to: {name: 'transaction'}},
+    {name: 'transactionHome.saleUet', value: 'saleUet', to: {name: 'transell'}}
   ]
 
   export default {
@@ -41,29 +45,31 @@
         auto: Number(this.$route.query.auto) || 0, //商户提现 自动填写信息
       }
     },
-    props:{
-
-    },
+    props: {},
     methods: {
       generateTitle,
-      toSell(data){
+      toSell(data) {
         this.mode = data.mode
         this.amount = data.amount
         this.bankNo = data.bankNo
         this.auto = data.auto
         this.isShowPostPend = true
+      },
+      quickBuyOrSell(type){
+        this.mode = type === 'sell' ? 3 : 1
+        this.isShowPostPend = true
       }
     },
-    computed:{
-      getType(){
+    computed: {
+      getType() {
         return this.mode === 1 ? 1 : (this.mode === 3 ? 2 : 1)
       }
     },
     created() {
-      if(this.mode > 1){
+      if (this.mode > 1) {
         this.isShowPostPend = true
       }
-      Vue.$global.bus.$on('open:QuickSell',(data) => {
+      Vue.$global.bus.$on('open:QuickSell', (data) => {
         this.toSell(data)
       });
     },
@@ -72,20 +78,21 @@
     activated() {
     },
     components: {
-      postPendord
+      postPendord,
+      PcActivity
     },
-    destroyed(){
+    destroyed() {
       Vue.$global.bus.$off('open:QuickSell')
     }
   };
 </script>
 <style lang="scss">
-.transact-menu{
+.transact-menu {
   height: 48px;
   line-height: 48px;
   min-height: auto;
   margin-top: 20px;
-  a{
+  a {
     display: block;
     float: left;
     width: 15%;
@@ -102,11 +109,10 @@
       background: #5087FF;
       border: 1px solid #5087FF;
     }
-    &:last-child{
+    &:last-child {
       margin: 0;
       float: right;
     }
   }
 }
-
 </style>

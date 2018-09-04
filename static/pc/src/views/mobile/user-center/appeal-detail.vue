@@ -111,7 +111,8 @@
         appealDetailList: [],
         offSwitch: false,
         orderId: '',
-        newArr: []
+        newArr: [],
+        attachmentUrls:''
       }
     },
     computed: {

@@ -3,14 +3,12 @@
     <nav-menu></nav-menu>
     <bread-crumbs :bread-list="breadList"></bread-crumbs>
     <transact-menu></transact-menu>
-
     <div class="section transaction-content">
       <div class="container min-width">
         <div class="row min-height">
           <div class="col-18 fl">
              <transell-list></transell-list>
           </div>
-
           <div class="col-19 fr">
             <h1 class="asset-title"> {{$t('transactionHome.assetManage')}} </h1>
             <user-walletass></user-walletass>
