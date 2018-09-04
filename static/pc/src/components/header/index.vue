@@ -19,7 +19,8 @@
         <i class="iconfont icon-useravat"></i>
         {{$t('navbar.userCenter')}}
       </router-link>
-      <span class="login-line" v-if="userData.nodeId < 10000"></span>
+      <span class="login-line"></span>
+      <login-app v-if="!isCustomize"></login-app>
       <a href="javascript:void(0);" v-if="userData.nodeId < 10000" @click="$store.dispatch('LOGIN_OUT')" class="btn-other">{{$t('navbar.logOut')}}</a>
     </div>
     <v-login @loginGoReg="showRegisterDialog=true" v-if="!islogin" v-model="showLoginDialog"></v-login>
@@ -28,11 +29,12 @@
   </div>
 </template>
 <script>
-  import {mapGetters, mapActions, mapMutations} from 'vuex'
+  import {mapGetters} from 'vuex'
   import vLogin from "components/auth/login"
   import vRegister from "components/auth/register"
   import {SETTING} from "@/assets/data"
   import balance from 'components/balance';
+  import LoginApp from './login-app'
 
   export default {
     data() {
@@ -71,7 +73,10 @@
       }
     },
     components: {
-      vLogin, vRegister, balance
+      vLogin,
+      vRegister,
+      balance,
+      LoginApp,
     }
 
   };

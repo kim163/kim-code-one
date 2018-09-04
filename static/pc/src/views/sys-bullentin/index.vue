@@ -4,7 +4,7 @@
       <header class="title">{{dataInfo.title}}</header>
       <section class="content">{{dataInfo.content}}</section>
     </div>
-    <a class="close-btn" @click="showSysBullentin = false"></a>
+    <a class="close-btn-radius" @click="showSysBullentin = false"></a>
   </div>
 </template>
 
@@ -105,13 +105,13 @@
       line-height: r(24);
     }
   }
-  .close-btn{
-    width: r(25);
-    height: r(25);
-    background: url(~images/close-round.png) no-repeat;
-    background-size: 100% 100%;
-    margin-top: r(15);
-    opacity: 0;
-    animation: rotateIn 1s .5s forwards;
-  }
+  /*.close-btn{*/
+    /*width: r(25);*/
+    /*height: r(25);*/
+    /*background: url(~images/close-round.png) no-repeat;*/
+    /*background-size: 100% 100%;*/
+    /*margin-top: r(15);*/
+    /*opacity: 0;*/
+    /*animation: rotateIn 1s .5s forwards;*/
+  /*}*/
 </style>
