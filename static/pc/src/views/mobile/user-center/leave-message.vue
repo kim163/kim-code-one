@@ -11,7 +11,7 @@
         <uploadPic :showClose="true" @gitPicUrl="getPicUrl"></uploadPic>
       </div>
     </div>
-    <div class="send_btn" v-on:click.once="sendInfo">发送</div>
+    <div class="send_btn" @click="sendInfo">发送</div>
   </div>
 </template>
 
