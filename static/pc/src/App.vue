@@ -72,13 +72,13 @@
             this.connectPsw= this.connectMsg[2];
           }
         });
-        this.detailNormal='/orderDetail/';
-        this.detailOver='/orderDetailOver/';
-        this.detailAppeal='/orderDetailAppeal/';
+        this.detailNormal='orderDetail';
+        this.detailOver='orderDetailOver';
+        this.detailAppeal='orderDetailAppeal';
         if(_.isMobile()){
-          this.detailNormal='/m/order/';
-          this.detailOver='/m/orderOver/';
-          this.detailAppeal='/m/orderAppeal/';
+          this.detailNormal='mOrder';
+          this.detailOver='mOrderOver';
+          this.detailAppeal='mOrderAppeal';
         }
       },
       stompSuccessCallback(frame) {

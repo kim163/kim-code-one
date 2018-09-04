@@ -9,6 +9,7 @@
         <a href="javascript:void(0);" class="item-info" @click="isShowPostPend=true"> {{$t('postPend.postTitle')}} </a>
         <router-link :to="{name: 'tranPending'}" class="item-info" >{{$t('transactionHome.pengdingOrder')}}</router-link>
         <router-link :to="{name: 'tranRecord'}" class="item-info" >{{$t('transactionHome.orderRecord')}}</router-link>
+        <router-link :to="{name:'pcMyGift'}" class="item-info">{{$t('userCenter.myGift')}}</router-link>
       </div>
     </div>
   </div>
@@ -87,7 +88,7 @@
   a{
     display: block;
     float: left;
-    width:18%;
+    width: 15%;
     text-align: center;
     font-size: 16px;
     color: #787876;
@@ -95,7 +96,7 @@
     border-bottom: none;
     border-top-left-radius: 3px;
     border-top-right-radius: 3px;
-    margin-right: 2.2%;
+    margin-right: 1.75%;
     &:hover, &.active {
       color: #ffffff;
       background: #5087FF;
