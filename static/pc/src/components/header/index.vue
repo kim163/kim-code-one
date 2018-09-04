@@ -20,7 +20,7 @@
         {{$t('navbar.userCenter')}}
       </router-link>
       <span class="login-line"></span>
-      <login-app v-if="!isCustomize"></login-app>
+      <login-app v-if="isCustomize"></login-app>
       <a href="javascript:void(0);" v-if="userData.nodeId < 10000" @click="$store.dispatch('LOGIN_OUT')" class="btn-other">{{$t('navbar.logOut')}}</a>
     </div>
     <v-login @loginGoReg="showRegisterDialog=true" v-if="!islogin" v-model="showLoginDialog"></v-login>

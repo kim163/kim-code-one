@@ -69,7 +69,7 @@
           console.log(res)
           if(res.code === 10000){
             if(res.data && !_.isNull(res.data)){
-              this.qrcodeLink = res.data
+              this.qrcodeLink = res.data.key
               this.showDialog = true
             }else{
               toast('获取App登录信息失败')
