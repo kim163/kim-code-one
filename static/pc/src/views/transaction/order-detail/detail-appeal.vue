@@ -379,7 +379,9 @@
             toast('发送成功')
             this.textValue = ''
             this.fetchData()
+            console.log('为什么没有生效啊 老铁')
             this.isReset = true
+            debugger;
           } else {
             toast(res.message)
           }
@@ -402,6 +404,13 @@
         }).catch(err => {
           toast(err.message);
         });
+      },
+      handleScroll() {
+
+        if (this.detailTypeItem == 'appealArbitrat') {
+
+        }
+
       },
       copystr(text) {
         text.$copy();
