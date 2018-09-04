@@ -2,7 +2,7 @@
   <div class="leave_message_container">
     <header class="mobile-header">
       <a @click="doClick" class="back-link"> <i class="iconfont icon-left-arrow"></i></a>
-      <span>留言板</span>
+      <span>留言板 </span>
     </header>
     <div class="leave_message_content">
       <p><i class="iconfont icon-leave-message"></i> 留言 </p>
