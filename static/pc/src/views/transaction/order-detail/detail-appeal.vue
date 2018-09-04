@@ -497,7 +497,6 @@
     }
     .user_content {
       padding-right: 10px;
-      padding-top: 20px;
       .name {
         color: #333;
         font-size: 16px;
