@@ -310,10 +310,10 @@
         display: block;
         border-radius: r(3);
         &.link-0{
-          background-image: linear-gradient(44deg, #FEE140 0%, #FCA96D 50%, #FCA96D 50%, #FA709A 100%);
+          background-image: linear-gradient(45deg, #AD7EFD 0%, #69EDFF 100%);
         }
         &.link-1{
-          background-image: linear-gradient(45deg, #69EDFF 0%, #AD7EFD 100%);
+          background-image: linear-gradient(44deg, #FA709A 0%, #FCA96D 50%, #FCA96D 50%, #FEE140 100%);
         }
         &.link-2{
           background-image: linear-gradient(47deg, #EE69FF 0%, #955AF9 100%);
