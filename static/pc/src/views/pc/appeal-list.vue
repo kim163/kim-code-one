@@ -1,10 +1,12 @@
 <template>
-    
+    <div>
+      这是第二版PC
+    </div>
 </template>
 
 <script>
     export default {
-        name: "applist"
+        name: "appeal-list"
     }
 </script>
 
