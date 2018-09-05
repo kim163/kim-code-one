@@ -1,6 +1,7 @@
 import aesutil from '@/util/aesutil';
 import Stomp from 'webstomp-client'
 import {$localStorage} from '@/util/storage'
+import store from '../store'
 
 import {
   getSharedConfigList,
@@ -172,7 +173,7 @@ _.mixin(
     },
     customize(){ //久安定制版域名判断
       const host = window.location.host
-      if(host.indexOf('9anwallet') > -1){
+      if(host.indexOf('9anwallet') > -1 || store.getters.userData.nodeId > 10000){
         return true
       }
       return false

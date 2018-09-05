@@ -59,3 +59,9 @@ export const getLive800Url = jsonData => service({
   method: 'post',
   data: jsonData
 });  //获取Live800
+
+export const qrCode = jsonData => service({
+  url: numversion + `user/chain/qrCode`,
+  method: 'post',
+  data: jsonData
+});  // app扫码登录地址
