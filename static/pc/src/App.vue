@@ -72,13 +72,13 @@
             this.connectPsw= this.connectMsg[2];
           }
         });
-        this.detailNormal='orderDetail';
-        this.detailOver='orderDetailOver';
-        this.detailAppeal='orderDetailAppeal';
+        this.detailNormal='/orderDetail/';
+        this.detailOver='/orderDetailOver/';
+        this.detailAppeal='/orderDetailAppeal/';
         if(_.isMobile()){
-          this.detailNormal='mOrder';
-          this.detailOver='mOrderOver';
-          this.detailAppeal='mOrderAppeal';
+          this.detailNormal='/m/order/';
+          this.detailOver='/m/orderOver/';
+          this.detailAppeal='/m/orderAppeal/';
         }
       },
       stompSuccessCallback(frame) {
@@ -93,19 +93,19 @@
             // C2C_ORDER_PLACE(1, "C2C下单"),
             //  C2C_ORDER_PAY(2, "C2C订单支付完成"),
             toast(msgData.describe);
-            this.$router.push({name: this.detailNormal,params:{ id: msgData.text}});
+            window.location.href= this.detailNormal + msgData.text;
           }else if(msgData.type == 3){
             //  C2C_ORDER_CANCEL(3, "C2C订单取消"),
             toast(msgData.describe);
-            this.$router.push({name: this.detailOver,params:{ id: msgData.text}});
+            window.location.href= this.detailOver +msgData.text;
           }else if(msgData.type == 4 ){
             //   C2C_ORDER_COMPLETE(4, "C2C订单完成"),
             toast(msgData.describe);
-            this.$router.push({name: this.detailOver,params:{ id: msgData.text}});
+            window.location.href= this.detailOver +msgData.text;
           }else if(msgData.type == 11){
             //  C2C_ORDER_APPEAL(11, "C2C申诉");
             toast(msgData.describe);
-            this.$router.push({name: this.detailAppeal,params:{ id: msgData.text}});
+            window.location.href=this.detailAppeal + msgData.text;
           }
           /*接收优惠券完成*/
            else if (msgData.type){
