@@ -1,6 +1,6 @@
 <template>
   <div class="act-main">
-    <!--<mobile-header :show-left-btn="false">优惠活动</mobile-header>-->
+    <login-app v-if="isCustomize"></login-app>
     <div class="header">
       <div class="activity-balance">
         <div class="title">赠币活动剩余</div>
@@ -75,6 +75,7 @@
   import QuickBuySell from '../pending-orders'
   import WithdrawTip from 'components/withdraw-tip';
   import {mapGetters} from 'vuex'
+  import LoginApp from 'components/header/login-app'
 
   export default {
     name: "activity-center",
@@ -87,7 +88,8 @@
         showBullDetail:false,
         bulletinDetail:{},
         buySell:'',
-        withdrawTip:false
+        withdrawTip:false,
+        isCustomize: _.customize()
       }
     },
     components:{
@@ -96,7 +98,8 @@
       BulletinDetail,
       // MobileHeader,
       QuickBuySell,
-      WithdrawTip
+      WithdrawTip,
+      LoginApp
     },
     computed:{
       scrollWidth(){
@@ -307,10 +310,10 @@
         display: block;
         border-radius: r(3);
         &.link-0{
-          background-image: linear-gradient(44deg, #FEE140 0%, #FCA96D 50%, #FCA96D 50%, #FA709A 100%);
+          background-image: linear-gradient(45deg, #AD7EFD 0%, #69EDFF 100%);
         }
         &.link-1{
-          background-image: linear-gradient(45deg, #69EDFF 0%, #AD7EFD 100%);
+          background-image: linear-gradient(44deg, #FA709A 0%, #FCA96D 50%, #FCA96D 50%, #FEE140 100%);
         }
         &.link-2{
           background-image: linear-gradient(47deg, #EE69FF 0%, #955AF9 100%);

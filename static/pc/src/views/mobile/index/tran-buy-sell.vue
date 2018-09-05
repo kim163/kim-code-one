@@ -26,7 +26,7 @@
       <div class="tip-info">注意：</div>
       <div class="tip-info">恶意下单又取消的账户会被禁用</div>
     </div>
-    <a class="close-btn" @click="close"></a>
+    <a class="close-btn-radius" @click="close"></a>
   </div>
 </template>
 
@@ -233,13 +233,13 @@
       margin-top: r(10);
     }
   }
-  .close-btn{
-    width: r(25);
-    height: r(25);
-    background: url(~images/close-round.png) no-repeat;
-    background-size: 100% 100%;
-    margin-top: r(15);
-    opacity: 0;
-    animation: rotateIn 1s forwards;
-  }
+  /*.close-btn{*/
+    /*width: r(25);*/
+    /*height: r(25);*/
+    /*background: url(~images/close-round.png) no-repeat;*/
+    /*background-size: 100% 100%;*/
+    /*margin-top: r(15);*/
+    /*opacity: 0;*/
+    /*animation: rotateIn 1s forwards;*/
+  /*}*/
 </style>
