@@ -139,8 +139,10 @@
                               @callBack="countDownEnd">
                   </count-down>
                 </p>
+
                 <div class="btn-group" v-if="DetailList.status =='45' && isCredit">
                   <input type="button" class="btn btn-block btn-normal" @click="showConfirm=true" value="我已完成付款">
+                  <p class="pay_send" v-if="showDiscountInfo&couponValueStr>0">立即付款后预计获赠 <span>{{couponValueStr}} UET</span></p>
                   <p class="payment-tips">
                     警告：为了您能快速完成交易，请尽量使用 <span class="red">您所绑定的银行卡/支付宝付款。</span>付款成功后，点击“我已完成付款”。
                   </p>
@@ -155,6 +157,7 @@
                 </div>
                 <div class="btn-group" v-if="DetailList.status =='47' && isDebit">
                   <input type="button" class="btn btn-block btn-normal" @click="showConfirmPayment=true" value="释放UET">
+                  <p class="pay_send" v-if="showDiscountInfo&couponValueStr>0">立即付款后预计获赠 <span>{{couponValueStr}} UET</span></p>
                   <p class="payment-tips">
                     确认收款前，请务必检查是否有收到买方付款
                   </p>
@@ -378,7 +381,9 @@
         typeState: 1,
         openListState: false,
         chatOnline:true,
-        buyTypeBuyBank: ''
+        buyTypeBuyBank: '',
+        couponValueStr: 0,
+        showDiscountInfo:false
       };
     },
     methods: {
@@ -402,6 +407,7 @@
             return;
           }
           this.DetailList = res.data;
+          this.fetchDiscountNum()
           if (this.DetailList.credit == this.userId) {
             this.isCredit = true;
           } else if (this.DetailList.debit == this.userId) {
@@ -430,6 +436,28 @@
       },
       chatStateUpdate() {
         this.chatState = false
+      },
+      fetchDiscountNum(){
+        const request={
+          'orderId':this.orderId,
+          'traderType': this.DetailList.credit == this.userId ? 1:2
+        }
+        transaction.getCouponAmount(request).then((res) => {
+          console.log(res,'手机打开')
+          if (res.code == '10000') {
+            if (res.data.isAward) {
+              this.showDiscountInfo = true;
+              this.couponValueStr = res.data.couponValueStr
+              if (this.showDiscountInfo) {
+                setTimeout(() => {
+                  this.fetchDiscountNum()
+                }, 10000)
+              }
+            }
+          } else {
+            toast(res.message)
+          }
+        })
       },
       openListUpdate() {
         this.openListState = true
@@ -794,7 +822,14 @@
       }
     }
   }
-
+  .pay_send{
+    font-size: 14px;
+    color: #333;
+    span{
+      font-size: 14px;
+      color: #ff1100;
+    }
+  }
   .detail-content {
     min-height: 300px;
     margin: 30px 0;
