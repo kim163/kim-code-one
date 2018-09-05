@@ -1,6 +1,6 @@
 <template>
   <div>
-    <!--<pc-activity @quickBuySell="quickBuyOrSell"></pc-activity>-->
+    <pc-activity @quickBuySell="quickBuyOrSell"></pc-activity>
     <div class="section transact-menu">
       <div class="container min-width">
         <div class="row">
