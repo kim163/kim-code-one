@@ -366,7 +366,6 @@
         this.chatOnline = true
       },
       sendInfo() {
-        console.log(this.orderId)
         const requests = {
           'orderId': this.orderId,
           'userId': this.userId,
@@ -379,9 +378,7 @@
             toast('发送成功')
             this.textValue = ''
             this.fetchData()
-            console.log('为什么没有生效啊 老铁')
             this.isReset = true
-            debugger;
           } else {
             toast(res.message)
           }
@@ -506,7 +503,6 @@
     }
     .user_content {
       padding-right: 10px;
-      padding-top: 20px;
       .name {
         color: #333;
         font-size: 16px;
