@@ -436,10 +436,12 @@
 
       },
       fetchDiscountNum() {
+        console.log('是快乐到家阿斯顿')
         const request = {
           'orderId': this.orderId,
           'traderType': this.DetailList.credit == this.userId ? 1 : 2
         }
+        console.log(request,'洒家扩大化阿斯顿')
         transaction.getCouponAmount(request).then((res) => {
           if (res.code == '10000') {
             if (res.data.isAward) {
