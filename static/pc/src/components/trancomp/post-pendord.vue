@@ -48,11 +48,11 @@
               <span class="btn btn-primary" @click="publishBuyOrSell">快速{{postItem === 'buyer' ? '买' : '卖'}}币</span>
             </div>
           </div>
-          <!--<transition name="fade">-->
-            <!--<div class="coupon" v-if="couponDetail.length > 0">-->
-              <!--<coupon-detail :item="couponDetail"></coupon-detail>-->
-            <!--</div>-->
-          <!--</transition>-->
+          <transition name="fade">
+            <div class="coupon" v-if="couponDetail.length > 0">
+              <coupon-detail :item="couponDetail"></coupon-detail>
+            </div>
+          </transition>
         </div>
       </div>
     </div>
