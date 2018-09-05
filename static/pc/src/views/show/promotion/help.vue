@@ -1,6 +1,6 @@
 <template>
   <div class="prom-helpcent">
-     <display-nav :isOfficialWeb="isOfficialWeb"></display-nav>
+     <!--<display-nav :isOfficialWeb="isOfficialWeb"></display-nav>-->
      <div class="helpcent-banner-part">
        <div class="container max-width context">
          <div class="row">

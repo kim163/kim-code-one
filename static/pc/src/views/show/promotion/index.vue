@@ -1,6 +1,6 @@
 <template>
   <div class="prom-advantage">
-     <display-nav :isOfficialWeb="isOfficialWeb"></display-nav>
+     <!--<display-nav :isOfficialWeb="isOfficialWeb"></display-nav>-->
      <div class="advantage-banner-part">
        <div class="container max-width">
          <div class="row">

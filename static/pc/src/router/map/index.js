@@ -1,6 +1,7 @@
 import transaction from './transaction';
 import mobileUrl from './mobile';
-import displayUrl from './display';
+// import displayUrl from './display';
+import pcRouter from './pc'
 
 const autoLogin = () => import('views/auto-login'); //商户自动登录
 const cash = () => import('views/cash'); //收银台
@@ -77,5 +78,6 @@ export default [
   },
   ...transaction,
   ...mobileUrl,
-  ...displayUrl
+  // ...displayUrl
+  ...pcRouter,
 ]
