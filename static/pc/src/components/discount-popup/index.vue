@@ -29,7 +29,7 @@
         },
         props:{
           value:{
-            type:Number,
+            type:String,
             default:0
           },
           isPC:{

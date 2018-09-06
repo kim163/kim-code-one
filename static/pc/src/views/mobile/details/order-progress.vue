@@ -440,7 +440,9 @@
           'orderId': this.orderId,
           'traderType': this.DetailList.credit == this.userId ? 1 : 2
         }
+        console.log(request,'可是敬爱的萨达')
         transaction.getCouponAmount(request).then((res) => {
+          console.log(res,'路上看见的萨达')
           if (res.code == '10000') {
             if (res.data.isAward) {
               this.showDiscountInfo = true;

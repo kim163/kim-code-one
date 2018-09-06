@@ -148,7 +148,7 @@
 
     </div>
     <div v-if="isShowpopup">
-      <discountPopup :value="couponValueStr" :isPc="true"  @closeState="isNeedClose"></discountPopup>
+      <discountPopup :value="couponValueStr" :isPC="true"  @closeState="isNeedClose"></discountPopup>
     </div>
 
     <v-footer ></v-footer>

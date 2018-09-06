@@ -117,7 +117,7 @@
     </div>
     <!--弹窗-->
     <div v-if="isShowpopup">
-      <discountPopup :value="couponValueStr" :isPc="false"  @closeState="isNeedClose"></discountPopup>
+      <discountPopup :value="couponValueStr" :isPC="false"  @closeState="isNeedClose"></discountPopup>
     </div>
   </div>
 </template>
@@ -179,6 +179,7 @@
           'orderId': this.orderData.orderId
         }
         transaction.getFinallyAmount(request).then((res) => {
+          console.log(res,'色空间啥都健康')
           if (res.code == '10000') {
             if (res.data) {
               this.isShowpopup = true
@@ -210,11 +211,11 @@
     },
     created() {
       this.fetchData();
-      if (this.isShowCoupon) {
+
         setTimeout(() => {
           this.fetchFinallyDiscount()
         }, 5000)
-      }
+
     },
     watch: {
       "$route": "fetchData"
