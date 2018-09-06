@@ -125,7 +125,6 @@
                   </p>
                 </div>
             </div>
-
           </div>
           <div class="detail-tips detail-tips-sell" v-if="DetailList.creditProofUrlTwin">
             <p v-if="isDebit" class="tips-title0">买家付款截图:</p>
@@ -148,6 +147,9 @@
       </div>
 
     </div>
+    <div v-if="isShowpopup">
+      <discountPopup :value="couponValueStr" :isPc="true"  @closeState="isNeedClose"></discountPopup>
+    </div>
 
     <v-footer ></v-footer>
   </div>
@@ -161,7 +163,7 @@
   import { generateTitle } from '@/util/i18n'
   import { transaction } from 'api'
   import {mapGetters,mapActions,mapMutations} from 'vuex'
-
+  import discountPopup from 'components/discount-popup'
   export default {
     data() {
       return {
@@ -185,7 +187,8 @@
         request:{},
         orderId: '',
         isCredit: false,
-        isDebit: false
+        isDebit: false,
+        isShowpopup:false
       };
     },
     methods: {
@@ -210,9 +213,35 @@
           toast(error.message);
         });
       },
+      isNeedClose(val){
+        this.isShowpopup = val
+      },
       copystr(text) {
         text.$copy();
         toast(this.$t('transactionHome.successCopy'));
+      },
+      fetchFinallyDiscount() {
+        const request = {
+          'orderId': this.orderId
+        }
+        transaction.getFinallyAmount(request).then((res) => {
+          if (res.code == '10000') {
+            if (res.data) {
+              this.isShowpopup = true
+              this.couponValueStr = res.data.couponValueStr
+              this.isShowDiscount = true
+            } else {
+              this.isShowpopup = false
+              this.isShowDiscount = false
+            }
+          }
+        })
+      },
+      goWatch(){
+
+      },
+      defineOk(){
+
       }
     },
     created() {
@@ -220,6 +249,9 @@
         this.orderId = this.$route.params.id;
         this.fetchData();
       }
+      setTimeout(()=>{
+        this.fetchFinallyDiscount()
+      },5000)
     },
     watch: {
       "$route"(val) {
@@ -232,7 +264,7 @@
       ...mapGetters(["userData","islogin","userId"]),
     },
     components: {
-      navMenu, breadCrumbs, NoDataTip, vFooter
+      navMenu, breadCrumbs, NoDataTip, vFooter,discountPopup
     },
     filters: {
       bankIcon: function (value) {
@@ -252,6 +284,7 @@
 </script>
 
 <style lang="scss" scoped>
+  @import "~assets/scss/mixin";
   .detail-content{
     min-height:300px;
     margin:30px 0;
@@ -489,5 +522,102 @@
      background: url(~images/bankIcon/cmbc.png) no-repeat;
      background-size: 40px;
    }
+  }
+  .popup_container {
+    background: rgba(0, 0, 0, 0.6);
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    .popup_content {
+      background-color: #fff;
+      width: r(250);
+      height: r(274);
+      position: absolute;
+      top: 20%;
+      left: 50%;
+      transform: translate(-50%);
+      padding: r(20);
+      .discount_info {
+        width: r(210);
+        height: r(108);
+        background-color: #ff8b8b;
+        border-radius: r(10);
+        display: flex;
+        .left_side {
+          width: r(60);
+          font-size: r(30);
+          color: #fff;
+          line-height: r(108);
+          text-align: center;
+          position: relative;
+
+        }
+        .right_side {
+          flex: 1;
+          font-size: r(16);
+          color: #fff;
+          height: r(108);
+          position: relative;
+          .middle_line {
+            position: absolute;
+            top: 0;
+            left: r(-8);
+            width: r(15);
+            height: r(108);
+            background: url('~images/discount_pink.png') no-repeat;
+            background-size: 100%;
+            background-color: transparent;
+          }
+          .rmb_value {
+            text-align: center;
+            padding-top: r(25);
+          }
+          .uet_value {
+            text-align: center;
+            padding-top: r(10);
+          }
+        }
+      }
+      .discount_uet {
+        font-size: r(14);
+        color: #333;
+        padding-top: r(20);
+        text-align: center;
+        span {
+          font-size: r(14);
+          color: #ec3a4e;
+        }
+      }
+      .go_watch {
+        border-radius: r(3);
+        background-color: #3573FA;
+        color: #fff;
+        text-align: center;
+        margin-top: r(20);
+        height: r(30);
+        line-height: r(30);
+      }
+      .define_ok {
+        margin-top: r(10);
+        border-radius: r(3);
+        background-color: #84a4e9;
+        color: #fff;
+        text-align: center;
+        height: r(30);
+        line-height: r(30);
+      }
+      .close_btn {
+        width: r(25);
+        height: r(25);
+        text-align: center;
+        background: url("~images/close_btn.png") no-repeat;
+        background-size: 100%;
+        margin: 0 auto;
+        margin-top: r(40);
+      }
+    }
   }
 </style>
