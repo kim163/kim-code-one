@@ -76,7 +76,7 @@ export default [
       noCache:true
     }
   },
-  ...transaction,
+  // ...transaction,
   ...mobileUrl,
   // ...displayUrl
   ...pcRouter,

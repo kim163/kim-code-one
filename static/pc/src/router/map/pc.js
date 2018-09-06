@@ -6,7 +6,7 @@ const PromContactUs = () => import('views/pc/promotion/contact-us');  // 推广�
 const WalletCenter = () => import('views/pc/wallet-center') //钱包中心
 const TranCenter = () => import('views/pc/tran-center') //交易模块
 const UserCenter = () => import('views/pc/user-center') //个人中心模块
-
+const OrderDetail = () => import('views/pc/order-detail') //订单详情
 
 export default [
   {
@@ -65,22 +65,22 @@ export default [
       },
       {
         path: "/center",
-        name: "walletCenter",
         component:WalletCenter,
         children:[
           {
             path:'',
+            name: "walletCenter",
             component:TranCenter,
           },
           {
-            path:'/user',
+            path:'user',
             name:'userCenter',
             component:UserCenter,
           },
           {
-            path:'/orderDetail/:id',
+            path:'orderDetail',
             name:'orderDetail',
-            component:TranCenter,
+            component:OrderDetail,
           }
         ]
       }
