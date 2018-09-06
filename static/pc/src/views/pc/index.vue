@@ -6,11 +6,13 @@
                 leave-active-class="animated-quick fadeOut">
       <router-view></router-view>
     </transition>
+    <v-footer :isDisplayFoot="true" :isOfficialWeb="isOfficialWeb" ></v-footer>
   </div>
 </template>
 
 <script>
-  import displayNav from 'components/nav/display-nav';
+  import DisplayNav from 'components/nav/display-nav';
+  import vFooter from 'components/footer';
   export default {
     name: "pc-index",
     data(){
@@ -25,7 +27,8 @@
       }
     },
     components:{
-      displayNav
+      DisplayNav,
+      vFooter
     }
   }
 </script>

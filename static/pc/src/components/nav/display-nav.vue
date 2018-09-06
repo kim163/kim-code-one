@@ -40,7 +40,7 @@
               <router-link :to="gotoIndex()">久安优势</router-link>
             </div>
             <div class="col-2" v-show="isOfficialWeb">
-              <router-link :to="{name:'transaction'}">久安钱包中心</router-link>
+              <router-link :to="{name:'walletCenter'}">久安钱包中心</router-link>
             </div>
             <div class="col-2">
               <router-link :to="gotoHelp()">帮助中心</router-link>

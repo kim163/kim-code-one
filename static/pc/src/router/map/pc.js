@@ -1,8 +1,12 @@
 
-const pcIndex = () => import('views/pc/index')
-const promIndex = () => import('views/show/promotion');  // 推广首页
-const promHelp = () => import('views/show/promotion/help');  // 推广帮助中心
-const promContactUs = () => import('views/show/promotion/contact-us');  // 推广联系我们
+const PcIndex = () => import('views/pc/index.vue')
+const PromIndex = () => import('views/pc/promotion');  // 推广首页
+const PromHelp = () => import('views/pc/promotion/help');  // 推广帮助中心
+const PromContactUs = () => import('views/pc/promotion/contact-us');  // 推广联系我们
+const WalletCenter = () => import('views/pc/wallet-center') //钱包中心
+const TranCenter = () => import('views/pc/tran-center') //交易模块
+const UserCenter = () => import('views/pc/user-center') //个人中心模块
+
 
 export default [
   {
@@ -12,7 +16,7 @@ export default [
   },
   {
     path: "/index",
-    component: pcIndex,
+    component: PcIndex,
     props: {
       isOfficialWeb: true
     },
@@ -23,7 +27,7 @@ export default [
       {
         path:"",
         name: "pcIndex",
-        component:promIndex,
+        component:PromIndex,
         // props:{
         //   isOfficialWeb:true
         // }
@@ -31,7 +35,7 @@ export default [
       {
         path: "/helpCenter",
         name: "helpCenter",
-        component: promHelp,
+        component: PromHelp,
         // props:{
         //   isOfficialWeb:true
         // }
@@ -39,7 +43,7 @@ export default [
       {
         path: "/contactUs",
         name: "contactUs",
-        component: promContactUs,
+        component: PromContactUs,
         // props:{
         //   isOfficialWeb:true
         // }
@@ -47,17 +51,38 @@ export default [
       {
         path: "/prom",
         name: "promIndex",
-        component: promIndex,
+        component: PromIndex,
       },
       {
         path: "/promHelp",
         name: "promHelp",
-        component: promHelp,
+        component: PromHelp,
       },
       {
         path: "/promContact",
         name: "promContact",
-        component: promContactUs,
+        component: PromContactUs,
+      },
+      {
+        path: "/center",
+        name: "walletCenter",
+        component:WalletCenter,
+        children:[
+          {
+            path:'',
+            component:TranCenter,
+          },
+          {
+            path:'/user',
+            name:'userCenter',
+            component:UserCenter,
+          },
+          {
+            path:'/orderDetail/:id',
+            name:'orderDetail',
+            component:TranCenter,
+          }
+        ]
       }
     ]
   }
