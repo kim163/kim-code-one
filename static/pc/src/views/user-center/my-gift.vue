@@ -135,7 +135,7 @@
         }
       },
       toUseExchange(){
-        const query = {mode:1,amount: 0,bankNo: '',auto: 0};
+        const query = {mode:3,amount: '0',bankNo: '',auto: 0};
         Vue.$global.bus.$emit('open:QuickSell',query);
       }
     },
@@ -176,12 +176,17 @@
         }
       }
       .exchange_content{
+         padding: 25px 0;
          .discount_ticket{
            width: 50%;
            height: 140px;
            margin: 25px 0;
            float: left;
          }
+        .page-wrap{
+          width: 100%;
+          float: left;
+        }
       }
     }
   }

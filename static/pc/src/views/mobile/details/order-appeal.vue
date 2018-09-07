@@ -44,7 +44,6 @@
       <div v-if="DetailList.credit == userId">
         <!--买-->
         <ul class="details-ul">
-
           <li>
             <span class="l-title">订单:</span>
             <p class="order-id-li extra_order"><span class="order_info">{{orderData.orderId}}</span>

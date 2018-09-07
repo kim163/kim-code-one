@@ -1,14 +1,16 @@
 <template>
   <div>
     <pc-activity @quickBuySell="quickBuyOrSell"></pc-activity>
-    <div class="section transact-menu">
+    <div class="transact-menu">
       <div class="container min-width">
         <div class="row">
           <router-link v-for="(item,i) in transactMenuData" class="item-info" :to="item.to" :key="i">
             {{generateTitle(item.name)}}
           </router-link>
           <a href="javascript:void(0);" class="item-info" @click="isShowPostPend=true">
-            {{$t('postPend.postTitle')}} </a>
+            <span class="float-trantips"></span>
+            {{$t('postPend.postTitle')}}
+          </a>
           <router-link :to="{name: 'tranPending'}" class="item-info">{{$t('transactionHome.pengdingOrder')}}
           </router-link>
           <router-link :to="{name: 'tranRecord'}" class="item-info">{{$t('transactionHome.orderRecord')}}</router-link>
@@ -88,11 +90,12 @@
 </script>
 <style lang="scss">
 .transact-menu {
+  width: 100%;
   height: 48px;
   line-height: 48px;
-  min-height: auto;
   margin-top: 20px;
   a {
+    position: relative;
     display: block;
     float: left;
     width: 15%;
@@ -108,11 +111,22 @@
       color: #ffffff;
       background: #5087FF;
       border: 1px solid #5087FF;
+      border-bottom: none;
     }
     &:last-child {
       margin: 0;
       float: right;
     }
+   .float-trantips{
+     position: absolute;
+     top: -12px;
+     right: -2px;
+     width: 58px;
+     height: 29px;
+     background: url("~images/transend-coins.png") no-repeat center center;
+     -webkit-animation: a-float 1.4s linear infinite;
+     animation: a-float 1.4s linear infinite;
+   }
   }
 }
 </style>

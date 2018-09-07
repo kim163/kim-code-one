@@ -38,7 +38,6 @@
             </div>
             <div v-if="isCredit" class="col-33">
               <h4 class="bank-title">卖家收款方式 : </h4>
-
               <div class="alipay-box"
                    v-if="DetailList.debitAccountMerchantTwin == '支付宝' || DetailList.debitAccountMerchantTwin == '微信'">
                 <p class="alipay-box-title">
@@ -78,7 +77,6 @@
             </div>
             <div v-else-if="isDebit" class="col-33">
               <h4 class="bank-title">买家付款方式 : </h4>
-
               <div class="alipay-box"
                    v-if="DetailList.creditAccountMerchantTwin == '支付宝' || DetailList.creditAccountMerchantTwin == '微信'">
                 <p class="alipay-box-title">
@@ -138,8 +136,10 @@
                               :end-time="DetailList.intervalTime-DetailList.elapsedTime<=0 ? 0 : DetailList.intervalTime-DetailList.elapsedTime "
                               @callBack="countDownEnd">
                   </count-down>
-                </p>
 
+                </p>
+                <!--卖家优惠 添加对应信息-->
+                <p class="pay_send" v-if="showDiscountInfo&couponValueStr>0&DetailList.status =='45' && isDebit">立即付款后预计获赠 <span>{{couponValueStr}} UET</span></p>
                 <div class="btn-group" v-if="DetailList.status =='45' && isCredit">
                   <input type="button" class="btn btn-block btn-normal" @click="showConfirm=true" value="我已完成付款">
                   <p class="pay_send" v-if="showDiscountInfo&couponValueStr>0">立即付款后预计获赠 <span>{{couponValueStr}} UET</span></p>
@@ -153,6 +153,7 @@
                   </p>
                 </div>
                 <div v-if="DetailList.status =='47' && isCredit">
+                  <p class="pay_send" v-if="showDiscountInfo&couponValueStr>0">立即付款后预计获赠 <span>{{couponValueStr}} UET</span></p>
                   <p class="text-center red">您已确认付款，请勿重复付款</p>
                 </div>
                 <div class="btn-group" v-if="DetailList.status =='47' && isDebit">
@@ -825,6 +826,7 @@
   .pay_send{
     font-size: 14px;
     color: #333;
+    text-align: center;
     span{
       font-size: 14px;
       color: #ff1100;

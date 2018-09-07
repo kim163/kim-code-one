@@ -116,23 +116,8 @@
       <input type="button" class="btn btn-block btn-primary" value="关闭页面" @click="closePage">
     </div>
     <!--弹窗-->
-    <div class="popup_container" v-if="isShowpopup">
-      <div class="popup_content">
-        <div class="discount_info">
-          <div class="left_side">
-            <p>赠</p>
-          </div>
-          <div class="right_side">
-            <p class="rmb_value">¥ {{(couponValueStr*0.01).toFixed(2)}}</p>
-            <p class="uet_value">= <span>{{couponValueStr}}</span>UET</p>
-            <div class="middle_line"></div>
-          </div>
-        </div>
-        <p class="discount_uet">您此次的交易获赠 <span>{{couponValueStr}}UET</span></p>
-        <div class="btn go_watch" @click="goWatch">前去查看</div>
-        <div class="btn define_ok" @click="defineOk">确定</div>
-        <p class="close_btn" @click="defineOk"></p>
-      </div>
+    <div v-if="isShowpopup">
+      <discountPopup :value="couponValueStr" :isPC="false"  @closeState="isNeedClose"></discountPopup>
     </div>
   </div>
 </template>
@@ -143,7 +128,7 @@
   import {transaction} from 'api'
   import {mapGetters} from 'vuex'
   import Clipboard from 'clipboard';
-
+  import discountPopup from 'components/discount-popup'
   export default {
     data() {
       return {
@@ -194,6 +179,7 @@
           'orderId': this.orderData.orderId
         }
         transaction.getFinallyAmount(request).then((res) => {
+          console.log(res,'色空间啥都健康')
           if (res.code == '10000') {
             if (res.data) {
               this.isShowpopup = true
@@ -225,11 +211,11 @@
     },
     created() {
       this.fetchData();
-      if (this.isShowCoupon) {
+
         setTimeout(() => {
           this.fetchFinallyDiscount()
         }, 5000)
-      }
+
     },
     watch: {
       "$route": "fetchData"
@@ -246,7 +232,8 @@
     },
 
     components: {
-      mHeader
+      mHeader,
+      discountPopup
     }
   };
 
