@@ -91,6 +91,7 @@
   }
   .container{
     width: 66%;
+    max-width: r(400);
     background: $white;
     color: #333333;
     animation: flipInY 1s forwards;
