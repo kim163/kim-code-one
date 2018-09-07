@@ -13,8 +13,16 @@
           </svg>
         </div>
         <div class="user-balance">
-          <div class="balance-info">可用余额： ≈ &yen;</div>
-          <div class="balance-info">锁定资产： ≈ &yen;</div>
+          <div class="balance-info">可用余额：
+            <animated-integer :value="calUserBalance(1)"></animated-integer> UET
+            ≈ &yen;
+            <animated-integer :value="formatCny(1)"></animated-integer>
+          </div>
+          <div class="balance-info">锁定资产：
+            <animated-integer :value="calUserBalance(2)"></animated-integer> UET
+            ≈ &yen;
+            <animated-integer :value="formatCny(2)"></animated-integer>
+          </div>
         </div>
       </div>
       <div class="btn-list">
@@ -34,6 +42,7 @@
 <script>
   import getLive800 from 'components/get-live800'
   import { getHomeInfo } from 'api/transaction'
+  import AnimatedInteger from 'components/animated-integer'
   export default {
     name: "user-info",
     data(){
@@ -47,7 +56,8 @@
       ])
     },
     components:{
-      getLive800
+      getLive800,
+      AnimatedInteger
     },
     methods:{
       getUserBalance(){
@@ -63,6 +73,13 @@
         }).catch(err => {
           toast(err)
         })
+      },
+      calUserBalance(type){
+        const balAmount = type === 1 ? this.homeInforma.chainAmount : (this.homeInforma.pendingAmount + this.homeInforma.lockedAmount);
+        return !_.isNaN(Number(balAmount)) ? Number(balAmount) : 0;
+      },
+      formatCny(type){
+        return (this.calUserBalance(type) * 0.01).toFixed(2)
       }
     },
     mounted(){
@@ -124,6 +141,7 @@
       }
       .balance-info{
         line-height: 30px;
+        text-align: left;
       }
     }
     .btn-list{
