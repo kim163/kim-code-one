@@ -117,9 +117,6 @@
       <div slot="leftBtn" class="confirm-btn-cancel dialog-cancel">取消</div>
       <div slot="rightBtn" class="dialog-btn-yes" @click="toSetInfo">确定</div>
     </confirm-dialog>
-    <router-view>
-
-    </router-view>
   </div>
 </template>
 
