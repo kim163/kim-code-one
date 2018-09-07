@@ -6,6 +6,7 @@
                  :class="{'talk-list':num == 3,'hot': item.hot}"
                  @click="tabIndex = num"
     >
+      <span class="transend-coins" v-if="num === 2">赠</span>
       <i class="iconfont" :class="tabIndex === num ? item.iconAct : item.iconDef"></i>
       <p class="unread-count" v-show="num == 3 && unreadCountUpdate > 0">{{unreadCountUpdate}}</p>
       <div class="link-name">{{generateTitle(item.name)}}</div>
@@ -113,6 +114,9 @@
       position: relative;
       &.active {
         color: $main-color;
+        .transend-coins{
+          color: #3162FC;
+        }
         .link-name {
           color: $main-color;
         }
@@ -134,6 +138,20 @@
           background: #305cfd;
         }
       }
+    }
+    .transend-coins{
+      position: absolute;
+      top: 9%;
+      right: 20%;
+      display: block;
+      border-radius: 50%;
+      width: r(20);
+      height: r(20);
+      line-height: r(20);
+      background: $white;
+      @include f(12px);
+      color: #FF7CAA;
+      text-align: center;
     }
     .unread-count {
       display: inline-block;
