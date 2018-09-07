@@ -8,13 +8,13 @@
     <transition :name="transitionName">
       <router-view v-if="$route.meta.noCache"></router-view>
     </transition>
-    <sys-bullentin v-if="islogin && isMobile"></sys-bullentin>
+    <sys-bullentin v-if="islogin"></sys-bullentin>
     <v-login v-if="showLogin" v-model="showLogin"></v-login>
     <v-register v-if="showRegister" v-model="showRegister"></v-register>
   </div>
 </template>
 <script type="text/ecmascript-6">
-  import {mapGetters,mapMutations} from 'vuex';
+  // import {mapGetters,mapMutations} from 'vuex';
   import Stomp from 'webstomp-client';
   import { aesutil } from '@/util';
   import {$localStorage} from '@/util/storage';
