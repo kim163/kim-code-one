@@ -176,12 +176,17 @@
         }
       }
       .exchange_content{
+         padding: 25px 0;
          .discount_ticket{
            width: 50%;
            height: 140px;
            margin: 25px 0;
            float: left;
          }
+        .page-wrap{
+          width: 100%;
+          float: left;
+        }
       }
     }
   }
