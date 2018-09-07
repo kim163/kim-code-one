@@ -28,6 +28,9 @@ export default [
         path:"",
         name: "pcIndex",
         component:PromIndex,
+        meta: {
+          noLogin: true
+        },
         // props:{
         //   isOfficialWeb:true
         // }
@@ -36,6 +39,9 @@ export default [
         path: "/helpCenter",
         name: "helpCenter",
         component: PromHelp,
+        meta: {
+          noLogin: true
+        },
         // props:{
         //   isOfficialWeb:true
         // }
@@ -44,6 +50,9 @@ export default [
         path: "/contactUs",
         name: "contactUs",
         component: PromContactUs,
+        meta: {
+          noLogin: true
+        },
         // props:{
         //   isOfficialWeb:true
         // }
@@ -52,16 +61,25 @@ export default [
         path: "/prom",
         name: "promIndex",
         component: PromIndex,
+        meta: {
+          noLogin: true
+        },
       },
       {
         path: "/promHelp",
         name: "promHelp",
         component: PromHelp,
+        meta: {
+          noLogin: true
+        },
       },
       {
         path: "/promContact",
         name: "promContact",
         component: PromContactUs,
+        meta: {
+          noLogin: true
+        },
       },
       {
         path: "/center",

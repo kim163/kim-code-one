@@ -9,6 +9,8 @@
       <router-view v-if="$route.meta.noCache"></router-view>
     </transition>
     <sys-bullentin v-if="islogin && isMobile"></sys-bullentin>
+    <v-login v-if="showLogin" v-model="showLogin"></v-login>
+    <v-register v-if="showRegister" v-model="showRegister"></v-register>
   </div>
 </template>
 <script type="text/ecmascript-6">
@@ -17,6 +19,8 @@
   import { aesutil } from '@/util';
   import {$localStorage} from '@/util/storage';
   import SysBullentin from 'views/sys-bullentin';
+  import vLogin from "components/auth/login"
+  import vRegister from "components/auth/register"
   export default {
     data(){
       return {
@@ -29,11 +33,17 @@
         detailNormal: '',
         detailOver: '',
         detailAppeal: '',
-        isMobile:_.isMobile()
+        isMobile:_.isMobile(),
       }
     },
     computed:{
-      ...mapGetters(["userData", "userId", "islogin"]),
+      ...mapGetters([
+        "userData",
+        "userId",
+        "islogin",
+        "showLogin",
+        "showRegister",
+      ]),
       isExclude(){
         return this.$route.meta.cache ? "" : this.$route.name;
       }
@@ -156,7 +166,9 @@
       },
     },
     components:{
-      SysBullentin
+      SysBullentin,
+      vLogin,
+      vRegister,
     },
     mounted() {
       if (this.islogin) {

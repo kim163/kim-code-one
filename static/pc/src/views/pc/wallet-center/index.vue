@@ -6,6 +6,7 @@
 </template>
 
 <script>
+  import store from '@/store'
   import UserInfo from './user-info'
   export default {
     name: "wallet-center",
@@ -16,6 +17,13 @@
     },
     components:{
       UserInfo
+    },
+    beforeRouteEnter(to,from,next){
+      if(store.getters.islogin){
+        next()
+      }else{
+        store.commit('SHOW_LOGIN',true)
+      }
     }
   }
 </script>

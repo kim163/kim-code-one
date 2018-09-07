@@ -11,6 +11,7 @@ export default new Vuex.Store({
   state: { //不要直接访问state
     showFooter: true,
     showLogin: false, //登录弹窗
+    showRegister:false,
     userData: {
       name: '',
       nickname: '',
@@ -103,6 +104,9 @@ export default new Vuex.Store({
     },
     bankCardInfo(state,getters){
       return state.bankCardInfo;
+    },
+    showRegister(state,getters){
+      return state.showRegister
     }
   },
   mutations: {         // 事件处理器用来驱动状态的变化
@@ -141,8 +145,6 @@ export default new Vuex.Store({
         }else{
           router.replace({name:'mobileCusLogin'});
         }
-      }else{
-        router.replace({name:'transaction'});
       }
       state.showLogin=val;
     },
@@ -160,6 +162,9 @@ export default new Vuex.Store({
     },
     [types.GET_BANKCARD](state,val){
       state.bankCardInfo=val
+    },
+    [types.SHOW_REGISTER](state,val){
+      state.showRegister=val
     }
   },
   actions: {    // 可以给组件使用的函数，以此用来驱动事件处理器 mutations
