@@ -79,6 +79,12 @@
       <div slot="content">下单成功</div>
       <div slot="leftBtn">关闭</div>
     </confirm>
+    <confirm v-if="showBindCard" v-model="showBindCard">
+      <div slot="title">请绑定您的</div>
+      <div slot="content">银行卡号/微信/支付宝</div>
+      <div slot="leftBtn">返回</div>
+      <div slot="rightBtn" class="btn-yes" @click="toBindCard">去绑定</div>
+    </confirm>
   </div>
 </template>
 
@@ -143,18 +149,25 @@
         max:9,
         couponDetail:null,
         rangeReset:false,
-        showBuySellRes:false
+        showBuySellRes:false,
+        showBindCard:false,//展示绑定银行卡提示
       }
     },
     watch: {
       pendingItem(val) {
-          this.setBankcard.pleaseSelTitle = val === 'seller' ? 'component.pleaseSelRecMet' : 'component.pleaseSelPayMet'
+        this.setBankcard.pleaseSelTitle = val === 'seller' ? 'component.pleaseSelRecMet' : 'component.pleaseSelPayMet'
+      },
+      noBankCardTip(val){
+        if(this.tabType === 0){
+          this.showBindCard = val
+        }
       }
     },
     computed: {
       ...mapGetters([
         'userId',
-        'userData'
+        'userData',
+        'noBankCardTip'
       ]),
     },
     props:{
@@ -174,7 +187,7 @@
         return !_.isNaN(Number(amount)) ? (Number(amount)*0.01).toFixed(2) : '0.00'
       },
       selCardChange(selCard){
-         this.payType = selCard;
+        this.payType = selCard;
       },
       publishBuyOrSell() {
         const buySellAmount = this.pendingItem === 'seller' ? this.sellAmount : this.buyAmount
@@ -263,6 +276,10 @@
             }
           }
         })
+      },
+      toBindCard(){
+        this.showBindCard = false
+        this.$router.push({name:'mUserCenter'})
       }
     },
     created() {
@@ -280,6 +297,9 @@
         }
       }
       this.bankNo = this.$route.query.bankNo
+      if(this.tabType === 0){
+        this.showBindCard = this.noBankCardTip
+      }
       // const withdraw = this.$route.query.withdraw
       // if(!_.isUndefined(withdraw) && withdraw === 'true'){
       //   if(this.pendingItem === 'seller'){
@@ -512,4 +532,8 @@
     color: #4982FF;
   }
  }
+  .btn-yes{
+    background: $main-color;
+    color: $white;
+  }
 </style>
