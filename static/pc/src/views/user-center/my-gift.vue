@@ -26,7 +26,6 @@
             </div>
             <paging-by :data="noCashPageInfo" @search="getInfonext"></paging-by>
          </div>
-
       </div>
       </div>
 
@@ -82,8 +81,8 @@
           "couponStatus": 3,
           "couponType": 100
         }
-        console.log('获取已兑现的优惠券参数:',requestData);
         userCenter.myGift(requestData).then(res => {
+          console.log(res,'电视剧sad')
           if (res.code == 10000) {
             if (res.pageInfo.total == 0) {
               this.isNull = true

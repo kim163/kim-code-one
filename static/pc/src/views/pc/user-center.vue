@@ -50,13 +50,13 @@
       </div>
     </div>
     <!--弹窗部分-->
-    <div class="bindCard-popup">
+    <div class="bindCard-popup" v-if="closeState">
       <!--绑定银行卡-->
       <div class="bindCard-content">
         <div class="bind-card-info" v-if="finallyStep">
           <div class="bind-title">
             <span class="main-title">绑定银行卡</span>
-            <span class="iconfont icon-close close-btn" @click="closePopup"></span>
+            <span class="iconfont icon-close close-btn" @click="closeContent"></span>
           </div>
           <div class="bind-content">
             <img src="~images/not-bind-card.png" alt="">
@@ -67,15 +67,15 @@
         <div class="add-card-info" v-if="!finallyStep">
           <div class="bind-title">
             <span class="main-title">绑定银行卡</span>
-            <span class="iconfont icon-close close-btn"></span>
+            <span class="iconfont icon-close close-btn" @click="closeContent"></span>
           </div>
           <div class="bind-content">
-            <p class="card-number">银行卡号 <input type="text" class="input"></p>
-            <p class="bank-name">银行名称 <input type="text" class=""></p>
-            <p class="user-name">持卡人姓名 <input type="text" class=""></p>
+            <p class="card-number">银行卡号 <input type="text" class="input-card-number" v-model="cardNumber" autocomplete="off" @blur="blurNumber"></p>
+            <p class="bank-name">银行名称 <input type="text" class="input-bank-name" readonly autocomplete="off" :value="bankName"></p>
+            <p class="user-name">持卡人姓名 <input type="text" class="input-user-name" autocomplete="off" v-model="userName"></p>
           </div>
-          <div class="btn">绑定</div>
-          <div class="btn">返回</div>
+          <div class="bindCard" @click="bindCard">绑定</div>
+          <div class="returnBack">关闭</div>
         </div>
       </div>
     </div>
@@ -115,11 +115,15 @@
         mouseOverThird: false,
         mouseOverFourth: false,
         closePopup:false,
-        finallyStep:false
+        finallyStep:false,
+        cardNumber:'',
+        closeState:'',
+        bankName:'',
+        userName:''
       }
     },
     created() {
-      this.bindBankCard()
+
     },
     computed: {
       ...mapGetters([
@@ -155,16 +159,51 @@
       addBankcard(){
         this.finallyStep = true
       },
-      closePopup(){
-        this.closeState = true
+      blurNumber(){
+        if(this.cardNumber.length==0){
+          return
+        }
+        let requests={
+          bankNo: this.cardNumber
+        }
+
+        userCenter.autoRecognize(requests).then(res=>{
+             if(res.data==null){
+               toast('该卡号无法识别,请输入正确的卡号')
+               this.bankName = ''
+             }else {
+               this.bankName = res.data.bankName
+             }
+        })
+      },
+      closeContent(){
+        this.closeState = false
+      },
+      bindCard(){
+        const requests={
+           userId: this.userId,
+           account: this.cardNumber,
+           type:3,
+           name: this.userName,
+           bank: this.bankName
+        }
+        userCenter.bindBankV2(requests).then(res=>{
+            if(res.code==10000){
+              toast('绑卡成功!')
+
+            }else {
+              toast(res.message)
+            }
+        })
       },
       bindBankCard() {
+        this.closeState =true
         let requests = {
           userId: this.userId
         }
         userCenter.getBankList(requests).then(res => {
           if (res.data.length == 0) {
-            this.is
+
           } else {
 
           }
@@ -212,7 +251,7 @@
           border: 1px solid #D3D3D3;
           .item-symbol {
             width: 100px;
-            height: 100px;
+            height: 98px;
             background-color: #d3d3d3;
             color: #fff;
             text-align: center;
@@ -270,6 +309,7 @@
     top: 0;
     left: 0;
     z-index: 100;
+    /*绑定银行卡*/
     .bindCard-content{
       background-color: #fff;
       width: 506px;
@@ -278,6 +318,7 @@
       top: 25%;
       left: 50%;
       transform: translate(-50%);
+
       .bind-card-info{
         padding: 25px;
         .bind-title{
@@ -324,6 +365,88 @@
           cursor: pointer;
         }
       }
+      .add-card-info{
+        padding: 25px;
+        .bind-title{
+           overflow: hidden;
+           .main-title{
+             font-size: 24px;
+             color: #333;
+             float: left;
+           }
+          .close-btn{
+            font-size: 20px;
+            color: #c8c8c8;
+            float: right;
+          }
+        }
+        .bind-content{
+          padding-top: 26px;
+
+           .card-number{
+              font-size: 16px;
+              color: #333;
+             padding-left: 15px;
+             .input-card-number{
+               border: 1px solid #e4e4e4;
+               color: #333;
+               font-size: 16px;
+               text-indent: 10px;
+               height: 40px;
+               width: 356px;
+             }
+           }
+          .bank-name{
+            margin-top: 21px;
+            padding-left: 15px;
+            .input-bank-name{
+              border: 1px solid #e4e4e4;
+              color: #333;
+              font-size: 16px;
+              text-indent: 10px;
+              height: 40px;
+              width: 356px;
+            }
+          }
+          .user-name{
+            padding-top: 21px;
+
+            .input-user-name{
+              border: 1px solid #e4e4e4;
+              color: #333;
+              font-size: 16px;
+              text-indent: 10px;
+              height: 40px;
+              width: 356px;
+            }
+          }
+        }
+        .bindCard{
+          width: 446px;
+          height: 50px;
+          line-height: 50px;
+          font-size: 18px;
+          background-color: #3573FA;
+          color: #fff;
+          text-align: center;
+          border-radius: 5px;
+          margin-top: 31px;
+          cursor: pointer;
+        }
+        .returnBack{
+          width: 446px;
+          height: 50px;
+          line-height: 50px;
+          font-size: 18px;
+          background-color: #f0f0f0;
+          color: #333333;
+          text-align: center;
+          margin-top: 20px;
+          cursor: pointer;
+          border-radius: 5px;
+        }
+      }
     }
+
   }
 </style>
