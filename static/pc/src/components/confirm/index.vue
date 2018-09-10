@@ -150,7 +150,7 @@
       justify-content: space-around;
       margin-top: r(25);
       .confirm-btn{
-        width: 49.9%;
+        width: 50%;
         height: r(40);
         line-height: r(40);
         text-align: center;

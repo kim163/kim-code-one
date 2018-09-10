@@ -66,13 +66,14 @@
           this.$emit("selCardChange", this.selBankCard);
           this.$emit('change',false);
         }
-      }
+      },
     },
     methods: {
       getBankInfo(){
         this.bankList.data = this.bankCardInfo;
         if(this.bankList.data.length<1){
           this.noCardTips = true;
+          this.$emit("selCardChange", this.bankList.data);
         }
         if(this.setBankcard.addOption.length>0){
           for (let i in this.setBankcard.addOption){

@@ -19,3 +19,4 @@ export const GET_WIDTHDRAW = 'GET_WIDTHDRAW' //商户提款标识
 
 export const GET_BANKCARD = 'GET_BANKCARD'  // 获取用户银行卡信息
 export const SHOW_FASTSALE = 'SHOW_FASTSALE'  // 显示快速买卖弹窗
+export const NOBANKCARDTIP = 'NOBANKCARDTIP'  // 没有银行卡提示

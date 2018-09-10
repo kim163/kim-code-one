@@ -8,7 +8,7 @@
     <transition :name="transitionName">
       <router-view v-if="$route.meta.noCache"></router-view>
     </transition>
-    <sys-bullentin v-if="islogin && isMobile"></sys-bullentin>
+    <sys-bullentin v-if="islogin"></sys-bullentin>
   </div>
 </template>
 <script type="text/ecmascript-6">
