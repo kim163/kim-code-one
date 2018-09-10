@@ -29,7 +29,8 @@
         <div class="btn-item">
           <get-live800></get-live800>
         </div>
-        <div class="btn-item">
+        <div class="btn-item" v-if="userData.nodeId < 10000"
+             @click="$store.dispatch('LOGIN_OUT')">
           <i class="iconfont icon-shut-down"></i>
           退出
         </div>
@@ -83,7 +84,7 @@
         return !_.isNaN(Number(balAmount)) ? Number(balAmount) : 0;
       },
       formatCny(type){
-        return (this.calUserBalance(type) * 0.01).toFixed(2)
+        return _.floor(this.calUserBalance(type) * 0.01, 2);
       }
     },
     mounted(){
