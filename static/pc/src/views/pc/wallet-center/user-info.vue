@@ -6,7 +6,8 @@
         <span class="nick-name">{{userData.nickname}}</span>
         <router-link :to="{name:'userCenter'}" class="link-def" tag="div">个人中心</router-link>
         <div class="link-def">收款码</div>
-        <div class="link-def">APP扫码登录</div>
+        <!--<div class="link-def">APP扫码登录</div>-->
+        <login-app v-if="isCustomize"></login-app>
         <div class="icon-font">
           <svg class="icon" aria-hidden="true">
             <use xlink:href="#icon-wallet-balance"></use>
@@ -44,6 +45,7 @@
   import getLive800 from 'components/get-live800'
   import { getHomeInfo } from 'api/transaction'
   import AnimatedInteger from 'components/animated-integer'
+  import LoginApp from 'components/header/login-app'
   export default {
     name: "user-info",
     data(){
@@ -53,6 +55,7 @@
           pendingAmount:0,
           lockedAmount:0,
         },
+        isCustomize: _.customize()
       }
     },
     computed:{
@@ -62,7 +65,8 @@
     },
     components:{
       getLive800,
-      AnimatedInteger
+      AnimatedInteger,
+      LoginApp
     },
     methods:{
       getUserBalance(){
