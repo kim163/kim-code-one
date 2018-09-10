@@ -29,7 +29,8 @@ export default new Vuex.Store({
     historyState:0,
     isShowCoupon:false,
     withdraw:false, //提现标识
-    bankCardInfo:[]
+    bankCardInfo:[],
+    isShowFastSale:false  // 是否显示快速买卖弹窗
   },
   getters: {     // 用来从 store 获取 Vue 组件数据
     language(state, getters) {
@@ -103,6 +104,9 @@ export default new Vuex.Store({
     },
     bankCardInfo(state,getters){
       return state.bankCardInfo;
+    },
+    isShowFastSale(state, getters) {
+      return state.isShowFastSale;
     }
   },
   mutations: {         // 事件处理器用来驱动状态的变化
@@ -160,6 +164,9 @@ export default new Vuex.Store({
     },
     [types.GET_BANKCARD](state,val){
       state.bankCardInfo=val
+    },
+    [types.SHOW_FASTSALE](state,val){
+      state.isShowFastSale=val
     }
   },
   actions: {    // 可以给组件使用的函数，以此用来驱动事件处理器 mutations

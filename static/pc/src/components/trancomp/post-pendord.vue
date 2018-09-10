@@ -169,7 +169,8 @@
     methods: {
       generateTitle,
       hide() {
-        this.$emit('change', false)
+        this.$emit('change', false);
+        this.$store.commit("SHOW_FASTSALE",false);
       },
       selCardChange(selCard) {
          this.payType = selCard;

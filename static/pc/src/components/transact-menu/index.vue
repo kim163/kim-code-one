@@ -30,6 +30,7 @@
   import postPendord from 'components/trancomp/post-pendord'
   import {generateTitle} from '@/util/i18n'
   import PcActivity from '../../views/pc-activity'
+  import {mapGetters} from 'vuex'
 
   let transactMenuData = [
     {name: 'transactionHome.buyUet', value: 'buyUet', to: {name: 'transaction'}},
@@ -48,6 +49,13 @@
       }
     },
     props: {},
+    watch: {
+      isShowFastSale(val) {
+        if (val) {
+          this.isShowPostPend=true
+        }
+      }
+    },
     methods: {
       generateTitle,
       toSell(data) {
@@ -65,7 +73,8 @@
     computed: {
       getType() {
         return this.mode === 1 ? 1 : (this.mode === 3 ? 2 : 1)
-      }
+      },
+      ...mapGetters(["isShowFastSale"])
     },
     created() {
       if (this.mode > 1) {
