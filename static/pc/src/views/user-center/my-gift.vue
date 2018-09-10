@@ -135,8 +135,7 @@
         }
       },
       toUseExchange(){
-        const query = {mode:3,amount: '0',bankNo: '',auto: 0};
-        Vue.$global.bus.$emit('open:QuickSell',query);
+        this.$store.commit("SHOW_FASTSALE",true);
       }
     },
     components: {
