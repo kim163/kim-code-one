@@ -47,7 +47,11 @@
     name: "user-info",
     data(){
       return{
-        homeInforma:{},
+        homeInforma:{
+          chainAmount:0,
+          pendingAmount:0,
+          lockedAmount:0,
+        },
       }
     },
     computed:{
@@ -75,7 +79,7 @@
         })
       },
       calUserBalance(type){
-        const balAmount = type === 1 ? this.homeInforma.chainAmount : (this.homeInforma.pendingAmount + this.homeInforma.lockedAmount);
+        const balAmount = type === 1 ? this.homeInforma.chainAmount : Number(this.homeInforma.pendingAmount + this.homeInforma.lockedAmount);
         return !_.isNaN(Number(balAmount)) ? Number(balAmount) : 0;
       },
       formatCny(type){
