@@ -1,7 +1,7 @@
 <template>
   <a :class="['item-href','live-800',liveSpecStyle]" target="_blank" :href="live800Url">
     <i v-if="isRoundIcon" class="iconfont icon-online-serv"></i>
-    <i v-else class="iconfont icon-online-service"></i>
+    <i v-else class="iconfont icon-customer-service"></i>
     {{$t('navbar.onlineService')}}
     <i class="iconfont icon-right-arrow fr" v-show="showRightArrow"></i>
   </a>

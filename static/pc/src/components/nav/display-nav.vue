@@ -19,9 +19,10 @@
       </div>
       <div class="mobile-nav-bar">
         <router-link :to="gotoIndex()" class="nav-item">久安优势</router-link>
+        <router-link :to="{name:'mIndex'}" v-show="isOfficialWeb" >久安钱包中心</router-link>
         <router-link :to="gotoHelp()" class="nav-item">帮助中心</router-link>
         <router-link :to="gotoContact()" class="nav-item">联系我们</router-link>
-        <router-link :to="{name:'mIndex'}" v-show="isOfficialWeb" class="nav-item tran-btn">前往久安钱包</router-link>
+        <!--<router-link :to="{name:'mIndex'}" v-show="isOfficialWeb" class="nav-item tran-btn">前往久安钱包</router-link>-->
       </div>
     </div>
 
@@ -37,6 +38,9 @@
           <div class="link-part fr">
             <div class="col-2">
               <router-link :to="gotoIndex()">久安优势</router-link>
+            </div>
+            <div class="col-2" v-show="isOfficialWeb">
+              <router-link :to="{name:'walletCenter'}">久安钱包中心</router-link>
             </div>
             <div class="col-2">
               <router-link :to="gotoHelp()">帮助中心</router-link>
@@ -55,9 +59,6 @@
             </div>
             <div class="col-2">
               <router-link :to="gotoContact()">联系我们</router-link>
-            </div>
-            <div class="col-2 tran-btn" v-show="isOfficialWeb">
-              <router-link :to="{name:'transaction'}">前往久安钱包</router-link>
             </div>
           </div>
         </div>
@@ -96,7 +97,7 @@
       gotoIndex(){
         let routerName = '';
         if(this.isOfficialWeb){
-          routerName = 'index';
+          routerName = 'pcIndex';
         }else {
           routerName = 'promIndex';
         }

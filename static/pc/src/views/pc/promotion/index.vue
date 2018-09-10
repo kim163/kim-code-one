@@ -1,6 +1,5 @@
 <template>
   <div class="prom-advantage">
-     <!--<display-nav :isOfficialWeb="isOfficialWeb"></display-nav>-->
      <div class="advantage-banner-part">
        <div class="container max-width">
          <div class="row">
@@ -86,12 +85,9 @@
        </div>
      </div>
 
-     <v-footer :isDisplayFoot="true" :isOfficialWeb="isOfficialWeb" ></v-footer>
   </div>
 </template>
 <script>
-  import displayNav from 'components/nav/display-nav';
-  import vFooter from 'components/footer';
   import {SETTING} from "@/assets/data";
   import VueQrcode from 'vue-qr';
   import Logo from '@/assets/images/logo-blue.png';
@@ -208,9 +204,7 @@
       }
     },
     components: {
-      qrcode: VueQrcode,
-      displayNav,
-      vFooter
+      qrcode: VueQrcode
     }
   };
 </script>

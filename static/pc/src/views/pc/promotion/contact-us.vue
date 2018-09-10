@@ -1,6 +1,5 @@
 <template>
   <div class="prom-contactus">
-     <!--<display-nav :isOfficialWeb="isOfficialWeb"></display-nav>-->
      <div class="contactus-banner-part">
        <div class="container max-width context">
          <div class="row">
@@ -35,12 +34,9 @@
        </div>
      </div>
 
-     <v-footer :isDisplayFoot="true" :isOfficialWeb="isOfficialWeb" ></v-footer>
   </div>
 </template>
 <script>
-  import displayNav from 'components/nav/display-nav';
-  import vFooter from 'components/footer';
 
   export default {
     data() {
@@ -64,7 +60,6 @@
     created() {
     },
     components: {
-      displayNav, vFooter
     }
   };
 </script>

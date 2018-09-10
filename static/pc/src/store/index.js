@@ -11,6 +11,7 @@ export default new Vuex.Store({
   state: { //不要直接访问state
     showFooter: true,
     showLogin: false, //登录弹窗
+    showRegister:false,
     userData: {
       name: '',
       nickname: '',
@@ -109,8 +110,11 @@ export default new Vuex.Store({
     isShowFastSale(state, getters) {
       return state.isShowFastSale;
     },
-    noBankCardTip(state,getters){
+    noBankCardTip(state,getters) {
       return state.noBankCardTip;
+    },
+    showRegister(state,getters){
+      return state.showRegister
     }
   },
   mutations: {         // 事件处理器用来驱动状态的变化
@@ -149,8 +153,6 @@ export default new Vuex.Store({
         }else{
           router.replace({name:'mobileCusLogin'});
         }
-      }else{
-        router.replace({name:'transaction'});
       }
       state.showLogin=val;
     },
@@ -176,6 +178,9 @@ export default new Vuex.Store({
     },
     [types.SHOW_FASTSALE](state,val){
       state.isShowFastSale=val
+    },
+    [types.SHOW_REGISTER](state,val){
+      state.showRegister=val
     }
   },
   actions: {    // 可以给组件使用的函数，以此用来驱动事件处理器 mutations
@@ -223,7 +228,7 @@ export default new Vuex.Store({
             //  router.replace({name:'mobileLogin'});
             window.location.href = "/m/login";
           } else {
-            window.location.href = "/transaction";
+            window.location.href = "/index";
           }
         }
       }
