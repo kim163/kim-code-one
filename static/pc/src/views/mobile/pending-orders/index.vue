@@ -190,6 +190,7 @@
         return !_.isNaN(Number(amount)) ? (Number(amount)*0.01).toFixed(2) : '0.00'
       },
       selCardChange(selCard){
+        debugger
         this.payType = selCard;
       },
       publishBuyOrSell() {

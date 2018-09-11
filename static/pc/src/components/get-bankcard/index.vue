@@ -29,6 +29,10 @@
         noCardTips:false
       };
     },
+    model:{
+      prop: 'reset',
+      event: 'changeReset'
+    },
     props: {
       setBankcard: {
         type: Object,
@@ -56,19 +60,16 @@
         default:false
       }
     },
-    model:{
-      prop: 'reset',
-      event: 'change'
-    },
     watch: {
       "selBankCard"(val){
+        debugger
         this.$emit("selCardChange", val);
       },
       reset(val){
         if(val){
           this.selBankCard = '';
           this.$emit("selCardChange", this.selBankCard);
-          this.$emit('change',false);
+          this.$emit('changeReset',false);
         }
       },
       filterBank(){
@@ -87,6 +88,12 @@
           cardList = this.bankCardInfo.filter((item) => {
             return item.type === 3
           });  //临时添加支付宝、微信过滤
+        }
+        if(cardList.length < 1){
+          this.noCardTips = true;
+          this.selBankCard = '';
+        }else{
+          this.noCardTips = false;
         }
         this.bankList.data = cardList
         if(this.setBankcard.addOption.length>0){

@@ -19,7 +19,7 @@
       <div class="pay-info" v-if="typeInfo === 2">
         <div>收款方式</div>
         <div class="pay-card">
-          <get-bankcard :auto-select="true" @selCardChange="selCardChange"></get-bankcard>
+          <get-bankcard :auto-select="true" :filter-bank="filterBank" @selCardChange="selCardChange"></get-bankcard>
         </div>
       </div>
       <div class="buy-sell-btn" @click="toBuySell">确定</div>
@@ -43,7 +43,8 @@
       return{
         userBalance:0,
         payType: '',
-        amount:''
+        amount:'',
+        filterBank: this.typeInfo === 1 ? false : true,
       }
     },
     model:{

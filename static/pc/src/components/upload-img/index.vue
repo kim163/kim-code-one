@@ -77,12 +77,10 @@
     watch: {
       reset(val){
         if(val){
-          debugger;
           this.picListArr = []
           this.picUrlArr = []
           this.$emit("gitPicUrl", this.picUrlArr);
           this.$emit('change',false)
-          debugger;
         }
       }
     },
