@@ -50,6 +50,10 @@
       autoSelect:{
         type:Boolean,
         default:false
+      },
+      filterBank:{ //过滤信息 只能选择银行卡
+        type:Boolean,
+        default:false
       }
     },
     model:{
@@ -67,14 +71,24 @@
           this.$emit('change',false);
         }
       },
+      filterBank(){
+        this.getBankInfo()
+      }
     },
     methods: {
       getBankInfo(){
-        this.bankList.data = this.bankCardInfo;
-        if(this.bankList.data.length<1){
+        // this.bankList.data = this.bankCardInfo;
+        if(this.bankCardInfo.length<1){
           this.noCardTips = true;
-          this.$emit("selCardChange", this.bankList.data);
+          this.$emit("selCardChange", this.bankCardInfo);
         }
+        let cardList = this.bankCardInfo
+        if(this.filterBank){
+          cardList = this.bankCardInfo.filter((item) => {
+            return item.type === 3
+          });  //临时添加支付宝、微信过滤
+        }
+        this.bankList.data = cardList
         if(this.setBankcard.addOption.length>0){
           for (let i in this.setBankcard.addOption){
             this.bankList.data.push(this.setBankcard.addOption[i]);
