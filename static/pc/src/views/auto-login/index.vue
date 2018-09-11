@@ -36,8 +36,13 @@
         isMobile: _.isMobile(),
       }
     },
+    beforeCreate(){
+      $localStorage.remove('tokenInfo');
+      $localStorage.remove('userData');
+      this.$store.commit('INIT_STATE')
+    },
     created(){
-      this.$store.dispatch('LOGIN_OUT', false)
+      // this.$store.dispatch('LOGIN_OUT', false)
       if(!_.isUndefined(this.backURL)){
         $localStorage.set('backURL', JSON.stringify(this.backURL))
       }

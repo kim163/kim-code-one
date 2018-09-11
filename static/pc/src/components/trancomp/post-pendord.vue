@@ -191,7 +191,7 @@
           return;
         }
         if (this.payType == '' || !this.payType) {
-          toast('支付方式不能为空');
+          toast(`请选择${this.postItem === 'seller' ? '收款' : '支付'}方式`);
           return;
         }
         // if (this.minAmount == '' || this.minAmount < 0) {
