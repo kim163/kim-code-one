@@ -13,7 +13,7 @@
                <span class="input-box">
                   <input type="text" :value="buyAmountCny" :placeholder="$t('transactionHome.tranAmount')" readonly>CNY
                </span>
-               <get-bankcard :setBankcard="setBankcard" v-model="bindCardReset" @selCardChange="selCardChange"></get-bankcard>
+               <get-bankcard :setBankcard="setBankcard" :filter-bank="true" v-model="bindCardReset" @selCardChange="selCardChange"></get-bankcard>
             </div>
 
             <span class="btns">

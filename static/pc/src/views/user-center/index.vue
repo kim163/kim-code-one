@@ -49,14 +49,14 @@
             name:'userCenter.bindCard',
             type:3,
           },
-          {
-            name:'userCenter.bindAlipay',
-            type:1,
-          },
-          {
-            name:'userCenter.bindWeChat',
-            type:2,
-          },
+          // {
+          //   name:'userCenter.bindAlipay',
+          //   type:1,
+          // },
+          // {
+          //   name:'userCenter.bindWeChat',
+          //   type:2,
+          // },
           {
             name:'userCenter.completeMaterial',
             type:4,

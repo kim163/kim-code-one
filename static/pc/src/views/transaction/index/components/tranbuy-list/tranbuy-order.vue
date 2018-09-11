@@ -38,7 +38,7 @@
           pleaseSelTitle: 'component.pleaseSelPayMet',         // 请选择标题文字
           addOption:[]
         },
-        bindCardReset:false
+        bindCardReset:false,
       };
     },
     props: {

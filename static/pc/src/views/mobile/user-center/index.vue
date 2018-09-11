@@ -66,16 +66,16 @@
         {{$t('userCenter.bindCard')}}
         <i class="iconfont icon-right-arrow"></i>
       </router-link>
-      <router-link :to="{name:'mBindCard',params:{id:1}}" class="item-href">
-        <i class="iconfont logo icon-bind-alipay"></i>
-        {{$t('userCenter.bindAlipay')}}
-        <i class="iconfont icon-right-arrow"></i>
-      </router-link>
-      <router-link :to="{name:'mBindCard',params:{id:2}}" class="item-href">
-        <i class="iconfont logo icon-bind-wechat"></i>
-        {{$t('userCenter.bindWeChat')}}
-        <i class="iconfont icon-right-arrow"></i>
-      </router-link>
+      <!--<router-link :to="{name:'mBindCard',params:{id:1}}" class="item-href">-->
+        <!--<i class="iconfont logo icon-bind-alipay"></i>-->
+        <!--{{$t('userCenter.bindAlipay')}}-->
+        <!--<i class="iconfont icon-right-arrow"></i>-->
+      <!--</router-link>-->
+      <!--<router-link :to="{name:'mBindCard',params:{id:2}}" class="item-href">-->
+        <!--<i class="iconfont logo icon-bind-wechat"></i>-->
+        <!--{{$t('userCenter.bindWeChat')}}-->
+        <!--<i class="iconfont icon-right-arrow"></i>-->
+      <!--</router-link>-->
      </div>
 
      <div class="mcenter-linkitem">

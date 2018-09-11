@@ -111,18 +111,22 @@
 
         transaction.getOrderxPendingPage(this.reqData).then(res => {
           console.log('买入UET get OrderxPageForHallSell data:',res);
-         if(res.data.length === 0 && this.reqData.offset === 0){
-            this.noData = true;
-         }else{
-          this.noData = false;
-          this.dataList.data = res.data.map(item => {
-            let mathRand = parseInt(Math.random()*this.avatarDealw,10);
-            item.already = false;
-            item.avatarColor = this.SETTING.avatarColor[mathRand];
-            return item;
-          });
-         }
-          this.dataList.pageInfo = res.pageInfo;
+          if(res.code === 10000){
+            if(res.data.length === 0 && this.reqData.offset === 0){
+              this.noData = true;
+            }else{
+              this.noData = false;
+              this.dataList.data = res.data.map(item => {
+                let mathRand = parseInt(Math.random()*this.avatarDealw,10);
+                item.already = false;
+                item.avatarColor = this.SETTING.avatarColor[mathRand];
+                return item;
+              });
+            }
+            this.dataList.pageInfo = res.pageInfo;
+          }else{
+           toast(res.message)
+          }
         }).catch(error => {
           toast(error.message);
         });
