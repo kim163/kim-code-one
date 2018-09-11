@@ -62,7 +62,6 @@
     },
     watch: {
       "selBankCard"(val){
-        debugger
         this.$emit("selCardChange", val);
       },
       reset(val){
