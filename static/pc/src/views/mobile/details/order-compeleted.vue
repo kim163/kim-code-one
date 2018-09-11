@@ -174,6 +174,9 @@
         });
 //        this.loading = false;
       },
+      isNeedClose(val){
+        this.isShowpopup = val
+      },
       fetchFinallyDiscount() {
         const request = {
           'orderId': this.orderData.orderId
