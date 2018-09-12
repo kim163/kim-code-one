@@ -36,8 +36,14 @@
         isMobile: _.isMobile(),
       }
     },
+    beforeCreate(){
+      $localStorage.remove('tokenInfo');
+      $localStorage.remove('userData');
+      this.$store.commit('INIT_STATE')
+      this.$store.commit('CHECK_ONLINE', false);
+    },
     created(){
-      this.$store.dispatch('LOGIN_OUT', false)
+      // this.$store.dispatch('LOGIN_OUT', false)
       if(!_.isUndefined(this.backURL)){
         $localStorage.set('backURL', JSON.stringify(this.backURL))
       }
@@ -62,6 +68,7 @@
           this.$store.commit('SET_USERDATA',res.data);
           this.$store.dispatch('CHECK_ONLINE', true);
           this.$store.dispatch('UPDATE_TOKEN_INFO', res.data.tokenVo);
+          this.$store.dispatch("GET_BANKCARD");
           _.initRongyun()
           // if(this.nodeId && this.nodeId > 10000){
           //   this.saveCustomUser(res.data)

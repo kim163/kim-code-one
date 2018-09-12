@@ -7,32 +7,33 @@ import {$localStorage, $sessionStorage} from '@/util/storage';
 import aesutil from '@/util/aesutil';
 
 Vue.use(Vuex);
-export default new Vuex.Store({
-  state: { //不要直接访问state
-    showFooter: true,
-    showLogin: false, //登录弹窗
-    userData: {
-      name: '',
-      nickname: '',
-      amount: '',
-      userId: '',
-      accountChainVos: [],
-      nodeId:'0'
-    },
-    language: $localStorage.get('language-sel') || 'zh',
-    tokenInfo: null,
-    checkOnline: false,
-    connectState:false,
-    RongIMEmoji:'',
-    timeOver:false,
-    unreadCount:0,
-    historyState:0,
-    isShowCoupon:false,
-    withdraw:false, //提现标识
-    bankCardInfo:[],
-    isShowFastSale:false,  // 是否显示快速买卖弹窗
-    noBankCardTip:false
+const stateInit = {
+  showFooter: true,
+  showLogin: false, //登录弹窗
+  userData: {
+    name: '',
+    nickname: '',
+    amount: '',
+    userId: '',
+    accountChainVos: [],
+    nodeId:'0'
   },
+  language: $localStorage.get('language-sel') || 'zh',
+  tokenInfo: null,
+  checkOnline: false,
+  connectState:false,
+  RongIMEmoji:'',
+  timeOver:false,
+  unreadCount:0,
+  historyState:0,
+  isShowCoupon:false,
+  withdraw:false, //提现标识
+  bankCardInfo:[],
+  isShowFastSale:false,  // 是否显示快速买卖弹窗
+  noBankCardTip:false
+}
+export default new Vuex.Store({
+  state: stateInit,
   getters: {     // 用来从 store 获取 Vue 组件数据
     language(state, getters) {
       return state.language;
@@ -78,10 +79,10 @@ export default new Vuex.Store({
     },
     islogin(state, getters) {  // 根据是否有 tokenVo 并且请求返回值不为 15016
       let tokenInfo = JSON.parse($localStorage.get('tokenInfo'));
-      if ($localStorage && tokenInfo) { //先查localStorage
-        if (types.CHECK_ONLINE) {
+      if (tokenInfo) { //先查localStorage
+        // if (state.checkOnline) {
           return true;
-        }
+        // }
       }
       if (state.checkOnline && state.tokenInfo) {
         return true;
@@ -171,11 +172,14 @@ export default new Vuex.Store({
         state.noBankCardTip = true
       }else{
         state.noBankCardTip = false
-        state.bankCardInfo=val
       }
+      state.bankCardInfo=val
     },
     [types.SHOW_FASTSALE](state,val){
       state.isShowFastSale=val
+    },
+    [types.INIT_STATE](state,val){
+      Object.assign(state,stateInit)
     }
   },
   actions: {    // 可以给组件使用的函数，以此用来驱动事件处理器 mutations
@@ -194,8 +198,9 @@ export default new Vuex.Store({
         nickname: '',
         amount: '',
         userId: '',
-        accountChainVos: []
+        accountChainVos: [],
       })
+      // commit(types.INIT_STATE)
     },
     [types.LOGIN_OUT]({commit, dispatch}, val = true) { //退出登录
       let nodeId = ''
@@ -213,6 +218,7 @@ export default new Vuex.Store({
       $localStorage.remove('backURL');
       $localStorage.remove('menuStyle');
       dispatch(types.INIT_INFO);
+      commit(types.INIT_STATE)
       dispatch(types.UPDATE_TOKEN_INFO, null);
       dispatch(types.CHECK_ONLINE, false);
       if (val) {
