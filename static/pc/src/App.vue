@@ -150,6 +150,11 @@
           this.client.connect(this.connectUser, this.connectPsw, this.stompSuccessCallback, this.stompFailureCallback);
         }
       },
+      initUserDef(){
+        // this.$store.dispatch("GET_BANKCARD");
+        this.initWsData();
+        this.stompConnect();
+      }
     },
 
     watch:{
@@ -159,11 +164,12 @@
       },
       islogin(val) {
         if (val) {
-          this.$store.dispatch("GET_BANKCARD");
-          this.initWsData();
-          this.stompConnect();
+          this.initUserDef()
         }
       },
+      userId(){
+         this.$store.dispatch("GET_BANKCARD");
+      }
     },
     components:{
       SysBullentin,
@@ -172,11 +178,8 @@
     },
     mounted() {
       if (this.islogin) {
-        this.$store.dispatch("GET_BANKCARD");
-        this.initWsData();
-        this.stompConnect();
+        this.initUserDef()
       }
-
-    }
+    },
   }
 </script>
