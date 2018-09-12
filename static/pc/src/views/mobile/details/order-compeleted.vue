@@ -66,7 +66,6 @@
         </li>
       </ul>
       <div v-if="filterType">
-
         <!--卖币订单-->
         <ul class="details-ul pay-detail my-paymethod" v-if="DetailList.debit==userData.userId">
           <li>
