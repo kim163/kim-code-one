@@ -40,6 +40,7 @@
       $localStorage.remove('tokenInfo');
       $localStorage.remove('userData');
       this.$store.commit('INIT_STATE')
+      this.$store.commit('CHECK_ONLINE', false);
     },
     created(){
       // this.$store.dispatch('LOGIN_OUT', false)

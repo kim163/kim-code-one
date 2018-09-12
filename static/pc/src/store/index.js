@@ -80,9 +80,9 @@ export default new Vuex.Store({
     islogin(state, getters) {  // 根据是否有 tokenVo 并且请求返回值不为 15016
       let tokenInfo = JSON.parse($localStorage.get('tokenInfo'));
       if (tokenInfo) { //先查localStorage
-        if (state.checkOnline) {
+        // if (state.checkOnline) {
           return true;
-        }
+        // }
       }
       if (state.checkOnline && state.tokenInfo) {
         return true;
