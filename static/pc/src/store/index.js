@@ -172,8 +172,8 @@ export default new Vuex.Store({
         state.noBankCardTip = true
       }else{
         state.noBankCardTip = false
-        state.bankCardInfo=val
       }
+      state.bankCardInfo=val
     },
     [types.SHOW_FASTSALE](state,val){
       state.isShowFastSale=val
@@ -218,6 +218,7 @@ export default new Vuex.Store({
       $localStorage.remove('backURL');
       $localStorage.remove('menuStyle');
       dispatch(types.INIT_INFO);
+      commit(types.INIT_STATE)
       dispatch(types.UPDATE_TOKEN_INFO, null);
       dispatch(types.CHECK_ONLINE, false);
       if (val) {
