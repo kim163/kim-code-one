@@ -80,3 +80,5 @@ export  const addAppealDetail = jsonData => service({
   method:'post',
   data:jsonData
 })
+
+
