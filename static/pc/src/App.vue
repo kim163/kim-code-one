@@ -141,7 +141,7 @@
         }
       },
       initUserDef(){
-        // this.$store.dispatch("GET_BANKCARD");
+        this.$store.dispatch("GET_BANKCARD");
         this.initWsData();
         this.stompConnect();
       }
@@ -158,7 +158,7 @@
         }
       },
       userId(){
-         this.$store.dispatch("GET_BANKCARD");
+         // this.$store.dispatch("GET_BANKCARD");
       }
     },
     components:{
