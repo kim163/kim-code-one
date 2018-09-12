@@ -1,6 +1,6 @@
 <template>
-    <div class="popup_container">
-        <div class="popup_content">
+    <div class="popup-container">
+        <div class="popup-content">
           <slot></slot>
         </div>
     </div>
@@ -13,8 +13,8 @@
 </script>
 
 <style lang="scss" scoped>
-  @import "~assets/scss/mixin";
-  .popup_container {
+  @import "~assets/scss/mobile";
+  .popup-container {
     background: rgba(0, 0, 0, 0.6);
     width: 100%;
     height: 100%;
@@ -22,15 +22,17 @@
     top: 0;
     left: 0;
     z-index: 100;
-    .popup_content {
-      background-color: #fff;
-      width: auto;
-      height: auto;
-      position: absolute;
-      top: 20%;
-      left: 50%;
-      transform: translate(-50%);
-      padding: r(20);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    .popup-content {
+      width: 100%;
+      animation: fadeInDown .5s;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
     }
   }
 </style>
