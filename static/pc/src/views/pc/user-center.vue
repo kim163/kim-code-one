@@ -11,13 +11,14 @@
       <div class="user-content">
         <div class="content-list">
           <div class="list-item" @mouseenter="mouseenter(1)" @mouseleave="mouseleave(1)"
-               :class="{'active':mouseOverFirst}">
+               :class="{'active':mouseOverFirst,'bindok':isbindOk}">
             <div class="item-symbol"><span class="iconfont icon-bind-bankcard"></span></div>
             <div class="item-content">
               <p class="bind-title">绑定银行卡</p>
               <p class="bind-des">请用您本人姓名开户的银行卡进行绑定, 方便您以后的存提款</p>
             </div>
-            <div class="item-btn" @click="bindBankCard">前去绑定</div>
+            <div class="item-btn" @click="getBankList(1)" v-if="filterArr.length<3">前去绑定</div>
+            <div class="item-btn" @click="getBankList(1)" v-if="filterArr.length==3">修改绑定</div>
           </div>
           <div class="list-item" @mouseenter="mouseenter(2)" @mouseleave="mouseleave(2)"
                :class="{'active':mouseOverSecond}">
@@ -26,7 +27,7 @@
               <p class="bind-title">绑定支付宝</p>
               <p class="bind-des">请用您本人姓名开户的银行卡进行绑定,方便您以后的存提款</p>
             </div>
-            <div class="item-btn">前去绑定</div>
+            <div class="item-btn" @click="bindzhifubao">前去绑定</div>
           </div>
           <div class="list-item" @mouseenter="mouseenter(3)" @mouseleave="mouseleave(3)"
                :class="{'active':mouseOverThird}">
@@ -50,35 +51,77 @@
       </div>
     </div>
     <!--弹窗部分-->
-    <div class="bindCard-popup" v-if="closeState">
-      <!--绑定银行卡-->
-      <div class="bindCard-content">
-        <div class="bind-card-info" v-if="finallyStep">
-          <div class="bind-title">
-            <span class="main-title">绑定银行卡</span>
-            <span class="iconfont icon-close close-btn" @click="closeContent"></span>
+    <!--绑定银行卡-->
+    <commonPopup v-if="closeState">
+          <div class="bind-card-info" v-if="isEmptyState">
+            <div class="bind-title">
+              <span class="main-title">绑定银行卡</span>
+              <span class="iconfont icon-close close-btn" @click="closeContent"></span>
+            </div>
+            <div class="bind-content">
+              <img src="~images/not-bind-card.png" alt="">
+              <p class="content-info">尚未绑定银行卡</p>
+            </div>
+            <div class="add-bank" @click="addBindCard">添加新的银行卡</div>
           </div>
-          <div class="bind-content">
-            <img src="~images/not-bind-card.png" alt="">
-            <p class="content-info">尚未绑定银行卡</p>
+          <!--绑定了银行卡-->
+          <div class="manage-card-info" v-if="isEmptyStateNext">
+            <div class="bind-title">
+              <span class="main-title">绑定银行卡</span>
+              <span class="iconfont icon-close close-btn" @click="closeContent"></span>
+            </div>
+            <div class="bind-content">
+              <div class="bank-list" v-for="(list,key) in filterArr">
+                <img :src="getPicArr(list.bank)" alt="" class="bank-pic">
+                <div class="bank-info">
+                  <p class="bank-name">{{list.bank}}</p>
+                  <p class="bank-type">储蓄卡</p>
+                  <p class="bank-num">{{list.account}}</p>
+                </div>
+                <div class="unbind-card" @click="unbindCard(list.account,key)">
+                  解绑 >>
+                </div>
+              </div>
+            </div>
+            <div class="add-bank" v-if="isAddCard" @click="addBindCard">添加新的银行卡</div>
           </div>
-          <div class="add-bank" @click="addBankcard">添加新的银行卡</div>
+
+          <!--新增绑定银行卡-->
+          <div class="add-card-info" v-if="needAddCard">
+            <div class="bind-title">
+              <span class="main-title">绑定银行卡</span>
+              <span class="iconfont icon-close close-btn" @click="closeContent"></span>
+            </div>
+            <div class="bind-content">
+              <p class="card-number">银行卡号 <input type="text" class="input-card-number" v-model="cardNumber" autocomplete="off" @blur="blurNumber"></p>
+              <p class="bank-name">银行名称 <input type="text" class="input-bank-name" readonly autocomplete="off" :value="bankName"></p>
+              <p class="user-name">持卡人姓名 <input type="text" class="input-user-name" autocomplete="off" v-model="userName"></p>
+            </div>
+            <div class="bindCard" @click="bindCard">绑定</div>
+            <div class="returnBack" @click="closeContent">关闭</div>
+          </div>
+    </commonPopup>
+ <!--绑定支付宝-->
+    <commonPopup v-if="zhifubaoPopup">
+        <div class="bind-zhifubao-info">
+           <div class="bind-title">
+             <span class="main-title">绑定支付宝</span>
+             <span class="iconfont icon-close close-btn" @click="closezhifubao"></span>
+           </div>
+           <div class="bind-content">
+              <p class="content-notice">支付宝认证姓名,务必与真实姓名相同</p>
+               <uploadImg :uploadImgSet="{maxUploadNum:1}" :showClose="true"></uploadImg>
+               <p class="content-remind">点击上传您的收款二维码</p>
+              <p>支付宝账号: <input type="text" v-model="zhifubaoValue"></p>
+              <p>支付宝认证姓名: <input type="text" v-model="zhifubaoName"></p>
+           </div>
+           <div class="bindzhifubao" @click="bindzhifubao">绑定支付宝</div>
+           <div class="close" ></div>
         </div>
-        <div class="add-card-info" v-if="!finallyStep">
-          <div class="bind-title">
-            <span class="main-title">绑定银行卡</span>
-            <span class="iconfont icon-close close-btn" @click="closeContent"></span>
-          </div>
-          <div class="bind-content">
-            <p class="card-number">银行卡号 <input type="text" class="input-card-number" v-model="cardNumber" autocomplete="off" @blur="blurNumber"></p>
-            <p class="bank-name">银行名称 <input type="text" class="input-bank-name" readonly autocomplete="off" :value="bankName"></p>
-            <p class="user-name">持卡人姓名 <input type="text" class="input-user-name" autocomplete="off" v-model="userName"></p>
-          </div>
-          <div class="bindCard" @click="bindCard">绑定</div>
-          <div class="returnBack">关闭</div>
-        </div>
-      </div>
-    </div>
+    </commonPopup>
+  <!--绑定微信-->
+
+   <!--完善资料-->
   </div>
 
 </template>
@@ -86,7 +129,9 @@
 <script>
   import {userCenter} from 'api'
   import {mapGetters} from 'vuex'
-
+  import getBankUrl from '../../util/bankurl'
+  import commonPopup from '../../components/common-popup/index'
+  import uploadImg from '../../components/upload-img/index'
   export default {
     name: "user-center",
     data() {
@@ -115,24 +160,43 @@
         mouseOverThird: false,
         mouseOverFourth: false,
         closePopup:false,
-        finallyStep:false,
         cardNumber:'',
         closeState:'',
         bankName:'',
-        userName:''
+        userName:'',
+        isEmptyState:false,
+        isAddCard:true,
+        needAddCard:false,
+        filterArr:[],
+        picArr:[],
+        isEmptyStateNext: false,
+        isbindOk:false,
+        zhifubaoPopup:false,
+        zhifubaoValue:'',
+        zhifubaoName:'',
       }
     },
-    created() {
-
+    components:{
+      commonPopup,
+      uploadImg
     },
     computed: {
       ...mapGetters([
         'userId'
-      ])
+      ]),
+
+    },
+    created(){
+      this.getBankList(0)
     },
     methods: {
       changeTab(type) {
         this.type = type
+      },
+      addBindCard(){
+        this.needAddCard = true
+        this.isEmptyState = false
+        this.isEmptyStateNext =false
       },
       mouseenter(num) {
         if (num == 1) {
@@ -145,6 +209,23 @@
           this.mouseOverFourth = true
         }
       },
+      unbindCard(num,key){
+        const requests={
+            userId:this.userId,
+            account: num
+        }
+         userCenter.unbindBank(requests).then(res=>{
+            if(res.code=='10000'){
+               toast('解绑成功')
+               this.filterArr.splice(key,1)
+               this.isAddCard = true
+               if(this.filterArr.length==0){
+               }
+            }else {
+              toast(res.message)
+            }
+         })
+      },
       mouseleave(num) {
         if (num == 1) {
           this.mouseOverFirst = false;
@@ -156,28 +237,35 @@
           this.mouseOverFourth = false
         }
       },
-      addBankcard(){
-        this.finallyStep = true
-      },
       blurNumber(){
         if(this.cardNumber.length==0){
           return
         }
+        const match = /^(\d{16}|\d{17}|\d{18}|\d{19})$/
+        if(!match.test(this.cardNumber)){
+           toast("请输入正确的银行卡长度!")
+           return
+        }
         let requests={
           bankNo: this.cardNumber
         }
-
         userCenter.autoRecognize(requests).then(res=>{
-             if(res.data==null){
-               toast('该卡号无法识别,请输入正确的卡号')
-               this.bankName = ''
-             }else {
-               this.bankName = res.data.bankName
-             }
+              if(res.code == 10000){
+                if(res.data==null){
+                  toast('该卡号无法识别,请输入正确的卡号!')
+                  this.bankName = ''
+                }else {
+                  this.bankName = res.data.bankName
+                }
+              }else {
+                toast(res.message)
+              }
+
         })
       },
       closeContent(){
         this.closeState = false
+        this.needAddCard = false
       },
       bindCard(){
         const requests={
@@ -190,22 +278,46 @@
         userCenter.bindBankV2(requests).then(res=>{
             if(res.code==10000){
               toast('绑卡成功!')
-
+              this.closeState =false
+              this.needAddCard = false
+              this.isbindOk= true
             }else {
               toast(res.message)
             }
         })
       },
-      bindBankCard() {
-        this.closeState =true
+      getPicArr(cont){
+       return getBankUrl(cont)
+      },
+      closezhifubao(){
+
+      },
+      bindzhifubao(){
+          this.zhifubaoPopup = true
+      },
+
+      getBankList(num) {
+        if(num==1){
+          this.closeState =true
+        }
         let requests = {
           userId: this.userId
         }
         userCenter.getBankList(requests).then(res => {
-          if (res.data.length == 0) {
-
+          this.filterArr = res.data.filter(item => item.type ===3)
+          if (this.filterArr.length==0) {
+              this.isEmptyState = true
+              this.isEmptyStateNext = false
+              this.isbindOk = false
           } else {
-
+              this.isEmptyStateNext = true
+              this.isEmptyState = false
+              this.bindBankCard = true
+              this.isbindOk = true
+            /*过滤符合条件的*/
+              if(this.filterArr.length==3){
+                 this.isAddCard = false
+              }
           }
 
         })
@@ -235,6 +347,7 @@
         color: #ffffff;
         background-color: #3573FA;
       }
+
     }
     .user-content {
       border: 1px solid #D3D3D3;
@@ -255,8 +368,8 @@
             background-color: #d3d3d3;
             color: #fff;
             text-align: center;
-            font-size: 25px;
-            line-height: 100px;
+            font-size: 35px;
+            line-height: 90px;
           }
           &:last-child {
             margin-bottom: 0;
@@ -295,32 +408,29 @@
               background-color: #3573FA;
             }
           }
+          &.bindok{
+            border: 1px solid #86A5F8;
+            .item-btn{
+              background-color: #86A5F8;
+              color: #fff;
+            }
+            .item-symbol{
+              background-color: #86A5F8;
+            }
+          }
         }
 
       }
     }
   }
 
-  .bindCard-popup {
-    background: rgba(0,0,0,0.6);
-    width: 100%;
-    height: 100%;
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 100;
+
+
     /*绑定银行卡*/
-    .bindCard-content{
-      background-color: #fff;
-      width: 506px;
-      height: 440px;
-      position: absolute;
-      top: 25%;
-      left: 50%;
-      transform: translate(-50%);
+
 
       .bind-card-info{
-        padding: 25px;
+
         .bind-title{
           overflow: hidden;
         }
@@ -365,8 +475,82 @@
           cursor: pointer;
         }
       }
+      .manage-card-info{
+        .bind-title{
+          overflow: hidden;
+          .main-title{
+            font-size: 24px;
+            color: #333;
+            float:left;
+          }
+          .close-btn{
+            font-size: 20px;
+            color: #c8c8c8;
+            float: right;
+            cursor: pointer;
+          }
+        }
+        .bind-content{
+          .bank-list{
+            margin-top: 20px;
+            background-color: #86a5f8;
+            width: 446px;
+            height: 120px;
+            border-radius: 5px;
+            padding: 13.5px;
+            display: flex;
+            flex-direction: row;
+            .bank-pic{
+               width: 45px;
+               height: 45px;
+            }
+            .bank-info{
+              flex: 1;
+              padding-left: 10px;
+              .bank-name{
+                font-size: 20px;
+                color: #fff;
+
+              }
+              .bank-type{
+                font-size: 16px;
+                color: #fff;
+                padding-top: 10px;
+                opacity: .7;
+              }
+              .bank-num{
+                font-size: 24px;
+                color: #fff;
+                padding-top: 10px;
+              }
+            }
+            .unbind-card{
+              font-size: 16px;
+              color: #fff;
+              opacity: .7;
+              text-align: center;
+              line-height: 93px;
+              cursor: pointer;
+            }
+          }
+
+        }
+        .add-bank{
+          width: 446px;
+          height: 50px;
+          background-color: #3573FA;
+          text-align: center;
+          color: #fff;
+          font-size: 18px;
+          line-height: 50px;
+          margin-top: 20px;
+          border-radius: 5px;
+          cursor: pointer;
+
+        }
+      }
       .add-card-info{
-        padding: 25px;
+
         .bind-title{
            overflow: hidden;
            .main-title{
@@ -378,11 +562,11 @@
             font-size: 20px;
             color: #c8c8c8;
             float: right;
+            cursor: pointer;
           }
         }
         .bind-content{
           padding-top: 26px;
-
            .card-number{
               font-size: 16px;
               color: #333;
@@ -446,7 +630,49 @@
           border-radius: 5px;
         }
       }
-    }
+    /*绑定支付宝*/
+   .bind-zhifubao-info{
+     width: 506px;
+     .bind-title{
+       overflow: hidden;
+       .main-title{
+         font-size: 24px;
+         color: #333;
+         float: left;
+       }
+       .close-btn{
+         font-size: 20px;
+         color: #c8c8c8;
+         float: right;
+         cursor: pointer;
+       }
+     }
+     .bind-content{
+       text-align: center;
+       .content-notice{
+          font-size: 16px;
+          color: #ff1100;
+          text-align: center;
+          padding-top: 20px;
+       }
+       .upload-imgpart{
 
-  }
+       }
+       .content-remind{
+         font-size: 16px;
+         color: #787876;
+       }
+     }
+     .bindzhifubao{
+       margin: 0 auto;
+       background-color: #3573FA;
+       border-radius: 5px;
+       width: 446px;
+       height: 50px;
+       font-size: 18px;
+       color: #fff;
+       text-align: center;
+       line-height: 50px;
+     }
+   }
 </style>
