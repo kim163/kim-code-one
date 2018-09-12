@@ -107,6 +107,7 @@ module.exports = {
       Vue: ['vue/dist/vue.esm.js', 'default'],
       _: 'lodash',
       Velocity: 'velocity-animate',
+      mapGetters: ['vuex', 'mapGetters'],
     })
   ],
   /*隐藏warning*/

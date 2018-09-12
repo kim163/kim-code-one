@@ -1,8 +1,9 @@
 <template>
-  <div class="main" :class="{'width-all':isMobile}" v-if="show">
+  <div class="login-app-main" :class="{'width-all':isMobile}" v-if="show">
     <!--pc展示页面-->
     <div class="pc" v-if="!isMobile">
-      <span class="pointer" @click="showQrcode">久安APP扫码登录</span>
+      <!--<span class="pointer" @click="showQrcode">久安APP扫码登录</span>-->
+      <div class="pointer link-def" @click="showQrcode">APP扫码登录</div>
     </div>
     <!--手机展示页面-->
     <div class="mobile" v-else>
@@ -87,7 +88,7 @@
 
 <style lang="scss" scoped>
   @import "~assets/scss/mobile";
-  .main{
+  .login-app-main{
     display: inline-block;
     color: $white;
     &.width-all{
@@ -95,6 +96,15 @@
     }
   }
   .pointer{
+    cursor: pointer;
+  }
+  .link-def{
+    margin-left: 10px;
+    padding: 5px 10px;
+    background: #FFFFFF;
+    border-radius: 3px;
+    font-size: 14px;
+    color: #4CA2E2;
     cursor: pointer;
   }
   .mobile{

@@ -1,7 +1,7 @@
 <template>
   <div class="modal fade in" v-show="value">
     <div class="modal-dialog popup">
-      <div type="button" class="close" @click="$emit('input',false)">
+      <div type="button" class="close" @click="closeDialog">
         <i class="iconfont icon-close"></i>
       </div>
       <div class="pop-content">
@@ -239,11 +239,12 @@
 //        })
       },
       goLogin(e){
-        //alert('emit')
-        this.$emit('input',false);
-        this.$emit('showLogin');
+        this.closeDialog();
+        this.$store.commit('SHOW_LOGIN',true)
       },
-
+      closeDialog(){
+        this.$store.commit('SHOW_REGISTER',false)
+      }
     },
     components: {
       eyes

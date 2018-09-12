@@ -2,7 +2,7 @@
   <div>
   <div class="modal fade in" v-show="value">
     <div class="modal-dialog popup">
-      <div type="button" class="close" @click="$emit('input',false)">
+      <div type="button" class="close" @click="closeDialog">
         <i class="iconfont icon-close"></i>
       </div>
       <div class="pop-content">
@@ -93,6 +93,10 @@
         requestda: {}
       }
     },
+    model:{
+      prop:'value',
+      event:'change'
+    },
     props: {
       value: {
         type:Boolean,
@@ -137,7 +141,6 @@
             this.$emit('input',false);
             this.SHOW_LOGIN(false);
             console.log(this.$route)
-            // const rquest = this.$route.name;
             $localStorage.set('tokenInfo', JSON.stringify(res.data.tokenVo));
             //$localStorage.set('userData', aesutil.encrypt(JSON.stringify(res.data)));
             this.$store.dispatch('CHECK_ONLINE', true);
@@ -146,7 +149,7 @@
             this.$store.commit('SET_USERDATA',res.data);
             _.checkUserBind({userId: res.data.userId})
             _.initRongyun()
-            // this.$router.push({path:rquest});
+            this.$router.push({name:'walletCenter'});
           }else {
             toast(res.message);
           }
@@ -184,8 +187,12 @@
         }
       },
       loginGoRegEvt(){
-        this.$emit('input',false);
-        this.$emit('loginGoReg');
+        this.closeDialog()
+        this.$store.commit('SHOW_REGISTER',true);
+      },
+      closeDialog(){
+        this.$store.commit('SHOW_LOGIN',false)
+        // this.$emit('change',false)
       }
     },
     created(){
