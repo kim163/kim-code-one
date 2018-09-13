@@ -1,5 +1,5 @@
 <template>
-  <div class="tran-main container">
+  <div class="tran-main container max-width">
     <div>
       订单通知功能模块 待开发
     </div>
@@ -74,6 +74,7 @@
 
 <style lang="scss" scoped>
   .tran-main {
+    width: 1200px;
     .tab-list{
       width: 100%;
       height: 50px;

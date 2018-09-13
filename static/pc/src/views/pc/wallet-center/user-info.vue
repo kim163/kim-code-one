@@ -1,6 +1,6 @@
 <template>
   <div class="user-info">
-    <div class="main container">
+    <div class="main container max-width">
       <div class="info-detail">
         <div class="avatar"></div>
         <span class="nick-name">{{userData.nickname}}</span>
@@ -58,7 +58,6 @@
 
 <script>
   import getLive800 from 'components/get-live800'
-  import { getHomeInfo } from 'api/transaction'
   import AnimatedInteger from 'components/animated-integer'
   import LoginApp from 'components/header/login-app'
   import Popup from 'components/common-popup'
@@ -68,11 +67,6 @@
     name: "user-info",
     data(){
       return{
-        homeInforma:{
-          chainAmount:0,
-          pendingAmount:0,
-          lockedAmount:0,
-        },
         isCustomize: _.customize(),
         showQrcode:false,
         Logo
@@ -80,7 +74,9 @@
     },
     computed:{
       ...mapGetters([
-        'userData'
+        'userData',
+        'userBalance',
+        'lockedAmount',
       ])
     },
     components:{
@@ -91,22 +87,8 @@
       VueQrcode
     },
     methods:{
-      getUserBalance(){
-        const requestdata={
-          userId: this.userData.userId
-        };
-        getHomeInfo(requestdata).then(res => {
-          if(res.code === 10000){
-            this.homeInforma = res.data;
-          }else{
-            toast(res.message)
-          }
-        }).catch(err => {
-          toast(err)
-        })
-      },
       calUserBalance(type){
-        const balAmount = type === 1 ? this.homeInforma.chainAmount : Number(this.homeInforma.pendingAmount + this.homeInforma.lockedAmount);
+        const balAmount = type === 1 ? this.userBalance : this.lockedAmount;
         return !_.isNaN(Number(balAmount)) ? Number(balAmount) : 0;
       },
       formatCny(type){
@@ -114,7 +96,6 @@
       }
     },
     mounted(){
-      this.getUserBalance()
     }
   }
 </script>
@@ -167,7 +148,7 @@
           width: 31px;
           height: 32px;
           margin-top: 9px;
-          margin-left: 2px;
+          margin-left: 9px;
         }
       }
       .balance-info{
