@@ -1,119 +1,10 @@
 <template>
-  <div class="transell-main header-padding">
-    <nav-menu></nav-menu>
-    <bread-crumbs :bread-list="breadList"></bread-crumbs>
+  <div class="transell-main">
     <div class="section detail-content">
-      <div class="container min-width" v-if="DetailList">
-        <div class="row00 detail-box">
-          <div class="detail-title">
-            <span v-if="isCredit" class="title-btn btn-primary">买入</span>
-            <span v-else-if="isDebit" class="title-btn btn-sell">卖出</span>
-            <span class="order-num">
-              订单号： {{orderId}}
-            </span>
-          </div>
+      <div class="page-content detail-box" v-if="DetailList">
+          <detail-title :isCredit="isCredit" :isDebit="isDebit" :orderId="orderId"></detail-title>
           <div class="detail-in cfx">
-            <div class="col-33">
-              <h3 v-if="isCredit" class="h3">卖方 : {{DetailList.debitName}} ({{DetailList.debitAccountNameTwin}})</h3>
-              <h3 v-else-if="isDebit" class="h3">买方 : {{DetailList.creditName}}
-                ({{DetailList.creditAccountNameTwin}})</h3>
-              <ul class="details-data">
-                <li>
-                  <p>交易金额:</p>
-                  <input type="text" class="red" readonly :value="DetailList.debitAmountTwin+' CNY'">
-                </li>
-                <li>
-                  <p>交易数量:</p>
-                  <input type="text" readonly :value="DetailList.debitAmount+' UET'">
-                </li>
-                <li>
-                  <p>交易单价:</p>
-                  <input type="text" readonly value="0.01 CNY">
-                </li>
-                <li>
-                  <p>订单时间:</p>
-                  <input type="text" readonly :value="DetailList.createtime | Date('yyyy-MM-dd hh:mm:ss')">
-                </li>
-              </ul>
-            </div>
-            <div v-if="isCredit" class="col-33">
-              <h4 class="bank-title">卖家收款方式 : </h4>
-              <div class="alipay-box"
-                   v-if="DetailList.debitAccountMerchantTwin == '支付宝' || DetailList.debitAccountMerchantTwin == '微信'">
-                <p class="alipay-box-title">
-                  <i class="i-alipay" v-if="DetailList.debitAccountMerchantTwin == '支付宝'"></i>
-                  <i class="i-wechat" v-else-if="DetailList.debitAccountMerchantTwin == '微信'"></i>
-                  {{DetailList.debitName}} ({{DetailList.debitAccountNameTwin}})<br> {{DetailList.debitAccountTwin}}
-                </p>
-                <div class="alipay-qrcode">
-                  <img src="~images/qrcode.jpg" :src="DetailList.debitAccountQrCodeUrlTwin" class="qrcode-img"/>
-                  <p>打开 {{DetailList.debitAccountMerchantTwin}} [扫一扫] </p>
-                </div>
-              </div>
-
-              <div class="alipay-box" v-else>
-                <p class="alipay-box-title text-center bank-title">
-                  <i class="i-bank" :class="DetailList.debitAccountMerchantTwin | bankIcon"></i>{{DetailList.debitAccountMerchantTwin}}
-                </p>
-                <div class="alipay-qrcode text-left bank-txt-box">
-                  <div class="bank-list-p">
-                    <h3>银行卡号:</h3>
-                    {{DetailList.debitAccountTwin}}
-                    <button class="copyBtn btn-copy" @click="copystr(DetailList.debitAccountTwin)">复制卡号</button>
-                    <br>
-                  </div>
-                  <div class="bank-list-p">
-                    <h3>开户姓名：</h3>
-                    {{DetailList.debitName}} ({{DetailList.debitAccountNameTwin}})
-                    <button class="copyBtn btn-copy" @click="copystr(DetailList.debitAccountNameTwin)">复制姓名</button>
-                    <br>
-                  </div>
-                  <div class="bank-list-p">
-                    <h3>银行类别：</h3>
-                    {{DetailList.debitAccountMerchantTwin}} (储蓄卡)<br>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div v-else-if="isDebit" class="col-33">
-              <h4 class="bank-title">买家付款方式 : </h4>
-              <div class="alipay-box"
-                   v-if="DetailList.creditAccountMerchantTwin == '支付宝' || DetailList.creditAccountMerchantTwin == '微信'">
-                <p class="alipay-box-title">
-                  <i class="i-alipay" v-if="DetailList.creditAccountMerchantTwin == '支付宝'"></i>
-                  <i class="i-wechat" v-else-if="DetailList.creditAccountMerchantTwin == '微信'"></i>
-                  {{DetailList.creditName}}（{{DetailList.creditAccountNameTwin}}）<br>{{DetailList.creditAccountTwin}}
-                </p>
-                <div class="alipay-qrcode">
-                  <img src="~images/qrcode.jpg" :src="DetailList.creditAccountQrCodeUrlTwin" class="qrcode-img"/>
-                  <p>打开 {{DetailList.creditAccountMerchantTwin}} [扫一扫] </p>
-                </div>
-              </div>
-
-              <div class="alipay-box" v-else>
-                <p class="alipay-box-title text-center bank-title">
-                  <i class="i-bank" :class="DetailList.creditAccountMerchantTwin | bankIcon"></i>{{DetailList.creditAccountMerchantTwin}}
-                </p>
-                <div class="alipay-qrcode text-left bank-txt-box">
-                  <div class="bank-list-p">
-                    <h3>银行卡号:</h3>
-                    {{DetailList.creditAccountTwin}}
-                    <button class="copyBtn btn-copy" @click="copystr(DetailList.creditAccountTwin)">复制卡号</button>
-                    <br>
-                  </div>
-                  <div class="bank-list-p">
-                    <h3>开户姓名：</h3>
-                    {{DetailList.creditName}}（{{DetailList.creditAccountNameTwin}}）
-                    <button class="copyBtn btn-copy" @click="copystr(DetailList.creditAccountNameTwin)">复制姓名</button>
-                    <br>
-                  </div>
-                  <div class="bank-list-p">
-                    <h3>银行类别：</h3>
-                    {{DetailList.creditAccountMerchantTwin}} (储蓄卡)<br>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <display-infor :DetailList="DetailList" :isCredit="isCredit" :isDebit="isDebit"></display-infor>
             <div class="col-33">
               <div class="order-time">
                 <p class="red order-status-title">
@@ -191,10 +82,9 @@
             <p>1.买方的汇款将直接进入您的账户，交易过程中您出售的UET由平台托管保护。<br>
               2.您在确认收款后，系统会将UET划转到您的账户，如果您申诉，订单将会被锁定。</p>
           </div>
-        </div>
 
       </div>
-      <div class="container min-width" v-else>
+      <div class="page-content" v-else>
         <no-data-tip></no-data-tip>
       </div>
     </div>
@@ -307,20 +197,18 @@
         @closeChatroom="iscloseChatroom"
       ></chat>
     </div>
-    <v-footer></v-footer>
+
   </div>
 </template>
 
 <script>
-  import navMenu from 'components/nav';
-  import breadCrumbs from 'components/bread-crumbs';
-  import vFooter from 'components/footer';
+  import DetailTitle from './detail-title';
+  import DisplayInfor from './display-infor';
   import CountDown from 'components/countdown'
   import getBankcard from 'components/get-bankcard'
   import uploadImg from 'components/upload-img'
   import {generateTitle} from '@/util/i18n'
   import {transaction, chatWith} from 'api'
-  import {mapGetters, mapActions, mapMutations} from 'vuex'
   import NoDataTip from 'components/no-data-tip'
   import confirmDialog from 'components/confirm'
   import chatList from '../../../views/mobile/chatroom/chat-list'
@@ -329,20 +217,6 @@
   export default {
     data() {
       return {
-        breadList: [
-          {
-            urlName: 'transaction',
-            name: 'navbar.tradingHall'
-          },
-          {
-            urlName: 'tranRecord',
-            name: 'transactionHome.orderRecord'
-          },
-          {
-            urlName: 'orderDetail',
-            name: 'transactionRecord.orderDetails'
-          }
-        ],
         orderId: '',
         isPCstate: '',
         DetailList: {},
@@ -465,12 +339,10 @@
         this.chatState = false
       },
       cancelOrder() {
-        this.loading = true;
         this.request = {
           orderId: this.orderId
-        }
+        };
         transaction.cancelOrder(this.request).then(res => {
-          this.loading = false;
           if (res.code == '10000') {
             toast('您已取消，请勿重复操作');
             Vue.$global.bus.$emit('update:tranList');
@@ -479,9 +351,8 @@
             toast(res.message);
           }
         }).catch(err => {
-          toast(err.message);
+          toast(err);
         });
-        this.loading = false;
       },
       iscloseChatroom(){
         this.isPCstate = false
@@ -631,10 +502,6 @@
       },
       countDownEnd() {
         this.fetchData();
-      },
-      copystr(text) {
-        text.$copy();
-        toast(this.$t('transactionHome.successCopy'));
       }
 
     },
@@ -670,20 +537,7 @@
       }
     },
     components: {
-      navMenu, breadCrumbs, vFooter, NoDataTip, getBankcard, uploadImg, CountDown, confirmDialog, chatList, chat
-    },
-    filters: {
-      bankIcon: function (value) {
-        if (!value) return 'icbc';
-        if (value == '工商银行') {
-          return 'icbc';
-        }
-        if (value == '招商银行') {
-          return 'cmbc';
-        }
-        //value = value.toString()
-        return value
-      }
+      DetailTitle, DisplayInfor, NoDataTip, getBankcard, uploadImg, CountDown, confirmDialog, chatList, chat
     },
     beforeRouteEnter(to,from,next){
       if(from.name === 'orderDetailAppeal'){
@@ -834,22 +688,11 @@
   }
   .detail-content {
     min-height: 300px;
-    margin: 30px 0;
+    padding: 30px 0;
   }
 
   .detail-box {
     border: 1px solid #d4d4d4;
-    input {
-      height: 40px;
-      line-height: 40px;
-      border: 1px solid #d4d4d4;
-      width: 100%;
-      padding: 0 20px;
-      font-size: 16px;
-    }
-    input:read-only {
-      background: #f7f7f7;
-    }
     .btn-sell {
       background: orange;
     }
@@ -880,80 +723,10 @@
     .red {
       color: red;
     }
-    .alipay-box {
-      margin: 20px 50px;
-      .alipay-box-title {
-        border: 1px solid #d4d4d4;
-        padding: 10px 10px 10px 10px;
-        background-size: 30px;
-        font-size: 16px;
-        &.bank-ttile {
-          font-size: 20px;
-        }
-      }
-      .i-alipay {
-        display: inline-block;
-        float: left;
-        height: 50px;
-        width: 38px;
-        background: url('~images/i-alipay.png') no-repeat left center;
-        background-size: 30px;
-      }
-      .i-wechat {
-        display: inline-block;
-        float: left;
-        height: 50px;
-        width: 38px;
-        background: url('~images/i-wechat.png') no-repeat left center;
-        background-size: 30px;
-      }
-      .alipay-qrcode {
-        background: #4aa9e9;
-        color: #fff;
-        text-align: center;
-        padding: 18px;
-        &.text-left {
-          text-align: left;
-        }
-        &.bank-txt-box {
-          padding: 18px 22px;
-        }
-        h3 {
-          font-weight: normal;
-          font-size: 18px;
-          padding: 2px 0 8px;
-        }
-        img {
-          width: 160px;
-          height: 160px;
-          padding: 12px;
-          background: url('~images/j.png') no-repeat;
-          margin-bottom: 5px;
-          display: inline-block;
-        }
-      }
-    }
   }
 
   .order-time {
     padding: 20px 50px;
-  }
-
-  .detail-title {
-    height: 80px;
-    border-bottom: 1px solid #d4d4d4;
-  }
-
-  .title-btn {
-    height: 80px;
-    line-height: 80px;
-    display: inline-block;
-    width: 140px;
-    color: #fff;
-    text-align: center;
-    background: #5087ff;
-    margin: 0 20px 0 0;
-    font-size: 18px;
   }
 
   .detail-tips {
@@ -981,27 +754,6 @@
   .detail-tips-sell {
     padding: 18px 30px 20px;
     overflow: hidden;
-  }
-
-  .h3, .bank-title {
-    font-weight: normal;
-    color: #333;
-    font-size: 22px;
-    padding: 20px 30px 0;
-  }
-
-  .details-data {
-    padding: 0 30px 30px;
-    li {
-      padding: 16px 0 0 0;
-    }
-    p {
-      font-size: 16px;
-      padding: 0 0 8px 0;
-    }
-    .red {
-      color: red;
-    }
   }
 
   input[type="button"] {
@@ -1067,32 +819,6 @@
   .bank-list-p {
     position: relative;
     margin-bottom: 18px;
-  }
-
-  .btn-copy {
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    color: #fff;
-    border: 0;
-    cursor: pointer;
-  }
-
-  .i-bank {
-    display: inline-block;
-    height: 40px;
-    width: 46px;
-    vertical-align: -13px;
-    background: url(~images/bankIcon/juan-bank.png) no-repeat;
-    background-size: contain;
-    &.icbc {
-      background: url(~images/bankIcon/icbc.png) no-repeat;
-      background-size: 40px;
-    }
-    &.cmbc {
-      background: url(~images/bankIcon/cmbc.png) no-repeat;
-      background-size: 40px;
-    }
   }
 
   .chatRoom {
