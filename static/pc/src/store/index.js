@@ -2,6 +2,7 @@ import Vue from 'vue'; //引入vue
 import Vuex from 'vuex'; //引入vue
 import router from '@/router'; //引入vue
 import {show} from 'api';     // 页面刷新获取用户数据
+import { getHomeInfo } from 'api/transaction'
 import * as types from './types'; //引入vue
 import {$localStorage, $sessionStorage} from '@/util/storage';
 import aesutil from '@/util/aesutil';
@@ -30,7 +31,9 @@ const stateInit = {
   withdraw:false, //提现标识
   bankCardInfo:[],
   isShowFastSale:false,  // 是否显示快速买卖弹窗
-  noBankCardTip:false
+  noBankCardTip:false,
+  userBalance:0,
+  lockedAmount:0,
 }
 export default new Vuex.Store({
   state: stateInit,
@@ -115,6 +118,12 @@ export default new Vuex.Store({
     },
     showRegister(state,getters){
       return state.showRegister
+    },
+    userBalance(state,getters){
+      return state.userBalance
+    },
+    lockedAmount(state,getters){
+      return state.lockedAmount
     }
   },
   mutations: {         // 事件处理器用来驱动状态的变化
@@ -184,6 +193,10 @@ export default new Vuex.Store({
     },
     [types.INIT_STATE](state,val){
       Object.assign(state,stateInit)
+    },
+    [types.UPDATE_USERBALANCE](state,val){
+      state.userBalance = val.chainAmount
+      state.lockedAmount = val.pendingAmount + val.lockedAmount
     }
   },
   actions: {    // 可以给组件使用的函数，以此用来驱动事件处理器 mutations
@@ -267,7 +280,21 @@ export default new Vuex.Store({
       }).catch(err => {
         toast(err);
       });
+    },
+    [types.GET_USERBALANCE]({commit,getters},val){  //获取用户余额
+      let requestdata={
+        userId: getters.userId
+      };
+      return getHomeInfo(requestdata).then((res) => {
+        if(res.code === 10000){
+          commit(types.UPDATE_USERBALANCE,res.data);
+        }else{
+          toast(res.message);
+        }
+        return Promise.resolve(res);
+      }).catch(err => {
+        toast(err);
+      });
     }
-
   }
 });

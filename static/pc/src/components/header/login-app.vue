@@ -16,7 +16,7 @@
         立即打开 >
       </div>
     </div>
-    <div class="dialog" v-if="showDialog">
+    <popup class="dialog" v-if="showDialog">
       <div class="dialog-main" :class="{bdr: !isMobile}">
         <div class="title" v-if="!isMobile">
           久安APP扫码登录
@@ -40,7 +40,7 @@
         </div>
       </div>
       <a class="close-btn-radius" v-if="isMobile" @click="showDialog = false"></a>
-    </div>
+    </popup>
   </div>
 </template>
 
@@ -49,6 +49,7 @@
     qrCode
   } from 'api/show'
   import VueQrcode from 'vue-qr';
+  import Popup from 'components/common-popup'
   import {SETTING} from "@/assets/data"
   export default {
     name: "login-app",
@@ -62,7 +63,8 @@
       }
     },
     components:{
-      VueQrcode
+      VueQrcode,
+      Popup
     },
     methods:{
       showQrcode(){
@@ -146,17 +148,17 @@
     }
   }
   .dialog{
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.40);
-    z-index: 998;
-    top: 0;
-    left: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+    /*position: fixed;*/
+    /*width: 100%;*/
+    /*height: 100%;*/
+    /*background: rgba(0,0,0,0.40);*/
+    /*z-index: 998;*/
+    /*top: 0;*/
+    /*left: 0;*/
+    /*display: flex;*/
+    /*justify-content: center;*/
+    /*align-items: center;*/
+    /*flex-direction: column;*/
     .dialog-main{
       max-width: r(500);
       width: 67%;

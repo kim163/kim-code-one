@@ -73,6 +73,9 @@
       },
       filterBank(){
         this.getBankInfo()
+      },
+      bankCardInfo(){
+        this.getBankInfo()
       }
     },
     methods: {

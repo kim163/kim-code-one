@@ -22,3 +22,5 @@ export const SHOW_FASTSALE = 'SHOW_FASTSALE'  // 显示快速买卖弹窗
 export const NOBANKCARDTIP = 'NOBANKCARDTIP'  // 没有银行卡提示
 export const SHOW_REGISTER = 'SHOW_REGISTER' //展示注册弹窗
 export const INIT_STATE = 'INIT_STATE' //初始化state
+export const GET_USERBALANCE = 'GET_USERBALANCE' //获取用户余额信息
+export const UPDATE_USERBALANCE = 'UPDATE_USERBALANCE' //更新用户余额

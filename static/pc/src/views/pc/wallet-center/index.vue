@@ -1,5 +1,5 @@
 <template>
-  <div class="center">
+  <div class="wallet-center">
     <user-info></user-info>
     <transition mode="out-in"
                 enter-active-class="animated-quick fadeIn"

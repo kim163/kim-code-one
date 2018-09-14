@@ -151,6 +151,7 @@
         }
       },
       initUserDef(){
+        this.$store.dispatch("GET_USERBALANCE");
         this.$store.dispatch("GET_BANKCARD");
         this.initWsData();
         this.stompConnect();
