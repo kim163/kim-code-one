@@ -1,5 +1,7 @@
 <template>
-  <div>交易大厅模块</div>
+  <div>
+    交易大厅
+  </div>
 </template>
 
 <script>
@@ -8,6 +10,6 @@
   }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 
 </style>

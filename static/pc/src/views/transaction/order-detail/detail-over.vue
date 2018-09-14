@@ -96,6 +96,7 @@
         transaction.getFinallyAmount(request).then((res) => {
           if (res.code == '10000') {
             if (res.data) {
+              alert('sad')
               this.isShowpopup = true
               this.couponValueStr = res.data.couponValueStr
               this.isShowDiscount = true

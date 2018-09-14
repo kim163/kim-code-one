@@ -1035,3 +1035,12 @@ span.icon-close,i.icon-close{
 .mobile-body{
   background: #F5F5F5;
 }
+
+.activity-pagination{
+  bottom: 0px !important;
+  > .swiper-pagination-bullet {
+    width: 40px !important;
+    height: 5px !important;
+    border-radius: 0;
+  }
+}

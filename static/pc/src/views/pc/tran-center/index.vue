@@ -1,24 +1,19 @@
 <template>
-  <div class="tran-main container">
+  <div class="tran-main container max-width">
     <div>
       订单通知功能模块 待开发
     </div>
     <activity></activity>
     <ul class="tab-list">
-      <li class="tab-info" v-for="(item,index) in tabCfg"
+      <router-link tag="li" :to="{name:item.linkName}" class="tab-info" v-for="(item,index) in tabCfg"
           :key="index"
-          :class="{active: item.tabNum === tabIndex}"
-          @click="tabIndex = item.tabNum">{{item.name}}</li>
+          >{{item.name}}</router-link>
     </ul>
     <div class="tab-container">
       <transition mode="out-in"
                   enter-active-class="animated-quick fadeIn"
                   leave-active-class="animated-quick fadeOut">
-        <quick-buy-sell v-if="tabIndex === 0"></quick-buy-sell>
-        <trading-hall v-if="tabIndex === 1"></trading-hall>
-        <order-record v-if="tabIndex === 2"></order-record>
-        <pending-record v-if="tabIndex === 3"></pending-record>
-        <appeal-record v-if="tabIndex === 4"></appeal-record>
+        <router-view></router-view>
       </transition>
     </div>
   </div>
@@ -40,25 +35,30 @@
         tabCfg:[
           {
             name:'快速买卖',
-            tabNum:0
+            tabNum:0,
+            linkName:'quickBuySell'
           },
           {
             name:'交易大厅',
-            tabNum:1
+            tabNum:1,
+            linkName:'tradHall'
           },
           {
             name:'订单记录',
-            tabNum:2
+            tabNum:2,
+            linkName:'orderRecord'
           },
           {
             name:'挂单记录',
-            tabNum:3
+            tabNum:3,
+            linkName:'pendingRecord'
           },
           {
             name:'申诉记录',
-            tabNum:4
+            tabNum:4,
+            linkName:'AppealRecord'
           }
-        ]
+        ],
       }
     },
     components: {
@@ -68,12 +68,16 @@
       OrderRecord,
       PendingRecord,
       AppealRecord,
+    },
+    methods:{
+
     }
   }
 </script>
 
 <style lang="scss" scoped>
   .tran-main {
+    width: 1200px;
     .tab-list{
       width: 100%;
       height: 50px;
@@ -98,6 +102,7 @@
     .tab-container{
       width: 100%;
       margin-bottom: 30px;
+      padding-bottom: 21px;
       border: 1px solid #D3D3D3;
     }
   }

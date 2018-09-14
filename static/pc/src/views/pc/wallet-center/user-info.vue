@@ -1,11 +1,11 @@
 <template>
   <div class="user-info">
-    <div class="main container">
+    <div class="main container max-width">
       <div class="info-detail">
         <div class="avatar"></div>
         <span class="nick-name">{{userData.nickname}}</span>
         <router-link :to="{name:'userCenter'}" class="link-def" tag="div">个人中心</router-link>
-        <div class="link-def">收款码</div>
+        <div class="link-def" @click="showQrcode = true">收款码</div>
         <!--<div class="link-def">APP扫码登录</div>-->
         <login-app v-if="isCustomize"></login-app>
         <div class="icon-font">
@@ -37,54 +37,58 @@
         </div>
       </div>
     </div>
-
+    <popup v-if="showQrcode">
+      <div class="dialog-main">
+        <div class="title">
+          我的收款二维码
+          <i class="iconfont icon-close close" @click="showQrcode = false"></i>
+        </div>
+        <div class="dialog-content">
+          <vue-qrcode :text="'UET,'+userData.accountChainVos[0].address"
+                  v-if="userData.accountChainVos[0].address"
+                  :logoSrc="Logo"
+                  :logoScale="0.2"
+                  :margin="0"
+                  :size="188"></vue-qrcode>
+        </div>
+      </div>
+    </popup>
   </div>
 </template>
 
 <script>
   import getLive800 from 'components/get-live800'
-  import { getHomeInfo } from 'api/transaction'
   import AnimatedInteger from 'components/animated-integer'
   import LoginApp from 'components/header/login-app'
+  import Popup from 'components/common-popup'
+  import VueQrcode from 'vue-qr';
+  import Logo from '@/assets/images/logo-blue.png'
   export default {
     name: "user-info",
     data(){
       return{
-        homeInforma:{
-          chainAmount:0,
-          pendingAmount:0,
-          lockedAmount:0,
-        },
-        isCustomize: _.customize()
+        isCustomize: _.customize(),
+        showQrcode:false,
+        Logo
       }
     },
     computed:{
       ...mapGetters([
-        'userData'
+        'userData',
+        'userBalance',
+        'lockedAmount',
       ])
     },
     components:{
       getLive800,
       AnimatedInteger,
-      LoginApp
+      LoginApp,
+      Popup,
+      VueQrcode
     },
     methods:{
-      getUserBalance(){
-        const requestdata={
-          userId: this.userData.userId
-        };
-        getHomeInfo(requestdata).then(res => {
-          if(res.code === 10000){
-            this.homeInforma = res.data;
-          }else{
-            toast(res.message)
-          }
-        }).catch(err => {
-          toast(err)
-        })
-      },
       calUserBalance(type){
-        const balAmount = type === 1 ? this.homeInforma.chainAmount : Number(this.homeInforma.pendingAmount + this.homeInforma.lockedAmount);
+        const balAmount = type === 1 ? this.userBalance : this.lockedAmount;
         return !_.isNaN(Number(balAmount)) ? Number(balAmount) : 0;
       },
       formatCny(type){
@@ -92,7 +96,6 @@
       }
     },
     mounted(){
-      this.getUserBalance()
     }
   }
 </script>
@@ -145,7 +148,7 @@
           width: 31px;
           height: 32px;
           margin-top: 9px;
-          margin-left: 2px;
+          margin-left: 9px;
         }
       }
       .balance-info{
@@ -163,6 +166,30 @@
         cursor: pointer;
         font-size: 14px;
       }
+    }
+  }
+  .dialog-main{
+    width: 500px;
+    border-radius: 10px;
+    overflow: hidden;
+    .title{
+      width: 100%;
+      height: 50px;
+      background-color: #5087ff;
+      padding-left: 30px;
+      line-height: 50px;
+      color: #ffffff;
+      .close{
+        font-size: 20px;
+        color: #ffffff;
+        float: right;
+        margin-right: 20px;
+        cursor: pointer;
+      }
+    }
+    .dialog-content{
+      background: #ffffff;
+      padding: 20px 0;
     }
   }
 </style>

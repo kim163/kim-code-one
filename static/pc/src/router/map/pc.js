@@ -7,7 +7,12 @@ const WalletCenter = () => import('views/pc/wallet-center') //钱包中心
 const TranCenter = () => import('views/pc/tran-center') //交易模块
 const UserCenter = () => import('views/pc/user-center') //个人中心模块
 const OrderDetail = () => import('views/pc/order-detail') //订单详情
-
+const QuickBuySell = () => import('views/pc/tran-center/quick-buy-sell') //快速买卖
+const TradHall = () => import('views/pc/tran-center/trading-hall') //交易大厅
+const OrderRecord = () => import('views/pc/tran-center/order-record') //订单记录
+const PendingRecord = () => import('views/pc/tran-center/pending-record')//挂单记录
+const AppealRecord = () => import('views/pc/tran-center/appeal-record') //申诉记录
+const MyGift = () => import('views/pc/user-center/my-gift') //个人中心我的
 export default [
   {
     path: "/",
@@ -86,14 +91,47 @@ export default [
         component:WalletCenter,
         children:[
           {
-            path:'',
+            path:'/',
             name: "walletCenter",
+            redirect:"buy",
             component:TranCenter,
+            children:[
+              {
+                path:'buy',
+                name:'quickBuySell',
+                component:QuickBuySell,
+              },
+              {
+                path:'trad',
+                name:'tradHall',
+                component:TradHall,
+              },
+              {
+                path:'order',
+                name:'orderRecord',
+                component:OrderRecord,
+              },
+              {
+                path:'pend',
+                name:'pendingRecord',
+                component:PendingRecord,
+              },
+              {
+                path:'appeal',
+                name:'AppealRecord',
+                component:AppealRecord,
+              },
+            ]
           },
           {
             path:'user',
             name:'userCenter',
             component:UserCenter,
+          },
+          {
+            path:"myGift",
+            name:'myGift',
+            component:MyGift
           },
           {
             path:'orderDetail',

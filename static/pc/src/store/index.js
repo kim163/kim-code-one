@@ -2,38 +2,41 @@ import Vue from 'vue'; //引入vue
 import Vuex from 'vuex'; //引入vue
 import router from '@/router'; //引入vue
 import {show} from 'api';     // 页面刷新获取用户数据
+import { getHomeInfo } from 'api/transaction'
 import * as types from './types'; //引入vue
 import {$localStorage, $sessionStorage} from '@/util/storage';
 import aesutil from '@/util/aesutil';
 
 Vue.use(Vuex);
-export default new Vuex.Store({
-  state: { //不要直接访问state
-    showFooter: true,
-    showLogin: false, //登录弹窗
-    showRegister:false,
-    userData: {
-      name: '',
-      nickname: '',
-      amount: '',
-      userId: '',
-      accountChainVos: [],
-      nodeId:'0'
-    },
-    language: $localStorage.get('language-sel') || 'zh',
-    tokenInfo: null,
-    checkOnline: false,
-    connectState:false,
-    RongIMEmoji:'',
-    timeOver:false,
-    unreadCount:0,
-    historyState:0,
-    isShowCoupon:false,
-    withdraw:false, //提现标识
-    bankCardInfo:[],
-    isShowFastSale:false,  // 是否显示快速买卖弹窗
-    noBankCardTip:false
+const stateInit = {
+  showFooter: true,
+  showLogin: false, //登录弹窗
+  userData: {
+    name: '',
+    nickname: '',
+    amount: '',
+    userId: '',
+    accountChainVos: [],
+    nodeId:'0'
   },
+  language: $localStorage.get('language-sel') || 'zh',
+  tokenInfo: null,
+  checkOnline: false,
+  connectState:false,
+  RongIMEmoji:'',
+  timeOver:false,
+  unreadCount:0,
+  historyState:0,
+  isShowCoupon:false,
+  withdraw:false, //提现标识
+  bankCardInfo:[],
+  isShowFastSale:false,  // 是否显示快速买卖弹窗
+  noBankCardTip:false,
+  userBalance:0,
+  lockedAmount:0,
+}
+export default new Vuex.Store({
+  state: stateInit,
   getters: {     // 用来从 store 获取 Vue 组件数据
     language(state, getters) {
       return state.language;
@@ -79,10 +82,10 @@ export default new Vuex.Store({
     },
     islogin(state, getters) {  // 根据是否有 tokenVo 并且请求返回值不为 15016
       let tokenInfo = JSON.parse($localStorage.get('tokenInfo'));
-      if ($localStorage && tokenInfo) { //先查localStorage
-        if (types.CHECK_ONLINE) {
+      if (tokenInfo) { //先查localStorage
+        // if (state.checkOnline) {
           return true;
-        }
+        // }
       }
       if (state.checkOnline && state.tokenInfo) {
         return true;
@@ -115,6 +118,12 @@ export default new Vuex.Store({
     },
     showRegister(state,getters){
       return state.showRegister
+    },
+    userBalance(state,getters){
+      return state.userBalance
+    },
+    lockedAmount(state,getters){
+      return state.lockedAmount
     }
   },
   mutations: {         // 事件处理器用来驱动状态的变化
@@ -173,14 +182,21 @@ export default new Vuex.Store({
         state.noBankCardTip = true
       }else{
         state.noBankCardTip = false
-        state.bankCardInfo=val
       }
+      state.bankCardInfo=val
     },
     [types.SHOW_FASTSALE](state,val){
       state.isShowFastSale=val
     },
-    [types.SHOW_REGISTER](state,val){
-      state.showRegister=val
+    [types.SHOW_REGISTER](state,val) {
+      state.showRegister = val
+    },
+    [types.INIT_STATE](state,val){
+      Object.assign(state,stateInit)
+    },
+    [types.UPDATE_USERBALANCE](state,val){
+      state.userBalance = val.chainAmount
+      state.lockedAmount = val.pendingAmount + val.lockedAmount
     }
   },
   actions: {    // 可以给组件使用的函数，以此用来驱动事件处理器 mutations
@@ -199,8 +215,9 @@ export default new Vuex.Store({
         nickname: '',
         amount: '',
         userId: '',
-        accountChainVos: []
+        accountChainVos: [],
       })
+      // commit(types.INIT_STATE)
     },
     [types.LOGIN_OUT]({commit, dispatch}, val = true) { //退出登录
       let nodeId = ''
@@ -218,6 +235,7 @@ export default new Vuex.Store({
       $localStorage.remove('backURL');
       $localStorage.remove('menuStyle');
       dispatch(types.INIT_INFO);
+      commit(types.INIT_STATE)
       dispatch(types.UPDATE_TOKEN_INFO, null);
       dispatch(types.CHECK_ONLINE, false);
       if (val) {
@@ -262,7 +280,21 @@ export default new Vuex.Store({
       }).catch(err => {
         toast(err);
       });
+    },
+    [types.GET_USERBALANCE]({commit,getters},val){  //获取用户余额
+      let requestdata={
+        userId: getters.userId
+      };
+      return getHomeInfo(requestdata).then((res) => {
+        if(res.code === 10000){
+          commit(types.UPDATE_USERBALANCE,res.data);
+        }else{
+          toast(res.message);
+        }
+        return Promise.resolve(res);
+      }).catch(err => {
+        toast(err);
+      });
     }
-
   }
 });

@@ -40,7 +40,11 @@
             <div class="form-input-box payment">
               <span class="left">{{postItem == 'buyer' ? '支付' : '收款'}}方式：</span>
               <span class="ps-input">
-                <get-bankcard :setBankcard="setBankcard" v-model="bindCardReset" :def-select="bankNo" @selCardChange="selCardChange"></get-bankcard>
+                <get-bankcard :setBankcard="setBankcard"
+                              v-model="bindCardReset"
+                              :def-select="bankNo"
+                              :filter-bank="filterBank"
+                              @selCardChange="selCardChange"></get-bankcard>
               </span>
             </div>
             <div class="btn-groups">
@@ -91,7 +95,8 @@
         },
         bindCardReset:false,
         userBalance:0,//用户余额
-        couponDetail:{}
+        couponDetail:{},
+        filterBank:false,
       }
     },
     watch: {
@@ -105,6 +110,7 @@
           //this.minAmount = '';
         }
         this.setBankcard.pleaseSelTitle = val === 'seller' ? 'component.pleaseSelRecMet' : 'component.pleaseSelPayMet'
+        this.filterBank = val === 'seller' ? true : false
       },
       type(val){
         if(val === 2){
@@ -185,7 +191,7 @@
           return;
         }
         if (this.payType == '' || !this.payType) {
-          toast('支付方式不能为空');
+          toast(`请选择${this.postItem === 'seller' ? '收款' : '支付'}方式`);
           return;
         }
         // if (this.minAmount == '' || this.minAmount < 0) {

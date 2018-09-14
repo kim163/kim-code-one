@@ -29,6 +29,10 @@
         noCardTips:false
       };
     },
+    model:{
+      prop: 'reset',
+      event: 'changeReset'
+    },
     props: {
       setBankcard: {
         type: Object,
@@ -50,11 +54,11 @@
       autoSelect:{
         type:Boolean,
         default:false
+      },
+      filterBank:{ //过滤信息 只能选择银行卡
+        type:Boolean,
+        default:false
       }
-    },
-    model:{
-      prop: 'reset',
-      event: 'change'
     },
     watch: {
       "selBankCard"(val){
@@ -64,17 +68,36 @@
         if(val){
           this.selBankCard = '';
           this.$emit("selCardChange", this.selBankCard);
-          this.$emit('change',false);
+          this.$emit('changeReset',false);
         }
       },
+      filterBank(){
+        this.getBankInfo()
+      },
+      bankCardInfo(){
+        this.getBankInfo()
+      }
     },
     methods: {
       getBankInfo(){
-        this.bankList.data = this.bankCardInfo;
-        if(this.bankList.data.length<1){
+        // this.bankList.data = this.bankCardInfo;
+        if(this.bankCardInfo.length<1){
           this.noCardTips = true;
-          this.$emit("selCardChange", this.bankList.data);
+          this.$emit("selCardChange", this.bankCardInfo);
         }
+        let cardList = this.bankCardInfo
+        if(this.filterBank){
+          cardList = this.bankCardInfo.filter((item) => {
+            return item.type === 3
+          });  //临时添加支付宝、微信过滤
+        }
+        if(cardList.length < 1){
+          this.noCardTips = true;
+          this.selBankCard = '';
+        }else{
+          this.noCardTips = false;
+        }
+        this.bankList.data = cardList
         if(this.setBankcard.addOption.length>0){
           for (let i in this.setBankcard.addOption){
             this.bankList.data.push(this.setBankcard.addOption[i]);

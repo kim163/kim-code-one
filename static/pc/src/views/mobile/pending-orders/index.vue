@@ -52,6 +52,7 @@
           <get-bankcard :setBankcard="setBankcard"
                         :def-select="bankNo"
                         :auto-select="true"
+                        :filter-bank="filterBank"
                         @selCardChange="selCardChange"></get-bankcard>
         </div>
       </div>
@@ -151,11 +152,13 @@
         rangeReset:false,
         showBuySellRes:false,
         showBindCard:false,//展示绑定银行卡提示
+        filterBank:false,
       }
     },
     watch: {
       pendingItem(val) {
         this.setBankcard.pleaseSelTitle = val === 'seller' ? 'component.pleaseSelRecMet' : 'component.pleaseSelPayMet'
+        this.filterBank = val === 'seller' ? true : false
       },
       noBankCardTip(val){
         if(this.tabType === 0){
