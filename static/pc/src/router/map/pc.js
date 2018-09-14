@@ -7,7 +7,7 @@ const WalletCenter = () => import('views/pc/wallet-center') //钱包中心
 const TranCenter = () => import('views/pc/tran-center') //交易模块
 const UserCenter = () => import('views/pc/user-center') //个人中心模块
 const OrderDetail = () => import('views/pc/order-detail') //订单详情
-
+const MyGift =() =>import('views/pc/user-center/my-gift') //个人中心我的
 export default [
   {
     path: "/",
@@ -94,6 +94,11 @@ export default [
             path:'user',
             name:'userCenter',
             component:UserCenter,
+          },
+          {
+            path:"myGift",
+            name:'myGift',
+            component:MyGift
           },
           {
             path:'orderDetail',
