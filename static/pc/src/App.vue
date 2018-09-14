@@ -82,9 +82,9 @@
             this.connectPsw= this.connectMsg[2];
           }
         });
-        this.detailNormal='/orderDetail/';
-        this.detailOver='/orderDetailOver/';
-        this.detailAppeal='/orderDetailAppeal/';
+        this.detailNormal='/center/orderDetail/';
+        this.detailOver='/center/orderDetailOver/';
+        this.detailAppeal='/center/orderDetailAppeal/';
         if(_.isMobile()){
           this.detailNormal='/m/order/';
           this.detailOver='/m/orderOver/';
