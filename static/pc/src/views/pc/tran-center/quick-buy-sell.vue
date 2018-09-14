@@ -21,13 +21,13 @@
                :key="index"
                @click="buyAmount = item.value">{{item.name}}UET</div>
         </div>
-        <input type="text" class="buy-input" v-number-only v-model="buyAmount" :maxlength="max"> UET  ≈ &yen;
+        <input type="text" class="buy-input" v-number-only v-model.number="buyAmount" :maxlength="max"> UET  ≈ &yen;
         <animated-integer :value="formatCny(1)"></animated-integer>
       </div>
       <div class="sell-container" v-show="pendingItem === 'seller'">
         <div class="info">
           <label>卖出数量：</label>
-          <input type="text" class="sell-input" v-model="sellAmount" v-number-only :maxlength="max">
+          <input type="text" class="sell-input" v-model.number="sellAmount" v-number-only :maxlength="max">
           <span class="amount-type">UET</span>
           <div class="all-in" @click="sellAmount = userBalance">全部卖出</div>
         </div>
@@ -49,6 +49,12 @@
         </div>
       </div>
       <div class="submit-btn" @click="publishBuyOrSell">确定</div>
+      <transition name="fade">
+        <div class="coupon-info" v-if="Object.keys(couponDetail).length > 0">
+          <div class="text">现在下单，立即兑现</div>
+          <coupon-detail class="coupon-detail" :item="couponDetail"></coupon-detail>
+        </div>
+      </transition>
     </div>
   </div>
 </template>
@@ -56,6 +62,7 @@
 <script>
   import AnimatedInteger from 'components/animated-integer'
   import GetBankcard from 'components/get-bankcard'
+  import CouponDetail from 'components/coupon-detail'
   import {
     publishToBuy,
     publishToSell
@@ -143,6 +150,13 @@
         bankNo:'',
         proofType:0,
         minAmount:1,
+        couponDetail:{},
+      }
+    },
+    props:{
+      tabType:{
+        type:Number,
+        default:1
       }
     },
     computed:{
@@ -154,12 +168,16 @@
     },
     components:{
       AnimatedInteger,
-      GetBankcard
+      GetBankcard,
+      CouponDetail
     },
     watch:{
       pendingItem(val) {
         this.filterBank = val === 'seller' ? true : false
       },
+      tabType(val){
+        this.pendingItem = val === 1 ? 'buyer' : 'seller'
+      }
     },
     methods:{
       formatCny(type){
@@ -172,11 +190,7 @@
       publishBuyOrSell() {
         const buySellAmount = this.pendingItem === 'seller' ? this.sellAmount : this.buyAmount
         if (buySellAmount == '' || buySellAmount == 0) {
-          toast(`${this.pendingItem === 'seller' ? '卖币' : '买币'}数量不能为空`);
-          return;
-        }
-        if(!_.isInteger(buySellAmount) || buySellAmount<1){
-          toast('请输入整数数量');
+          toast(`请输入${this.pendingItem === 'seller' ? '卖币' : '买币'}数量`);
           return;
         }
         if(this.pendingItem === 'seller' && Number(buySellAmount) > Number(this.userBalance)){
@@ -236,6 +250,21 @@
           toast(err.message);
         })
       },
+      getGift(){
+        getFastTraderAward({}).then(res => {
+          if(res.code === 10000){
+            if(res.data && !_.isNull(res.data)){
+              this.couponDetail = res.data
+            }
+          }
+        })
+      },
+    },
+    created(){
+      this.pendingItem = this.tabType === 1 ? 'buyer' : 'seller'
+    },
+    mounted(){
+      this.getGift()
     }
   }
 </script>
@@ -379,6 +408,17 @@
       margin-top: 30px;
       cursor: pointer;
       font-size: 18px;
+    }
+    .coupon-info{
+      padding-top: 25px;
+      .text{
+        margin-bottom: 10px;
+      }
+      .coupon-detail{
+        width: 555px;
+        height: 128px;
+        margin: 0;
+      }
     }
   }
 </style>

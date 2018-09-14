@@ -85,7 +85,7 @@
           default:
             break
         }
-        console.log('优惠类型',type)
+        // console.log('优惠类型',type)
         if(type != ''){
           this.$emit('quickBuySell',type)
         }
