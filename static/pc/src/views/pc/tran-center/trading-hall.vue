@@ -2,11 +2,11 @@
   <div class="trad-main">
     <div class="content">
       <div class="title">买币大厅</div>
-      <trad-list :type="1"></trad-list>
+      <trad-list></trad-list>
     </div>
     <div class="content">
       <div class="title">卖币大厅</div>
-      <trad-list :type="2"></trad-list>
+      <trad-list :is-sell="true"></trad-list>
     </div>
   </div>
 </template>
@@ -30,6 +30,7 @@
       width: 540px;
       .title{
         font-size: 24px;
+        margin-bottom: 20px;
       }
     }
   }
