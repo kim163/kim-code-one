@@ -12,7 +12,7 @@ const TradHall = () => import('views/pc/tran-center/trading-hall') //交易大�
 const OrderRecord = () => import('views/pc/tran-center/order-record') //订单记录
 const PendingRecord = () => import('views/pc/tran-center/pending-record')//挂单记录
 const AppealRecord = () => import('views/pc/tran-center/appeal-record') //申诉记录
-
+const MyGift = () => import('views/pc/user-center/my-gift') //个人中心我的
 export default [
   {
     path: "/",
@@ -127,6 +127,11 @@ export default [
             path:'user',
             name:'userCenter',
             component:UserCenter,
+          },
+          {
+            path:"myGift",
+            name:'myGift',
+            component:MyGift
           },
           {
             path:'orderDetail',
