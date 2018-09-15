@@ -38,8 +38,9 @@
           <div>申诉锁定</div>
           <div><span class="btn">详情</span></div>
         </div>
+        <pageBy :data="pageInfo"></pageBy>
       </div>
-        <pageBy></pageBy>
+
     </div>
   </div>
 </template>
@@ -59,6 +60,7 @@
         isNullNext: false,
         historyArr: [],
         currentShow: false,
+        pageInfo:{}
       }
     },
     created() {
@@ -73,7 +75,6 @@
     },
     methods: {
       getData() {
-
         this.currentShow = true
         const requests = {
           'limit': 10,
@@ -103,7 +104,7 @@
             this.isNullNext = true
           } else {
             this.historyArr = res.data
-            console.log(this.historyArr, '四大皆空')
+            this.pageInfo = res.pageInfo
           }
         })
       }
