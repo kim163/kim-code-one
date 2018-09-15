@@ -3,13 +3,19 @@
     <div class="title-list" :class="{sell: isSell}">
       <div class="title-info" v-for="(item,index) in titleList" :key="index">{{item.name}}</div>
     </div>
-    <div class="trad-info" v-if="dataList.data.length > 0">
-      <div v-for="(item,index) in dataList.data" :key="index">
-        <tran-detail :item="item" :is-sell="isSell"></tran-detail>
-      </div>
-      <paging-by :data="dataList.pageInfo" @search="pageInfo"></paging-by>
+    <div class="trad-info" v-if="!noData">
+      <transition-group tag="div"
+                        enter-active-class="fadeInRight"
+                        >
+          <tran-detail v-for="(item,index) in dataList.data"
+                       :key="item.id"
+                       :item="item"
+                       :is-sell="isSell"
+                       :class="`deley-${index}`"></tran-detail>
+      </transition-group>
     </div>
-    <no-data-tip v-else></no-data-tip>
+    <paging-by class="page" v-if="!noData" :data="dataList.pageInfo" @search="pageInfo"></paging-by>
+    <no-data-tip v-if="noData"></no-data-tip>
   </div>
 </template>
 
@@ -21,6 +27,7 @@
   import {SETTING} from "@/assets/data";
   import NoDataTip from 'components/no-data-tip';
   import TranDetail from './trading-detail'
+  import TransactionList from "../../mobile/transaction-record/transaction-list";
 
   export default {
     name: "trading-list",
@@ -46,7 +53,7 @@
           pageInfo: {}
         },
         reqData: {
-          limit: 10,
+          limit: 7,
           offset: 0,
           currentPage:1,
           status:1,
@@ -67,6 +74,7 @@
       }
     },
     components:{
+      TransactionList,
       PagingBy,
       NoDataTip,
       TranDetail
@@ -111,10 +119,19 @@
 </script>
 
 <style lang="scss" scoped>
+  .list-enter{
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  .list-move{
+    transition: all .5s;
+  }
   .trad-list{
     width: 100%;
     background: #FFFFFF;
     border: 1px solid #86A5F8;
+    min-height: 682px;
+    overflow: hidden;
     &.sell{
       border-color: #F68887;
     }
@@ -127,11 +144,32 @@
         background: #F68887;
       }
       .title-info{
-        width: 25%;
+        width: 23%;
         text-align: center;
         line-height: 50px;
         color: #ffffff;
+        &:first-child{
+          width: 30%;
+        }
       }
+    }
+    .trad-info{
+      position: relative;
+      min-height: 560px;
+    }
+    .page{
+      width: 100%;
+      height: 63px;
+      bottom: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 0;
+    }
+  }
+  @for $i from 1 to 10{
+    .deley-#{$i}{
+      animation-duration: 0.1s * $i;
     }
   }
 </style>

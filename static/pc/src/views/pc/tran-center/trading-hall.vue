@@ -1,10 +1,10 @@
 <template>
   <div class="trad-main">
-    <div class="content">
+    <div class="trad-content">
       <div class="title">买币大厅</div>
       <trad-list></trad-list>
     </div>
-    <div class="content">
+    <div class="trad-content">
       <div class="title">卖币大厅</div>
       <trad-list :is-sell="true"></trad-list>
     </div>
@@ -26,7 +26,7 @@
     padding: 30px 40px 40px;
     display: flex;
     justify-content: space-between;
-    .content{
+    .trad-content{
       width: 540px;
       .title{
         font-size: 24px;
