@@ -1,5 +1,5 @@
 <template>
-  <div class="container max-width">
+  <div class="container min-width min-height">
     <div class="tab-list">
       <div class="tab-item"
            :class="{active: type === item.type}"
@@ -239,8 +239,11 @@
       changeTab(type) {
         this.type = type
         if(type==2){
-
+          this.$router.push({name:'myGift'})
+        }else {
+          this.$router.push({name:'user'})
         }
+
       },
       addBindCard() {
         this.needAddCard = true
@@ -476,7 +479,6 @@
       .content-list {
         .list-item {
           margin-bottom: 20px;
-          width: 1138px;
           height: 100px;
           display: flex;
           flex-direction: row;
