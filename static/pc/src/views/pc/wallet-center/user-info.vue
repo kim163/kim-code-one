@@ -43,7 +43,7 @@
           我的收款二维码
           <i class="iconfont icon-close close" @click="showQrcode = false"></i>
         </div>
-        <div class="dialog-content">
+        <div class="dialog-content center">
           <vue-qrcode :text="'UET,'+userData.accountChainVos[0].address"
                   v-if="userData.accountChainVos[0].address"
                   :logoSrc="Logo"

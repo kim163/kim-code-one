@@ -24,14 +24,7 @@
       </svg>
       {{transactItem === 'buyUet' ? '买' : '卖'}}币大厅
     </div>
-    <!--<div class="account-balline">-->
-      <!--{{$t('navbar.accountBalance')}}：-->
-      <!--<balance></balance>-->
-    <!--</div>-->
     <div class="tran-container">
-      <!--<tranbuy-list v-if="islogin && transactItem=='buyUet'"></tranbuy-list>-->
-
-      <!--<transell-list v-if="islogin && transactItem=='saleUet'"></transell-list>-->
       <transition name="buy">
         <tran-list v-if="islogin && transactItem === 'buyUet'" :type="1"></tran-list>
       </transition>

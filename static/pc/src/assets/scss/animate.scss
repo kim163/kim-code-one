@@ -141,6 +141,17 @@
     transform: none;
   }
 }
+@keyframes fadeOutLeft{
+
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    -webkit-transform: translate3d(-100%, 0, 0);
+    transform: translate3d(-100%, 0, 0);
+  }
+}
 @keyframes flipInY{
 
   from {
@@ -246,7 +257,19 @@
     transform: none;
   }
 }
+@keyframes bounceOutLeft{
 
+  20% {
+    opacity: 1;
+    -webkit-transform: translate3d(20px, 0, 0);
+    transform: translate3d(20px, 0, 0);
+  }
+  to {
+    opacity: 0;
+    -webkit-transform: translate3d(-2000px, 0, 0);
+    transform: translate3d(-2000px, 0, 0);
+  }
+}
 @-webkit-keyframes a-float {
   0%, 100% {
     -webkit-transform: translateY(0);

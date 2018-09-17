@@ -242,6 +242,7 @@
           if (res.code == '10000') {
             this.buyAmount = 0;
             this.sellAmount = 0;
+            this.$store.dispatch('GET_USERBALANCE')
             toast('下单成功');
           } else {
             toast(res.message)
