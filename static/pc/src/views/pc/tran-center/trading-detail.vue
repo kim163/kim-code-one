@@ -241,7 +241,7 @@
         height: 15px;
         font-size: 12px;
         text-align: center;
-        line-height: 15px;
+        line-height: 13px;
         border-radius: 2px;
         border: 1px solid transparent;
         margin-top: 5px;
@@ -274,7 +274,7 @@
         width: 80px;
         height: 25px;
         text-align: center;
-        line-height: 25px;
+        line-height: 23px;
         color: #3573FA;
         border: 1px solid #3573FA;
         border-radius: 3px;

@@ -6,6 +6,7 @@
     <div class="trad-info" v-if="!noData">
       <transition-group tag="div"
                         enter-active-class="fadeInRight"
+                        leave-active-class="no-delay"
                         >
           <tran-detail v-for="(item,index) in dataList.data"
                        :key="item.id"
@@ -85,6 +86,7 @@
         Object.assign(this.reqData,{
           type: this.isSell ? 12 : 11
         })
+        this.dataList.data = []
         getOrderxPendingPage(this.reqData).then(res => {
           console.log('大厅:',res)
           if(res.code === 10000){
@@ -171,5 +173,8 @@
     .deley-#{$i}{
       animation-duration: 0.1s * $i;
     }
+  }
+  .no-delay{
+    animation-duration:0s
   }
 </style>
