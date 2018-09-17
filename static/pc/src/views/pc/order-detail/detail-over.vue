@@ -9,7 +9,7 @@
                 <div class="order-time">
                   <p class="text-center time-stame" v-if="DetailList.status == 203">
                     <img src="~images/order-completed.png" height="107">
-                    <span >订单已完成</span>
+                    <span>订单已完成</span>
                   </p>
                   <p class="text-center time-stame" v-else-if="DetailList.status == 204">
                     <img src="~images/order-cancel.png" height="107">
@@ -96,7 +96,6 @@
         transaction.getFinallyAmount(request).then((res) => {
           if (res.code == '10000') {
             if (res.data) {
-              alert('sad')
               this.isShowpopup = true
               this.couponValueStr = res.data.couponValueStr
               this.isShowDiscount = true

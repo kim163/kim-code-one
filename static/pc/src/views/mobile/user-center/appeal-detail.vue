@@ -33,7 +33,6 @@
       <noDataTip v-if="appealDetailList.length==0"></noDataTip>
       <div class="leaveMessage_content" v-else v-for="(list,key) in appealDetailList">
         <!--判断用户角色-->
-
         <div v-if="list.sourceTypeText=='卖家'" class="content_list">
           <div style="flex: 1"></div>
           <div class="user_content">

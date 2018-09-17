@@ -2,12 +2,12 @@
   <div class="appeal-container">
     <div class="appeal-title">
       <span @click="getData" :class="{active:currentShow}">交易中</span>
-      <span @click="getHistoryData" :class="{active:!currentShow}">交易完成</span>
+      <span @click="getHistoryData(0)" :class="{active:!currentShow}">交易完成</span>
     </div>
     <div class="appeal-content" v-if="currentShow">
       <noDataTip v-if="isNull"></noDataTip>
       <div v-else>
-        <div class="content-title">
+        <div class="bind-title">
           <span v-for="list in titleArr" class="title-list">{{list}}</span>
         </div>
         <div class="content-item" v-for="list in processArr">
@@ -18,14 +18,15 @@
           <div style="color: red">0.01CNY</div>
           <div>{{list.amountTwin}}</div>
           <div>申诉锁定</div>
-          <div><span class="btn">详情</span></div>
+          <div><router-link :to="{name:'orderDetailAppeal',params:{id:list.orderId}}" class="btn">详情</router-link></div>
         </div>
+        <pageBy :data="pageInfoNext" @search="getData"></pageBy>
       </div>
     </div>
     <div class="history-content" v-else>
       <noDataTip v-if="isNullNext"></noDataTip>
       <div v-else>
-        <div class="content-title">
+        <div class="bind-title">
           <span v-for="list in titleArr" class="title-list">{{list}}</span>
         </div>
         <div class="content-item" v-for="list in historyArr">
@@ -36,9 +37,9 @@
           <div style="color: red">0.01CNY</div>
           <div>{{list.amountTwin}}</div>
           <div>申诉锁定</div>
-          <div><span class="btn">详情</span></div>
+          <div><router-link :to="{name:'orderDetailAppeal',params:{id:list.orderId},query:{name:2}}" class="btn">详情</router-link></div>
         </div>
-        <pageBy :data="pageInfo"></pageBy>
+        <pageBy :data="pageInfo" @search="getHistoryData"></pageBy>
       </div>
 
     </div>
@@ -60,7 +61,8 @@
         isNullNext: false,
         historyArr: [],
         currentShow: false,
-        pageInfo:{}
+        pageInfo:{},
+        pageInfoNext:{}
       }
     },
     created() {
@@ -74,11 +76,11 @@
       pageBy
     },
     methods: {
-      getData() {
+      getData(val) {
         this.currentShow = true
         const requests = {
           'limit': 10,
-          'offset': 0,
+          'offset': val>=1?(val-1)*10:val*10,
           'userId': this.userId,
           'types': [1, 2, 3, 4]
         }
@@ -87,15 +89,15 @@
             this.isNull = true
           } else {
             this.processArr = res.data
+            this.pageInfoNext = res.pageInfo
           }
         })
       },
-
-      getHistoryData() {
+      getHistoryData(val) {
         this.currentShow = false
         const requests = {
           'limit': 10,
-          'offset': 0,
+          'offset': val>=1?(val-1)*10:val*10,
           'userId': this.userId,
           'types': [1, 2, 3, 4]
         }
@@ -104,6 +106,7 @@
             this.isNullNext = true
           } else {
             this.historyArr = res.data
+            console.log(this.historyArr,'世界的')
             this.pageInfo = res.pageInfo
           }
         })
@@ -136,7 +139,7 @@
     .appeal-content {
       margin-left: 41px;
       margin-top: 20px;
-      .content-title {
+      .bind-title {
         width: 1118px;
         height: 50px;
         background-color: #86A5F8;
@@ -150,11 +153,34 @@
           flex: 1;
         }
       }
+      .content-item {
+        width: 1118px;
+        height: 50px;
+        background-color: #fff;
+        display: flex;
+        flex-direction: row;
+        div {
+          flex: 1;
+          font-size: 14px;
+          color: #787876;
+          text-align: center;
+          line-height: 50px;
+        }
+        .btn {
+          display: inline-block;
+          width: 70px;
+          height: 25px;
+          background-color: #86A5F8;
+          color: #fff;
+          line-height: 25px;
+          cursor: pointer;
+        }
+      }
     }
     .history-content {
       margin-left: 41px;
       margin-top: 20px;
-      .content-title {
+      .bind-title {
         width: 1118px;
         height: 50px;
         background-color: #86A5F8;

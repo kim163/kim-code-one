@@ -171,7 +171,6 @@
                 <span class="qrcode-tips">保存二维码</span>
               </div>
             </li>
-
           </ul>
         <div class="payment-tips">
           该订单已被申诉,请进入申诉会话提交您的证据,申诉失败一方将被处罚!
@@ -252,7 +251,7 @@
           userId: this.userId,
           type: 3   //默认为3
         }
-        console.log(this.request)
+        console.log(this.request,'啥快递件')
         console.log(this.userData)
         transaction.getAppealDetailPage(this.request).then(res => {
           this.loading = false;
@@ -391,7 +390,6 @@
             return item;
           });
         }
-
         return this.AppealList.appealDetailList.reverse();
       },
       unreadCountUpdate() {
