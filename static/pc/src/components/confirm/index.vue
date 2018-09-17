@@ -1,5 +1,5 @@
 <template>
-  <div class="confirm-main" v-if="show">
+  <popup class="confirm-main" v-if="show">
     <div class="mask-bg" @click="hideDialog"></div>
     <div class="container" :class="{'container-pc': isPc}">
       <div class="header" v-if="isPc">
@@ -23,10 +23,11 @@
         </div>
       </div>
     </div>
-  </div>
+  </popup>
 </template>
 
 <script>
+  import Popup from 'components/common-popup'
   export default {
     name: "confirm-dialog",
 
@@ -39,7 +40,9 @@
       return {
       }
     },
-
+    components:{
+      Popup
+    },
     props:{
       show: {
         type: Boolean,
@@ -120,15 +123,11 @@
       overflow: hidden;
       background: #FFFFFF;
       border-radius: 5px;
-      z-index: 1001;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translateY(-50%);
-      margin-left: -36%;
       &.container-pc{
         width: 500px;
-        margin-left: -250px;
+        .icon-close{
+          @include f(20px);
+        }
       }
       .confirm-title,.confirm-content{
         width: 100%;
