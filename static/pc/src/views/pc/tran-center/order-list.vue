@@ -34,7 +34,7 @@
             {{item.resultTypeText}}
           </span>
           <span class="unit">
-            <router-link :to='orderDetailLink(item)' class="detail-link">详情</router-link>
+            <router-link :to='orderDetailLink(item)' class="btn-link">详情</router-link>
           </span>
         </div>
         <paging-by :data="pageInfo" @search="getDataList"></paging-by>

@@ -81,6 +81,7 @@
             }
             $localStorage.set(`withdraw_${res.data.userId}`,
               aesutil.encrypt(JSON.stringify(data)))
+            this.$store.commit('GET_WIDTHDRAW',true)
           }
           this.jumpLink(true)
         }else{
@@ -110,17 +111,17 @@
     },
     methods:{
       jumpLink(success){
-        const tranAddress = _.isMobile() ? (!_.isUndefined(this.mode) && Number(this.mode) > 1 ? 'mPendingBuy' : 'mIndex') : 'transaction'
+        const tranAddress = _.isMobile() ? (!_.isUndefined(this.mode) && Number(this.mode) > 1 ? 'mPendingBuy' : 'mIndex') : 'walletCenter'
         const loginAddress = _.isMobile() ? 'mobileLogin' : 'aindex'
         if(success){
           if(!_.isUndefined(this.mode)){
             const query = {mode: this.mode}
-            if(this.withdraw && this.withdraw === 'true'){
-              // Object.assign(query,{
-              //   withdraw: this.withdraw
-              // })
-              this.$store.commit('GET_WIDTHDRAW',true)
-            }
+            // if(this.withdraw && this.withdraw === 'true'){
+            //   // Object.assign(query,{
+            //   //   withdraw: this.withdraw
+            //   // })
+            //   this.$store.commit('GET_WIDTHDRAW',true)
+            // }
             this.$router.replace({name:tranAddress,query})
           }else{
             this.$router.replace({name:tranAddress})

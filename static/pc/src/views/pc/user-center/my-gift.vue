@@ -149,7 +149,7 @@
         }
       },
       toUseExchange() {
-        this.$store.commit("SHOW_FASTSALE", true);
+        this.$route.push({name:'quickBuySell'})
       }
     },
     components: {

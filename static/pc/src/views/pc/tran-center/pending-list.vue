@@ -15,12 +15,12 @@
           <span class="s-percent">{{percent(item) | toFixed(2) }}%  </span>
         </span>
         <span class="unit unit1">
-          <a class="detail-link" :class="{disable:item.balance === 0}"
+          <a class="btn-link" :class="{disable:item.balance === 0}"
              v-if="tabType === 1"
              @click="item.balance === 0 ? '' : putDownUpOrder(item.id,1)">{{$t('table.remove')}}</a>
           <div v-else-if="item.status != 11">
-            <a class="detail-link" @click="putDownUpOrder(item.id,2)">{{$t('table.restored')}}</a>
-            <a class="detail-link" @click="deleteOrder(item.id)">{{$t('table.deleteOrder')}}</a>
+            <a class="btn-link" @click="putDownUpOrder(item.id,2)">{{$t('table.restored')}}</a>
+            <a class="btn-link orange" @click="deleteOrder(item.id)">{{$t('table.deleteOrder')}}</a>
           </div>
           <span v-else>
             {{$t('postPend.removing')}}

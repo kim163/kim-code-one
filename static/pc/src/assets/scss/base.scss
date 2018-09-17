@@ -1051,7 +1051,7 @@ span.icon-close,i.icon-close{
 .record-main{
   padding: 20px 40px;
 }
-.detail-link{
+.btn-link{
   display: inline-block;
   width: 70px;
   height: 25px;
@@ -1065,5 +1065,12 @@ span.icon-close,i.icon-close{
   &:hover{
     color: #ffffff;
     background: #3573FA;
+  }
+  &.orange{
+    background: #ff9600;
+    opacity: 0.8;
+    &:hover{
+      opacity: 1;
+    }
   }
 }

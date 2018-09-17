@@ -89,17 +89,6 @@
 <style lang="scss" scoped>
   @import "~assets/scss/mobile";
   .confirm-main{
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    z-index: 999;
-    .mask-bg{
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.40);
-    }
     .header{
       width: 100%;
       height: r(50);
