@@ -91,6 +91,7 @@
           "couponType": 100
         }
         userCenter.myGift(requestData).then(res => {
+          console.log(res,'卡了多久萨达')
           if (res.code == 10000) {
             if (res.pageInfo.total == 0) {
               this.isNull = true

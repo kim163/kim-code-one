@@ -65,6 +65,7 @@
         this.$emit("search", index);
     },
     pageOffset (i) {
+
       if (i === 0 || i === this.currentPage) return
       this.pageFun(i);
     },

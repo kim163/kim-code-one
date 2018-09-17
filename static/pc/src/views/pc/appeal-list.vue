@@ -5,7 +5,6 @@
                :class="{active:type===item.type}"
                v-for="(item,index) in navList"
                :key="index" @click="changeTab(item.type)">
-
           </div>
         </div>
     </div>
