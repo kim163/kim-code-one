@@ -6,7 +6,7 @@
                 leave-active-class="animated-quick fadeOut">
       <router-view></router-view>
     </transition>
-    <withdraw-tip v-if="withdrawTip" v-model="withdrawTip" :is-pc="true"></withdraw-tip>
+    <withdraw-tip v-model="withdrawTip" :is-pc="true"></withdraw-tip>
   </div>
 </template>
 

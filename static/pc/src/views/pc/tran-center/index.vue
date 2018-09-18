@@ -1,7 +1,7 @@
 <template>
   <div class="tran-main container max-width">
     <div>
-      订单通知功能模块 待开发
+      <order-notice></order-notice>
     </div>
     <activity></activity>
     <ul class="tab-list">
@@ -26,6 +26,7 @@
   import OrderRecord from './order-record'
   import PendingRecord from './pending-record'
   import AppealRecord from './appeal-record'
+  import OrderNotice from './order-notice'
 
   export default {
     name: "tran-center",
@@ -68,6 +69,7 @@
       OrderRecord,
       PendingRecord,
       AppealRecord,
+      OrderNotice,
     },
     methods:{
 

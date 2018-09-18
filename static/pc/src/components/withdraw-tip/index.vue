@@ -51,7 +51,8 @@
         }
       },
       'withdrawInfo.pass'(val){
-        console.log('提款状态',val)
+        toast('提款审核已通过！')
+        this.toQuickSell()
       }
     },
     components:{
@@ -73,11 +74,12 @@
         $localStorage.remove(`withdraw_${this.userId}`)
         this.$emit('change', false)
         if(_.isMobile()){
-          this.$router.push({name:'mPendingBuy',query:{mode:3,amount: this.amount,bankNo: this.bankNo,withdraw: true}})
+          this.$router.push({name:'mPendingBuy',query:{mode:3,amount: this.withdrawInfo.amount,bankNo: this.withdrawInfo.bankNo,withdraw: true}})
         }else{
-          const query = {mode:3,amount: this.amount,bankNo: this.bankNo,auto: 1}
+          this.$router.push({name:'quickBuySell'})
+          // const query = {mode:3,amount: this.amount,bankNo: this.bankNo,auto: 1}
           // if(this.$route.name === 'transaction'){
-            Vue.$global.bus.$emit('open:QuickSell',query);
+          //   Vue.$global.bus.$emit('open:QuickSell',query);
           // }else{
           //   this.$router.push({name:'transaction',query})
           // }
@@ -85,11 +87,11 @@
       }
     },
     created(){
-      this.getWithdrawInfo()
-      Vue.$global.bus.$on('update:withdrawSuccess',() => {
-        toast('提款审核已通过！')
-        this.toQuickSell()
-      });
+      // this.getWithdrawInfo()
+      // Vue.$global.bus.$on('update:withdrawSuccess',() => {
+      //   toast('提款审核已通过！')
+      //   this.toQuickSell()
+      // });
       if(!this.time){
         this.time = setTimeout(() => {
           this.$emit('change', false)
@@ -97,7 +99,7 @@
       }
     },
     destroyed(){
-      Vue.$global.bus.$off('update:withdrawSuccess');
+      // Vue.$global.bus.$off('update:withdrawSuccess');
     }
   }
 </script>

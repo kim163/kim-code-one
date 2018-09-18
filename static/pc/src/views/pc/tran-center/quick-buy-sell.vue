@@ -185,9 +185,10 @@
       },
       "withdrawInfo.pass"(val){
         if(val){
+          this.pendingItem = 'seller'
           this.bankNo = this.withdrawInfo.bankNo
-          this.amount = this.withdrawInfo.amount
-          this.$store.commit('UPDATE_WIDTHDRAWINFO',{pass:false})
+          this.sellAmount = this.withdrawInfo.amount
+          this.$store.commit('UPDATE_WIDTHDRAWINFO',{pass:false,bankNo:'',amount:0})
         }
       }
     },
@@ -247,10 +248,8 @@
             proofType: this.proofType
           })
         }
-        console.log('requestda',this.requestda)
         const api = this.pendingItem === 'buyer' ? publishToBuy : publishToSell
         api(this.requestda).then((res) => {
-          console.log(res)
           if (res.code == '10000') {
             this.buyAmount = 0;
             this.sellAmount = 0;
@@ -277,9 +276,10 @@
       this.pendingItem = this.tabType === 1 ? 'buyer' : 'seller'
       this.pendingItem = this.openQuickSell ? 'seller' : 'buyer'
       if(this.withdrawInfo.pass){
+        this.pendingItem = 'seller'
         this.bankNo = this.withdrawInfo.bankNo
-        this.amount = this.withdrawInfo.amount
-        this.$store.commit('UPDATE_WIDTHDRAWINFO',{pass:false})
+        this.sellAmount = this.withdrawInfo.amount
+        this.$store.commit('UPDATE_WIDTHDRAWINFO',{pass:false,bankNo:'',amount:0})
       }
     },
     mounted(){
