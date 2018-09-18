@@ -240,10 +240,7 @@
         this.type = type
         if(type==2){
           this.$router.push({name:'myGift'})
-        }else {
-          this.$router.push({name:'user'})
         }
-
       },
       addBindCard() {
         this.needAddCard = true
