@@ -37,7 +37,7 @@
   import noDataTip from 'components/no-data-tip'
   import {userCenter} from 'api'
   import {mapGetters} from 'vuex'
-
+  import  scrollBottom from '../../../util/bottomScroll'
   export default {
     data() {
       return {
@@ -64,39 +64,7 @@
       ])
     },
     methods: {
-      getScrollTop() {
-        var scrollTop = 0, bodyScrollTop = 0, documentScrollTop = 0;
-        if (document.body) {
-          bodyScrollTop = document.body.scrollTop;
-        }
-        if (document.documentElement) {
-          documentScrollTop = document.documentElement.scrollTop;
-        }
-        scrollTop = (bodyScrollTop - documentScrollTop > 0) ? bodyScrollTop : documentScrollTop;
-        return scrollTop;
-      },
-      /*浏览器的适口高度*/
-      getWindowHeight() {
-        var windowHeight = 0;
-        if (document.compatMode == "CSS1Compat") {
-          windowHeight = document.documentElement.clientHeight;
-        } else {
-          windowHeight = document.body.clientHeight;
-        }
-        return windowHeight;
-      },
-      /*滚动高度*/
-      getScrollHeight() {
-        var scrollHeight = 0, bodyScrollHeight = 0, documentScrollHeight = 0;
-        if (document.body) {
-          this.bSH = document.body.scrollHeight;
-        }
-        if (document.documentElement) {
-          this.dSH = document.documentElement.scrollHeight;
-        }
-        scrollHeight = (this.bSH - this.dSH > 0) ? this.bSH : this.dSH;
-        return scrollHeight;
-      },
+
       changeTab(num) {
         if (num == 1) {
           this.currentShow = true
@@ -147,7 +115,7 @@
         this.$router.push({name:'mAppealDetail',params:{id},query:{num}})
       },
       scroll(){
-         if(this.getScrollTop()+this.getWindowHeight() == this.getScrollHeight()){
+         if(scrollBottom.getScrollTop()+scrollBottom.getWindowHeight() == scrollBottom.getScrollHeight()){
            const IshavePage = Number(this.total)>Number(this.initPage+10)*1?true:false
            const IshavePageNext = Number(this.totalNext)>Number(this.initPageNext+10)*1?true:false
            if(this.currentShow&&IshavePage){
