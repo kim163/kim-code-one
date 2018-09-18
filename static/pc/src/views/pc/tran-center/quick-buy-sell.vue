@@ -164,6 +164,8 @@
         'userData',
         'userBalance',
         'noBankCardTip',
+        'openQuickSell',
+        'withdrawInfo',
       ])
     },
     components:{
@@ -177,6 +179,16 @@
       },
       tabType(val){
         this.pendingItem = val === 1 ? 'buyer' : 'seller'
+      },
+      openQuickSell(val){
+        this.pendingItem = val ? 'seller' : 'buyer'
+      },
+      "withdrawInfo.pass"(val){
+        if(val){
+          this.bankNo = this.withdrawInfo.bankNo
+          this.amount = this.withdrawInfo.amount
+          this.$store.commit('UPDATE_WIDTHDRAWINFO',{pass:false})
+        }
       }
     },
     methods:{
@@ -263,9 +275,18 @@
     },
     created(){
       this.pendingItem = this.tabType === 1 ? 'buyer' : 'seller'
+      this.pendingItem = this.openQuickSell ? 'seller' : 'buyer'
+      if(this.withdrawInfo.pass){
+        this.bankNo = this.withdrawInfo.bankNo
+        this.amount = this.withdrawInfo.amount
+        this.$store.commit('UPDATE_WIDTHDRAWINFO',{pass:false})
+      }
     },
     mounted(){
       this.getGift()
+    },
+    beforeDestroy(){
+      this.$store.commit('OPEN_QUICKSELL',false)
     }
   }
 </script>

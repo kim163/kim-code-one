@@ -23,7 +23,6 @@ module.exports = {
         target:'http://54.255.244.109:9001',
        // target:'http://10.33.67.31:17000',
        // target:'10.33.67.54:17000',
-       //  target:'http://10.33.67.32:17000',
         changeOrigin:true
       }
     },

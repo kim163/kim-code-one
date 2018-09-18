@@ -2,7 +2,7 @@
 <div class="page-wrap" v-if="data.total>data.limit">
   <ul v-show="prePage" class="li-page" @click="goPrePage"> < </ul>
   <ul>
-    <li v-for="i, index in showPageBtn" :key="index" :class="{active: i === currentPage, pointer: i, hover: i && i !== currentPage}"
+    <li v-for="i, index in showPageBtn" :key="index" :class="{active: i === currentPage, pointer: i, hover: i && i !== currentPage,'no-border': !i}"
         @click="pageOffset(i)">
       <a v-if="i" class="notPointer">{{i}}</a>
       <a v-else>···</a>

@@ -88,7 +88,6 @@
         })
         this.dataList.data = []
         getOrderxPendingPage(this.reqData).then(res => {
-          console.log('大厅:',res)
           if(res.code === 10000){
             if(res.data.length === 0 && this.reqData.offset === 0){
               this.noData = true;

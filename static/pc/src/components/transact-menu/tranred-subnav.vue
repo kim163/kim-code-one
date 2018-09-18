@@ -56,19 +56,20 @@
 </script>
 <style lang="scss">
 .tranred-subnav{
-  height: 80px;
-  line-height: 80px;
+  height: 40px;
+  line-height: 40px;
   min-height: auto;
   border-bottom: 1px solid #D4D4D4;
   .item-info{
     display: inline-block;
-    width: 200px;
+    width: 100px;
     text-align: center;
     font-size: 16px;
     color: #333333;
-    height: 77px;
-    line-height: 77px;
+    height: 40px;
+    line-height: 40px;
     cursor: pointer;
+    margin-right: 40px;
     &:hover, &.active {
       color: #5087ff;
       border-bottom: 1px solid #5087FF;
@@ -94,21 +95,20 @@
 }
   .search-box{
     display:inline-block; float:right;
-    height:46px;
-    margin:20px;
-    width:330px;
+    height:40px;
+    width:310px;
   }
   .search-btn{
     display: inline-block;
     float:left;
-    width: 100px;
+    width: 80px;
     text-align: center;
     font-size: 16px;
-    background: orange;
+    background: #3573FA;
     color:#fff;
-    height:42px;
-    line-height: 42px;
-    border-radius:0 5px 5px 0;
+    height:40px;
+    line-height: 40px;
+    /*border-radius:0 5px 5px 0;*/
     cursor: pointer;
   }
   .search-input{
@@ -116,9 +116,8 @@
     width: 230px;
     border:1px solid #ccc;
     border-right:0;
-    border-radius: 5px 0 0 5px;
-    height:42px;
-    line-height: 42px;
-    padding:0 10px 0 30px;
+    height:40px;
+    line-height: 40px;
+    padding:0 10px 0 20px;
   }
 </style>
