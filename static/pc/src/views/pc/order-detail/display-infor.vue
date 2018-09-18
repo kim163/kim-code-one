@@ -7,11 +7,13 @@
       <ul class="details-data">
         <li class="cfx">
           <p>交易金额:</p>
-          <input type="text" class="red" readonly :value="DetailList.debitAmountTwin+' CNY'">
+          <input type="text" class="red" readonly  v-if="isHistory" :value="DetailList.amount+' CNY'">
+          <input type="text" class="red" readonly v-else :value="DetailList.debitAmountTwin+' CNY'">
         </li>
         <li class="cfx">
           <p>交易数量:</p>
-          <input type="text" readonly :value="DetailList.debitAmount+' UET'">
+          <input type="text" readonly :value="DetailList.amountTwin+' UET'" v-if="isHistory">
+          <input type="text" readonly :value="DetailList.debitAmount+' UET'" v-else>
         </li>
         <li class="cfx">
           <p>交易单价:</p>
@@ -119,6 +121,10 @@
         default:false
       },
       isDebit:{
+        type:Boolean,
+        default:false
+      },
+      isHistory:{
         type:Boolean,
         default:false
       }

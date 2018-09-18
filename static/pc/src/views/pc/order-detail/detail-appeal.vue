@@ -11,7 +11,8 @@
         <div class="row00 detail-box_scoped" v-if="detailTypeItem=='orderDetails'">
           <detail-title :isCredit="isCredit" :isDebit="isDebit" :orderId="orderId"></detail-title>
           <div class="detail-in cfx">
-            <display-infor :DetailList="DetailList" :isCredit="isCredit" :isDebit="isDebit"></display-infor>
+            <display-infor :DetailList="DetailList" :isCredit="isCredit" :isHistory="isHistory"
+                           :isDebit="isDebit"></display-infor>
             <div class="col-33">
               <div class="order-time">
                 <p class="red order-status-title">
@@ -94,10 +95,11 @@
               <no-data-tip></no-data-tip>
             </div>
             <!--输入框-->
-            <div class="input-content">
+            <div class="input-content" v-if="!isHistory">
               <div class="content-box">
                 <textarea placeholder="说点什么吧...." style="resize:none" v-model="textValue"></textarea>
-                <uploadImg :uploadImgSet="{maxUploadNum:3}" :showClose="true" @gitPicUrl="getPicUrl"  v-model="isReset"></uploadImg>
+                <uploadImg :uploadImgSet="{maxUploadNum:3}" :showClose="true" @gitPicUrl="getPicUrl"
+                           v-model="isReset"></uploadImg>
               </div>
               <!--发送按钮-->
               <div class="send-btn" @click="sendInfo">
@@ -185,6 +187,7 @@
         textValue: '',
         attachmentUrls: '',
         isReset: false,
+        isHistory: false
       };
     },
     methods: {
@@ -197,33 +200,52 @@
           userId: this.userId,
           type: 3   //默认为3
         }
-        transaction.getAppealDetailPage(this.request).then(res => {
-          // data.orderx   订单详情
-          // data.sendInfo   申诉消息列表
-          // data.appeal   申诉状态
-          if (res.code == '10000') {
-            this.DetailList = res.data.orderx;
-            this.AppealList = res.data;
-            if (this.DetailList.credit == this.userId) {
-              this.isCredit = true;
-            } else if (this.DetailList.debit == this.userId) {
-              this.isDebit = true;
+        if (this.$route.query.name == 2) {
+          userCenter.getAppealDetailHistoryPage(this.request).then(res => {
+            if (res.code == '10000') {
+              console.log(res, '萨达')
+              this.isHistory = true
+              this.DetailList = res.data.appealHistory;
+              this.AppealList = res.data;
+              if (this.AppealList.transaction.credit == this.userId) {
+                this.isCredit = true;
+              } else if (this.AppealList.transaction.credit == this.userId) {
+                this.isDebit = true;
+              }
+            } else {
+              toast(res.message)
             }
-          } else {
-            toast(res.message)
-          }
+          })
+          return;
+        } else {
+          transaction.getAppealDetailPage(this.request).then(res => {
+            // data.orderx   订单详情
+            // data.sendInfo   申诉消息列表
+            // data.appeal   申诉状态
+            if (res.code == '10000') {
+              this.DetailList = res.data.orderx;
+              this.AppealList = res.data;
+              if (this.DetailList.credit == this.userId) {
+                this.isCredit = true;
+              } else if (this.DetailList.debit == this.userId) {
+                this.isDebit = true;
+              }
+            } else {
+              toast(res.message)
+            }
 
-          //statusText
+            //statusText
 //          this.DetailList.creditProofUrlTwin = res.data.creditProofUrlTwin.split(',');
 
-        }).catch(error => {
-          toast(error.message);
-        });
+          }).catch(error => {
+            toast(error.message);
+          });
+        }
       },
       chatStateUpdate() {
         this.chatState = false
       },
-      refreshContent(){
+      refreshContent() {
         this.fetchData()
       },
       openListUpdate() {
@@ -232,7 +254,6 @@
       },
       getPicUrl(res) {
         this.attachmentUrls = res
-        console.log('为什么我们是我们')
       },
       iscloseChatroom() {
         this.isPCstate = false
@@ -246,6 +267,7 @@
           'attachmentUrls': this.attachmentUrls ? this.attachmentUrls.join(',') : '',
           'content': this.textValue
         }
+        console.log(requests,'skjdl')
         userCenter.addAppealDetail(requests).then((res) => {
           if (res.code == '10000') {
             toast('发送成功')
@@ -302,6 +324,7 @@
     },
     created() {
       if (this.$route.params.id) {
+
         this.orderId = this.$route.params.id;
         this.fetchData();
       }
@@ -316,12 +339,16 @@
       ...mapGetters(["userData", "islogin", "userId", 'connectState', 'unreadCount']),
       reverseAppealList() {
         // 按照时间倒序显示数据
-        if (this.AppealList.send && this.AppealList.send.length > 0) {
-          this.AppealList.send = this.AppealList.send.map(item => {
-            return item;
-          });
+        if (this.isHistory) {
+           return  this.AppealList.appealDetailHistoryList.reverse();
+        } else {
+          if (this.AppealList.send && this.AppealList.send.length > 0) {
+            this.AppealList.send = this.AppealList.send.map(item => {
+              return item;
+            });
+          }
+          return this.AppealList.appealDetailList.reverse();
         }
-        return this.AppealList.appealDetailList.reverse();
       },
       unreadCountUpdate() {
         if (this.unreadCount < 0) {
@@ -445,7 +472,7 @@
         max-width: 15rem;
       }
       .pic {
-        padding:10px;
+        padding: 10px;
         width: 120px;
         height: 120px;
         text-align: left;

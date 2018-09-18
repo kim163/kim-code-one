@@ -91,7 +91,6 @@
           "couponType": 100
         }
         userCenter.myGift(requestData).then(res => {
-          console.log(res,'卡了多久萨达')
           if (res.code == 10000) {
             if (res.pageInfo.total == 0) {
               this.isNull = true
@@ -139,8 +138,6 @@
           this.currentShow = false
         }
       },
-
-
       /*滚动条在Y轴上的滚动距离*/
       getScrollTop() {
         var scrollTop = 0, bodyScrollTop = 0, documentScrollTop = 0;
