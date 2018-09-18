@@ -760,6 +760,8 @@
   /*绑定支付宝*/
   .bind-zhifubao-info {
     width: 506px;
+    background-color: #fff;
+    padding: 20px;
     .bind-title {
       overflow: hidden;
       .main-title {
@@ -832,6 +834,8 @@
   /*绑定微信*/
   .bind-weixin-info {
     width: 506px;
+    background-color: #fff;
+    padding: 20px;
     .bind-title {
       overflow: hidden;
       .main-title {
