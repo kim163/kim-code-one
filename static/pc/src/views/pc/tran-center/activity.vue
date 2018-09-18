@@ -74,21 +74,9 @@
         })
       },
       quickBuyOrSell(data){
-        let type = ''
-        switch (data.type){
-          case 'sellCoins':
-            type = 'sell'
-            break
-          case 'buyCoins':
-            type = 'buy'
-            break
-          default:
-            break
-        }
-        // console.log('优惠类型',type)
-        if(type != ''){
-          this.$emit('quickBuySell',type)
-        }
+        let openSell = data.type === 'sellCoins' ? true : false
+        this.$store.commit('OPEN_QUICKSELL',openSell)
+        this.$router.push({name:'quickBuySell'})
       }
     },
     mounted() {

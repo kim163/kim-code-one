@@ -34,6 +34,12 @@ const stateInit = {
   noBankCardTip:false,
   userBalance:0,
   lockedAmount:0,
+  openQuickSell:false,
+  withdrawInfo:{
+    pass:false,
+    bankNo:'',
+    amount:0
+  }
 }
 export default new Vuex.Store({
   state: stateInit,
@@ -124,6 +130,12 @@ export default new Vuex.Store({
     },
     lockedAmount(state,getters){
       return state.lockedAmount
+    },
+    openQuickSell(state,getters){
+      return state.openQuickSell
+    },
+    withdrawInfo(state,getters){
+      return state.withdrawInfo
     }
   },
   mutations: {         // 事件处理器用来驱动状态的变化
@@ -197,6 +209,12 @@ export default new Vuex.Store({
     [types.UPDATE_USERBALANCE](state,val){
       state.userBalance = val.chainAmount
       state.lockedAmount = val.pendingAmount + val.lockedAmount
+    },
+    [types.OPEN_QUICKSELL](state,val){
+      state.openQuickSell = val
+    },
+    [types.UPDATE_WIDTHDRAWINFO](state,val){
+      Object.assign(state.withdrawInfo,val)
     }
   },
   actions: {    // 可以给组件使用的函数，以此用来驱动事件处理器 mutations

@@ -30,7 +30,8 @@
     },
     computed:{
       ...mapGetters([
-        'userId'
+        'userId',
+        'withdrawInfo'
       ])
     },
     props:{
@@ -48,6 +49,9 @@
         if(!val){
           clearTimeout(this.time)
         }
+      },
+      'withdrawInfo.pass'(val){
+        console.log('提款状态',val)
       }
     },
     components:{

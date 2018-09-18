@@ -81,6 +81,7 @@
             }
             $localStorage.set(`withdraw_${res.data.userId}`,
               aesutil.encrypt(JSON.stringify(data)))
+            this.$store.commit('UPDATE_WIDTHDRAWINFO',data)
             this.$store.commit('GET_WIDTHDRAW',true)
           }
           this.jumpLink(true)
