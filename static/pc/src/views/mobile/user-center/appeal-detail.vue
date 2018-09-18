@@ -63,7 +63,7 @@
         </div>
         <div v-if="list.sourceTypeText=='钱包客服'" class="content_list_kefu">
           <div class="user_symbol"></div>
-          <div class="user_content"  >
+          <div class="user_content">
             <p class="name">客服: {{list.userName}} </p>
             <p class="text_content">{{list.content}}</p>
             <div v-if="list.attachmentUrls&&list.attachmentUrls!==null" style="display: inline-block">
@@ -121,6 +121,7 @@
     },
     created() {
       this.fetchData()
+
     },
     methods: {
       closeState(val) {

@@ -550,7 +550,8 @@
   /*绑定银行卡*/
 
   .bind-card-info {
-
+     background-color: #fff;
+     padding: 20px;
     .bind-title {
       overflow: hidden;
     }
@@ -597,6 +598,8 @@
   }
 
   .manage-card-info {
+    background-color: #fff;
+    padding: 20px;
     .bind-title {
       overflow: hidden;
       .main-title {
@@ -672,7 +675,8 @@
   }
 
   .add-card-info {
-
+     background-color: #fff;
+     padding: 20px;
     .bind-title {
       overflow: hidden;
       .main-title {
