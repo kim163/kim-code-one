@@ -39,7 +39,8 @@ const stateInit = {
     pass:false,
     bankNo:'',
     amount:0
-  }
+  },
+  newOrder:'',
 }
 export default new Vuex.Store({
   state: stateInit,
@@ -136,6 +137,9 @@ export default new Vuex.Store({
     },
     withdrawInfo(state,getters){
       return state.withdrawInfo
+    },
+    getNewOrder(state,getters){
+      return state.newOrder
     }
   },
   mutations: {         // 事件处理器用来驱动状态的变化
@@ -215,6 +219,9 @@ export default new Vuex.Store({
     },
     [types.UPDATE_WIDTHDRAWINFO](state,val){
       Object.assign(state.withdrawInfo,val)
+    },
+    [types.UPDATE_NEWORDER](state,val){
+      state.newOrder = val
     }
   },
   actions: {    // 可以给组件使用的函数，以此用来驱动事件处理器 mutations

@@ -97,13 +97,17 @@
           console.log('msgData.type：'+msgData.type)
           if(msgData.type == 5){
             // C2C_ORDER_ONLINE(5, "C2C订单发起人在线检测"),
-            msgData.text= this.userId;
+            msgData.text = this.userId;
             this.client.send('/exchange/walletCustomOnline/-0', {priority: 9}, aesutil.encrypt(JSON.stringify(msgData)))
-          }else if(msgData.type == 1 || msgData.type == 2){
+          }else if(msgData.type == 1 || msgData.type == 2) {
             // C2C_ORDER_PLACE(1, "C2C下单"),
             //  C2C_ORDER_PAY(2, "C2C订单支付完成"),
-            toast(msgData.describe);
-            window.location.href= this.detailNormal + msgData.text;
+            if(_.isMobile()){
+              toast(msgData.describe);
+              window.location.href= this.detailNormal + msgData.text;
+            }else{
+              this.$store.commit('UPDATE_NEWORDER',msgData.text)
+            }
           }else if(msgData.type == 3){
             //  C2C_ORDER_CANCEL(3, "C2C订单取消"),
             toast(msgData.describe);
@@ -114,8 +118,12 @@
             window.location.href= this.detailOver +msgData.text;
           }else if(msgData.type == 11){
             //  C2C_ORDER_APPEAL(11, "C2C申诉");
-            toast(msgData.describe);
-            window.location.href=this.detailAppeal + msgData.text;
+            if(_.isMobile()){
+              toast(msgData.describe);
+              window.location.href=this.detailAppeal + msgData.text;
+            }else{
+              this.$store.commit('UPDATE_NEWORDER',msgData.text)
+            }
           }
           /*接收优惠券完成*/
            else if (msgData.type){
@@ -168,9 +176,9 @@
           this.initUserDef()
         }
       },
-      userId(){
-         // this.$store.dispatch("GET_BANKCARD");
-      }
+      // userId(){
+      //    // this.$store.dispatch("GET_BANKCARD");
+      // }
     },
     components:{
       SysBullentin,

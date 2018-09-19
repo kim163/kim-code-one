@@ -177,7 +177,7 @@
     </div>
     <div class="chatRoom" @click="showChatList()" v-if="chatOnline">
       <div class="chatRoom_content">
-        <span class="iconfont icon-tab-talk"></span> 在线聊天
+        <span class="iconfont icon-tab-talk" style="color: red;"></span> 在线聊天
         <div class="unread-count" v-show="unreadCountUpdate>0" :class="{'upMax':unreadCountUpdate>99}">{{unreadCountUpdate}}
         <span class="add_symbol" v-show="unreadCountUpdate>99">+</span>
         </div>

@@ -366,7 +366,7 @@
   };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 
   .content_list {
     display: flex;

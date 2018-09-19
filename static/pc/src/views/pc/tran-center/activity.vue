@@ -17,7 +17,9 @@
             <div class="info-item right">
               <p class="balance-last">赠币活动剩余：</p>
               <p>
-                <span class="balance">{{coinBalance}}</span>
+                <span class="balance">
+                  <animated-integer :value="coinBalance"></animated-integer>
+                </span>
                 <span>UET</span>
               </p>
             </div>
@@ -33,6 +35,7 @@
   import 'swiper/dist/css/swiper.css'
   import {swiper, swiperSlide} from 'vue-awesome-swiper'
   import {getAwardInfo} from 'api/activity'
+  import AnimatedInteger from 'components/animated-integer'
 
   export default {
     name: "pc-activity",
@@ -57,15 +60,22 @@
     },
     components: {
       swiper,
-      swiperSlide
+      swiperSlide,
+      AnimatedInteger
     },
     methods: {
       getActivityList() {
         getAwardInfo({}).then(res => {
           console.log(res)
           if (res.code === 10000) {
-            this.coinBalance = res.data.coinBalance
+            this.coinBalance = Number(res.data.coinBalance)
             this.activityList = [...res.data.awardList]
+            if(this.coinBalance > 0){
+              this.timer = setTimeout(() => {
+                clearTimeout(this.timer)
+                this.getActivityList()
+              },20000)
+            }
           } else {
             toast(res.message)
           }
@@ -81,6 +91,12 @@
     },
     mounted() {
       this.getActivityList()
+      // this.timer = setInterval(() => {
+      //   this.getActivityList()
+      // },20000)
+    },
+    beforeDestroy(){
+      clearTimeout(this.timer)
     }
   }
 </script>
