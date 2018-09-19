@@ -19,7 +19,7 @@
                     <img src="~images/activity/coin/sell-coins.png" alt="" class="width-100">
                  </div>
                  <router-link tag="div" class="participate-btn eighteen-font" :to="gotoSellCoins()">
-                   参加快速卖币赠币活动
+                   立即卖币
                  </router-link>
               </div>
               <div class="col-24">
@@ -29,7 +29,7 @@
                     <img src="~images/activity/coin/buy-coins.png" alt="" class="width-100">
                  </div>
                  <router-link tag="div" class="participate-btn right-act eighteen-font" :to="gotoBuyCoins()">
-                   参加快速买币赠币活动
+                   立即买币
                  </router-link>
               </div>
            </div>
@@ -58,7 +58,7 @@
                 <div class="randing-part left-part col-27">
                   <div class="ranking-item cfx" v-for="(item,i) in rankingList" v-if="i<5">
                      <span><a href="javascript:void(0);" class="num">{{item.rankingsIndex}}</a></span>
-                     <span>{{item.name}}</span>
+                     <span>{{item.nickname}}</span>
                      <span>{{item.awardTotal}}</span>
                   </div>
                 </div>
@@ -66,7 +66,7 @@
                 <div class="randing-part right-part col-27">
                   <div class="ranking-item cfx" v-for="(item,i) in rankingList" v-if="i>=5">
                     <span><a href="javascript:void(0);" class="num">{{item.rankingsIndex}}</a></span>
-                    <span>{{item.name}}</span>
+                    <span>{{item.nickname}}</span>
                     <span>{{item.awardTotal}}</span>
                   </div>
                 </div>
