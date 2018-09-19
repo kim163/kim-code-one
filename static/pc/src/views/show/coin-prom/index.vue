@@ -564,7 +564,7 @@
         line-height: 114px;
         a{
           display: block;
-          color: #afafaf;
+          color:#b3c3f5;
           font-weight: bold;
           &.active,&:hover{
             color: #6f91ff;
@@ -782,12 +782,12 @@
            display: block;
            margin: 0 auto;
            line-height: 22px;
-           background: #D2D2D2;
+           background: #b3c3f5;
            border-radius: 10px;
-           color: #333333;
+           color: #FFFFFF;
            padding: 4%;
            &:hover,&.active{
-             background: #E45B36;
+             background: #698EFF;
              color: #FFFFFF;
            }
          }
