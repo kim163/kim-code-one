@@ -26,6 +26,7 @@ const customizeLoginTip = () => import('views/mobile/customize-login-tip')
 const mreceivcode = () => import('views/mobile/user-center/receivables-code') // 收款码
 const mAppealList = () => import('views/mobile/user-center/appeal-list') //申诉列表
 const mAppealDetail = () => import('views/mobile/user-center/appeal-detail')
+const mActivity = () => import('views/mobile/activity-center') //手机活动
 export default [
   {
     path: "/m/login",
@@ -223,9 +224,7 @@ export default [
   {
     path:'/m/activity',
     name:'mIndex',
-    component(resolve){ //活动中心
-      return resolve(require('views/mobile/activity-center'))
-    },
+    component:mActivity,
     meta:{
       noCache:true,
       isMobilePage:'mobile-body'
