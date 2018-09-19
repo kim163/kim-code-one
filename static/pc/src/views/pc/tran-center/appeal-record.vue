@@ -5,12 +5,12 @@
       <span @click="getHistoryData(0)" :class="{active:!currentShow}">交易完成</span>
     </div>
     <div class="appeal-content" v-if="currentShow">
-      <noDataTip v-if="isNull"></noDataTip>
-      <div v-else>
+      <div>
         <div class="bind-title">
           <span v-for="list in titleArr" class="title-list">{{list}}</span>
         </div>
-        <div class="content-item" v-for="list in processArr">
+        <noDataTip v-if="isNull"></noDataTip>
+        <div class="content-item" v-for="list in processArr" v-else>
           <div>{{list.orderType==0? '对方':'我方'}}</div>
           <div>{{list.orderType==0? '卖出':'买入'}}</div>
           <div>{{list.userId==list.debit?list.debitName:list.creditName}}</div>
@@ -24,12 +24,12 @@
       </div>
     </div>
     <div class="history-content" v-else>
-      <noDataTip v-if="isNullNext"></noDataTip>
-      <div v-else>
+      <div>
         <div class="bind-title">
           <span v-for="list in titleArr" class="title-list">{{list}}</span>
         </div>
-        <div class="content-item" v-for="list in historyArr">
+        <noDataTip v-if="isNullNext"></noDataTip>
+        <div class="content-item" v-for="list in historyArr" v-else>
           <div>{{list.orderType==0? '对方':'我方'}}</div>
           <div>{{list.orderType==0? '卖出':'买入'}}</div>
           <div>{{list.userId==list.debit?list.debitName:list.creditName}}</div>
