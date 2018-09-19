@@ -220,7 +220,7 @@
           {
             advLogo:"adv-welfare",
             advTitle:"福利",
-            advSubTitle:"现阶段使用久安钱包，在合作商户充值和提款，在钱包快速买卖交易，都将获得增送。"
+            advSubTitle:"现阶段使用久安钱包，在合作商户充值和提款，在钱包快速买卖交易，都将获得赠送。"
           },
           {
             advLogo:"adv-invest",
@@ -276,7 +276,7 @@
         }else {
           routerName = 'transaction';
         }
-        return {name: routerName,query:{mode:'2'}};
+        return {name: routerName,query:{mode:'3'}};
       },
       gotoBuyCoins(){
         let routerName = '';
@@ -285,7 +285,7 @@
         }else {
           routerName = 'transaction';
         }
-        return {name: routerName,query:{mode:'3'}};
+        return {name: routerName,query:{mode:'2'}};
       }
     },
     computed: {},
