@@ -161,7 +161,7 @@
              </div>
              <div class="col-26">
                <img src="~images/activity/coin/buy-two.png" alt="" class="width-100">
-               <p class="sixteen-font">填写购买数量 - 点击买币 (人民币兑UET币比例为1:100)</p>
+               <p class="sixteen-font">填写购买数量，点击买币 (人民币兑UET币比例为1:100)</p>
              </div>
              <div class="col-26">
                <img src="~images/activity/coin/buy-three.png" alt="" class="width-100">
@@ -176,7 +176,7 @@
             </div>
             <div class="col-26">
               <img src="~images/activity/coin/sell-two.png" alt="" class="width-100">
-              <p class="sixteen-font">填写卖出数量 - 点击卖币 (人民币兑UET币比例为1:100)</p>
+              <p class="sixteen-font">填写卖出数量，点击卖币 (人民币兑UET币比例为1:100)</p>
             </div>
             <div class="col-26">
               <img src="~images/activity/coin/sell-three.png" alt="" class="width-100">
@@ -230,8 +230,8 @@
         ],
         rechwithdType:"proRecharge",
         rechwithdNav:[
-          {name:"如何使用久安钱包充值到商户平台", value:"proRecharge"},
-          {name:"如何使用久安钱包从商户平台提款", value:"proWithdrawal"}
+          {name:"如何充值到商户平台", value:"proRecharge"},
+          {name:"如何从商户平台提款", value:"proWithdrawal"}
         ],
         tradingType:"buyCoin",
         tradingCoinNav:[
@@ -566,6 +566,7 @@
           display: block;
           color:#b3c3f5;
           font-weight: bold;
+          text-align: center;
           &.active,&:hover{
             color: #6f91ff;
           }
@@ -774,6 +775,7 @@
       padding: 30px 0;
       .rechwithd-navbar{
          line-height: inherit;
+         margin-bottom: 10px;
          a{
            font-size: 14px;
            font-weight: normal;
