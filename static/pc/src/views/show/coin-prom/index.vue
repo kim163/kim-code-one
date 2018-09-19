@@ -722,6 +722,8 @@
          }
          .tips-title{
            line-height: 60px;
+           margin-top: 10px;
+           font-size: 18px;
          }
          .participate-btn{
             margin: 20px auto 0;
@@ -757,6 +759,7 @@
     }
     .product-advantage{
        .adv-item{
+         min-height: 350px;
          padding: 10px 10px 0;
          p{
            margin-bottom: 0;
