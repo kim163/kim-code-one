@@ -17,9 +17,9 @@
                     <h2 class="tips-title thirty-font">快速卖币 100% 赠币</h2>
                     <img src="~images/activity/coin/sell-coins.png" alt="" class="width-100">
                  </div>
-                 <router-link tag="div" class="participate-btn eighteen-font" :to="gotoSellCoins()">
+                 <div class="participate-btn eighteen-font" @click="gotoSellCoins">
                    立即卖币
-                 </router-link>
+                 </div>
               </div>
               <div class="col-24">
                  <div class="fast-buy">
@@ -27,9 +27,9 @@
                     <h2 class="tips-title thirty-font">快速买币 100% 赠币</h2>
                     <img src="~images/activity/coin/buy-coins.png" alt="" class="width-100">
                  </div>
-                 <router-link tag="div" class="participate-btn right-act eighteen-font" :to="gotoBuyCoins()">
+                 <div class="participate-btn right-act eighteen-font" @click="gotoBuyCoins">
                    立即买币
-                 </router-link>
+                 </div>
               </div>
            </div>
         </div>
@@ -268,22 +268,19 @@
         this.$refs.juanVideo.play();
       },
       gotoSellCoins(){
-        let routerName = '';
         if(_.isMobile()){
-          routerName = 'mPendingBuy';
+          this.$router.push({name: 'mPendingBuy',query:{mode:'3'}});
         }else {
-          routerName = 'transaction';
+          this.$store.commit('OPEN_QUICKSELL',true);
+          this.$router.push({name: 'quickBuySell'});
         }
-        return {name: routerName,query:{mode:'3'}};
       },
       gotoBuyCoins(){
-        let routerName = '';
         if(_.isMobile()){
-          routerName = 'mPendingBuy';
+          this.$router.push({name: 'mPendingBuy',query:{mode:'2'}});
         }else {
-          routerName = 'transaction';
+          this.$router.push({name: 'quickBuySell'});
         }
-        return {name: routerName,query:{mode:'2'}};
       }
     },
     computed: {},
