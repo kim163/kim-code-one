@@ -1,6 +1,5 @@
 <template>
   <div class="coin-activity-promot">
-    <display-nav :isOfficialWeb="isOfficialWeb"></display-nav>
     <div class="activity-mobile-header"></div>
     <div class="activity-banner">
        <img src="~images/activity/coin/coin-mobile-banner.jpg" alt="久安免费赠币" />
@@ -189,7 +188,7 @@
       </div>
     </div>
 
-    <div class="simple-footer">
+    <div class="simple-footer hide">
       <div class="container max-width">
         <div class="row center">
            <p class="sixteen-font"> 国内早期区块链从业者，专注数字资产钱包，智能合约方向 &nbsp;&nbsp; Copyright &copy; 2018 久安钱包 All</p>
@@ -200,7 +199,6 @@
   </div>
 </template>
 <script>
-  import displayNav from 'components/nav/display-nav';
   import {awardRankings} from 'api/activity';
 
   export default {
@@ -295,7 +293,7 @@
       this.getAwardRankings();
     },
     components: {
-      displayNav
+
     }
   };
 </script>

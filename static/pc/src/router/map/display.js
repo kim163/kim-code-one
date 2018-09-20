@@ -6,7 +6,6 @@
 const promIndex = () => import('views/show/promotion');  // 推广首页
 const promHelp = () => import('views/show/promotion/help');  // 推广帮助中心
 const promContactUs = () => import('views/show/promotion/contact-us');  // 推广联系我们
-const activityIndex = () => import('views/show/coin-prom');   // 优惠活动
 
 export default [
   {
@@ -67,17 +66,6 @@ export default [
     path: "/promContact",
     name: "promContact",
     component: promContactUs,
-    meta:{
-      noLogin: true
-    }
-  },
-  {
-    path: "/newActivity",
-    name: "activityIndex",
-    component: activityIndex,
-    props:{
-      isOfficialWeb:true
-    },
     meta:{
       noLogin: true
     }
