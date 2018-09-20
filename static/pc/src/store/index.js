@@ -40,7 +40,10 @@ const stateInit = {
     bankNo:'',
     amount:0
   },
-  newOrder:'',
+  newOrder:{
+    type:0,
+    orderId:''
+  },
 }
 export default new Vuex.Store({
   state: stateInit,
@@ -221,7 +224,7 @@ export default new Vuex.Store({
       Object.assign(state.withdrawInfo,val)
     },
     [types.UPDATE_NEWORDER](state,val){
-      state.newOrder = val
+      Object.assign(state.newOrder,val)
     }
   },
   actions: {    // 可以给组件使用的函数，以此用来驱动事件处理器 mutations

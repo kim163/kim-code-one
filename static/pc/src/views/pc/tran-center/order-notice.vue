@@ -42,9 +42,19 @@
       ])
     },
     watch:{
-      getNewOrder(val){
-        this.orderId = val
-        this.getOrderDetail()
+      "getNewOrder":{
+        handler(newVal,oldVal){
+          if(newVal.orderId != oldVal.orderId){
+            this.orderId = newVal.orderId
+            this.getOrderDetail()
+          }else{
+            if(newVal.type === 1 || newVal.type === 2 || newVal.type === 11){
+              this.orderId = newVal.orderId
+              this.getOrderDetail()
+            }
+          }
+        },
+        deep: true
       },
       hasNew(val){
         if(val){
