@@ -37,7 +37,7 @@
   import noDataTip from 'components/no-data-tip'
   import {userCenter} from 'api'
   import {mapGetters} from 'vuex'
-
+  import  scrollBottom from '../../../util/bottomScroll'
   export default {
     data() {
       return {
@@ -45,12 +45,18 @@
         isNull: false,
         isNullNext: false,
         historyArr:[],
-        processArr:[]
+        processArr:[],
+        totalNext:"",
+        total:'',
+        initPage:10,
+        initPageNext:10,
+        pageSize:10
       }
     },
     created() {
       this.getAppealPageInfo()
       this.getAppealDetailHistoryPageInfo()
+      window.addEventListener('scroll', this.scroll)
     },
     computed: {
       ...mapGetters([
@@ -58,6 +64,7 @@
       ])
     },
     methods: {
+
       changeTab(num) {
         if (num == 1) {
           this.currentShow = true
@@ -67,8 +74,8 @@
       },
       getAppealPageInfo() {
         const requests = {
-          'limit': 10,
-          'offset': 0,
+          'limit': this.pageSize,
+          'offset': this.initPage,
           'userId': this.userId,
           'types': [1, 2, 3, 4]
         }
@@ -77,28 +84,50 @@
           if (res.data.length == 0) {
             this.isNull = true
           } else {
-            this.processArr = res.data
+            this.processArr = res.data,
+            this.total = res.pageInfo.total
           }
         })
       },
       getAppealDetailHistoryPageInfo() {
         const requests = {
-          'limit': 10,
-          'offset': 0,
+          'limit': this.pageSize,
+          'offset': this.initPageNext,
           'userId': this.userId,
           'types': [1, 2, 3, 4]
         }
         /*历史的列表页*/
+
         userCenter.getAppealHistoryPage(requests).then((res) => {
+
           if (res.data.length == 0) {
             this.isNullNext = true
           } else {
-            this.historyArr = res.data
+            const templateArr=res.data
+            for(let i =0; i<templateArr.length;i++){
+              this.historyArr.push(templateArr[i])
+            }
+            this.totalNext = res.pageInfo.total
           }
         })
       },
       goDetail(id,num){
         this.$router.push({name:'mAppealDetail',params:{id},query:{num}})
+      },
+      scroll(){
+         if(scrollBottom.getScrollTop()+scrollBottom.getWindowHeight() == scrollBottom.getScrollHeight()){
+           const IshavePage = Number(this.total)>Number(this.initPage+10)*1?true:false
+           const IshavePageNext = Number(this.totalNext)>Number(this.initPageNext+10)*1?true:false
+           if(this.currentShow&&IshavePage){
+             this.initPage +=10
+             this.getAppealPageInfo()
+           }
+           if(!this.currentShow&&IshavePageNext){
+             this.initPageNext+=10
+             this.getAppealDetailHistoryPageInfo()
+
+           }
+         }
       }
     },
 

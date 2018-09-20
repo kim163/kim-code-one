@@ -34,7 +34,6 @@
             </router-link>
           </div>
           <div class="tool-item-href border-bot hidden" @click="handleSetLanguage" > {{$t('navbar.languageSel')}} </div>
-
         </div>
       </transition>
     </div>

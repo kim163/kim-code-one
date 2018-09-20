@@ -1,14 +1,14 @@
 <template>
 <div class="page-wrap" v-if="data.total>data.limit">
-  <ul v-show="prePage" class="li-page" @click="goPrePage"> « </ul>
+  <ul v-show="prePage" class="li-page" @click="goPrePage"> < </ul>
   <ul>
-    <li v-for="i, index in showPageBtn" :key="index" :class="{active: i === currentPage, pointer: i, hover: i && i !== currentPage}"
+    <li v-for="i, index in showPageBtn" :key="index" :class="{active: i === currentPage, pointer: i, hover: i && i !== currentPage,'no-border': !i}"
         @click="pageOffset(i)">
       <a v-if="i" class="notPointer">{{i}}</a>
       <a v-else>···</a>
     </li>
   </ul>
-  <ul v-show="nextPage" class="li-page" @click="goNextPage"> » </ul>
+  <ul v-show="nextPage" class="li-page" @click="goNextPage"> > </ul>
 </div>
 </template>
 
@@ -65,6 +65,7 @@
         this.$emit("search", index);
     },
     pageOffset (i) {
+
       if (i === 0 || i === this.currentPage) return
       this.pageFun(i);
     },
@@ -90,13 +91,15 @@
     overflow: hidden;
 
     li {
+      width: 30px;
+      height: 30px;
+      line-height: 28px;
+      text-align: center;
       float: left;
       color: #1e5a6b;
-      padding: 3px 15px;
       margin: 0 5px;
-      border-radius:8px;
       user-select: none;
-      border: 1px solid transparent;
+      border: 1px solid #D3D3D3;
     }
   }
 
@@ -106,24 +109,33 @@
 
   .hover {
     &:hover {
-      border-color: #7ba6b3;
+      border-color: #3573FA;
+      color: #3573FA;
     }
   }
 
   .li-page {
-    line-height: 1.5;
     cursor: pointer;
-    color: #1e5a6b;
-    padding: 1px 10px;
-
+    border: 1px solid #D3D3D3;
+    width: 30px;
+    height: 30px;
+    line-height: 26px;
+    text-align: center;
+    color: #C2C2C2;
+    margin: 0 5px;
     &:hover {
-      color: #7ba6b3;
+      color: #3573FA;
+      border-color: #3573FA;
     }
   }
 
   .active {
-    background: #5087FF;
+    background: #3573FA;
     color:#fff;
+    border-color: #3573FA;
+  }
+  .no-border{
+    border:none;
   }
 }
 </style>

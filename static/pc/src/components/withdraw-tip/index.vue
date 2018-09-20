@@ -1,19 +1,20 @@
 <template>
-  <div class="main" v-if="show">
-    <div class="main-bg"></div>
+  <popup class="main" v-if="show">
+    <!--<div class="main-bg"></div>-->
     <div class="container" :class="{'is-pc':isPc}">
       <div class="title">温馨提示</div>
       <div class="bg"></div>
       <div class="tip">提款审核中,请稍后...</div>
       <div class="close-btn" @click="hideDialog">关闭按钮</div>
     </div>
-  </div>
+  </popup>
 </template>
 
 <script>
   import aesutil from '@/util/aesutil';
   import {$localStorage} from '@/util/storage'
-  import {mapGetters} from 'vuex'
+  // import {mapGetters} from 'vuex'
+  import Popup from 'components/common-popup'
   export default {
     name: "withdraw-tip",
     data(){
@@ -29,7 +30,8 @@
     },
     computed:{
       ...mapGetters([
-        'userId'
+        'userId',
+        'withdrawInfo'
       ])
     },
     props:{
@@ -47,7 +49,13 @@
         if(!val){
           clearTimeout(this.time)
         }
+      },
+      'withdrawInfo.pass'(val){
+        console.log('提款状态',val)
       }
+    },
+    components:{
+      Popup
     },
     methods:{
       hideDialog(){
@@ -97,24 +105,8 @@
 <style lang="scss" scoped>
   @import "~assets/scss/mobile";
   .main{
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    z-index: 999;
-    .main-bg{
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.40);
-    }
     .container{
       width: 80%;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translateY(-50%);
-      margin-left: -40%;
       background: $white;
       border-radius: r(5);
       display: flex;
@@ -122,7 +114,6 @@
       align-items: center;
       &.is-pc{
         width: r(400);
-        margin-left: -#{r(250)};
         .bg{
           width: r(222);
           height: r(141);

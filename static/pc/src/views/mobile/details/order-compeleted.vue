@@ -180,6 +180,7 @@
         const request = {
           'orderId': this.orderData.orderId
         }
+        console.log(request,'啥快递垃圾萨达')
         transaction.getFinallyAmount(request).then((res) => {
           console.log(res,'色空间啥都健康')
           if (res.code == '10000') {
@@ -216,7 +217,6 @@
     },
     created() {
       this.fetchData();
-
         setTimeout(() => {
           this.fetchFinallyDiscount()
         }, 5000)

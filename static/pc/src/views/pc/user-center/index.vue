@@ -1,5 +1,5 @@
 <template>
-  <div class="container max-width">
+  <div class="container min-width min-height">
     <div class="tab-list">
       <div class="tab-item"
            :class="{active: type === item.type}"
@@ -150,7 +150,7 @@
         </div>
         <div class="bind-content">
           <p class="username">昵称 <input type="text" v-model="personUserName" ></p>
-          <p class="realname">真实姓名 <input type="text" v-model="personRealName"></p>
+          <p class="realname">真实姓名 <input type="text" v-model="personRealName" readonly></p>
         </div>
         <div class="bindInfo" @click='binkUserAccount'>绑定</div>
       </div>
@@ -239,7 +239,7 @@
       changeTab(type) {
         this.type = type
         if(type==2){
-
+          this.$router.push({name:'myGift'})
         }
       },
       addBindCard() {
@@ -476,7 +476,6 @@
       .content-list {
         .list-item {
           margin-bottom: 20px;
-          width: 1138px;
           height: 100px;
           display: flex;
           flex-direction: row;
@@ -548,7 +547,8 @@
   /*绑定银行卡*/
 
   .bind-card-info {
-
+     background-color: #fff;
+     padding: 20px;
     .bind-title {
       overflow: hidden;
     }
@@ -595,6 +595,8 @@
   }
 
   .manage-card-info {
+    background-color: #fff;
+    padding: 20px;
     .bind-title {
       overflow: hidden;
       .main-title {
@@ -670,7 +672,8 @@
   }
 
   .add-card-info {
-
+     background-color: #fff;
+     padding: 20px;
     .bind-title {
       overflow: hidden;
       .main-title {
@@ -754,6 +757,8 @@
   /*绑定支付宝*/
   .bind-zhifubao-info {
     width: 506px;
+    background-color: #fff;
+    padding: 20px;
     .bind-title {
       overflow: hidden;
       .main-title {
@@ -826,6 +831,8 @@
   /*绑定微信*/
   .bind-weixin-info {
     width: 506px;
+    background-color: #fff;
+    padding: 20px;
     .bind-title {
       overflow: hidden;
       .main-title {
@@ -897,6 +904,8 @@
 
   .bind-person-info {
     width: 506px;
+    background-color: #fff;
+    padding: 20px;
     .bind-title {
       overflow: hidden;
       .main-title {

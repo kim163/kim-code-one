@@ -24,3 +24,5 @@ export const SHOW_REGISTER = 'SHOW_REGISTER' //展示注册弹窗
 export const INIT_STATE = 'INIT_STATE' //初始化state
 export const GET_USERBALANCE = 'GET_USERBALANCE' //获取用户余额信息
 export const UPDATE_USERBALANCE = 'UPDATE_USERBALANCE' //更新用户余额
+export const OPEN_QUICKSELL = 'OPEN_QUICKSELL' //打开快速卖币
+export const UPDATE_WIDTHDRAWINFO = 'UPDATE_WIDTHDRAWINFO' //更新用户提款信息

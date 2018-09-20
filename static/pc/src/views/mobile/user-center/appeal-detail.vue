@@ -33,7 +33,6 @@
       <noDataTip v-if="appealDetailList.length==0"></noDataTip>
       <div class="leaveMessage_content" v-else v-for="(list,key) in appealDetailList">
         <!--判断用户角色-->
-
         <div v-if="list.sourceTypeText=='卖家'" class="content_list">
           <div style="flex: 1"></div>
           <div class="user_content">
@@ -64,7 +63,7 @@
         </div>
         <div v-if="list.sourceTypeText=='钱包客服'" class="content_list_kefu">
           <div class="user_symbol"></div>
-          <div class="user_content"  >
+          <div class="user_content">
             <p class="name">客服: {{list.userName}} </p>
             <p class="text_content">{{list.content}}</p>
             <div v-if="list.attachmentUrls&&list.attachmentUrls!==null" style="display: inline-block">
@@ -122,6 +121,7 @@
     },
     created() {
       this.fetchData()
+
     },
     methods: {
       closeState(val) {
