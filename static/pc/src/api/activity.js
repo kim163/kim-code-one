@@ -20,3 +20,9 @@ export const getFastTraderAward = jsonData => service({
   method: 'post',
   data: jsonData
 });
+//获取优惠券排行
+export const awardRankings = jsonData => service({
+  url: numversion+`coupon/awardRankings`,
+  method: 'post',
+  data: jsonData
+});
