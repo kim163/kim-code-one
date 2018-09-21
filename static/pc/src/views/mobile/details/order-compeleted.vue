@@ -198,6 +198,9 @@
       closePage() {
         this.$router.push({name:'mTransaction'})
       },
+      isNeedClose(val){
+        this.isShowpopup = val
+      },
       copy() {
         var clipboard = new Clipboard('.copy-btn')
         clipboard.on('success', e => {

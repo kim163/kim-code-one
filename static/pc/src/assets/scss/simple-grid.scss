@@ -67,6 +67,28 @@
   min-height: 0.125rem;
 }
 
+.thirty-eight-font{
+  font-size: 24px;
+}
+.thirty-font{
+  font-size: 22px;
+}
+.twenty-four-font{
+  font-size: 16px;
+}
+.eighteen-font{
+  font-size: 16px;
+}
+.sixteen-font{
+  font-size: 14px;
+}
+.fourteen-font{
+  font-size: 12px;
+}
+.pc-show{
+  display: none;
+}
+
 .col-1,
 .col-2,
 .col-3,
@@ -82,7 +104,9 @@
 .col-16,
 .col-17,
 .col-18,
-.col-19{
+.col-19,
+.col-24,
+.col-27{
   width: 100%;
 }
 .col-13{
@@ -106,6 +130,9 @@
 }
 .col-23{
   width: 50%;
+}
+.col-25 {
+  width: 47%;
 }
 
 .col-1-sm {
@@ -262,6 +289,40 @@
   .col-23{
     width: 25%;
   }
+  .col-24{
+    width: 50%;
+  }
+  .col-25 {
+    width: 22%;
+  }
+  .col-26{
+    width: 33.33%;
+  }
+  .col-27{
+    width: 46.6%;
+  }
+  .thirty-eight-font{
+    font-size: 38px;
+  }
+  .thirty-font{
+    font-size: 30px;
+  }
+  .twenty-four-font{
+    font-size: 24px;
+  }
+  .eighteen-font{
+    font-size: 18px;
+  }
+  .sixteen-font{
+    font-size: 16px;
+  }
+  .fourteen-font{
+    font-size: 14px;
+  }
+  .pc-show{
+    display: block;
+  }
+
 }
 
 @media only screen and (min-width: 60em) { /* 960px */

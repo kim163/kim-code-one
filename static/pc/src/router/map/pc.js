@@ -3,6 +3,7 @@ const PcIndex = () => import('views/pc/index');   // 入口文件
 const PromIndex = () => import('views/pc/promotion');  // 推广首页
 const PromHelp = () => import('views/pc/promotion/help');  // 推广帮助中心
 const PromContactUs = () => import('views/pc/promotion/contact-us');  // 推广联系我们
+const ActivityIndex = () => import('views/show/coin-prom');   // 最新优惠
 const WalletCenter = () => import('views/pc/wallet-center') //钱包中心
 const TranCenter = () => import('views/pc/tran-center') //交易模块
 const UserCenter = () => import('views/pc/user-center') //个人中心模块
@@ -18,7 +19,7 @@ const MyGift = () => import('views/pc/user-center/my-gift') //个人中心我的
 export default [
   {
     path: "/",
-    name: "aindex",
+    name: "index",
     redirect:"/index"
   },
   {
@@ -63,6 +64,14 @@ export default [
         // props:{
         //   isOfficialWeb:true
         // }
+      },
+      {
+        path: "/newActivity",
+        name: "activityIndex",
+        component: ActivityIndex,
+        meta:{
+          noLogin: true
+        }
       },
       {
         path: "/prom",

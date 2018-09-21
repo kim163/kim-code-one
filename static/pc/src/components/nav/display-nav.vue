@@ -19,10 +19,10 @@
       </div>
       <div class="mobile-nav-bar">
         <router-link :to="gotoIndex()" class="nav-item">久安优势</router-link>
-        <router-link :to="{name:'mIndex'}" v-show="isOfficialWeb" >久安钱包中心</router-link>
+        <router-link :to="{name:'activityIndex'}" class="nav-item">最新优惠</router-link>
         <router-link :to="gotoHelp()" class="nav-item">帮助中心</router-link>
         <router-link :to="gotoContact()" class="nav-item">联系我们</router-link>
-        <!--<router-link :to="{name:'mIndex'}" v-show="isOfficialWeb" class="nav-item tran-btn">前往久安钱包</router-link>-->
+        <router-link :to="{name:'mIndex'}" v-show="isOfficialWeb" class="nav-item tran-btn">前往久安钱包</router-link>
       </div>
     </div>
 
@@ -41,6 +41,9 @@
             </div>
             <div class="col-2" v-show="isOfficialWeb">
               <router-link :to="{name:'walletCenter'}">久安钱包中心</router-link>
+            </div>
+            <div class="col-2">
+              <router-link :to="{name:'activityIndex'}">最新优惠</router-link>
             </div>
             <div class="col-2">
               <router-link :to="gotoHelp()">帮助中心</router-link>
@@ -163,10 +166,10 @@
   }
   .link-part{
     [class^="col"]{
-      margin: 0 32px;
+      margin: 0 18px;
       width: auto;
       &:last-child{
-        margin: 0 0 0 32px;
+        margin: 0 0 0 18px;
       }
     }
    .tran-btn a{
@@ -230,11 +233,19 @@
   }
 }
 
- @media only screen and (max-width: 1180px) and (min-width: 800px) {
+ @media only screen and (max-width: 1190px) and (min-width: 800px) {
    .dispnav-content .link-part [class^="col"]{
-     margin: 0 3px;
+     margin: 0 1px;
+     a{
+       padding: 0 10px;
+     }
      &:last-child{
-       margin: 0 0 0 3px;
+       margin: 0 0 0 1px;
+     }
+     &.tran-btn{
+       a{
+         padding: 7px 10px;
+       }
      }
    }
  }
