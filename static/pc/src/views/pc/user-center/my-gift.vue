@@ -9,6 +9,7 @@
              @click="changeTitle(item.type)">
           {{$t(item.name)}}
         </div>
+        <router-link class="go-center" :to="{name:'walletCenter'}">返回钱包中心</router-link>
       </div>
       <div class="gift_content">
         <div class="gift_tab">
@@ -168,6 +169,7 @@
       padding-top: 20px;
       text-align: left;
       background-color: #fff;
+      line-height: 50px;
       .tab-item {
         text-align: center;
         display: inline-block;
@@ -185,6 +187,9 @@
           color: #ffffff;
           background-color: #3573FA;
         }
+      }
+      .go-center{
+        float: right;
       }
     }
     .gift_content {
