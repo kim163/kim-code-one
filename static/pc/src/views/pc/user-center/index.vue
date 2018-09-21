@@ -151,7 +151,7 @@
         </div>
         <div class="bind-content">
           <p class="username">昵称 <input type="text" v-model="personUserName" ></p>
-          <p class="realname">真实姓名 <input type="text" v-model="personRealName"></p>
+          <p class="realname">真实姓名 <input type="text" v-model="personRealName" readonly></p>
         </div>
         <div class="bindInfo" @click='binkUserAccount'>绑定</div>
       </div>
