@@ -286,7 +286,8 @@
         }
         transaction.payCompleted(this.request).then(res => {
           if (res.code == '10000') {
-            Vue.$global.bus.$emit('update:balance');
+            // Vue.$global.bus.$emit('update:balance');
+            this.$store.dispatch('GET_USERBALANCE')
             toast('您已确认收款，请勿重复操作');
             this.$router.push({name: 'orderDetailOver', params: {id: this.orderId}});
           } else {

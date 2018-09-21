@@ -18,7 +18,7 @@ const service = axios.create({
 
 // request拦截器
 service.interceptors.request.use(config => {
-  const showLoading = _(config.loading).isUndefined() ? true : config.loading
+  const showLoading = _(config.loading).isUndefined() ? (_(config.data.loading).isUndefined() ? true : config.data.loading) : config.loading
   if (config.data && config.data.multipart) {
     config.headers['content-type'] = 'multipart/form-data'
   } else {
