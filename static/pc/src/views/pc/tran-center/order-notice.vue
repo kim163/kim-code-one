@@ -101,8 +101,8 @@
           console.log('getCouponAmount',res)
           if(res.code === 10000){
             if(!_.isNull(res.data)){
-              this.couponValueStr = res.data.couponValueStr
-              this.isAward = res.data.isAward
+              this.couponValueStr = Number(res.data.couponValueStr)
+              this.isAward = this.couponValueStr > 0 ? res.data.isAward : false
             }
           }else{
             toast(res.message)
