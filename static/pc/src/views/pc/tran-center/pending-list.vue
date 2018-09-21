@@ -168,7 +168,7 @@
       },
       percent(item){
         const res = (item.successAmount/item.amount)*100
-        return res > 100 ? 100 : res
+        return res > 100 ? 100 : (res < 1 ? 0 : res)
       }
     },
     mounted(){
