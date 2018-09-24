@@ -5,14 +5,14 @@
     </div>
     <div class="trad-info" v-if="!noData">
       <transition-group tag="div"
-                        enter-active-class="fadeInRight"
-                        leave-active-class="no-delay"
+                        @before-enter="beforeEnter"
+                        @enter="enter"
                         >
           <tran-detail v-for="(item,index) in dataList.data"
                        :key="item.id"
                        :item="item"
                        :is-sell="isSell"
-                       :class="`deley-${index}`"></tran-detail>
+                       :data-index="index"></tran-detail>
       </transition-group>
     </div>
     <paging-by class="page" v-if="!noData" :data="dataList.pageInfo" @search="pageInfo"></paging-by>
@@ -81,6 +81,20 @@
       TranDetail
     },
     methods:{
+      beforeEnter(el){
+        // el.style.opacity = 0
+        el.style.transform = "translateX(100%)"
+      },
+      enter(el,done){
+        const delay = el.dataset.index * 100
+        setTimeout(function () {
+          Velocity(
+            el,
+            { translateX: 0 },
+            { complete: done }
+          )
+        }, delay)
+      },
       getTradList(){
         this.reqData.offset = (this.reqData.currentPage - 1) * this.reqData.limit;
         Object.assign(this.reqData,{
