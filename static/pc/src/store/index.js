@@ -14,6 +14,7 @@ Vue.use(Vuex);
 const stateInit = {
   showFooter: true,
   showLogin: false, //登录弹窗
+  showRegister:false, //注册弹窗
   userData: {
     name: '',
     nickname: '',

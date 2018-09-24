@@ -120,7 +120,7 @@
         if(_.isMobile()){
           routerName = 'mUserCenter';
         }else {
-          routerName = 'pcUserCenter';
+          routerName = 'userCenter';
         }
         return {name: routerName};
       }
