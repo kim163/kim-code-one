@@ -1,27 +1,33 @@
 <template>
   <div class="muser-center-home">
     <div class="mcenter-userinfo">
-       <div class="login-user">
-         <img :src="getLogo" class="logo">
-         {{$t('navbar.nickName')}}：{{userData.nickname}}
-       </div>
-       <div class="assets cfx">
-         <div class="item-info">
-           <div class="mcertent">
-              <p> UET资产：</p>
-              <span class="amount"> {{calUserBalance(1)}}</span>
-              <span class="money"> ≈ &nbsp;{{formatCny(1)}} &nbsp;CNY</span>
-           </div>
-         </div>
+      <div class="login-user" >
+        <span @click="goAccountManager">
+          <img :src="getLogo" class="logo">
+          {{$t('navbar.nickName')}}：{{userData.nickname}}
+          <span class="iconfont icon-right-arrow left "></span>
+        </span>
 
-         <div class="item-info txt-center">
-           <div class="mcertent right-lock">
-             <p> 锁定资产：</p>
-             <span class="amount"> {{calUserBalance(2)}}</span>
-             <span class="money"> ≈ &nbsp;{{formatCny(2)}} &nbsp;CNY</span>
-           </div>
-         </div>
-       </div>
+        <span class="iconfont icon-cebian-menu right" @click="demo"></span>
+      </div>
+
+      <div class="assets cfx">
+        <div class="item-info">
+          <div class="mcertent">
+            <p> UET资产：</p>
+            <span class="amount"> {{calUserBalance(1)}}</span>
+            <span class="money"> ≈ &nbsp;{{formatCny(1)}} &nbsp;CNY</span>
+          </div>
+        </div>
+
+        <div class="item-info txt-center">
+          <div class="mcertent right-lock">
+            <p> 锁定资产：</p>
+            <span class="amount"> {{calUserBalance(2)}}</span>
+            <span class="money"> ≈ &nbsp;{{formatCny(2)}} &nbsp;CNY</span>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="mcenter-hotlink cfx">
@@ -47,66 +53,66 @@
     </div>
 
     <div class="panel-item">
-     <div class="mcenter-linkitem">
-      <router-link :to="{name:'mBindList'}" v-if="userData.nodeId < 10000" class="item-href">
-        <i class="iconfont logo icon-business-list"></i>
-        {{$t('navbar.busineList')}}
-        <i class="iconfont icon-right-arrow"></i>
-      </router-link>
-       <router-link :to="{name:'mAppealList'}" class="item-href">
-         <i class="iconfont logo icon-appeal-list"></i>
-         {{$t('userCenter.appealList')}}
-         <i class="iconfont icon-right-arrow"></i>
-       </router-link>
-     </div>
+      <div class="mcenter-linkitem">
+        <router-link :to="{name:'mBindList'}" v-if="userData.nodeId < 10000" class="item-href">
+          <i class="iconfont logo icon-business-list"></i>
+          {{$t('navbar.busineList')}}
+          <i class="iconfont icon-right-arrow"></i>
+        </router-link>
+        <router-link :to="{name:'mAppealList'}" class="item-href">
+          <i class="iconfont logo icon-appeal-list"></i>
+          {{$t('userCenter.appealList')}}
+          <i class="iconfont icon-right-arrow"></i>
+        </router-link>
+      </div>
 
-     <div class="mcenter-linkitem">
-      <router-link :to="{name:'mCardList'}" class="item-href">
-        <i class="iconfont logo icon-bind-bank"></i>
-        {{$t('userCenter.bindCard')}}
-        <i class="iconfont icon-right-arrow"></i>
-      </router-link>
-      <!--<router-link :to="{name:'mBindCard',params:{id:1}}" class="item-href">-->
+      <div class="mcenter-linkitem">
+        <router-link :to="{name:'mCardList'}" class="item-href">
+          <i class="iconfont logo icon-bind-bank"></i>
+          {{$t('userCenter.bindCard')}}
+          <i class="iconfont icon-right-arrow"></i>
+        </router-link>
+        <!--<router-link :to="{name:'mBindCard',params:{id:1}}" class="item-href">-->
         <!--<i class="iconfont logo icon-bind-alipay"></i>-->
         <!--{{$t('userCenter.bindAlipay')}}-->
         <!--<i class="iconfont icon-right-arrow"></i>-->
-      <!--</router-link>-->
-      <!--<router-link :to="{name:'mBindCard',params:{id:2}}" class="item-href">-->
+        <!--</router-link>-->
+        <!--<router-link :to="{name:'mBindCard',params:{id:2}}" class="item-href">-->
         <!--<i class="iconfont logo icon-bind-wechat"></i>-->
         <!--{{$t('userCenter.bindWeChat')}}-->
         <!--<i class="iconfont icon-right-arrow"></i>-->
-      <!--</router-link>-->
-     </div>
+        <!--</router-link>-->
+      </div>
 
-     <div class="mcenter-linkitem">
-      <router-link :to="{name:'mSetUserInfo'}" class="item-href">
-        <i class="iconfont logo icon-complete-material"></i>
-        完善资料
-        <i class="iconfont icon-right-arrow"></i>
-      </router-link>
-     </div>
+      <div class="mcenter-linkitem">
+        <router-link :to="{name:'mSetUserInfo'}" class="item-href">
+          <i class="iconfont logo icon-complete-material"></i>
+          完善资料
+          <i class="iconfont icon-right-arrow"></i>
+        </router-link>
+      </div>
 
-     <div class="mcenter-linkitem">
-      <get-live800 :showRightArrow="true" :liveSpecStyle="mcenterLive" :isRoundIcon="true"></get-live800>
-      <a class="item-href" target="_blank" :href="SETTING.appUrl">
-        <i class="iconfont logo icon-juan-app"></i>
-        {{$t('navbar.juanApp')}}
-        <i class="iconfont icon-right-arrow"></i>
-      </a>
-      <router-link :to="{name:'index'}" class="item-href">
-        <i class="iconfont logo icon-juan-home"></i>
-        前往久安首页
-        <i class="iconfont icon-right-arrow"></i>
-      </router-link>
-     </div>
+      <div class="mcenter-linkitem">
+        <a class="item-href" target="_blank" :href="SETTING.appUrl">
+          <i class="iconfont logo icon-juan-app"></i>
+          {{$t('navbar.juanApp')}}
+          <i class="iconfont icon-right-arrow"></i>
+        </a>
+        <router-link :to="{name:'index'}" class="item-href">
+          <i class="iconfont logo icon-juan-home"></i>
+          前往久安首页
+          <i class="iconfont icon-right-arrow"></i>
+        </router-link>
+      </div>
 
-     <div class="mcenter-linkitem">
-      <a href="javascript:void(0);" class="item-href" v-if="userData.nodeId < 10000" @click="$store.dispatch('LOGIN_OUT')">
-        <i class="iconfont logo icon-sign-out"></i>
-        {{$t('navbar.logOut')}}
-        <i class="iconfont icon-right-arrow"></i>
-      </a>
-     </div>
+      <div class="mcenter-linkitem">
+        <a href="javascript:void(0);" class="item-href" v-if="userData.nodeId < 10000"
+           @click="$store.dispatch('LOGIN_OUT')">
+          <i class="iconfont logo icon-sign-out"></i>
+          {{$t('navbar.logOut')}}
+          <i class="iconfont icon-right-arrow"></i>
+        </a>
+      </div>
     </div>
     <m-navbar></m-navbar>
     <confirm-dialog v-model="showConfirm">
@@ -117,6 +123,29 @@
       <div slot="leftBtn" class="confirm-btn-cancel dialog-cancel">取消</div>
       <div slot="rightBtn" class="dialog-btn-yes" @click="toSetInfo">确定</div>
     </confirm-dialog>
+      <div class="outer-container"  v-if="isAd" @click="demo">
+        <div class="side-menu">
+          <div class="account-person-single">
+            <p class="account-pic"><span class="iconfont icon-default-user"></span></p>
+            <p class="account-name">ANSON001</p>
+          </div>
+          <div class="add-account">添加账户</div>
+          <div class="account-content">
+            <get-live800 :showRightArrow="true" :liveSpecStyle="mcenterLive" :isRoundIcon="true"></get-live800>
+            <router-link :to="{name:'mSetUserInfo'}" class="item-href">
+              <i class="iconfont logo icon-complete-material"></i>
+              帮助中心
+              <i class="iconfont icon-right-arrow"></i>
+            </router-link>
+            <router-link :to="{name:'mSetUserInfo'}" class="item-href">
+              <i class="iconfont logo icon-complete-material"></i>
+              关于我们
+              <i class="iconfont icon-right-arrow"></i>
+            </router-link>
+          </div>
+          <div class="login-out-btn">退出账户</div>
+        </div>
+      </div>
   </div>
 </template>
 
@@ -130,56 +159,62 @@
 
   import jiuanLogo from '@/assets/images/icon/juan-logo.svg';
 
-  import {transaction,userCenter} from 'api';
+  import {transaction, userCenter} from 'api';
+  import mToolbar from 'components/m-toolbar'
 
   export default {
     name: "m-user-center",
     data() {
       return {
         SETTING,
-        showConfirm:false,
-        homeInforma:{},
-        requestdata:{},
-        mcenterLive:'mcenter-live',
+        showConfirm: false,
+        homeInforma: {},
+        requestdata: {},
+        mcenterLive: 'mcenter-live',
         initPageNext: 0,
-        myGiftTotal: 0
+        myGiftTotal: 0,
+        isAd: false
       }
     },
-    components:{
+    components: {
       ConfirmDialog,
       mNavbar,
-      getLive800
+      getLive800,
+      mToolbar
     },
-    watch:{
-      'userData.name':function(val){
+    watch: {
+      'userData.name': function (val) {
         this.userData.name = val
       },
     },
-    computed:{
+    computed: {
       ...mapGetters([
         'userData',
         'userId'
       ]),
-      getLogo(){
+      getLogo() {
         const menuStyle = JSON.parse($localStorage.get('menuStyle'));
         let logoSrc = jiuanLogo;
-        if(this.userData.nodeId > 10000 && menuStyle){
+        if (this.userData.nodeId > 10000 && menuStyle) {
           logoSrc = menuStyle.iconUrl;
         }
         return logoSrc
       }
     },
-    methods:{
-      toSetInfo(){
+    methods: {
+      demo() {
+        this.isAd = !this.isAd
+      },
+      toSetInfo() {
         this.showConfirm = false;
-        this.$router.push({name:'mSetUserInfo'});
+        this.$router.push({name: 'mSetUserInfo'});
       },
-      formatCny(type){   // type 1表示用户余额 2表示锁定资产
-        const amount = type === 1 ? this.homeInforma.chainAmount : (this.homeInforma.pendingAmount+this.homeInforma.lockedAmount);
-        return !_.isNaN(Number(amount)) ? (Number(amount)*0.01).toFixed(2) : '0.00';
+      formatCny(type) {   // type 1表示用户余额 2表示锁定资产
+        const amount = type === 1 ? this.homeInforma.chainAmount : (this.homeInforma.pendingAmount + this.homeInforma.lockedAmount);
+        return !_.isNaN(Number(amount)) ? (Number(amount) * 0.01).toFixed(2) : '0.00';
       },
-      searchHomeInfo(){
-        this.requestdata={
+      searchHomeInfo() {
+        this.requestdata = {
           userId: this.userId
         };
         transaction.getHomeInfo(this.requestdata).then(res => {
@@ -190,11 +225,14 @@
           toast(err.message);
         })
       },
-      calUserBalance(type){
-        const balAmount = type === 1 ? this.homeInforma.chainAmount : (this.homeInforma.pendingAmount+this.homeInforma.lockedAmount);
-        return  !_.isNaN(Number(balAmount)) ? Number(balAmount) : '0.00';
+      calUserBalance(type) {
+        const balAmount = type === 1 ? this.homeInforma.chainAmount : (this.homeInforma.pendingAmount + this.homeInforma.lockedAmount);
+        return !_.isNaN(Number(balAmount)) ? Number(balAmount) : '0.00';
       },
-      getInfonext(){
+      goAccountManager(){
+        this.$router.push({name:'mAccountManager'})
+      },
+      getInfonext() {
         const requestDatas = {
           "limit": 10,
           "offset": this.initPageNext,
@@ -216,14 +254,14 @@
       this.searchHomeInfo();
       this.getInfonext();
     },
-    beforeRouteLeave (to, from , next) {
-      if(to.name === 'mBindCard'){
-        if(_.isNull(this.userData.name)){
+    beforeRouteLeave(to, from, next) {
+      if (to.name === 'mBindCard') {
+        if (_.isNull(this.userData.name)) {
           this.showConfirm = true
-        }else{
+        } else {
           next()
         }
-      }else{
+      } else {
         next()
       }
     }
@@ -233,88 +271,99 @@
 <style lang="scss" scoped>
   @import "~assets/scss/mobile";
 
-  .muser-center-home{
+  .muser-center-home {
     padding-bottom: r($footer-hg+20);
   }
-  .mcenter-userinfo{
+
+  .mcenter-userinfo {
     background: #3573FA;
     padding: r(20) r(20) r(22);
     color: $white;
     margin-bottom: r(10);
-    .login-user{
-      .logo{
-        height: r(60);
+    .login-user {
+      height: r(40);
+      overflow: hidden;
+      .logo {
+        height: r(40);
         margin-right: r(6);
         border-radius: r(35);
       }
-      line-height: r(60);
-      @include  f(20px);
+      .left {
+        font-size: r(14);
+        padding-left: r(10);
+      }
+      .right {
+        float: right;
+      }
+      line-height: r(40);
+      @include f(16px);
       margin-bottom: r(18);
     }
-    .assets{
-      .item-info{
+    .assets {
+      .item-info {
         width: 50%;
         float: left;
-        @include  f(16px);
-        &:first-child{
+        @include f(16px);
+        &:first-child {
           border-right: 1px solid #85ABFC;
         }
-        .right-lock{
+        .right-lock {
           display: inline-block;
           text-align: left;
         }
-        span{
+        span {
           display: block;
-          word-wrap:break-word;
-          &.amount{
-            @include  f(26px);
+          word-wrap: break-word;
+          &.amount {
+            @include f(26px);
             line-height: r(40);
+            padding-top: r(7);
           }
-          &.money{
-            @include  f(14px);
+          &.money {
+            @include f(14px);
             line-height: r(14);
-            margin-top: r(5);
+            margin-top: r(10);
           }
         }
       }
     }
   }
 
-  .mcenter-hotlink{
+  .mcenter-hotlink {
     background: #FFFFFF;
-    box-shadow: 0 r(4) r(4) 0 rgba(0,0,0,0.05);
+    box-shadow: 0 r(4) r(4) 0 rgba(0, 0, 0, 0.05);
     margin-bottom: r(11);
-    .item-href{
+    .item-href {
       display: block;
       width: 25%;
       float: left;
-      @include  f(13px);
-      color:$font-color;
+      @include f(13px);
+      color: $font-color;
       text-align: center;
       position: relative;
       padding: r(10) 0;
-      .iconfont{
-        @include  f(29px);
+      .iconfont {
+        @include f(29px);
         display: block;
         margin-bottom: r(8);
-        &.icon-receipt-code{
+        &.icon-receipt-code {
           color: #39D65A;
         }
-        &.icon-tran-record1{
+        &.icon-tran-record1 {
           color: #3573FA;
         }
-        &.icon-mypend-order{
+        &.icon-mypend-order {
           color: #955AF9;
         }
-        &.icon-my-gift{
+        &.icon-my-gift {
           color: #FF758D;
         }
       }
-      .tran-num{
+      .tran-num {
         position: absolute;
         right: r(12);
         top: r(8);
-        @include  f(14px);
+        @include f(14px);
         width: r(20);
         height: r(20);
         border-radius: r(50);
@@ -324,65 +373,135 @@
     }
   }
 
-  .panel-item{
-    .mcenter-linkitem{
+  .panel-item {
+    .mcenter-linkitem {
       background: #FFFFFF;
       border-top: 1px solid #E4E4E4;
       border-bottom: 1px solid #E4E4E4;
       padding-left: r(20);
       margin-bottom: r(10);
 
-      .item-href{
+      .item-href {
         height: r(50);
         line-height: r(50);
         padding: 0 r(10) 0 0;
         display: block;
         border-bottom: 1px solid #E4E4E4;
-        @include  f(16px);
-        color:$font-color;
-        &:last-child{
+        @include f(16px);
+        color: $font-color;
+        &:last-child {
           border-bottom: none;
         }
-        .iconfont{
-          &.logo{
-            @include  f(25px);
+        .iconfont {
+          &.logo {
+            @include f(25px);
             margin-right: r(5);
           }
-          &.icon-business-list{
-             color: #B0D443;
+          &.icon-business-list {
+            color: #B0D443;
           }
-          &.icon-appeal-list{
+          &.icon-appeal-list {
             color: #db1270;
           }
-          &.icon-bind-bank{
-             color: #3D88E4;
+          &.icon-bind-bank {
+            color: #3D88E4;
           }
-          &.icon-bind-alipay{
+          &.icon-bind-alipay {
             color: #00AAEE;
           }
-          &.icon-bind-wechat{
-             color: #3CB034;
+          &.icon-bind-wechat {
+            color: #3CB034;
           }
-          &.icon-complete-material{
+          &.icon-complete-material {
             color: #F4376D;
           }
-          &.icon-juan-app{
-             color: #C8151D;
+          &.icon-juan-app {
+            color: #C8151D;
           }
-          &.icon-juan-home{
+          &.icon-juan-home {
             color: #3573FA;
           }
-          &.icon-sign-out{
+          &.icon-sign-out {
             color: #E17367;
           }
         }
-        .icon-right-arrow{
+        .icon-right-arrow {
           float: right;
         }
       }
     }
   }
-  .icon-gift{
+
+  .icon-gift {
     color: #03A9F3;
+  }
+
+  .outer-container {
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 100;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, .4);
+    .side-menu {
+      position: fixed;
+      top: 0;
+      right: 0;
+      background-color: #fff;
+      width: 70%;
+      height: 100%;
+      z-index: 20;
+      animation: fadeInRight .5s;
+      .account-person-single{
+        text-align: center;
+        height: r(180);
+        padding-top: r(40);
+        background-color: #f6f9ff;
+        .account-pic{
+          display: block;
+          width: 60px;
+          height: 60px;
+          border-radius: 50%;
+          background-color: #85abfc;
+          text-align: center;
+          line-height: 50px;
+          @include f(35px);
+          margin: auto;
+        }
+        color: #fff;
+        .account-name{
+          margin-top: r(20);
+          @include f(18px);
+          color: #333333;
+        }
+      }
+      .add-account{
+         background-color: #85abfc;
+         color: #fff;
+         @include f(18px);
+         line-height: 44px;
+         text-align: center;
+      }
+      .account-content{
+        margin-top: r(20);
+        .item-href{
+          height: r(50);
+          display: block;
+          border: 1px solid #f5f5f5;
+          line-height: r(50);
+          margin-bottom: r(10);
+          padding-left: r(10);
+        }
+      }
+      .login-out-btn{
+        background-color: #3573FA;
+        color: #fff;
+        height: r(44);
+        line-height: r(44);
+        @include f(18px);
+        text-align: center;
+      }
+    }
   }
 </style>

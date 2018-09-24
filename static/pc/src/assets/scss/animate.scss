@@ -11,6 +11,13 @@
   transform: translateX(-100%);
 }
 
+.toolSlideRight-enter-active,.toolSlideRight-leave-active {
+  transition:transform .5s;
+}
+.toolSlideRight-enter,.toolSlideRight-leave-to{
+  transform: translateX(100%);
+}
+
 .message-enter-active, .message-leave-active {
   transition:transform .5s;
 }
