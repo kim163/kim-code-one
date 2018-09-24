@@ -7,7 +7,7 @@
         <router-link :to="{name:'userCenter'}" class="link-def" tag="div">个人中心</router-link>
         <div class="link-def" @click="showQrcode = true">收款码</div>
         <!--<div class="link-def">APP扫码登录</div>-->
-        <login-app></login-app>
+        <login-app v-if="isCustomize"></login-app>
         <div class="icon-font">
           <svg class="icon" aria-hidden="true">
             <use xlink:href="#icon-wallet-balance"></use>
@@ -21,7 +21,7 @@
           </div>
           <div class="balance-info">锁定资产：
             <animated-integer :value="calUserBalance(2)"></animated-integer> UET
-            ≈ &yen;
+            ≈ &yen;;
             <animated-integer :value="formatCny(2)"></animated-integer>
           </div>
         </div>
