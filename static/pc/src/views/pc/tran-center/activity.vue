@@ -66,7 +66,6 @@
     methods: {
       getActivityList() {
         getAwardInfo({}).then(res => {
-          console.log(res)
           if (res.code === 10000) {
             this.coinBalance = Number(res.data.coinBalance)
             this.activityList = [...res.data.awardList]

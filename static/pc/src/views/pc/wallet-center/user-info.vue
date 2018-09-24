@@ -7,7 +7,7 @@
         <router-link :to="{name:'userCenter'}" class="link-def" tag="div">个人中心</router-link>
         <div class="link-def" @click="showQrcode = true">收款码</div>
         <!--<div class="link-def">APP扫码登录</div>-->
-        <login-app v-if="isCustomize"></login-app>
+        <login-app></login-app>
         <div class="icon-font">
           <svg class="icon" aria-hidden="true">
             <use xlink:href="#icon-wallet-balance"></use>
