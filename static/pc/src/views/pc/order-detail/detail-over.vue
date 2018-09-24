@@ -115,6 +115,7 @@
       setTimeout(()=>{
         this.fetchFinallyDiscount()
       },5000)
+      this.$store.dispatch('GET_USERBALANCE')
     },
     watch: {
       "$route"(val) {

@@ -2,86 +2,90 @@
   <div class="transell-main">
     <div class="section detail-content">
       <div class="page-content detail-box" v-if="DetailList">
-          <detail-title :isCredit="isCredit" :isDebit="isDebit" :orderId="orderId"></detail-title>
-          <div class="detail-in cfx">
-            <display-infor :DetailList="DetailList" :isCredit="isCredit" :isDebit="isDebit"></display-infor>
-            <div class="col-33">
-              <div class="order-time">
-                <p class="red order-status-title">
-                  <span v-if="DetailList.status =='45'">等待付款</span>
-                  <span v-else-if="DetailList.status =='47'">等待释放UET</span>
-                  <span v-else-if="DetailList.status =='61'">申诉锁定</span>
-                  <span v-else-if="DetailList.status =='41'">订单已发布</span>
-                  <span v-else-if="DetailList.status =='43'">订单已下架</span>
-                  <span v-else>
+        <detail-title :isCredit="isCredit" :isDebit="isDebit" :orderId="orderId"></detail-title>
+        <div class="detail-in cfx">
+          <display-infor :DetailList="DetailList" :isCredit="isCredit" :isDebit="isDebit"></display-infor>
+          <div class="col-33">
+            <div class="order-time">
+              <p class="red order-status-title">
+                <span v-if="DetailList.status =='45'">等待付款</span>
+                <span v-else-if="DetailList.status =='47'">等待释放UET</span>
+                <span v-else-if="DetailList.status =='61'">申诉锁定</span>
+                <span v-else-if="DetailList.status =='41'">订单已发布</span>
+                <span v-else-if="DetailList.status =='43'">订单已下架</span>
+                <span v-else>
                       {{DetailList.status}}
                     </span>
-                </p>
-                <p class="text-center time-stame">
-                  <span v-if="DetailList.status =='45' && isCredit">请在倒计时结束前完成付款</span>
-                  <span v-else-if="DetailList.status =='47' && isCredit">等待卖家释放UET倒计时</span>
-                  <span v-else-if="DetailList.status =='45' && isDebit">等待买家付款倒计时</span>
-                  <span v-else-if="DetailList.status =='47' && isDebit">释放UET倒计时</span>
+              </p>
+              <p class="text-center time-stame">
+                <span v-if="DetailList.status =='45' && isCredit">请在倒计时结束前完成付款</span>
+                <span v-else-if="DetailList.status =='47' && isCredit">等待卖家释放UET倒计时</span>
+                <span v-else-if="DetailList.status =='45' && isDebit">等待买家付款倒计时</span>
+                <span v-else-if="DetailList.status =='47' && isDebit">释放UET倒计时</span>
 
-                  <count-down v-if="DetailList.status !='61'"
-                              :end-time="DetailList.intervalTime-DetailList.elapsedTime<=0 ? 0 : DetailList.intervalTime-DetailList.elapsedTime "
-                              @callBack="countDownEnd">
-                  </count-down>
+                <count-down v-if="DetailList.status !='61'"
+                            :end-time="DetailList.intervalTime-DetailList.elapsedTime<=0 ? 0 : DetailList.intervalTime-DetailList.elapsedTime "
+                            @callBack="countDownEnd">
+                </count-down>
 
+              </p>
+              <!--卖家优惠 添加对应信息-->
+              <p class="pay_send" v-if="showDiscountInfo&couponValueStr>0&DetailList.status =='45' && isDebit">立即付款后预计获赠
+                <span>{{couponValueStr}} UET</span></p>
+              <div class="btn-group" v-if="DetailList.status =='45' && isCredit">
+                <input type="button" class="btn btn-block btn-normal" @click="showConfirm=true" value="我已完成付款">
+                <p class="pay_send" v-if="showDiscountInfo&couponValueStr>0">立即付款后预计获赠
+                  <span>{{couponValueStr}} UET</span></p>
+                <p class="payment-tips">
+                  警告：为了您能快速完成交易，请尽量使用 <span class="red">您所绑定的银行卡/支付宝付款。</span>付款成功后，点击“我已完成付款”。
                 </p>
-                <!--卖家优惠 添加对应信息-->
-                <p class="pay_send" v-if="showDiscountInfo&couponValueStr>0&DetailList.status =='45' && isDebit">立即付款后预计获赠 <span>{{couponValueStr}} UET</span></p>
-                <div class="btn-group" v-if="DetailList.status =='45' && isCredit">
-                  <input type="button" class="btn btn-block btn-normal" @click="showConfirm=true" value="我已完成付款">
-                  <p class="pay_send" v-if="showDiscountInfo&couponValueStr>0">立即付款后预计获赠 <span>{{couponValueStr}} UET</span></p>
-                  <p class="payment-tips">
-                    警告：为了您能快速完成交易，请尽量使用 <span class="red">您所绑定的银行卡/支付宝付款。</span>付款成功后，点击“我已完成付款”。
-                  </p>
-                  <input type="button" class="btn btn-block btn-orange" @click="cancelOrder" value="取消订单">
-                  <p class="text-center">
-                    <span class="red">如果您已向卖家付款，千万不要取消</span><br>
-                    取消规则：买方当日连续取消2笔，或累计取消6笔，将限制交易24小时。
-                  </p>
-                </div>
-                <div v-if="DetailList.status =='47' && isCredit">
-                  <p class="pay_send" v-if="showDiscountInfo&couponValueStr>0">立即付款后预计获赠 <span>{{couponValueStr}} UET</span></p>
-                  <p class="text-center red">您已确认付款，请勿重复付款</p>
-                </div>
-                <div class="btn-group" v-if="DetailList.status =='47' && isDebit">
-                  <input type="button" class="btn btn-block btn-normal" @click="showConfirmPayment=true" value="释放UET">
-                  <p class="pay_send" v-if="showDiscountInfo&couponValueStr>0">立即付款后预计获赠 <span>{{couponValueStr}} UET</span></p>
-                  <p class="payment-tips">
-                    确认收款前，请务必检查是否有收到买方付款
-                  </p>
-                  <input type="button" class="btn btn-block btn-orange" @click="createAppeal" value="我要申诉">
-                  <p class="text-center">
-                    申诉规则：申诉后，该笔订单将会被锁定。若仲裁结果为买方获胜，系统将会自动释放该笔订单的UET给买方。若仲裁结果为您获胜，则该笔订单交易失败。
-                  </p>
-                </div>
+                <input type="button" class="btn btn-block btn-orange" @click="cancelOrder" value="取消订单">
+                <p class="text-center">
+                  <span class="red">如果您已向卖家付款，千万不要取消</span><br>
+                  取消规则：买方当日连续取消2笔，或累计取消6笔，将限制交易24小时。
+                </p>
+              </div>
+              <div v-if="DetailList.status =='47' && isCredit">
+                <p class="pay_send" v-if="showDiscountInfo&couponValueStr>0">立即付款后预计获赠
+                  <span>{{couponValueStr}} UET</span></p>
+                <p class="text-center red">您已确认付款，请勿重复付款</p>
+              </div>
+              <div class="btn-group" v-if="DetailList.status =='47' && isDebit">
+                <input type="button" class="btn btn-block btn-normal" @click="showConfirmPayment=true" value="释放UET">
+                <p class="pay_send" v-if="showDiscountInfo&couponValueStr>0">立即付款后预计获赠
+                  <span>{{couponValueStr}} UET</span></p>
+                <p class="payment-tips">
+                  确认收款前，请务必检查是否有收到买方付款
+                </p>
+                <input type="button" class="btn btn-block btn-orange" @click="createAppeal" value="我要申诉">
+                <p class="text-center">
+                  申诉规则：申诉后，该笔订单将会被锁定。若仲裁结果为买方获胜，系统将会自动释放该笔订单的UET给买方。若仲裁结果为您获胜，则该笔订单交易失败。
+                </p>
               </div>
             </div>
           </div>
-          <div class="detail-tips" v-if="isCredit">
-            <p class="tips-title">温馨提示</p>
-            <p>1.您的汇款将直接进入卖方账户，交易过程中卖方出售的UET由平台托管保护。<br>
-              2.请在规定时间内完成付款，并务必点击“我已完成付款”，卖方确认收款后，系统会将UET划转到您的账户。</p>
-          </div>
-          <div class="detail-tips detail-tips-sell" v-if="DetailList.creditProofUrlTwin && isDebit">
-            <p class="tips-title0">买家付款截图:</p>
-            <ul class="pic-ul">
-              <li v-for="proofImg in DetailList.creditProofUrlTwin||[]">
-                <viewer :images="DetailList.creditProofUrlTwin">
-                  <img :src="proofImg" alt="买家付款截图">
-                </viewer>
-              </li>
-            </ul>
-            <span class="fl friend-txt">提示：点击缩略图可放大查看</span>
-          </div>
-          <div class="detail-tips" v-if="isDebit">
-            <p class="tips-title tips-title-i">温馨提示</p>
-            <p>1.买方的汇款将直接进入您的账户，交易过程中您出售的UET由平台托管保护。<br>
-              2.您在确认收款后，系统会将UET划转到您的账户，如果您申诉，订单将会被锁定。</p>
-          </div>
+        </div>
+        <div class="detail-tips" v-if="isCredit">
+          <p class="tips-title">温馨提示</p>
+          <p>1.您的汇款将直接进入卖方账户，交易过程中卖方出售的UET由平台托管保护。<br>
+            2.请在规定时间内完成付款，并务必点击“我已完成付款”，卖方确认收款后，系统会将UET划转到您的账户。</p>
+        </div>
+        <div class="detail-tips detail-tips-sell" v-if="DetailList.creditProofUrlTwin && isDebit">
+          <p class="tips-title0">买家付款截图:</p>
+          <ul class="pic-ul">
+            <li v-for="proofImg in DetailList.creditProofUrlTwin||[]">
+              <viewer :images="DetailList.creditProofUrlTwin">
+                <img :src="proofImg" alt="买家付款截图">
+              </viewer>
+            </li>
+          </ul>
+          <span class="fl friend-txt">提示：点击缩略图可放大查看</span>
+        </div>
+        <div class="detail-tips" v-if="isDebit">
+          <p class="tips-title tips-title-i">温馨提示</p>
+          <p>1.买方的汇款将直接进入您的账户，交易过程中您出售的UET由平台托管保护。<br>
+            2.您在确认收款后，系统会将UET划转到您的账户，如果您申诉，订单将会被锁定。</p>
+        </div>
 
       </div>
       <div class="page-content" v-else>
@@ -125,7 +129,8 @@
             </div>
             <div class="payord-group cfx border-bot pcdetail-paymethod">
               <label>您的付款方式</label>
-              <get-bankcard :setBankcard="setBankcard" v-model="bindCardReset" @selCardChange="selCardChange"></get-bankcard>
+              <get-bankcard :setBankcard="setBankcard" v-model="bindCardReset"
+                            @selCardChange="selCardChange"></get-bankcard>
             </div>
             <div class="payinst-tips">
               请您提供真实的付款信息，否则您将可能无法顺利买入UET
@@ -177,24 +182,25 @@
     </div>
     <div class="chatRoom" @click="showChatList()" v-if="chatOnline">
       <div class="chatRoom_content">
-        <span class="iconfont icon-tab-talk"></span> 在线聊天
-        <div class="unread-count" v-show="unreadCountUpdate>0" :class="{'upMax':unreadCountUpdate>99}">{{unreadCountUpdate}}
-        <span class="add_symbol" v-show="unreadCountUpdate>99">+</span>
+        <span class="iconfont icon-tab-talk" style="color: red;"></span> 在线聊天
+        <div class="unread-count" v-show="unreadCountUpdate>0" :class="{'upMax':unreadCountUpdate>99}">
+          {{unreadCountUpdate}}
+          <span class="add_symbol" v-show="unreadCountUpdate>99">+</span>
         </div>
       </div>
     </div>
     <div v-if="isPCstate" style="position: relative">
       <chatList :isPC="isPCstate" v-if="openListState" @closeChatroom="iscloseChatroom"></chatList>
       <chat
-        class="chatWindow"
-        v-if="chatState"
-        :detail="orderId"
-        :debitNum="DetailList.debitAmount"
-        :historyState="DetailList.historyState"
-        @chatShow="chatStateUpdate"
-        :isPc="isPCstate"
-        @openList="openListUpdate"
-        @closeChatroom="iscloseChatroom"
+              class="chatWindow"
+              v-if="chatState"
+              :detail="orderId"
+              :debitNum="DetailList.debitAmount"
+              :historyState="DetailList.historyState"
+              @chatShow="chatStateUpdate"
+              :isPc="isPCstate"
+              @openList="openListUpdate"
+              @closeChatroom="iscloseChatroom"
       ></chat>
     </div>
 
@@ -245,7 +251,7 @@
             {type: -1, account: 'component.otherPayMethod'}
           ]
         },
-        bindCardReset:false,
+        bindCardReset: false,
         selAccountTypeTwin: {},
         showPayDetail: false,
         showPayBankName: false,
@@ -255,10 +261,10 @@
         showConfirmPayment: false,
         typeState: 1,
         openListState: false,
-        chatOnline:true,
+        chatOnline: true,
         buyTypeBuyBank: '',
         couponValueStr: 0,
-        showDiscountInfo:false
+        showDiscountInfo: false
       };
     },
     methods: {
@@ -268,32 +274,32 @@
           orderId: this.orderId
         }
         transaction.getOrderx(this.request).then(res => {
-          if (res.data == '' || res.data == null) {
-            this.$router.push({name: 'transaction'});
-            return;
-          }
-          if (res.data.status == '61') {
-            this.$router.push({name: 'orderDetailAppeal', params: {id: this.orderId}});
-            return;
-          }
-          if (res.data.intervalTime - res.data.elapsedTime <= 0) {
-            toast('您好订单已过期');
-            this.$router.back();
-            return;
-          }
-          this.DetailList = res.data;
-          this.fetchDiscountNum()
-          if (this.DetailList.credit == this.userId) {
-            this.isCredit = true;
-          } else if (this.DetailList.debit == this.userId) {
-            this.isDebit = true;
-          }
+          if (res.code === 10000) {
+            if (res.data == '' || res.data == null) {
+              this.$router.push({name: 'walletCenter'});
+              return;
+            }
+            if (res.data.status == '61') {
+              this.$router.push({name: 'orderDetailAppeal', params: {id: this.orderId}});
+              return;
+            }
+            if (res.data.intervalTime - res.data.elapsedTime <= 0) {
+              toast('您好订单已过期');
+              this.$router.back();
+              return;
+            }
+            this.DetailList = res.data;
+            this.fetchDiscountNum()
+            if (this.DetailList.credit == this.userId) {
+              this.isCredit = true;
+            } else if (this.DetailList.debit == this.userId) {
+              this.isDebit = true;
+            }
 
-          if (res.data.creditProofUrlTwin && res.data.creditProofUrlTwin.length > 1) {
-            this.DetailList.creditProofUrlTwin = res.data.creditProofUrlTwin.split(',');
-          }
+            if (res.data.creditProofUrlTwin && res.data.creditProofUrlTwin.length > 1) {
+              this.DetailList.creditProofUrlTwin = res.data.creditProofUrlTwin.split(',');
+            }
 
-          if (res.code == '10000') {
             if (this.DetailList.credit == this.userId) {
               toast('您已下单成功，请进入列表查询');
             } else {
@@ -302,7 +308,9 @@
               }
               // toast('对方已确认付款，请查收是否到账');
             }
-
+          }else{
+            toast(res.message)
+            this.$router.replace({name: 'walletCenter'});
           }
         }).catch(err => {
           toast(err.message);
@@ -312,13 +320,13 @@
       chatStateUpdate() {
         this.chatState = false
       },
-      fetchDiscountNum(){
-        const request={
-          'orderId':this.orderId,
-          'traderType': this.DetailList.credit == this.userId ? 1:2
+      fetchDiscountNum() {
+        const request = {
+          'orderId': this.orderId,
+          'traderType': this.DetailList.credit == this.userId ? 1 : 2
         }
         transaction.getCouponAmount(request).then((res) => {
-          console.log(res,'手机打开')
+          console.log(res, '手机打开')
           if (res.code == '10000') {
             if (res.data.isAward) {
               this.showDiscountInfo = true;
@@ -346,15 +354,21 @@
           if (res.code == '10000') {
             toast('您已取消，请勿重复操作');
             Vue.$global.bus.$emit('update:tranList');
-            this.$router.push({name: 'tranRecord'});
-          }else {
+            this.$store.commit('UPDATE_NEWORDER',{
+              type: 0,
+              orderId: ''
+            })
+            this.$store.dispatch('GET_ORDERXPAGE')
+            this.$store.dispatch('GET_USERBALANCE')
+            this.$router.push({name: 'walletCenter'});
+          } else {
             toast(res.message);
           }
         }).catch(err => {
           toast(err);
         });
       },
-      iscloseChatroom(){
+      iscloseChatroom() {
         this.isPCstate = false
         this.chatOnline = true
       },
@@ -401,7 +415,7 @@
                 this.buyTypeBuyBank = '支付宝';
               } else if (this.payOrderParam.creditAccountTypeTwin == 2) {
                 this.buyTypeBuyBank = '微信';
-              } else{
+              } else {
                 this.buyTypeBuyBank = this.payOrderParam.creditAccountMerchantTwin;
               }
             } else {
@@ -428,7 +442,7 @@
             toast('您已确认付款，请勿重复付款');
             this.fetchData();
             this.payOrderStep = 1;
-          }else {
+          } else {
             toast(res.message);
           }
 
@@ -449,7 +463,7 @@
         }
         chatWith.createChatGroup(params).then(res => {
           if (res.code === 10000) {
-            this.$store.commit('GET_HISTORYSTATE',3)
+            this.$store.commit('GET_HISTORYSTATE', 3)
             this.isPCstate = !this.isPCstate
             this.chatOnline = false
             this.chatState = true
@@ -468,7 +482,8 @@
         transaction.payCompleted(this.request).then(res => {
           this.loading = false;
           if (res.code == '10000') {
-            Vue.$global.bus.$emit('update:balance');
+            // Vue.$global.bus.$emit('update:balance');
+            this.$store.dispatch('GET_USERBALANCE')
             toast('您已确认收款，请勿重复操作');
             this.$router.push({name: 'orderDetailOver', params: {id: this.orderId}});
           } else {
@@ -492,7 +507,7 @@
           if (res.code == '10000') {
             toast('申诉创建成功');
             this.$router.push({name: 'orderDetailAppeal', params: {id: this.orderId}});
-          }else {
+          } else {
             toast(res.message);
           }
         }).catch(err => {
@@ -522,16 +537,41 @@
         } else {
           this.showPayBankName = false;
         }
-      }
+      },
+      "getNewOrder": {
+        handler(newVal, oldVal) {
+          if (newVal.orderId === this.orderId) {
+            if(newVal.type === 1 || newVal.type === 2){
+              this.fetchData();
+            }else{
+              let routerName = ''
+              if (newVal.type === 3 || newVal.type === 4) {
+                routerName = 'orderDetailOver'
+              } else if (newVal.type === 11) {
+                routerName = 'orderDetailAppeal'
+              }
+              this.$router.replace({name: routerName, params: {id: this.orderId}})
+            }
+          }
+        },
+        deep: true
+      },
     },
     computed: {
-      ...mapGetters(["userData", "islogin", "userId", 'connectState','unreadCount']),
-      unreadCountUpdate(){
-        if(this.unreadCount<0){
+      ...mapGetters([
+        "userData",
+        "islogin",
+        "userId",
+        'connectState',
+        'unreadCount',
+        'getNewOrder',
+      ]),
+      unreadCountUpdate() {
+        if (this.unreadCount < 0) {
           return 0
-        }else if(this.unreadCount>99){
+        } else if (this.unreadCount > 99) {
           return 99
-        }else {
+        } else {
           return this.unreadCount
         }
       }
@@ -539,10 +579,10 @@
     components: {
       DetailTitle, DisplayInfor, NoDataTip, getBankcard, uploadImg, CountDown, confirmDialog, chatList, chat
     },
-    beforeRouteEnter(to,from,next){
-      if(from.name === 'orderDetailAppeal'){
-        next({name:'tranRecord'})
-      }else{
+    beforeRouteEnter(to, from, next) {
+      if (from.name === 'orderDetailAppeal') {
+        next({name: 'tranRecord'})
+      } else {
         next()
       }
     }
@@ -592,12 +632,12 @@
       font-size: 15px;
       color: #333333;
       display: flex;
-      p.bind-card-part{
+      p.bind-card-part {
         flex-grow: 1;
         width: auto;
         /*display: flex;*/
       }
-      .payord-control,.my-input {
+      .payord-control, .my-input {
         height: 40px;
         line-height: 40px;
         width: auto;
@@ -677,15 +717,17 @@
       }
     }
   }
-  .pay_send{
+
+  .pay_send {
     font-size: 14px;
     color: #333;
     text-align: center;
-    span{
+    span {
       font-size: 14px;
       color: #ff1100;
     }
   }
+
   .detail-content {
     min-height: 300px;
     padding: 30px 0;
@@ -834,35 +876,35 @@
     line-height: 50px;
     text-align: center;
     float: right;
-    .chatRoom_content{
+    .chatRoom_content {
       position: relative;
     }
   }
 
-    .unread-count {
-      display: inline-block;
-      border-radius: 50%;
-      padding: 0 5px;
-      background-color: red;
-      font-size: 12px;
-      text-align: center;
-      margin: 0 auto;
-      color: #fff;
-      line-height: 17px;
-      vertical-align: top;
-      margin-top: 7px;
-      position: relative;
-      &.upMax{
-        padding: 0 10px 0 5px;
-      }
-      .add_symbol {
-        position: absolute;
-        top: -3px;
-        right: 0;
-        margin-top: -1px;
-        font-size: 14px;
-        font-weight: bold;
-      }
+  .unread-count {
+    display: inline-block;
+    border-radius: 50%;
+    padding: 0 5px;
+    background-color: red;
+    font-size: 12px;
+    text-align: center;
+    margin: 0 auto;
+    color: #fff;
+    line-height: 17px;
+    vertical-align: top;
+    margin-top: 7px;
+    position: relative;
+    &.upMax {
+      padding: 0 10px 0 5px;
     }
+    .add_symbol {
+      position: absolute;
+      top: -3px;
+      right: 0;
+      margin-top: -1px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+  }
 
 </style>

@@ -96,7 +96,8 @@ _.mixin(
             }else if(msgData.type == 22){  //收银台 支付完成
               Vue.$global.bus.$emit('update:paySuccess');
             }else if(msgData.type == 23){  //商户提款
-              Vue.$global.bus.$emit('update:withdrawSuccess');
+              // Vue.$global.bus.$emit('update:withdrawSuccess');
+              store.commit('UPDATE_WIDTHDRAWINFO',{pass:true})
             }
           })
       }

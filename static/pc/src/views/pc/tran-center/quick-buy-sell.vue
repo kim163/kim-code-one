@@ -3,9 +3,10 @@
     <div class="tabs">
       <ul>
         <li v-for="item in pendingType" @click="pendingItem=item.value" :class="{active:pendingItem === item.value}" :key="item.value">
-          <svg class="icon" aria-hidden="true">
-            <use :xlink:href="item.icon"></use>
-          </svg>
+          <!--<svg class="icon" aria-hidden="true">-->
+            <!--<use :xlink:href="item.icon"></use>-->
+          <!--</svg>-->
+          <i class="iconfont" :class="item.icon"></i>
           <p>{{$t(item.name)}}</p>
         </li>
       </ul>
@@ -78,12 +79,12 @@
           {
             name: "transactionRecord.buyer",
             value: "buyer",
-            icon: '#icon-car-add'
+            icon: 'icon-car-add'
           },
           {
             name: "transactionRecord.seller",
             value: "seller",
-            icon: '#icon-car-sub'
+            icon: 'icon-car-sub'
           }
         ],
         pendingItem:'buyer',
@@ -185,9 +186,10 @@
       },
       "withdrawInfo.pass"(val){
         if(val){
+          this.pendingItem = 'seller'
           this.bankNo = this.withdrawInfo.bankNo
-          this.amount = this.withdrawInfo.amount
-          this.$store.commit('UPDATE_WIDTHDRAWINFO',{pass:false})
+          this.sellAmount = this.withdrawInfo.amount
+          this.$store.commit('UPDATE_WIDTHDRAWINFO',{pass:false,bankNo:'',amount:0})
         }
       }
     },
@@ -247,10 +249,8 @@
             proofType: this.proofType
           })
         }
-        console.log('requestda',this.requestda)
         const api = this.pendingItem === 'buyer' ? publishToBuy : publishToSell
         api(this.requestda).then((res) => {
-          console.log(res)
           if (res.code == '10000') {
             this.buyAmount = 0;
             this.sellAmount = 0;
@@ -277,9 +277,10 @@
       this.pendingItem = this.tabType === 1 ? 'buyer' : 'seller'
       this.pendingItem = this.openQuickSell ? 'seller' : 'buyer'
       if(this.withdrawInfo.pass){
+        this.pendingItem = 'seller'
         this.bankNo = this.withdrawInfo.bankNo
-        this.amount = this.withdrawInfo.amount
-        this.$store.commit('UPDATE_WIDTHDRAWINFO',{pass:false})
+        this.sellAmount = this.withdrawInfo.amount
+        this.$store.commit('UPDATE_WIDTHDRAWINFO',{pass:false,bankNo:'',amount:0})
       }
     },
     mounted(){
@@ -320,6 +321,10 @@
             height: 25px;
             margin-bottom: 15px;
             color: #ffffff;
+          }
+          .iconfont{
+            font-size: 24px;
+            margin-bottom: 10px;
           }
           &.active{
             background: #3573FA;

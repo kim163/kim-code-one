@@ -1,12 +1,13 @@
 <template>
   <div class="wallet-center">
     <user-info></user-info>
+    <order-notice></order-notice>
     <transition mode="out-in"
                 enter-active-class="animated-quick fadeIn"
                 leave-active-class="animated-quick fadeOut">
       <router-view></router-view>
     </transition>
-    <withdraw-tip v-if="withdrawTip" v-model="withdrawTip" :is-pc="true"></withdraw-tip>
+    <withdraw-tip v-model="withdrawTip" :is-pc="true"></withdraw-tip>
   </div>
 </template>
 
@@ -14,6 +15,7 @@
   import store from '@/store'
   import UserInfo from './user-info'
   import WithdrawTip from 'components/withdraw-tip'
+  import OrderNotice from './order-notice'
   export default {
     name: "wallet-center",
     data(){
@@ -23,7 +25,8 @@
     },
     components:{
       UserInfo,
-      WithdrawTip
+      WithdrawTip,
+      OrderNotice,
     },
     computed: {
       ...mapGetters([

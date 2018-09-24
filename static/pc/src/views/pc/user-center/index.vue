@@ -8,48 +8,49 @@
            @click="changeTab(item.type)">
         {{$t(item.name)}}
       </div>
-      <div class="user-content">
-        <div class="content-list">
-          <div class="list-item" @mouseenter="mouseenter(1)" @mouseleave="mouseleave(1)"
-               :class="{'bindok':isbindOk,'active':mouseOverFirst,}">
-            <div class="item-symbol"><span class="iconfont icon-bind-bankcard"></span></div>
-            <div class="item-content">
-              <p class="bind-title">绑定银行卡</p>
-              <p class="bind-des">请用您本人姓名开户的银行卡进行绑定, 方便您以后的存提款</p>
-            </div>
-            <div class="item-btn" @click="getBankList(1)" v-if="filterArr.length<3">前去绑定</div>
-            <div class="item-btn" @click="getBankList(1)" v-if="filterArr.length==3">修改绑定</div>
+      <router-link class="go-center" :to="{name:'walletCenter'}">返回钱包中心</router-link>
+    </div>
+    <div class="user-content">
+      <div class="content-list">
+        <div class="list-item" @mouseenter="mouseenter(1)" @mouseleave="mouseleave(1)"
+             :class="{'bindok':isbindOk,'active':mouseOverFirst,}">
+          <div class="item-symbol"><span class="iconfont icon-bind-bankcard"></span></div>
+          <div class="item-content">
+            <p class="bind-title">绑定银行卡</p>
+            <p class="bind-des">请用您本人姓名开户的银行卡进行绑定, 方便您以后的存提款</p>
           </div>
-          <div class="list-item" @mouseenter="mouseenter(2)" @mouseleave="mouseleave(2)"
-               :class="{'active':mouseOverSecond,'bindok':filterZfb.length==1}">
-            <div class="item-symbol"><span class="iconfont icon-bind-zhifubao"></span></div>
-            <div class="item-content">
-              <p class="bind-title">绑定支付宝</p>
-              <p class="bind-des">请用您本人姓名开户的银行卡进行绑定,方便您以后的存提款</p>
-            </div>
-            <div class="item-btn" @click="bindzhifubao" v-if="filterZfb.length==0">前去绑定</div>
-            <div class="item-btn" v-else>已绑定</div>
+          <div class="item-btn" @click="getBankList(1)" v-if="filterArr.length<3">前去绑定</div>
+          <div class="item-btn" @click="getBankList(1)" v-if="filterArr.length==3">修改绑定</div>
+        </div>
+        <div class="list-item" @mouseenter="mouseenter(2)" @mouseleave="mouseleave(2)"
+             :class="{'active':mouseOverSecond,'bindok':filterZfb.length==1}">
+          <div class="item-symbol"><span class="iconfont icon-bind-zhifubao"></span></div>
+          <div class="item-content">
+            <p class="bind-title">绑定支付宝</p>
+            <p class="bind-des">请用您本人姓名开户的银行卡进行绑定,方便您以后的存提款</p>
           </div>
-          <div class="list-item" @mouseenter="mouseenter(3)" @mouseleave="mouseleave(3)"
-               :class="{'active':mouseOverThird,'bindok':filterWx.length==1}">
-            <div class="item-symbol"><span class="iconfont icon-bind-weixin"></span></div>
-            <div class="item-content">
-              <p class="bind-title">绑定微信</p>
-              <p class="bind-des">请用您本人姓名开户的银行卡进行绑定,方便您以后的存提款</p>
-            </div>
-            <div class="item-btn" @click="bindWx" v-if="filterWx.length==0">前去绑定</div>
-            <div class="item-btn" v-else>已绑定</div>
+          <div class="item-btn" @click="bindzhifubao" v-if="filterZfb.length==0">前去绑定</div>
+          <div class="item-btn" v-else>已绑定</div>
+        </div>
+        <div class="list-item" @mouseenter="mouseenter(3)" @mouseleave="mouseleave(3)"
+             :class="{'active':mouseOverThird,'bindok':filterWx.length==1}">
+          <div class="item-symbol"><span class="iconfont icon-bind-weixin"></span></div>
+          <div class="item-content">
+            <p class="bind-title">绑定微信</p>
+            <p class="bind-des">请用您本人姓名开户的银行卡进行绑定,方便您以后的存提款</p>
           </div>
-          <div class="list-item" @mouseenter="mouseenter(4)" @mouseleave="mouseleave(4)"
-               :class="{'active':mouseOverFourth,'bindok':userData.nickname&&userData.name}">
-            <div class="item-symbol"><span class="iconfont icon-book-star"></span></div>
-            <div class="item-content">
-              <p class="bind-title">完善资料</p>
-              <p class="bind-des">完善您的账户资料,这样会让您的账户更加安全</p>
-            </div>
-            <div class="item-btn" @click="writePersonInfo" v-if="!userData.nickname&&!userData.name">前去完善</div>
-            <div class="item-btn" @click="writePersonInfo">修改资料</div>
+          <div class="item-btn" @click="bindWx" v-if="filterWx.length==0">前去绑定</div>
+          <div class="item-btn" v-else>已绑定</div>
+        </div>
+        <div class="list-item" @mouseenter="mouseenter(4)" @mouseleave="mouseleave(4)"
+             :class="{'active':mouseOverFourth,'bindok':userData.nickname&&userData.name}">
+          <div class="item-symbol"><span class="iconfont icon-book-star"></span></div>
+          <div class="item-content">
+            <p class="bind-title">完善资料</p>
+            <p class="bind-des">完善您的账户资料,这样会让您的账户更加安全</p>
           </div>
+          <div class="item-btn" @click="writePersonInfo" v-if="!userData.nickname&&!userData.name">前去完善</div>
+          <div class="item-btn" @click="writePersonInfo">修改资料</div>
         </div>
       </div>
     </div>
@@ -480,6 +481,7 @@
     padding-top: 20px;
     background-color: #fff;
     text-align: left;
+    line-height: 50px;
     .tab-item {
       display: inline-block;
       width: 150px;
@@ -497,79 +499,81 @@
         color: #ffffff;
         background-color: #3573FA;
       }
-
     }
-    .user-content {
-      border: 1px solid #D3D3D3;
-      padding: 31px;
-      .content-list {
-        .list-item {
-          margin-bottom: 20px;
-          height: 100px;
-          display: flex;
-          flex-direction: row;
-          cursor: pointer;
-          background-color: #fff;
-          border: 1px solid #D3D3D3;
-          .item-symbol {
-            width: 100px;
-            height: 98px;
-            background-color: #d3d3d3;
-            color: #fff;
-            text-align: center;
-            font-size: 35px;
-            line-height: 90px;
+    .go-center{
+      float: right;
+    }
+  }
+  .user-content {
+    border: 1px solid #D3D3D3;
+    padding: 31px;
+    .content-list {
+      .list-item {
+        margin-bottom: 20px;
+        height: 100px;
+        display: flex;
+        flex-direction: row;
+        cursor: pointer;
+        background-color: #fff;
+        border: 1px solid #D3D3D3;
+        .item-symbol {
+          width: 100px;
+          height: 98px;
+          background-color: #d3d3d3;
+          color: #fff;
+          text-align: center;
+          font-size: 35px;
+          line-height: 90px;
+        }
+        &:last-child {
+          margin-bottom: 0;
+        }
+        .item-content {
+          flex: 1;
+          padding: 20px;
+          .bind-title {
+            font-size: 20px;
+            color: #333333;
           }
-          &:last-child {
-            margin-bottom: 0;
-          }
-          .item-content {
-            flex: 1;
-            padding: 20px;
-            .bind-title {
-              font-size: 20px;
-              color: #333333;
-            }
-            .bind-des {
-              font-size: 16px;
-              color: #787876;
-              padding-top: 12px;
-            }
-          }
-          .item-btn {
-            width: 120px;
-            height: 40px;
-            border: 1px solid #D3D3D3;
-            color: #787876;
-            text-align: center;
+          .bind-des {
             font-size: 16px;
-            line-height: 40px;
-            margin-top: 30px;
-            margin-right: 20px;
-          }
-          &.active {
-            border: 1px solid #3573FA !important;
-            .item-btn {
-              background-color: #3573FA !important;
-              color: #fff;
-            }
-            .item-symbol {
-              background-color: #3573FA !important;
-            }
-          }
-          &.bindok {
-            border: 1px solid #86A5F8;
-            .item-btn {
-              background-color: #86A5F8;
-              color: #fff;
-            }
-            .item-symbol {
-              background-color: #86A5F8;
-            }
+            color: #787876;
+            padding-top: 12px;
           }
         }
-
+        .item-btn {
+          width: 120px;
+          height: 40px;
+          border: 1px solid #D3D3D3;
+          color: #787876;
+          text-align: center;
+          font-size: 16px;
+          line-height: 40px;
+          margin-top: 30px;
+          margin-right: 20px;
+        }
+        &.active {
+          border: 1px solid #3573FA !important;
+          .item-btn {
+            background-color: #3573FA !important;
+            color: #fff;
+          }
+          .item-symbol {
+            background-color: #3573FA !important;
+          }
+        }
+        &.bindok {
+          border: 1px solid #86A5F8;
+          .item-btn {
+            background-color: #86A5F8;
+            color: #fff;
+          }
+          .item-symbol {
+            background-color: #86A5F8;
+          }
+        }
       }
+
     }
   }
 

@@ -1,8 +1,5 @@
 <template>
   <div class="tran-main container max-width">
-    <div>
-      订单通知功能模块 待开发
-    </div>
     <activity></activity>
     <ul class="tab-list">
       <router-link tag="li" :to="{name:item.linkName}" class="tab-info" v-for="(item,index) in tabCfg"

@@ -286,7 +286,8 @@
         }
         transaction.payCompleted(this.request).then(res => {
           if (res.code == '10000') {
-            Vue.$global.bus.$emit('update:balance');
+            // Vue.$global.bus.$emit('update:balance');
+            this.$store.dispatch('GET_USERBALANCE')
             toast('您已确认收款，请勿重复操作');
             this.$router.push({name: 'orderDetailOver', params: {id: this.orderId}});
           } else {
@@ -333,10 +334,27 @@
       "$route"(val) {
         this.orderId = val.params.id;
         this.fetchData();
-      }
+      },
+      "getNewOrder":{
+        handler(newVal,oldVal){
+          if(newVal.orderId === this.orderId){
+            if(newVal.type === 3 || newVal.type === 4){
+              this.$router.push({name:'orderDetailOver',params:{id: this.orderId}})
+            }
+          }
+        },
+        deep: true
+      },
     },
     computed: {
-      ...mapGetters(["userData", "islogin", "userId", 'connectState', 'unreadCount']),
+      ...mapGetters([
+        "userData",
+        "islogin",
+        "userId",
+        'connectState',
+        'unreadCount',
+        'getNewOrder',
+      ]),
       reverseAppealList() {
         // 按照时间倒序显示数据
         if (this.isHistory) {
@@ -366,7 +384,7 @@
   };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 
   .content_list {
     display: flex;

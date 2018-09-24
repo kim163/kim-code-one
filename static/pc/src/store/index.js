@@ -2,7 +2,10 @@ import Vue from 'vue'; //引入vue
 import Vuex from 'vuex'; //引入vue
 import router from '@/router'; //引入vue
 import {show} from 'api';     // 页面刷新获取用户数据
-import { getHomeInfo } from 'api/transaction'
+import {
+  getHomeInfo,
+  getOrderxPage
+} from 'api/transaction'
 import * as types from './types'; //引入vue
 import {$localStorage, $sessionStorage} from '@/util/storage';
 import aesutil from '@/util/aesutil';
@@ -11,6 +14,7 @@ Vue.use(Vuex);
 const stateInit = {
   showFooter: true,
   showLogin: false, //登录弹窗
+  showRegister:false, //注册弹窗
   userData: {
     name: '',
     nickname: '',
@@ -39,7 +43,11 @@ const stateInit = {
     pass:false,
     bankNo:'',
     amount:0
-  }
+  },
+  newOrder:{
+    type:0,
+    orderId:''
+  },
 }
 export default new Vuex.Store({
   state: stateInit,
@@ -136,6 +144,9 @@ export default new Vuex.Store({
     },
     withdrawInfo(state,getters){
       return state.withdrawInfo
+    },
+    getNewOrder(state,getters){
+      return state.newOrder
     }
   },
   mutations: {         // 事件处理器用来驱动状态的变化
@@ -215,6 +226,9 @@ export default new Vuex.Store({
     },
     [types.UPDATE_WIDTHDRAWINFO](state,val){
       Object.assign(state.withdrawInfo,val)
+    },
+    [types.UPDATE_NEWORDER](state,val){
+      Object.assign(state.newOrder,val)
     }
   },
   actions: {    // 可以给组件使用的函数，以此用来驱动事件处理器 mutations
@@ -306,6 +320,32 @@ export default new Vuex.Store({
       return getHomeInfo(requestdata).then((res) => {
         if(res.code === 10000){
           commit(types.UPDATE_USERBALANCE,res.data);
+        }else{
+          toast(res.message);
+        }
+        return Promise.resolve(res);
+      }).catch(err => {
+        toast(err);
+      });
+    },
+    [types.GET_ORDERXPAGE]({commit,getters},val){  //获取用户余额
+      const userId = getters.userId
+      const data = {
+        limit: 1,
+        offset: 0,
+        credit: userId,
+        debit: userId,
+        types:[11, 12],
+        loading:false
+      };
+      return getOrderxPage(data).then((res) => {
+        if(res.code === 10000){
+          const resData = res.data
+          if(resData.length > 0){
+            commit(types.UPDATE_NEWORDER,{
+              orderId: resData[0].id
+            });
+          }
         }else{
           toast(res.message);
         }

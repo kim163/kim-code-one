@@ -30,6 +30,8 @@ const mAccountManager = () => import('views/mobile/user-center/account-manager')
 const mAddAccount = () => import('views/mobile/user-center/add-account') //添加账户
 const mSetPassword = () => import('views/mobile/user-center/set-account-password') //设置账户密码
 const mAccountDetail = () => import('views/mobile/user-center/account-detail')
+const mActivity = () => import('views/mobile/activity-center') //手机活动
+
 export default [
   {
     path: "/m/login",
@@ -227,9 +229,7 @@ export default [
   {
     path:'/m/activity',
     name:'mIndex',
-    component(resolve){ //活动中心
-      return resolve(require('views/mobile/activity-center'))
-    },
+    component:mActivity,
     meta:{
       noCache:true,
       isMobilePage:'mobile-body'
