@@ -150,7 +150,7 @@
         }
       },
       toUseExchange() {
-        this.$route.push({name:'quickBuySell'})
+        this.$router.push({name:'quickBuySell'})
       }
     },
     components: {
