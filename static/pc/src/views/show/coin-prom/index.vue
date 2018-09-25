@@ -27,7 +27,7 @@
                     <h2 class="tips-title thirty-font">快速买币 100% 赠币</h2>
                     <img src="~images/activity/coin/buy-coins.png" alt="" class="width-100">
                  </div>
-                 <div class="participate-btn right-act eighteen-font" v-if="islogin" @click="gotoBuyCoins">ivity
+                 <div class="participate-btn right-act eighteen-font" v-if="islogin" @click="gotoBuyCoins">
                    立即买币
                  </div>
               </div>
