@@ -54,13 +54,13 @@ export default {
     visible(val){
       this.$emit("input",val)
     },
-  /*  value(val){
+    value(val){
       if(val){
         if(!this.showModel)return;
         this._open();
       }else{
         this._close();
       }
-    }*/
+    }
   }
 }
