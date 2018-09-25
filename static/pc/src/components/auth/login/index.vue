@@ -6,52 +6,61 @@
         <i class="iconfont icon-close"></i>
       </div>
       <div class="pop-content">
-        <h2 class="alert-title">{{$t('login.title')}}</h2>
-        <ul class="pop-tab tab-box">
-          <li v-for="item in loginType" @click="loginItem=item.value" class="s" :class="{active:loginItem==item.value}" :key="item.value">
-            {{generateTitle(item.name)}}
-          </li>
-        </ul>
-        <div class="form-box form-box-phone">
-          <div class="form-group" v-show="loginItem=='account'">
-             <label class="form-subtitle">{{$t('login.username')}}</label>
-             <div class="form-input">
+        <template v-if="!customize">
+          <h2 class="alert-title">{{$t('login.title')}}</h2>
+          <ul class="pop-tab tab-box">
+            <li v-for="item in loginType" @click="loginItem=item.value" class="s" :class="{active:loginItem==item.value}" :key="item.value">
+              {{generateTitle(item.name)}}
+            </li>
+          </ul>
+          <div class="form-box form-box-phone">
+            <div class="form-group" v-show="loginItem=='account'">
+              <label class="form-subtitle">{{$t('login.username')}}</label>
+              <div class="form-input">
                 <input name="account" @keyup.enter="login" v-model="data.account" type="text" class="ps-input ps-input1" :placeholder="$t('login.usernamePhd')">
-             </div>
+              </div>
             </div>
-          <div class="form-group" v-show="loginItem=='phone'">
-            <label class="form-subtitle">{{$t('login.mobileNum')}}</label>
-            <div class="form-input">
-               <select class="select-country" v-model="data.areaCode">
-                     <option v-for="areacd in areaCodeData" :value="areacd.value" :key="areacd.value" > {{areacd.name}} </option>
-               </select>
-               <input type="text" class="ps-input ps-input1 ps-phoneput" v-model="data.phone"
-                   :placeholder="$t('login.mobileNumPhd')" maxlength="11" name="phone">
+            <div class="form-group" v-show="loginItem=='phone'">
+              <label class="form-subtitle">{{$t('login.mobileNum')}}</label>
+              <div class="form-input">
+                <select class="select-country" v-model="data.areaCode">
+                  <option v-for="areacd in areaCodeData" :value="areacd.value" :key="areacd.value" > {{areacd.name}} </option>
+                </select>
+                <input type="text" class="ps-input ps-input1 ps-phoneput" v-model="data.phone"
+                       :placeholder="$t('login.mobileNumPhd')" maxlength="11" name="phone">
+              </div>
             </div>
-          </div>
-          <div class="form-group" v-show="loginItem=='email'">
-            <label class="form-subtitle">{{$t('login.emailadd')}}</label>
-            <div class="form-input">
-               <input name="email" @keyup.enter="login" v-model="data.email" type="text" class="ps-input ps-input1" :placeholder="$t('login.emailaddPhd')">
+            <div class="form-group" v-show="loginItem=='email'">
+              <label class="form-subtitle">{{$t('login.emailadd')}}</label>
+              <div class="form-input">
+                <input name="email" @keyup.enter="login" v-model="data.email" type="text" class="ps-input ps-input1" :placeholder="$t('login.emailaddPhd')">
+              </div>
             </div>
-          </div>
-          <div class="form-group">
-            <label class="form-subtitle">{{$t('login.password')}}</label>
-            <div class="form-input posit-rel">
-              <input ref="pwd" @keyup.enter="login" name="password" v-model="data.password" type="password" class="ps-input ps-input1" :placeholder="$t('login.passwordPhd')">
-               <eyes :dom="$refs.pwd"></eyes>
+            <div class="form-group">
+              <label class="form-subtitle">{{$t('login.password')}}</label>
+              <div class="form-input posit-rel">
+                <input ref="pwd" @keyup.enter="login" name="password" v-model="data.password" type="password" class="ps-input ps-input1" :placeholder="$t('login.passwordPhd')">
+                <eyes :dom="$refs.pwd"></eyes>
+              </div>
             </div>
-          </div>
 
-          <span class="validate"></span>
-          <input type="button" class="submit btn btn-block" @click.enter="login" id="submit_user" :value="$t('login.logIn')">
-          <div class="link-fogroup">
-            <a href="javascript:void(0);" class="forget-btn" @click="openFindPWD">{{$t('login.forgotpwd')}}</a>
-            <span class="right-part fr">
+            <span class="validate"></span>
+            <input type="button" class="submit btn btn-block" @click.enter="login" id="submit_user" :value="$t('login.logIn')">
+            <div class="link-fogroup">
+              <a href="javascript:void(0);" class="forget-btn" @click="openFindPWD">{{$t('login.forgotpwd')}}</a>
+              <span class="right-part fr">
               还没有久安账户？<a href="javascript:void(0);" class="register-btn" @click="loginGoRegEvt" >立即注册</a>
             </span>
+            </div>
           </div>
-        </div>
+        </template>
+        <template v-else>
+          <div class="customize-main">
+            <div class="tip-bg"></div>
+            <div class="text">您还没有登录哦</div>
+            <div class="text">请从久安的合作商户网址登陆</div>
+          </div>
+        </template>
       </div>
     </div>
   </div>
@@ -90,7 +99,8 @@
           email:"",
           password:""
         },
-        requestda: {}
+        requestda: {},
+        customize:_.customize()
       }
     },
     model:{
@@ -202,10 +212,25 @@
 
     },
     components:{
-      forgetPassword, eyes
+      forgetPassword,
+      eyes,
     }
   };
 </script>
 <style lang="scss" scoped>
-
+  .customize-main{
+    .tip-bg{
+      width: 155px;
+      height: 170px;
+      background: url(~images/customize-tip.png) no-repeat;
+      background-size: 100% 100%;
+      margin-bottom: 60px;
+    }
+    .text{
+      color: #333333;
+      font-size: 20px;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+  }
 </style>
