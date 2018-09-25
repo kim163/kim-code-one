@@ -635,7 +635,10 @@
         border-radius: 4px;
       }
     }
-
+    .upload-btngroup {
+      width: 100px !important;
+      height: 100px !important;
+    }
   }
 
   .order-time {
@@ -669,10 +672,7 @@
     overflow: hidden;
   }
 
-  .upload-btngroup {
-    width: 100px !important;
-    height: 100px !important;
-  }
+
 
   input[type="button"] {
     &.btn {

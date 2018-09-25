@@ -1,6 +1,6 @@
 <template>
   <div class="mygift-main-content">
-    <div class="container min-width min-height">
+    <div class="container min-width min-height max-width">
       <div class="tab-list">
         <div class="tab-item"
              :class="{active: titleType === item.type}"
