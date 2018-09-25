@@ -81,6 +81,7 @@
       },
       hasNew(val){
         if(val){
+          document.body.scrollTop = 0
           setTimeout(() => {
             this.hasNew = false
           },1000)
