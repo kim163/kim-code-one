@@ -47,12 +47,14 @@
         </div>
       </div>
     </transition>
+    <bind-card-tips v-model="showBindCard"></bind-card-tips>
   </div>
 </template>
 
 <script>
   import getBankcard from 'components/get-bankcard'
   import AnimatedInteger from 'components/animated-integer'
+  import BindCardTips from './bind-card-tips'
   import {
     placeAnOrder
   } from 'api/transaction';
@@ -65,6 +67,7 @@
         amount:'',
         filterBank: this.isSell ? true : false,
         payType: '',
+        showBindCard:false
       }
     },
     props:{
@@ -81,11 +84,13 @@
       ...mapGetters([
         'userData',
         'userBalance',
+        'noBankCardTip'
       ])
     },
     components:{
       getBankcard,
-      AnimatedInteger
+      AnimatedInteger,
+      BindCardTips
     },
     watch:{
       showBuySell(val){
@@ -121,7 +126,11 @@
       },
       buyBtn(){
         if(this.userData.userId !== this.item.userId){
-          this.showBuySell = !this.showBuySell
+          if(this.noBankCardTip){
+            this.showBindCard = true
+          }else{
+            this.showBuySell = !this.showBuySell
+          }
         }
       },
       allIn(){
