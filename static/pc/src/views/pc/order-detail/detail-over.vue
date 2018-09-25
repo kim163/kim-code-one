@@ -1,6 +1,9 @@
 <template>
   <div class="transell-main">
     <div class="section detail-content">
+      <div class="go-back-part page-content cfx">
+        <router-link :to="{name:'orderRecord'}" class="fr">返回上一页</router-link>
+      </div>
       <div class="page-content detail-box" v-if="DetailList">
           <detail-title :isCredit="isCredit" :isDebit="isDebit" :orderId="orderId"></detail-title>
           <div class="detail-in cfx">
@@ -136,7 +139,19 @@
 <style lang="scss" scoped>
   .detail-content{
     min-height:300px;
-    padding:30px 0;
+    padding: 0 0 23px;
+  }
+  .go-back-part{
+    line-height: 40px;
+    a{
+      font-size: 16px;
+      color: #333333;
+      padding-left: 20px;
+      display: inline-block;
+      &:hover{
+        color: #5087ff;
+      }
+    }
   }
 
   .detail-box{
@@ -167,15 +182,10 @@
   }
   .col-33{
     display:block;
-    width:33%;
+    width: 28%;
     float: left;
-    border-right:1px solid #d4d4d4;
     margin:0;
     min-height:427px;
-    min-width:350px;
-  &:last-child{
-     border:0;
-   }
   }
   p {
     font-size: 16px;
