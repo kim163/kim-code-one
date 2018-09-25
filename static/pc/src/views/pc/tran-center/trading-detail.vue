@@ -1,5 +1,5 @@
 <template>
-  <div class="trad-detail" :class="[{active: showBuySell,sell:isSell}]">
+  <li class="trad-detail" :class="[{active: showBuySell,sell:isSell}]">
     <div class="detail-info">
       <div class="info-item">
         <div>
@@ -47,7 +47,7 @@
         </div>
       </div>
     </transition>
-  </div>
+  </li>
 </template>
 
 <script>
@@ -65,6 +65,7 @@
         amount:'',
         filterBank: this.isSell ? true : false,
         payType: '',
+        showBindCard:false
       }
     },
     props:{
@@ -81,11 +82,12 @@
       ...mapGetters([
         'userData',
         'userBalance',
+        'noBankCardTip'
       ])
     },
     components:{
       getBankcard,
-      AnimatedInteger
+      AnimatedInteger,
     },
     watch:{
       showBuySell(val){
@@ -121,7 +123,11 @@
       },
       buyBtn(){
         if(this.userData.userId !== this.item.userId){
-          this.showBuySell = !this.showBuySell
+          if(this.noBankCardTip){
+            this.$emit('bindCardTips')
+          }else{
+            this.showBuySell = !this.showBuySell
+          }
         }
       },
       allIn(){

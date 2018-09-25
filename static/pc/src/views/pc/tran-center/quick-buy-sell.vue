@@ -57,6 +57,7 @@
         </div>
       </transition>
     </div>
+    <bind-card-tips v-if="showBindCard" v-model="showBindCard"></bind-card-tips>
   </div>
 </template>
 
@@ -64,6 +65,8 @@
   import AnimatedInteger from 'components/animated-integer'
   import GetBankcard from 'components/get-bankcard'
   import CouponDetail from 'components/coupon-detail'
+  // import Confirm from 'components/confirm'
+  import BindCardTips from './bind-card-tips'
   import {
     publishToBuy,
     publishToSell
@@ -152,6 +155,7 @@
         proofType:0,
         minAmount:1,
         couponDetail:{},
+        showBindCard:false,//展示绑定银行卡提示
       }
     },
     props:{
@@ -172,7 +176,9 @@
     components:{
       AnimatedInteger,
       GetBankcard,
-      CouponDetail
+      CouponDetail,
+      // Confirm
+      BindCardTips,
     },
     watch:{
       pendingItem(val) {
@@ -190,6 +196,11 @@
           this.bankNo = this.withdrawInfo.bankNo
           this.sellAmount = this.withdrawInfo.amount
           this.$store.commit('UPDATE_WIDTHDRAWINFO',{pass:false,bankNo:'',amount:0})
+        }
+      },
+      noBankCardTip(val){
+        if(this.pendingItem === 'buyer'){
+          this.showBindCard = val
         }
       }
     },
@@ -272,6 +283,10 @@
           }
         })
       },
+      toBindCard(){
+        this.showBindCard = false
+        this.$router.push({name:'userCenter'})
+      }
     },
     created(){
       this.pendingItem = this.tabType === 1 ? 'buyer' : 'seller'
@@ -282,6 +297,7 @@
         this.sellAmount = this.withdrawInfo.amount
         this.$store.commit('UPDATE_WIDTHDRAWINFO',{pass:false,bankNo:'',amount:0})
       }
+      this.showBindCard = this.noBankCardTip
     },
     mounted(){
       this.getGift()
