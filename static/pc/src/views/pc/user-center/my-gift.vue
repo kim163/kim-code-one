@@ -1,6 +1,6 @@
 <template>
   <div class="mygift-main-content">
-    <div class="container min-width min-height">
+    <div class="container min-width min-height max-width">
       <div class="tab-list">
         <div class="tab-item"
              :class="{active: titleType === item.type}"
@@ -35,18 +35,14 @@
       </div>
     </div>
 
-    <v-footer></v-footer>
   </div>
 </template>
 
 <script>
   import {userCenter} from 'api';
   import noDataTip from 'components/no-data-tip';
-
-
   import CouponDetail from 'components/coupon-detail';
   import pagingBy from "components/paging-by";
-  import VFooter from 'components/footer';
 
   export default {
     name: "pcmy-gift",
@@ -154,10 +150,8 @@
       }
     },
     components: {
-
       CouponDetail,
       pagingBy,
-      VFooter,
       noDataTip
     }
   }

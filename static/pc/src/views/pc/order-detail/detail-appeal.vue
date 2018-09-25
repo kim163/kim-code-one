@@ -7,6 +7,7 @@
                 :class="{active:detailTypeItem==item.value}" :key="item.value">
               {{generateTitle(item.name)}}
           </span>
+          <router-link :to="{name:'orderRecord'}" class="fr go-back">返回上一页</router-link>
         </div>
         <div class="row00 detail-box_scoped" v-if="detailTypeItem=='orderDetails'">
           <detail-title :isCredit="isCredit" :isDebit="isDebit" :orderId="orderId"></detail-title>
@@ -16,6 +17,7 @@
             <div class="col-33">
               <div class="order-time">
                 <p class="red order-status-title">
+                  <img src="~images/lock-appeal.png">
                   <span> 申诉锁定中</span>
                 </p>
                 <input type="button" v-if="isCredit" class="btn btn-normal " @click="detailTypeItem='appealArbitrat'"
@@ -96,7 +98,7 @@
             </div>
             <!--输入框-->
             <div class="input-content" v-if="!isHistory">
-              <div class="content-box">
+              <div class="content-box appeal-message-uploadimg">
                 <textarea placeholder="说点什么吧...." style="resize:none" v-model="textValue"></textarea>
                 <uploadImg :uploadImgSet="{maxUploadNum:3}" :showClose="true" @gitPicUrl="getPicUrl"
                            v-model="isReset"></uploadImg>
@@ -555,15 +557,32 @@
         margin: 0;
       }
     }
+    .go-back{
+      font-size: 16px;
+      color: #333333;
+      padding-left: 20px;
+      display: inline-block;
+      a:hover{
+        color: #5087ff;
+      }
+    }
   }
 
   .detail-content {
     min-height: 300px;
-    padding: 30px 0;
+    padding: 20px 0 23px;
   }
 
   .order-status-title {
     text-align: center;
+    img{
+      width: 147px;
+    }
+    span{
+      display: block;
+      line-height: 60px;
+      font-size: 20px;
+    }
   }
 
   .detail-box_scoped {
@@ -585,11 +604,10 @@
     }
     .col-33 {
       display: block;
-      width: 33%;
+      width: 28%;
       float: left;
       margin: 0;
       min-height: 427px;
-      min-width: 350px;
     }
 
     .red {
@@ -618,10 +636,6 @@
         }
         .upload-imgpart {
           padding: 0;
-          .upload-imgitem {
-            width: 100px;
-            height: 100px;
-          }
         }
       }
       .send-btn {
@@ -633,13 +647,13 @@
         line-height: 40px;
         margin: 20px 20px 20px 0;
         border-radius: 4px;
+        cursor: pointer;
       }
     }
-
   }
 
   .order-time {
-    padding: 20px 50px;
+    padding: 47px 38px 20px;
   }
 
   .detail-tips {
@@ -668,20 +682,15 @@
     padding: 18px 30px 20px;
     overflow: hidden;
   }
-
-  .upload-btngroup {
-    width: 100px !important;
-    height: 100px !important;
-  }
-
   input[type="button"] {
     &.btn {
-      display: inline-block;
+      display: block;
       border: 1px solid #5087ff;
-      color: #5087ff;
+      font-size: 18px;
+      color: #FFFFFF;
       border-radius: 4px;
-      height: 50px;
-      line-height: 50px;
+      height: 40px;
+      line-height: 40px;
       padding: 0 20px;
       margin: 10px 0 0 0;
       cursor: pointer;

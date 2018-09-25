@@ -1,10 +1,14 @@
 <template>
   <div class="transell-main">
     <div class="section detail-content">
+      <div class="go-back-part page-content cfx">
+        <router-link :to="{name:'orderRecord'}" class="fr">返回上一页</router-link>
+      </div>
+
       <div class="page-content detail-box" v-if="DetailList">
         <detail-title :isCredit="isCredit" :isDebit="isDebit" :orderId="orderId"></detail-title>
         <div class="detail-in cfx">
-          <display-infor :DetailList="DetailList" :isCredit="isCredit" :isDebit="isDebit"></display-infor>
+          <display-infor :DetailList="DetailList" :isCredit="isCredit" :isDebit="isDebit" :isTrading="true"></display-infor>
           <div class="col-33">
             <div class="order-time">
               <p class="red order-status-title">
@@ -182,7 +186,7 @@
     </div>
     <div class="chatRoom" @click="showChatList()" v-if="chatOnline">
       <div class="chatRoom_content">
-        <span class="iconfont icon-tab-talk" style="color: red;"></span> 在线聊天
+        <span class="iconfont icon-tab-talk"></span> 在线聊天
         <div class="unread-count" v-show="unreadCountUpdate>0" :class="{'upMax':unreadCountUpdate>99}">
           {{unreadCountUpdate}}
           <span class="add_symbol" v-show="unreadCountUpdate>99">+</span>
@@ -301,7 +305,7 @@
             }
 
             if (this.DetailList.credit == this.userId) {
-              toast('您已下单成功，请进入列表查询');
+
             } else {
               if (this.DetailList.status == '47' || this.DetailList.status == '48') {
                 toast('对方已确认付款，请查收是否到账');
@@ -730,7 +734,19 @@
 
   .detail-content {
     min-height: 300px;
-    padding: 30px 0;
+    padding: 0 0 23px;
+  }
+  .go-back-part{
+    line-height: 40px;
+    a{
+      font-size: 16px;
+      color: #333333;
+      padding-left: 20px;
+      display: inline-block;
+      &:hover{
+        color: #5087ff;
+      }
+    }
   }
 
   .detail-box {
@@ -739,26 +755,24 @@
       background: orange;
     }
     .time-stame {
-      font-size: 22px;
+      font-size: 20px;
       padding: 10px 0;
-      span:last-child {
-        color: red;
+      span{
+        display: block;
+         &:last-child {
+          color: red;
+         }
       }
     }
     .col-33 {
       display: block;
       float: left;
-      width: 33%;
-      border-right: 1px solid #d4d4d4;
+      width: 28%;
       margin: 0;
       min-height: 435px;
-      min-width: 350px;
-      &:last-child {
-        border: 0;
-      }
     }
     p {
-      font-size: 16px;
+      font-size: 14px;
       padding: 5px 0;
       line-height: 25px;
     }
@@ -768,7 +782,7 @@
   }
 
   .order-time {
-    padding: 20px 50px;
+    padding: 20px;
   }
 
   .detail-tips {
@@ -800,14 +814,15 @@
 
   input[type="button"] {
     &.btn {
-      display: inline-block;
+      display: block;
+      width: 90%;
       border: 1px solid #5087ff;
-      color: #5087ff;
+      font-size: 18px;
+      color: #FFFFFF;
       border-radius: 4px;
-      height: 50px;
-      line-height: 50px;
-      padding: 0 20px;
-      margin: 10px 0 0 0;
+      height: 38px;
+      line-height: 38px;
+      margin: 10px auto 0;
       cursor: pointer;
       &:hover {
         opacity: .8;
@@ -818,11 +833,11 @@
       color: #5087ff;
     }
     &.btn-orange {
-      border: 1px solid #ffa500;
-      color: #ffa500;
+      border: 1px solid #D3D3D3;
+      color: #787876;
     }
     &.btn-normal {
-      border: 1px solid #5087ff;
+      border: 1px solid #D3D3D3;
       background: #5087ff;
       color: #fff;
     }

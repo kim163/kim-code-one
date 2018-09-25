@@ -52,7 +52,7 @@
       background: #5087ff;
     }
     .btn-sell {
-      background: orange;
+      background: #F68887;
     }
     .order-num{
       float: left;
