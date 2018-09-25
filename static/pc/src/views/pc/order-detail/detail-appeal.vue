@@ -647,11 +647,8 @@
         line-height: 40px;
         margin: 20px 20px 20px 0;
         border-radius: 4px;
+        cursor: pointer;
       }
-    }
-    .upload-btngroup {
-      width: 100px !important;
-      height: 100px !important;
     }
   }
 
