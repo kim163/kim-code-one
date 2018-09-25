@@ -1,5 +1,5 @@
 <template>
-  <div class="trad-detail" :class="[{active: showBuySell,sell:isSell}]">
+  <li class="trad-detail" :class="[{active: showBuySell,sell:isSell}]">
     <div class="detail-info">
       <div class="info-item">
         <div>
@@ -47,14 +47,12 @@
         </div>
       </div>
     </transition>
-    <bind-card-tips v-model="showBindCard"></bind-card-tips>
-  </div>
+  </li>
 </template>
 
 <script>
   import getBankcard from 'components/get-bankcard'
   import AnimatedInteger from 'components/animated-integer'
-  import BindCardTips from './bind-card-tips'
   import {
     placeAnOrder
   } from 'api/transaction';
@@ -90,7 +88,6 @@
     components:{
       getBankcard,
       AnimatedInteger,
-      BindCardTips
     },
     watch:{
       showBuySell(val){
@@ -127,7 +124,7 @@
       buyBtn(){
         if(this.userData.userId !== this.item.userId){
           if(this.noBankCardTip){
-            this.showBindCard = true
+            this.$emit('bindCardTips')
           }else{
             this.showBuySell = !this.showBuySell
           }

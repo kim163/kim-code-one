@@ -62,7 +62,7 @@
     }
   }
   .btn-yes{
-    background: #3573FA;
-    color: #FFFFFF;
+    /*background: #3573FA;*/
+    /*color: #FFFFFF;*/
   }
 </style>

@@ -4,7 +4,7 @@
       <div class="title-info" v-for="(item,index) in titleList" :key="index">{{item.name}}</div>
     </div>
     <div class="trad-info" v-if="!noData">
-      <transition-group tag="div"
+      <transition-group tag="ul"
                         @before-enter="beforeEnter"
                         @enter="enter"
                         >
@@ -12,7 +12,8 @@
                        :key="item.id"
                        :item="item"
                        :is-sell="isSell"
-                       :data-index="index"></tran-detail>
+                       :data-index="index"
+                       @bindCardTips="$emit('bindCardTips',true)"></tran-detail>
       </transition-group>
     </div>
     <paging-by class="page" v-if="!noData" :data="dataList.pageInfo" @search="pageInfo"></paging-by>

@@ -21,7 +21,7 @@
           </div>
           <div class="balance-info">锁定资产：
             <animated-integer :value="calUserBalance(2)"></animated-integer> UET
-            ≈ &yen;;
+            ≈ &yen;
             <animated-integer :value="formatCny(2)"></animated-integer>
           </div>
         </div>
