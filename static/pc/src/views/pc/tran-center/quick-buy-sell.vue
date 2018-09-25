@@ -57,6 +57,12 @@
         </div>
       </transition>
     </div>
+    <confirm v-if="showBindCard" v-model="showBindCard" :isPc="true">
+      <div slot="title">请绑定您的</div>
+      <div slot="content">银行卡号/微信/支付宝</div>
+      <div slot="leftBtn">返回</div>
+      <div slot="rightBtn" class="btn-yes" @click="toBindCard">去绑定</div>
+    </confirm>
   </div>
 </template>
 
@@ -64,6 +70,7 @@
   import AnimatedInteger from 'components/animated-integer'
   import GetBankcard from 'components/get-bankcard'
   import CouponDetail from 'components/coupon-detail'
+  import Confirm from 'components/confirm'
   import {
     publishToBuy,
     publishToSell
@@ -152,6 +159,7 @@
         proofType:0,
         minAmount:1,
         couponDetail:{},
+        showBindCard:false,//展示绑定银行卡提示
       }
     },
     props:{
@@ -167,12 +175,14 @@
         'noBankCardTip',
         'openQuickSell',
         'withdrawInfo',
+        'noBankCardTip',
       ])
     },
     components:{
       AnimatedInteger,
       GetBankcard,
-      CouponDetail
+      CouponDetail,
+      Confirm
     },
     watch:{
       pendingItem(val) {
@@ -190,6 +200,11 @@
           this.bankNo = this.withdrawInfo.bankNo
           this.sellAmount = this.withdrawInfo.amount
           this.$store.commit('UPDATE_WIDTHDRAWINFO',{pass:false,bankNo:'',amount:0})
+        }
+      },
+      noBankCardTip(val){
+        if(this.pendingItem === 'buyer'){
+          this.showBindCard = val
         }
       }
     },
@@ -272,6 +287,10 @@
           }
         })
       },
+      toBindCard(){
+        this.showBindCard = false
+        this.$router.push({name:'userCenter'})
+      }
     },
     created(){
       this.pendingItem = this.tabType === 1 ? 'buyer' : 'seller'
@@ -446,6 +465,10 @@
         height: 128px;
         margin: 0;
       }
+    }
+    .btn-yes{
+      background: #3573FA;
+      color: #FFFFFF;
     }
   }
 </style>
