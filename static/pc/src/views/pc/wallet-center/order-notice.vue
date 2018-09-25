@@ -1,18 +1,31 @@
 <template>
-  <transition name="fade">
-    <div class="order-main" v-if="show">
-      <div class="title" :class="{animation: hasNew}">订单通知</div>
-      <div class="detail">
-        <div class="detail-content">
-          <div>{{orderType === 1 ? '购买' : '卖出'}}{{amount}}UET</div>
-          <div class="color-blue">{{orderStatus === 1 ? '等待付款' : (orderStatus === 2 ? '等待放币' : '申诉锁定')}}...</div>
-          <div class="color-red" v-if="isAward">立即付款预计获赠{{couponValueStr}}UET</div>
-          <div class="go-detail" @click="toLink(1)">前去交易</div>
-          <div class="more" @click="toLink(2)">更多订单 >></div>
+  <div>
+    <transition name="fade">
+      <div class="order-main" v-if="show">
+        <div class="title" :class="{animation: hasNew}">订单通知</div>
+        <div class="detail">
+          <div class="detail-content">
+            <div>{{orderType === 1 ? '购买' : '卖出'}}{{amount}}UET</div>
+            <div class="color-blue">{{orderStatus === 1 ? '等待付款' : (orderStatus === 2 ? '等待放币' : '申诉锁定')}}...</div>
+            <div class="color-red" v-if="isAward">立即付款预计获赠{{couponValueStr}}UET</div>
+            <div v-if="countDownTime > 0">
+              <div>交易倒计时:
+                <span class="cl-red">
+                <count-down :end-time="countDownTime" @callBack="getOrderIng"></count-down>
+              </span>
+              </div>
+            </div>
+            <div class="go-detail" @click="toLink(1)">前去交易</div>
+            <div class="more" @click="toLink(2)">更多订单 >></div>
+          </div>
         </div>
       </div>
-    </div>
-  </transition>
+    </transition>
+    <audio ref="music">
+      <source src="~assets/music/ding-tips.ogg" type="audio/ogg"/>
+      <source src="~assets/music/ding-tips.mp3" type="audio/mpeg"/>
+    </audio>
+  </div>
 </template>
 
 <script>
@@ -21,6 +34,7 @@
     getCouponAmount,
     getOrderx
   } from 'api/transaction'
+  import CountDown from 'components/countdown'
   export default {
     name: "order-notice",
     data(){
@@ -33,6 +47,7 @@
         isAward:false,
         couponValueStr:0,
         hasNew:false,
+        countDownTime:0
       }
     },
     computed:{
@@ -44,13 +59,21 @@
     watch:{
       "getNewOrder":{
         handler(newVal,oldVal){
-          if(newVal.orderId != oldVal.orderId){
+          if(newVal.orderId === ''){
+            this.show = false
             this.orderId = newVal.orderId
-            this.getOrderDetail()
           }else{
-            if(newVal.type === 1 || newVal.type === 2 || newVal.type === 11){
+            if(newVal.orderId != oldVal.orderId){
               this.orderId = newVal.orderId
+              this.$refs.music.play()
               this.getOrderDetail()
+            }else{
+              if(newVal.type === 1 || newVal.type === 2 || newVal.type === 11){
+                this.orderId = newVal.orderId
+                this.getOrderDetail()
+              }else{
+                this.getOrderIng()
+              }
             }
           }
         },
@@ -62,7 +85,21 @@
             this.hasNew = false
           },1000)
         }
+      },
+      '$route':{
+        handler(val){
+          if(val.name === 'orderDetail' || val.name === 'orderDetailAppeal'){
+            this.show = this.checkRouter()
+          }else if(val.name === 'orderDetailOver'){
+            this.getOrderIng()
+          }else if(this.orderId != ''){
+            this.show = true
+          }
+        }
       }
+    },
+    components:{
+      CountDown
     },
     methods:{
       getOrderIng(){  //获取交易中的最新订单
@@ -71,19 +108,29 @@
           offset: 0,
           credit: this.userId,
           debit: this.userId,
-          types:[11, 12]
+          types:[11, 12],
+          loading:false
         }
         getOrderxPage(request).then(res => {
           if(res.code === 10000){
             if(res.data && res.data.length > 0){
               const data = res.data[0]
-              this.show = true
               this.hasNew = true
               this.orderType = this.userId === data.debit ? 2 : 1
               this.orderStatus = data.status === 61 ? 3 : (data.status === 45 ? 1 : 2)
               this.amount = this.orderType === 1 ? data.creditAmount : data.debitAmount
               this.orderId = data.id
+              if(!_.isNull(data.intervalTime)){
+                this.countDownTime = data.intervalTime - data.elapsedTime
+              }
+              this.show = this.checkRouter()
               this.getDiscountNum()
+            }else{
+              this.show = false
+              this.$store.commit('UPDATE_NEWORDER',{
+                type: 0,
+                orderId: ''
+              })
             }
           }else{
             toast(res.message)
@@ -98,7 +145,6 @@
           traderType: this.orderType
         }
         getCouponAmount(req).then(res => {
-          console.log('getCouponAmount',res)
           if(res.code === 10000){
             if(!_.isNull(res.data)){
               this.couponValueStr = Number(res.data.couponValueStr)
@@ -113,15 +159,14 @@
       },
       getOrderDetail(){
         getOrderx({orderId: this.orderId}).then(res => {
-          console.log('order-notice',res)
           if(res.code === 10000){
-            this.show = true
+            this.show = this.checkRouter()
             this.hasNew = true
-            if(res.data.status === '61'){
+            if(res.data.status === 61){
               this.orderStatus = 3
-            }else if(res.data.status === '45'){
+            }else if(res.data.status === 45){
               this.orderStatus = 1
-            }else if(res.data.status === '47'){
+            }else if(res.data.status === 47){
               this.orderStatus = 2
             }
             if (res.data.credit === this.userId) {
@@ -130,6 +175,9 @@
               this.orderType = 2;
             }
             this.amount = res.data.debitAmount
+            if(!_.isNull(res.data.intervalTime)){
+              this.countDownTime = res.data.intervalTime - res.data.elapsedTime
+            }
             this.getDiscountNum()
           }else{
             toast(res.message)
@@ -139,16 +187,26 @@
         })
       },
       toLink(type){
-        this.show = false
         if(type === 1){
+          this.getOrderIng()
           let routerName = 'orderDetail'
           if(this.orderStatus === 3){
             routerName = 'orderDetailAppeal'
           }
           this.$router.push({name:routerName,params:{id: this.orderId}})
         }else{
+          this.show = false
           this.$router.push({name:'orderRecord'})
         }
+      },
+      checkRouter(){
+        const val = this.$route
+        if(val.name === 'orderDetail' || val.name === 'orderDetailAppeal'){
+          if(this.orderId === val.params.id){
+            return false
+          }
+        }
+        return true
       }
     },
     mounted(){
@@ -159,7 +217,8 @@
 
 <style lang="scss" scoped>
   .order-main{
-    margin-top: 20px;
+    margin: 20px auto 0;
+    width: 1200px;
   }
   .title{
     font-size: 24px;

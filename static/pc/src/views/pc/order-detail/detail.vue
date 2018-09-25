@@ -358,6 +358,12 @@
           if (res.code == '10000') {
             toast('您已取消，请勿重复操作');
             Vue.$global.bus.$emit('update:tranList');
+            this.$store.commit('UPDATE_NEWORDER',{
+              type: 0,
+              orderId: ''
+            })
+            this.$store.dispatch('GET_ORDERXPAGE')
+            this.$store.dispatch('GET_USERBALANCE')
             this.$router.push({name: 'walletCenter'});
           } else {
             toast(res.message);
@@ -480,7 +486,8 @@
         transaction.payCompleted(this.request).then(res => {
           this.loading = false;
           if (res.code == '10000') {
-            Vue.$global.bus.$emit('update:balance');
+            // Vue.$global.bus.$emit('update:balance');
+            this.$store.dispatch('GET_USERBALANCE')
             toast('您已确认收款，请勿重复操作');
             this.$router.push({name: 'orderDetailOver', params: {id: this.orderId}});
           } else {

@@ -3,9 +3,10 @@
     <div class="tabs">
       <ul>
         <li v-for="item in pendingType" @click="pendingItem=item.value" :class="{active:pendingItem === item.value}" :key="item.value">
-          <svg class="icon" aria-hidden="true">
-            <use :xlink:href="item.icon"></use>
-          </svg>
+          <!--<svg class="icon" aria-hidden="true">-->
+            <!--<use :xlink:href="item.icon"></use>-->
+          <!--</svg>-->
+          <i class="iconfont" :class="item.icon"></i>
           <p>{{$t(item.name)}}</p>
         </li>
       </ul>
@@ -78,12 +79,12 @@
           {
             name: "transactionRecord.buyer",
             value: "buyer",
-            icon: '#icon-car-add'
+            icon: 'icon-car-add'
           },
           {
             name: "transactionRecord.seller",
             value: "seller",
-            icon: '#icon-car-sub'
+            icon: 'icon-car-sub'
           }
         ],
         pendingItem:'buyer',
@@ -320,6 +321,10 @@
             height: 25px;
             margin-bottom: 15px;
             color: #ffffff;
+          }
+          .iconfont{
+            font-size: 24px;
+            margin-bottom: 10px;
           }
           &.active{
             background: #3573FA;

@@ -184,6 +184,7 @@
             toast('下单成功')
             this.amount = ''
             this.$store.dispatch('GET_USERBALANCE')
+            this.$router.push({name:'orderDetail',params:{id: res.data.key}})
           }else {
             toast(res.message);
           }

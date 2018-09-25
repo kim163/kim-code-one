@@ -1,8 +1,5 @@
 <template>
   <div class="tran-main container max-width">
-    <div>
-      <order-notice></order-notice>
-    </div>
     <activity></activity>
     <ul class="tab-list">
       <router-link tag="li" :to="{name:item.linkName}" class="tab-info" v-for="(item,index) in tabCfg"
@@ -26,7 +23,6 @@
   import OrderRecord from './order-record'
   import PendingRecord from './pending-record'
   import AppealRecord from './appeal-record'
-  import OrderNotice from './order-notice'
 
   export default {
     name: "tran-center",
@@ -69,7 +65,6 @@
       OrderRecord,
       PendingRecord,
       AppealRecord,
-      OrderNotice,
     },
     methods:{
 

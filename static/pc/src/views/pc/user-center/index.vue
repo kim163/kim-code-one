@@ -1,5 +1,5 @@
 <template>
-  <div class="container min-width min-height">
+  <div class="container min-width min-height max-width">
     <div class="tab-list">
       <div class="tab-item"
            :class="{active: type === item.type}"
@@ -23,23 +23,23 @@
           <div class="item-btn" @click="getBankList(1)" v-if="filterArr.length==3">修改绑定</div>
         </div>
         <div class="list-item" @mouseenter="mouseenter(2)" @mouseleave="mouseleave(2)"
-             :class="{'active':mouseOverSecond,'bindok':filterZfb.length==1}">
+             :class="{'active':mouseOverSecond,'bindok':filterZfb.length==1||bindAlipay}">
           <div class="item-symbol"><span class="iconfont icon-bind-zhifubao"></span></div>
           <div class="item-content">
             <p class="bind-title">绑定支付宝</p>
             <p class="bind-des">请用您本人姓名开户的银行卡进行绑定,方便您以后的存提款</p>
           </div>
-          <div class="item-btn" @click="bindzhifubao" v-if="filterZfb.length==0">前去绑定</div>
+          <div class="item-btn" @click="bindzhifubao" v-if="filterZfb.length==0&&!bindAlipay">前去绑定</div>
           <div class="item-btn" v-else>已绑定</div>
         </div>
         <div class="list-item" @mouseenter="mouseenter(3)" @mouseleave="mouseleave(3)"
-             :class="{'active':mouseOverThird,'bindok':filterWx.length==1}">
+             :class="{'active':mouseOverThird,'bindok':filterWx.length==1||bindWechat}">
           <div class="item-symbol"><span class="iconfont icon-bind-weixin"></span></div>
           <div class="item-content">
             <p class="bind-title">绑定微信</p>
             <p class="bind-des">请用您本人姓名开户的银行卡进行绑定,方便您以后的存提款</p>
           </div>
-          <div class="item-btn" @click="bindWx" v-if="filterWx.length==0">前去绑定</div>
+          <div class="item-btn" @click="bindWx" v-if="filterWx.length==0&&!bindWechat">前去绑定</div>
           <div class="item-btn" v-else>已绑定</div>
         </div>
         <div class="list-item" @mouseenter="mouseenter(4)" @mouseleave="mouseleave(4)"
@@ -119,8 +119,10 @@
           <p class="content-notice">支付宝认证姓名,务必与真实姓名相同</p>
           <uploadImg :uploadImgSet="{maxUploadNum:1}" :showClose="true" @gitPicUrl="getPicUrl"></uploadImg>
           <p class="content-remind">点击上传您的收款二维码</p>
-          <p class="zhifubaoAccount">支付宝账号: <input type="text" v-model="zhifubaoValue"></p>
-          <p class="zhifubaoName">支付宝认证姓名: <input type="text" v-model="zhifubaoName"></p>
+          <p class="zhifubaoAccount"><span>支付宝账号:</span> <input type="text" v-model="zhifubaoValue"></p>
+          <p class="zhifubaoName"><span>支付宝认证姓名:</span> <input type="text"  v-model="zhifubaoName" v-if="userData.name==null">
+            <input type="text" :value="userData.name" readonly v-else>
+          </p>
         </div>
         <div class="bindzhifubao" @click="bindzhifubaoBtn" v-if="filterZfb.length==0">绑定支付宝</div>
       </div>
@@ -137,7 +139,9 @@
           <uploadImg :uploadImgSet="{maxUploadNum:1}" :showClose="true" @gitPicUrl="getPicUrl"></uploadImg>
           <p class="content-remind">点击上传您的收款二维码</p>
           <p class="weixinAccount">微信账号: <input type="text" v-model="wxValue"></p>
-          <p class="weixinName">微信姓名: <input type="text" v-model="wxName"></p>
+          <p class="weixinName">微信姓名: <input type="text" v-model="wxName" v-if="userData.name==null">
+            <input type="text" :value="userData.name" readonly v-else>
+          </p>
         </div>
         <div class="bindweixin" @click="binweixinBtn">绑定微信</div>
       </div>
@@ -147,11 +151,12 @@
       <div class="bind-person-info">
         <div class="bind-title">
           <span class="main-title">完善资料</span>
-          <span class="iconfont icon-close close-btn" @click="closePersonInfo" ></span>
+          <span class="iconfont icon-close close-btn" @click="closePersonInfo"></span>
         </div>
         <div class="bind-content">
-          <p class="username">昵称 <input type="text" v-model="personUserName" ></p>
-          <p class="realname">真实姓名 <input type="text" v-model="personRealName" readonly></p>
+          <p class="username">昵称 <input type="text" v-model="personUserName"></p>
+          <p class="realname">真实姓名 <input type="text" v-model="personRealName" readonly v-if="userData.userName==null">
+            <input type="text" :value="userData.name" readonly v-else></p>
         </div>
         <div class="bindInfo" @click='binkUserAccount'>绑定</div>
       </div>
@@ -219,6 +224,9 @@
         personInfoPopup: false,
         personUserName: '',
         personRealName: '',
+        bindCardState:false,
+        bindAlipay:false,
+        bindWechat:false
       }
     },
     components: {
@@ -239,8 +247,8 @@
     methods: {
       changeTab(type) {
         this.type = type
-        if(type==2){
-          this.$router.push({name:'myGift'})
+        if (type == 2) {
+          this.$router.push({name: 'myGift'})
         }
       },
       addBindCard() {
@@ -269,6 +277,8 @@
             toast('解绑成功')
             this.filterArr.splice(key, 1)
             this.isAddCard = true
+            this.$store.dispatch('UPDATE_USERDATA')
+            this.$store.dispatch('GET_BANKCARD')
             if (this.filterArr.length == 0) {
             }
           } else {
@@ -288,32 +298,39 @@
         }
       },
       blurNumber() {
+
         if (this.cardNumber.length == 0) {
           return
         }
         const match = /^(\d{16}|\d{17}|\d{18}|\d{19})$/
+
         if (!match.test(this.cardNumber)) {
           toast("请输入正确的银行卡长度!")
+          this.bindCardState = false
           return
-        }
-        let requests = {
-          bankNo: this.cardNumber
-        }
-        userCenter.autoRecognize(requests).then(res => {
-          if (res.code == 10000) {
-            if (res.data == null) {
-              toast('该卡号无法识别,请输入正确的卡号!')
-              this.bankName = ''
-            } else {
-              this.bankName = res.data.bankName
-            }
-          } else {
-            toast(res.message)
+        } else {
+          let requests = {
+            bankNo: this.cardNumber
           }
+          console.log(this.cardNumber,'数控刀具')
+          userCenter.autoRecognize(requests).then(res => {
+            if (res.code == 10000) {
+              if (res.data == null) {
+                toast('该卡号无法识别,请输入正确的卡号!')
+                this.bankName = ''
+                this.bindCardState = false
+              } else {
+                this.bankName = res.data.bankName
+                this.bindCardState = true
+              }
+            } else {
+              toast(res.message)
+            }
 
-        })
+          })
+        }
       },
-      closePersonInfo(){
+      closePersonInfo() {
         this.personInfoPopup = false
       },
       closeContent() {
@@ -321,6 +338,9 @@
         this.needAddCard = false
       },
       bindCard() {
+        if(!this.bindCardState){
+          return
+        }
         const requests = {
           userId: this.userId,
           account: this.cardNumber,
@@ -334,6 +354,8 @@
             this.closeState = false
             this.needAddCard = false
             this.isbindOk = true
+            this.$store.dispatch('UPDATE_USERDATA')
+            this.$store.dispatch('GET_BANKCARD')
           } else {
             toast(res.message)
           }
@@ -357,12 +379,23 @@
           account: this.zhifubaoValue,
           type: 1,
           qrCodeUrl: this.picUrl,
-          name: this.zhifubaoName,
+          name: this.zhifubaoName==''?this.userData.name:this.zhifubaoName,
+        }
+        if (this.picUrl == '') {
+          toast("二维码不能为空")
+          return
+        }
+        if (this.zhifubaoValue == '') {
+          toast('支付宝账号不能为空')
+          return
         }
         userCenter.bindBankV2(requests).then(res => {
           if (res.code == 10000) {
             toast('绑定支付宝成功')
             this.zhifubaoPopup = false
+            this.bindAlipay = true
+            this.$store.dispatch('UPDATE_USERDATA')
+            this.$store.dispatch('GET_BANKCARD')
           } else {
             toast(res.message)
           }
@@ -418,9 +451,11 @@
           name: this.personUserName,
         }
         userCenter.bindUserInfo(requests).then(res => {
-          if(res.code ==10000){
+          if (res.code == 10000) {
             toast('修改信息成功')
-          }else {
+            this.$store.dispatch('UPDATE_USERDATA')
+            this.$store.dispatch('GET_BANKCARD')
+          } else {
             toast(res.message)
           }
         })
@@ -432,12 +467,23 @@
           account: this.wxValue,
           type: 2,
           qrCodeUrl: this.picUrl,
-          name: this.wxName,
+          name: this.wxName==''?this.userData.name:this.wxName,
+        }
+        /*二维码判断*/
+        if (this.picUrl == '') {
+          toast("二维码不能为空")
+          return
+        }
+        /*用户账户名判断*/
+        if (this.wxValue == '') {
+          toast('微信账号不能为空')
+          return
         }
         userCenter.bindBankV2(requests).then(res => {
           if (res.code == 10000) {
             toast('绑定微信成功')
             this.weixinPopup = false
+            this.bindWechat = true
           } else {
             toast(res.message)
           }
@@ -551,8 +597,8 @@
   /*绑定银行卡*/
 
   .bind-card-info {
-     background-color: #fff;
-     padding: 20px;
+    background-color: #fff;
+    padding: 20px;
     .bind-title {
       overflow: hidden;
     }
@@ -676,8 +722,8 @@
   }
 
   .add-card-info {
-     background-color: #fff;
-     padding: 20px;
+    background-color: #fff;
+    padding: 20px;
     .bind-title {
       overflow: hidden;
       .main-title {
@@ -796,24 +842,40 @@
         padding-top: 10px;
         font-size: 16px;
         color: #333;
+        display: flex;
+        flex-direction: row;
+        margin-left: 33px;
+        span {
+          line-height: 40px;
+        }
 
         input {
+          flex: 1;
           border: 1px solid #e4e4e4;
           width: 325px;
           height: 40px;
           text-indent: 10px;
+          margin-right: 32px;
+          margin-left: 10px;
         }
       }
       .zhifubaoName {
         padding-top: 20px;
         font-size: 16px;
         color: #333;
+        display: flex;
+        flex-direction: row;
+        span {
+          line-height: 40px;
+        }
         input {
+          flex: 1;
           border: 1px solid #e4e4e4;
           width: 325px;
           height: 40px;
           margin-right: 32px;
           text-indent: 10px;
+          margin-left: 10px;
         }
       }
     }
@@ -954,7 +1016,7 @@
         }
       }
     }
-    .bindInfo{
+    .bindInfo {
       margin: 0 auto;
       background-color: #3573FA;
       border-radius: 5px;

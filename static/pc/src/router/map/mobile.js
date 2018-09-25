@@ -26,7 +26,12 @@ const customizeLoginTip = () => import('views/mobile/customize-login-tip')
 const mreceivcode = () => import('views/mobile/user-center/receivables-code') // 收款码
 const mAppealList = () => import('views/mobile/user-center/appeal-list') //申诉列表
 const mAppealDetail = () => import('views/mobile/user-center/appeal-detail')
+const mAccountManager = () => import('views/mobile/user-center/account-manager') //账户管理
+const mAddAccount = () => import('views/mobile/user-center/add-account') //添加账户
+const mSetPassword = () => import('views/mobile/user-center/set-account-password') //设置账户密码
+const mAccountDetail = () => import('views/mobile/user-center/account-detail')
 const mActivity = () => import('views/mobile/activity-center') //手机活动
+
 export default [
   {
     path: "/m/login",
@@ -257,5 +262,40 @@ export default [
       isMobilePage:'mobile-body'
     }
   },
-
+  {
+    path:'/m/accountManager',
+    name:'mAccountManager',
+    component:mAccountManager,
+    meta:{
+      noCache:true,
+      isMobilePage:'mobile-body'
+    }
+  },
+  {
+    path:"/m/addAccount",
+    name:'mAddAccount',
+    component:mAddAccount,
+    meta:{
+      noCache:true,
+      isMobilePage:'mobile-body'
+    }
+  },
+  {
+    path:"/m/setPassword",
+    name:'mSetPassword',
+    component:mSetPassword,
+    meta:{
+      noCache:true,
+      isMobilePage:'mobile-body'
+    }
+  },
+  {
+    path:'/m/accountDetail',
+    name:'mAccountDetail',
+    component:mAccountDetail,
+    meta:{
+      noCache:true,
+      isMobilePage:'mobile-body'
+    }
+  }
 ]

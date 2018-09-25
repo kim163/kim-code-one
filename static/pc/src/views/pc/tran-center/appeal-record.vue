@@ -119,17 +119,18 @@
   .appeal-container{
     margin: 0 auto;
     .appeal-title {
-       padding-top: 30px;
+       padding-top: 20px;
        padding-left: 41px;
         span{
            display: inline-block;
            font-size: 16px;
            color: #333;
            width: 100px;
-           height: 60px;
+           height: 40px;
            text-align: center;
-           line-height: 60px;
+           line-height: 40px;
            cursor: pointer;
+          margin-right: 40px;
             &.active{
                color: #3573FA;
                border-bottom: 1px solid #3573FA;
