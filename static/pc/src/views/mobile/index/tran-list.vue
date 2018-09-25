@@ -26,6 +26,12 @@
                    :item-info="buySellItem"
                    :type-info="type"></tran-buy-sell>
     <no-data-tip v-if="noData"></no-data-tip>
+    <confirm v-if="showBindCard" v-model="showBindCard">
+      <div slot="title">请绑定您的</div>
+      <div slot="content">银行卡号/微信/支付宝</div>
+      <div slot="leftBtn">返回</div>
+      <div slot="rightBtn" class="btn-yes" @click="toBindCard">去绑定</div>
+    </confirm>
   </div>
 </template>
 <script>
@@ -39,7 +45,7 @@
   import tranDetail from './tran-detail';
   import tranBuySell from './tran-buy-sell'
   import {mapGetters} from 'vuex';
-
+  import Confirm from 'components/confirm'
   export default {
     data() {
       return {
@@ -69,7 +75,8 @@
         scrollY:0,
         noData:false,
         showBuySell:false,
-        buySellItem:{}
+        buySellItem:{},
+        showBindCard:false
       }
     },
     props:{
@@ -89,10 +96,14 @@
       Scroll,
       NoDataTip,
       tranDetail,
-      tranBuySell
+      tranBuySell,
+      Confirm
     },
     computed: {
-      ...mapGetters(["userData"]),
+      ...mapGetters([
+        "userData",
+        "noBankCardTip"
+      ]),
       avatarDealw() {
         return this.SETTING.avatarColor.length;
       },
@@ -149,8 +160,16 @@
         this.scrollY = e.y
       },
       buyOrSell(item){
-        this.buySellItem = item
-        this.showBuySell = true
+        if(this.noBankCardTip){
+          this.showBindCard = true
+        }else{
+          this.buySellItem = item
+          this.showBuySell = true
+        }
+      },
+      toBindCard(){
+        this.showBindCard = false
+        this.$router.push({name:'mUserCenter'})
       }
     },
     created() {
@@ -188,6 +207,10 @@
         }
       }
     }
+  }
+  .btn-yes{
+    background: $main-color;
+    color: $white;
   }
 </style>
 

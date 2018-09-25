@@ -143,6 +143,9 @@
         line-height: r(40);
         text-align: center;
         cursor: pointer;
+        >div{
+          height: 100%;
+        }
         &.confirm-btn-pc{
           height: r(60);
           line-height: r(60);
