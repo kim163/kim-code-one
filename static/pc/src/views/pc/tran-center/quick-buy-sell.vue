@@ -224,7 +224,11 @@
           return;
         }
         if (this.payType == '' || !this.payType) {
-          toast(`请选择${this.pendingItem === 'seller' ? '收款' : '支付'}方式`);
+          if(this.noBankCardTip && this.pendingItem === 'buyer'){
+            this.showBindCard = true
+          }else{
+            toast(`请选择${this.pendingItem === 'seller' ? '收款' : '支付'}方式`);
+          }
           return;
         }
         if (this.payType.type == '1') {
