@@ -18,7 +18,7 @@
                     <h2 class="tips-title thirty-font">快速卖币 100% 赠币</h2>
                     <img src="~images/activity/coin/sell-coins.png" alt="" class="width-100">
                  </div>
-                 <router-link tag="div" class="participate-btn eighteen-font" :to="gotoSellCoins()">
+                 <router-link tag="div" class="participate-btn eighteen-font" v-if="islogin" :to="gotoSellCoins()">
                    立即卖币
                  </router-link>
               </div>
@@ -28,7 +28,7 @@
                     <h2 class="tips-title thirty-font">快速买币 100% 赠币</h2>
                     <img src="~images/activity/coin/buy-coins.png" alt="" class="width-100">
                  </div>
-                 <router-link tag="div" class="participate-btn right-act eighteen-font" :to="gotoBuyCoins()">
+                 <router-link tag="div" class="participate-btn right-act eighteen-font" v-if="islogin" :to="gotoBuyCoins()">
                    立即买币
                  </router-link>
               </div>
@@ -202,7 +202,7 @@
 <script>
   import displayNav from 'components/nav/display-nav';
   import {awardRankings} from 'api/activity';
-
+  import {mapGetters} from 'vuex';
   export default {
     data() {
       return {
@@ -288,7 +288,11 @@
         return {name: routerName,query:{mode:'2'}};
       }
     },
-    computed: {},
+    computed: {
+      ...mapGetters([
+        'islogin'
+      ])
+    },
     created() {
     },
     mounted() {
