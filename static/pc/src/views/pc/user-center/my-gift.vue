@@ -35,18 +35,14 @@
       </div>
     </div>
 
-    <v-footer></v-footer>
   </div>
 </template>
 
 <script>
   import {userCenter} from 'api';
   import noDataTip from 'components/no-data-tip';
-
-
   import CouponDetail from 'components/coupon-detail';
   import pagingBy from "components/paging-by";
-  import VFooter from 'components/footer';
 
   export default {
     name: "pcmy-gift",
@@ -154,10 +150,8 @@
       }
     },
     components: {
-
       CouponDetail,
       pagingBy,
-      VFooter,
       noDataTip
     }
   }
