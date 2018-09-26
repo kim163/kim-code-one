@@ -110,7 +110,25 @@
     },
     methods:{
       jumpLink(success){
-        const tranAddress = _.isMobile() ? (!_.isUndefined(this.mode) && Number(this.mode) > 1 ? 'mPendingBuy' : 'mIndex') : 'transaction'
+        // const tranAddress = _.isMobile() ? (!_.isUndefined(this.mode) && Number(this.mode) > 1 ? 'mPendingBuy' : 'mIndex') : 'transaction'
+        let tranAddress = ''
+        if(_.isMobile()){
+          if(!_.isUndefined(this.mode) && Number(this.mode) > 1){
+            if(Number(this.mode) === 4){
+              tranAddress = 'activityIndex'
+            }else{
+              tranAddress = 'mPendingBuy'
+            }
+          }else{
+            tranAddress = 'mIndex'
+          }
+        }else{
+          if(Number(this.mode) === 4){
+            tranAddress = 'activityIndex'
+          }else{
+            tranAddress = 'transaction'
+          }
+        }
         const loginAddress = _.isMobile() ? 'mobileLogin' : 'aindex'
         if(success){
           if(!_.isUndefined(this.mode)){
