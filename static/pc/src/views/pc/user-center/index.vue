@@ -30,7 +30,7 @@
             <p class="bind-des">请用您本人姓名开户的银行卡进行绑定,方便您以后的存提款</p>
           </div>
           <div class="item-btn" @click="bindzhifubao" v-if="filterZfb.length==0&&!bindAlipay">前去绑定</div>
-          <div class="item-btn" @click="bindzhifubao" v-else>已绑定</div>
+          <div class="item-btn" @click="opencheckAlipay" v-else>已绑定</div>
         </div>
         <div class="list-item" @mouseenter="mouseenter(3)" @mouseleave="mouseleave(3)"
              :class="{'active':mouseOverThird,'bindok':filterWx.length==1||bindWechat}">
@@ -40,7 +40,7 @@
             <p class="bind-des">请用您本人姓名开户的银行卡进行绑定,方便您以后的存提款</p>
           </div>
           <div class="item-btn" @click="bindWx" v-if="filterWx.length==0&&!bindWechat">前去绑定</div>
-          <div class="item-btn" v-else @click="bindWx">已绑定</div>
+          <div class="item-btn" v-else @click="opencheckWchat">已绑定</div>
         </div>
         <div class="list-item" @mouseenter="mouseenter(4)" @mouseleave="mouseleave(4)"
              :class="{'active':mouseOverFourth,'bindok':userData.nickname&&userData.name}">
@@ -172,6 +172,37 @@
       </confirm-dialog>
     </div>
 
+    <commonPopup v-if="checkAlipayPopup">
+      <div class="bind-zhifubao-info">
+        <div class="bind-title">
+          <span class="main-title">绑定支付宝</span>
+          <span class="iconfont icon-close close-btn" @click="closecheckAlipay"></span>
+        </div>
+        <div class="bind-content">
+          <p class="zhifubaoAccount"><span>支付宝账号:</span> <input type="text" :value="filterAlipay[0].account" readonly></p>
+          <p class="zhifubaoName"><span>支付宝认证姓名:</span> <input type="text"  v-model="zhifubaoName" v-if="userData.name==null">
+            <input type="text" :value="userData.name" readonly v-else>
+          </p>
+        </div>
+        <div class="bindzhifubao" @click="closecheckAlipay">确认</div>
+      </div>
+    </commonPopup>
+
+    <commonPopup v-if="checkWchatPopup">
+      <div class="bind-weixin-info">
+        <div class="bind-title">
+          <span class="main-title">绑定微信</span>
+          <span class="iconfont icon-close close-btn" @click="closecheckWchat"></span>
+        </div>
+        <div class="bind-content">
+          <p class="weixinAccount">微信账号: <input type="text" :value="filterWchat[0].account"></p>
+          <p class="weixinName">微信姓名: <input type="text" v-model="wxName" v-if="userData.name==null">
+            <input type="text" :value="userData.name" readonly v-else>
+          </p>
+        </div>
+        <div class="bindweixin" @click="closecheckWchat">确认</div>
+      </div>
+    </commonPopup>
   </div>
 
 </template>
@@ -238,7 +269,11 @@
         bindAlipay:false,
         bindWechat:false,
         showConfirm:true,
-        bindPersonInfo:false
+        bindPersonInfo:false,
+        filterAlipay:'',
+        filterWchat:'',
+        checkAlipayPopup:false,
+        checkWchatPopup:false
       }
     },
     components: {
@@ -249,7 +284,8 @@
     computed: {
       ...mapGetters([
         'userId',
-        'userData'
+        'userData',
+        'bankCardInfo'
       ]),
 
     },
@@ -257,7 +293,27 @@
     created() {
       this.getBankList(0)
     },
+    mounted(){
+      this.$nextTick(()=>{
+        this.filterAlipay = this.bankCardInfo.filter(item => item.type === 2)
+        console.log(this.filterAlipay[0].account,'时间跨度')
+        this.filterWchat = this.bankCardInfo.filter(item => item.type ===1)
+      })
+
+    },
     methods: {
+      opencheckAlipay(){
+        this.checkAlipayPopup = true
+      },
+      opencheckWchat(){
+        this.checkWchatPopup = true
+      },
+      closecheckAlipay(){
+        this.checkAlipayPopup = false
+      },
+      closecheckWchat(){
+        this.checkWchatPopup = false
+      },
       changeTab(type) {
         this.type = type
         if (type == 2) {
@@ -927,6 +983,7 @@
       line-height: 50px;
       margin-top: 30px;
       margin-bottom: 30px;
+      cursor: pointer;
     }
   }
 
