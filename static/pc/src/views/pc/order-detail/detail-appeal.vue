@@ -7,7 +7,7 @@
                 :class="{active:detailTypeItem==item.value}" :key="item.value">
               {{generateTitle(item.name)}}
           </span>
-          <router-link :to="{name:'orderRecord'}" class="fr go-back">返回上一页</router-link>
+          <router-link :to="{name:'AppealRecord'}" class="fr go-back">返回上一页</router-link>
         </div>
         <div class="row00 detail-box_scoped" v-if="detailTypeItem=='orderDetails'">
           <detail-title :isCredit="isCredit" :isDebit="isDebit" :orderId="orderId"></detail-title>
