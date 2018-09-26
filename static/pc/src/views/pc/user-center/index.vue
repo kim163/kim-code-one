@@ -30,7 +30,7 @@
             <p class="bind-des">请用您本人姓名开户的银行卡进行绑定,方便您以后的存提款</p>
           </div>
           <div class="item-btn" @click="bindzhifubao" v-if="filterZfb.length==0&&!bindAlipay">前去绑定</div>
-          <div class="item-btn" v-else>已绑定</div>
+          <div class="item-btn" @click="bindzhifubao" v-else>已绑定</div>
         </div>
         <div class="list-item" @mouseenter="mouseenter(3)" @mouseleave="mouseleave(3)"
              :class="{'active':mouseOverThird,'bindok':filterWx.length==1||bindWechat}">
@@ -40,7 +40,7 @@
             <p class="bind-des">请用您本人姓名开户的银行卡进行绑定,方便您以后的存提款</p>
           </div>
           <div class="item-btn" @click="bindWx" v-if="filterWx.length==0&&!bindWechat">前去绑定</div>
-          <div class="item-btn" v-else>已绑定</div>
+          <div class="item-btn" v-else @click="bindWx">已绑定</div>
         </div>
         <div class="list-item" @mouseenter="mouseenter(4)" @mouseleave="mouseleave(4)"
              :class="{'active':mouseOverFourth,'bindok':userData.nickname&&userData.name}">
@@ -101,7 +101,8 @@
                                              autocomplete="off" @blur="blurNumber"></p>
           <p class="bank-name">银行名称 <input type="text" class="input-bank-name" readonly autocomplete="off"
                                            :value="bankName"></p>
-          <p class="user-name">持卡人姓名 <input type="text" class="input-user-name" autocomplete="off" v-model="userName">
+          <p class="user-name">持卡人姓名 <input type="text" v-if="userName.name==null" class="input-user-name" autocomplete="off" v-model="userName">
+            <input type="text" class="input-user-name" :value="userData.name" v-else>
           </p>
         </div>
         <div class="bindCard" @click="bindCard">绑定</div>
@@ -155,12 +156,21 @@
         </div>
         <div class="bind-content">
           <p class="username">昵称 <input type="text" v-model="personUserName"></p>
-          <p class="realname">真实姓名 <input type="text" v-model="personRealName" readonly v-if="userData.userName==null">
+          <p class="realname">真实姓名 <input type="text" v-model="personRealName"  v-if="userData.name==null">
             <input type="text" :value="userData.name" readonly v-else></p>
         </div>
         <div class="bindInfo" @click='binkUserAccount'>绑定</div>
       </div>
     </commonPopup>
+    <div v-if="bindPersonInfo">
+      <confirm-dialog v-model="bindPersonInfo" :is-pc="true">
+        <div slot="content">
+          <div class="dialog-content">请前往设置您的真实姓名</div>
+        </div>
+        <div slot="leftBtn" class="confirm-btn-cancel dialog-cancel">取消</div>
+        <div slot="rightBtn" class="dialog-btn-yes" @click="defineOk">确定</div>
+      </confirm-dialog>
+    </div>
 
   </div>
 
@@ -172,7 +182,7 @@
   import getBankUrl from '../../../util/bankurl'
   import commonPopup from 'components/common-popup/index'
   import uploadImg from 'components/upload-img/index'
-
+  import ConfirmDialog from 'components/confirm'
   export default {
     name: "user-center",
     data() {
@@ -226,12 +236,15 @@
         personRealName: '',
         bindCardState:false,
         bindAlipay:false,
-        bindWechat:false
+        bindWechat:false,
+        showConfirm:true,
+        bindPersonInfo:false
       }
     },
     components: {
       commonPopup,
-      uploadImg
+      uploadImg,
+      ConfirmDialog
     },
     computed: {
       ...mapGetters([
@@ -255,6 +268,10 @@
         this.needAddCard = true
         this.isEmptyState = false
         this.isEmptyStateNext = false
+      },
+      defineOk(){
+         this.bindPersonInfo = false
+         this.personInfoPopup = true
       },
       mouseenter(num) {
         if (num == 1) {
@@ -368,7 +385,11 @@
         this.zhifubaoPopup = false
       },
       bindzhifubao() {
-        this.zhifubaoPopup = true
+        if(this.userData.name==null){
+           this.bindPersonInfo = true
+        }else {
+          this.zhifubaoPopup = true
+        }
       },
       getPicUrl(val) {
         this.picUrl = val.join()
@@ -403,7 +424,11 @@
       },
       getBankList(num) {
         if (num == 1) {
-          this.closeState = true
+          if(this.userData.name==null){
+            this.bindPersonInfo = true
+          }else {
+            this.closeState = true
+          }
         }
         let requests = {
           userId: this.userId
@@ -433,7 +458,12 @@
         })
       },
       bindWx() {
-        this.weixinPopup = true
+        if(this.userData.name==null){
+          this.bindPersonInfo = true
+        }else {
+          this.weixinPopup = true
+        }
+
       },
       closeWeixin() {
         this.weixinPopup = false

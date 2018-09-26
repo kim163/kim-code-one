@@ -16,7 +16,7 @@
             <div class="col-33">
               <div class="order-time">
                 <p class="red order-status-title">
-                  <span> 申诉锁定中</span>
+                  <span>申诉锁定中</span>
                 </p>
                 <input type="button" v-if="isCredit" class="btn btn-normal " @click="detailTypeItem='appealArbitrat'"
                        value="提出反证">
@@ -635,7 +635,7 @@
         border-radius: 4px;
       }
     }
-    .upload-btngroup {
+   /deep/ .upload-btngroup {
       width: 100px !important;
       height: 100px !important;
     }

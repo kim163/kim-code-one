@@ -81,4 +81,16 @@ export  const addAppealDetail = jsonData => service({
   data:jsonData
 })
 
+//获取用户中心列表
+export const getCenterInfo = jsonData => service({
+  url:numversion + `user/center/getCenterInfo`,
+  method:'post',
+  data:jsonData
+})
 
+//添加到用户中心
+export const addToCenter = jsonData => service({
+  url:numversion + `user/center/addToCenter`,
+  method:'post',
+  data:jsonData
+})

@@ -178,6 +178,7 @@ export default new Vuex.Store({
     [types.IS_TIMEOVER](state, val) {
       state.timeOver = val
     },
+    /*定制版的登陆*/
     [types.SHOW_LOGIN](state,val){
       if(_.isMobile() && val){
         if(!_.customize()){
