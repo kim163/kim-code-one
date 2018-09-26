@@ -208,7 +208,7 @@
           </p>
         </div>
         <div class="bindweixin" @click="closecheckWchat">确认</div>
-        <div class="bindTips">您已绑定支付宝账号,如需更换请联系<span class="hot-line"><getLive800></getLive800></span></div>
+        <div class="bindTips">您已绑定微信账号,如需更换请联系<span class="hot-line"><getLive800></getLive800></span></div>
       </div>
     </commonPopup>
   </div>
@@ -301,10 +301,8 @@
     },
     watch: {
       bankCardInfo() {
-        this.filterAlipay = this.bankCardInfo.filter(item => item.type === 2)
-
-        this.filterWchat = this.bankCardInfo.filter(item => item.type === 1)
-
+        this.filterAlipay = this.bankCardInfo.filter(item => item.type === 1)
+        this.filterWchat = this.bankCardInfo.filter(item => item.type === 2)
       }
     },
     created() {
@@ -429,9 +427,10 @@
           userId: this.userId,
           account: this.cardNumber,
           type: 3,
-          name: this.userName,
+          name: this.userName==''?this.userData.name:this.userName,
           bank: this.bankName
         }
+
         userCenter.bindBankV2(requests).then(res => {
           if (res.code == 10000) {
             toast('绑卡成功!')
@@ -582,6 +581,8 @@
             toast('绑定微信成功')
             this.weixinPopup = false
             this.bindWechat = true
+            this.$store.dispatch('UPDATE_USERDATA')
+            this.$store.dispatch('GET_BANKCARD')
           } else {
             toast(res.message)
           }
