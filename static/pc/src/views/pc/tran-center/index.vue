@@ -8,8 +8,7 @@
     </ul>
     <div class="tab-container">
       <transition mode="out-in"
-                  enter-active-class="animated-quick fadeIn"
-                  leave-active-class="animated-quick fadeOut">
+                  name="fade-quick">
         <router-view></router-view>
       </transition>
     </div>
