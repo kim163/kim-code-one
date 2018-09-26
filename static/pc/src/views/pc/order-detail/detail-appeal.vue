@@ -558,13 +558,17 @@
       }
     }
     .go-back{
-      font-size: 16px;
-      color: #333333;
-      padding-left: 20px;
-      display: inline-block;
-      a:hover{
-        color: #5087ff;
-      }
+       font-size: 16px;
+       padding: 5px 12px;
+       border-radius: 15px;
+       background-color: #86A5F8;
+       color: #FFFFFF;
+       display: block;
+       line-height: 16px;
+       margin-top: 12px;
+        &:hover{
+          background: #9490F6;
+        }
     }
   }
 

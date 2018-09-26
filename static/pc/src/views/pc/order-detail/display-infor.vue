@@ -75,7 +75,7 @@
       </p>
 
       <p v-else-if="isDebit && isTrading" class="tips-info">
-        如果收到款项不确定是否对方付的，请点右下角跟对方会话
+        如果收到款项不确定是否对方付的，请点右下角 在线聊天 跟对方会话
       </p>
     </div>
     <div  class="col-33 hidden">
