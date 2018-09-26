@@ -7,7 +7,7 @@
                 :class="{active:detailTypeItem==item.value}" :key="item.value">
               {{generateTitle(item.name)}}
           </span>
-          <router-link :to="{name:'orderRecord'}" class="fr go-back">返回上一页</router-link>
+          <router-link :to="{name:'AppealRecord'}" class="fr go-back">返回上一页</router-link>
         </div>
         <div class="row00 detail-box_scoped" v-if="detailTypeItem=='orderDetails'">
           <detail-title :isCredit="isCredit" :isDebit="isDebit" :orderId="orderId"></detail-title>
@@ -558,13 +558,17 @@
       }
     }
     .go-back{
-      font-size: 16px;
-      color: #333333;
-      padding-left: 20px;
-      display: inline-block;
-      a:hover{
-        color: #5087ff;
-      }
+       font-size: 16px;
+       padding: 5px 12px;
+       border-radius: 15px;
+       background-color: #86A5F8;
+       color: #FFFFFF;
+       display: block;
+       line-height: 16px;
+       margin-top: 12px;
+        &:hover{
+          background: #9490F6;
+        }
     }
   }
 

@@ -737,14 +737,18 @@
     padding: 0 0 23px;
   }
   .go-back-part{
-    line-height: 40px;
+    height: 40px;
     a{
       font-size: 16px;
-      color: #333333;
-      padding-left: 20px;
-      display: inline-block;
+      padding: 5px 12px;
+      border-radius: 15px;
+      background-color: #86A5F8;
+      color: #FFFFFF;
+      display: block;
+      line-height: 16px;
+      margin-top: 7px;
       &:hover{
-        color: #5087ff;
+        background: #9490F6;
       }
     }
   }
@@ -837,7 +841,7 @@
       color: #787876;
     }
     &.btn-normal {
-      border: 1px solid #D3D3D3;
+      border: 1px solid #5087ff;
       background: #5087ff;
       color: #fff;
     }
