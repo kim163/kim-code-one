@@ -40,7 +40,7 @@
         methods:{
           goWatch(){
               if(this.isPC){
-                this.$router.push({name:'pcMyGift'})
+                this.$router.push({name:'myGift'})
               }else {
                 this.$router.push({name:'mMyGift'})
               }

@@ -63,7 +63,7 @@
             this.show = false
             this.orderId = newVal.orderId
           }else{
-            if(newVal.orderId != oldVal.orderId){
+            if(newVal.orderId != this.orderId){
               this.orderId = newVal.orderId
               this.$refs.music.play()
               this.getOrderDetail()
@@ -203,7 +203,7 @@
       checkRouter(){
         const val = this.$route
         if(val.name === 'orderDetail' || val.name === 'orderDetailAppeal'){
-          if(this.orderId === val.params.id){
+          if(this.orderId === '' || (this.orderId === val.params.id)){
             return false
           }
         }

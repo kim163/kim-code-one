@@ -101,8 +101,9 @@
                                              autocomplete="off" @blur="blurNumber"></p>
           <p class="bank-name">银行名称 <input type="text" class="input-bank-name" readonly autocomplete="off"
                                            :value="bankName"></p>
-          <p class="user-name">持卡人姓名 <input type="text" v-if="userName.name==null" class="input-user-name" autocomplete="off" v-model="userName">
-            <input type="text" class="input-user-name" :value="userData.name" v-else>
+          <p class="user-name">持卡人姓名 <input type="text" v-if="userData.name==null" class="input-user-name"
+                                            autocomplete="off" v-model="userName">
+            <input type="text" class="input-user-name" :value="userData.name" v-else readonly>
           </p>
         </div>
         <div class="bindCard" @click="bindCard">绑定</div>
@@ -121,7 +122,8 @@
           <uploadImg :uploadImgSet="{maxUploadNum:1}" :showClose="true" @gitPicUrl="getPicUrl"></uploadImg>
           <p class="content-remind">点击上传您的收款二维码</p>
           <p class="zhifubaoAccount"><span>支付宝账号:</span> <input type="text" v-model="zhifubaoValue"></p>
-          <p class="zhifubaoName"><span>支付宝认证姓名:</span> <input type="text"  v-model="zhifubaoName" v-if="userData.name==null">
+          <p class="zhifubaoName"><span>支付宝认证姓名:</span> <input type="text" v-model="zhifubaoName"
+                                                               v-if="userData.name==null">
             <input type="text" :value="userData.name" readonly v-else>
           </p>
         </div>
@@ -156,7 +158,7 @@
         </div>
         <div class="bind-content">
           <p class="username">昵称 <input type="text" v-model="personUserName"></p>
-          <p class="realname">真实姓名 <input type="text" v-model="personRealName"  v-if="userData.name==null">
+          <p class="realname">真实姓名 <input type="text" v-model="personRealName" v-if="userData.name==null">
             <input type="text" :value="userData.name" readonly v-else></p>
         </div>
         <div class="bindInfo" @click='binkUserAccount'>绑定</div>
@@ -175,32 +177,38 @@
     <commonPopup v-if="checkAlipayPopup">
       <div class="bind-zhifubao-info">
         <div class="bind-title">
-          <span class="main-title">绑定支付宝</span>
+          <span class="main-title">您已绑定的支付宝</span>
           <span class="iconfont icon-close close-btn" @click="closecheckAlipay"></span>
         </div>
         <div class="bind-content">
-          <p class="zhifubaoAccount"><span>支付宝账号:</span> <input type="text" :value="filterAlipay[0].account" readonly></p>
-          <p class="zhifubaoName"><span>支付宝认证姓名:</span> <input type="text"  v-model="zhifubaoName" v-if="userData.name==null">
+          <img :src="filterAlipay[0].qrCodeUrl" alt="" class="qrCodePic">
+          <p class="zhifubaoAccount"><span>支付宝账号:</span> <input type="text" :value="filterAlipay[0].account" readonly>
+          </p>
+          <p class="zhifubaoName"><span>支付宝认证姓名:</span> <input type="text" v-model="zhifubaoName"
+                                                               v-if="userData.name==null">
             <input type="text" :value="userData.name" readonly v-else>
           </p>
         </div>
         <div class="bindzhifubao" @click="closecheckAlipay">确认</div>
+        <div class="bindTips">您已绑定支付宝账号,如需更换请联系<span class="hot-line"><getLive800></getLive800></span></div>
       </div>
     </commonPopup>
 
     <commonPopup v-if="checkWchatPopup">
       <div class="bind-weixin-info">
         <div class="bind-title">
-          <span class="main-title">绑定微信</span>
+          <span class="main-title">您已绑定的微信号</span>
           <span class="iconfont icon-close close-btn" @click="closecheckWchat"></span>
         </div>
         <div class="bind-content">
-          <p class="weixinAccount">微信账号: <input type="text" :value="filterWchat[0].account"></p>
+          <img :src="filterWchat[0].qrCodeUrl" alt="" class="qrCodePic">
+          <p class="weixinAccount">微信账号: <input type="text" :value="filterWchat[0].account" readonly></p>
           <p class="weixinName">微信姓名: <input type="text" v-model="wxName" v-if="userData.name==null">
             <input type="text" :value="userData.name" readonly v-else>
           </p>
         </div>
         <div class="bindweixin" @click="closecheckWchat">确认</div>
+        <div class="bindTips">您已绑定微信账号,如需更换请联系<span class="hot-line"><getLive800></getLive800></span></div>
       </div>
     </commonPopup>
   </div>
@@ -214,6 +222,8 @@
   import commonPopup from 'components/common-popup/index'
   import uploadImg from 'components/upload-img/index'
   import ConfirmDialog from 'components/confirm'
+  import getLive800 from 'components/get-live800';
+
   export default {
     name: "user-center",
     data() {
@@ -265,21 +275,22 @@
         personInfoPopup: false,
         personUserName: '',
         personRealName: '',
-        bindCardState:false,
-        bindAlipay:false,
-        bindWechat:false,
-        showConfirm:true,
-        bindPersonInfo:false,
-        filterAlipay:'',
-        filterWchat:'',
-        checkAlipayPopup:false,
-        checkWchatPopup:false
+        bindCardState: false,
+        bindAlipay: false,
+        bindWechat: false,
+        showConfirm: true,
+        bindPersonInfo: false,
+        filterAlipay: [],
+        filterWchat: [],
+        checkAlipayPopup: false,
+        checkWchatPopup: false
       }
     },
     components: {
       commonPopup,
       uploadImg,
-      ConfirmDialog
+      ConfirmDialog,
+      getLive800
     },
     computed: {
       ...mapGetters([
@@ -287,31 +298,29 @@
         'userData',
         'bankCardInfo'
       ]),
-
     },
-
+    watch: {
+      bankCardInfo() {
+        this.filterAlipay = this.bankCardInfo.filter(item => item.type === 1)
+        this.filterWchat = this.bankCardInfo.filter(item => item.type === 2)
+      }
+    },
     created() {
       this.getBankList(0)
-    },
-    mounted(){
-      this.$nextTick(()=>{
-        this.filterAlipay = this.bankCardInfo.filter(item => item.type === 2)
-        console.log(this.filterAlipay[0].account,'时间跨度')
-        this.filterWchat = this.bankCardInfo.filter(item => item.type ===1)
-      })
 
     },
+
     methods: {
-      opencheckAlipay(){
+      opencheckAlipay() {
         this.checkAlipayPopup = true
       },
-      opencheckWchat(){
+      opencheckWchat() {
         this.checkWchatPopup = true
       },
-      closecheckAlipay(){
+      closecheckAlipay() {
         this.checkAlipayPopup = false
       },
-      closecheckWchat(){
+      closecheckWchat() {
         this.checkWchatPopup = false
       },
       changeTab(type) {
@@ -325,9 +334,9 @@
         this.isEmptyState = false
         this.isEmptyStateNext = false
       },
-      defineOk(){
-         this.bindPersonInfo = false
-         this.personInfoPopup = true
+      defineOk() {
+        this.bindPersonInfo = false
+        this.personInfoPopup = true
       },
       mouseenter(num) {
         if (num == 1) {
@@ -385,7 +394,7 @@
           let requests = {
             bankNo: this.cardNumber
           }
-          console.log(this.cardNumber,'数控刀具')
+          console.log(this.cardNumber, '数控刀具')
           userCenter.autoRecognize(requests).then(res => {
             if (res.code == 10000) {
               if (res.data == null) {
@@ -411,16 +420,17 @@
         this.needAddCard = false
       },
       bindCard() {
-        if(!this.bindCardState){
+        if (!this.bindCardState) {
           return
         }
         const requests = {
           userId: this.userId,
           account: this.cardNumber,
           type: 3,
-          name: this.userName,
+          name: this.userName==''?this.userData.name:this.userName,
           bank: this.bankName
         }
+
         userCenter.bindBankV2(requests).then(res => {
           if (res.code == 10000) {
             toast('绑卡成功!')
@@ -441,9 +451,9 @@
         this.zhifubaoPopup = false
       },
       bindzhifubao() {
-        if(this.userData.name==null){
-           this.bindPersonInfo = true
-        }else {
+        if (this.userData.name == null) {
+          this.bindPersonInfo = true
+        } else {
           this.zhifubaoPopup = true
         }
       },
@@ -456,7 +466,7 @@
           account: this.zhifubaoValue,
           type: 1,
           qrCodeUrl: this.picUrl,
-          name: this.zhifubaoName==''?this.userData.name:this.zhifubaoName,
+          name: this.zhifubaoName == '' ? this.userData.name : this.zhifubaoName,
         }
         if (this.picUrl == '') {
           toast("二维码不能为空")
@@ -480,9 +490,9 @@
       },
       getBankList(num) {
         if (num == 1) {
-          if(this.userData.name==null){
+          if (this.userData.name == null) {
             this.bindPersonInfo = true
-          }else {
+          } else {
             this.closeState = true
           }
         }
@@ -514,9 +524,9 @@
         })
       },
       bindWx() {
-        if(this.userData.name==null){
+        if (this.userData.name == null) {
           this.bindPersonInfo = true
-        }else {
+        } else {
           this.weixinPopup = true
         }
 
@@ -533,14 +543,15 @@
         const requests = {
           idCard: '',
           userId: this.userId,
-          nickname: this.personRealName,
-          name: this.personUserName,
+          nickname: this.personUserName,
+          name: this.personRealName,
         }
         userCenter.bindUserInfo(requests).then(res => {
           if (res.code == 10000) {
             toast('修改信息成功')
             this.$store.dispatch('UPDATE_USERDATA')
             this.$store.dispatch('GET_BANKCARD')
+            this.personInfoPopup = false
           } else {
             toast(res.message)
           }
@@ -553,7 +564,7 @@
           account: this.wxValue,
           type: 2,
           qrCodeUrl: this.picUrl,
-          name: this.wxName==''?this.userData.name:this.wxName,
+          name: this.wxName == '' ? this.userData.name : this.wxName,
         }
         /*二维码判断*/
         if (this.picUrl == '') {
@@ -570,6 +581,8 @@
             toast('绑定微信成功')
             this.weixinPopup = false
             this.bindWechat = true
+            this.$store.dispatch('UPDATE_USERDATA')
+            this.$store.dispatch('GET_BANKCARD')
           } else {
             toast(res.message)
           }
@@ -603,7 +616,7 @@
         background-color: #3573FA;
       }
     }
-    .go-center{
+    .go-center {
       float: right;
       padding: 5px 10px;
       border-radius: 15px;
@@ -613,6 +626,7 @@
       margin-top: 8px;
     }
   }
+
   .user-content {
     border: 1px solid #D3D3D3;
     padding: 31px;
@@ -923,8 +937,11 @@
         text-align: center;
         padding-top: 20px;
       }
-      .upload-imgpart {
-
+      .qrCodePic {
+        width: 150px;
+        height: 120px;
+        padding-top: 20px;
+        padding-bottom: 20px;
       }
       .content-remind {
         font-size: 16px;
@@ -982,8 +999,17 @@
       text-align: center;
       line-height: 50px;
       margin-top: 30px;
-      margin-bottom: 30px;
+      margin-bottom: 20px;
       cursor: pointer;
+    }
+    .bindTips {
+      color: #333;
+      /deep/ i {
+        display: none;
+      }
+      .hot-line {
+        color: #ec3a4e;
+      }
     }
   }
 
@@ -1014,8 +1040,11 @@
         text-align: center;
         padding-top: 20px;
       }
-      .upload-imgpart {
-
+      .qrCodePic {
+        width: 150px;
+        height: 120px;
+        padding-top: 20px;
+        padding-bottom: 20px;
       }
       .content-remind {
         font-size: 16px;
@@ -1058,6 +1087,15 @@
       margin-top: 30px;
       margin-bottom: 30px;
       cursor: pointer;
+    }
+    .bindTips {
+      color: #333;
+      /deep/ i {
+        display: none;
+      }
+      .hot-line {
+        color: #ec3a4e;
+      }
     }
   }
 
@@ -1120,9 +1158,11 @@
       text-align: center;
       line-height: 50px;
       margin-top: 30px;
-      margin-bottom: 30px;
+      margin-bottom: 20px;
       cursor: pointer;
+
     }
+
   }
 
 </style>

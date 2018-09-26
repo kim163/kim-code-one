@@ -4,6 +4,12 @@
 .fade-enter,.fade-leave-to{
   opacity: 0
 }
+.fade-quick-enter-active, .fade-quick-leave-active {
+  transition: opacity .3s
+}
+.fade-quick-enter,.fade-quick-leave-to{
+  opacity: 0
+}
 .toolSlideLeft-enter-active,.toolSlideLeft-leave-active {
   transition:transform .5s;
 }

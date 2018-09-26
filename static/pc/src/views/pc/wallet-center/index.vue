@@ -3,8 +3,7 @@
     <user-info></user-info>
     <order-notice></order-notice>
     <transition mode="out-in"
-                enter-active-class="animated-quick fadeIn"
-                leave-active-class="animated-quick fadeOut">
+                name="fade-quick">
       <router-view></router-view>
     </transition>
     <withdraw-tip v-model="withdrawTip" :is-pc="true"></withdraw-tip>
