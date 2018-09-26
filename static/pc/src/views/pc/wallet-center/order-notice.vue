@@ -63,7 +63,7 @@
             this.show = false
             this.orderId = newVal.orderId
           }else{
-            if(newVal.orderId != oldVal.orderId){
+            if(newVal.orderId != this.orderId){
               this.orderId = newVal.orderId
               this.$refs.music.play()
               this.getOrderDetail()
