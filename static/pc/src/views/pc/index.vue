@@ -2,8 +2,7 @@
   <div>
     <display-nav :isOfficialWeb="isOfficialWeb"></display-nav>
     <transition mode="out-in"
-                enter-active-class="fadeIn animated-quick"
-                leave-active-class="fadeOut animated-quick">
+                name="fade-quick">
       <router-view></router-view>
     </transition>
     <v-footer :isDisplayFoot="true" :isOfficialWeb="isOfficialWeb" ></v-footer>
