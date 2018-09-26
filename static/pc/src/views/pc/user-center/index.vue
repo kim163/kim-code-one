@@ -101,9 +101,9 @@
                                              autocomplete="off" @blur="blurNumber"></p>
           <p class="bank-name">银行名称 <input type="text" class="input-bank-name" readonly autocomplete="off"
                                            :value="bankName"></p>
-          <p class="user-name">持卡人姓名 <input type="text" v-if="userName.name==null" class="input-user-name"
+          <p class="user-name">持卡人姓名 <input type="text" v-if="userData.name==null" class="input-user-name"
                                             autocomplete="off" v-model="userName">
-            <input type="text" class="input-user-name" :value="userData.name" v-else>
+            <input type="text" class="input-user-name" :value="userData.name" v-else readonly>
           </p>
         </div>
         <div class="bindCard" @click="bindCard">绑定</div>
