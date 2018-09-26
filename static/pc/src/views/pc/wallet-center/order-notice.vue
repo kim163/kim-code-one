@@ -203,7 +203,7 @@
       checkRouter(){
         const val = this.$route
         if(val.name === 'orderDetail' || val.name === 'orderDetailAppeal'){
-          if(this.orderId === val.params.id){
+          if(this.orderId === '' || (this.orderId === val.params.id)){
             return false
           }
         }
