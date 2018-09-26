@@ -519,6 +519,12 @@
     }
     .go-center{
       float: right;
+      padding: 5px 10px;
+      border-radius: 15px;
+      background-color: #86A5F8;
+      color: #FFFFFF;
+      line-height: 16px;
+      margin-top: 8px;
     }
   }
   .user-content {

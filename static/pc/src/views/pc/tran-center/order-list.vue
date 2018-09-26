@@ -35,7 +35,7 @@
             {{item.resultTypeText}}
           </span>
           <span class="unit">
-            <router-link :to='orderDetailLink(item)' class="btn-link">详情</router-link>
+            <router-link :to='orderDetailLink(item)' v-if="item.type === 11 || item.type === 12" class="btn-link">详情</router-link>
           </span>
         </div>
         <paging-by :data="pageInfo" @search="getDataList"></paging-by>
