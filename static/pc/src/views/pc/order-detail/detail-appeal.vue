@@ -650,8 +650,11 @@
         cursor: pointer;
       }
     }
+   /deep/ .upload-btngroup {
+      width: 100px !important;
+      height: 100px !important;
+    }
   }
-
   .order-time {
     padding: 47px 38px 20px;
   }

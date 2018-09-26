@@ -1,6 +1,6 @@
 <template>
   <div class="mreceiv-code">
-    <mobile-header>{{$t('userCenter.receivcode')}}</mobile-header>
+    <mobile-header :mheadSet="mheadSet" @returnBtnEvent="returnBtnEvent">{{$t('userCenter.receivcode')}}</mobile-header>
 
     <div v-for="(item,i) in userData.accountChainVos" class="mreceiv-code-content">
       <p class="address"> {{item.address}} </p>
@@ -23,7 +23,11 @@
   export default {
     data() {
       return {
-        Logo
+        Logo,
+        mheadSet:{
+          returnBtnFun:false,
+          returnBtnEvent:'returnBtnEvent'
+        }
       };
     },
     props: {},
@@ -40,6 +44,9 @@
           // 释放内存
           clipboard.destroy()
         });
+      },
+      returnBtnEvent(){
+        this.$emit('closeReceivables',false)
       }
     },
     computed: {
@@ -57,6 +64,8 @@
   @import "~assets/scss/mobile";
 .mreceiv-code{
   padding-bottom: r($footer-hg+20);
+  width: 100%;
+  background-color: #fff;
 }
 
 .mreceiv-code-content{

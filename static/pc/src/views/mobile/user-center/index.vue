@@ -1,7 +1,7 @@
 <template>
   <div class="muser-center-home">
     <div class="mcenter-userinfo">
-      <div class="login-user" >
+      <div class="login-user">
         <span @click="goAccountManager">
           <img :src="getLogo" class="logo">
           {{$t('navbar.nickName')}}：{{userData.nickname}}
@@ -31,10 +31,10 @@
     </div>
 
     <div class="mcenter-hotlink cfx">
-      <router-link :to="{name:'mreceivcode'}" class="item-href">
+      <div class="item-href" @click="openReivePage">
         <i class="iconfont icon-receipt-code"></i>
         {{$t('userCenter.receivcode')}}
-      </router-link>
+      </div>
       <router-link :to="{name:'mTranRecord'}" class="item-href">
         <i class="iconfont icon-tran-record1"></i>
         {{$t('userCenter.transactionRecord')}}
@@ -123,29 +123,33 @@
       <div slot="leftBtn" class="confirm-btn-cancel dialog-cancel">取消</div>
       <div slot="rightBtn" class="dialog-btn-yes" @click="toSetInfo">确定</div>
     </confirm-dialog>
-      <div class="outer-container"  v-if="isAd" @click="demo">
-        <div class="side-menu">
-          <div class="account-person-single">
-            <p class="account-pic"><span class="iconfont icon-default-user"></span></p>
-            <p class="account-name">ANSON001</p>
-          </div>
-          <div class="add-account">添加账户</div>
-          <div class="account-content">
-            <get-live800 :showRightArrow="true" :liveSpecStyle="mcenterLive" :isRoundIcon="true"></get-live800>
-            <router-link :to="{name:'mSetUserInfo'}" class="item-href">
-              <i class="iconfont logo icon-complete-material"></i>
-              帮助中心
-              <i class="iconfont icon-right-arrow"></i>
-            </router-link>
-            <router-link :to="{name:'mSetUserInfo'}" class="item-href">
-              <i class="iconfont logo icon-complete-material"></i>
-              关于我们
-              <i class="iconfont icon-right-arrow"></i>
-            </router-link>
-          </div>
-          <div class="login-out-btn">退出账户</div>
+    <div class="outer-container" v-if="isAd" @click="demo">
+      <div class="side-menu">
+        <div class="account-person-single">
+          <p class="account-pic"><span class="iconfont icon-default-user"></span></p>
+          <p class="account-name">{{singerUserName}}</p>
         </div>
+        <div class="add-account" @click="addAccount">添加账户</div>
+        <div class="account-content">
+          <get-live800 :showRightArrow="true" :liveSpecStyle="mcenterLive" :isRoundIcon="true"></get-live800>
+          <router-link :to="{name:'mSetUserInfo'}" class="item-href">
+            <i class="iconfont logo icon-complete-material"></i>
+            帮助中心
+            <i class="iconfont icon-right-arrow"></i>
+          </router-link>
+          <router-link :to="{name:'mSetUserInfo'}" class="item-href">
+            <i class="iconfont logo icon-complete-material"></i>
+            关于我们
+            <i class="iconfont icon-right-arrow"></i>
+          </router-link>
+        </div>
+        <div class="login-out-btn">退出账户</div>
       </div>
+    </div>
+    <transition name="scroll-up">
+      <ReceivablesCode v-if="showReceivePage" @closeReceivables="closeReivePage"></ReceivablesCode>
+    </transition>
+
   </div>
 </template>
 
@@ -156,7 +160,7 @@
   import {SETTING} from "@/assets/data";
   import getLive800 from 'components/get-live800';
   import {$localStorage} from '@/util/storage';
-
+  import ReceivablesCode from './receivables-code'
   import jiuanLogo from '@/assets/images/icon/juan-logo.svg';
 
   import {transaction, userCenter} from 'api';
@@ -173,14 +177,17 @@
         mcenterLive: 'mcenter-live',
         initPageNext: 0,
         myGiftTotal: 0,
-        isAd: false
+        isAd: false,
+        showReceivePage:false,
+        singerUserName:''
       }
     },
     components: {
       ConfirmDialog,
       mNavbar,
       getLive800,
-      mToolbar
+      mToolbar,
+      ReceivablesCode
     },
     watch: {
       'userData.name': function (val) {
@@ -202,6 +209,15 @@
       }
     },
     methods: {
+      closeReivePage(val){
+        this.showReceivePage = val
+      },
+      openReivePage(){
+         this.showReceivePage = true
+      },
+      addAccount(){
+        this.$router.push({name:'mAddAccount'})
+      },
       demo() {
         this.isAd = !this.isAd
       },
@@ -229,9 +245,24 @@
         const balAmount = type === 1 ? this.homeInforma.chainAmount : (this.homeInforma.pendingAmount + this.homeInforma.lockedAmount);
         return !_.isNaN(Number(balAmount)) ? Number(balAmount) : '0.00';
       },
-      goAccountManager(){
-        this.$router.push({name:'mAccountManager'})
+      goAccountManager() {
+        this.$router.push({name: 'mAccountManager'})
       },
+      getCenterInfo(){
+        const request ={}
+        userCenter.getCenterInfo(request).then(res=>{
+          console.log(res,'速度')
+           if(res.code=='10000'){
+              if(res.data.length==1){
+                  this.singerUserName = res.data[0].name
+
+              }else {
+
+              }
+           }
+        })
+      },
+
       getInfonext() {
         const requestDatas = {
           "limit": 10,
@@ -253,6 +284,8 @@
     created() {
       this.searchHomeInfo();
       this.getInfonext();
+      this.getCenterInfo();
+
     },
     beforeRouteLeave(to, from, next) {
       if (to.name === 'mBindCard') {
@@ -453,12 +486,12 @@
       height: 100%;
       z-index: 20;
       animation: fadeInRight .5s;
-      .account-person-single{
+      .account-person-single {
         text-align: center;
         height: r(180);
         padding-top: r(40);
         background-color: #f6f9ff;
-        .account-pic{
+        .account-pic {
           display: block;
           width: 60px;
           height: 60px;
@@ -470,22 +503,22 @@
           margin: auto;
         }
         color: #fff;
-        .account-name{
+        .account-name {
           margin-top: r(20);
           @include f(18px);
           color: #333333;
         }
       }
-      .add-account{
-         background-color: #85abfc;
-         color: #fff;
-         @include f(18px);
-         line-height: 44px;
-         text-align: center;
+      .add-account {
+        background-color: #85abfc;
+        color: #fff;
+        @include f(18px);
+        line-height: 44px;
+        text-align: center;
       }
-      .account-content{
+      .account-content {
         margin-top: r(20);
-        .item-href{
+        .item-href {
           height: r(50);
           display: block;
           border: 1px solid #f5f5f5;
@@ -494,7 +527,7 @@
           padding-left: r(10);
         }
       }
-      .login-out-btn{
+      .login-out-btn {
         background-color: #3573FA;
         color: #fff;
         height: r(44);

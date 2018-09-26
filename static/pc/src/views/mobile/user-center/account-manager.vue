@@ -6,7 +6,7 @@
     </MobileHeader>
     <div class="account-list">
       <div class="list-item">
-        <div class="account-box">
+        <div class="account-box" @click="goDetailPage">
           <div class="up-line">
             <p class="user-name">anson001</p>
             <p class="order-num">195374465456465456456</p>
@@ -45,6 +45,9 @@
       },
       addAccount(){
          this.$router.push({name:'mAddAccount'})
+      },
+      goDetailPage(){
+        this.$router.push({name:'mAccountDetail'})
       }
     },
     components: {MobileHeader}
