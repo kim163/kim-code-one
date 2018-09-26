@@ -219,12 +219,16 @@
 </script>
 <style lang="scss" scoped>
   .customize-main{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     .tip-bg{
       width: 155px;
       height: 170px;
       background: url(~images/customize-tip.png) no-repeat;
       background-size: 100% 100%;
-      margin-bottom: 60px;
+      margin-bottom: 20px;
+      margin-top: 20px;
     }
     .text{
       color: #333333;
