@@ -12,7 +12,7 @@
         <noDataTip v-if="isNull"></noDataTip>
         <div class="content-item" v-for="list in processArr" v-else>
           <div>{{list.orderType==0? '对方':'我方'}}</div>
-          <div>{{list.orderType==0? '卖出':'买入'}}</div>
+          <div>{{list.orderType==0? '买入':'卖出'}}</div>
           <div>{{list.userId==list.debit?list.debitName:list.creditName}}</div>
           <div>{{list.amount}}</div>
           <div style="color: red">0.01CNY</div>
@@ -31,7 +31,7 @@
         <noDataTip v-if="isNullNext"></noDataTip>
         <div class="content-item" v-for="list in historyArr" v-else>
           <div>{{list.orderType==0? '对方':'我方'}}</div>
-          <div>{{list.orderType==0? '卖出':'买入'}}</div>
+          <div>{{list.orderType==0? '买入':'卖出'}}</div>
           <div>{{list.userId==list.debit?list.debitName:list.creditName}}</div>
           <div>{{list.amount}}</div>
           <div style="color: red">0.01CNY</div>
@@ -55,8 +55,8 @@
     name: "appeal-record",
     data() {
       return {
-        titleArr: ['申诉类型', '订单类型', '对方', '交易数量', '交易单价', '交易金额', '状态', '操作'],
-        titleHistory: ['申诉类型', '订单类型', '对方', '交易数量', '交易单价', '交易金额', '结果类型', '操作'],
+        titleArr: ['申诉人', '订单类型', '对方', '交易数量', '交易单价', '交易金额', '状态', '操作'],
+        titleHistory: ['申诉人', '订单类型', '对方', '交易数量', '交易单价', '交易金额', '结果类型', '操作'],
         processArr: [],
         isNull: false,
         isNullNext: false,
