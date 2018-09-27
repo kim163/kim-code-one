@@ -42,7 +42,7 @@
         <div class="row00 detail-box_scoped" v-else-if="detailTypeItem=='appealArbitrat'">
           <div class="appeal-content">
             <div class="content-title">
-              <span class="title-state">发起申诉中....</span>
+              <span v-if="!isHistory" class="title-state">发起申诉中....</span>
               <span class="title-blank"></span>
               <span class="title-refresh" @click="refreshContent">刷新会话</span>
             </div>
@@ -133,7 +133,7 @@
       <div slot="rightBtn" @click="payCompleted" class="bg-blue">{{$t('orderDetailPay.confirmPayBtn')}}</div>
     </confirm-dialog>
     <!--聊天部分-->
-    <div class="chatRoom" @click="showChatList()" v-if="chatOnline">
+    <div class="chatRoom" @click="showChatList()" v-if="chatOnline && !isHistory">
       <div class="chatRoom_content">
         <span class="iconfont icon-tab-talk"></span> 在线聊天
         <div class="unread-count" v-show="unreadCountUpdate>0" :class="{'upMax':unreadCountUpdate>99}">

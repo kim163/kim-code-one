@@ -14,8 +14,7 @@ export const login = jsonData => service({
 export const implicitLogin = jsonData => service({
   url: numversion + `user/chain/implicitLogin`,
   method: 'post',
-  data: jsonData,
-  encryptDef:true  //使用默认加密规则
+  data: jsonData
 });  // 隐式登录
 
 export const loginByUserNameAndPwd = jsonData => service({
