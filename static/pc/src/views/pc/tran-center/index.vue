@@ -90,7 +90,7 @@
         margin-right: 10px;
         cursor: pointer;
         transition: all .5s;
-        &.active{
+        &.active,&:hover{
           background: #3573FA;
         }
       }

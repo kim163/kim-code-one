@@ -1,8 +1,8 @@
 <template>
   <div class="appeal-container">
     <div class="appeal-title">
-      <span @click="getData" :class="{active:currentShow}">交易中</span>
-      <span @click="getHistoryData(0)" :class="{active:!currentShow}">交易完成</span>
+      <span @click="getData" :class="{active:currentShow}">仲裁中</span>
+      <span @click="getHistoryData(0)" :class="{active:!currentShow}">仲裁历史</span>
     </div>
     <div class="appeal-content" v-if="currentShow">
       <div>
@@ -26,7 +26,7 @@
     <div class="history-content" v-else>
       <div>
         <div class="bind-title">
-          <span v-for="list in titleArr" class="title-list">{{list}}</span>
+          <span v-for="list in titleHistory" class="title-list">{{list}}</span>
         </div>
         <noDataTip v-if="isNullNext"></noDataTip>
         <div class="content-item" v-for="list in historyArr" v-else>
@@ -36,7 +36,7 @@
           <div>{{list.amount}}</div>
           <div style="color: red">0.01CNY</div>
           <div>{{list.amountTwin}}</div>
-          <div>{{list.statusText}}</div>
+          <div>{{list.resultTypeText}}</div>
           <div><router-link :to="{name:'orderDetailAppeal',params:{id:list.orderId},query:{name:2}}" class="btn">详情</router-link></div>
         </div>
         <pageBy :data="pageInfo" @search="getHistoryData"></pageBy>
@@ -56,6 +56,7 @@
     data() {
       return {
         titleArr: ['申诉类型', '订单类型', '对方', '交易数量', '交易单价', '交易金额', '状态', '操作'],
+        titleHistory: ['申诉类型', '订单类型', '对方', '交易数量', '交易单价', '交易金额', '结果类型', '操作'],
         processArr: [],
         isNull: false,
         isNullNext: false,
@@ -130,7 +131,7 @@
            line-height: 40px;
            cursor: pointer;
           margin-right: 40px;
-            &.active{
+            &.active,&:hover{
                color: #3573FA;
                border-bottom: 1px solid #3573FA;
             }
@@ -159,6 +160,9 @@
         background-color: #fff;
         display: flex;
         flex-direction: row;
+        &:nth-child(odd) {
+          background: #F8FAFF;
+        }
         div {
           flex: 1;
           font-size: 14px;
@@ -174,6 +178,9 @@
           color: #fff;
           line-height: 25px;
           cursor: pointer;
+          &:hover{
+            background: #3573FA;
+          }
         }
       }
     }
@@ -200,6 +207,9 @@
         background-color: #fff;
         display: flex;
         flex-direction: row;
+        &:nth-child(odd) {
+          background: #F8FAFF;
+        }
         div {
           flex: 1;
           font-size: 14px;
@@ -215,6 +225,9 @@
           color: #fff;
           line-height: 25px;
           cursor: pointer;
+          &:hover{
+            background: #3573FA;
+          }
         }
       }
     }
