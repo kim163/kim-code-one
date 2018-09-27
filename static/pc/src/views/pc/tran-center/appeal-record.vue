@@ -17,7 +17,7 @@
           <div>{{list.amount}}</div>
           <div style="color: red">0.01CNY</div>
           <div>{{list.amountTwin}}</div>
-          <div>申诉锁定</div>
+          <div>{{list.statusText}}</div>
           <div><router-link :to="{name:'orderDetailAppeal',params:{id:list.orderId}}" class="btn">详情</router-link></div>
         </div>
         <pageBy :data="pageInfoNext" @search="getData"></pageBy>
@@ -36,7 +36,7 @@
           <div>{{list.amount}}</div>
           <div style="color: red">0.01CNY</div>
           <div>{{list.amountTwin}}</div>
-          <div>申诉锁定</div>
+          <div>{{list.statusText}}</div>
           <div><router-link :to="{name:'orderDetailAppeal',params:{id:list.orderId},query:{name:2}}" class="btn">详情</router-link></div>
         </div>
         <pageBy :data="pageInfo" @search="getHistoryData"></pageBy>
@@ -106,7 +106,6 @@
             this.isNullNext = true
           } else {
             this.historyArr = res.data
-            console.log(this.historyArr,'世界的')
             this.pageInfo = res.pageInfo
           }
         })
