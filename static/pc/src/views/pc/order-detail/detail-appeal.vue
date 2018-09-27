@@ -18,15 +18,22 @@
               <div class="order-time">
                 <p class="red order-status-title">
                   <img src="~images/lock-appeal.png">
-                  <span> 申诉锁定中</span>
+                  <span v-if="isHistory">{{DetailList.statusText}}</span>
+                  <span v-else> 申诉锁定中</span>
                 </p>
-                <input type="button" v-if="isCredit" class="btn btn-normal " @click="detailTypeItem='appealArbitrat'"
-                       value="提出反证">
-                <div class="btn-group" v-else-if="isDebit">
-                  <input type="button" class="btn btn-block btn-normal" @click="showConfirmPayment=true" value="释放UET">
-                  <input type="button" class="btn btn-block btn-orange" @click="detailTypeItem='appealArbitrat'"
-                         value="继续留言">
+                <div v-if="isHistory">
+                   <p class="reason-appeal">申诉原因: <span class="red">{{DetailList.typeText}}</span> </p>
                 </div>
+                <div v-else>
+                   <input type="button" v-if="isCredit" class="btn btn-normal " @click="detailTypeItem='appealArbitrat'"
+                       value="提出反证">
+                   <div class="btn-group" v-else-if="isDebit">
+                      <input type="button" class="btn btn-block btn-normal" @click="showConfirmPayment=true" value="释放UET">
+                      <input type="button" class="btn btn-block btn-orange" @click="detailTypeItem='appealArbitrat'"
+                         value="继续留言">
+                   </div>
+                </div>
+
               </div>
             </div>
           </div>
@@ -196,28 +203,38 @@
       generateTitle,
       fetchData() {
         this.request = {
-          limit: '20',
-          offset: '0',
+          limit: 10,
+          offset: 0,
           orderId: this.orderId,
           userId: this.userId,
           type: 3   //默认为3
-        }
+        };
         if (this.$route.query.name == 2) {
           userCenter.getAppealDetailHistoryPage(this.request).then(res => {
             if (res.code == '10000') {
-              console.log(res, '萨达')
-              this.isHistory = true
+              console.log(res, '萨达');
+              this.isHistory = true;
               this.DetailList = res.data.appealHistory;
               this.AppealList = res.data;
-              if (this.AppealList.transaction.credit == this.userId) {
+
+              let transactList = this.AppealList.transaction;
+              this.DetailList.debitAccountNameTwin = transactList.debitAccountNameTwin;
+              this.DetailList.debitAccountMerchantTwin = transactList.debitAccountMerchantTwin;
+              this.DetailList.debitAccountTwin = transactList.debitAccountTwin;
+              this.DetailList.debitName = transactList.debitName;
+              this.DetailList.creditName = transactList.creditName;
+              this.DetailList.creditAccountNameTwin = transactList.creditAccountNameTwin;
+              this.DetailList.debitAccountQrCodeUrlTwin = transactList.debitAccountQrCodeUrlTwin;
+
+              if (transactList.credit == this.userId) {
                 this.isCredit = true;
-              } else if (this.AppealList.transaction.credit == this.userId) {
+              } else if (transactList.debit == this.userId) {
                 this.isDebit = true;
               }
             } else {
               toast(res.message)
             }
-          })
+          });
           return;
         } else {
           transaction.getAppealDetailPage(this.request).then(res => {
@@ -661,6 +678,14 @@
   }
   .order-time {
     padding: 47px 38px 20px;
+    .reason-appeal{
+      line-height: 36px;
+      span{
+        display: block;
+        line-height: 26px;
+        text-align: center;
+      }
+    }
   }
 
   .detail-tips {
