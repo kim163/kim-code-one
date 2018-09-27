@@ -7,12 +7,12 @@
       <ul class="details-data">
         <li class="cfx">
           <p>交易金额:</p>
-          <input type="text" class="red" readonly  v-if="isHistory" :value="DetailList.amount+' CNY'">
+          <input type="text" class="red" readonly  v-if="isHistory" :value="DetailList.amountTwin+' CNY'">
           <input type="text" class="red" readonly v-else :value="DetailList.debitAmountTwin+' CNY'">
         </li>
         <li class="cfx">
           <p>交易数量:</p>
-          <input type="text" readonly :value="DetailList.amountTwin+' UET'" v-if="isHistory">
+          <input type="text" readonly :value="DetailList.amount+' UET'" v-if="isHistory">
           <input type="text" readonly :value="DetailList.debitAmount+' UET'" v-else>
         </li>
         <li class="cfx">
