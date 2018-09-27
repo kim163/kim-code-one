@@ -18,7 +18,7 @@
               <div class="order-time">
                 <p class="red order-status-title">
                   <img src="~images/lock-appeal.png">
-                  <span v-if="isHistory">{{DetailList.statusText}}</span>
+                  <span v-if="isHistory">{{DetailList.resultTypeText}}</span>
                   <span v-else> 申诉锁定中</span>
                 </p>
                 <div v-if="isHistory">
