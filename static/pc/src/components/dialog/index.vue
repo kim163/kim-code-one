@@ -40,7 +40,11 @@
       right: 30px;
       cursor: pointer;
       z-index: 2;
-      color: #C8C8C8;;
+      color: #C8C8C8;
+      transition: all .5s;
+      &:hover{
+        transform: rotate(180deg);
+      }
     }
   }
 </style>
