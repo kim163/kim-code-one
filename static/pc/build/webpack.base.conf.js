@@ -61,7 +61,7 @@ module.exports = {
         test: /\.js$/,
         loader: 'babel-loader?cacheDirectory',  //缓存loader执行结果
         exclude: /node_modules/,
-        include: [resolve('src'), resolve('test')]
+        include: [resolve('src'), resolve('test'), resolve('node_modules/webpack-dev-server/client'),resolve('node_modules/vue-plugin-load-script')]
       },
       {
         test: /\.(png|jpe?g|gif)(\?.*)?$/,

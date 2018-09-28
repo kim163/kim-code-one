@@ -2,9 +2,9 @@
   <div class="addAccount-container">
     <MobileHeader>账户添加</MobileHeader>
     <div class="addAccount-content">
-      <div class="account">账号 <input type="text" class="account-input"></div>
-      <div class="password">密码 <input type="password" class="password-input"></div>
-      <div class="addAccount-btn">添加</div>
+      <div class="account">账号 <input type="text" class="account-input" v-model="userName"></div>
+      <div class="password">密码 <input type="password" class="password-input" v-model="userPassword"></div>
+      <div class="addAccount-btn" @click="loginAccount">添加</div>
       <div class="content-remind">
         <p class="remind-title">温馨提示</p>
         <p class="remind-content">1.账户添加后可快速切换登录和UET互转</p>
@@ -16,13 +16,39 @@
 
 <script>
   import MobileHeader from 'components/m-header'
-
+  import {userCenter} from 'api'
+  import {mapGetters} from 'vuex'
   export default {
     name: "add-account",
     data() {
       return {
-
+        userName:'',
+        userPassword:"",
+        userId:''
       }
+    },
+    computed:{
+    ...mapGetters(["centerId"])
+    },
+    methods:{
+      loginAccount(){
+        const request = {
+          'userName': this.userName,
+          'password': this.userPassword,
+          'id': this.centerId==''?'':this.centerId
+        }
+        console.log(request,'是的555')
+        userCenter.chainLogin(request).then(res=>{
+          console.log(res,'是的')
+          if(res.code =='10000'){
+              this.userId = res.data.userId
+              this.addAccount()
+          }else {
+            toast(res.message)
+          }
+        })
+      },
+
     },
     components: {MobileHeader}
   }

@@ -48,6 +48,7 @@ const stateInit = {
     type:0,
     orderId:''
   },
+  centerId:''
 }
 export default new Vuex.Store({
   state: stateInit,
@@ -147,6 +148,9 @@ export default new Vuex.Store({
     },
     getNewOrder(state,getters){
       return state.newOrder
+    },
+    centerId(state,getters){
+      return state.centerId
     }
   },
   mutations: {         // 事件处理器用来驱动状态的变化
@@ -224,6 +228,9 @@ export default new Vuex.Store({
     },
     [types.OPEN_QUICKSELL](state,val){
       state.openQuickSell = val
+    },
+    [types.GET_CENTERID](state,val){
+      state.centerId = val
     },
     [types.UPDATE_WIDTHDRAWINFO](state,val){
       Object.assign(state.withdrawInfo,val)
