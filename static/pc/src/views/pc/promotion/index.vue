@@ -20,11 +20,9 @@
                 </span>
              </div>
            </div>
-
            <div class="product-display">
              <img src="~images/prom/product-effect.png" class="width-100" >
            </div>
-
          </div>
        </div>
      </div>

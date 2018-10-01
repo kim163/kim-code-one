@@ -2,13 +2,13 @@
   <div class="muser-center-home">
     <div class="mcenter-userinfo">
       <div class="login-user">
-        <span @click="goAccountManager">
+        <!--   <span @click="goAccountManager">-->
+        <span>
           <img :src="getLogo" class="logo">
           {{$t('navbar.nickName')}}：{{userData.nickname}}
-          <span class="iconfont icon-right-arrow left "></span>
+         <!-- <span class="iconfont icon-right-arrow left "></span>-->
         </span>
-
-        <span class="iconfont icon-cebian-menu right" @click="demo"></span>
+        <!--<span class="iconfont icon-cebian-menu right" @click="demo"></span>-->
       </div>
 
       <div class="assets cfx">
@@ -123,7 +123,8 @@
       <div slot="leftBtn" class="confirm-btn-cancel dialog-cancel">取消</div>
       <div slot="rightBtn" class="dialog-btn-yes" @click="toSetInfo">确定</div>
     </confirm-dialog>
-    <div class="outer-container" v-if="isAd" @click="demo">
+    <!--<div class="outer-container" v-if="isAd">
+      <div class="mist" @click="demo"></div>
       <div class="side-menu">
         <div class="account-person-single">
           <p class="account-pic"><span class="iconfont icon-default-user"></span></p>
@@ -148,7 +149,7 @@
     </div>
     <transition name="scroll-up">
       <ReceivablesCode v-if="showReceivePage" @closeReceivables="closeReivePage"></ReceivablesCode>
-    </transition>
+    </transition>-->
 
   </div>
 </template>
@@ -178,8 +179,8 @@
         initPageNext: 0,
         myGiftTotal: 0,
         isAd: false,
-        showReceivePage:false,
-        singerUserName:''
+        showReceivePage: false,
+        singerUserName: ''
       }
     },
     components: {
@@ -209,14 +210,14 @@
       }
     },
     methods: {
-      closeReivePage(val){
+      closeReivePage(val) {
         this.showReceivePage = val
       },
-      openReivePage(){
-         this.showReceivePage = true
+      openReivePage() {
+        this.showReceivePage = true
       },
-      addAccount(){
-        this.$router.push({name:'mAddAccount'})
+      addAccount() {
+        this.$router.push({name: 'mAddAccount'})
       },
       demo() {
         this.isAd = !this.isAd
@@ -248,18 +249,20 @@
       goAccountManager() {
         this.$router.push({name: 'mAccountManager'})
       },
-      getCenterInfo(){
-        const request ={}
-        userCenter.getCenterInfo(request).then(res=>{
-          console.log(res,'速度')
-           if(res.code=='10000'){
-              if(res.data.length==1){
-                  this.singerUserName = res.data[0].name
+      getCenterInfo() {
+        const request = {}
+        userCenter.getCenterInfo(request).then(res => {
+          console.log(res, '速度')
+          if (res.code == '10000') {
+            if (res.data.length == 1) {
+              this.singerUserName = res.data[0].name
+              this.$store.commit('GET_CENTERID', res.data[0].centerId)
+            } else {
 
-              }else {
-
-              }
-           }
+            }
+          } else {
+            toast(res.message)
+          }
         })
       },
 
@@ -470,13 +473,17 @@
   }
 
   .outer-container {
-    position: fixed;
-    top: 0;
-    right: 0;
-    z-index: 100;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, .4);
+    .mist {
+      position: fixed;
+      top: 0;
+      right: 0;
+      z-index: 110;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, .4);
+    }
     .side-menu {
       position: fixed;
       top: 0;
@@ -484,7 +491,7 @@
       background-color: #fff;
       width: 70%;
       height: 100%;
-      z-index: 20;
+      z-index: 200;
       animation: fadeInRight .5s;
       .account-person-single {
         text-align: center;

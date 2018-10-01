@@ -1,6 +1,7 @@
 import { service } from "@/util"
 
 let numversion = '/api/v1/';   // 版本信息
+let numversion2 = '/api/v2/'
 // 个人中心
 
 //自动识别银行卡
@@ -88,9 +89,10 @@ export const getCenterInfo = jsonData => service({
   data:jsonData
 })
 
-//添加到用户中心
-export const addToCenter = jsonData => service({
-  url:numversion + `user/center/addToCenter`,
+
+//登录 用户名/手机/邮箱统一登录
+export const chainLogin = jsonData => service({
+  url:numversion2 +`user/chain/login`,
   method:'post',
   data:jsonData
 })
