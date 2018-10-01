@@ -362,6 +362,7 @@
             this.$store.dispatch('UPDATE_USERDATA')
             this.$store.dispatch('GET_BANKCARD')
             if (this.filterArr.length == 0) {
+              this.isbindOk = false
             }
           } else {
             toast(res.message)
@@ -690,6 +691,7 @@
           .item-btn {
             background-color: #86A5F8;
             color: #fff;
+            border: none;
           }
           .item-symbol {
             background-color: #86A5F8;
