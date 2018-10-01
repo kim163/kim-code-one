@@ -17,6 +17,7 @@
 <script>
   import check from "@/util/RegExp"
   import DialogPop from 'components/dialog'
+  import { chainLogin } from 'api/user-center'
   export default {
     name: "customize-login",
     data(){
