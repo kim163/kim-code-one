@@ -129,6 +129,9 @@
             tranAddress = 'activityIndex'
           }else{
             tranAddress = 'walletCenter'
+            if(Number(this.mode) === 3){
+              this.$store.commit('OPEN_QUICKSELL',true)
+            }
           }
         }
         const loginAddress = _.isMobile() ? 'mobileLogin' : 'aindex'
