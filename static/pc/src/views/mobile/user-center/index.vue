@@ -6,9 +6,8 @@
         <span>
           <img :src="getLogo" class="logo">
           {{$t('navbar.nickName')}}：{{userData.nickname}}
-          <span class="iconfont icon-right-arrow left "></span>
+         <!-- <span class="iconfont icon-right-arrow left "></span>-->
         </span>
-
         <!--<span class="iconfont icon-cebian-menu right" @click="demo"></span>-->
       </div>
 
