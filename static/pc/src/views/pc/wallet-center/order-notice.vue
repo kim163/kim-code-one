@@ -123,8 +123,12 @@
               this.orderId = data.id
               if(!_.isNull(data.intervalTime)){
                 this.countDownTime = data.intervalTime - data.elapsedTime
+                this.show = this.checkRouter()
+              }else if(_.isNull(data.intervalTime) && data.status != 61){
+                this.show = false
+              }else{
+                this.show = this.checkRouter()
               }
-              this.show = this.checkRouter()
               this.getDiscountNum()
             }else{
               this.show = false

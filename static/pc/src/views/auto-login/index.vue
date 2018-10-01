@@ -128,7 +128,7 @@
           if(Number(this.mode) === 4){
             tranAddress = 'activityIndex'
           }else{
-            tranAddress = 'transaction'
+            tranAddress = 'walletCenter'
           }
         }
         const loginAddress = _.isMobile() ? 'mobileLogin' : 'aindex'

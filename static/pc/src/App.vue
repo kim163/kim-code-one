@@ -9,8 +9,8 @@
       <router-view v-if="$route.meta.noCache"></router-view>
     </transition>
     <sys-bullentin v-if="islogin"></sys-bullentin>
-    <v-login v-if="showLogin" v-model="showLogin"></v-login>
-    <v-register v-if="showRegister" v-model="showRegister"></v-register>
+    <v-login v-if="showLogin && !isMobile" v-model="showLogin"></v-login>
+    <v-register v-if="showRegister && !isMobile" v-model="showRegister"></v-register>
   </div>
 </template>
 <script type="text/ecmascript-6">
