@@ -14,13 +14,13 @@
             <a href="javascript:void(0);" > <i class="iconfont icon-facebook"></i> </a>
           </div>
           <div class="icon-sm telegram p-gradually-block4">
-            <a href="tg://resolve?domain=jiuan365" > <i class="iconfont icon-telegram"></i> </a>
+            <a href="tg://resolve?domain=jiuanqianbao" > <i class="iconfont icon-telegram"></i> </a>
           </div>
           <div class="icon-sm wechat p-gradually-block5">
             <a href="javascript:void(0);" > <i class="iconfont icon-wechat"></i> </a>
           </div>
           <div class="icon-sm skype p-gradually-block6">
-            <a href="skype:live:jiuan366?chat" > <i class="iconfont icon-skype"></i> </a>
+            <a href="skype:live:7bd0951217f4f825?chat" > <i class="iconfont icon-skype"></i> </a>
           </div>
         </div>
       </div>
