@@ -39,7 +39,7 @@
         if(_.isMobile()){
           this.$router.replace({name: 'mIndex'});
         }else{
-          this.$router.replace({name:'index'})
+          this.$router.replace({name: 'index'});
         }
       },
       goback(){
