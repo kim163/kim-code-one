@@ -12,6 +12,6 @@ export default {
   wechat:/^[a-zA-Z][\w\-]{5-19}/,//微信
   bank:/^(\d{16}|\d{18}|\d{19})$/,//银行卡号
   intNum:/^[0-9]*[1-9][0-9]*$/,        //非零正整数
-  userAccount:/^[a-zA-Z0-9.]$/, //登录账号
+  userAccount:/^[a-zA-z]\w{3,15}$/, //登录账号
 
 }

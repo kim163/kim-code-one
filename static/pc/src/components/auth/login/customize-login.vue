@@ -18,6 +18,7 @@
   import check from "@/util/RegExp"
   import DialogPop from 'components/dialog'
   import { chainLogin } from 'api/user-center'
+  import { $localStorage } from '@/util/storage'
   export default {
     name: "customize-login",
     data(){
@@ -41,21 +42,49 @@
           toast('请输入登录账号')
           this.$refs.name.focus()
           return false
-        }else if(!check.userAccount.test(this.account)){
-          toast('请输入正确登录账号')
-          this.$refs.name.focus()
-          return false
         }
         if(this.password === ''){
           toast('请输入登录密码')
           this.$refs.pwd.focus()
           return false
         }
+        let reg = ''
+        if(this.account.indexOf('@') > -1){
+          reg = check.email
+        }else if(/^\d+$/.test(this.account)){
+          const start = this.account.substring(0, 1)
+          if(start === '1'){
+            reg = check.phone
+          }else if(start === '0' || start === '9'){
+            reg = check.php_phone
+          }
+        }else{
+          reg = check.userAccount
+        }
+        if(!reg.test(this.account)){
+          toast('请输入正确账号')
+          return false
+        }
         const data = {
           userName: this.account,
           password: this.password
         }
-
+        chainLogin(data).then(res => {
+          if(res.code === 10000){
+            this.$store.commit('SHOW_LOGIN', false)
+            $localStorage.set('tokenInfo', JSON.stringify(res.data.tokenVo));
+            this.$store.dispatch('CHECK_ONLINE', true);
+            this.$store.dispatch('UPDATE_TOKEN_INFO', res.data.tokenVo);
+            this.$store.dispatch('INIT_INFO');
+            this.$store.commit('SET_USERDATA', res.data);
+            _.initRongyun()
+            this.$router.push({name: 'walletCenter'});
+          }else{
+            toast(res.message)
+          }
+        }).catch(err => {
+          toast(err)
+        })
       }
     }
   }
