@@ -37,6 +37,8 @@
         if(val){
           this.withdrawTip = true
           this.$store.commit('GET_WIDTHDRAW',false)
+        }else{
+          this.withdrawTip = false
         }
       },
       withdrawTip(val){
