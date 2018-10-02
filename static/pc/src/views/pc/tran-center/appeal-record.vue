@@ -48,7 +48,6 @@
 
 <script>
   import {userCenter} from 'api'
-  import {mapGetters} from 'vuex';
   import noDataTip from 'components/no-data-tip'
   import pageBy from 'components/paging-by'
   export default {
@@ -78,38 +77,52 @@
     },
     methods: {
       getData(val) {
-        this.currentShow = true
+        this.currentShow = true;
         const requests = {
           'limit': 10,
-          'offset': val>=1?(val-1)*10:val*10,
+          'offset': (!isNaN(val) && val>0)?(val-1)*10:0,
           'userId': this.userId,
           'types': [1, 2, 3, 4]
-        }
+        };
+        console.log('进行中参数',requests);
         userCenter.getAppealPage(requests).then((res) => {
-          if (res.data.length == 0) {
-            this.isNull = true
+          if (res.code == 10000) {
+            if (res.data.length == 0) {
+               this.isNull = true
+            } else {
+              this.processArr = res.data;
+              this.pageInfoNext = res.pageInfo;
+            }
           } else {
-            this.processArr = res.data
-            this.pageInfoNext = res.pageInfo
+            toast(res.message)
           }
-        })
+        }).catch(err => {
+          toast(err);
+        });
       },
       getHistoryData(val) {
-        this.currentShow = false
+        this.currentShow = false;
         const requests = {
           'limit': 10,
-          'offset': val>=1?(val-1)*10:val*10,
+          'offset': (!isNaN(val) && val>0)?(val-1)*10:0,
           'userId': this.userId,
           'types': [1, 2, 3, 4]
-        }
+        };
+        console.log('仲裁历史参数',requests);
         userCenter.getAppealHistoryPage(requests).then((res) => {
-          if (res.data.length == 0) {
-            this.isNullNext = true
+          if (res.code == 10000) {
+            if (res.data.length == 0) {
+               this.isNullNext = true
+            } else {
+              this.historyArr = res.data;
+              this.pageInfo = res.pageInfo;
+            }
           } else {
-            this.historyArr = res.data
-            this.pageInfo = res.pageInfo
+            toast(res.message)
           }
-        })
+        }).catch(err => {
+          toast(err);
+        });
       }
     }
   }
