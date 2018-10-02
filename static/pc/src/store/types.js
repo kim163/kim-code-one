@@ -29,3 +29,4 @@ export const UPDATE_WIDTHDRAWINFO = 'UPDATE_WIDTHDRAWINFO' //更新用户提款�
 export const UPDATE_NEWORDER = 'UPDATE_NEWORDER' //更新变化的订单
 export const GET_ORDERXPAGE = 'GET_ORDERXPAGE'//获取交易中的最新订单
 export const GET_CENTERID = 'GET_CENTERID' //获取个人中心的centerId
+export const SET_INITPWD = 'SET_INITPWD' //设置初始密码

@@ -48,7 +48,8 @@ const stateInit = {
     type:0,
     orderId:''
   },
-  centerId:''
+  centerId:'',
+  setInitPwd:false, // 设置初始密码
 }
 export default new Vuex.Store({
   state: stateInit,
@@ -151,6 +152,9 @@ export default new Vuex.Store({
     },
     centerId(state,getters){
       return state.centerId
+    },
+    setInitPwd(state,getters){
+      return state.setInitPwd
     }
   },
   mutations: {         // 事件处理器用来驱动状态的变化
@@ -237,6 +241,9 @@ export default new Vuex.Store({
     },
     [types.UPDATE_NEWORDER](state,val){
       Object.assign(state.newOrder,val)
+    },
+    [types.SET_INITPWD](state,val){
+      state.setInitPwd = val
     }
   },
   actions: {    // 可以给组件使用的函数，以此用来驱动事件处理器 mutations
