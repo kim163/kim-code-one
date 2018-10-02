@@ -84,6 +84,9 @@
             this.$store.commit('UPDATE_WIDTHDRAWINFO',data)
             this.$store.commit('GET_WIDTHDRAW',true)
           }
+          if(res.data.initPwd === 'Y'){
+            this.$store.commit('SET_INITPWD',true)
+          }
           this.jumpLink(true)
         }else{
           toast(res.message)
