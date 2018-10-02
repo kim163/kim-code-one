@@ -298,7 +298,7 @@
       if(this.withdrawInfo.pass){
         this.pendingItem = 'seller'
         this.bankNo = this.withdrawInfo.bankNo
-        this.sellAmount = this.withdrawInfo.amount
+        this.sellAmount = this.withdrawInfo.amount * 100
         this.$store.commit('UPDATE_WIDTHDRAWINFO',{pass:false,bankNo:'',amount:0})
       }
       this.showBindCard = this.noBankCardTip
