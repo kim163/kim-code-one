@@ -38,7 +38,15 @@
           this.withdrawTip = true
           this.$store.commit('GET_WIDTHDRAW',false)
         }
+      },
+      withdrawTip(val){
+        if(!val){
+          this.$store.commit('GET_WIDTHDRAW',false)
+        }
       }
+    },
+    created(){
+      this.withdrawTip = this.getWithdraw
     },
     beforeRouteEnter(to,from,next){
       if(store.getters.islogin){
