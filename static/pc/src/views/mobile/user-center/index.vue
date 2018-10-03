@@ -2,13 +2,15 @@
   <div class="muser-center-home">
     <div class="mcenter-userinfo">
       <div class="login-user">
-        <!--   <span @click="goAccountManager">-->
+        <span @click="goAccountManager">
         <span>
           <img :src="getLogo" class="logo">
           {{$t('navbar.nickName')}}：{{userData.nickname}}
-         <!-- <span class="iconfont icon-right-arrow left "></span>-->
+          <span class="iconfont icon-right-arrow left "></span>
         </span>
-        <!--<span class="iconfont icon-cebian-menu right" @click="demo"></span>-->
+           </span>
+        <span class="iconfont icon-cebian-menu right" @click="demo"></span>
+
       </div>
 
       <div class="assets cfx">
@@ -123,12 +125,20 @@
       <div slot="leftBtn" class="confirm-btn-cancel dialog-cancel">取消</div>
       <div slot="rightBtn" class="dialog-btn-yes" @click="toSetInfo">确定</div>
     </confirm-dialog>
-    <!--<div class="outer-container" v-if="isAd">
+    <div class="outer-container" v-if="isAd">
       <div class="mist" @click="demo"></div>
       <div class="side-menu">
-        <div class="account-person-single">
+        <div class="account-person-single" v-if="isSingle">
           <p class="account-pic"><span class="iconfont icon-default-user"></span></p>
           <p class="account-name">{{singerUserName}}</p>
+        </div>
+        <div class="account-person-more" v-else>
+          <p class="changeTitle">切换账号</p>
+          <p v-for="list in accountList" class="account-list">
+            <img src="" alt="">
+            <span class="user-name">{{list.name}}</span>
+            <span class="change-account" @click="changeAccount(list.userId)">切换账户</span>
+          </p>
         </div>
         <div class="add-account" @click="addAccount">添加账户</div>
         <div class="account-content">
@@ -148,8 +158,8 @@
       </div>
     </div>
     <transition name="scroll-up">
-      <ReceivablesCode v-if="showReceivePage" @closeReceivables="closeReivePage"></ReceivablesCode>
-    </transition>-->
+      <ReceivablesCode v-if="showReceivePage" @closeReceivables="closeReivePage" :accountChainVos="userData.accountChainVos"></ReceivablesCode>
+    </transition>
 
   </div>
 </template>
@@ -163,7 +173,6 @@
   import {$localStorage} from '@/util/storage';
   import ReceivablesCode from './receivables-code'
   import jiuanLogo from '@/assets/images/icon/juan-logo.svg';
-
   import {transaction, userCenter} from 'api';
   import mToolbar from 'components/m-toolbar'
 
@@ -180,7 +189,9 @@
         myGiftTotal: 0,
         isAd: false,
         showReceivePage: false,
-        singerUserName: ''
+        singerUserName: '',
+        isSingle: false,
+        accountList: []
       }
     },
     components: {
@@ -207,7 +218,8 @@
           logoSrc = menuStyle.iconUrl;
         }
         return logoSrc
-      }
+      },
+
     },
     methods: {
       closeReivePage(val) {
@@ -225,6 +237,9 @@
       toSetInfo() {
         this.showConfirm = false;
         this.$router.push({name: 'mSetUserInfo'});
+      },
+      changeAccount(val){
+
       },
       formatCny(type) {   // type 1表示用户余额 2表示锁定资产
         const amount = type === 1 ? this.homeInforma.chainAmount : (this.homeInforma.pendingAmount + this.homeInforma.lockedAmount);
@@ -250,15 +265,22 @@
         this.$router.push({name: 'mAccountManager'})
       },
       getCenterInfo() {
-        const request = {}
+        const request = {
+
+        }
         userCenter.getCenterInfo(request).then(res => {
-          console.log(res, '速度')
           if (res.code == '10000') {
             if (res.data.length == 1) {
+              this.isSingle = true
               this.singerUserName = res.data[0].name
               this.$store.commit('GET_CENTERID', res.data[0].centerId)
             } else {
-
+              console.log(res,'时刻记得')
+              this.isSingle = false
+              this.accountList = res.data.filter((item) => {
+                return item.name !== this.userData.nickname
+              })
+              this.$store.commit('GET_CENTERID', res.data[0].centerId)
             }
           } else {
             toast(res.message)
@@ -288,7 +310,7 @@
       this.searchHomeInfo();
       this.getInfonext();
       this.getCenterInfo();
-
+      this.$store.commit('SET_ACCOUNT_MANAGER_TOKEN', {type:'add',value:'userToken',userId:this.userId})
     },
     beforeRouteLeave(to, from, next) {
       if (to.name === 'mBindCard') {
@@ -309,6 +331,14 @@
 
   .muser-center-home {
     padding-bottom: r($footer-hg+20);
+  }
+
+  /deep/ .mreceiv-code {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    height: -webkit-fill-available;
   }
 
   .mcenter-userinfo {
@@ -514,6 +544,35 @@
           margin-top: r(20);
           @include f(18px);
           color: #333333;
+        }
+      }
+      .account-person-more {
+        background-color: #f6f9ff;
+        .changeTitle {
+          @include f(16px);
+          color: #333;
+          margin-top: r(20);
+          margin-bottom: r(20);
+          padding-left: r(20);
+        }
+        .account-list {
+          height: r(50);
+          width: 100%;
+          background-color: #fff;
+          border-bottom: 1px solid #E9E9E9;
+          border-top: 1px solid #e9e9e9;
+          line-height: r(50);
+          margin-bottom: r(10);
+          display: flex;
+          .user-name {
+            flex: 1;
+
+          }
+          .change-account {
+            height: r(30);
+            padding-left: r(10);
+            border-left: 1px solid #e9e9e9;
+          }
         }
       }
       .add-account {

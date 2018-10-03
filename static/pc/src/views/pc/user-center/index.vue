@@ -536,11 +536,16 @@
         this.weixinPopup = false
       },
       writePersonInfo() {
+
         this.personInfoPopup = true
         this.personUserName = this.userData.nickname
         this.personRealName = this.userData.name
       },
       binkUserAccount() {
+        if(this.personUserName.length>10){
+          toast('用户昵称长度不能超过10位!')
+          return
+        }
         const requests = {
           idCard: '',
           userId: this.userId,

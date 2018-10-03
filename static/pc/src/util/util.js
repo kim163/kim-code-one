@@ -24,6 +24,19 @@ let util = {
       .replace(/&lt;/g, '<')
       .replace(/&gt;/g, '>')
       .replace(/&amp;/g, '&');
+  },
+  stringToArray(arr) {
+    var tempArr = arr.split(',');
+    var returnArr = new Array();
+    var i, len = tempArr.length;
+    for (i = 0; i < len; i++) {
+      if (typeOf(tempArr[0] * 1) === 'number') {
+        returnArr.push(tempArray[i] * 1);
+      } else {
+        returnArr.push(tempArray[i]);
+      }
+    }
+    return returnArr;
   }
 };
 

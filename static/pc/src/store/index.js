@@ -1,5 +1,6 @@
 import Vue from 'vue'; //引入vue
 import Vuex from 'vuex'; //引入vue
+import util from '../util/util'
 import router from '@/router'; //引入vue
 import {show} from 'api';     // 页面刷新获取用户数据
 import {
@@ -48,7 +49,8 @@ const stateInit = {
     type:0,
     orderId:''
   },
-  centerId:''
+  centerId:'',
+  accountManager:[]
 }
 export default new Vuex.Store({
   state: stateInit,
@@ -151,6 +153,9 @@ export default new Vuex.Store({
     },
     centerId(state,getters){
       return state.centerId
+    },
+    accountManager(state,getters){
+      return state.accountManager
     }
   },
   mutations: {         // 事件处理器用来驱动状态的变化
@@ -235,10 +240,34 @@ export default new Vuex.Store({
     [types.UPDATE_WIDTHDRAWINFO](state,val){
       Object.assign(state.withdrawInfo,val)
     },
+
     [types.UPDATE_NEWORDER](state,val){
       Object.assign(state.newOrder,val)
+    },
+    [types.SET_ACCOUNT_MANAGER_TOKEN](state,val){
+      if(val.init){
+        const tempArr =[]
+        console.log('数据库的好')
+        $localStorage.set('accountManager',[1,2,3])
+      }
+      /*清空数组*/
+      if(val.clear){
+         $localStorage.removeItem('accountManager')
+      }
+      /*添加数据*/
+      else if(val.add){
+        console.log(val.add,'时间跨度')
+      const accountMangerValue = $localStorage.get('accountManager')
+
+        $localStorage.set('accountManager',accountMangerValue)
+      }
+      /*删除数组*/
+      else if(val.del){
+
+      }
     }
-  },
+  }
+  ,
   actions: {    // 可以给组件使用的函数，以此用来驱动事件处理器 mutations
     [types.SET_LANGUAGE]({commit}, language) {
       commit(types.SET_LANGUAGE, language)

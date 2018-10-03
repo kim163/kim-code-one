@@ -37,20 +37,21 @@
   import noDataTip from 'components/no-data-tip'
   import {userCenter} from 'api'
   import {mapGetters} from 'vuex'
-  import  scrollBottom from '../../../util/bottomScroll'
+  import scrollBottom from '../../../util/bottomScroll'
+
   export default {
     data() {
       return {
         currentShow: true,
         isNull: false,
         isNullNext: false,
-        historyArr:[],
-        processArr:[],
-        totalNext:"",
-        total:'',
-        initPage:10,
-        initPageNext:10,
-        pageSize:10
+        historyArr: [],
+        processArr: [],
+        totalNext: "",
+        total: '',
+        initPage: 10,
+        initPageNext: 10,
+        pageSize: 10
       }
     },
     created() {
@@ -60,7 +61,8 @@
     },
     computed: {
       ...mapGetters([
-        'userId'
+        'userId',
+        'userData'
       ])
     },
     methods: {
@@ -80,12 +82,13 @@
           'types': [1, 2, 3, 4]
         }
         /*进行的列表页*/
+
         userCenter.getAppealPage(requests).then((res) => {
           if (res.data.length == 0) {
             this.isNull = true
           } else {
             this.processArr = res.data,
-            this.total = res.pageInfo.total
+              this.total = res.pageInfo.total
           }
         })
       },
@@ -103,31 +106,31 @@
           if (res.data.length == 0) {
             this.isNullNext = true
           } else {
-            const templateArr=res.data
-            for(let i =0; i<templateArr.length;i++){
+            const templateArr = res.data
+            for (let i = 0; i < templateArr.length; i++) {
               this.historyArr.push(templateArr[i])
             }
             this.totalNext = res.pageInfo.total
           }
         })
       },
-      goDetail(id,num){
-        this.$router.push({name:'mAppealDetail',params:{id},query:{num}})
+      goDetail(id, num) {
+        this.$router.push({name: 'mAppealDetail', params: {id}, query: {num}})
       },
-      scroll(){
-         if(scrollBottom.getScrollTop()+scrollBottom.getWindowHeight() == scrollBottom.getScrollHeight()){
-           const IshavePage = Number(this.total)>Number(this.initPage+10)*1?true:false
-           const IshavePageNext = Number(this.totalNext)>Number(this.initPageNext+10)*1?true:false
-           if(this.currentShow&&IshavePage){
-             this.initPage +=10
-             this.getAppealPageInfo()
-           }
-           if(!this.currentShow&&IshavePageNext){
-             this.initPageNext+=10
-             this.getAppealDetailHistoryPageInfo()
+      scroll() {
+        if (scrollBottom.getScrollTop() + scrollBottom.getWindowHeight() == scrollBottom.getScrollHeight()) {
+          const IshavePage = Number(this.total) > Number(this.initPage + 10) * 1 ? true : false
+          const IshavePageNext = Number(this.totalNext) > Number(this.initPageNext + 10) * 1 ? true : false
+          if (this.currentShow && IshavePage) {
+            this.initPage += 10
+            this.getAppealPageInfo()
+          }
+          if (!this.currentShow && IshavePageNext) {
+            this.initPageNext += 10
+            this.getAppealDetailHistoryPageInfo()
 
-           }
-         }
+          }
+        }
       }
     },
 
@@ -185,11 +188,11 @@
       line-height: r(40);
       padding-left: r(10);
     }
-    .title{
+    .title {
       color: #333333;
       padding-right: r(10);
     }
-    .look-detail{
+    .look-detail {
       @include f(14px);
       background-color: #86A5F8;
       color: #fff;
@@ -212,11 +215,11 @@
       line-height: r(40);
       padding-left: r(10);
     }
-    .title{
+    .title {
       color: #333333;
       padding-right: r(10);
     }
-    .look-detail{
+    .look-detail {
       @include f(14px);
       background-color: #86A5F8;
       color: #fff;
