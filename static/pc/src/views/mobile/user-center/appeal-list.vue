@@ -36,13 +36,8 @@
   import MobileHeader from 'components/m-header'
   import noDataTip from 'components/no-data-tip'
   import {userCenter} from 'api'
-<<<<<<< HEAD
   import {mapGetters} from 'vuex'
   import scrollBottom from '../../../util/bottomScroll'
-
-=======
-  import  scrollBottom from '../../../util/bottomScroll'
->>>>>>> 78f220d337b922a20da7f5125431d9401d8322a4
   export default {
     data() {
       return {
