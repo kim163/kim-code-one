@@ -49,15 +49,6 @@
         currentShow: true,
         isNull: false,
         isNullNext: false,
-<<<<<<< HEAD
-        historyArr: [],
-        processArr: [],
-        totalNext: "",
-        total: '',
-        initPage: 10,
-        initPageNext: 10,
-        pageSize: 10
-=======
         historyArr:[],
         processArr:[],
         totalNext:"",
@@ -65,7 +56,6 @@
         initPage:0,
         initPageNext:0,
         pageSize:10
->>>>>>> 78f220d337b922a20da7f5125431d9401d8322a4
       }
     },
     created() {
