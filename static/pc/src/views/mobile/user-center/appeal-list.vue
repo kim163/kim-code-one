@@ -84,15 +84,6 @@
         /*进行的列表页*/
 
         userCenter.getAppealPage(requests).then((res) => {
-<<<<<<< HEAD
-          if (res.data.length == 0) {
-            this.isNull = true
-          } else {
-            this.processArr = res.data,
-              this.total = res.pageInfo.total
-          }
-        })
-=======
          if (res.code == 10000) {
            if (res.data.length == 0) {
              this.isNull = true
@@ -106,7 +97,6 @@
         }).catch(err => {
           toast(err);
         });
->>>>>>> 78f220d337b922a20da7f5125431d9401d8322a4
       },
       getAppealDetailHistoryPageInfo() {
         const requests = {
@@ -117,17 +107,7 @@
         };
         console.log('申诉历史参数',requests);
         /*历史的列表页*/
-
         userCenter.getAppealHistoryPage(requests).then((res) => {
-<<<<<<< HEAD
-
-          if (res.data.length == 0) {
-            this.isNullNext = true
-          } else {
-            const templateArr = res.data
-            for (let i = 0; i < templateArr.length; i++) {
-              this.historyArr.push(templateArr[i])
-=======
           if (res.code == 10000) {
             if (res.data.length == 0) {
                this.isNullNext = true
@@ -137,7 +117,6 @@
                 this.historyArr.push(templateArr[i])
               }
               this.totalNext = res.pageInfo.total
->>>>>>> 78f220d337b922a20da7f5125431d9401d8322a4
             }
           } else {
             toast(res.message)
