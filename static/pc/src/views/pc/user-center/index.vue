@@ -12,7 +12,7 @@
     </div>
     <div class="user-content">
       <div class="content-list">
-        <div class="list-item" @mouseenter="mouseenter(1)" @mouseleave="mouseleave(1)"
+        <div class="list-item"
              :class="{'bindok':isbindOk,'active':mouseOverFirst,}">
           <div class="item-symbol"><span class="iconfont icon-bind-bankcard"></span></div>
           <div class="item-content">
@@ -22,7 +22,7 @@
           <div class="item-btn" @click="getBankList(1)" v-if="filterArr.length<3">前去绑定</div>
           <div class="item-btn" @click="getBankList(1)" v-if="filterArr.length==3">修改绑定</div>
         </div>
-        <div class="list-item" @mouseenter="mouseenter(2)" @mouseleave="mouseleave(2)"
+        <div class="list-item"
              :class="{'active':mouseOverSecond,'bindok':filterZfb.length==1||bindAlipay}">
           <div class="item-symbol"><span class="iconfont icon-bind-zhifubao"></span></div>
           <div class="item-content">
@@ -32,7 +32,7 @@
           <div class="item-btn" @click="bindzhifubao" v-if="filterZfb.length==0&&!bindAlipay">前去绑定</div>
           <div class="item-btn" @click="opencheckAlipay" v-else>已绑定</div>
         </div>
-        <div class="list-item" @mouseenter="mouseenter(3)" @mouseleave="mouseleave(3)"
+        <div class="list-item"
              :class="{'active':mouseOverThird,'bindok':filterWx.length==1||bindWechat}">
           <div class="item-symbol"><span class="iconfont icon-bind-weixin"></span></div>
           <div class="item-content">
@@ -42,7 +42,7 @@
           <div class="item-btn" @click="bindWx" v-if="filterWx.length==0&&!bindWechat">前去绑定</div>
           <div class="item-btn" v-else @click="opencheckWchat">已绑定</div>
         </div>
-        <div class="list-item" @mouseenter="mouseenter(4)" @mouseleave="mouseleave(4)"
+        <div class="list-item"
              :class="{'active':mouseOverFourth,'bindok':userData.nickname&&userData.name}">
           <div class="item-symbol"><span class="iconfont icon-book-star"></span></div>
           <div class="item-content">
@@ -51,6 +51,15 @@
           </div>
           <div class="item-btn" @click="writePersonInfo" v-if="!userData.nickname&&!userData.name">前去完善</div>
           <div class="item-btn" @click="writePersonInfo">修改资料</div>
+        </div>
+        <div class="list-item"
+             :class="{'active':mouseOverFourth,'bindok':!setInitPwd}">
+          <div class="item-symbol"><span class="iconfont icon-gear-lock"></span></div>
+          <div class="item-content">
+            <p class="bind-title">修改/设置密码</p>
+            <p class="bind-des">定期修改您的密码，会让您的账户更加安全。</p>
+          </div>
+          <div class="item-btn" @click="showSetInitPwd = true">{{setInitPwd ? '设置' : '修改'}}密码</div>
         </div>
       </div>
     </div>
@@ -211,6 +220,7 @@
         <div class="bindTips">您已绑定微信账号,如需更换请联系<span class="hot-line"><getLive800></getLive800></span></div>
       </div>
     </commonPopup>
+    <set-update-pwd v-if="showSetInitPwd" :is-first="setInitPwd" v-model="showSetInitPwd"></set-update-pwd>
   </div>
 
 </template>
@@ -223,6 +233,7 @@
   import uploadImg from 'components/upload-img/index'
   import ConfirmDialog from 'components/confirm'
   import getLive800 from 'components/get-live800';
+  import SetUpdatePwd from 'components/set-update-pwd'
 
   export default {
     name: "user-center",
@@ -283,20 +294,23 @@
         filterAlipay: [],
         filterWchat: [],
         checkAlipayPopup: false,
-        checkWchatPopup: false
+        checkWchatPopup: false,
+        showSetInitPwd:false,
       }
     },
     components: {
       commonPopup,
       uploadImg,
       ConfirmDialog,
-      getLive800
+      getLive800,
+      SetUpdatePwd
     },
     computed: {
       ...mapGetters([
         'userId',
         'userData',
-        'bankCardInfo'
+        'bankCardInfo',
+        'setInitPwd'
       ]),
     },
     watch: {
@@ -680,7 +694,7 @@
           margin-top: 30px;
           margin-right: 20px;
         }
-        &.active {
+        &:hover {
           border: 1px solid #3573FA !important;
           .item-btn {
             background-color: #3573FA !important;

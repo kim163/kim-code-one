@@ -286,16 +286,16 @@ export default new Vuex.Store({
       dispatch(types.UPDATE_TOKEN_INFO, null);
       dispatch(types.CHECK_ONLINE, false);
       if (val) {
-        if (nodeId > 10000) {
-          window.location.href = backURL;
-        } else {
+        // if (nodeId > 10000) {
+        //   window.location.href = backURL;
+        // } else {
           if (_.isMobile()) {
             //  router.replace({name:'mobileLogin'});
             window.location.href = "/m/login";
           } else {
             window.location.href = "/index";
           }
-        }
+        // }
       }
     },
     [types.UPDATE_USERDATA]({commit, dispatch}, val) {  //获取 初始化信息

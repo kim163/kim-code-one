@@ -104,12 +104,16 @@
         }else{
           const data = {
             userId: this.userData.userId,
-            centerId: this.centerId,
             password: this.password
+          }
+          if(this.isFirst){
+            Object.assign(data,{
+              centerId: this.centerId,
+            })
           }
           updatePassword(data).then(res => {
             if(res.code === 10000){
-              toast('密码设置成功')
+              toast(`密码${this.isFirst ? '设置' : '修改'}成功`)
               this.show = false
               this.$store.dispatch('UPDATE_USERDATA')
               if(this.isFirst){
