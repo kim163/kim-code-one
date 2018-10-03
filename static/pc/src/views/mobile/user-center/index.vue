@@ -93,6 +93,7 @@
       </div>
 
       <div class="mcenter-linkitem">
+        <get-live800 :showRightArrow="true" :liveSpecStyle="mcenterLive" :isRoundIcon="true"></get-live800>
         <a class="item-href" target="_blank" :href="SETTING.appUrl">
           <i class="iconfont logo icon-juan-app"></i>
           {{$t('navbar.juanApp')}}
@@ -146,10 +147,10 @@
         </div>
         <div class="login-out-btn">退出账户</div>
       </div>
-    </div>
+    </div>-->
     <transition name="scroll-up">
       <ReceivablesCode v-if="showReceivePage" @closeReceivables="closeReivePage"></ReceivablesCode>
-    </transition>-->
+    </transition>
 
   </div>
 </template>
@@ -309,6 +310,13 @@
 
   .muser-center-home {
     padding-bottom: r($footer-hg+20);
+    /deep/ .mreceiv-code{
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: -webkit-fill-available;
+      z-index: 100;
+    }
   }
 
   .mcenter-userinfo {
