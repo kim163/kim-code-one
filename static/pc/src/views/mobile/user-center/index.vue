@@ -106,8 +106,8 @@
         </router-link>
       </div>
 
-      <div class="mcenter-linkitem">
-        <a href="javascript:void(0);" class="item-href" v-if="userData.nodeId < 10000"
+      <div class="mcenter-linkitem" v-if="userData.nodeId < 10000">
+        <a href="javascript:void(0);" class="item-href"
            @click="$store.dispatch('LOGIN_OUT')">
           <i class="iconfont logo icon-sign-out"></i>
           {{$t('navbar.logOut')}}
