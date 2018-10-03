@@ -1,69 +1,73 @@
 <template>
   <div class="detail-container">
     <MobileHeader>账户详情</MobileHeader>
-      <div class="account-person-single">
-        <p class="account-pic"><span class="iconfont icon-default-user"></span></p>
-        <p class="account-name">ANSON001</p>
-        <p class="account-num"><span>1000000</span>UET</p>
-        <div class="address-info">
-          <div class="left-side">
-            <span class="iconfont icon-qrcode-address"></span>
-            <p>二维码</p>
-          </div>
-          <div class="right-side">
-            <span class="iconfont icon-copy-address"></span>
-            <p>复制地址</p>
-          </div>
+    <div class="account-person-single">
+      <p class="account-pic"><span class="iconfont icon-default-user"></span></p>
+      <p class="account-name">{{username}}</p>
+      <p class="account-num"><span>{{accountValue}}</span> UET</p>
+      <div class="address-info">
+        <div class="left-side" @click="openCode">
+          <span class="iconfont icon-qrcode-address"></span>
+          <p>二维码</p>
         </div>
-        <div class="person-manager">
-          <div class="btn" @click="transferMoney(1)" :class="{active:typeNum==1}">UET转出</div>
-          <div class="btn btn-middle" @click="transferMoney(2)" :class="{active:typeNum==2}">UET转入</div>
-          <div class="btn" @click="transferMoney(3)" :class="{active:typeNum==3}">收款</div>
+        <a class="right-side copy-btn" @click="copy" :data-clipboard-text="userData.accountChainVos[0].address">
+          <span class="iconfont icon-copy-address"></span>
+          <p>复制地址</p>
+        </a>
+      </div>
+      <div class="person-manager">
+        <div class="btn" @click="transferMoney(1)" :class="{active:typeNum==1}">UET转出</div>
+        <div class="btn btn-middle" @click="transferMoney(2)" :class="{active:typeNum==2}">UET转入</div>
+        <div class="btn" @click="transferMoney(3)" :class="{active:typeNum==3}">收款</div>
+      </div>
+      <div class="manager-content" v-if="typeNum==1">
+        <div class="de-title">手动转账</div>
+        <div class="transfer-address">
+          <input type="text" placeholder="请手动输入地址">
         </div>
-        <div class="manager-content" v-if="typeNum==1">
-          <div class="de-title">手动转账</div>
-          <div class="transfer-address">
-            <input type="text" placeholder="请手动输入地址">
-          </div>
-          <div class="transfer-amount">
-            <input type="text" placeholder="请填写转账数量">
-            <span class="amount-value">UET</span>
-          </div>
-          <div class="btn">确定转账</div>
+        <div class="transfer-amount">
+          <input type="text" placeholder="请填写转账数量">
+          <span class="amount-value">UET</span>
         </div>
-        <div class="manager-content-middle" v-else-if="typeNum==2">
-          <div class="de-title">请选择以下目标账户</div>
-          <div class="de-line">
-             <span class="de-user">stan</span>
-             <span class="de-accountValue">账户余额: 200000UET</span>
-             <span class="iconfont icon-down-arrow "></span>
-          </div>
-          <div class="de-line">
-            <span class="de-user">stan</span>
-            <span class="de-accountValue">账户余额: 200000UET</span>
-            <span class="iconfont icon-down-arrow de-arrow"></span>
-          </div>
+        <div class="btn">确定转账</div>
+      </div>
+      <div class="manager-content-middle" v-else-if="typeNum==2">
+        <div class="de-title">请选择以下目标账户</div>
+        <div class="de-line">
+          <span class="de-user">stan</span>
+          <span class="de-accountValue">账户余额: 200000UET</span>
+          <span class="iconfont icon-down-arrow "></span>
         </div>
-        <div class="content-last" v-else-if="typeNum==3">
-          <div class="mreceiv-code">
-            <div v-for="(item,i) in userData.accountChainVos" class="mreceiv-code-content">
-              <div class="qrcode">
-                <qrcode :text="'UET,'+item.address" v-if="item.address" :logoSrc="Logo" :logoScale="0.2" :size="180"></qrcode>
-              </div>
-              <a href="javascript:void(0);" class="copy-btn mobile-pubtn" :data-clipboard-text="item.address"
-                 @click="copy" >{{$t('transactionHome.copyBtn')}}</a>
+        <div class="de-line">
+          <span class="de-user">stan</span>
+          <span class="de-accountValue">账户余额: 200000UET</span>
+          <span class="iconfont icon-down-arrow de-arrow"></span>
+        </div>
+      </div>
+      <div class="content-last" v-else-if="typeNum==3">
+        <div class="mreceiv-code">
+          <div v-for="(item,i) in userData.accountChainVos" class="mreceiv-code-content">
+            <div class="qrcode">
+              <qrcode :text="'UET,'+item.address" v-if="item.address" :logoSrc="Logo" :logoScale="0.2"
+                      :size="180"></qrcode>
             </div>
+            <a href="javascript:void(0);" class="copy-btn mobile-pubtn" :data-clipboard-text="item.address"
+               @click="copy">{{$t('transactionHome.copyBtn')}}</a>
           </div>
         </div>
       </div>
+    </div>
+    <transition name="scroll-up">
+      <MultiAccount v-if="showReceivePageUpdate" @closeReceivables="closeReivePage" :accountChainVos="currentAddress"></MultiAccount>
+    </transition>
   </div>
 </template>
 
 <script>
-
-  import ReceivablesCode from './receivables-code'
+  import {transaction} from 'api'
+  import MultiAccount from './multi-account-code'
   import MobileHeader from 'components/m-header';
-  import { mapGetters} from 'vuex';
+  import {mapGetters} from 'vuex';
   import VueQrcode from 'vue-qr';
   import Logo from '@/assets/images/logo-blue.png';
   import Clipboard from 'clipboard';
@@ -71,24 +75,53 @@
   export default {
     data() {
       return {
-        showReceivePage:false,
-        typeNum:1,
+        showReceivePage: false,
+        typeNum: 1,
+        currentId: '',
+        userBalance: '',
+        usernickName: '',
+        showReceivePageUpdate: false,
+        homeInfoName: '',
+        accountValue: '',
+        currentAddress:'',
         Logo
       }
     },
+    created() {
+      this.currentId = this.$route.params.id
+      this.currentAddress = this.$route.params.address
+      this.username = this.$route.params.username
+      this.searchHomeInfo()
+    },
     methods: {
-      transferMoney(val){
+      openCode() {
+        this.showReceivePageUpdate = true
+      },
+      transferMoney(val) {
         this.typeNum = val
-        if(val==3){
+        if (val == 3) {
           this.showReceivePage = true
         }
       },
-      closeReivePage(val){
-        this.showReceivePage = val
+      closeReivePage(val) {
+        this.showReceivePageUpdate = val
       },
-      openReivePage(){
-        this.showReceivePage = true
+      searchHomeInfo() {
+        this.requestdata = {
+          'userId': this.currentId,
+          'assetCode':'UET',
+          'address':this.currentAddress
+        };
+        transaction.getAccountChain(this.requestdata).then(res => {
+          console.log(res,'时间看到了')
+          if (res.code == '10000') {
+            this.accountValue = res.data.balance
+          }
+        }).catch(err => {
+          toast(err.message);
+        })
       },
+
       copy() {
         var clipboard = new Clipboard('a.copy-btn');
         clipboard.on('success', e => {
@@ -102,17 +135,17 @@
           clipboard.destroy()
         });
       },
-      returnBtnEvent(){
-        this.$emit('closeReceivables',false)
+      returnBtnEvent() {
+        this.$emit('closeReceivables', false)
       }
     },
     computed: {
-      ...mapGetters(["userData"])
+      ...mapGetters(["userData", 'userId'])
     },
     components: {
       qrcode: VueQrcode,
       MobileHeader,
-      ReceivablesCode
+      MultiAccount
     },
   }
 </script>
@@ -147,6 +180,7 @@
       .account-num {
         @include f(18px);
         color: #333;
+        padding-top: r(15);
         span {
           color: #ec3a4e;
         }
@@ -325,6 +359,13 @@
           margin: r(0) auto r(30);
         }
       }
+    }
+    /deep/ .mreceiv-code {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1000;
+      height: -webkit-fill-available;
     }
   }
 </style>

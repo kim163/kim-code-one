@@ -36,7 +36,8 @@
   import MobileHeader from 'components/m-header'
   import noDataTip from 'components/no-data-tip'
   import {userCenter} from 'api'
-  import  scrollBottom from '../../../util/bottomScroll'
+  import {mapGetters} from 'vuex'
+  import scrollBottom from '../../../util/bottomScroll'
   export default {
     data() {
       return {
@@ -59,7 +60,8 @@
     },
     computed: {
       ...mapGetters([
-        'userId'
+        'userId',
+        'userData'
       ])
     },
     methods: {
@@ -80,6 +82,7 @@
         };
         console.log('进行中参数',requests);
         /*进行的列表页*/
+
         userCenter.getAppealPage(requests).then((res) => {
          if (res.code == 10000) {
            if (res.data.length == 0) {
@@ -104,7 +107,6 @@
         };
         console.log('申诉历史参数',requests);
         /*历史的列表页*/
-
         userCenter.getAppealHistoryPage(requests).then((res) => {
           if (res.code == 10000) {
             if (res.data.length == 0) {
@@ -123,23 +125,23 @@
           toast(err);
         });
       },
-      goDetail(id,num){
-        this.$router.push({name:'mAppealDetail',params:{id},query:{num}})
+      goDetail(id, num) {
+        this.$router.push({name: 'mAppealDetail', params: {id}, query: {num}})
       },
-      scroll(){
-         if(scrollBottom.getScrollTop()+scrollBottom.getWindowHeight() == scrollBottom.getScrollHeight()){
-           const IshavePage = Number(this.total)>Number(this.initPage+10)*1?true:false
-           const IshavePageNext = Number(this.totalNext)>Number(this.initPageNext+10)*1?true:false
-           if(this.currentShow&&IshavePage){
-             this.initPage +=10
-             this.getAppealPageInfo()
-           }
-           if(!this.currentShow&&IshavePageNext){
-             this.initPageNext+=10
-             this.getAppealDetailHistoryPageInfo()
+      scroll() {
+        if (scrollBottom.getScrollTop() + scrollBottom.getWindowHeight() == scrollBottom.getScrollHeight()) {
+          const IshavePage = Number(this.total) > Number(this.initPage + 10) * 1 ? true : false
+          const IshavePageNext = Number(this.totalNext) > Number(this.initPageNext + 10) * 1 ? true : false
+          if (this.currentShow && IshavePage) {
+            this.initPage += 10
+            this.getAppealPageInfo()
+          }
+          if (!this.currentShow && IshavePageNext) {
+            this.initPageNext += 10
+            this.getAppealDetailHistoryPageInfo()
 
-           }
-         }
+          }
+        }
       }
     },
 
@@ -201,11 +203,11 @@
       line-height: r(40);
       padding-left: r(10);
     }
-    .title{
+    .title {
       color: #333333;
       padding-right: r(10);
     }
-    .look-detail{
+    .look-detail {
       @include f(14px);
       background-color: #86A5F8;
       color: #fff;
@@ -228,11 +230,11 @@
       line-height: r(40);
       padding-left: r(10);
     }
-    .title{
+    .title {
       color: #333333;
       padding-right: r(10);
     }
-    .look-detail{
+    .look-detail {
       @include f(14px);
       background-color: #86A5F8;
       color: #fff;
