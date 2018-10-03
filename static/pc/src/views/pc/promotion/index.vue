@@ -9,7 +9,7 @@
            <div class="appdown-part cfx">
              <div class="col-21">
                <div class="qrcode-part">
-                 <qrcode :text="SETTING.appUrl" v-if="SETTING.appUrl" :logoSrc="Logo" :logoScale="0.2" :size="136"></qrcode>
+                 <qrcode :text="SETTING.appUrl" v-if="SETTING.appUrl" :margin="0" :logoSrc="Logo" :logoScale="0.2" :size="102"></qrcode>
                </div>
              </div>
              <div class="col-21 context">
@@ -443,7 +443,7 @@
        width: 86px;
        height: 86px;
        img{
-         width: 98px;
+         width: 74px;
        }
      }
      .context{
