@@ -96,3 +96,10 @@ export const chainLogin = jsonData => service({
   method:'post',
   data:jsonData
 })
+
+//设置/修改用户密码
+export const updatePassword = jsonData => service({
+  url:numversion2 +`user/chain/updatePassword`,
+  method:'post',
+  data:jsonData
+})

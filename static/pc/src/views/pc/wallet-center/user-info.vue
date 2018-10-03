@@ -30,7 +30,7 @@
         <div class="btn-item">
           <get-live800></get-live800>
         </div>
-        <div class="btn-item" v-if="userData.nodeId < 10000"
+        <div class="btn-item"
              @click="$store.dispatch('LOGIN_OUT')">
           <i class="iconfont icon-shut-down"></i>
           退出

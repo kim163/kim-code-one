@@ -21,6 +21,7 @@
   import SysBullentin from 'views/sys-bullentin';
   import vLogin from "components/auth/login"
   import vRegister from "components/auth/register"
+
   export default {
     data(){
       return {
@@ -176,7 +177,7 @@
     components:{
       SysBullentin,
       vLogin,
-      vRegister,
+      vRegister
     },
     mounted() {
       if (this.islogin) {

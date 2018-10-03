@@ -85,7 +85,11 @@
             this.$store.commit('GET_WIDTHDRAW',true)
           }
           if(res.data.initPwd === 'Y'){
-            this.$store.commit('SET_INITPWD',true)
+            if(_.isMobile()){
+              //做对应跳页逻辑
+            }else{
+              this.$store.commit('SET_INITPWD',true)
+            }
           }
           this.jumpLink(true)
         }else{

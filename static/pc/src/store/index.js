@@ -309,6 +309,9 @@ export default new Vuex.Store({
         if (res.code == 10000) {
           commit(types.SET_USERDATA, res.data);
           dispatch(types.CHECK_ONLINE, true);
+          if(res.data.initPwd === 'Y'){
+            commit(types.SET_INITPWD, true);
+          }
         }
         return Promise.resolve(res);
       });
