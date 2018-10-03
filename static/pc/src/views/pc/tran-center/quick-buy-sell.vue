@@ -190,13 +190,26 @@
       openQuickSell(val){
         this.pendingItem = val ? 'seller' : 'buyer'
       },
-      "withdrawInfo.pass"(val){
-        if(val){
-          this.pendingItem = 'seller'
-          this.bankNo = this.withdrawInfo.bankNo
-          this.sellAmount = this.withdrawInfo.amount
-          this.$store.commit('UPDATE_WIDTHDRAWINFO',{pass:false,bankNo:'',amount:0})
-        }
+      // "withdrawInfo.pass"(val){
+      //   if(val){
+      //     this.pendingItem = 'seller'
+      //     this.bankNo = this.withdrawInfo.bankNo
+      //     this.sellAmount = this.withdrawInfo.amount * 100
+      //     this.$store.commit('UPDATE_WIDTHDRAWINFO',{pass:false,bankNo:'',amount:0})
+      //   }
+      // },
+      "withdrawInfo":{
+        handler(newVal) {
+          if(newVal.pass){
+            toast('提款审核已通过！')
+            this.pendingItem = 'seller'
+            this.bankNo = this.withdrawInfo.bankNo
+            this.sellAmount = this.withdrawInfo.amount * 100
+            this.$store.commit('UPDATE_WIDTHDRAWINFO',{pass:false,bankNo:'',amount:0})
+            this.$store.commit('GET_WIDTHDRAW',false)
+          }
+        },
+        deep: true
       },
       noBankCardTip(val){
         if(this.pendingItem === 'buyer'){
@@ -298,7 +311,7 @@
       if(this.withdrawInfo.pass){
         this.pendingItem = 'seller'
         this.bankNo = this.withdrawInfo.bankNo
-        this.sellAmount = this.withdrawInfo.amount
+        this.sellAmount = this.withdrawInfo.amount * 100
         this.$store.commit('UPDATE_WIDTHDRAWINFO',{pass:false,bankNo:'',amount:0})
       }
       this.showBindCard = this.noBankCardTip
