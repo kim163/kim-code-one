@@ -74,16 +74,16 @@
           {{$t('userCenter.bindCard')}}
           <i class="iconfont icon-right-arrow"></i>
         </router-link>
-        <!--<router-link :to="{name:'mBindCard',params:{id:1}}" class="item-href">-->
-        <!--<i class="iconfont logo icon-bind-alipay"></i>-->
-        <!--{{$t('userCenter.bindAlipay')}}-->
-        <!--<i class="iconfont icon-right-arrow"></i>-->
-        <!--</router-link>-->
-        <!--<router-link :to="{name:'mBindCard',params:{id:2}}" class="item-href">-->
-        <!--<i class="iconfont logo icon-bind-wechat"></i>-->
-        <!--{{$t('userCenter.bindWeChat')}}-->
-        <!--<i class="iconfont icon-right-arrow"></i>-->
-        <!--</router-link>-->
+        <router-link :to="{name:'mBindCard',params:{id:1}}" class="item-href">
+          <i class="iconfont logo icon-bind-alipay"></i>
+          {{$t('userCenter.bindAlipay')}}
+          <i class="iconfont icon-right-arrow"></i>
+        </router-link>
+        <router-link :to="{name:'mBindCard',params:{id:2}}" class="item-href">
+          <i class="iconfont logo icon-bind-wechat"></i>
+          {{$t('userCenter.bindWeChat')}}
+          <i class="iconfont icon-right-arrow"></i>
+        </router-link>
       </div>
 
       <div class="mcenter-linkitem">
@@ -95,6 +95,7 @@
       </div>
 
       <div class="mcenter-linkitem">
+     <!--   <get-live800 :showRightArrow="true" :liveSpecStyle="mcenterLive" :isRoundIcon="true"></get-live800>-->
         <a class="item-href" target="_blank" :href="SETTING.appUrl">
           <i class="iconfont logo icon-juan-app"></i>
           {{$t('navbar.juanApp')}}
@@ -158,7 +159,7 @@
       </div>
     </div>
     <transition name="scroll-up">
-      <ReceivablesCode v-if="showReceivePage" @closeReceivables="closeReivePage" :accountChainVos="userData.accountChainVos"></ReceivablesCode>
+      <ReceivablesCode v-if="showReceivePage" @closeReceivables="closeReivePage"></ReceivablesCode>
     </transition>
 
   </div>
@@ -331,6 +332,13 @@
 
   .muser-center-home {
     padding-bottom: r($footer-hg+20);
+    /deep/ .mreceiv-code{
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: -webkit-fill-available;
+      z-index: 100;
+    }
   }
 
   /deep/ .mreceiv-code {

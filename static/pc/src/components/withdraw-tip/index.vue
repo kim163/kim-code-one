@@ -50,9 +50,14 @@
           clearTimeout(this.time)
         }
       },
-      'withdrawInfo.pass'(val){
-        toast('提款审核已通过！')
-        this.toQuickSell()
+      "withdrawInfo":{
+        handler(newVal) {
+          if(newVal.pass){
+            toast('提款审核已通过！')
+            this.toQuickSell()
+          }
+        },
+        deep: true
       }
     },
     components:{

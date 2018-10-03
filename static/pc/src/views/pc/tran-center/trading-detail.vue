@@ -264,6 +264,10 @@
       }
       .nick-name{
         margin-left: 5px;
+        flex-grow: 1;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
       }
       .card-icon{
         margin-right: 10px;

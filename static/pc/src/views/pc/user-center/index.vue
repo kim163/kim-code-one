@@ -542,7 +542,7 @@
         this.personRealName = this.userData.name
       },
       binkUserAccount() {
-        if(this.personUserName.length>10){
+        if(this.personUserName.length > 10){
           toast('用户昵称长度不能超过10位!')
           return
         }

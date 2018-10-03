@@ -2,11 +2,11 @@
   <div>
     <mobile-header>申诉列表</mobile-header>
     <div class="appeal-tab">
-      <div class="is_cash" :class="{'active':currentShow}" @click="changeTab(1)">进行中</div>
-      <div class="no_cash" :class="{'active':!currentShow}" @click="changeTab(2)">已完成</div>
+      <div class="is_cash" :class="{'active':currentShow}" @click="changeTab(1)">仲裁中</div>
+      <div class="no_cash" :class="{'active':!currentShow}" @click="changeTab(2)">仲裁历史</div>
     </div>
     <!--进行中的列表-->
-    <div v-if="currentShow">
+    <div v-if="currentShow" class="appeal-content">
       <noDataTip v-if="isNull"></noDataTip>
       <div v-else class="processArr" v-for="list in processArr">
         <p><span class="title">订单号码:</span>{{list.orderId}}</p>
@@ -18,7 +18,7 @@
       </div>
     </div>
     <!--已完成的列表-->
-    <div v-else>
+    <div v-else class="appeal-content">
       <noDataTip v-if="isNullNext"></noDataTip>
       <div v-else class="historyArr" v-for="list in historyArr">
         <p><span class="title">订单号码:</span>{{list.orderId}}</p>
@@ -36,15 +36,20 @@
   import MobileHeader from 'components/m-header'
   import noDataTip from 'components/no-data-tip'
   import {userCenter} from 'api'
+<<<<<<< HEAD
   import {mapGetters} from 'vuex'
   import scrollBottom from '../../../util/bottomScroll'
 
+=======
+  import  scrollBottom from '../../../util/bottomScroll'
+>>>>>>> 78f220d337b922a20da7f5125431d9401d8322a4
   export default {
     data() {
       return {
         currentShow: true,
         isNull: false,
         isNullNext: false,
+<<<<<<< HEAD
         historyArr: [],
         processArr: [],
         totalNext: "",
@@ -52,12 +57,21 @@
         initPage: 10,
         initPageNext: 10,
         pageSize: 10
+=======
+        historyArr:[],
+        processArr:[],
+        totalNext:"",
+        total:'',
+        initPage:0,
+        initPageNext:0,
+        pageSize:10
+>>>>>>> 78f220d337b922a20da7f5125431d9401d8322a4
       }
     },
     created() {
-      this.getAppealPageInfo()
-      this.getAppealDetailHistoryPageInfo()
-      window.addEventListener('scroll', this.scroll)
+      this.getAppealPageInfo();
+      this.getAppealDetailHistoryPageInfo();
+      window.addEventListener('scroll', this.scroll);
     },
     computed: {
       ...mapGetters([
@@ -80,10 +94,12 @@
           'offset': this.initPage,
           'userId': this.userId,
           'types': [1, 2, 3, 4]
-        }
+        };
+        console.log('进行中参数',requests);
         /*进行的列表页*/
 
         userCenter.getAppealPage(requests).then((res) => {
+<<<<<<< HEAD
           if (res.data.length == 0) {
             this.isNull = true
           } else {
@@ -91,6 +107,21 @@
               this.total = res.pageInfo.total
           }
         })
+=======
+         if (res.code == 10000) {
+           if (res.data.length == 0) {
+             this.isNull = true
+           } else {
+             this.processArr = res.data;
+             this.total = res.pageInfo.total;
+           }
+         } else {
+           toast(res.message)
+         }
+        }).catch(err => {
+          toast(err);
+        });
+>>>>>>> 78f220d337b922a20da7f5125431d9401d8322a4
       },
       getAppealDetailHistoryPageInfo() {
         const requests = {
@@ -98,10 +129,12 @@
           'offset': this.initPageNext,
           'userId': this.userId,
           'types': [1, 2, 3, 4]
-        }
+        };
+        console.log('申诉历史参数',requests);
         /*历史的列表页*/
 
         userCenter.getAppealHistoryPage(requests).then((res) => {
+<<<<<<< HEAD
 
           if (res.data.length == 0) {
             this.isNullNext = true
@@ -109,10 +142,24 @@
             const templateArr = res.data
             for (let i = 0; i < templateArr.length; i++) {
               this.historyArr.push(templateArr[i])
+=======
+          if (res.code == 10000) {
+            if (res.data.length == 0) {
+               this.isNullNext = true
+            } else {
+              const templateArr=res.data
+              for(let i =0; i<templateArr.length;i++){
+                this.historyArr.push(templateArr[i])
+              }
+              this.totalNext = res.pageInfo.total
+>>>>>>> 78f220d337b922a20da7f5125431d9401d8322a4
             }
-            this.totalNext = res.pageInfo.total
+          } else {
+            toast(res.message)
           }
-        })
+        }).catch(err => {
+          toast(err);
+        });
       },
       goDetail(id, num) {
         this.$router.push({name: 'mAppealDetail', params: {id}, query: {num}})
@@ -174,6 +221,10 @@
         color: #fff;
       }
     }
+  }
+
+  .appeal-content{
+    padding-bottom: r(60);
   }
 
   .processArr {
