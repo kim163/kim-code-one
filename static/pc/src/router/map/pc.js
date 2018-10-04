@@ -141,7 +141,7 @@ export default [
             component:UserCenter,
             children:[
               {
-                path:'',
+                path:'info',
                 name:'userCenter',
                 component:UserInfo,
               },
