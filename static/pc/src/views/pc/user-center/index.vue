@@ -1162,14 +1162,14 @@
           line-height: 40px;
           background: #F8F8F8;
         }
-        /*input {*/
-          /*border: 1px solid #e4e4e4;*/
-          /*width: 325px;*/
-          /*height: 40px;*/
-          /*text-indent: 10px;*/
-          /*margin-left: 10px;*/
+        input {
+          border: 1px solid #e4e4e4;
+          width: 325px;
+          height: 40px;
+          text-indent: 10px;
+          margin-left: 15px;
 
-        /*}*/
+        }
       }
     }
     .bindInfo {
