@@ -8,6 +8,7 @@
       <div class="group-head">
         <span class="unit">订单类型</span>
         <span class="unit">对方</span>
+        <span class="unit unit1">创建时间</span>
         <span class="unit">交易数量</span>
         <span class="unit">交易单价</span>
         <span class="unit">交易金额</span>
@@ -51,5 +52,13 @@
 <style lang="scss" scoped>
   .order-list{
     margin-top: 20px;
+  }
+  .group-head{
+    .unit{
+      width: 12%;
+      &.unit1{
+        width: 16%;
+      }
+    }
   }
 </style>

@@ -14,6 +14,7 @@
             </span>
           </span>
           <span class="unit">{{getUserName(item)}}</span>
+          <span class="unit unit1">{{item.createtime | Date('yyyy-MM-dd hh:mm:ss')}}</span>
           <span class="unit"> {{tabType === 3 ? item.amount : item.creditAmount}}   UET</span>
           <span class="unit"> 0.01 CNY</span>
           <span class="unit cl-red">{{toCny(item)}}
@@ -270,6 +271,10 @@
       font-size: 14px;
       line-height: 40px;
       color: #787876;
+      width: 12%;
+      &.unit1{
+        width: 16%;
+      }
     }
   }
   .type{
