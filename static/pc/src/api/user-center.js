@@ -94,7 +94,8 @@ export const getCenterInfo = jsonData => service({
 export const chainLogin = jsonData => service({
   url:numversion2 +`user/chain/login`,
   method:'post',
-  data:jsonData
+  data:jsonData,
+  encryptDef:true,  //使用默认加密规则
 })
 
 //设置/修改用户密码
