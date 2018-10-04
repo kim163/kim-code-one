@@ -75,7 +75,7 @@
             <div class="bank-info">
               <p class="bank-name">{{list.bank}}</p>
               <p class="bank-type">储蓄卡</p>
-              <p class="bank-num">{{list.account}}</p>
+              <p class="bank-num">{{processBank(list.account)}}</p>
             </div>
             <div class="unbind-card" @click="unbindCard(list.account,key)">
               解绑 >>
@@ -581,6 +581,9 @@
             toast(res.message)
           }
         })
+      },
+      processBank(val){
+        return val.substring(0,4) + '********' + val.substring(val.length - 4,val.length)
       }
     }
   }

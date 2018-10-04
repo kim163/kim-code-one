@@ -185,3 +185,10 @@ export const getHomeInfo = jsonData => service({
   method: 'post',
   data: jsonData
 });
+
+//获取UET账户信息
+export const getAccountChain = jsonData =>service({
+  url:numversion+`account/chain/getAccountChain`,
+  method:'post',
+  data:jsonData
+})
