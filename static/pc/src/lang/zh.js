@@ -252,6 +252,7 @@ export default {
     myGift:'我的优惠券',
     transactionRecord:'交易记录',
     receivcode:'收款码',
-    appealList:'申诉列表'
+    appealList:'申诉列表',
+    accountManagement:'账户管理',
   }
 }

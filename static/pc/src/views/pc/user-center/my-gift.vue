@@ -1,37 +1,25 @@
 <template>
   <div class="mygift-main-content">
-    <div class="container min-width min-height max-width">
-      <div class="tab-list">
-        <div class="tab-item"
-             :class="{active: titleType === item.type}"
-             v-for="(item,index) in navList"
-             :key="index"
-             @click="changeTitle(item.type)">
-          {{$t(item.name)}}
-        </div>
-        <router-link class="go-center" :to="{name:'walletCenter'}">返回钱包中心</router-link>
+    <div class="gift_content">
+      <div class="gift_tab">
+        <div class="exchange" :class="{'active':!currentShow}" @click="changeTab(2)">未兑现</div>
+        <div class="exchange" :class="{'active':currentShow}" @click="changeTab(1)">已兑现</div>
       </div>
-      <div class="gift_content">
-        <div class="gift_tab">
-          <div class="exchange" :class="{'active':!currentShow}" @click="changeTab(2)">未兑现</div>
-          <div class="exchange" :class="{'active':currentShow}" @click="changeTab(1)">已兑现</div>
+      <!--以兑现-->
+      <div class="exchange_content cfx" v-if="currentShow">
+        <noDataTip v-if="isNull"></noDataTip>
+        <div class="discount_ticket" v-for="(list,num) in isCashArr" v-else>
+          <coupon-detail :item="list" :isUsed="true"></coupon-detail>
         </div>
-        <!--以兑现-->
-        <div class="exchange_content cfx" v-if="currentShow">
-          <noDataTip v-if="isNull"></noDataTip>
-          <div class="discount_ticket" v-for="(list,num) in isCashArr" v-else>
-            <coupon-detail :item="list" :isUsed="true"></coupon-detail>
-          </div>
-          <paging-by :data="isCashPageInfo" @search="getInfo"></paging-by>
+        <paging-by :data="isCashPageInfo" @search="getInfo"></paging-by>
+      </div>
+      <!--未兑现-->
+      <div class="exchange_content cfx" v-else>
+        <noDataTip v-if="isNullNext"></noDataTip>
+        <div class="discount_ticket" v-for="(list,num) in noCacheArr" v-else>
+          <coupon-detail :item="list" :showBtn="true" @toUse="toUseExchange"></coupon-detail>
         </div>
-        <!--未兑现-->
-        <div class="exchange_content cfx" v-else>
-          <noDataTip v-if="isNullNext"></noDataTip>
-          <div class="discount_ticket" v-for="(list,num) in noCacheArr" v-else>
-            <coupon-detail :item="list" :showBtn="true" @toUse="toUseExchange"></coupon-detail>
-          </div>
-          <paging-by :data="noCashPageInfo" @search="getInfonext"></paging-by>
-        </div>
+        <paging-by :data="noCashPageInfo" @search="getInfonext"></paging-by>
       </div>
     </div>
 
@@ -159,41 +147,8 @@
 
 <style lang="scss" scoped>
   .mygift-main-content {
-    .tab-list {
-      padding-top: 20px;
-      text-align: left;
-      background-color: #fff;
-      line-height: 50px;
-      .tab-item {
-        text-align: center;
-        display: inline-block;
-        width: 150px;
-        height: 50px;
-        line-height: 50px;
-        font-size: 16px;
-        color: #fff;
-        cursor: pointer;
-        background-color: #86A5F8;
-        &:nth-child(2) {
-          margin-left: 10px;
-        }
-        &.active {
-          color: #ffffff;
-          background-color: #3573FA;
-        }
-      }
-      .go-center{
-        float: right;
-        padding: 5px 10px;
-        border-radius: 15px;
-        background-color: #86A5F8;
-        color: #FFFFFF;
-        line-height: 16px;
-        margin-top: 8px;
-      }
-    }
     .gift_content {
-      border: 1px solid #ccc;
+      /*border: 1px solid #ccc;*/
       margin: 0 0 30px 0;
       .gift_tab {
         border-bottom: 1px solid #d5d5d5;

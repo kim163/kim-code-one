@@ -251,6 +251,7 @@ export default {
     myGift:'My Coupons',
     transactionRecord:'Transaction Record',
     receivcode:'Receivables Code',
-    appealList:'Appeal List'
+    appealList:'Appeal List',
+    accountManagement:'Account',
   }
 }
