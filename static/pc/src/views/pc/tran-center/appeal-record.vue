@@ -14,6 +14,7 @@
           <div>{{list.orderType==0? '对方':'我方'}}</div>
           <div>{{list.orderType==0? '买入':'卖出'}}</div>
           <div>{{list.userId==list.debit?list.debitName:list.creditName}}</div>
+          <div class="time">{{list.createtime | Date('yyyy-MM-dd hh:mm:ss')}}</div>
           <div>{{list.amount}}</div>
           <div style="color: red">0.01CNY</div>
           <div>{{list.amountTwin}}</div>
@@ -33,6 +34,7 @@
           <div>{{list.orderType==0? '对方':'我方'}}</div>
           <div>{{list.orderType==0? '买入':'卖出'}}</div>
           <div>{{list.userId==list.debit?list.debitName:list.creditName}}</div>
+          <div class="time">{{list.createtime | Date('yyyy-MM-dd hh:mm:ss')}}</div>
           <div>{{list.amount}}</div>
           <div style="color: red">0.01CNY</div>
           <div>{{list.amountTwin}}</div>
@@ -54,8 +56,8 @@
     name: "appeal-record",
     data() {
       return {
-        titleArr: ['申诉人', '订单类型', '对方', '交易数量', '交易单价', '交易金额', '状态', '操作'],
-        titleHistory: ['申诉人', '订单类型', '对方', '交易数量', '交易单价', '交易金额', '结果类型', '操作'],
+        titleArr: ['申诉人', '订单类型', '对方', '创建时间', '交易数量', '交易单价', '交易金额', '状态', '操作'],
+        titleHistory: ['申诉人', '订单类型', '对方', '创建时间', '交易数量', '交易单价', '交易金额', '结果类型', '操作'],
         processArr: [],
         isNull: false,
         isNullNext: false,
@@ -84,7 +86,6 @@
           'userId': this.userId,
           'types': [1, 2, 3, 4]
         };
-        console.log('进行中参数',requests);
         userCenter.getAppealPage(requests).then((res) => {
           if (res.code == 10000) {
             if (res.data.length == 0) {
@@ -108,7 +109,6 @@
           'userId': this.userId,
           'types': [1, 2, 3, 4]
         };
-        console.log('仲裁历史参数',requests);
         userCenter.getAppealHistoryPage(requests).then((res) => {
           if (res.code == 10000) {
             if (res.data.length == 0) {
@@ -165,6 +165,9 @@
           text-align: center;
           line-height: 50px;
           flex: 1;
+          &:nth-child(4){
+            flex: 1.5;
+          }
         }
       }
       .content-item {
@@ -182,6 +185,9 @@
           color: #787876;
           text-align: center;
           line-height: 50px;
+        }
+        .time{
+          flex: 1.5;
         }
         .btn {
           display: inline-block;
@@ -212,6 +218,9 @@
           text-align: center;
           line-height: 50px;
           flex: 1;
+          &:nth-child(4){
+            flex: 1.5;
+          }
         }
       }
       .content-item {
@@ -229,6 +238,9 @@
           color: #787876;
           text-align: center;
           line-height: 50px;
+        }
+        .time{
+          flex: 1.5;
         }
         .btn {
           display: inline-block;
