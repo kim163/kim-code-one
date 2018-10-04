@@ -317,9 +317,6 @@
     },
     created() {
       this.getBankList(0)
-      Object.assign(this.userData,{
-        isNeedSync:1
-      })
     },
 
     methods: {
