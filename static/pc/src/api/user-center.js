@@ -96,3 +96,10 @@ export const chainLogin = jsonData => service({
   method:'post',
   data:jsonData
 })
+
+//删除用户中心关系
+export const deleteCenter = jsonData => service({
+  url: numversion +`user/center/deleteCenter`,
+  method:'post',
+  data:jsonData
+})

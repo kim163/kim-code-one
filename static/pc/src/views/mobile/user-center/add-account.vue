@@ -18,32 +18,37 @@
   import MobileHeader from 'components/m-header'
   import {userCenter} from 'api'
   import {mapGetters} from 'vuex'
+  import {$localStorage} from '@/util/storage';
+
   export default {
     name: "add-account",
     data() {
       return {
-        userName:'',
-        userPassword:"",
-        userId:''
+        userName: '',
+        userPassword: "",
+        userId: ''
       }
     },
-    computed:{
-    ...mapGetters(["centerId"])
+    computed: {
+      ...mapGetters(["centerId"])
     },
-    methods:{
-      loginAccount(){
+    methods: {
+      loginAccount() {
         const request = {
           'userName': this.userName,
           'password': this.userPassword,
-          'id': this.centerId==''?'':this.centerId
+          'id': this.centerId == '' ? '' : this.centerId
         }
-        console.log(request,'是的555')
-        userCenter.chainLogin(request).then(res=>{
-          console.log(res,'是的')
-          if(res.code =='10000'){
-              this.userId = res.data.userId
-              this.addAccount()
-          }else {
+        console.log(request,'洒家扩大')
+        userCenter.chainLogin(request).then(res => {
+          console.log(res, '撒看见了的')
+          if (res.code == '10000') {
+            toast('添加成功')
+            this.userId = res.data.userId
+            this.userName = ''
+            this.userPassword = ''
+            this.$store.commit('SET_ACCOUNT_MANAGER_TOKEN', {type: 'add', value: 'userToken', userId: this.userId})
+          } else {
             toast(res.message)
           }
         })

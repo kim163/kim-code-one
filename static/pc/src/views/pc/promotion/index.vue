@@ -443,7 +443,7 @@
        width: 86px;
        height: 86px;
        img{
-         width: 98px;
+         width: 74px;
        }
      }
      .context{

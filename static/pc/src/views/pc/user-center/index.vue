@@ -541,6 +541,7 @@
         this.weixinPopup = false
       },
       writePersonInfo() {
+
         this.personInfoPopup = true
         this.personUserName = this.userData.nickname
         this.personRealName = this.userData.name
