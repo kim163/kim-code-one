@@ -490,27 +490,32 @@
           userId: this.userId
         }
         userCenter.getBankList(requests).then(res => {
-          /*银行卡*/
-          this.filterArr = res.data.filter(item => item.type === 3)
-          /*支付宝*/
-          this.filterZfb = res.data.filter(item => item.type === 1)
-          /*微信*/
-          this.filterWx = res.data.filter(item => item.type === 2)
-          if (this.filterArr.length == 0) {
-            this.isEmptyState = true
-            this.isEmptyStateNext = false
-            this.isbindOk = false
-          } else {
-            this.isEmptyStateNext = true
-            this.isEmptyState = false
-            this.bindBankCard = true
-            this.isbindOk = true
-            /*过滤符合条件的*/
-            if (this.filterArr.length == 3) {
-              this.isAddCard = false
+          if(res.code === 10000){
+            /*银行卡*/
+            this.filterArr = res.data.filter(item => item.type === 3)
+            /*支付宝*/
+            this.filterZfb = res.data.filter(item => item.type === 1)
+            /*微信*/
+            this.filterWx = res.data.filter(item => item.type === 2)
+            if (this.filterArr.length == 0) {
+              this.isEmptyState = true
+              this.isEmptyStateNext = false
+              this.isbindOk = false
+            } else {
+              this.isEmptyStateNext = true
+              this.isEmptyState = false
+              this.bindBankCard = true
+              this.isbindOk = true
+              /*过滤符合条件的*/
+              if (this.filterArr.length == 3) {
+                this.isAddCard = false
+              }
             }
+          }else{
+            toast(res.message)
           }
-
+        }).catch(err => {
+          toast(err)
         })
       },
       bindWx() {

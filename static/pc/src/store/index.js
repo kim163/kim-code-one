@@ -375,7 +375,7 @@ export default new Vuex.Store({
         toast(err);
       });
     },
-    [types.GET_ORDERXPAGE]({commit,getters},val){  //获取用户余额
+    [types.GET_ORDERXPAGE]({commit,getters},val){  //获取最新交易中订单
       const userId = getters.userId
       const data = {
         limit: 1,

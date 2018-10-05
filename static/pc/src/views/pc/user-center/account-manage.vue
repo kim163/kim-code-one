@@ -5,7 +5,7 @@
         <div class="left">
           <div class="info-btn switch" v-if="userId === item.userId">主账户</div>
           <div class="switch-del" v-else>
-            <div class="info-btn switch" @click="">切换账户</div>
+            <div class="info-btn switch" @click="switchAccount(item)">切换账户</div>
             <div class="info-btn del" @click="delAccountConfirm(item)">解除账户</div>
           </div>
           <div class="flex">
@@ -14,7 +14,7 @@
               <div class="info-detail">
                 账户余额：
                 <span class="cl-red">
-              <animated-integer :value="item.amount"></animated-integer>{{item.assetCode}}
+                <animated-integer :value="item.amount"></animated-integer>{{item.assetCode}}
             </span>
               </div>
               <div class="info-detail">
@@ -45,6 +45,8 @@
       <div slot="content">您确定要解除{{delUserName}}账户吗？</div>
       <div class="blue-btn" slot="rightBtn" @click="delAccount">确认</div>
     </confirm>
+    <!--账户转账-->
+    <transfer-dialog></transfer-dialog>
   </div>
 </template>
 
@@ -61,6 +63,8 @@
   import CusLogin from 'components/auth/login/customize-login'
   import QrcodeDialog from 'components/qrcode-dialog'
   import Confirm from 'components/confirm'
+  import {$localStorage} from '@/util/storage'
+  import TransferDialog from './transfer-dialog'
   export default {
     name: "account-man",
     data(){
@@ -97,7 +101,8 @@
       AnimatedInteger,
       CusLogin,
       QrcodeDialog,
-      Confirm
+      Confirm,
+      TransferDialog
     },
     methods:{
       getUserList(){
@@ -126,7 +131,7 @@
           clipboard.destroy()
         })
       },
-      qrcodeDetail(val){
+      qrcodeDetail(val){ //展示收款二维码
         this.qrcodeAddress = 'UET,' + val
         this.showQrcode = true
       },
@@ -135,12 +140,36 @@
         this.delUserName = item.name
         this.deleteConfrim = true
       },
-      delAccount(){
+      delAccount(){ //删除账户
         deleteCenter({userId:this.delUserId}).then(res => {
           if(res.code === 10000){
             toast(`解除${this.delUserName}账户成功`)
             this.deleteConfrim = false
             this.getUserList()
+          }else{
+            toast(res.message)
+          }
+        }).catch(err => {
+          toast(err)
+        })
+      },
+      switchAccount(item){ //切换账户
+        const data = {
+          type:11,
+          token: item.token,
+          merchantId: item.merchantId
+        }
+        login(data).then(res => {
+          if(res.code === 10000){
+            $localStorage.set('tokenInfo', JSON.stringify(res.data.tokenVo));
+            this.$store.commit('SET_USERDATA',res.data);
+            this.$store.dispatch('CHECK_ONLINE', true);
+            this.$store.dispatch('UPDATE_TOKEN_INFO', res.data.tokenVo);
+            this.$store.dispatch("GET_BANKCARD");
+            this.$store.dispatch('GET_USERBALANCE')
+            _.initRongyun()
+            toast('切换用户成功')
+            this.$router.push({name:'walletCenter'})
           }else{
             toast(res.message)
           }
