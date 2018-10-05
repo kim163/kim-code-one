@@ -80,7 +80,7 @@
             <div class="bank-info">
               <p class="bank-name">{{list.bank}}</p>
               <p class="bank-type">储蓄卡</p>
-              <p class="bank-num">{{list.account}}</p>
+              <p class="bank-num">{{processBank(list.account)}}</p>
             </div>
             <div class="unbind-card" @click="unbindCard(list.account,key)">
               解绑 >>
@@ -157,9 +157,18 @@
           <span class="iconfont icon-close close-btn" @click="closePersonInfo"></span>
         </div>
         <div class="bind-content">
-          <p class="username">昵称 <input type="text" v-model="personUserName"></p>
-          <p class="realname">真实姓名 <input type="text" v-model="personRealName" v-if="userData.name==null">
-            <input type="text" :value="userData.name" readonly v-else></p>
+          <p class="username">昵称
+            <input type="text" v-model="personUserName">
+          </p>
+          <div class="realname">
+            真实姓名
+            <input type="text" v-model="personRealName"
+                   v-if="userData.name==null"
+                   :readonly="isNeedSyncName"
+                   :placeholder="isNeedSyncName ? '请在合作商户网站上设置姓名' : ''"
+                   @focus="checkName"/>
+            <div class="name-readonly" v-else>{{userData.name}}</div>
+          </div>
         </div>
         <div class="bindInfo" @click='binkUserAccount'>绑定</div>
       </div>
@@ -283,7 +292,8 @@
         filterAlipay: [],
         filterWchat: [],
         checkAlipayPopup: false,
-        checkWchatPopup: false
+        checkWchatPopup: false,
+        isNeedSyncName:false
       }
     },
     components: {
@@ -307,7 +317,6 @@
     },
     created() {
       this.getBankList(0)
-
     },
 
     methods: {
@@ -593,6 +602,15 @@
             toast(res.message)
           }
         })
+      },
+      processBank(val){
+        return val.substring(0,4) + '********' + val.substring(val.length - 4,val.length)
+      },
+      checkName(){
+        if(this.userData.isNeedSync === 1){
+          this.isNeedSyncName = true
+          toast('您是合作商户用户，根据合作商户要求，您需要在商户网站上设置完真实姓名重新登录久安，姓名便会自动同步')
+        }
       }
     }
   }
@@ -1143,13 +1161,23 @@
         padding-top: 20px;
         font-size: 16px;
         color: #333;
-
+        display: flex;
+        align-items: center;
+        .name-readonly{
+          border: 1px solid #e4e4e4;
+          width: 325px;
+          height: 40px;
+          text-indent: 10px;
+          margin-left: 15px;
+          line-height: 40px;
+          background: #F8F8F8;
+        }
         input {
           border: 1px solid #e4e4e4;
           width: 325px;
           height: 40px;
           text-indent: 10px;
-          margin-left: 10px;
+          margin-left: 15px;
 
         }
       }
