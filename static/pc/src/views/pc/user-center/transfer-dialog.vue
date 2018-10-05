@@ -23,17 +23,19 @@
       <div class="within-tran">
         <div class="title">{{isOut ? '内部账户转账' : '请选择以下账户，进行转账'}}</div>
         <div class="tran-list">
-          <div class="within-info" v-for="(item,index) in userList"
-               :key="index"
-               v-if="item.userId != data.userId"
-               :class="{active: showIndex === index}"
-               @click="showIndex = index">
-            <div class="user-name">{{item.name}}</div>
-            <div class="user-balance" v-if="showIndex != index">余额：{{item.amount}}{{item.assetCode}}</div>
-            <div class="tran-out" v-else>
-              转出
-              <input class="input-out" type="text" v-number-only/>
-              <div class="tran-btn" @click="toTansfer">确定</div>
+          <div>
+            <div class="within-info" v-for="(item,index) in userList"
+                 :key="index"
+                 v-if="item.userId != data.userId"
+                 :class="{active: showIndex === index}"
+                 @click="showIndex = index">
+              <div class="user-name">{{item.name}}</div>
+              <div class="user-balance" v-if="showIndex != index">余额：{{item.amount}}{{item.assetCode}}</div>
+              <div class="tran-out" v-else>
+                转出
+                <input class="input-out" type="text" v-number-only/>
+                <div class="tran-btn" @click="toTansfer">确定</div>
+              </div>
             </div>
           </div>
         </div>
@@ -133,22 +135,27 @@
   }
   .within-tran{
     width: 100%;
-    height: 130px;
     margin-top: 30px;
-    position: relative;
-    overflow-x: auto;
-    overflow-y: hidden;
     .tran-list{
-      display: flex;
-      align-items: center;
-      position: absolute;
-      left: 0;
-      bottom: 0;
+      /*width: 100%;*/
+      height: 115px;
+      position: relative;
+      overflow-x: auto;
+      overflow-y: hidden;
+      >div{
+        /*width: auto;*/
+        display: flex;
+        align-items: center;
+        flex-wrap: nowrap;
+        position: absolute;
+        left: 0;
+        bottom: 5px;
+      }
     }
     .within-info{
+      /*width: auto;*/
       min-width: 136px;
       padding: 10px;
-      height: 78px;
       background: #FFFFFF;
       border: 1px solid #E4E4E4;
       transition: all .5s;
@@ -156,7 +163,7 @@
       margin-right: 10px;
       cursor: pointer;
       &.active{
-        width: 243px;
+        width: 263px;
         background: #F3F7FF;
         border-color: #D4DFF5;
       }
@@ -166,6 +173,9 @@
       .user-balance{
         display: flex;
         align-items: center;
+        justify-content: flex-start;
+        flex-wrap: nowrap;
+        padding-top: 7px;
       }
       .tran-out{
         display: flex;
