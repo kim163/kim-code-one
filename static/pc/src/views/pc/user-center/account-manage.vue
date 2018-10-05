@@ -26,8 +26,8 @@
           </div>
         </div>
         <div class="right">
-          <div class="right-btn pink" @click="">UET转出</div>
-          <div class="right-btn blue" @click="">UET转入</div>
+          <div class="right-btn pink" @click="toTransfer(item,true)">UET转出</div>
+          <div class="right-btn blue" @click="toTransfer(item,false)">UET转入</div>
           <div class="right-btn light-blue" @click="qrcodeDetail(item.address)">收款码</div>
         </div>
       </div>
@@ -46,7 +46,11 @@
       <div class="blue-btn" slot="rightBtn" @click="delAccount">确认</div>
     </confirm>
     <!--账户转账-->
-    <transfer-dialog></transfer-dialog>
+    <transfer-dialog v-if="showTran"
+                     v-model="showTran"
+                     :is-out="isTranOut"
+                     :data="tranData"
+                     :user-list="otherUserList"></transfer-dialog>
   </div>
 </template>
 
@@ -76,6 +80,10 @@
         deleteConfrim:false,
         delUserId:'',
         delUserName:'',
+        showTran:false,
+        isTranOut:false,
+        tranData: null,
+        otherUserList:[],
       }
     },
     computed:{
@@ -176,6 +184,14 @@
         }).catch(err => {
           toast(err)
         })
+      },
+      toTransfer(data,isOut){
+        this.tranData = data
+        this.isTranOut = isOut
+        this.otherUserList = this.userList.filter(item => {
+          return item.userId != data.userId
+        })
+        this.showTran = true
       }
     },
     mounted(){
