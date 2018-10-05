@@ -39,7 +39,7 @@
           'password': this.userPassword,
           'id': this.centerId == '' ? '' : this.centerId
         }
-        console.log(request,'洒家扩大')
+
         userCenter.chainLogin(request).then(res => {
           console.log(res, '撒看见了的')
           if (res.code == '10000') {

@@ -361,6 +361,7 @@ export default new Vuex.Store({
       });
     },
     [types.GET_USERBALANCE]({commit,getters},val){  //获取用户余额
+
       let requestdata={
         userId: getters.userId
       };

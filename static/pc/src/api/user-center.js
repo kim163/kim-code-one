@@ -111,3 +111,11 @@ export const deleteCenter = jsonData => service({
   method:'post',
   data:jsonData
 })
+
+//转账
+export const assetTransfer = jsonData => service({
+  url: numversion + `account/chain/assetTransfer`,
+  method:'post',
+  data:jsonData
+})
+

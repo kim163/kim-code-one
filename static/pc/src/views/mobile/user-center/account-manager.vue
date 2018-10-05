@@ -6,7 +6,7 @@
     </MobileHeader>
     <div class="account-list">
       <div class="list-item" v-for="list in accountArr">
-        <div class="account-box" @click="goDetailPage(list.userId,list.address,list.name)">
+        <div class="account-box" @click="goDetailPage(list.userId,list.address,list.name,list.nodeId)">
           <div class="up-line">
             <p class="user-symbol"><span class="iconfont icon-default-user"></span></p>
             <p class="user-name">{{list.name}}</p>
@@ -74,14 +74,12 @@
         const request = {
           'id': this.centerId
         }
-
         userCenter.getCenterInfo(request).then(res => {
           if (res.code == '10000') {
             this.accountArr = res.data
-            console.log(this.accountArr, '四大皆空')
+
           }
         })
-
       },
       cancelTrade() {
         this.isConfirm = false
@@ -112,8 +110,9 @@
       addAccount() {
         this.$router.push({name: 'mAddAccount'})
       },
-      goDetailPage(val,cont,name) {
-        this.$router.push({name: 'mAccountDetail', params: {id: val,address:cont,username:name}})
+      goDetailPage(val,cont,name,id) {
+        console.log(id,'啥都健康')
+        this.$router.push({name: 'mAccountDetail', params: {id: val,address:cont,username:name,node:id}})
       }
     },
 

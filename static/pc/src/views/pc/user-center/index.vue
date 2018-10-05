@@ -94,7 +94,6 @@
   .user-content {
     border: 1px solid #D3D3D3;
     margin-bottom: 50px;
-    /*padding: 31px;*/
 
   }
 

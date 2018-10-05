@@ -9,7 +9,11 @@
       <div class="info-item">
         <div class="title">真实姓名:</div>
         <span v-if="userData.name != null">{{name}}</span>
-        <input v-else class="info-input" type="text" v-model="name" placeholder="请输入真实姓名"/>
+        <input v-else class="info-input" type="text"
+               v-model="name"
+               :readonly="isNeedSyncName"
+               @focus="checkName"
+               :placeholder="isNeedSyncName ? '请在合作商户网站上设置姓名' : '请输入真实姓名'"/>
       </div>
       <div class="m-top-md">
         <div class="bind-def-btn" @click="setUserInfo">绑定</div>
@@ -30,6 +34,7 @@
       return{
         nickName:'',
         name:'',
+        isNeedSyncName:false
       }
     },
     watch:{
@@ -57,10 +62,10 @@
           toast('请输入昵称')
           return
         }
-        if(this.name === ''){
-          toast('请输入真实姓名')
-          return
-        }
+        // if(this.name === ''){
+        //   toast('请输入真实姓名')
+        //   return
+        // }
         const data = {
           idCard:'',
           userId: this.userData.userId,
@@ -70,7 +75,7 @@
         console.log('set user',data)
         bindUserInfo(data).then(res => {
           if(res.code === 10000){
-            toast('绑定成功')
+            toast('设置成功')
             this.$store.dispatch('UPDATE_USERDATA')
             if(!this.isPc){
               this.$router.replace({name:'mUserCenter'})
@@ -81,6 +86,12 @@
         }).catch(err => {
           toast(err)
         })
+      },
+      checkName(){
+        if(this.userData.isNeedSync === 1){
+          this.isNeedSyncName = true
+          toast('您是合作商户用户，根据合作商户要求，您需要在商户网站上设置完真实姓名重新登录久安，姓名便会自动同步')
+        }
       }
     },
     created(){
