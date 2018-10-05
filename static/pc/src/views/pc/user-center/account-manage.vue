@@ -26,8 +26,8 @@
           </div>
         </div>
         <div class="right">
-          <div class="right-btn pink" @click="toTransfer(item,true)">UET转出</div>
-          <div class="right-btn blue" @click="toTransfer(item,false)">UET转入</div>
+          <div class="right-btn pink" @click="toTransfer(item,1)">UET转出</div>
+          <div class="right-btn blue" @click="toTransfer(item,2)">UET转入</div>
           <div class="right-btn light-blue" @click="qrcodeDetail(item.address)">收款码</div>
         </div>
       </div>
@@ -50,7 +50,8 @@
                      v-model="showTran"
                      :is-out="isTranOut"
                      :data="tranData"
-                     :user-list="otherUserList"></transfer-dialog>
+                     :user-list="otherUserList"
+                     @tranSuccess="getUserList"></transfer-dialog>
   </div>
 </template>
 
@@ -185,9 +186,9 @@
           toast(err)
         })
       },
-      toTransfer(data,isOut){
+      toTransfer(data,type){ //type 1转出 2转入
         this.tranData = data
-        this.isTranOut = isOut
+        this.isTranOut = type === 2 ? false : data.userId === this.userId
         this.otherUserList = this.userList.filter(item => {
           return item.userId != data.userId
         })

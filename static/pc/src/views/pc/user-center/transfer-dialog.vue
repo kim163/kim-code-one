@@ -11,31 +11,28 @@
         <div class="title">手动转账</div>
         <div class="tran-info">
           <span>输入数量</span>
-          <input class="tran-input" type="text" v-number-only v-model="tranOutAmonut">
+          <input class="tran-input" type="text" v-number-only v-model.number="manualOutAmonut">
           <span class="uet">{{data.assetCode}}</span>
         </div>
         <div class="tran-info">
           <span>钱包地址</span>
           <input class="tran-input" type="text" v-model="tranAddress">
         </div>
-        <div class="dialog-btn" @click="toTansfer">确定</div>
+        <div class="dialog-btn" @click="toTansfer(1)">确定</div>
       </div>
       <div class="within-tran">
         <div class="title">{{isOut ? '内部账户转账' : '请选择以下账户，进行转账'}}</div>
         <div class="tran-list">
-          <div>
-            <div class="within-info" v-for="(item,index) in userList"
-                 :key="index"
-                 v-if="item.userId != data.userId"
-                 :class="{active: showIndex === index}"
-                 @click="showIndex = index">
-              <div class="user-name">{{item.name}}</div>
-              <div class="user-balance" v-if="showIndex != index">余额：{{item.amount}}{{item.assetCode}}</div>
-              <div class="tran-out" v-else>
-                转出
-                <input class="input-out" type="text" v-number-only/>
-                <div class="tran-btn" @click="toTansfer">确定</div>
-              </div>
+          <div class="within-info" v-for="(item,index) in userList"
+               :key="index"
+               :class="{active: showIndex === index}"
+               @click="showIndex = index">
+            <div class="user-name">{{item.name}}</div>
+            <div class="user-balance" v-if="showIndex != index">余额：{{item.amount}}{{item.assetCode}}</div>
+            <div class="tran-out" v-else>
+              转出
+              <input class="input-out" type="text" v-model.number="withinAmount" v-number-only/>
+              <div class="tran-btn" @click="toTansfer(2)">确定</div>
             </div>
           </div>
         </div>
@@ -55,9 +52,12 @@
     data(){
       return{
         showPop:true,
-        tranOutAmonut:0,
+        manualOutAmonut:0, //手动转账金额
         tranAddress:'',
         showIndex:0,
+        withinAmount:0, //内部转账金额
+        // selectUserBalance:0,//内部转账当前用户余额
+        selectUser:{} //内部转账当前用户
       }
     },
     computed:{
@@ -71,6 +71,29 @@
       showPop(val){
         if(!val){
           this.$emit('changeShow',false)
+        }
+      },
+      showIndex(){
+        this.withinAmount = 0
+        this.selectUser = this.userList[this.showIndex]
+      },
+      manualOutAmonut(val){
+        if(val > Number(this.data.amount)){
+          toast('您的账户余额不足')
+          this.manualOutAmonut = Number(this.data.amount)
+        }
+      },
+      withinAmount(val){
+        if(this.isOut){
+          if(val > Number(this.data.amount)){
+            toast('您的账户余额不足')
+            this.withinAmount = Number(this.data.amount)
+          }
+        }else{
+          if(val > Number(this.selectUser.amount)){
+            toast('对应账户余额不足')
+            this.withinAmount = Number(this.selectUser.amount)
+          }
         }
       }
     },
@@ -101,9 +124,62 @@
       AnimatedInteger
     },
     methods:{
-      toTansfer(){
-
+      toTansfer(type){ // type: 1代表手动转账  2表示账户内转账
+        if(type === 1){
+          if(this.manualOutAmonut === '' || this.manualOutAmonut === 0){
+            toast('请输入转账金额')
+            return
+          }else if(this.tranAddress === ''){
+            toast('请输入钱包地址')
+            return
+          }
+        }else{
+          if(this.withinAmount === '' || this.withinAmount === 0){
+            toast('请输入转账金额')
+            return
+          }
+        }
+        const Obj = this.isOut ? this.data : this.selectUser
+        const data = {
+          userId: Obj.userId,
+          nodeId: Obj.nodeId,
+          debitAccount: Obj.address,
+          creditAccount: type === 1 ? this.tranAddress : this.selectUser.address,
+          amount: type === 1 ? this.manualOutAmonut : this.withinAmount
+        }
+        console.log(data)
+        assetTransfer(data).then(res => {
+          if(res.code === 10000){
+            toast('转账成功')
+            this.$emit('tranSuccess')
+            this.showPop = false
+          }else{
+            toast(res.message)
+          }
+        }).catch(err => {
+          toast(err)
+        })
+        // if(this.isOut){
+        //   Object.assign(data,{
+        //     userId: this.data.userId,
+        //     nodeId: this.data.nodeId,
+        //     debitAccount: this.data.address,
+        //     creditAccount: type === 1 ? this.tranAddress : this.selectUser.address,
+        //     amount: type === 1 ? this.manualOutAmonut : this.withinAmount
+        //   })
+        // }else{
+        //   Object.assign(data,{
+        //     userId: this.selectUser.userId,
+        //     nodeId: this.selectUser.nodeId,
+        //     debitAccount: this.selectUser.address,
+        //     creditAccount: this.selectUser.address,
+        //     amount: this.withinAmount
+        //   })
+        // }
       }
+    },
+    created(){
+      this.selectUser = this.userList[this.showIndex]
     }
   }
 </script>
@@ -137,24 +213,14 @@
     width: 100%;
     margin-top: 30px;
     .tran-list{
-      /*width: 100%;*/
-      height: 115px;
-      position: relative;
+      width: 100%;
+      height: 100px;
       overflow-x: auto;
       overflow-y: hidden;
-      >div{
-        /*width: auto;*/
-        display: flex;
-        align-items: center;
-        flex-wrap: nowrap;
-        position: absolute;
-        left: 0;
-        bottom: 5px;
-      }
+      white-space: nowrap;
+      float:left;
     }
     .within-info{
-      /*width: auto;*/
-      min-width: 136px;
       padding: 10px;
       background: #FFFFFF;
       border: 1px solid #E4E4E4;
@@ -162,8 +228,10 @@
       font-size: 16px;
       margin-right: 10px;
       cursor: pointer;
+      display: inline-block;
+      vertical-align: top;
       &.active{
-        width: 263px;
+        /*width: 263px;*/
         background: #F3F7FF;
         border-color: #D4DFF5;
       }
