@@ -7,6 +7,7 @@
       <router-view></router-view>
     </transition>
     <withdraw-tip v-model="withdrawTip" :is-pc="true"></withdraw-tip>
+    <set-update-pwd v-if="showSetInitPwd" :is-first="true" v-model="showSetInitPwd"></set-update-pwd>
   </div>
 </template>
 
@@ -15,21 +16,25 @@
   import UserInfo from './user-info'
   import WithdrawTip from 'components/withdraw-tip'
   import OrderNotice from './order-notice'
+  import SetUpdatePwd from 'components/set-update-pwd'
   export default {
     name: "wallet-center",
     data(){
       return{
-        withdrawTip:false
+        withdrawTip:false,
+        showSetInitPwd:false
       }
     },
     components:{
       UserInfo,
       WithdrawTip,
       OrderNotice,
+      SetUpdatePwd
     },
     computed: {
       ...mapGetters([
-        "getWithdraw"
+        "getWithdraw",
+        "setInitPwd"
       ])
     },
     watch:{
@@ -44,11 +49,18 @@
       withdrawTip(val){
         if(!val){
           this.$store.commit('GET_WIDTHDRAW',false)
+          this.showSetInitPwd = this.setInitPwd
         }
+      },
+      setInitPwd(val){
+        this.showSetInitPwd = val
       }
     },
     created(){
       this.withdrawTip = this.getWithdraw
+      if(!this.withdrawTip){
+        this.showSetInitPwd = this.setInitPwd
+      }
     },
     beforeRouteEnter(to,from,next){
       if(store.getters.islogin){

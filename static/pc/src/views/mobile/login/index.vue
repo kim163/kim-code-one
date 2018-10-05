@@ -136,7 +136,7 @@
             this.$store.dispatch('UPDATE_TOKEN_INFO', res.data.tokenVo);
             this.$store.dispatch('INIT_INFO');
             this.$store.commit('SET_USERDATA',res.data);
-             _.checkUserBind({userId: res.data.userId})
+             // _.checkUserBind({userId: res.data.userId})
             _.initRongyun()
             this.$router.replace({name: 'mIndex'});
           }else {

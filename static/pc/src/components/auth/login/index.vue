@@ -1,15 +1,15 @@
 <template>
   <div>
-  <div class="modal fade in" v-show="value">
-    <div class="modal-dialog popup">
-      <div type="button" class="close" @click="closeDialog">
-        <i class="iconfont icon-close"></i>
-      </div>
-      <div class="pop-content">
-        <template v-if="!customize">
+    <div class="modal fade in" v-show="value && !customize">
+      <div class="modal-dialog popup">
+        <div type="button" class="close" @click="closeDialog">
+          <i class="iconfont icon-close"></i>
+        </div>
+        <div class="pop-content">
           <h2 class="alert-title">{{$t('login.title')}}</h2>
           <ul class="pop-tab tab-box">
-            <li v-for="item in loginType" @click="loginItem=item.value" class="s" :class="{active:loginItem==item.value}" :key="item.value">
+            <li v-for="item in loginType" @click="loginItem=item.value" class="s"
+                :class="{active:loginItem==item.value}" :key="item.value">
               {{generateTitle(item.name)}}
             </li>
           </ul>
@@ -17,14 +17,16 @@
             <div class="form-group" v-show="loginItem=='account'">
               <label class="form-subtitle">{{$t('login.username')}}</label>
               <div class="form-input">
-                <input name="account" @keyup.enter="login" v-model="data.account" type="text" class="ps-input ps-input1" :placeholder="$t('login.usernamePhd')">
+                <input name="account" @keyup.enter="login" v-model="data.account" type="text"
+                       class="ps-input ps-input1" :placeholder="$t('login.usernamePhd')">
               </div>
             </div>
             <div class="form-group" v-show="loginItem=='phone'">
               <label class="form-subtitle">{{$t('login.mobileNum')}}</label>
               <div class="form-input">
                 <select class="select-country" v-model="data.areaCode">
-                  <option v-for="areacd in areaCodeData" :value="areacd.value" :key="areacd.value" > {{areacd.name}} </option>
+                  <option v-for="areacd in areaCodeData" :value="areacd.value" :key="areacd.value"> {{areacd.name}}
+                  </option>
                 </select>
                 <input type="text" class="ps-input ps-input1 ps-phoneput" v-model="data.phone"
                        :placeholder="$t('login.mobileNumPhd')" maxlength="11" name="phone">
@@ -33,122 +35,116 @@
             <div class="form-group" v-show="loginItem=='email'">
               <label class="form-subtitle">{{$t('login.emailadd')}}</label>
               <div class="form-input">
-                <input name="email" @keyup.enter="login" v-model="data.email" type="text" class="ps-input ps-input1" :placeholder="$t('login.emailaddPhd')">
+                <input name="email" @keyup.enter="login" v-model="data.email" type="text" class="ps-input ps-input1"
+                       :placeholder="$t('login.emailaddPhd')">
               </div>
             </div>
             <div class="form-group">
               <label class="form-subtitle">{{$t('login.password')}}</label>
               <div class="form-input posit-rel">
-                <input ref="pwd" @keyup.enter="login" name="password" v-model="data.password" type="password" class="ps-input ps-input1" :placeholder="$t('login.passwordPhd')">
+                <input ref="pwd" @keyup.enter="login" name="password" v-model="data.password" type="password"
+                       class="ps-input ps-input1" :placeholder="$t('login.passwordPhd')">
                 <eyes :dom="$refs.pwd"></eyes>
               </div>
             </div>
 
             <span class="validate"></span>
-            <input type="button" class="submit btn btn-block" @click.enter="login" id="submit_user" :value="$t('login.logIn')">
+            <input type="button" class="submit btn btn-block" @click.enter="login" id="submit_user"
+                   :value="$t('login.logIn')">
             <div class="link-fogroup">
               <a href="javascript:void(0);" class="forget-btn" @click="openFindPWD">{{$t('login.forgotpwd')}}</a>
               <span class="right-part fr">
-              还没有久安账户？<a href="javascript:void(0);" class="register-btn" @click="loginGoRegEvt" >立即注册</a>
+              还没有久安账户？<a href="javascript:void(0);" class="register-btn" @click="loginGoRegEvt">立即注册</a>
             </span>
             </div>
           </div>
-        </template>
-        <template v-else>
-          <div class="customize-main">
-            <div class="tip-bg"></div>
-            <div class="text">您还没有登录哦</div>
-            <div class="text">请从久安的合作商户网址登陆</div>
-          </div>
-        </template>
+        </div>
       </div>
     </div>
-  </div>
-
-    <forget-password v-show="showPass"  @hide="showPass=false"></forget-password>
+    <cus-login v-if="value && customize" @closeDialog="closeDialog"></cus-login>
+    <forget-password v-show="showPass" @hide="showPass=false"></forget-password>
   </div>
 </template>
 <script>
-  import { show } from 'api'
+  import {show} from 'api'
   import forgetPassword from "components/password/forget-password"
   import eyes from "components/eyes"
   import {$localStorage, $sessionStorage} from '@/util/storage'
-  import { generateTitle } from '@/util/i18n'
+  import {generateTitle} from '@/util/i18n'
   import aesutil from '@/util/aesutil';
-  import {mapGetters,mapActions,mapMutations} from 'vuex'
+  import {mapGetters, mapActions, mapMutations} from 'vuex'
   import check from "@/util/RegExp"
+  import CusLogin from './customize-login'
 
   export default {
-    data(){
+    data() {
       return {
-        loginType:[
+        loginType: [
           {name: "login.accloginTitle", value: "account"},
           {name: "login.mobloginTitle", value: "phone"},
           {name: "login.emailloginTitle", value: "email"}
         ],
         loginItem: 'phone',
         areaCodeData: [
-          {name:"+63", value: "+63" },
-          {name:"+86", value: "+86" }
+          {name: "+63", value: "+63"},
+          {name: "+86", value: "+86"}
         ],
-        showPass:false,
-        data:{
-          account:"",
-          phone:"",
-          areaCode:"+86",
-          email:"",
-          password:""
+        showPass: false,
+        data: {
+          account: "",
+          phone: "",
+          areaCode: "+86",
+          email: "",
+          password: ""
         },
         requestda: {},
-        customize:_.customize()
+        customize: _.customize()
       }
     },
-    model:{
-      prop:'value',
-      event:'change'
+    model: {
+      prop: 'value',
+      event: 'change'
     },
     props: {
       value: {
-        type:Boolean,
+        type: Boolean,
         default: false
       }
     },
-    watch:{
-
-    },
-    methods:{
+    watch: {},
+    methods: {
       generateTitle,
       ...mapMutations(["SHOW_LOGIN"]),
-      openFindPWD(findType){
-        this.showPass=true;
-        this.$emit('input',false);
+      openFindPWD(findType) {
+        this.showPass = true;
+        this.$emit('input', false);
       },
       login() {
-        if(!this.check())return;
-        if(this.loginItem=='account'){
-          this.requestda ={
+        if (!this.check()) return;
+        if (this.loginItem == 'account') {
+          this.requestda = {
             userName: this.data.account,
             password: this.data.password
           }
-        }else if(this.loginItem=='phone'){
+        } else if (this.loginItem == 'phone') {
           this.requestda = {
-            type:4,
+            type: 4,
             areaCode: this.data.areaCode,
             phone: this.data.phone,
             password: this.data.password
           }
-       }else if(this.loginItem=='email'){
-         this.requestda = {
-           type:4,
-           areaCode: this.data.areaCode,
-           email: this.data.email,
-           password: this.data.password
-         }
-       }
-        const api = this.loginItem=='account' ?  show.loginByUserNameAndPwd : show.login
+        } else if (this.loginItem == 'email') {
+          this.requestda = {
+            type: 4,
+            areaCode: this.data.areaCode,
+            email: this.data.email,
+            password: this.data.password
+          }
+        }
+        const api = this.loginItem == 'account' ? show.loginByUserNameAndPwd : show.login
         api(this.requestda).then(res => {
           if (res.code == 10000) {
-            this.$emit('input',false);
+            this.$emit('input', false);
             this.SHOW_LOGIN(false);
             console.log(this.$route)
             $localStorage.set('tokenInfo', JSON.stringify(res.data.tokenVo));
@@ -156,11 +152,11 @@
             this.$store.dispatch('CHECK_ONLINE', true);
             this.$store.dispatch('UPDATE_TOKEN_INFO', res.data.tokenVo);
             this.$store.dispatch('INIT_INFO');
-            this.$store.commit('SET_USERDATA',res.data);
-            _.checkUserBind({userId: res.data.userId})
+            this.$store.commit('SET_USERDATA', res.data);
+            // _.checkUserBind({userId: res.data.userId})
             _.initRongyun()
-            this.$router.push({name:'walletCenter'});
-          }else {
+            this.$router.push({name: 'walletCenter'});
+          } else {
             toast(res.message);
           }
         }).catch(err => {
@@ -168,61 +164,60 @@
         })
       },
       check() {
-        if(this.loginItem=='account'){
-          if(this.data.account=="" || !this.data.account){
+        if (this.loginItem == 'account') {
+          if (this.data.account == "" || !this.data.account) {
             toast("请您输入用户名");
-          }else if(this.data.password=="" || !this.data.password){
+          } else if (this.data.password == "" || !this.data.password) {
             toast("请您输入密码");
-          }else {
+          } else {
             return true;
           }
-        }else if(this.loginItem=='phone'){
-          if(this.data.phone=="" || !this.data.phone){
+        } else if (this.loginItem == 'phone') {
+          if (this.data.phone == "" || !this.data.phone) {
             toast("请您输入电话号码");
-          }else if(this.data.password=="" || !this.data.password){
+          } else if (this.data.password == "" || !this.data.password) {
             toast("请您输入密码");
-          }else {
+          } else {
             return true;
           }
-        }else if(this.loginItem=='email'){
-          if(this.data.email=="" || !this.data.email){
+        } else if (this.loginItem == 'email') {
+          if (this.data.email == "" || !this.data.email) {
             toast("请您输入邮箱");
-          }else if (!check.email.test(this.data.email)) {
+          } else if (!check.email.test(this.data.email)) {
             toast("您输入的电子邮箱格式不正确");
-          }else if(this.data.password=="" || !this.data.password){
+          } else if (this.data.password == "" || !this.data.password) {
             toast("请您输入密码");
-          }else {
+          } else {
             return true;
           }
         }
       },
-      loginGoRegEvt(){
+      loginGoRegEvt() {
         this.closeDialog()
-        this.$store.commit('SHOW_REGISTER',true);
+        this.$store.commit('SHOW_REGISTER', true);
       },
-      closeDialog(){
-        this.$store.commit('SHOW_LOGIN',false)
+      closeDialog() {
+        this.$store.commit('SHOW_LOGIN', false)
         // this.$emit('change',false)
       }
     },
-    created(){
+    created() {
 
     },
-    computed: {
-
-    },
-    components:{
+    computed: {},
+    components: {
       forgetPassword,
       eyes,
+      CusLogin
     }
   };
 </script>
 <style lang="scss" scoped>
-  .customize-main{
+  .customize-main {
     display: flex;
     flex-direction: column;
     align-items: center;
-    .tip-bg{
+    .tip-bg {
       width: 155px;
       height: 170px;
       background: url(~images/customize-tip.png) no-repeat;
@@ -230,7 +225,7 @@
       margin-bottom: 20px;
       margin-top: 20px;
     }
-    .text{
+    .text {
       color: #333333;
       font-size: 20px;
       text-align: center;

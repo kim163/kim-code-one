@@ -16,6 +16,8 @@ const OrderRecord = () => import('views/pc/tran-center/order-record') //订单�
 const PendingRecord = () => import('views/pc/tran-center/pending-record')//挂单记录
 const AppealRecord = () => import('views/pc/tran-center/appeal-record') //申诉记录
 const MyGift = () => import('views/pc/user-center/my-gift') //个人中心我的
+const UserSetInfo = () => import('views/pc/user-center/user-set-info') //个人中心 绑定银行卡类
+const AccountManage = () => import('views/pc/user-center/account-manage') //账户管理
 export default [
   {
     path: "/",
@@ -136,13 +138,24 @@ export default [
           },
           {
             path:'user',
-            name:'userCenter',
             component:UserCenter,
-          },
-          {
-            path:"myGift",
-            name:'myGift',
-            component:MyGift
+            children:[
+              {
+                path:'info',
+                name:'userCenter',
+                component:UserSetInfo,
+              },
+              {
+                path:"myGift",
+                name:'myGift',
+                component:MyGift
+              },
+              {
+                path:"acc",
+                name:'accountManage',
+                component:AccountManage
+              },
+            ]
           },
           {
             path: "orderDetail/:id",

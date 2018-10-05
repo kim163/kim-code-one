@@ -30,29 +30,16 @@
         <div class="btn-item">
           <get-live800></get-live800>
         </div>
-        <div class="btn-item" v-if="userData.nodeId < 10000"
+        <div class="btn-item"
              @click="$store.dispatch('LOGIN_OUT')">
           <i class="iconfont icon-shut-down"></i>
           退出
         </div>
       </div>
     </div>
-    <popup v-if="showQrcode">
-      <div class="dialog-main">
-        <div class="title">
-          我的收款二维码
-          <i class="iconfont icon-close close" @click="showQrcode = false"></i>
-        </div>
-        <div class="dialog-content center">
-          <vue-qrcode :text="'UET,'+userData.accountChainVos[0].address"
-                  v-if="userData.accountChainVos[0].address"
-                  :logoSrc="Logo"
-                  :logoScale="0.2"
-                  :margin="0"
-                  :size="188"></vue-qrcode>
-        </div>
-      </div>
-    </popup>
+    <qrcode-dialog v-if="showQrcode"
+                   v-model="showQrcode"
+                   :address="'UET,'+userData.accountChainVos[0].address"></qrcode-dialog>
   </div>
 </template>
 
@@ -60,16 +47,13 @@
   import getLive800 from 'components/get-live800'
   import AnimatedInteger from 'components/animated-integer'
   import LoginApp from 'components/header/login-app'
-  import Popup from 'components/common-popup'
-  import VueQrcode from 'vue-qr';
-  import Logo from '@/assets/images/logo-blue.png'
+  import QrcodeDialog from 'components/qrcode-dialog'
   export default {
     name: "user-info",
     data(){
       return{
         isCustomize: _.customize(),
         showQrcode:false,
-        Logo
       }
     },
     computed:{
@@ -83,8 +67,7 @@
       getLive800,
       AnimatedInteger,
       LoginApp,
-      Popup,
-      VueQrcode
+      QrcodeDialog
     },
     methods:{
       calUserBalance(type){
@@ -166,30 +149,6 @@
         cursor: pointer;
         font-size: 14px;
       }
-    }
-  }
-  .dialog-main{
-    width: 500px;
-    border-radius: 10px;
-    overflow: hidden;
-    .title{
-      width: 100%;
-      height: 50px;
-      background-color: #5087ff;
-      padding-left: 30px;
-      line-height: 50px;
-      color: #ffffff;
-      .close{
-        font-size: 20px;
-        color: #ffffff;
-        float: right;
-        margin-right: 20px;
-        cursor: pointer;
-      }
-    }
-    .dialog-content{
-      background: #ffffff;
-      padding: 20px 0;
     }
   }
 </style>

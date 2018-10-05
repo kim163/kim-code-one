@@ -94,6 +94,14 @@ export const getCenterInfo = jsonData => service({
 export const chainLogin = jsonData => service({
   url:numversion2 +`user/chain/login`,
   method:'post',
+  data:jsonData,
+  encryptDef:true,  //使用默认加密规则
+})
+
+//设置/修改用户密码
+export const updatePassword = jsonData => service({
+  url:numversion2 +`user/chain/updatePassword`,
+  method:'post',
   data:jsonData
 })
 
@@ -103,3 +111,11 @@ export const deleteCenter = jsonData => service({
   method:'post',
   data:jsonData
 })
+
+//转账
+export const assetTransfer = jsonData => service({
+  url: numversion + `account/chain/assetTransfer`,
+  method:'post',
+  data:jsonData
+})
+

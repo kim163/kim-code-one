@@ -9,7 +9,7 @@
           <span class="iconfont icon-right-arrow left "></span>
         </span>
            </span>
-        <span class="iconfont icon-cebian-menu right" @click="demo"></span>
+        <span class="iconfont icon-cebian-menu right" @click="openSideMenu"></span>
 
       </div>
 
@@ -95,7 +95,7 @@
       </div>
 
       <div class="mcenter-linkitem">
-     <!--   <get-live800 :showRightArrow="true" :liveSpecStyle="mcenterLive" :isRoundIcon="true"></get-live800>-->
+        <!--   <get-live800 :showRightArrow="true" :liveSpecStyle="mcenterLive" :isRoundIcon="true"></get-live800>-->
         <a class="item-href" target="_blank" :href="SETTING.appUrl">
           <i class="iconfont logo icon-juan-app"></i>
           {{$t('navbar.juanApp')}}
@@ -127,7 +127,7 @@
       <div slot="rightBtn" class="dialog-btn-yes" @click="toSetInfo">确定</div>
     </confirm-dialog>
     <div class="outer-container" v-if="isAd">
-      <div class="mist" @click="demo"></div>
+      <div class="mist" @click="openSideMenu"></div>
       <div class="side-menu">
         <div class="account-person-single" v-if="isSingle">
           <p class="account-pic"><span class="iconfont icon-default-user"></span></p>
@@ -136,9 +136,10 @@
         <div class="account-person-more" v-else>
           <p class="changeTitle">切换账号</p>
           <p v-for="list in accountList" class="account-list">
-            <img src="" alt="">
+            <img src="" alt="" v-if="list.iconUrl">
+            <img  alt="" v-lazy="list.iconUrl" v-else>
             <span class="user-name">{{list.name}}</span>
-            <span class="change-account" @click="changeAccount(list.userId)">切换账户</span>
+            <span class="change-account" @click="changeAccount(list.token,list.merchantId)">切换账户</span>
           </p>
         </div>
         <div class="add-account" @click="addAccount">添加账户</div>
@@ -174,7 +175,7 @@
   import {$localStorage} from '@/util/storage';
   import ReceivablesCode from './receivables-code'
   import jiuanLogo from '@/assets/images/icon/juan-logo.svg';
-  import {transaction, userCenter} from 'api';
+  import {transaction, userCenter, show} from 'api';
   import mToolbar from 'components/m-toolbar'
 
   export default {
@@ -232,15 +233,35 @@
       addAccount() {
         this.$router.push({name: 'mAddAccount'})
       },
-      demo() {
+      openSideMenu() {
         this.isAd = !this.isAd
+        this.getCenterInfo()
       },
       toSetInfo() {
         this.showConfirm = false;
         this.$router.push({name: 'mSetUserInfo'});
       },
-      changeAccount(val){
-
+      changeAccount(val, cont) {
+        const request = {
+          type: 11,
+          token: val,
+          merchantId: cont
+        }
+        show.login(request).then(res => {
+          if (res.code == '10000') {
+            $localStorage.set('tokenInfo', JSON.stringify(res.data.tokenVo));
+            this.$store.commit('SET_USERDATA', res.data);
+            this.$store.dispatch('CHECK_ONLINE', true);
+            this.$store.dispatch('UPDATE_TOKEN_INFO', res.data.tokenVo);
+            this.$store.dispatch("GET_BANKCARD");
+            this.searchHomeInfo()
+            _.initRongyun()
+            toast('切换用户成功')
+            this.isAd = false
+          } else {
+            toast(res.message)
+          }
+        })
       },
       formatCny(type) {   // type 1表示用户余额 2表示锁定资产
         const amount = type === 1 ? this.homeInforma.chainAmount : (this.homeInforma.pendingAmount + this.homeInforma.lockedAmount);
@@ -251,7 +272,7 @@
           userId: this.userId
         };
         transaction.getHomeInfo(this.requestdata).then(res => {
-          if (res.code == 10000) {
+          if (res.code == '10000') {
             this.homeInforma = res.data;
           }
         }).catch(err => {
@@ -266,9 +287,7 @@
         this.$router.push({name: 'mAccountManager'})
       },
       getCenterInfo() {
-        const request = {
-
-        }
+        const request = {}
         userCenter.getCenterInfo(request).then(res => {
           if (res.code == '10000') {
             if (res.data.length == 1) {
@@ -276,10 +295,10 @@
               this.singerUserName = res.data[0].name
               this.$store.commit('GET_CENTERID', res.data[0].centerId)
             } else {
-              console.log(res,'时刻记得')
+              console.log(res, '时刻记得')
               this.isSingle = false
               this.accountList = res.data.filter((item) => {
-                return item.name !== this.userData.nickname
+                return item.userId !== this.userId
               })
               this.$store.commit('GET_CENTERID', res.data[0].centerId)
             }
@@ -297,7 +316,7 @@
           "couponType": 100
         };
         userCenter.myGift(requestDatas).then(res => {
-          if (res.code == 10000) {
+          if (res.code == '10000') {
             this.myGiftTotal = res.pageInfo.total;
           } else {
             toast(res.message)
@@ -311,7 +330,7 @@
       this.searchHomeInfo();
       this.getInfonext();
       this.getCenterInfo();
-      this.$store.commit('SET_ACCOUNT_MANAGER_TOKEN', {type:'add',value:'userToken',userId:this.userId})
+      this.$store.commit('SET_ACCOUNT_MANAGER_TOKEN', {type: 'add', value: 'userToken', userId: this.userId})
     },
     beforeRouteLeave(to, from, next) {
       if (to.name === 'mBindCard') {
@@ -332,7 +351,7 @@
 
   .muser-center-home {
     padding-bottom: r($footer-hg+20);
-    /deep/ .mreceiv-code{
+    /deep/ .mreceiv-code {
       position: fixed;
       top: 0;
       left: 0;

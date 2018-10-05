@@ -84,6 +84,13 @@
             this.$store.commit('UPDATE_WIDTHDRAWINFO',data)
             this.$store.commit('GET_WIDTHDRAW',true)
           }
+          if(res.data.initPwd === 'Y'){
+            if(_.isMobile()){
+              //做对应跳页逻辑
+            }else{
+              this.$store.commit('SET_INITPWD',true)
+            }
+          }
           this.jumpLink(true)
         }else{
           toast(res.message)

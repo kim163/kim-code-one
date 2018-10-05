@@ -50,6 +50,7 @@ const stateInit = {
     orderId:''
   },
   centerId:'',
+  setInitPwd:false, // 设置初始密码
   accountManager:[]
 }
 export default new Vuex.Store({
@@ -154,6 +155,9 @@ export default new Vuex.Store({
     centerId(state,getters){
       return state.centerId
     },
+    setInitPwd(state,getters) {
+      return state.setInitPwd
+    },
     accountManager(state,getters){
       return state.accountManager
     }
@@ -244,6 +248,9 @@ export default new Vuex.Store({
     [types.UPDATE_NEWORDER](state,val){
       Object.assign(state.newOrder,val)
     },
+    [types.SET_INITPWD](state,val) {
+      state.setInitPwd = val
+    },
     [types.SET_ACCOUNT_MANAGER_TOKEN](state,val){
       if(val.init){
         const tempArr =[]
@@ -308,16 +315,16 @@ export default new Vuex.Store({
       dispatch(types.UPDATE_TOKEN_INFO, null);
       dispatch(types.CHECK_ONLINE, false);
       if (val) {
-        if (nodeId > 10000) {
-          window.location.href = backURL;
-        } else {
+        // if (nodeId > 10000) {
+        //   window.location.href = backURL;
+        // } else {
           if (_.isMobile()) {
             //  router.replace({name:'mobileLogin'});
             window.location.href = "/m/login";
           } else {
             window.location.href = "/index";
           }
-        }
+        // }
       }
     },
     [types.UPDATE_USERDATA]({commit, dispatch}, val) {  //获取 初始化信息
@@ -331,6 +338,9 @@ export default new Vuex.Store({
         if (res.code == 10000) {
           commit(types.SET_USERDATA, res.data);
           dispatch(types.CHECK_ONLINE, true);
+          if(res.data.initPwd === 'Y'){
+            commit(types.SET_INITPWD, true);
+          }
         }
         return Promise.resolve(res);
       });
@@ -351,6 +361,7 @@ export default new Vuex.Store({
       });
     },
     [types.GET_USERBALANCE]({commit,getters},val){  //获取用户余额
+
       let requestdata={
         userId: getters.userId
       };
@@ -365,7 +376,7 @@ export default new Vuex.Store({
         toast(err);
       });
     },
-    [types.GET_ORDERXPAGE]({commit,getters},val){  //获取用户余额
+    [types.GET_ORDERXPAGE]({commit,getters},val){  //获取最新交易中订单
       const userId = getters.userId
       const data = {
         limit: 1,
