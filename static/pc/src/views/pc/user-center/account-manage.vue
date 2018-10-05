@@ -6,7 +6,7 @@
           <div class="info-btn switch" v-if="userId === item.userId">主账户</div>
           <div class="switch-del" v-else>
             <div class="info-btn switch" @click="">切换账户</div>
-            <div class="info-btn del" @click="delAccount(item)">解除账户</div>
+            <div class="info-btn del" @click="delAccountConfirm(item)">解除账户</div>
           </div>
           <div class="flex">
             <div class="info">
@@ -43,7 +43,7 @@
     <!--删除用户提示框-->
     <confirm v-model="deleteConfrim" :is-pc="true">
       <div slot="content">您确定要解除{{delUserName}}账户吗？</div>
-      <div class="blue-btn" slot="rightBtn">确认</div>
+      <div class="blue-btn" slot="rightBtn" @click="delAccount">确认</div>
     </confirm>
   </div>
 </template>
@@ -53,6 +53,9 @@
     getCenterInfo,
     deleteCenter
   } from 'api/user-center'
+  import {
+    login
+  } from 'api/show'
   import Clipboard from 'clipboard';
   import AnimatedInteger from 'components/animated-integer'
   import CusLogin from 'components/auth/login/customize-login'
@@ -81,6 +84,12 @@
       showQrcode(val){
         if(!val){
           this.qrcodeAddress = ''
+        }
+      },
+      deleteConfrim(val){
+        if(!val){
+          this.delUserId = ''
+          this.delUserName = ''
         }
       }
     },
@@ -121,10 +130,23 @@
         this.qrcodeAddress = 'UET,' + val
         this.showQrcode = true
       },
-      delAccount(item){
+      delAccountConfirm(item){
         this.delUserId = item.userId
         this.delUserName = item.name
         this.deleteConfrim = true
+      },
+      delAccount(){
+        deleteCenter({userId:this.delUserId}).then(res => {
+          if(res.code === 10000){
+            toast(`解除${this.delUserName}账户成功`)
+            this.deleteConfrim = false
+            this.getUserList()
+          }else{
+            toast(res.message)
+          }
+        }).catch(err => {
+          toast(err)
+        })
       }
     },
     mounted(){
