@@ -4,8 +4,8 @@
       <div class="title">{{isFirst ? '设置账户密码，方便下次登录' : '修改账户密码'}}</div>
       <div class="sub-title">您的登录账号：</div>
       <div class="user-name-copy">
-        <div class="user-name">{{userData.userName}}</div>
-        <div class="copy-btn-next copy-btn" :data-clipboard-text="userData.userName"
+        <div class="user-name">{{checkUserName}}</div>
+        <div class="copy-btn-next copy-btn" :data-clipboard-text="checkUserName"
            @click="copy">复制账号</div>
       </div>
       <div class="sub-title">密码</div>
@@ -48,7 +48,11 @@
       ...mapGetters([
         'userData',
         'centerId',
-      ])
+      ]),
+      checkUserName(){
+        return !_.isNull(this.userData.userName) ? this.userData.userName
+          : (!_.isNull(this.userData.email) ? this.userData.email : this.userData.phone)
+      }
     },
     components:{
       DialogPop
