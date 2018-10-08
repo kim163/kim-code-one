@@ -392,7 +392,6 @@
               var originWidth = img.width;
               var originHeight = img.height;
               // 最大尺寸限制
-              console.log(this.base64.length,'Kldshakjsajkdh')
               if (this.base64.length > 100000) {
                 canvasNext.width = 600;
                 canvasNext.height = 600;

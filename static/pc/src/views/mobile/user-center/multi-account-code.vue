@@ -5,9 +5,10 @@
     <div class="mreceiv-code-content">
       <p class="address">{{accountChainVos}}</p>
       <div class="qrcode">
-        <qrcode :text="'UET,'+accountChainVos+','+accountMount" v-if="accountChainVos" :logoSrc="Logo"
+        <qrcode :text="'UET,'+accountChainVos+','+accountMount" v-if="accountChainVos" :logoSrc="Logo" id="qrcode"
                 :logoScale="0.2" :size="180"></qrcode>
       </div>
+      <a class="download-qrocode" id="downloadLink" @click="downloadQrocode">下载二维码</a>
       <a href="javascript:void(0);" class="copy-btn mobile-pubtn" :data-clipboard-text="accountChainVos"
          @click="copy">{{$t('transactionHome.copyBtn')}}</a>
     </div>
@@ -32,16 +33,27 @@
       };
     },
     props: {
-       accountChainVos: {
-         type: String,
-         default: ''
-       },
-       accountMount: {
-         type: Number,
-         default: 0
-       }
+      accountChainVos: {
+        type: String,
+        default: ''
+      },
+      accountMount: {
+        type: Number,
+        default: 0
+      }
     },
     methods: {
+      downloadQrocode() {
+        var img = document.getElementById('qrcode').getElementsByTagName('img')[0];
+        var canvas = document.createElement('canvas');
+        canvas.width = img.width;
+        canvas.height = img.height;
+        canvas.getContext('2d').drawImage(img, 0, 0);
+        const url = canvas.toDataURL('image/png');
+        const downloadLink = document.getElementById('downloadLink');
+        downloadLink.setAttribute('href', url);
+        downloadLink.setAttribute('download', '二维码.png');
+      },
       copy() {
         var clipboard = new Clipboard('a.copy-btn');
         clipboard.on('success', e => {
@@ -81,7 +93,7 @@
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 100;
+    z-index: 1000;
   }
 
   .mreceiv-code-content {
@@ -101,6 +113,11 @@
       height: r(150);
       overflow: hidden;
       margin: r(0) auto r(30);
+    }
+    .download-qrocode {
+      display: inline-block;
+      margin-bottom: r(20);
+      margin-top: r(10);
     }
   }
 
