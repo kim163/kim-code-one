@@ -119,3 +119,10 @@ export const assetTransfer = jsonData => service({
   data:jsonData
 })
 
+//领取红包
+export const receiveCoupon = jsonData => service({
+  url: numversion + `coupon/receiveCoupon`,
+  method:'post',
+  data:jsonData
+})
+

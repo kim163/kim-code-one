@@ -13,13 +13,13 @@
           </span>
        </div>
        <div class="amount-part">
-          <h4>久安钱包<br />给您发了一个红包</h4>
-          <h1>1000UET</h1>
+          <h4>{{sendUserName}}<br />给您发了一个红包</h4>
+          <h1>{{amount}}UET</h1>
           <div class="receive-btn">
             <a href="javascript:void(0);" @click="collarEnvelope" ></a>
           </div>
           <p>
-            红包将于2018-10-10后过期，过期将自动返回给对方，请及时领取！
+            红包将于{{endTime | Date('yyyy-MM-dd')}}后过期，过期将自动返回给对方，请及时领取！
           </p>
        </div>
     </div>
@@ -34,26 +34,86 @@
 </template>
 <script>
   import Popup from 'components/common-popup';
+  import {
+    myGift,
+    receiveCoupon
+  } from 'api/user-center'
   export default {
     data() {
       return {
-        showRedEnvelope:false
+        showRedEnvelope:false,
+        id: '',
+        endTime: 0,
+        amount: 0,
+        userType:0,// 0 是系统发放 1是用户发放
+        sendUserName:'久安钱包', //红包发放者
       };
-    },
-    props: {},
-    methods: {
-      collarEnvelope(){
-        this.$refs.music.play();
-      }
-    },
-    computed: {},
-    created() {
-    },
-    mounted(){
-
     },
     components: {
       Popup
+    },
+    computed:{
+      ...mapGetters([
+        'userId'
+      ])
+    },
+    methods: {
+      collarEnvelope(){
+        const data = {
+          id: this.id,
+          couponType: 105,
+          userId: this.userId
+        }
+        receiveCoupon(data).then(res => {
+          if(res.code === 10000){
+            toast('红包领取成功')
+            this.$refs.music.play();
+            this.showRedEnvelope = false
+            this.$store.dispatch('GET_USERBALANCE')
+          }else{
+            toast(res.message)
+          }
+        }).catch(err => {
+          toast(err)
+        })
+      },
+      checkRedEnvelope(){
+        const data = {
+          limit:1,
+          offset:0,
+          couponType:105,
+          couponStatus:2,
+          loading:false
+        }
+        myGift(data).then(res => {
+          if(res.code === 10000){
+            console.log(res)
+            if(!_.isNull(res.data) && !_.isEmpty(res.data)){
+              this.id = res.data[0].id
+              this.endTime = res.data[0].couponEndtime
+              this.amount = res.data[0].couponValueStr
+              this.userType = res.data[0].userType
+              if(this.userType === 1){
+                this.sendUserName = res.data[0].userName
+              }
+              this.showRedEnvelope = true
+            }
+          }
+        }).catch(err => {
+
+        })
+      }
+    },
+    created() {
+    },
+    mounted(){
+      this.checkRedEnvelope()
+      this.timer = setInterval(() => {
+        this.checkRedEnvelope()
+      },10000)
+    },
+    beforeDestroy(){
+      clearInterval(this.timer)
     }
   };
 </script>
