@@ -535,8 +535,8 @@
         this.personRealName = this.userData.name
       },
       binkUserAccount() {
-        if(this.personUserName.length > 10){
-          toast('用户昵称长度不能超过10位!')
+        if(this.personUserName.length > 32){
+          toast('用户昵称长度不能超过32位!')
           return
         }
         const requests = {
