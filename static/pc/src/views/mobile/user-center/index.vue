@@ -136,8 +136,8 @@
         <div class="account-person-more" v-else>
           <p class="changeTitle">切换账号</p>
           <p v-for="list in accountList" class="account-list">
-            <img src="" alt="" v-if="list.iconUrl">
-            <img  alt="" v-lazy="list.iconUrl" v-else>
+            <img :src="list.iconUrl" alt="" v-if="list.iconUrl">
+            <span class="iconfont icon-default-user user-symbol" v-else></span>
             <span class="user-name">{{list.name}}</span>
             <span class="change-account" @click="changeAccount(list.token,list.merchantId)">切换账户</span>
           </p>
@@ -145,14 +145,14 @@
         <div class="add-account" @click="addAccount">添加账户</div>
         <div class="account-content">
           <get-live800 :showRightArrow="true" :liveSpecStyle="mcenterLive" :isRoundIcon="true"></get-live800>
-          <router-link :to="{name:'mSetUserInfo'}" class="item-href">
-            <i class="iconfont logo icon-complete-material"></i>
-            帮助中心
+          <router-link :to="{name:'mSetUserInfo'}" class="item-info">
+            <i class="iconfont help-icon icon-help-center"></i>
+            <span class="font-content">帮助中心</span>
             <i class="iconfont icon-right-arrow"></i>
           </router-link>
-          <router-link :to="{name:'mSetUserInfo'}" class="item-href">
-            <i class="iconfont logo icon-complete-material"></i>
-            关于我们
+          <router-link :to="{name:'mSetUserInfo'}" class="item-info">
+            <i class="iconfont about-icon icon-about-jiuan"></i>
+            <span class="font-content">关于我们</span>
             <i class="iconfont icon-right-arrow"></i>
           </router-link>
         </div>
@@ -451,6 +451,12 @@
         &.icon-my-gift {
           color: #FF758D;
         }
+        &.icon-about-jiuan {
+          color: #3573FA;
+        }
+        &.icon-help-center {
+          color: #ec3a4e;
+        }
       }
       .tran-num {
         position: absolute;
@@ -591,14 +597,34 @@
           line-height: r(50);
           margin-bottom: r(10);
           display: flex;
+          .user-symbol {
+            margin-top: r(8);
+            width: r(36);
+            height: r(36);
+            border-radius: 50%;
+            text-align: center;
+            line-height: r(36);
+            background-color: #85ABFC;
+            color: #fff;
+            margin-left: r(8);
+          }
           .user-name {
-            flex: 1;
-
+            flex: 2;
+            padding-left: r(10);
           }
           .change-account {
-            height: r(30);
+            flex: 1;
             padding-left: r(10);
             border-left: 1px solid #e9e9e9;
+            color: #3573FA;
+          }
+          img {
+            width: r(36);
+            height: r(36);
+            line-height: r(50);
+            padding-left: r(7);
+            margin-top: r(8);
+
           }
         }
       }
@@ -610,15 +636,41 @@
         text-align: center;
       }
       .account-content {
-        margin-top: r(20);
         .item-href {
-          height: r(50);
+          height: 3.09067rem;
+          line-height: 3.09067rem;
+          padding: 0 0.61813rem 0 0;
           display: block;
+          border-bottom: 1px solid #E4E4E4;
+          font-size: 16px;
+          color: #333333;
+          padding-left: r(10);
+        }
+        .item-info {
+          height: r(50);
           border: 1px solid #f5f5f5;
           line-height: r(50);
           margin-bottom: r(10);
-          padding-left: r(10);
+          padding: 0 0.61813rem 0 r(10);
+          display: flex;
+          flex-direction: row;
+          margin-top: r(10);
+          .font-content {
+            flex: 1;
+            padding-left: r(10);
+          }
+          .iconfont {
+            &.icon-about-jiuan {
+              color: #3573FA;
+              @include f(24px)
+            }
+            &.icon-help-center {
+              color: #E17367;
+              @include f(24px)
+            }
+          }
         }
+
       }
       .login-out-btn {
         background-color: #3573FA;

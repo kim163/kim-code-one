@@ -111,7 +111,6 @@
         this.$router.push({name: 'mAddAccount'})
       },
       goDetailPage(val,cont,name,id) {
-        console.log(id,'啥都健康')
         this.$router.push({name: 'mAccountDetail', params: {id: val,address:cont,username:name,node:id}})
       }
     },

@@ -87,6 +87,7 @@
           if(res.data.initPwd === 'Y'){
             if(_.isMobile()){
               //做对应跳页逻辑
+
             }else{
               this.$store.commit('SET_INITPWD',true)
             }

@@ -77,6 +77,10 @@
   @import "~assets/scss/mobile";
 
   .code-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
     .mreceiv-code {
       padding-bottom: r($footer-hg+20);
       width: 100%;

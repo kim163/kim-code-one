@@ -11,6 +11,7 @@
     <sys-bullentin v-if="islogin"></sys-bullentin>
     <v-login v-if="showLogin && !isMobile" v-model="showLogin"></v-login>
     <v-register v-if="showRegister && !isMobile" v-model="showRegister"></v-register>
+      <setAccountPassword v-if="userData.initPwd=='Y'&&isMobile" @closePage="closesetPage"></setAccountPassword>
   </div>
 </template>
 <script type="text/ecmascript-6">
@@ -21,7 +22,7 @@
   import SysBullentin from 'views/sys-bullentin';
   import vLogin from "components/auth/login"
   import vRegister from "components/auth/register"
-
+  import setAccountPassword  from 'views/mobile/user-center/set-account-password'
   export default {
     data(){
       return {
@@ -71,6 +72,9 @@
         }else if(_.isUndefined(classN) || _.isNull(classN)){
           element.className = '';
         }
+      },
+      closesetPage(val){
+        this.isMobile = val
       },
       initWsData(){
         console.log('this.userData===================')
@@ -177,7 +181,8 @@
     components:{
       SysBullentin,
       vLogin,
-      vRegister
+      vRegister,
+      setAccountPassword
     },
     mounted() {
       if (this.islogin) {
