@@ -122,21 +122,23 @@
           type: this.type === 1 ? 11 : 12
         })
         getOrderxPendingPage(this.reqData).then(res => {
-          console.log('买入UET get OrderxPageForHallSell data:');
-          console.log(res);
-          if(res.data.length === 0 && this.reqData.currentPage === 1){
-            this.noData = true
-          }else{
-            this.noData = false
-            this.dataList.data = [...this.dataList.data, ...res.data.map(item => {
-              let mathRand = parseInt(Math.random()*this.avatarDealw,10);
-              item.avatarColor = this.SETTING.avatarColor[mathRand];
-              return item;
-            })];
-            this.dataList.total = res.pageInfo.total;
-            if (this.totalPage <= this.reqData.currentPage) {
-              this.$refs.scroll.update(true)
+          if(res.code === 10000){
+            if(res.data.length === 0 && this.reqData.currentPage === 1){
+              this.noData = true
+            }else{
+              this.noData = false
+              this.dataList.data = [...this.dataList.data, ...res.data.map(item => {
+                let mathRand = parseInt(Math.random()*this.avatarDealw,10);
+                item.avatarColor = this.SETTING.avatarColor[mathRand];
+                return item;
+              })];
+              this.dataList.total = res.pageInfo.total;
+              if (this.totalPage <= this.reqData.currentPage) {
+                this.$refs.scroll.update(true)
+              }
             }
+          }else{
+            toast(res.message)
           }
         }).catch(error => {
           toast(error.message);

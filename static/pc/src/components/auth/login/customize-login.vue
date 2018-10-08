@@ -102,7 +102,6 @@
             id: this.centerId
           })
         }
-        console.log('关联',data)
         chainLogin(data).then(res => {
           if(res.code === 10000){
             if(this.isAdd){
