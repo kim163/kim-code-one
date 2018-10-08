@@ -25,7 +25,7 @@
         <div class="dialog-content">
           <!--pc弹出信息-->
           <div class="content-pc" v-if="!isMobile"> <!--pc弹出信息-->
-            <vue-qrcode class="qrcode" v-if="qrcodeLink != ''" :text="qrcodeLink" :margin="0" :size="188"></vue-qrcode>
+            <vue-qrcode class="qrcode" v-if="qrcodeLink != ''" :text="qrcodeLink" :logoSrc="Logo" :margin="0" :size="188"></vue-qrcode>
             <div class="text">打开久安定制APP，扫码二维码快速登录</div>
           </div>
           <!--手机弹出信息-->
@@ -51,6 +51,7 @@
   import VueQrcode from 'vue-qr';
   import Popup from 'components/common-popup'
   import {SETTING} from "@/assets/data"
+  import Logo from '@/assets/images/logo-blue.png'
   export default {
     name: "login-app",
     data(){
@@ -59,7 +60,8 @@
         qrcodeLink:'',
         showDialog:false,
         show:true,
-        SETTING
+        SETTING,
+        Logo
       }
     },
     components:{
