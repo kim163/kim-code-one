@@ -143,6 +143,7 @@
     padding: 0 10px;
     color: #EC3A4E;
     font-size: 16px;
+    margin-bottom: 20px;
     .copy-btn{
       font-size: 14px;
       position: relative;
