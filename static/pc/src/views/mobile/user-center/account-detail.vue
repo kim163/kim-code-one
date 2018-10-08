@@ -85,8 +85,8 @@
           <div class="mreceiv-code-content">
             <div class="qrcode">
               <qrcode :text="'UET,'+currentAddress+','+accountValue" v-if="currentAddress" :logoSrc="Logo"
-                      :logoScale="0.2" id="qrcode"
-                      :size="180"></qrcode>
+                      :logoScale="0.2" id="qrcode" :margin="0"
+                      :size="150"></qrcode>
             </div>
             <a class="download-qrocode" id="downloadLink" @click="downloadQrocode">下载二维码</a>
             <a href="javascript:void(0);" class="copy-btn mobile-pubtn" :data-clipboard-text="currentAddress"
@@ -97,7 +97,7 @@
 
     </div>
     <transition name="scroll-up">
-      <MultiAccount v-if="showReceivePageUpdate" @closeReceivables="closeReivePage" :accountChainVos="currentAddress"
+      <MultiAccount v-if="showReceivePageUpdate" @closeReceivables="closeReivePage" :accountChainVos="currentAddress" :margin="0"
                     :accountMount="accountValue"></MultiAccount>
     </transition>
 

@@ -5,8 +5,8 @@
     <div class="mreceiv-code-content">
       <p class="address">{{accountChainVos}}</p>
       <div class="qrcode">
-        <qrcode :text="'UET,'+accountChainVos+','+accountMount" v-if="accountChainVos" :logoSrc="Logo" id="qrcode"
-                :logoScale="0.2" :size="180"></qrcode>
+        <qrcode :text="'UET,'+accountChainVos+','+accountMount" v-if="accountChainVos" :logoSrc="Logo" id="qrcode" :margin="0"
+                :logoScale="0.2" :size="150"></qrcode>
       </div>
       <a class="download-qrocode" id="downloadLink" @click="downloadQrocode">下载二维码</a>
       <a href="javascript:void(0);" class="copy-btn mobile-pubtn" :data-clipboard-text="accountChainVos"

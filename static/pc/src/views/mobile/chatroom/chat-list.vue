@@ -170,7 +170,6 @@
             RongIMClient.getInstance().removeConversation(RongIMLib.ConversationType.GROUP, id, {
               onSuccess: function (bool) {
                 // 删除会话成功。
-                console.log('删除数据成功！！！！')
               },
               onError: function (error) {
                 // error => 删除会话的错误码
