@@ -24,7 +24,7 @@
         <div class="btn" @click="transferMoney(3)" :class="{active:typeNum==3}">收款</div>
       </div>
       <div class="manager-content" v-if="typeNum==1">
-        <div class="transfer-account-hand">
+        <div class="transfer-account-hand" v-if="userId==currentId">
           <div class="de-title">手动转账</div>
           <div class="transfer-address">
             <input type="text" placeholder="请手动输入地址" v-model="handAddress">
@@ -45,9 +45,9 @@
             <div class="wipper-info">
               <span class="de-user">{{list.name}}</span>
               <span class="de-accountValue">账户余额: {{list.amount}} UET</span>
-              <span class="down-arrow" :class="{active:currentNum==key}"></span>
+              <span class="down-arrow" :class="{close:currentNum!==key&&isSame,active:currentNum==key&&!isSame}"></span>
             </div>
-            <div class="inner-info" :class="{active:currentNum==key}">
+            <div class="inner-info" :class="{close:currentNum!==key&&isSame,active:currentNum==key&&!isSame}">
               <div class="inner-box">
                 <span class="iconfont icon-money-value"></span>
                 <div class="info-detail">
@@ -59,7 +59,6 @@
             </div>
           </div>
         </div>
-
       </div>
       <div class="manager-content-middle" v-else-if="typeNum==2">
         <div class="de-title">请选择以下目标账户</div>
@@ -67,9 +66,9 @@
           <div class="wipper-info">
             <span class="de-user">{{list.name}}</span>
             <span class="de-accountValue">账户余额: {{list.amount}} UET</span>
-            <span class="down-arrow" :class="{'active':currentNumNext ==key}"></span>
+            <span class="down-arrow" :class="{close:isSameNext,active:currentNumNext ==key&&!isSameNext}"></span>
           </div>
-          <div class="inner-info" :class="{'active':currentNumNext==key}">
+          <div class="inner-info" :class="{close:isSameNext,active:currentNumNext==key&&!isSameNext}">
             <div class="inner-box">
               <span class="iconfont icon-money-value"></span>
               <div class="info-detail">
@@ -94,11 +93,14 @@
           </div>
         </div>
       </div>
+
     </div>
     <transition name="scroll-up">
-      <MultiAccount v-if="showReceivePageUpdate" @closeReceivables="closeReivePage" :accountChainVos="currentAddress"
-                    :accountMount="accountValue"></MultiAccount>
+        <MultiAccount v-if="showReceivePageUpdate" @closeReceivables="closeReivePage" :accountChainVos="currentAddress"
+                  :accountMount="accountValue"></MultiAccount>
     </transition>
+
+
   </div>
 </template>
 
@@ -123,7 +125,7 @@
         homeInfoName: '',
         accountValue: 0,
         currentAddress: '',
-        accountList:[],
+        accountList: [],
         isOpenState: false,
         currentNum: -1,
         transferNum: '',
@@ -132,6 +134,14 @@
         currentNumNext: -1,
         handAddress: '',
         handAmount: '',
+        lastNum: 0,
+        isSame: false,
+        initTime: 0,
+        lastNumNext: '',
+        currentNumAnother: '',
+        initTimeNext: 0,
+        isSameNext: false,
+
         Logo
       }
     },
@@ -150,9 +160,9 @@
         }
         userCenter.getCenterInfo(request).then(res => {
           if (res.code == '10000') {
-              this.accountList = res.data.filter((item) => {
-                return item.userId !== this.userId
-              })
+            this.accountList = res.data.filter((item) => {
+              return item.userId !== this.userId
+            })
           }
         })
       },
@@ -169,7 +179,6 @@
         userCenter.assetTransfer(request).then(res => {
           if (res.code == '10000') {
             toast("账户转账成功")
-
             this.searchHomeInfo()
             this.getCenterInfo()
           } else {
@@ -187,12 +196,23 @@
         }
       },
       closeReivePage(val) {
-        console.log(val,'啥空间了的')
         this.showReceivePageUpdate = val
       },
       openDetailInfo(val) {
+        this.lastNum = this.currentNum
         this.currentNum = val
         this.transferNum = ''
+
+        if (this.lastNum == this.currentNum) {
+          this.initTime++
+          if (this.initTime % 2 == 1) {
+            this.isSame = true
+          } else {
+            this.isSame = false
+          }
+        } else {
+          this.isSame = false
+        }
       },
       TransMoney() {
         const request = {
@@ -217,7 +237,20 @@
         })
       },
       openMiddleInfo(num) {
+        this.lastNumNext = this.currentNumNext
         this.currentNumNext = num
+        this.transferAmount = ''
+
+        if (this.lastNumNext == this.currentNumNext) {
+          this.initTimeNext++
+          if (this.initTimeNext % 2 == 1) {
+            this.isSameNext = true
+          } else {
+            this.isSameNext = false
+          }
+        } else {
+          this.isSameNext = false
+        }
       },
       searchHomeInfo() {
         this.requestdata = {
@@ -228,14 +261,12 @@
         transaction.getAccountChain(this.requestdata).then(res => {
           if (res.code == '10000') {
             this.accountValue = Number(res.data.balance)
-            console.log(typeof this.accountValue,'sadjk ')
             this.$store.dispatch("GET_USERBALANCE", res.data.balance)
           }
         }).catch(err => {
           toast(err.message);
         })
       },
-
       copy() {
         var clipboard = new Clipboard('a.copy-btn');
         clipboard.on('success', e => {
@@ -468,6 +499,13 @@
                 transform: rotate(-135deg);
                 transition: transform .3s;
               }
+              .down-arrow.close::after {
+                transform-origin: center;
+                transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
+                transform-origin: center;
+                transition: transform .3s;
+
+              }
             }
             .inner-info {
               display: none;
@@ -521,6 +559,10 @@
               &.active {
                 display: block;
               }
+              &.close {
+                display: none;
+              }
+            ;
             }
 
           }
@@ -690,11 +732,12 @@
       top: 0;
       left: 0;
       z-index: 1000;
-      height:auto;
+      height: auto;
     }
 
   }
-   .code-container /deep/ .mreceiv-code{
+
+  .code-container /deep/ .mreceiv-code {
     height: -webkit-fill-available !important;
   }
 </style>
