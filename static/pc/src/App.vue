@@ -11,16 +11,17 @@
     <sys-bullentin v-if="islogin"></sys-bullentin>
     <v-login v-if="showLogin && !isMobile" v-model="showLogin"></v-login>
     <v-register v-if="showRegister && !isMobile" v-model="showRegister"></v-register>
+    <red-envelope v-if="islogin"></red-envelope>
   </div>
 </template>
 <script type="text/ecmascript-6">
-  // import {mapGetters,mapMutations} from 'vuex';
   import Stomp from 'webstomp-client';
   import { aesutil } from '@/util';
   import {$localStorage} from '@/util/storage';
   import SysBullentin from 'views/sys-bullentin';
-  import vLogin from "components/auth/login"
-  import vRegister from "components/auth/register"
+  import vLogin from "components/auth/login";
+  import vRegister from "components/auth/register";
+  import RedEnvelope from 'views/red-envelope';
 
   export default {
     data(){
@@ -177,7 +178,8 @@
     components:{
       SysBullentin,
       vLogin,
-      vRegister
+      vRegister,
+      RedEnvelope
     },
     mounted() {
       if (this.islogin) {
