@@ -87,7 +87,6 @@
         }
         myGift(data).then(res => {
           if(res.code === 10000){
-            console.log(res)
             if(!_.isNull(res.data) && !_.isEmpty(res.data)){
               this.id = res.data[0].id
               this.endTime = res.data[0].couponEndtime
