@@ -49,6 +49,7 @@
     <transfer-dialog v-if="showTran"
                      v-model="showTran"
                      :is-out="isTranOut"
+                     :show-manual="showManual"
                      :data="tranData"
                      :user-list="otherUserList"
                      @tranSuccess="getUserList"></transfer-dialog>
@@ -83,6 +84,7 @@
         delUserName:'',
         showTran:false,
         isTranOut:false,
+        showManual:false,
         tranData: null,
         otherUserList:[],
       }
@@ -188,7 +190,8 @@
       },
       toTransfer(data,type){ //type 1转出 2转入
         this.tranData = data
-        this.isTranOut = type === 2 ? false : data.userId === this.userId
+        this.isTranOut = type === 2 ? false : true
+        this.showManual = type === 2 ? false : data.userId === this.userId
         this.otherUserList = this.userList.filter(item => {
           return item.userId != data.userId
         })
