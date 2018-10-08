@@ -107,10 +107,10 @@
               var originHeight = img.height;
               // 最大尺寸限制
               if (this.base64.length > 100000) {
-                canvasNext.width = 60;
-                canvasNext.height = 60;
-                ctx.clearRect(0, 0, 60, 60)
-                ctx.drawImage(img, 0, 0, 60, 60)
+                canvasNext.width = 600;
+                canvasNext.height = 600;
+                ctx.clearRect(0, 0, 600, 600)
+                ctx.drawImage(img, 0, 0, 600, 600)
                 this.dataURLNext = canvasNext.toDataURL('image/png');
                 this.base64 = this.dataURLNext.replace(/^data:.*?;base64,/, '')
               } else {
