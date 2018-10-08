@@ -95,9 +95,11 @@
       </div>
 
     </div>
+    <transition name="scroll-up">
+        <MultiAccount v-if="showReceivePageUpdate" @closeReceivables="closeReivePage" :accountChainVos="currentAddress"
+                  :accountMount="accountValue"></MultiAccount>
+    </transition>
 
-      <MultiAccount v-if="showReceivePageUpdate" @closeReceivables="closeReivePage" :accountChainVos="currentAddress"
-                    :accountMount="accountValue"></MultiAccount>
 
   </div>
 </template>
