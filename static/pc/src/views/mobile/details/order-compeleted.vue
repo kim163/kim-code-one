@@ -1,6 +1,5 @@
 <template>
   <div class="transell-main0 transell-main-box">
-    {{DetailList.debit}}
     <m-header v-if="DetailList.credit==userData.userId">我的买币订单</m-header>
     <m-header v-else-if="DetailList.debit==userData.userId">我的卖币订单</m-header>
     <div class="m-order-details">

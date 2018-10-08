@@ -538,6 +538,9 @@
         if(this.personUserName.length > 32){
           toast('用户昵称长度不能超过32位!')
           return
+        }else if(this.personUserName.length==0){
+          toast('昵称不能为空')
+          return
         }
         const requests = {
           idCard: '',

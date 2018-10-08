@@ -5,8 +5,9 @@
     <div v-for="(item,i) in userData.accountChainVos" class="mreceiv-code-content">
       <p class="address"> {{item.address}} </p>
       <div class="qrcode">
-        <qrcode :text="'UET,'+item.address" v-if="item.address" :logoSrc="Logo" :logoScale="0.2" :size="180"></qrcode>
+        <qrcode :text="'UET,'+item.address" v-if="item.address" id="qrcode" :logoSrc="Logo" :logoScale="0.2" :size="180"></qrcode>
       </div>
+      <a class="download-qrocode" id="downloadLink" @click="downloadQrocode">下载二维码</a>
       <a href="javascript:void(0);" class="copy-btn mobile-pubtn" :data-clipboard-text="item.address"
          @click="copy" >{{$t('transactionHome.copyBtn')}}</a>
     </div>
@@ -47,6 +48,17 @@
       },
       returnBtnEvent(){
         this.$emit('closeReceivables',false)
+      },
+      downloadQrocode(){
+        var img = document.getElementById('qrcode').getElementsByTagName('img')[0];
+        var canvas = document.createElement('canvas');
+        canvas.width = img.width;
+        canvas.height = img.height;
+        canvas.getContext('2d').drawImage(img,0,0);
+        const url = canvas.toDataURL('image/png');
+        const downloadLink = document.getElementById('downloadLink');
+        downloadLink.setAttribute('href',url);
+        downloadLink.setAttribute('download','二维码.png');
       }
     },
     computed: {
@@ -84,7 +96,12 @@
     width: r(150);
     height: r(150);
     overflow: hidden;
-    margin: r(0) auto r(30);
+    margin: r(0) auto r(10);
+  }
+  .download-qrocode{
+    display: inline-block;
+    margin-bottom: r(20);
+    margin-top: r(10);
   }
 }
 </style>
