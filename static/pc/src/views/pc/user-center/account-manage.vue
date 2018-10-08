@@ -118,7 +118,6 @@
     methods:{
       getUserList(){
         getCenterInfo({}).then(res => {
-          console.log(res)
           if(res.code === 10000){
             this.userList = [...res.data]
             this.$store.commit('GET_CENTERID',res.data[0].centerId)
