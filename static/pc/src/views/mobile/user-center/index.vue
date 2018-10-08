@@ -107,15 +107,6 @@
           <i class="iconfont icon-right-arrow"></i>
         </router-link>
       </div>
-
-      <div class="mcenter-linkitem" v-if="userData.nodeId < 10000">
-        <a href="javascript:void(0);" class="item-href"
-           @click="$store.dispatch('LOGIN_OUT')">
-          <i class="iconfont logo icon-sign-out"></i>
-          {{$t('navbar.logOut')}}
-          <i class="iconfont icon-right-arrow"></i>
-        </a>
-      </div>
     </div>
     <m-navbar></m-navbar>
     <confirm-dialog v-model="showConfirm">
@@ -156,7 +147,7 @@
             <i class="iconfont icon-right-arrow"></i>
           </router-link>
         </div>
-        <div class="login-out-btn">退出账户</div>
+        <div class="login-out-btn" @click="$store.dispatch('LOGIN_OUT')">退出账户</div>
       </div>
     </div>
     <transition name="scroll-up">

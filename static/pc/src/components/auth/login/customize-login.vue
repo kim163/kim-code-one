@@ -4,7 +4,7 @@
       <div class="title">{{isAdd ? '添加账户 方便账户之间切换和转账' : '欢迎回来'}}</div>
       <div class="sub-title">账号</div>
       <input type="text" class="input-def" ref="name" v-model="account" placeholder="请输入账号 / 手机 / 邮箱" autocomplete="off">
-      <div class="sub-title">账号</div>
+      <div class="sub-title">密码</div>
       <input type="password" class="input-def" ref="pwd" v-model="password" @keyup.enter="toLogin" placeholder="请输入您的密码" autocomplete="off">
       <div class="dialog-btn" @click="toLogin">{{isAdd ? '关联' : '登录钱包'}}</div>
       <template v-if="!isAdd">
@@ -103,7 +103,9 @@
           if(res.code === 10000){
             if(this.isAdd){
               toast('用户关联成功')
-              this.$emit('addSuccess')
+              if(this.isAdd){
+                this.$emit('addSuccess')
+              }
               this.$emit('changShow',false)
             }else{
               this.$store.commit('SHOW_LOGIN', false)
