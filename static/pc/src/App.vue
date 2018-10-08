@@ -9,10 +9,11 @@
       <router-view v-if="$route.meta.noCache"></router-view>
     </transition>
     <sys-bullentin v-if="islogin"></sys-bullentin>
-    <v-login v-if="showLogin && !isMobile" v-model="showLogin"></v-login>
+    <!--<v-login v-if="showLogin && !isMobile" v-model="showLogin"></v-login>-->
+    <login-dialog v-if="showLogin && !isMobile"></login-dialog>
     <v-register v-if="showRegister && !isMobile" v-model="showRegister"></v-register>
 
-      <setAccountPassword v-if="userData.initPwd=='Y'&&isMobile" @closePage="closesetPage"></setAccountPassword>
+    <setAccountPassword v-if="userData.initPwd=='Y'&&isMobile" @closePage="closesetPage"></setAccountPassword>
 
     <red-envelope v-if="islogin"></red-envelope>
 
@@ -20,18 +21,19 @@
 </template>
 <script type="text/ecmascript-6">
   import Stomp from 'webstomp-client';
-  import { aesutil } from '@/util';
+  import {aesutil} from '@/util';
   import {$localStorage} from '@/util/storage';
   import SysBullentin from 'views/sys-bullentin';
-  import setAccountPassword  from 'views/mobile/user-center/set-account-password'
+  import setAccountPassword from 'views/mobile/user-center/set-account-password'
   import vLogin from "components/auth/login";
   import vRegister from "components/auth/register";
+  import LoginDialog from 'components/auth/login/customize-login'
   import RedEnvelope from 'views/red-envelope';
 
   export default {
-    data(){
+    data() {
       return {
-        transitionName:"slide",
+        transitionName: "slide",
         client: null,
         connectMsg: [],
         connectUrl: '',
@@ -40,10 +42,10 @@
         detailNormal: '',
         detailOver: '',
         detailAppeal: '',
-        isMobile:_.isMobile(),
+        isMobile: _.isMobile(),
       }
     },
-    computed:{
+    computed: {
       ...mapGetters([
         "userData",
         "userId",
@@ -51,15 +53,15 @@
         "showLogin",
         "showRegister",
       ]),
-      isExclude(){
+      isExclude() {
         return this.$route.meta.cache ? "" : this.$route.name;
       }
     },
     created() {
       const userData = $localStorage.get('userData')
-      if(!_.isUndefined(userData) && !_.isNull(userData)){
-        const userDataInfo = JSON.parse(aesutil.decrypt(userData,true))
-        if(userDataInfo.node && userDataInfo.node.customer){
+      if (!_.isUndefined(userData) && !_.isNull(userData)) {
+        const userDataInfo = JSON.parse(aesutil.decrypt(userData, true))
+        if (userDataInfo.node && userDataInfo.node.customer) {
           aesutil.updateKey(userDataInfo.node.customer.aesKey)
         }
       }
@@ -67,70 +69,70 @@
       this.dwMobilePage();
     },
     methods: {
-      dwMobilePage(){
+      dwMobilePage() {
         let element = document.getElementsByTagName('body')[0];
         let classN = this.$route.meta.isMobilePage;
-        if(!_.isUndefined(classN) && !_.isNull(classN)){
-          if((' ' + element.className + ' ').indexOf(' ' + classN + ' ') < 0){
+        if (!_.isUndefined(classN) && !_.isNull(classN)) {
+          if ((' ' + element.className + ' ').indexOf(' ' + classN + ' ') < 0) {
             element.className = classN;
           }
-        }else if(_.isUndefined(classN) || _.isNull(classN)){
+        } else if (_.isUndefined(classN) || _.isNull(classN)) {
           element.className = '';
         }
       },
-      closesetPage(val){
+      closesetPage(val) {
         this.isMobile = val
       },
-      initWsData(){
+      initWsData() {
         console.log('this.userData===================')
         console.log(this.userData.configVos)
         _.forEach(this.userData.configVos, (value, key) => {
-          if(value.type == 1002){
+          if (value.type == 1002) {
             this.connectMsg = value.value.split(',');
-            this.connectUrl= this.connectMsg[0];
-            this.connectUser= this.connectMsg[1];
-            this.connectPsw= this.connectMsg[2];
+            this.connectUrl = this.connectMsg[0];
+            this.connectUser = this.connectMsg[1];
+            this.connectPsw = this.connectMsg[2];
           }
         });
-        this.detailNormal='/center/orderDetail/';
-        this.detailOver='/center/orderDetailOver/';
-        this.detailAppeal='/center/orderDetailAppeal/';
-        if(_.isMobile()){
-          this.detailNormal='/m/order/';
-          this.detailOver='/m/orderOver/';
-          this.detailAppeal='/m/orderAppeal/';
+        this.detailNormal = '/center/orderDetail/';
+        this.detailOver = '/center/orderDetailOver/';
+        this.detailAppeal = '/center/orderDetailAppeal/';
+        if (_.isMobile()) {
+          this.detailNormal = '/m/order/';
+          this.detailOver = '/m/orderOver/';
+          this.detailAppeal = '/m/orderAppeal/';
         }
       },
       stompSuccessCallback(frame) {
-        this.client.subscribe('/exchange/walletCustomOperation/'+this.userId, (data) => {
-          let msgData=JSON.parse(aesutil.decrypt(data.body,true));
-          console.log('msgData.type：'+msgData.type)
-          if(msgData.type == 5){
+        this.client.subscribe('/exchange/walletCustomOperation/' + this.userId, (data) => {
+          let msgData = JSON.parse(aesutil.decrypt(data.body, true));
+          console.log('msgData.type：' + msgData.type)
+          if (msgData.type == 5) {
             // C2C_ORDER_ONLINE(5, "C2C订单发起人在线检测"),
             msgData.text = this.userId;
             this.client.send('/exchange/walletCustomOnline/-0', {priority: 9}, aesutil.encrypt(JSON.stringify(msgData)))
-          }else{
-            if(_.isMobile()){
-              if(msgData.type == 1 || msgData.type == 2) {
+          } else {
+            if (_.isMobile()) {
+              if (msgData.type == 1 || msgData.type == 2) {
                 // C2C_ORDER_PLACE(1, "C2C下单"),
                 //  C2C_ORDER_PAY(2, "C2C订单支付完成"),
                 toast(msgData.describe);
-                window.location.href= this.detailNormal + msgData.text;
-              }else if(msgData.type == 3 || msgData.type == 4){
+                window.location.href = this.detailNormal + msgData.text;
+              } else if (msgData.type == 3 || msgData.type == 4) {
                 //  C2C_ORDER_CANCEL(3, "C2C订单取消"),
                 //   C2C_ORDER_COMPLETE(4, "C2C订单完成"),
                 toast(msgData.describe);
-                window.location.href= this.detailOver +msgData.text;
-              }else if(msgData.type == 11){
+                window.location.href = this.detailOver + msgData.text;
+              } else if (msgData.type == 11) {
                 //  C2C_ORDER_APPEAL(11, "C2C申诉");
                 toast(msgData.describe);
-                window.location.href=this.detailAppeal + msgData.text;
-              } else{
+                window.location.href = this.detailAppeal + msgData.text;
+              } else {
                 toast(msgData.describe)
                 //console.log(msgData);
               }
-            }else{
-              this.$store.commit('UPDATE_NEWORDER',{
+            } else {
+              this.$store.commit('UPDATE_NEWORDER', {
                 type: msgData.type,
                 orderId: msgData.text
               })
@@ -139,7 +141,7 @@
         })
       },
       stompFailureCallback(error) {
-        console.log('STOMP: ' , error)
+        console.log('STOMP: ', error)
         if (this.client && this.client.ws.readyState === this.client.ws.CONNECTING) {
           return
         }
@@ -151,17 +153,17 @@
         }, 10000)
         console.log('STOMP: Reconecting in 10 seconds')
       },
-      stompConnect () {
+      stompConnect() {
         console.log('STOMP: Attempting connection')
-        if(this.connectUrl != ''){
+        if (this.connectUrl != '') {
           let ws = new WebSocket(this.connectUrl);
-          this.client = Stomp.over(ws,{debug:false});
+          this.client = Stomp.over(ws, {debug: false});
           this.client.heartbeat.outgoing = 30000;
           this.client.heartbeat.incoming = 30000;
           this.client.connect(this.connectUser, this.connectPsw, this.stompSuccessCallback, this.stompFailureCallback);
         }
       },
-      initUserDef(){
+      initUserDef() {
         this.$store.dispatch("GET_USERBALANCE");
         this.$store.dispatch("GET_BANKCARD");
         this.initWsData();
@@ -169,8 +171,8 @@
       }
     },
 
-    watch:{
-      "$route"(to,from){
+    watch: {
+      "$route"(to, from) {
         this.dwMobilePage();
 //        document.title=to.meta.title||to.meta.headName||"久安钱包";
       },
@@ -183,10 +185,12 @@
       //    // this.$store.dispatch("GET_BANKCARD");
       // }
     },
-    components:{
+    components: {
       SysBullentin,
-      vLogin,
+      // vLogin,
       vRegister,
+      RedEnvelope,
+      LoginDialog,
       setAccountPassword,
       RedEnvelope
     },
