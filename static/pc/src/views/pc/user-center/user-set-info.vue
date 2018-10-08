@@ -606,6 +606,7 @@
       cursor: pointer;
       background-color: #fff;
       border: 1px solid #D3D3D3;
+      transition: all 0.5s;
       .item-symbol {
         width: 100px;
         height: 98px;
@@ -614,6 +615,7 @@
         text-align: center;
         font-size: 35px;
         line-height: 90px;
+        transition: all 0.5s;
       }
       &:last-child {
         margin-bottom: 0;
@@ -641,6 +643,7 @@
         line-height: 40px;
         margin-top: 30px;
         margin-right: 20px;
+        transition: all .5s;
       }
       &:hover {
         border: 1px solid #3573FA !important;

@@ -7,6 +7,10 @@
       <div class="sub-title">密码</div>
       <input type="password" class="input-def" ref="pwd" v-model="password" @keyup.enter="toLogin" placeholder="请输入您的密码" autocomplete="off">
       <div class="dialog-btn" @click="toLogin">{{isAdd ? '关联' : '登录钱包'}}</div>
+      <div class="find-register" v-if="!isAdd">
+        <!--<div class="cl-red">找回密码？</div>-->
+        <div class="cl-red" @click="toRegister">注册账户</div>
+      </div>
       <template v-if="!isAdd">
         <div class="tips-title">温馨提示</div>
         <p class="tips-detail">1.久安旧用户可以输入账号、手机或者邮箱进行登录。</p>
@@ -123,11 +127,23 @@
         }).catch(err => {
           toast(err)
         })
+      },
+      toRegister(){
+        this.$store.commit('SHOW_LOGIN', false)
+        this.$store.commit('SHOW_REGISTER', true);
       }
     }
   }
 </script>
 
 <style lang="scss" scoped>
-
+  .find-register{
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+    >div{
+      cursor: pointer;
+    }
+  }
 </style>

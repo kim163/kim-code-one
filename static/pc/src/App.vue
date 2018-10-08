@@ -9,7 +9,8 @@
       <router-view v-if="$route.meta.noCache"></router-view>
     </transition>
     <sys-bullentin v-if="islogin"></sys-bullentin>
-    <v-login v-if="showLogin && !isMobile" v-model="showLogin"></v-login>
+    <!--<v-login v-if="showLogin && !isMobile" v-model="showLogin"></v-login>-->
+    <login-dialog v-if="showLogin && !isMobile"></login-dialog>
     <v-register v-if="showRegister && !isMobile" v-model="showRegister"></v-register>
     <red-envelope v-if="islogin"></red-envelope>
   </div>
@@ -19,8 +20,9 @@
   import { aesutil } from '@/util';
   import {$localStorage} from '@/util/storage';
   import SysBullentin from 'views/sys-bullentin';
-  import vLogin from "components/auth/login";
+  // import vLogin from "components/auth/login";
   import vRegister from "components/auth/register";
+  import LoginDialog from 'components/auth/login/customize-login'
   import RedEnvelope from 'views/red-envelope';
 
   export default {
@@ -177,9 +179,10 @@
     },
     components:{
       SysBullentin,
-      vLogin,
+      // vLogin,
       vRegister,
-      RedEnvelope
+      RedEnvelope,
+      LoginDialog,
     },
     mounted() {
       if (this.islogin) {
