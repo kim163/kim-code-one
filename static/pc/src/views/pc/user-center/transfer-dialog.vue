@@ -7,7 +7,7 @@
           <animated-integer :value="data.amount"></animated-integer>{{data.assetCode}}
         </span>
       </div>
-      <div class="manual-transfer" v-if="isOut">
+      <div class="manual-transfer" v-if="showManual">
         <div class="title">手动转账</div>
         <div class="tran-info">
           <span>输入数量</span>
@@ -110,6 +110,10 @@
         type:Boolean,
         default:false
       },
+      showManual:{
+        type:Boolean,
+        default:true
+      },
       data:{ //转账账户信息
         type:Object,
         default:{}
@@ -147,7 +151,6 @@
           creditAccount: type === 1 ? this.tranAddress : (this.isOut ? this.selectUser.address : this.data.address),
           amount: type === 1 ? this.manualOutAmonut : this.withinAmount
         }
-        console.log(data)
         assetTransfer(data).then(res => {
           if(res.code === 10000){
             toast('转账成功')
