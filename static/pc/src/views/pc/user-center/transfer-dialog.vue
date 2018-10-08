@@ -144,7 +144,7 @@
           userId: Obj.userId,
           nodeId: Obj.nodeId,
           debitAccount: Obj.address,
-          creditAccount: type === 1 ? this.tranAddress : this.selectUser.address,
+          creditAccount: type === 1 ? this.tranAddress : (this.isOut ? this.selectUser.address : this.data.address),
           amount: type === 1 ? this.manualOutAmonut : this.withinAmount
         }
         console.log(data)
