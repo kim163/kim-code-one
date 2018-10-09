@@ -15,6 +15,7 @@
         <div class="tips-title">温馨提示</div>
         <p class="tips-detail">1.久安旧用户可以输入账号、手机或者邮箱进行登录。</p>
         <p class="tips-detail">2.通过合作商户跳转打开的用户，设置了账户密码后，也可以使用账号登录。</p>
+        <p class="tips-detail">3.手机号登录，无需添加区号前缀</p>
       </template>
     </div>
   </dialog-pop>
@@ -38,7 +39,7 @@
       showPop(val){
         this.$store.commit('SHOW_LOGIN', val)
         if(!val){
-          this.$emit('changShow',false)
+          this.$emit('changLoginShow',false)
         }
       }
     },
@@ -57,7 +58,7 @@
     },
     model:{
       prop:'show',
-      event:'changShow'
+      event:'changLoginShow'
     },
     computed:{
       ...mapGetters([
@@ -106,10 +107,8 @@
           if(res.code === 10000){
             if(this.isAdd){
               toast('用户关联成功')
-              if(this.isAdd){
-                this.$emit('addSuccess')
-              }
-              this.$emit('changShow',false)
+              this.$emit('addSuccess')
+              this.$emit('changLoginShow',false)
             }else{
               this.$store.commit('SHOW_LOGIN', false)
               $localStorage.set('tokenInfo', JSON.stringify(res.data.tokenVo));
