@@ -321,7 +321,11 @@
       this.searchHomeInfo();
       this.getInfonext();
       this.getCenterInfo();
-      this.$store.commit('SET_ACCOUNT_MANAGER_TOKEN', {type: 'add', value: 'userToken', userId: this.userId})
+      this.$store.commit('SET_ACCOUNT_MANAGER_TOKEN', {type: 'add', value: 'userToken', userId: this.userId});
+      const demoValue = $localStorage.get('name')
+      if(!demoValue){
+        $localStorage.set('name','')
+      }
     },
     beforeRouteLeave(to, from, next) {
       if (to.name === 'mBindCard') {

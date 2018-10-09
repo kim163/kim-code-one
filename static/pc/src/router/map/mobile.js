@@ -296,6 +296,6 @@ export default [
     meta:{
       noCache:true,
       isMobilePage:'mobile-body'
-    }
-  }
+    },
+  },
 ]
