@@ -156,6 +156,7 @@
             toast('转账成功')
             this.$emit('tranSuccess')
             this.showPop = false
+            this.$store.dispatch('GET_USERBALANCE')
           }else{
             toast(res.message)
           }
