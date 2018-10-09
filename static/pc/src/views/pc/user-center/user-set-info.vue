@@ -1122,7 +1122,17 @@
         padding-top: 20px;
         font-size: 16px;
         color: #333;
-
+        display: flex;
+        align-items: center;
+        .name-readonly{
+          border: 1px solid #e4e4e4;
+          width: 325px;
+          height: 40px;
+          text-indent: 10px;
+          margin-left: 15px;
+          line-height: 40px;
+          background: #F8F8F8;
+        }
         input {
           border: 1px solid #e4e4e4;
           width: 325px;
