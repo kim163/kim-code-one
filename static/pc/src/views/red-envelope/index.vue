@@ -3,7 +3,7 @@
   <popup class="red-envelope-main" v-if="showRedEnvelope">
     <div class="container">
        <div class="header cfx">
-         <a class="close fr" href="javascript:void(0);" @click="showRedEnvelope=false">
+         <a class="close fr" href="javascript:void(0);" @click="closeDialog">
            <i class="iconfont icon-close"></i>
          </a>
        </div>
@@ -47,6 +47,8 @@
         amount: 0,
         userType:0,// 0 是系统发放 1是用户发放
         sendUserName:'久安钱包', //红包发放者
+        index:0,//当前红包
+        redArr:[],//红包数组
       };
     },
     components: {
@@ -79,28 +81,47 @@
       },
       checkRedEnvelope(){
         const data = {
-          limit:1,
+          limit:10,
           offset:0,
           couponType:105,
           couponStatus:2,
           loading:false
         }
         myGift(data).then(res => {
+          console.log(res)
           if(res.code === 10000){
             if(!_.isNull(res.data) && !_.isEmpty(res.data)){
-              this.id = res.data[0].id
-              this.endTime = res.data[0].couponEndtime
-              this.amount = res.data[0].couponValueStr
-              this.userType = res.data[0].userType
-              if(this.userType === 1){
-                this.sendUserName = res.data[0].userName
-              }
-              this.showRedEnvelope = true
+              this.redArr = [...res.data]
+              this.index = 0
+              this.getRedInfo()
             }
           }
         }).catch(err => {
 
         })
+      },
+      getRedInfo(){
+        this.id = this.redArr[this.index].id
+        this.endTime = this.redArr[this.index].couponEndtime
+        this.amount = this.redArr[this.index].couponValueStr
+        this.userType = this.redArr[this.index].userType
+        if(this.userType === 1){
+          this.sendUserName = this.redArr[this.index].userName
+        }
+        const now = _.now()
+        if(now < this.endTime){
+          this.showRedEnvelope = true
+        }
+      },
+      closeDialog(){
+        this.showRedEnvelope = false
+        this.index += 1
+        if(this.index <= this.redArr.length - 1){
+          this.getRedInfo()
+        }else{
+          this.index = 0
+          this.redArr = []
+        }
       }
     },
     created() {
