@@ -603,7 +603,7 @@
       checkName(){
         if(this.userData.isNeedSync === 1){
           this.isNeedSyncName = true
-          toast('您是合作商户用户，根据合作商户要求，您需要在商户网站上设置完真实姓名重新登录久安，姓名便会自动同步')
+          toast({message:'您是合作商户用户，根据合作商户要求，您需要在商户网站上设置完真实姓名重新登录久安，姓名便会自动同步',duration:3000})
         }
       }
     }
