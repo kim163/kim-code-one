@@ -152,9 +152,18 @@
           <span class="iconfont icon-close close-btn" @click="closePersonInfo"></span>
         </div>
         <div class="bind-content">
-          <p class="username">昵称 <input type="text" v-model="personUserName"></p>
-          <p class="realname">真实姓名 <input type="text" v-model="personRealName" v-if="userData.name==null">
-            <input type="text" :value="userData.name" readonly v-else></p>
+          <p class="username">昵称
+            <input type="text" v-model="personUserName">
+          </p>
+          <div class="realname">
+            真实姓名
+            <input type="text" v-model="personRealName"
+                   v-if="userData.name==null"
+                   :readonly="isNeedSyncName"
+                   :placeholder="isNeedSyncName ? '请在合作商户网站上设置姓名' : ''"
+                   @focus="checkName"/>
+            <div class="name-readonly" v-else>{{userData.name}}</div>
+          </div>
         </div>
         <div class="bindInfo" @click='binkUserAccount'>绑定</div>
       </div>
@@ -271,6 +280,7 @@
         checkAlipayPopup: false,
         checkWchatPopup: false,
         showSetInitPwd:false,
+        isNeedSyncName:false
       }
     },
     components: {
@@ -592,6 +602,12 @@
       },
       processBank(val){
         return val.substring(0,4) + '********' + val.substring(val.length - 4,val.length)
+      },
+      checkName(){
+        if(this.userData.isNeedSync === 1){
+          this.isNeedSyncName = true
+          toast('您是合作商户用户，根据合作商户要求，您需要在商户网站上设置完真实姓名重新登录久安，姓名便会自动同步')
+        }
       }
     }
   }
