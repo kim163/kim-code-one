@@ -194,7 +194,15 @@
         this.otherUserList = this.userList.filter(item => {
           return item.userId != data.userId
         })
-        this.showTran = true
+        if(type === 1){
+          this.showTran = true
+        }else{
+          if(this.otherUserList.length > 0){
+            this.showTran = true
+          }else{
+            toast('您尚未关联其他账户，无法进行账户内转账')
+          }
+        }
       }
     },
     mounted(){

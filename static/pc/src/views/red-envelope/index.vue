@@ -116,7 +116,7 @@
       closeDialog(){
         this.showRedEnvelope = false
         this.index += 1
-        if(this.index < this.redArr.length){
+        if(this.index <= this.redArr.length - 1){
           this.getRedInfo()
         }else{
           this.index = 0

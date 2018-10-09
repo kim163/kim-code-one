@@ -20,7 +20,7 @@
         </div>
         <div class="dialog-btn" @click="toTansfer(1)">确定</div>
       </div>
-      <div class="within-tran">
+      <div class="within-tran" v-if="userList.length > 0">
         <div class="title">{{isOut ? '内部账户转账' : '请选择以下账户，进行转账'}}</div>
         <div class="tran-list">
           <div class="within-info" v-for="(item,index) in userList"
@@ -162,23 +162,6 @@
         }).catch(err => {
           toast(err)
         })
-        // if(this.isOut){
-        //   Object.assign(data,{
-        //     userId: this.data.userId,
-        //     nodeId: this.data.nodeId,
-        //     debitAccount: this.data.address,
-        //     creditAccount: type === 1 ? this.tranAddress : this.selectUser.address,
-        //     amount: type === 1 ? this.manualOutAmonut : this.withinAmount
-        //   })
-        // }else{
-        //   Object.assign(data,{
-        //     userId: this.selectUser.userId,
-        //     nodeId: this.selectUser.nodeId,
-        //     debitAccount: this.selectUser.address,
-        //     creditAccount: this.selectUser.address,
-        //     amount: this.withinAmount
-        //   })
-        // }
       }
     },
     created(){
