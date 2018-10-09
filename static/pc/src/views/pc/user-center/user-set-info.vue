@@ -1119,6 +1119,8 @@
         padding-top: 20px;
         font-size: 16px;
         color: #333;
+        display: flex;
+        align-items: center;
         .name-readonly{
           border: 1px solid #e4e4e4;
           width: 325px;
