@@ -5,7 +5,7 @@
     <div v-for="(item,i) in userData.accountChainVos" class="mreceiv-code-content">
       <p class="address"> {{item.address}} </p>
       <div class="qrcode">
-        <qrcode :text="'UET,'+item.address" v-if="item.address" id="qrcode" :logoSrc="Logo" :logoScale="0.2" :size="180"></qrcode>
+        <qrcode :text="'UET,'+item.address" v-if="item.address" id="qrcode" :logoSrc="Logo" :logoScale="0.2" :margin="0" :size="150"></qrcode>
       </div>
       <a class="download-qrocode" id="downloadLink" @click="downloadQrocode">下载二维码</a>
       <a href="javascript:void(0);" class="copy-btn mobile-pubtn" :data-clipboard-text="item.address"
@@ -93,10 +93,11 @@
     margin-bottom: r(31);
   }
   .qrcode{
-    width: r(150);
-    height: r(150);
+    width: r(180);
+    height: r(180);
     overflow: hidden;
     margin: r(0) auto r(10);
+
   }
   .download-qrocode{
     display: inline-block;
