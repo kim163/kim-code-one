@@ -3,7 +3,7 @@
   <popup class="red-envelope-main" v-if="showRedEnvelope">
     <div class="container">
        <div class="header cfx">
-         <a class="close fr" href="javascript:void(0);" @click="closeDialog">
+         <a class="close fr" href="javascript:void(0);" @click="showRedEnvelope = false">
            <i class="iconfont icon-close"></i>
          </a>
        </div>
@@ -58,6 +58,13 @@
       ...mapGetters([
         'userId'
       ])
+    },
+    watch:{
+      showRedEnvelope(val){
+        if(!val){
+          this.closeDialog()
+        }
+      }
     },
     methods: {
       collarEnvelope(){
@@ -114,7 +121,6 @@
         }
       },
       closeDialog(){
-        this.showRedEnvelope = false
         this.index += 1
         if(this.index <= this.redArr.length - 1){
           this.getRedInfo()
