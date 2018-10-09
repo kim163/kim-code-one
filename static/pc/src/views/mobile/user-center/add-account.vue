@@ -9,6 +9,7 @@
         <p class="remind-title">温馨提示</p>
         <p class="remind-content">1.账户添加后可快速切换登录和UET互转</p>
         <p class="remind-content">2.钱包旧用户,可以使用旧账户和手机邮箱登录;</p>
+        <p class="remind-content">3.手机号登录，无需添加区号前缀</p>
       </div>
     </div>
   </div>
@@ -33,6 +34,13 @@
       ...mapGetters(["centerId"])
     },
     methods: {
+      strMapToObj(strMap) {
+        let obj = Object.create(null);
+        for (let [k, v] of strMap) {
+          obj[k] = v;
+        }
+        return obj;
+      },
       loginAccount() {
         const request = {
           'userName': this.userName,
@@ -41,13 +49,18 @@
         }
 
         userCenter.chainLogin(request).then(res => {
-          console.log(res, '撒看见了的')
           if (res.code == '10000') {
             toast('添加成功')
             this.userId = res.data.userId
             this.userName = ''
             this.userPassword = ''
             this.$store.commit('SET_ACCOUNT_MANAGER_TOKEN', {type: 'add', value: 'userToken', userId: this.userId})
+       /*     const m = new Map();
+            m.set(res.data.userId, res.data.tokenVo.accessToken)
+            localStorage.name = JSON.stringify(m)
+            var zmap = new Map(JSON.parse(localStorage.name))
+            console.log(zmap[0].get())
+            // let demoValue = wb[res.data.userId]*/
           } else {
             toast(res.message)
           }

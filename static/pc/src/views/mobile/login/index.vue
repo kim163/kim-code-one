@@ -1,199 +1,151 @@
 <template>
-  <div class="mobile-login">
-      <m-header>{{$t('login.title')}}</m-header>
-
-      <div class="login-content">
-        <ul class="mobile-navtabs cfx">
-          <li v-for="item in loginType" @click="loginItem=item.value" class="s" :class="{active:loginItem==item.value}" :key="item.value">
-            {{generateTitle(item.name)}}
-          </li>
-        </ul>
-        <div class="mobile-form-box form-box-phone">
-          <div class="form-group cfx" v-show="loginItem=='account'">
-             <p class="iconfont icon-useravat"></p>
-             <div class="form-input">
-                <label class="form-subtitle">{{$t('login.username')}}</label>
-                <input name="account" @keyup.enter="login" v-model="data.account" type="text" class="ps-input ps-input1" :placeholder="$t('login.usernamePhd')">
-             </div>
-          </div>
-          <div class="form-group cfx" v-show="loginItem=='phone'">
-            <p class="iconfont icon-mobile"></p>
-            <div class="form-input">
-               <label class="form-subtitle">手机号</label>
-               <select class="select-country" v-model="data.areaCode">
-                     <option v-for="areacd in areaCodeData" :value="areacd.value" :key="areacd.value" > {{areacd.name}} </option>
-               </select>
-               <input type="text" class="ps-input ps-input1 mobile-input" v-model="data.phone"
-                   :placeholder="$t('login.mobileNumPhd')" maxlength="11" name="phone">
-            </div>
-          </div>
-          <div class="form-group cfx" v-show="loginItem=='email'">
-            <p class="iconfont icon-login-email"></p>
-            <div class="form-input">
-               <label class="form-subtitle">邮箱</label>
-               <input name="email" @keyup.enter="login" v-model="data.email" type="text" class="ps-input ps-input1" :placeholder="$t('login.emailaddPhd')">
-            </div>
-          </div>
-          <div class="form-group cfx">
-            <p class="iconfont icon-password"></p>
-            <div class="form-input posit-rel">
-              <label class="form-subtitle">{{$t('login.password')}}</label>
-              <input ref="pwd" @keyup.enter="login" name="password" v-model="data.password" type="password" class="ps-input ps-input1" :placeholder="$t('login.passwordPhd')">
-               <eyes :dom="$refs.pwd"></eyes>
-            </div>
-          </div>
-
-          <input type="button" class="submit btn btn-block" @click="login" id="submit_user" :value="$t('login.logIn')">
-          <div class="link-group">
-            <a href="javascript:void(0);" class="forget-btn hide">{{$t('login.forgotpwd')}}</a>
-            <router-link :to="{name:'mobileRegister'}" class="link-register fr">注册账户</router-link>
-          </div>
-        </div>
+  <div class="addAccount-container">
+    <MobileHeader>账户登录
+      <getLive800 class="service-logo" :isShowFont="false"></getLive800>
+    </MobileHeader>
+    <div class="addAccount-content">
+      <div class="account">账号 <input type="text" class="account-input" v-model="userName" placeholder="账号 / 手机号 / 邮箱">
       </div>
-
-
+      <div class="password">密码 <input type="password" class="password-input" v-model="userPassword"
+                                      placeholder="请输入您的密码"></div>
+      <div class="addAccount-btn" @click="loginAccount">登录</div>
+      <div class="content-remind">
+        <p class="remind-title">温馨提示</p>
+        <p class="remind-content">1.久安旧用户可以输入账号、手机或者邮箱进行登录。</p>
+        <p class="remind-content">2.通过合作商户跳转打开的用户，设置了账户密码后，也可以使用账号登录</p>
+        <p class="remind-content">3.手机号登录，无需添加区号前缀</p>
+      </div>
+    </div>
   </div>
 </template>
-<script>
-  import { show } from 'api'
-  import eyes from "components/eyes"
-  import mHeader from "components/m-header"
-  import {$localStorage, $sessionStorage} from '@/util/storage'
-  import { generateTitle } from '@/util/i18n'
-  import aesutil from '@/util/aesutil';
-  import {mapGetters,mapActions,mapMutations} from 'vuex'
-  import check from "@/util/RegExp"
 
+<script>
+  import MobileHeader from 'components/m-header'
+  import {userCenter} from 'api'
+  import {mapGetters} from 'vuex'
+  import {$localStorage} from '@/util/storage';
+  import getLive800 from 'components/get-live800';
   export default {
-    data(){
+    name: "add-account",
+    data() {
       return {
-        loginType:[
-          {name: "login.accloginTitle", value: "account"},
-          {name: "login.mobloginTitle", value: "phone"},
-          {name: "login.emailloginTitle", value: "email"}
-        ],
-        loginItem: 'phone',
-        areaCodeData: [
-          {name:"+63", value: "+63" },
-          {name:"+86", value: "+86" }
-        ],
-        data:{
-          account:"",
-          phone:"",
-          areaCode:"+86",
-          email:"",
-          password:""
-        },
-        requestda: {}
+        userName: '',
+        userPassword: "",
+        userId: ''
       }
     },
-    mounted(){
+    computed: {
+      ...mapGetters(["centerId"])
+    },
+    methods: {
+      strMapToObj(strMap) {
+        let obj = Object.create(null);
+        for (let [k, v] of strMap) {
+          obj[k] = v;
+        }
+        return obj;
+      },
+      loginAccount() {
+        if (this.userName == '') {
+          toast('用户账号不能为空');
+          return
+        }
+        else if (this.userPassword == '') {
+          toast('用户密码不能为空');
+          return
+        }
+        const request = {
+          'userName': this.userName,
+          'password': this.userPassword,
+        }
 
-      this.$nextTick(()=>{
-        var jiangnan = document.getElementById('demoImg')
-        console.log(jiangnan)
-      })
-    },
-    props: {
-      value: Boolean
-    },
-    watch:{
-
-    },
-    methods:{
-      generateTitle,
-      ...mapMutations(["SHOW_LOGIN"]),
-      login() {
-        if(!this.check())return;
-        if(this.loginItem=='account'){
-          this.requestda ={
-            userName: this.data.account,
-            password: this.data.password
-          }
-        }else if(this.loginItem=='phone'){
-          this.requestda = {
-            type:4,
-            areaCode: this.data.areaCode,
-            phone: this.data.phone,
-            password: this.data.password
-          }
-       }else if(this.loginItem=='email'){
-         this.requestda = {
-           type:4,
-           areaCode: this.data.areaCode,
-           email: this.data.email,
-           password: this.data.password
-         }
-       }
-        const api = this.loginItem=='account' ?  show.loginByUserNameAndPwd : show.login
-        api(this.requestda).then(res => {
-          if (res.code == 10000) {
-            this.$emit('input',false);
-            this.$store.commit('SHOW_LOGIN',false);
+        userCenter.chainLogin(request).then(res => {
+          if (res.code == '10000') {
+            toast('登录成功')
+            this.$store.commit('SHOW_LOGIN', false)
             $localStorage.set('tokenInfo', JSON.stringify(res.data.tokenVo));
-            //$localStorage.set('userData', aesutil.encrypt(JSON.stringify(res.data)));
             this.$store.dispatch('CHECK_ONLINE', true);
             this.$store.dispatch('UPDATE_TOKEN_INFO', res.data.tokenVo);
             this.$store.dispatch('INIT_INFO');
-            this.$store.commit('SET_USERDATA',res.data);
-             // _.checkUserBind({userId: res.data.userId})
+            this.$store.commit('SET_USERDATA', res.data)
             _.initRongyun()
-            this.$router.replace({name: 'mIndex'});
-          }else {
-            toast(res.message);
+            this.$router.replace({name: 'mIndex'})
+
+          } else {
+            toast(res.message)
           }
-          console.log('user login:', res);
-        }).catch(err => {
-          toast(err);
         })
       },
-      check() {
-        if(this.loginItem=='account'){
-           if(this.data.account=="" || !this.data.account){
-             toast("请您输入用户名");
-           }else if(this.data.password=="" || !this.data.password){
-             toast("请您输入密码");
-           }else {
-             return true;
-           }
-        }else if(this.loginItem=='phone'){
-          if(this.data.phone=="" || !this.data.phone){
-            toast("请您输入电话号码");
-          }else if(this.data.password=="" || !this.data.password){
-            toast("请您输入密码");
-          }else {
-            return true;
-          }
-        }else if(this.loginItem=='email'){
-          if(this.data.email=="" || !this.data.email){
-            toast("请您输入邮箱");
-          }else if (!check.email.test(this.data.email)) {
-            toast("您输入的电子邮箱格式不正确");
-          }else if(this.data.password=="" || !this.data.password){
-            toast("请您输入密码");
-          }else {
-            return true;
-          }
-        }
-      }
-    },
-    created(){
 
     },
-    computed: {
-
-    },
-    components:{
-       eyes, mHeader
-    }
-  };
+    components: {MobileHeader,getLive800}
+  }
 </script>
-<style lang="scss">
+
+<style lang="scss" scoped>
   @import "~assets/scss/mobile";
 
-  .forget-btn{
-     font-size: 18px;
-     color: #4c74ed !important;
+  .addAccount-content {
+    margin-top: r(20);
+
+    .account {
+      background-color: #fff;
+      height: r(44);
+      width: 100%;
+      padding-left: r(20);
+      line-height: r(44);
+      .account-input {
+        height: r(30);
+        padding-left: r(10);
+        margin-left: r(10);
+      }
+      input:focus {
+        outline: none;
+      }
+    }
+    .password {
+      background-color: #fff;
+      height: r(44);
+      padding-left: r(20);
+      margin-top: r(10);
+      line-height: r(44);
+      .password-input {
+        height: r(30);
+        padding-left: r(10);
+        margin-left: r(10);
+      }
+      input:focus {
+        outline: none;
+      }
+    }
+    .addAccount-btn {
+      text-align: center;
+      margin: 0 auto;
+      background-color: #3573FA;
+      width: 80%;
+      color: #fff;
+      height: r(44);
+      line-height: r(44);
+      border-radius: r(3);
+      margin-top: r(20);
+    }
+    .content-remind {
+      margin-top: r(40);
+      padding-left: r(20);
+      .remind-title {
+        @include f(18px);
+        color: #333;
+      }
+      .remind-content {
+        @include f(14px);
+        color: #787876;
+        margin-top: r(10);
+      }
+    }
   }
 
+  /deep/ .mobile-header .service-logo {
+    float: right;
+    padding-right: r(10);
+  }
 </style>
