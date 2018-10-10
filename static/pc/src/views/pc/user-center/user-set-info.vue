@@ -302,6 +302,9 @@
       bankCardInfo() {
         this.filterAlipay = this.bankCardInfo.filter(item => item.type === 1)
         this.filterWchat = this.bankCardInfo.filter(item => item.type === 2)
+      },
+      personInfoPopup() {
+        this.personUserName = this.userData.nickname
       }
     },
     created() {
@@ -1138,7 +1141,7 @@
           width: 325px;
           height: 40px;
           text-indent: 10px;
-          margin-left: 10px;
+          margin-left: 15px;
 
         }
       }

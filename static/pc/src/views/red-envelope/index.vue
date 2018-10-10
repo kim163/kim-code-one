@@ -95,7 +95,6 @@
           loading:false
         }
         myGift(data).then(res => {
-          console.log(res)
           if(res.code === 10000){
             if(!_.isNull(res.data) && !_.isEmpty(res.data)){
               this.redArr = [...res.data]
