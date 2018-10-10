@@ -80,7 +80,7 @@
   import {SETTING} from "@/assets/data";
   import VueQrcode from 'vue-qr';
   import Logo from '@/assets/images/logo-blue.png';
-  import textScroll from 'components/text-scroll';
+  // import textScroll from 'components/text-scroll';
   import vueSeamless from 'vue-seamless-scroll'
 
   export default {
@@ -146,7 +146,7 @@
     created() {
     },
     components: {
-      textScroll,
+      // textScroll,
       qrcode: VueQrcode,
       vueSeamless
     }
