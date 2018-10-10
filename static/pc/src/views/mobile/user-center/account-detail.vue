@@ -41,7 +41,7 @@
           <div class="de-title">
             转账到内部账户
           </div>
-          <div class="de-line" v-for="(list,key) in accountList" >
+          <div class="de-line" v-for="(list,key) in accountList">
             <div class="wipper-info" @click="openDetailInfo(key)">
               <span class="de-user">{{list.name}}</span>
               <span class="de-accountValue">账户余额: {{list.amount}} UET</span>
@@ -62,7 +62,7 @@
       </div>
       <div class="manager-content-middle" v-else-if="typeNum==2">
         <div class="de-title">请选择以下目标账户</div>
-        <div class="de-line" v-for="(list,key) in accountList" >
+        <div class="de-line" v-for="(list,key) in accountList">
           <div class="wipper-info" @click="openMiddleInfo(key)">
             <span class="de-user">{{list.name}}</span>
             <span class="de-accountValue">账户余额: {{list.amount}} UET</span>
@@ -75,7 +75,7 @@
                 <p class="detail-name">{{list.name}}</p>
                 <p class="detail-money">转出 <input type="number" v-model="transferAmount"> UET</p>
               </div>
-              <p class="defineOk">确认</p>
+              <p class="defineOk" @click="TransMoneyMiddle(list.userId,list.nodeId,list.address)">确认</p>
             </div>
           </div>
         </div>
@@ -97,7 +97,8 @@
 
     </div>
     <transition name="scroll-up">
-      <MultiAccount v-if="showReceivePageUpdate" @closeReceivables="closeReivePage" :accountChainVos="currentAddress" :margin="0"
+      <MultiAccount v-if="showReceivePageUpdate" @closeReceivables="closeReivePage" :accountChainVos="currentAddress"
+                    :margin="0"
                     :accountMount="accountValue"></MultiAccount>
     </transition>
 
@@ -176,6 +177,24 @@
           debitAccount: this.currentAddress,
           /*借方*/
           creditAccount: address
+        }
+        userCenter.assetTransfer(request).then(res => {
+          if (res.code == '10000') {
+            toast("账户转账成功")
+            this.searchHomeInfo()
+            this.getCenterInfo()
+          } else {
+            toast(res.message)
+          }
+        })
+      },
+      TransMoneyMiddle(id, val, address) {
+        const request = {
+          userId: id,
+          amount: this.transferAmount,
+          nodeId: val,
+          debitAccount: address,
+          creditAccount: this.currentAddress
         }
         userCenter.assetTransfer(request).then(res => {
           if (res.code == '10000') {
