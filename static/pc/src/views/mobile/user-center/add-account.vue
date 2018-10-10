@@ -55,12 +55,7 @@
             this.userName = ''
             this.userPassword = ''
             this.$store.commit('SET_ACCOUNT_MANAGER_TOKEN', {type: 'add', value: 'userToken', userId: this.userId})
-       /*     const m = new Map();
-            m.set(res.data.userId, res.data.tokenVo.accessToken)
-            localStorage.name = JSON.stringify(m)
-            var zmap = new Map(JSON.parse(localStorage.name))
-            console.log(zmap[0].get())
-            // let demoValue = wb[res.data.userId]*/
+
           } else {
             toast(res.message)
           }
