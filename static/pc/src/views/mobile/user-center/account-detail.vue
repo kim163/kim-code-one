@@ -73,7 +73,7 @@
               <span class="iconfont icon-money-value"></span>
               <div class="info-detail">
                 <p class="detail-name">{{list.name}}</p>
-                <p class="detail-money">转出 <input type="number" v-model="transferAmount"> UET</p>
+                <p class="detail-money">转入 <input type="number" v-model="transferAmount"> UET</p>
               </div>
               <p class="defineOk" @click="TransMoneyMiddle(list.userId,list.nodeId,list.address)">确认</p>
             </div>
