@@ -168,6 +168,7 @@
               this.$store.dispatch('INIT_INFO');
               this.$store.commit('SET_USERDATA',res.data);
               _.initRongyun()
+              this.$router.push({name: 'walletCenter'});
             }else{
               toast(res.message);
             }
@@ -190,7 +191,7 @@
             show.sendEmailCode(this.requestdata).then((res) => {
               if (res.success) {
                 toast(res.message);
-                this.$router.push({name: 'transaction'});
+                this.$router.push({name: 'walletCenter'});
               } else {
                 console.log(res.message)
                 toast(res.message);
@@ -215,7 +216,7 @@
 
               if (res.success) {
                 toast('恭喜，您已注册成功');
-                this.$router.push({name: 'transaction'});
+                this.$router.push({name: 'walletCenter'});
               } else {
                 console.log(res);
                 toast(res.message);
