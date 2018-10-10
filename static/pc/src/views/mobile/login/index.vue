@@ -68,9 +68,9 @@
             this.$store.dispatch('UPDATE_TOKEN_INFO', res.data.tokenVo);
             this.$store.dispatch('INIT_INFO');
             this.$store.commit('SET_USERDATA', res.data)
+            this.$store.commit('GET_CENTERID',res.data.centerId)
             _.initRongyun()
             this.$router.replace({name: 'mIndex'})
-
           } else {
             toast(res.message)
           }

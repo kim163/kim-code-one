@@ -286,7 +286,6 @@
               this.singerUserName = res.data[0].name
               this.$store.commit('GET_CENTERID', res.data[0].centerId)
             } else {
-              console.log(res, '时刻记得')
               this.isSingle = false
               this.accountList = res.data.filter((item) => {
                 return item.userId !== this.userId
