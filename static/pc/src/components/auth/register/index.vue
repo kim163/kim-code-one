@@ -192,8 +192,8 @@
             show.sendEmailCode(this.requestdata).then((res) => {
               if (res.success) {
                 toast(res.message);
-                this.$store.commit('SHOW_REGISTER', false);
-                this.$router.push({name: 'walletCenter'});
+                // this.$store.commit('SHOW_REGISTER', false);
+                // this.$router.push({name: 'walletCenter'});
               } else {
                 console.log(res.message)
                 toast(res.message);
@@ -217,9 +217,9 @@
             show.sendCode(this.requestdata).then((res) => {
 
               if (res.success) {
-                toast('恭喜，您已注册成功');
-                this.$store.commit('SHOW_REGISTER', false);
-                this.$router.push({name: 'walletCenter'});
+                toast(res.message);
+                // this.$store.commit('SHOW_REGISTER', false);
+                // this.$router.push({name: 'walletCenter'});
               } else {
                 console.log(res);
                 toast(res.message);
