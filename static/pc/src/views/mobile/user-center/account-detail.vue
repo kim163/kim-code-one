@@ -41,8 +41,8 @@
           <div class="de-title">
             转账到内部账户
           </div>
-          <div class="de-line" v-for="(list,key) in accountList" @click="openDetailInfo(key)">
-            <div class="wipper-info">
+          <div class="de-line" v-for="(list,key) in accountList" >
+            <div class="wipper-info" @click="openDetailInfo(key)">
               <span class="de-user">{{list.name}}</span>
               <span class="de-accountValue">账户余额: {{list.amount}} UET</span>
               <span class="down-arrow" :class="{close:currentNum!==key&&isSame,active:currentNum==key&&!isSame}"></span>
@@ -62,8 +62,8 @@
       </div>
       <div class="manager-content-middle" v-else-if="typeNum==2">
         <div class="de-title">请选择以下目标账户</div>
-        <div class="de-line" v-for="(list,key) in accountList" @click="openMiddleInfo(key)">
-          <div class="wipper-info">
+        <div class="de-line" v-for="(list,key) in accountList" >
+          <div class="wipper-info" @click="openMiddleInfo(key)">
             <span class="de-user">{{list.name}}</span>
             <span class="de-accountValue">账户余额: {{list.amount}} UET</span>
             <span class="down-arrow" :class="{close:isSameNext,active:currentNumNext ==key&&!isSameNext}"></span>
