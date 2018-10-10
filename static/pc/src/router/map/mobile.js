@@ -31,6 +31,7 @@ const mAddAccount = () => import('views/mobile/user-center/add-account') //添�
 const mSetPassword = () => import('views/mobile/user-center/set-account-password') //设置账户密码
 const mAccountDetail = () => import('views/mobile/user-center/account-detail')
 const mActivity = () => import('views/mobile/activity-center') //手机活动
+const mOrderMatch = () => import('views/mobile/order-match') //匹配页面
 
 export default [
   {
@@ -293,6 +294,15 @@ export default [
     path:'/m/accountDetail/:id/:address/:username/:node',
     name:'mAccountDetail',
     component:mAccountDetail,
+    meta:{
+      noCache:true,
+      isMobilePage:'mobile-body'
+    },
+  },
+  {
+    path:'/m/match',
+    name:'mMatch',
+    component:mOrderMatch,
     meta:{
       noCache:true,
       isMobilePage:'mobile-body'
