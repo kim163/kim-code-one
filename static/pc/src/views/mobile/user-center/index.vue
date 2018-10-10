@@ -576,10 +576,12 @@
       }
       .account-person-more {
         background-color: #f6f9ff;
+        padding-top: r(20);
+        padding-bottom: r(10);
         .changeTitle {
           @include f(16px);
           color: #333;
-          margin-top: r(20);
+
           margin-bottom: r(20);
           padding-left: r(20);
         }
@@ -590,7 +592,7 @@
           border-bottom: 1px solid #E9E9E9;
           border-top: 1px solid #e9e9e9;
           line-height: r(50);
-          margin-bottom: r(10);
+
           display: flex;
           .user-symbol {
             margin-top: r(8);
@@ -612,6 +614,7 @@
             padding-left: r(10);
             border-left: 1px solid #e9e9e9;
             color: #3573FA;
+            @include f(14px)
           }
           img {
             width: r(36);
@@ -631,19 +634,22 @@
         text-align: center;
       }
       .account-content {
+        padding-top: r(20);
         .item-href {
           height: 3.09067rem;
           line-height: 3.09067rem;
           padding: 0 0.61813rem 0 0;
           display: block;
-          border-bottom: 1px solid #E4E4E4;
+          border-bottom: 1px solid #e4e4e4;
           font-size: 16px;
           color: #333333;
           padding-left: r(10);
+          border-top: 1px solid #e4e4e4;
         }
         .item-info {
           height: r(50);
-          border: 1px solid #f5f5f5;
+          border-top: 1px solid #e4e4e4;
+          border-bottom: 1px solid #e4e4e4;
           line-height: r(50);
           margin-bottom: r(10);
           padding: 0 0.61813rem 0 r(10);

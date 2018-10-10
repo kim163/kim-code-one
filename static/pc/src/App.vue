@@ -104,6 +104,7 @@
         }
       },
       stompSuccessCallback(frame) {
+        console.log(this.client.subscribe(),'洒家扩大')
         this.client.subscribe('/exchange/walletCustomOperation/' + this.userId, (data) => {
           let msgData = JSON.parse(aesutil.decrypt(data.body, true));
           console.log('msgData.type：' + msgData.type)
