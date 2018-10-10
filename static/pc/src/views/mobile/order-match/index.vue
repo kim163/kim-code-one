@@ -42,7 +42,7 @@
       },
       show:{
         type:Boolean,
-        default:false
+        default:true
       }
     },
     methods:{
