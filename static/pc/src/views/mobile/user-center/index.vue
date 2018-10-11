@@ -599,7 +599,7 @@
           border-bottom: 1px solid #E9E9E9;
           border-top: 1px solid #e9e9e9;
           line-height: r(50);
-
+          margin-bottom: r(10);
           display: flex;
           .user-symbol {
             margin-top: r(8);
