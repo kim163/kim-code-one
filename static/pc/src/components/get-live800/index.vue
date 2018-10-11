@@ -1,7 +1,9 @@
 <template>
   <a :class="['item-href','live-800',liveSpecStyle]" target="_blank" :href="live800Url">
-    <i v-if="isRoundIcon" class="iconfont icon-online-serv"></i>
-    <i v-else class="iconfont icon-customer-service"></i>
+    <template v-if="showIcon">
+      <i v-if="isRoundIcon" class="iconfont icon-online-serv"></i>
+      <i v-else class="iconfont icon-customer-service"></i>
+    </template>
     <i v-if="isShowFont">{{$t('navbar.onlineService')}}</i>
     <i class="iconfont icon-right-arrow fr" v-show="showRightArrow"></i>
   </a>
@@ -29,6 +31,10 @@
         default:""
       },
       isShowFont:{
+        type:Boolean,
+        default:true
+      },
+      showIcon:{
         type:Boolean,
         default:true
       }
