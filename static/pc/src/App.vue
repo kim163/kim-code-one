@@ -13,10 +13,10 @@
     <login-dialog v-if="showLogin && !isMobile"></login-dialog>
     <v-register v-if="showRegister && !isMobile" v-model="showRegister"></v-register>
 
-    <setAccountPassword v-if="userData.initPwd=='Y'&&isMobile" @closePage="closesetPage"></setAccountPassword>
+    <setAccountPassword v-if="userData.initPwd == 'Y' && isMobile" @closePage="closesetPage"></setAccountPassword>
 
     <red-envelope v-if="islogin"></red-envelope>
-
+    <find-pwd-dialog v-if="showFindPwd"></find-pwd-dialog>
   </div>
 </template>
 <script type="text/ecmascript-6">
@@ -29,7 +29,7 @@
   import vRegister from "components/auth/register";
   import LoginDialog from 'components/auth/login/customize-login'
   import RedEnvelope from 'views/red-envelope';
-
+  import FindPwdDialog from 'components/password/find-pwd'
   export default {
     data() {
       return {
@@ -52,6 +52,7 @@
         "islogin",
         "showLogin",
         "showRegister",
+        "showFindPwd"
       ]),
       isExclude() {
         return this.$route.meta.cache ? "" : this.$route.name;
@@ -192,7 +193,8 @@
       RedEnvelope,
       LoginDialog,
       setAccountPassword,
-      RedEnvelope
+      RedEnvelope,
+      FindPwdDialog
     },
     mounted() {
       if (this.islogin) {

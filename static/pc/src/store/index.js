@@ -16,6 +16,7 @@ const stateInit = {
   showFooter: true,
   showLogin: false, //登录弹窗
   showRegister:false, //注册弹窗
+  showFindPwd:false, //找回密码弹窗
   userData: {
     name: '',
     nickname: '',
@@ -160,6 +161,9 @@ export default new Vuex.Store({
     },
     accountManager(state,getters){
       return state.accountManager
+  },
+    showFindPwd(state,getters){
+      return state.showFindPwd
     }
   },
   mutations: {         // 事件处理器用来驱动状态的变化
@@ -251,28 +255,9 @@ export default new Vuex.Store({
     [types.SET_INITPWD](state,val) {
       state.setInitPwd = val
     },
-    [types.SET_ACCOUNT_MANAGER_TOKEN](state,val){
-      if(val.init){
-        const tempArr =[]
-        console.log('数据库的好')
-        $localStorage.set('accountManager',[1,2,3])
-      }
-      /*清空数组*/
-      if(val.clear){
-         $localStorage.removeItem('accountManager')
-      }
-      /*添加数据*/
-      else if(val.add){
-        console.log(val.add,'时间跨度')
-      const accountMangerValue = $localStorage.get('accountManager')
-
-        $localStorage.set('accountManager',accountMangerValue)
-      }
-      /*删除数组*/
-      else if(val.del){
-
-      }
-    }
+    [types.SHOW_FINDPASSWORD](state,val) {
+      state.showFindPwd = val
+    },
   }
   ,
   actions: {    // 可以给组件使用的函数，以此用来驱动事件处理器 mutations

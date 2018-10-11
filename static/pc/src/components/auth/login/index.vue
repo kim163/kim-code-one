@@ -67,7 +67,6 @@
 </template>
 <script>
   import {show} from 'api'
-  import forgetPassword from "components/password/forget-password"
   import eyes from "components/eyes"
   import {$localStorage, $sessionStorage} from '@/util/storage'
   import {generateTitle} from '@/util/i18n'
@@ -206,7 +205,6 @@
     },
     computed: {},
     components: {
-      forgetPassword,
       eyes,
       CusLogin
     }

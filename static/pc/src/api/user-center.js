@@ -126,3 +126,10 @@ export const receiveCoupon = jsonData => service({
   data:jsonData
 })
 
+//找回密码
+export const findPwd = jsonData => service({
+  url: numversion + `account/cash/updatePassword`,
+  method:'post',
+  data:jsonData
+})
+

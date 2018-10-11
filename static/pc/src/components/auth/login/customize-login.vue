@@ -8,7 +8,7 @@
       <input type="password" class="input-def" ref="pwd" v-model="password" @keyup.enter="toLogin" placeholder="请输入您的密码" autocomplete="off">
       <div class="dialog-btn" @click="toLogin">{{isAdd ? '关联' : '登录钱包'}}</div>
       <div class="find-register" v-if="!isAdd">
-        <!--<div class="cl-red">找回密码？</div>-->
+        <div class="cl-red" @click="toFindPwd">找回密码？</div>
         <div class="cl-red" @click="toRegister">注册账户</div>
       </div>
       <template v-if="!isAdd">
@@ -44,7 +44,7 @@
       }
     },
     components:{
-      DialogPop
+      DialogPop,
     },
     props:{
       isAdd:{
@@ -129,6 +129,10 @@
       toRegister(){
         this.$store.commit('SHOW_LOGIN', false)
         this.$store.commit('SHOW_REGISTER', true);
+      },
+      toFindPwd(){
+        this.$store.commit('SHOW_LOGIN', false)
+        this.$store.commit('SHOW_FINDPASSWORD',true)
       }
     }
   }
@@ -138,7 +142,7 @@
   .find-register{
     width: 100%;
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     margin-top: 10px;
     >div{
       cursor: pointer;

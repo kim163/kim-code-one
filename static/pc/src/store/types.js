@@ -31,3 +31,4 @@ export const GET_ORDERXPAGE = 'GET_ORDERXPAGE'//获取交易中的最新订单
 export const GET_CENTERID = 'GET_CENTERID' //获取个人中心的centerId
 export const SET_INITPWD = 'SET_INITPWD' //设置初始密码
 export const SET_ACCOUNT_MANAGER_TOKEN = 'SET_ACCOUNT_MANAGER_TOKEN' //获取账户管理Token
+export const SHOW_FINDPASSWORD = 'SHOW_FINDPASSWORD' //找回密码弹窗
