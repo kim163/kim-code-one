@@ -137,12 +137,12 @@
         <div class="add-account" @click="addAccount">添加账户</div>
         <div class="account-content">
           <get-live800 :showRightArrow="true" :liveSpecStyle="mcenterLive" :isRoundIcon="true"></get-live800>
-          <router-link :to="{name:'mSetUserInfo'}" class="item-info">
+          <router-link :to="{name:'helpCenter'}" class="item-info">
             <i class="iconfont help-icon icon-help-center"></i>
             <span class="font-content">帮助中心</span>
             <i class="iconfont icon-right-arrow"></i>
           </router-link>
-          <router-link :to="{name:'mSetUserInfo'}" class="item-info">
+          <router-link :to="{name:'contactUs'}" class="item-info">
             <i class="iconfont about-icon icon-about-jiuan"></i>
             <span class="font-content">关于我们</span>
             <i class="iconfont icon-right-arrow"></i>
