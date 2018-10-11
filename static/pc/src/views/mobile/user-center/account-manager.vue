@@ -6,7 +6,7 @@
     </MobileHeader>
     <div class="account-list">
       <div class="list-item" v-for="list in accountArr">
-        <div class="account-box" @click="goDetailPage(list.userId,list.address,list.name,list.nodeId)">
+        <div class="account-box" @click="goDetailPage(list.userId,list.address,list.name,list.nodeId,list.iconUrl)">
           <div class="up-line">
             <p class="user-symbol"><span class="iconfont icon-default-user"></span></p>
             <p class="user-name">{{list.name}}</p>
@@ -110,8 +110,8 @@
       addAccount() {
         this.$router.push({name: 'mAddAccount'})
       },
-      goDetailPage(val,cont,name,id) {
-        this.$router.push({name: 'mAccountDetail', params: {id: val,address:cont,username:name,node:id}})
+      goDetailPage(val,cont,name,id,url) {
+        this.$router.push({name: 'mAccountDetail', params: {id: val,address:cont,username:name,node:id,url:url}})
       }
     },
 
@@ -130,6 +130,7 @@
 
   .account-list {
     margin-top: r(20);
+    margin-bottom: r(40);
     .list-item {
       width: 100%;
       background-color: #fff;

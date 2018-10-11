@@ -4,7 +4,8 @@
       <div class="login-user">
         <span @click="goAccountManager">
         <span>
-          <img :src="getLogo" class="logo">
+          <img :src="getLogo" class="logo" v-if="currentIcon==null">
+          <img :src="currentIcon" alt="" class="logo" v-else>
           {{$t('navbar.nickName')}}：{{userData.nickname}}
           <span class="iconfont icon-right-arrow left "></span>
         </span>
@@ -184,7 +185,9 @@
         showReceivePage: false,
         singerUserName: '',
         isSingle: false,
-        accountList: []
+        accountList: [],
+        currentUser:[],
+        currentIcon:''
       }
     },
     components: {
@@ -246,6 +249,7 @@
             this.$store.dispatch('UPDATE_TOKEN_INFO', res.data.tokenVo);
             this.$store.dispatch("GET_BANKCARD");
             this.searchHomeInfo()
+            this.getCenterInfo()
             _.initRongyun()
             toast('切换用户成功')
             this.isAd = false
@@ -290,6 +294,10 @@
               this.accountList = res.data.filter((item) => {
                 return item.userId !== this.userId
               })
+              this.currentUser = res.data.filter((item)=>{
+                return item.userId == this.userId
+              })
+              this.currentIcon = this.currentUser[0].iconUrl
               this.$store.commit('GET_CENTERID', res.data[0].centerId)
             }
           } else {
@@ -591,7 +599,7 @@
           border-bottom: 1px solid #E9E9E9;
           border-top: 1px solid #e9e9e9;
           line-height: r(50);
-
+          margin-bottom: r(10);
           display: flex;
           .user-symbol {
             margin-top: r(8);

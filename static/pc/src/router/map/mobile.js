@@ -291,7 +291,7 @@ export default [
     }
   },
   {
-    path:'/m/accountDetail/:id/:address/:username/:node',
+    path:'/m/accountDetail/:id/:address/:username/:node/:url',
     name:'mAccountDetail',
     component:mAccountDetail,
     meta:{

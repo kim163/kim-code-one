@@ -76,10 +76,10 @@
       </div>
     </div>
     <mobile-nav-bar v-if="!mini"></mobile-nav-bar>
-    <confirm v-model="showBuySellRes" :show-right-btn="false">
+  <!--  <confirm v-model="showBuySellRes" :show-right-btn="false">
       <div slot="content">下单成功</div>
       <div slot="leftBtn">关闭</div>
-    </confirm>
+    </confirm>-->
     <confirm v-if="showBindCard" v-model="showBindCard">
       <div slot="title">请绑定您的</div>
       <div slot="content">银行卡号/微信/支付宝</div>
@@ -243,10 +243,9 @@
             proofType: this.proofType
           })
         }
-        console.log('requestda',this.requestda)
+
         const api = this.pendingItem === 'buyer' ? publishToBuy : publishToSell
         api(this.requestda).then((res) => {
-          console.log(res)
           if (res.code == '10000') {
             this.buyAmount = this.mini ? 1000 : 0;
             this.sellAmount = 0;
@@ -255,8 +254,9 @@
             setTimeout(() => {
               this.rangeReset = false
             },100)
-            // toast('下单成功');
-            this.showBuySellRes = true
+             toast('下单成功');
+             this.$router.push({name:"mMatch"})
+         //   this.showBuySellRes = true
           } else {
             toast(res.message)
           }
