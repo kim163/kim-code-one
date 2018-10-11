@@ -3,7 +3,8 @@
     <MobileHeader>账户详情</MobileHeader>
     <div class="account-person-single">
       <div class="person-single-info">
-        <p class="account-pic"><span class="iconfont icon-default-user"></span></p>
+        <p class="account-pic" v-if="iconUrl==null"><span class="iconfont icon-default-user"></span></p>
+        <p class="account-pic-next" v-else><img :src="iconUrl" alt=""></p>
         <p class="account-name">{{username}}</p>
         <p class="account-num"><span>{{accountValue}}</span> UET</p>
         <div class="address-info">
@@ -143,7 +144,6 @@
         currentNumAnother: '',
         initTimeNext: 0,
         isSameNext: false,
-
         Logo
       }
     },
@@ -152,6 +152,7 @@
       this.currentAddress = this.$route.params.address
       this.username = this.$route.params.username
       this.usernode = this.$route.params.nodeId
+      this.iconUrl = this.$route.params.url
       this.searchHomeInfo(),
         this.getCenterInfo()
     },
@@ -347,6 +348,24 @@
           line-height: r(70);
           @include f(35px);
           margin: auto;
+          img {
+            width: r(60);
+            height: r(60);
+          }
+        }
+        .account-pic-next {
+          display: block;
+          width: r(80);
+          height: r(80);
+          border-radius: 50%;
+          text-align: center;
+          line-height: r(70);
+          @include f(35px);
+          margin: auto;
+          img {
+            width: r(60);
+            height: r(60);
+          }
         }
         .account-name {
           margin-top: r(20);

@@ -13,6 +13,7 @@
     <div class="user-list">
       <div class="user" v-for="(item,index) in randomUser" :key="index" :style="{left: `${item.left}%`,top:`${item.top}%`}">{{item.name}}</div>
     </div>
+    <div class="" style=" color: #fff">{{getNewOrder.type}}</div>
   </div>
 </template>
 
@@ -20,6 +21,7 @@
   import {
     getOrderxPendingPage
   } from 'api/transaction'
+  import {mapGetters} from 'vuex'
   export default {
     name: "order-match",
     data(){
@@ -34,6 +36,11 @@
     model:{
       prop:"show",
       event:'change'
+    },
+    watch:{
+      getNewOrder(val){
+        console.log(val,'速度')
+      }
     },
     props:{
       type:{ //类型  0代表买 1代表卖
@@ -98,6 +105,9 @@
     mounted(){
       this.getUserList()
     },
+    computed:{
+      ...mapGetters(['getNewOrder'])
+    }
     // beforeRouteEnter(to,from,next){
     //   next(vm => {
     //     if(from.name === 'mIndex' || from.name === 'mPendingBuy'){

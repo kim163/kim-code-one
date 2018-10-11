@@ -112,7 +112,7 @@
             msgData.text = this.userId;
             this.client.send('/exchange/walletCustomOnline/-0', {priority: 9}, aesutil.encrypt(JSON.stringify(msgData)))
           } else {
-            if (_.isMobile()) {
+        /*    if (_.isMobile()) {
               if (msgData.type == 1 || msgData.type == 2) {
                 // C2C_ORDER_PLACE(1, "C2C下单"),
                 //  C2C_ORDER_PAY(2, "C2C订单支付完成"),
@@ -131,12 +131,11 @@
                 toast(msgData.describe)
                 //console.log(msgData);
               }
-            } else {
+            } else {*/
               this.$store.commit('UPDATE_NEWORDER', {
                 type: msgData.type,
                 orderId: msgData.text
               })
-            }
           }
         })
       },

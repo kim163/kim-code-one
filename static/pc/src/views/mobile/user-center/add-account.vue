@@ -54,8 +54,6 @@
             this.userId = res.data.userId
             this.userName = ''
             this.userPassword = ''
-            this.$store.commit('SET_ACCOUNT_MANAGER_TOKEN', {type: 'add', value: 'userToken', userId: this.userId})
-
           } else {
             toast(res.message)
           }
