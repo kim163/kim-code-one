@@ -39,7 +39,7 @@
     },
     watch:{
       'userData.name':function(val){
-        this.userData.name = val
+        this.name = val.substring(0,1) + '******'
       }
     },
     computed:{
@@ -96,7 +96,7 @@
     },
     created(){
       this.nickName = this.userData.nickname
-      this.name = _.isNull(this.userData.name) ? '' : this.userData.name
+      this.name = _.isNull(this.userData.name) ? '' : this.userData.name.substring(0,1) + '******'
     }
   }
 </script>

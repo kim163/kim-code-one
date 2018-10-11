@@ -5,7 +5,7 @@
       <div class="card-item" v-for="(item,i) in cardList" :key="i">
         <div class="card-info">
           <div class="title">银行卡号</div>
-          <div class="info">{{item.account}}</div>
+          <div class="info">{{processBank(item.account)}}</div>
         </div>
         <div class="card-info">
           <div class="title">开户行</div>
@@ -13,7 +13,7 @@
         </div>
         <div class="card-info">
           <div class="title">持卡人姓名</div>
-          <div class="info">{{item.name}}</div>
+          <div class="info">{{item.name.substring(0,1) + '******'}}</div>
         </div>
         <div class="card-info">
           <div class="unbind" @click="unbindBankConfrim(item.account)">解除绑定</div>
@@ -148,7 +148,10 @@
         if(this.checkUserName()){
           this.$emit('addNewCard')
         }
-      }
+      },
+      processBank(val){
+        return val.substring(0,4) + '********' + val.substring(val.length - 4,val.length)
+      },
     },
     mounted() {
       this.getBankListInfo()

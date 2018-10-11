@@ -12,7 +12,7 @@
       </div>
       <div class="info">
         <div class="title">{{typeName}}认证姓名:</div>
-        <div>{{dataInfo[0].name}}</div>
+        <div>{{dataInfo[0].name.substring(0,1) + '******'}}</div>
       </div>
     </div>
   </div>

@@ -98,7 +98,7 @@
                                            :value="bankName"></p>
           <p class="user-name">持卡人姓名 <input type="text" v-if="userData.name==null" class="input-user-name"
                                             autocomplete="off" v-model="userName">
-            <input type="text" class="input-user-name" :value="userData.name" v-else readonly>
+            <input type="text" class="input-user-name" :value="userData.name.substring(0,1) + '******'" v-else readonly>
           </p>
         </div>
         <div class="bindCard" @click="bindCard">绑定</div>
@@ -119,7 +119,7 @@
           <p class="zhifubaoAccount"><span>支付宝账号:</span> <input type="text" v-model="zhifubaoValue"></p>
           <p class="zhifubaoName"><span>支付宝认证姓名:</span> <input type="text" v-model="zhifubaoName"
                                                                v-if="userData.name==null">
-            <input type="text" :value="userData.name" readonly v-else>
+            <input type="text" :value="userData.name.substring(0,1) + '******'" readonly v-else>
           </p>
         </div>
         <div class="bindzhifubao" @click="bindzhifubaoBtn" v-if="filterZfb.length==0">绑定支付宝</div>
@@ -138,7 +138,7 @@
           <p class="content-remind">点击上传您的收款二维码</p>
           <p class="weixinAccount">微信账号: <input type="text" v-model="wxValue"></p>
           <p class="weixinName">微信姓名: <input type="text" v-model="wxName" v-if="userData.name==null">
-            <input type="text" :value="userData.name" readonly v-else>
+            <input type="text" :value="userData.name.substring(0,1) + '******'" readonly v-else>
           </p>
         </div>
         <div class="bindweixin" @click="binweixinBtn">绑定微信</div>
@@ -162,7 +162,7 @@
                    :readonly="isNeedSyncName"
                    :placeholder="isNeedSyncName ? '请在合作商户网站上设置姓名' : ''"
                    @focus="checkName"/>
-            <div class="name-readonly" v-else>{{userData.name}}</div>
+            <div class="name-readonly" v-else>{{userData.name.substring(0,1) + '******'}}</div>
           </div>
         </div>
         <div class="bindInfo" @click='binkUserAccount'>绑定</div>
