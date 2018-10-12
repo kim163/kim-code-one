@@ -57,11 +57,11 @@
 
     <div class="panel-item">
       <div class="mcenter-linkitem">
-        <router-link :to="{name:'mBindList'}" v-if="userData.nodeId < 10000" class="item-href">
+     <!--   <router-link :to="{name:'mBindList'}" v-if="userData.nodeId < 10000" class="item-href">
           <i class="iconfont logo icon-business-list"></i>
           {{$t('navbar.busineList')}}
           <i class="iconfont icon-right-arrow"></i>
-        </router-link>
+        </router-link>-->
         <router-link :to="{name:'mAppealList'}" class="item-href">
           <i class="iconfont logo icon-appeal-list"></i>
           {{$t('userCenter.appealList')}}
