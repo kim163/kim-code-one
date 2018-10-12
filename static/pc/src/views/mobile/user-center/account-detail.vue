@@ -164,7 +164,7 @@
         userCenter.getCenterInfo(request).then(res => {
           if (res.code == '10000') {
             this.accountList = res.data.filter((item) => {
-              return item.userId !== this.userId
+              return item.userId !== this.currentId
             })
           }
         })
