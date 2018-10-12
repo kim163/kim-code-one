@@ -194,7 +194,7 @@
           </p>
         </div>
         <div class="bindzhifubao" @click="closecheckAlipay">确认</div>
-        <div class="bindTips">您已绑定支付宝账号,如需更换请联系<span class="hot-line"><getLive800></getLive800></span></div>
+        <div class="bindTips">您已绑定支付宝账号,如需更换请联系<span class="hot-line"><getLive800 :show-icon="false"></getLive800></span></div>
       </div>
     </commonPopup>
 
@@ -212,7 +212,7 @@
           </p>
         </div>
         <div class="bindweixin" @click="closecheckWchat">确认</div>
-        <div class="bindTips">您已绑定微信账号,如需更换请联系<span class="hot-line"><getLive800></getLive800></span></div>
+        <div class="bindTips">您已绑定微信账号,如需更换请联系<span class="hot-line"><getLive800 :show-icon="false"></getLive800></span></div>
       </div>
     </commonPopup>
     <set-update-pwd v-if="showSetInitPwd" :is-first="setInitPwd" v-model="showSetInitPwd"></set-update-pwd>
@@ -994,7 +994,7 @@
     .bindTips {
       color: #333;
       /deep/ i {
-        display: none;
+        vertical-align: top;
       }
       .hot-line {
         color: #ec3a4e;
@@ -1080,7 +1080,7 @@
     .bindTips {
       color: #333;
       /deep/ i {
-        display: none;
+        vertical-align: top;
       }
       .hot-line {
         color: #ec3a4e;
