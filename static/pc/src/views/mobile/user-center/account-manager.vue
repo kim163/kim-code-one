@@ -79,8 +79,16 @@
         }
         userCenter.getCenterInfo(request).then(res => {
           if (res.code == '10000') {
-            this.accountArr = res.data
-            console.log(this.accountArr,'就萨科技的')
+            this.currentInfo = res.data.find((item) => {
+              return item.userId == this.userId
+            })
+
+            this.accountArr=res.data.filter((item) => {
+              return item.userId !== this.userId
+            })
+            console.log(this.accountArr,'asda')
+            this.accountArr.unshift(this.currentInfo)
+
           }
         })
       },
@@ -174,7 +182,7 @@
             line-height: r(40);
             float: left;
             margin: r(10);
-            img{
+            img {
               width: r(40);
               height: r(40);
             }
