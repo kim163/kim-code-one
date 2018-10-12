@@ -19,7 +19,7 @@
           <p class="bind-des">请用您本人姓名开户的银行卡进行绑定,方便您以后的存提款</p>
         </div>
         <div class="item-btn" @click="bindzhifubao" v-if="filterZfb.length==0&&!bindAlipay">前去绑定</div>
-        <div class="item-btn" @click="opencheckAlipay" v-else>已绑定</div>
+        <div class="item-btn" @click="opencheckAlipay" v-else>查看</div>
       </div>
       <div class="list-item"
            :class="{'active':mouseOverThird,'bindok':filterWx.length==1||bindWechat}">
@@ -29,7 +29,7 @@
           <p class="bind-des">请用您本人姓名开户的银行卡进行绑定,方便您以后的存提款</p>
         </div>
         <div class="item-btn" @click="bindWx" v-if="filterWx.length==0&&!bindWechat">前去绑定</div>
-        <div class="item-btn" v-else @click="opencheckWchat">已绑定</div>
+        <div class="item-btn" v-else @click="opencheckWchat">查看</div>
       </div>
       <div class="list-item"
            :class="{'active':mouseOverFourth,'bindok':userData.nickname&&userData.name}">

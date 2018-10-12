@@ -8,7 +8,8 @@
       <div class="list-item" v-for="list in accountArr">
         <div class="account-box" @click="goDetailPage(list.userId,list.address,list.name,list.nodeId,list.iconUrl)">
           <div class="up-line">
-            <p class="user-symbol"><span class="iconfont icon-default-user"></span></p>
+            <p class="user-symbol" v-if="list.iconUrl ==null"><span class="iconfont icon-default-user"></span></p>
+            <p class="user-symbol-next" v-else><img :src="list.iconUrl" alt=""></p>
             <p class="user-name">{{list.name}}</p>
             <p class="order-num">{{list.address}}</p>
             <span class="iconfont icon-right-arrow right-direct"></span>
@@ -110,8 +111,11 @@
       addAccount() {
         this.$router.push({name: 'mAddAccount'})
       },
-      goDetailPage(val,cont,name,id,url) {
-        this.$router.push({name: 'mAccountDetail', params: {id: val,address:cont,username:name,node:id,url:url}})
+      goDetailPage(val, cont, name, id, url) {
+        this.$router.push({
+          name: 'mAccountDetail',
+          params: {id: val, address: cont, username: name, node: id, url: url}
+        })
       }
     },
 
@@ -147,7 +151,7 @@
           color: #333;
           position: relative;
           width: 100%;
-          .user-symbol{
+          .user-symbol {
             width: r(40);
             height: r(40);
             background-color: #85abfc;
@@ -156,9 +160,21 @@
             line-height: r(40);
             float: left;
             margin: r(10);
-            span{
+            span {
               color: #fff;
               @include f(24px)
+            }
+          }
+          .user-symbol-next {
+            width: r(40);
+            height: r(40);
+            text-align: center;
+            line-height: r(40);
+            float: left;
+            margin: r(10);
+            img{
+              width: r(40);
+              height: r(40);
             }
           }
           .user-name {
