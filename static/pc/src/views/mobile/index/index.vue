@@ -32,7 +32,6 @@
         <tran-list v-if="islogin && transactItem === 'saleUet'" :type="2"></tran-list>
       </transition>
     </div>
-
     <m-navbar></m-navbar>
   </div>
 </template>
