@@ -14,15 +14,19 @@
               <div class="info-detail">
                 账户余额：
                 <span class="cl-red">
-                <animated-integer :value="item.amount"></animated-integer>{{item.assetCode}}
-            </span>
+                  <animated-integer :value="item.amount"></animated-integer>{{item.assetCode}}
+                </span>
+              </div>
+              <div class="info-detail">
+                登录账号：{{checkUserName(item)}}
               </div>
               <div class="info-detail">
                 {{item.address}}
               </div>
             </div>
             <div class="copy-btn-next copy-btn" :data-clipboard-text="item.address"
-                 @click="copy">复制</div>
+                 @click="copy">复制
+            </div>
           </div>
         </div>
         <div class="right">
@@ -71,57 +75,64 @@
   import Confirm from 'components/confirm'
   import {$localStorage} from '@/util/storage'
   import TransferDialog from './transfer-dialog'
+
   export default {
     name: "account-man",
-    data(){
-      return{
-        userList:[],
-        showAddUser:false,
-        showQrcode:false,
-        qrcodeAddress:'',
-        deleteConfrim:false,
-        delUserId:'',
-        delUserName:'',
-        showTran:false,
-        isTranOut:false,
-        showManual:false,
+    data() {
+      return {
+        userList: [],
+        showAddUser: false,
+        showQrcode: false,
+        qrcodeAddress: '',
+        deleteConfrim: false,
+        delUserId: '',
+        delUserName: '',
+        showTran: false,
+        isTranOut: false,
+        showManual: false,
         tranData: null,
-        otherUserList:[],
+        otherUserList: [],
       }
     },
-    computed:{
+    computed: {
       ...mapGetters([
         "userId",
         "centerId",
       ])
     },
-    watch:{
-      showQrcode(val){
-        if(!val){
+    watch: {
+      showQrcode(val) {
+        if (!val) {
           this.qrcodeAddress = ''
         }
       },
-      deleteConfrim(val){
-        if(!val){
+      deleteConfrim(val) {
+        if (!val) {
           this.delUserId = ''
           this.delUserName = ''
         }
       }
     },
-    components:{
+    components: {
       AnimatedInteger,
       CusLogin,
       QrcodeDialog,
       Confirm,
       TransferDialog
     },
-    methods:{
-      getUserList(){
+    methods: {
+      getUserList() {
         getCenterInfo({}).then(res => {
-          if(res.code === 10000){
-            this.userList = [...res.data]
-            this.$store.commit('GET_CENTERID',res.data[0].centerId)
-          }else{
+          if (res.code === 10000) {
+            this.userList = res.data
+            const index = _(res.data).findIndex({userId: this.userId})
+            const nowArr = res.data.find((item) => {
+              return item.userId === this.userId
+            })
+            this.userList.splice(index,1)
+            this.userList.unshift(nowArr)
+            this.$store.commit('GET_CENTERID', res.data[0].centerId)
+          } else {
             toast(res.message)
           }
         }).catch(err => {
@@ -141,89 +152,92 @@
           clipboard.destroy()
         })
       },
-      qrcodeDetail(val){ //展示收款二维码
+      qrcodeDetail(val) { //展示收款二维码
         this.qrcodeAddress = 'UET,' + val
         this.showQrcode = true
       },
-      delAccountConfirm(item){
+      delAccountConfirm(item) {
         this.delUserId = item.userId
         this.delUserName = item.name
         this.deleteConfrim = true
       },
-      delAccount(){ //删除账户
-        deleteCenter({userId:this.delUserId}).then(res => {
-          if(res.code === 10000){
+      delAccount() { //删除账户
+        deleteCenter({userId: this.delUserId}).then(res => {
+          if (res.code === 10000) {
             toast(`解除${this.delUserName}账户成功`)
             this.deleteConfrim = false
             this.getUserList()
-          }else{
+          } else {
             toast(res.message)
           }
         }).catch(err => {
           toast(err)
         })
       },
-      switchAccount(item){ //切换账户
+      switchAccount(item) { //切换账户
         const data = {
-          type:11,
+          type: 11,
           token: item.token,
           merchantId: item.merchantId
         }
         login(data).then(res => {
-          if(res.code === 10000){
+          if (res.code === 10000) {
             $localStorage.set('tokenInfo', JSON.stringify(res.data.tokenVo));
-            this.$store.commit('SET_USERDATA',res.data);
+            this.$store.commit('SET_USERDATA', res.data);
             this.$store.dispatch('CHECK_ONLINE', true);
             this.$store.dispatch('UPDATE_TOKEN_INFO', res.data.tokenVo);
             this.$store.dispatch("GET_BANKCARD");
             this.$store.dispatch('GET_USERBALANCE')
             _.initRongyun()
             toast('切换用户成功')
-            this.$router.push({name:'walletCenter'})
-          }else{
+            this.$router.push({name: 'walletCenter'})
+          } else {
             toast(res.message)
           }
         }).catch(err => {
           toast(err)
         })
       },
-      toTransfer(data,type){ //type 1转出 2转入
+      toTransfer(data, type) { //type 1转出 2转入
         this.tranData = data
         this.isTranOut = type === 2 ? false : true
         this.showManual = type === 2 ? false : data.userId === this.userId
         this.otherUserList = this.userList.filter(item => {
           return item.userId != data.userId
         })
-        if(type === 1){
+        if (type === 1) {
           this.showTran = true
-        }else{
-          if(this.otherUserList.length > 0){
+        } else {
+          if (this.otherUserList.length > 0) {
             this.showTran = true
-          }else{
+          } else {
             toast('您尚未关联其他账户，无法进行账户内转账')
           }
         }
+      },
+      checkUserName(data){
+        return _.isNull(data.userName) ? (_.isNull(data.phone) ? data.email : data.phone) : data.userName
       }
     },
-    mounted(){
+    mounted() {
       this.getUserList()
     }
   }
 </script>
 
 <style lang="scss" scoped>
-  .acc-main{
+  .acc-main {
     padding: 31px;
-    .list-info{
+    .list-info {
       width: 100%;
-      height: 182px;
+      /*height: 182px;*/
       background: #FFFFFF;
       border: 1px solid #D3D3D3;
       padding: 21px;
       display: flex;
       justify-content: space-between;
       margin-bottom: 30px;
-      .info-btn{
+      .info-btn {
         width: 120px;
         height: 40px;
         text-align: center;
@@ -232,30 +246,30 @@
         cursor: pointer;
         font-size: 16px;
         margin-bottom: 20px;
-        &.switch{
+        &.switch {
           background: #86A5F8;
         }
-        &.del{
+        &.del {
           background: #F68887;
           margin-left: 20px;
         }
       }
-      .switch-del{
+      .switch-del {
         display: flex;
       }
-      .flex{
+      .flex {
         display: flex;
         align-items: flex-end;
         justify-content: space-between;
         width: 530px;
       }
-      .info-detail{
+      .info-detail {
         font-size: 16px;
         line-height: 16px;
         color: #333333;
         margin-bottom: 10px;
       }
-      .copy-btn{
+      .copy-btn {
         display: inline-block;
         width: 63px;
         height: 30px;
@@ -269,7 +283,7 @@
         margin-left: 20px;
         margin-bottom: 5px;
       }
-      .right-btn{
+      .right-btn {
         width: 160px;
         height: 40px;
         text-align: center;
@@ -278,18 +292,18 @@
         font-size: 16px;
         cursor: pointer;
         margin-bottom: 10px;
-        &.pink{
+        &.pink {
           background: #F68887;
         }
-        &.blue{
+        &.blue {
           background: #3573FA;
         }
-        &.light-blue{
+        &.light-blue {
           background: #86A5F8;
         }
       }
     }
-    .add-account{
+    .add-account {
       width: 100%;
       height: 50px;
       line-height: 50px;
@@ -302,7 +316,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      .add-icon{
+      .add-icon {
         display: inline-block;
         width: 20px;
         height: 20px;
@@ -311,13 +325,13 @@
         margin-right: 10px;
         transition: all .5s;
       }
-      &:hover{
-        .add-icon{
+      &:hover {
+        .add-icon {
           transform: rotate(180deg);
         }
       }
     }
-    .blue-btn{
+    .blue-btn {
       background-color: #5087ff;
       color: #ffffff;
     }
