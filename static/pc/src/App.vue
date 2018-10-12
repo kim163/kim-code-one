@@ -133,9 +133,11 @@
                 //console.log(msgData);
               }
             } else {*/
+              console.log(msgData.orderx,'砂进口的')
               this.$store.commit('UPDATE_NEWORDER', {
                 type: msgData.type,
-                orderId: msgData.text
+                orderId: msgData.text,
+                orderx:JSON.parse(msgData.orderx)
               })
             }
         })

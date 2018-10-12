@@ -13,7 +13,9 @@
     <div class="user-list">
       <div class="user" v-for="(item,index) in randomUser" :key="index" :style="{left: `${item.left}%`,top:`${item.top}%`}">{{item.name}}</div>
     </div>
-    <div class="" style=" color: #fff">{{getNewOrder.type}}</div>
+    <div class="list-" v-for="list in newArr.arr">
+
+    </div>
   </div>
 </template>
 
@@ -29,6 +31,7 @@
         title:'匹配中...',
         userList:[],
         randomUser:[],
+        newArr:[],
         leftArr:_.shuffle(_.range(10,30,4).concat(_.range(60,80,4))),
         topArr:_.shuffle(_.range(10,40,6).concat(_.range(60,90,6)))
       }
@@ -38,8 +41,13 @@
       event:'change'
     },
     watch:{
-      getNewOrder(val){
-        console.log(val,'速度')
+      'getNewOrder':{
+        handler(newValue,oldValue){
+          console.log(newValue,'杀菌灯')
+          this.newArr.push({arr:newValue.orderId})
+
+        },
+        deep:true
       }
     },
     props:{
