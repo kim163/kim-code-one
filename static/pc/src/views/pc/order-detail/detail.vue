@@ -567,7 +567,29 @@
         this.payTypeConfirm = true
       },
       getRealPayAmount(){
-
+        const data = {
+          orderId: this.orderId,
+          accountCashVo:{
+            type: this.payType
+          }
+        }
+        const selectPay = this.bankCardInfo.find(item => {
+          return item.type === this.payType
+        })
+        if(selectPay){
+          Object.assign(data.accountCashVo,{
+            account: selectPay.account
+          })
+        }
+        transaction.recommendedAmount(data).then(res => {
+          if(res.code === 10000){
+            //去展示推荐金额
+          }else {
+            toast(res.message)
+          }
+        }).catch(err => {
+          toast(err)
+        })
       }
     },
     created() {
@@ -620,6 +642,7 @@
         'connectState',
         'unreadCount',
         'getNewOrder',
+        'bankCardInfo'
       ]),
       unreadCountUpdate() {
         if (this.unreadCount < 0) {
