@@ -7,16 +7,22 @@
 
       <div class="page-content detail-box" v-if="DetailList">
         <detail-title :isCredit="isCredit" :isDebit="isDebit" :orderId="orderId"></detail-title>
-        <div class="pay-type">
+        <div class="pay-type" v-if="isCredit && DetailList.debit === '0'">
           <div class="tips">请先选择以下的付款方式，根据生成的金额来付款，选择后不可更改，为了及时到账请确保付款的金额准确</div>
           <div class="type-list">
-            <div class="type-item" v-for="(item,indx) in payTypeList" :class="{active: item.type === payType}" :key="index">
-
+            <div class="type-item" v-for="(item,index) in payTypeList"
+                 :class="{active: item.type === payType}"
+                 :key="index" @click="payType != 0 ? '' : chooseType(item.type)">
+              <div class="icon">
+                <i class="iconfont" :class="item.icon"></i>
+              </div>
+              我用{{item.name}}转账
             </div>
           </div>
         </div>
         <div class="detail-in cfx">
-          <display-infor :DetailList="DetailList" :isCredit="isCredit" :isDebit="isDebit" :isTrading="true"></display-infor>
+          <display-infor :DetailList="DetailList" :isCredit="isCredit" :isDebit="isDebit"
+                         :isTrading="true"></display-infor>
           <div class="col-33">
             <div class="order-time">
               <p class="red order-status-title">
@@ -277,24 +283,25 @@
         buyTypeBuyBank: '',
         couponValueStr: 0,
         showDiscountInfo: false,
-        payTypeList:[
+        payTypeList: [
           {
-            icon:'icon-pay-type-ali',
-            name:'支付宝',
-            type:1
+            icon: 'icon-pay-type-ali',
+            name: '支付宝',
+            type: 1
           },
           {
-            icon:'icon-pay-type-wechat',
-            name:'微信',
-            type:2
+            icon: 'icon-pay-type-wechat',
+            name: '微信',
+            type: 2
           },
           {
-            icon:'icon-pay-type-bank',
-            name:'银行卡',
-            type:3
+            icon: 'icon-pay-type-bank',
+            name: '银行卡',
+            type: 3
           }
         ],
-        payType:0,
+        payType: 0,
+        showPayType: false,
       };
     },
     methods: {
@@ -322,6 +329,7 @@
             this.fetchDiscountNum()
             if (this.DetailList.credit == this.userId) {
               this.isCredit = true;
+              this.payType = _.isNull(this.DetailList.creditAccountTypeTwin) ? 0 : this.DetailList.creditAccountTypeTwin
             } else if (this.DetailList.debit == this.userId) {
               this.isDebit = true;
             }
@@ -338,7 +346,7 @@
               }
               // toast('对方已确认付款，请查收是否到账');
             }
-          }else{
+          } else {
             toast(res.message)
             this.$router.replace({name: 'walletCenter'});
           }
@@ -384,7 +392,7 @@
           if (res.code == '10000') {
             toast('您已取消，请勿重复操作');
             Vue.$global.bus.$emit('update:tranList');
-            this.$store.commit('UPDATE_NEWORDER',{
+            this.$store.commit('UPDATE_NEWORDER', {
               type: 0,
               orderId: ''
             })
@@ -547,8 +555,10 @@
       },
       countDownEnd() {
         this.fetchData();
-      }
+      },
+      chooseType(data){ //买家选择支付渠道
 
+      }
     },
     created() {
       if (this.$route.params.id) {
@@ -571,9 +581,9 @@
       "getNewOrder": {
         handler(newVal, oldVal) {
           if (newVal.orderId === this.orderId) {
-            if(newVal.type === 1 || newVal.type === 2){
+            if (newVal.type === 1 || newVal.type === 2) {
               this.fetchData();
-            }else{
+            } else {
               let routerName = ''
               if (newVal.type === 3 || newVal.type === 4) {
                 routerName = 'orderDetailOver'
@@ -762,9 +772,10 @@
     min-height: 300px;
     padding: 0 0 23px;
   }
-  .go-back-part{
+
+  .go-back-part {
     height: 40px;
-    a{
+    a {
       font-size: 16px;
       padding: 5px 12px;
       border-radius: 15px;
@@ -773,7 +784,7 @@
       display: block;
       line-height: 16px;
       margin-top: 7px;
-      &:hover{
+      &:hover {
         background: #9490F6;
       }
     }
@@ -787,11 +798,11 @@
     .time-stame {
       font-size: 20px;
       padding: 10px 0;
-      span{
+      span {
         display: block;
-         &:last-child {
+        &:last-child {
           color: red;
-         }
+        }
       }
     }
     .col-33 {
@@ -808,6 +819,55 @@
     }
     .red {
       color: red;
+    }
+    .pay-type {
+      padding: 30px 40px;
+      .tips {
+        font-size: 14px;
+      }
+      .type-list {
+        margin-top: 30px;
+        display: flex;
+        justify-content: space-between;
+      }
+      .type-item {
+        width: 346px;
+        height: 80px;
+        background: #F3F7FF;
+        border-radius: 5px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        &:hover{
+          box-shadow: 0 2px 5px 0 rgba(0,0,0,0.30);
+        }
+        &.active{
+          background-image: linear-gradient(0deg, #3A7FDB 0%, #58A0FF 100%);
+          box-shadow: 0 2px 5px 0 rgba(0,0,0,0.30);
+        }
+      }
+      .icon {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: #FFFFFF;
+        margin-right: 20px;
+        text-align: center;
+        font-size: 24px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        .icon-pay-type-ali {
+          color: #3988FF;
+        }
+        .icon-pay-type-wechat {
+          color: #24DB5A;
+        }
+        .icon-pay-type-bank {
+          color: #EC3A4E;
+        }
+      }
     }
   }
 
