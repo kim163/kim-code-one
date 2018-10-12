@@ -11,7 +11,9 @@
             <p class="user-symbol" v-if="list.iconUrl ==null"><span class="iconfont icon-default-user"></span></p>
             <p class="user-symbol-next" v-else><img :src="list.iconUrl" alt=""></p>
             <p class="user-name">{{list.name}}</p>
-            <p class="order-num">{{list.address}}</p>
+            <p class="order-num" v-if="list.userName">登录账号: {{list.userName}}</p>
+            <p class="order-num" v-else-if="list.phone">登录账号: {{list.phone}}</p>
+            <p class="order-num" v-else>登录账号: {{list.email}}</p>
             <span class="iconfont icon-right-arrow right-direct"></span>
           </div>
           <div class="bottom-line">
@@ -78,7 +80,7 @@
         userCenter.getCenterInfo(request).then(res => {
           if (res.code == '10000') {
             this.accountArr = res.data
-
+            console.log(this.accountArr,'就萨科技的')
           }
         })
       },
