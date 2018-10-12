@@ -6,7 +6,7 @@
         <span>
           <img :src="getLogo" class="logo" v-if="currentIcon==null">
           <img :src="currentIcon" alt="" class="logo" v-else>
-          {{$t('navbar.nickName')}}：{{userData.nickname}}
+          {{userData.nickname}}
           <span class="iconfont icon-right-arrow left "></span>
         </span>
            </span>
