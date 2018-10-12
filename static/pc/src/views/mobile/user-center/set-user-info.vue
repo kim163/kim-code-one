@@ -69,7 +69,7 @@
         const data = {
           idCard:'',
           userId: this.userData.userId,
-          name: this.name,
+          name: _.isNull(this.userData.name) ? this.name : this.userData.name,
           nickname: this.nickName
         }
         console.log('set user',data)
