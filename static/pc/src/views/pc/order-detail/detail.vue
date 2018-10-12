@@ -7,6 +7,14 @@
 
       <div class="page-content detail-box" v-if="DetailList">
         <detail-title :isCredit="isCredit" :isDebit="isDebit" :orderId="orderId"></detail-title>
+        <div class="pay-type">
+          <div class="tips">请先选择以下的付款方式，根据生成的金额来付款，选择后不可更改，为了及时到账请确保付款的金额准确</div>
+          <div class="type-list">
+            <div class="type-item" v-for="(item,indx) in payTypeList" :class="{active: item.type === payType}" :key="index">
+
+            </div>
+          </div>
+        </div>
         <div class="detail-in cfx">
           <display-infor :DetailList="DetailList" :isCredit="isCredit" :isDebit="isDebit" :isTrading="true"></display-infor>
           <div class="col-33">
@@ -268,7 +276,25 @@
         chatOnline: true,
         buyTypeBuyBank: '',
         couponValueStr: 0,
-        showDiscountInfo: false
+        showDiscountInfo: false,
+        payTypeList:[
+          {
+            icon:'icon-pay-type-ali',
+            name:'支付宝',
+            type:1
+          },
+          {
+            icon:'icon-pay-type-wechat',
+            name:'微信',
+            type:2
+          },
+          {
+            icon:'icon-pay-type-bank',
+            name:'银行卡',
+            type:3
+          }
+        ],
+        payType:0,
       };
     },
     methods: {
