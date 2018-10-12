@@ -171,7 +171,7 @@
       },
       TransMoneyNext(val, address) {
         const request = {
-          userId: this.userId,
+          userId: this.currentId,
           amount: this.transferNum,
           nodeId: val,
           /*debit是用户自己的  贷方*/
