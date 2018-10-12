@@ -57,11 +57,11 @@
 
     <div class="panel-item">
       <div class="mcenter-linkitem">
-       <!-- <router-link :to="{name:'mBindList'}" v-if="userData.nodeId < 10000" class="item-href">
-          <i class="iconfont logo icon-business-list"></i>
-          {{$t('navbar.busineList')}}
-          <i class="iconfont icon-right-arrow"></i>
-        </router-link>-->
+        <!-- <router-link :to="{name:'mBindList'}" v-if="userData.nodeId < 10000" class="item-href">
+           <i class="iconfont logo icon-business-list"></i>
+           {{$t('navbar.busineList')}}
+           <i class="iconfont icon-right-arrow"></i>
+         </router-link>-->
         <router-link :to="{name:'mAppealList'}" class="item-href">
           <i class="iconfont logo icon-appeal-list"></i>
           {{$t('userCenter.appealList')}}
@@ -127,12 +127,16 @@
         </div>
         <div class="account-person-more" v-else>
           <p class="changeTitle">切换账号</p>
-          <p v-for="list in accountList" class="account-list">
-            <img :src="list.iconUrl" alt="" v-if="list.iconUrl">
-            <span class="iconfont icon-default-user user-symbol" v-else></span>
-            <span class="user-name">{{list.name}}</span>
-            <span class="change-account" @click="changeAccount(list.token,list.merchantId)">切换账户</span>
-          </p>
+          <div class="list-box">
+            <p v-for="list in accountList" class="account-list">
+              <img :src="list.iconUrl" alt="" v-if="list.iconUrl">
+              <span class="iconfont icon-default-user user-symbol" v-else></span>
+              <span class="user-name">{{list.name}}</span>
+
+              <span class="change-account" @click="changeAccount(list.token,list.merchantId)">切换账户</span>
+            </p>
+          </div>
+
         </div>
         <div class="add-account" @click="addAccount">添加账户</div>
         <div class="account-content">
@@ -186,8 +190,8 @@
         singerUserName: '',
         isSingle: false,
         accountList: [],
-        currentUser:[],
-        currentIcon:''
+        currentUser: [],
+        currentIcon: ''
       }
     },
     components: {
@@ -229,18 +233,44 @@
       },
       openSideMenu() {
         this.isAd = !this.isAd
-        this.getCenterInfo()
       },
       toSetInfo() {
         this.showConfirm = false;
         this.$router.push({name: 'mSetUserInfo'});
       },
+      flushCenterToken() {
+        const request = {}
+        userCenter.flushCenterToken(request).then(res => {
+          if (res.code == '10000') {
+            if (res.data.length == 1) {
+              this.isSingle = true
+              this.singerUserName = res.data[0].name
+              this.$store.commit('GET_CENTERID', res.data[0].centerId)
+            } else {
+              this.isSingle = false
+              this.accountList = res.data.filter((item) => {
+                return item.userId !== this.userId
+              })
+              console.log(this.accountList,'撒娇看')
+              this.currentUser = res.data.filter((item) => {
+                return item.userId == this.userId
+              })
+              this.currentIcon = this.currentUser[0].iconUrl
+              this.$store.commit('GET_CENTERID', res.data[0].centerId)
+            }
+          } else {
+            toast(res.message)
+          }
+        })
+      },
       changeAccount(val, cont) {
+        console.log(val,'手机卡了')
         const request = {
           type: 11,
           token: val,
           merchantId: cont
         }
+        console.log(request,'sakojd')
         show.login(request).then(res => {
           if (res.code == '10000') {
             $localStorage.set('tokenInfo', JSON.stringify(res.data.tokenVo));
@@ -249,7 +279,7 @@
             this.$store.dispatch('UPDATE_TOKEN_INFO', res.data.tokenVo);
             this.$store.dispatch("GET_BANKCARD");
             this.searchHomeInfo()
-            this.getCenterInfo()
+            this.flushCenterToken()
             _.initRongyun()
             toast('切换用户成功')
             this.isAd = false
@@ -257,11 +287,13 @@
             toast(res.message)
           }
         })
-      },
+      }
+      ,
       formatCny(type) {   // type 1表示用户余额 2表示锁定资产
         const amount = type === 1 ? this.homeInforma.chainAmount : (this.homeInforma.pendingAmount + this.homeInforma.lockedAmount);
         return !_.isNaN(Number(amount)) ? (Number(amount) * 0.01).toFixed(2) : '0.00';
-      },
+      }
+      ,
       searchHomeInfo() {
         this.requestdata = {
           userId: this.userId
@@ -273,39 +305,16 @@
         }).catch(err => {
           toast(err.message);
         })
-      },
+      }
+      ,
       calUserBalance(type) {
         const balAmount = type === 1 ? this.homeInforma.chainAmount : (this.homeInforma.pendingAmount + this.homeInforma.lockedAmount);
         return !_.isNaN(Number(balAmount)) ? Number(balAmount) : '0.00';
-      },
+      }
+      ,
       goAccountManager() {
         this.$router.push({name: 'mAccountManager'})
       },
-      getCenterInfo() {
-        const request = {}
-        userCenter.getCenterInfo(request).then(res => {
-          if (res.code == '10000') {
-            if (res.data.length == 1) {
-              this.isSingle = true
-              this.singerUserName = res.data[0].name
-              this.$store.commit('GET_CENTERID', res.data[0].centerId)
-            } else {
-              this.isSingle = false
-              this.accountList = res.data.filter((item) => {
-                return item.userId !== this.userId
-              })
-              this.currentUser = res.data.filter((item)=>{
-                return item.userId == this.userId
-              })
-              this.currentIcon = this.currentUser[0].iconUrl
-              this.$store.commit('GET_CENTERID', res.data[0].centerId)
-            }
-          } else {
-            toast(res.message)
-          }
-        })
-      },
-
       getInfonext() {
         const requestDatas = {
           "limit": 10,
@@ -327,13 +336,14 @@
     created() {
       this.searchHomeInfo();
       this.getInfonext();
-      this.getCenterInfo();
+      this.flushCenterToken();
       // this.$store.commit('SET_ACCOUNT_MANAGER_TOKEN', {type: 'add', value: 'userToken', userId: this.userId});
       // const demoValue = $localStorage.get('name')
       // if(!demoValue){
       //   $localStorage.set('name','')
       // }
-    },
+    }
+    ,
     beforeRouteLeave(to, from, next) {
       if (to.name === 'mBindCard') {
         if (_.isNull(this.userData.name)) {
@@ -588,48 +598,51 @@
         .changeTitle {
           @include f(16px);
           color: #333;
-
           margin-bottom: r(20);
           padding-left: r(20);
         }
-        .account-list {
-          height: r(50);
-          width: 100%;
-          background-color: #fff;
-          border-bottom: 1px solid #E9E9E9;
-          border-top: 1px solid #e9e9e9;
-          line-height: r(50);
-          margin-bottom: r(10);
-          display: flex;
-          .user-symbol {
-            margin-top: r(8);
-            width: r(36);
-            height: r(36);
-            border-radius: 50%;
-            text-align: center;
-            line-height: r(36);
-            background-color: #85ABFC;
-            color: #fff;
-            margin-left: r(8);
-          }
-          .user-name {
-            flex: 2;
-            padding-left: r(10);
-          }
-          .change-account {
-            flex: 1;
-            padding-left: r(10);
-            border-left: 1px solid #e9e9e9;
-            color: #3573FA;
-            @include f(14px)
-          }
-          img {
-            width: r(36);
-            height: r(36);
+        .list-box {
+          max-height: r(260);
+          overflow-y: scroll;
+          .account-list {
+            height: r(50);
+            width: 100%;
+            background-color: #fff;
+            border-bottom: 1px solid #E9E9E9;
+            border-top: 1px solid #e9e9e9;
             line-height: r(50);
-            padding-left: r(7);
-            margin-top: r(8);
+            margin-bottom: r(10);
+            display: flex;
+            .user-symbol {
+              margin-top: r(8);
+              width: r(36);
+              height: r(36);
+              border-radius: 50%;
+              text-align: center;
+              line-height: r(36);
+              background-color: #85ABFC;
+              color: #fff;
+              margin-left: r(8);
+            }
+            .user-name {
+              flex: 2;
+              padding-left: r(10);
+            }
+            .change-account {
+              flex: 1;
+              padding-left: r(10);
+              border-left: 1px solid #e9e9e9;
+              color: #3573FA;
+              @include f(14px)
+            }
+            img {
+              width: r(36);
+              height: r(36);
+              line-height: r(50);
+              padding-left: r(7);
+              margin-top: r(8);
 
+            }
           }
         }
       }

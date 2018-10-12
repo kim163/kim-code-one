@@ -89,7 +89,12 @@ export const getCenterInfo = jsonData => service({
   data:jsonData
 })
 
-
+//带刷新token 的中心列表
+export const flushCenterToken = jsonData => service({
+  url:numversion + `user/center/flushCenterToken`,
+  method:'post',
+  data:jsonData
+})
 //登录 用户名/手机/邮箱统一登录
 export const chainLogin = jsonData => service({
   url:numversion2 +`user/chain/login`,
@@ -133,3 +138,4 @@ export const findPwd = jsonData => service({
   data:jsonData
 })
 
+//

@@ -170,6 +170,7 @@
         })
       },
       TransMoneyNext(val, address) {
+
         const request = {
           userId: this.currentId,
           amount: this.transferNum,
@@ -290,6 +291,7 @@
           'assetCode': 'UET',
           'address': this.currentAddress
         };
+        console.log(this.requestdata,'电视卡')
         transaction.getAccountChain(this.requestdata).then(res => {
           if (res.code == '10000') {
             this.accountValue = Number(res.data.balance)
