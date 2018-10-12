@@ -221,7 +221,12 @@
               @closeChatroom="iscloseChatroom"
       ></chat>
     </div>
-
+    <confirm-dialog v-model="payTypeConfirm" :is-pc="true">
+      <div slot="title">请确认是否选择<span class="cl-red">{{payTypeList[payType - 1].name}}</span>付款？</div>
+      <div slot="content">选择后不可更改</div>
+      <div slot="leftBtn">返回</div>
+      <div slot="rightBtn" @click="getRealPayAmount">确认</div>
+    </confirm-dialog>
   </div>
 </template>
 
@@ -302,6 +307,7 @@
         ],
         payType: 0,
         showPayType: false,
+        payTypeConfirm:false,//支付方式确认弹窗
       };
     },
     methods: {
@@ -557,6 +563,10 @@
         this.fetchData();
       },
       chooseType(data){ //买家选择支付渠道
+        this.payType = data
+        this.payTypeConfirm = true
+      },
+      getRealPayAmount(){
 
       }
     },
@@ -596,6 +606,11 @@
         },
         deep: true
       },
+      payTypeConfirm(val){
+        if(!val){
+          this.payType = 0
+        }
+      }
     },
     computed: {
       ...mapGetters([
@@ -617,7 +632,15 @@
       }
     },
     components: {
-      DetailTitle, DisplayInfor, NoDataTip, getBankcard, uploadImg, CountDown, confirmDialog, chatList, chat
+      DetailTitle,
+      DisplayInfor,
+      NoDataTip,
+      getBankcard,
+      uploadImg,
+      CountDown,
+      confirmDialog,
+      chatList,
+      chat,
     },
     beforeRouteEnter(to, from, next) {
       if (from.name === 'orderDetailAppeal') {
