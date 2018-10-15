@@ -29,7 +29,7 @@
             </div>
           </div>
         </div>
-        <div class="right">
+        <div class="right-side">
           <div class="right-btn pink" @click="toTransfer(item,1)">UET转出</div>
           <div class="right-btn blue" @click="toTransfer(item,2)">UET转入</div>
           <div class="right-btn light-blue" @click="qrcodeDetail(item.address)">收款码</div>
@@ -62,7 +62,7 @@
 
 <script>
   import {
-    getCenterInfo,
+    flushCenterToken,
     deleteCenter
   } from 'api/user-center'
   import {
@@ -122,13 +122,11 @@
     },
     methods: {
       getUserList() {
-        getCenterInfo({}).then(res => {
+        flushCenterToken({}).then(res => {
           if (res.code === 10000) {
             this.userList = res.data
             const index = _(res.data).findIndex({userId: this.userId})
-            const nowArr = res.data.find((item) => {
-              return item.userId === this.userId
-            })
+            const nowArr = res.data[index]
             this.userList.splice(index,1)
             this.userList.unshift(nowArr)
             this.$store.commit('GET_CENTERID', res.data[0].centerId)
@@ -283,6 +281,12 @@
         margin-left: 20px;
         margin-bottom: 5px;
       }
+      .right-side{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+      }
       .right-btn {
         width: 160px;
         height: 40px;
@@ -291,7 +295,7 @@
         color: #ffffff;
         font-size: 16px;
         cursor: pointer;
-        margin-bottom: 10px;
+        /*margin-bottom: 10px;*/
         &.pink {
           background: #F68887;
         }

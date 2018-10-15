@@ -11,7 +11,9 @@
             <p class="user-symbol" v-if="list.iconUrl ==null"><span class="iconfont icon-default-user"></span></p>
             <p class="user-symbol-next" v-else><img :src="list.iconUrl" alt=""></p>
             <p class="user-name">{{list.name}}</p>
-            <p class="order-num">{{list.address}}</p>
+            <p class="order-num" v-if="list.userName">登录账号: {{list.userName}}</p>
+            <p class="order-num" v-else-if="list.phone">登录账号: {{list.phone}}</p>
+            <p class="order-num" v-else>登录账号: {{list.email}}</p>
             <span class="iconfont icon-right-arrow right-direct"></span>
           </div>
           <div class="bottom-line">
@@ -77,7 +79,15 @@
         }
         userCenter.getCenterInfo(request).then(res => {
           if (res.code == '10000') {
-            this.accountArr = res.data
+            this.currentInfo = res.data.find((item) => {
+              return item.userId == this.userId
+            })
+
+            this.accountArr=res.data.filter((item) => {
+              return item.userId !== this.userId
+            })
+            console.log(this.accountArr,'asda')
+            this.accountArr.unshift(this.currentInfo)
 
           }
         })
@@ -172,7 +182,7 @@
             line-height: r(40);
             float: left;
             margin: r(10);
-            img{
+            img {
               width: r(40);
               height: r(40);
             }
