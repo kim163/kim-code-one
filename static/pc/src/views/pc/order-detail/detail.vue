@@ -222,14 +222,14 @@
       ></chat>
     </div>
     <confirm-dialog v-model="payTypeConfirm" :is-pc="true">
-      <div slot="title">请确认是否选择<span class="cl-red">{{payTypeList[payType - 1].name}}</span>付款？</div>
+      <div slot="title">请确认是否选择<span class="cl-red">{{payType === 0 ? '' : payTypeList[payType - 1].name}}</span>付款？</div>
       <div slot="content">选择后不可更改</div>
-      <div slot="leftBtn">返回</div>
-      <div slot="rightBtn" @click="getRealPayAmount">确认</div>
+      <div slot="leftBtn" @click="hidePayType">返回</div>
+      <div slot="rightBtn" class="bg-blue" @click="getRealPayAmount">确认</div>
     </confirm-dialog>
     <common-popup v-if="showRealAmount">
       <div class="real-main">
-        <div class="title">请用{{payTypeList[payType - 1].name}}付款</div>
+        <div class="title">请用{{payType === 0 ? '' : payTypeList[payType - 1].name}}付款</div>
         <div class="real-amount cl-red">&yen; {{realAmount}}</div>
         <div class="tips cl-red">请保证转账的金额准确，否则订单会匹配失败，金额有少许差额敬请见谅！！</div>
         <div class="real-btn" @click="hasGetRealAmount">我知道了</div>
@@ -597,9 +597,11 @@
           })
         }
         transaction.recommendedAmount(data).then(res => {
+          console.log(res)
           if(res.code === 10000){
             this.realAmount = res.data.key
             this.showRealAmount = true
+            this.payTypeConfirm = false
           }else {
             toast(res.message)
           }
@@ -610,6 +612,10 @@
       hasGetRealAmount(){
         this.showRealAmount = false
         this.hideAmountBtn = false
+      },
+      hidePayType(){
+        this.payTypeConfirm = false
+        this.payType = 0
       }
     },
     created() {
@@ -648,11 +654,11 @@
         },
         deep: true
       },
-      payTypeConfirm(val){
-        if(!val){
-          this.payType = 0
-        }
-      }
+      // payTypeConfirm(val){
+      //   if(!val){
+      //     this.payType = 0
+      //   }
+      // }
     },
     computed: {
       ...mapGetters([
@@ -685,6 +691,9 @@
       chatList,
       chat,
       CommonPopup
+    },
+    beforeDestroy(){
+      this.showDiscountInfo = false
     },
     beforeRouteEnter(to, from, next) {
       if (from.name === 'orderDetailAppeal') {
@@ -889,6 +898,7 @@
     }
     .pay-type {
       padding: 30px 40px;
+      border-bottom: 1px solid #EBEBEB;
       .tips {
         font-size: 14px;
       }
@@ -906,12 +916,14 @@
         justify-content: center;
         align-items: center;
         cursor: pointer;
+        transition: all .5s;
         &:hover{
           box-shadow: 0 2px 5px 0 rgba(0,0,0,0.30);
         }
         &.active{
           background-image: linear-gradient(0deg, #3A7FDB 0%, #58A0FF 100%);
           box-shadow: 0 2px 5px 0 rgba(0,0,0,0.30);
+          color: #ffffff;
         }
       }
       .icon {
@@ -1082,6 +1094,7 @@
     width: 506px;
     padding: 30px;
     text-align: center;
+    background: #ffffff;
     .title{
       margin-top: 30px;
       ont-size: 24px;
@@ -1103,6 +1116,10 @@
       line-height: 50px;
       font-size: 18px;
       color: #FFFFFF;
+      background: #3573FA;
+      border-radius: 5px;
+      margin-top: 50px;
+      cursor: pointer;
     }
   }
 
