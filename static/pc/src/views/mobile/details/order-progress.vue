@@ -400,6 +400,7 @@
           orderId: this.orderId
         }
         transaction.getOrderx(this.request).then(res => {
+         if (res.code === 10000) {
           if (res.data == '' || res.data == null) {
             this.$router.push({name: 'mIndex'});
             return;
@@ -419,17 +420,20 @@
             this.DetailList.creditProofUrlTwin = res.data.creditProofUrlTwin.split(',');
           }
 
-          if (res.code == '10000') {
-            if (this.DetailList.credit == this.userId) {
-              toast('您已下单成功，请进入列表查询');
-            } else {
+          if (this.DetailList.credit == this.userId) {
+
+          } else {
               if (this.DetailList.status == '47' || this.DetailList.status == '48') {
                 toast('对方已确认付款，请查收是否到账');
               }
               // toast('对方已确认付款，请查收是否到账');
-            }
-
           }
+
+         }else{
+           toast(res.message);
+           this.$router.replace({name: 'mIndex'});
+         }
+
         }).catch(err => {
           toast(err.message);
         });
