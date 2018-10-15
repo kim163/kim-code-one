@@ -62,7 +62,7 @@
 
 <script>
   import {
-    getCenterInfo,
+    flushCenterToken,
     deleteCenter
   } from 'api/user-center'
   import {
@@ -122,7 +122,7 @@
     },
     methods: {
       getUserList() {
-        getCenterInfo({}).then(res => {
+        flushCenterToken({}).then(res => {
           if (res.code === 10000) {
             this.userList = res.data
             const index = _(res.data).findIndex({userId: this.userId})

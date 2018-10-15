@@ -30,7 +30,7 @@
             <div class="user-name">{{item.name}}</div>
             <div class="user-balance" v-if="showIndex != index">余额：{{item.amount}}{{item.assetCode}}</div>
             <div class="tran-out" v-else>
-              转出
+              {{isOut ? '转入' : '转出'}}
               <input class="input-out" type="text" v-model.number="withinAmount" v-number-only/>
               <div class="tran-btn" @click="toTansfer(2)">确定</div>
             </div>
