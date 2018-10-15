@@ -231,11 +231,11 @@
       },
       toCny(item){
         let amount = 0
-        if(item.type === 41){
+        // if(item.type === 41){
           amount = _(item.creditAmount * 0.01).floor(2)
-        }else{
-          amount = item.creditAmountTwin
-        }
+        // }else{
+        //   amount = item.creditAmountTwin
+        // }
         return amount
       }
     },
