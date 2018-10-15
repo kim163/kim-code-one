@@ -21,7 +21,7 @@
           </div>
         </div>
         <div class="detail-in cfx">
-          <display-infor :DetailList="DetailList" :isCredit="isCredit" :isDebit="isDebit"
+          <display-infor :DetailList="DetailList" :isCredit="isCredit" :hide-amount="hideAmountBtn" :isDebit="isDebit"
                          :isTrading="true"></display-infor>
           <div class="col-33">
             <div class="order-time">
@@ -51,7 +51,7 @@
               <p class="pay_send" v-if="showDiscountInfo&couponValueStr>0&DetailList.status =='45' && isDebit">立即付款后预计获赠
                 <span>{{couponValueStr}} UET</span></p>
               <div class="btn-group" v-if="DetailList.status =='45' && isCredit">
-                <input type="button" class="btn btn-block btn-normal" @click="showConfirm=true" value="我已完成付款">
+                <input type="button" class="btn btn-block btn-normal" @click="showConfirm=true" v-if="!hideAmountBtn" value="我已完成付款">
                 <p class="pay_send" v-if="showDiscountInfo&couponValueStr>0">立即付款后预计获赠
                   <span>{{couponValueStr}} UET</span></p>
                 <p class="payment-tips">
@@ -227,6 +227,14 @@
       <div slot="leftBtn">返回</div>
       <div slot="rightBtn" @click="getRealPayAmount">确认</div>
     </confirm-dialog>
+    <common-popup v-if="showRealAmount">
+      <div class="real-main">
+        <div class="title">请用{{payTypeList[payType - 1].name}}付款</div>
+        <div class="real-amount cl-red">&yen; {{realAmount}}</div>
+        <div class="tips cl-red">请保证转账的金额准确，否则订单会匹配失败，金额有少许差额敬请见谅！！</div>
+        <div class="real-btn" @click="hasGetRealAmount">我知道了</div>
+      </div>
+    </common-popup>
   </div>
 </template>
 
@@ -242,6 +250,7 @@
   import confirmDialog from 'components/confirm'
   import chatList from '../../../views/mobile/chatroom/chat-list'
   import chat from '../../../views/mobile/chatroom/chat'
+  import CommonPopup from 'components/common-popup'
 
   export default {
     data() {
@@ -288,7 +297,7 @@
         buyTypeBuyBank: '',
         couponValueStr: 0,
         showDiscountInfo: false,
-        payTypeList: [
+        payTypeList: [  //支付方式列表
           {
             icon: 'icon-pay-type-ali',
             name: '支付宝',
@@ -306,8 +315,11 @@
           }
         ],
         payType: 0,
-        showPayType: false,
+        showPayType: false, //展示支付类型选择
         payTypeConfirm:false,//支付方式确认弹窗
+        realAmount:0,
+        showRealAmount:false, //展示推荐金额弹窗
+        hideAmountBtn:false, //隐藏交易金额和我已完成付款按钮
       };
     },
     methods: {
@@ -335,7 +347,10 @@
             this.fetchDiscountNum()
             if (this.DetailList.credit == this.userId) {
               this.isCredit = true;
-              this.payType = _.isNull(this.DetailList.creditAccountTypeTwin) ? 0 : this.DetailList.creditAccountTypeTwin
+              if(this.DetailList.debit === '0'){
+                this.payType = _.isNull(this.DetailList.creditAccountTypeTwin) ? 0 : this.DetailList.creditAccountTypeTwin
+                this.hideAmountBtn = this.payType === 0 ? true : false
+              }
             } else if (this.DetailList.debit == this.userId) {
               this.isDebit = true;
             }
@@ -583,13 +598,18 @@
         }
         transaction.recommendedAmount(data).then(res => {
           if(res.code === 10000){
-            //去展示推荐金额
+            this.realAmount = res.data.key
+            this.showRealAmount = true
           }else {
             toast(res.message)
           }
         }).catch(err => {
           toast(err)
         })
+      },
+      hasGetRealAmount(){
+        this.showRealAmount = false
+        this.hideAmountBtn = false
       }
     },
     created() {
@@ -664,6 +684,7 @@
       confirmDialog,
       chatList,
       chat,
+      CommonPopup
     },
     beforeRouteEnter(to, from, next) {
       if (from.name === 'orderDetailAppeal') {
@@ -1055,6 +1076,33 @@
       margin-top: -1px;
       font-size: 14px;
       font-weight: bold;
+    }
+  }
+  .real-main{
+    width: 506px;
+    padding: 30px;
+    text-align: center;
+    .title{
+      margin-top: 30px;
+      ont-size: 24px;
+      color: #333333;
+    }
+    .real-amount{
+      font-size: 40px;
+      margin-top: 60px;
+    }
+    .tips{
+      font-size: 16px;
+      text-align: left;
+      margin-top: 57px;
+    }
+    .real-btn{
+      width: 100%;
+      height: 50px;
+      text-align: center;
+      line-height: 50px;
+      font-size: 18px;
+      color: #FFFFFF;
     }
   }
 
