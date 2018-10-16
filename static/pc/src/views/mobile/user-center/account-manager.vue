@@ -108,6 +108,10 @@
         })
       },
       delAccount(val, cont) {
+        if(cont==this.userId){
+           toast("主账户无法解绑!")
+           return
+        }
         this.accountName = val
         this.isConfirm = true
         this.accountUserId = cont
