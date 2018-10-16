@@ -1111,6 +1111,7 @@
       font-size: 16px;
       text-align: left;
       margin-top: 57px;
+      line-height: 24px;
     }
     .real-btn{
       width: 100%;
