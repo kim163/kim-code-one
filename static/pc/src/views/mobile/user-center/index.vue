@@ -488,7 +488,6 @@
       border-bottom: 1px solid #E4E4E4;
       padding-left: r(20);
       margin-bottom: r(10);
-
       .item-href {
         height: r(50);
         line-height: r(50);
