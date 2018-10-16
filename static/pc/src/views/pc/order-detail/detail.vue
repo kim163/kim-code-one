@@ -229,7 +229,7 @@
     </confirm-dialog>
     <common-popup v-if="showRealAmount">
       <div class="real-main">
-        <div class="title cl-red">请用{{selectTayItem.name}}付款</div>
+        <div class="title">请用{{selectTayItem.name}}付款</div>
         <div class="real-amount cl-red">&yen; {{realAmount}}</div>
         <div class="tips cl-red">请保证转账的金额准确，否则订单会匹配失败，金额有少许差额敬请见谅！！</div>
         <div class="real-btn" @click="hasGetRealAmount">我知道了</div>
@@ -1100,7 +1100,7 @@
     background: #ffffff;
     .title{
       margin-top: 30px;
-      ont-size: 24px;
+      font-size: 24px;
       color: #333333;
     }
     .real-amount{
