@@ -523,7 +523,6 @@
                 color: #787876;
                 flex: 1;
                 text-align: right;
-                white-space: nowrap;
               }
               .down-arrow {
                 display: inline-block;
