@@ -4,25 +4,10 @@
       <div class="go-back-part page-content cfx">
         <router-link :to="{name:'orderRecord'}" class="fr">返回上一页</router-link>
       </div>
-
       <div class="page-content detail-box" v-if="DetailList">
         <detail-title :isCredit="isCredit" :isDebit="isDebit" :orderId="orderId"></detail-title>
-        <div class="pay-type" v-if="isCredit && DetailList.debit === '0'">
-          <div class="tips">请先选择以下的付款方式，根据生成的金额来付款，选择后不可更改，为了及时到账请确保付款的金额准确</div>
-          <div class="type-list">
-            <div class="type-item" v-for="(item,index) in payTypeList"
-                 :class="{active: item.type === payType}"
-                 :key="index" @click="payType != 0 ? '' : chooseType(item)">
-              <div class="icon">
-                <i class="iconfont" :class="item.icon"></i>
-              </div>
-              我用{{item.name}}转账
-            </div>
-          </div>
-        </div>
         <div class="detail-in cfx">
-          <display-infor :DetailList="DetailList" :isCredit="isCredit" :hide-amount="hideAmountBtn" :isDebit="isDebit"
-                         :isTrading="true"></display-infor>
+          <display-infor :DetailList="DetailList" :isCredit="isCredit" :isDebit="isDebit" :isTrading="true"></display-infor>
           <div class="col-33">
             <div class="order-time">
               <p class="red order-status-title">
@@ -51,7 +36,7 @@
               <p class="pay_send" v-if="showDiscountInfo&couponValueStr>0&DetailList.status =='45' && isDebit">立即付款后预计获赠
                 <span>{{couponValueStr}} UET</span></p>
               <div class="btn-group" v-if="DetailList.status =='45' && isCredit">
-                <input type="button" class="btn btn-block btn-normal" @click="showConfirm=true" v-if="!hideAmountBtn" value="我已完成付款">
+                <input type="button" class="btn btn-block btn-normal" @click="showConfirm=true"  value="我已完成付款">
                 <p class="pay_send" v-if="showDiscountInfo&couponValueStr>0">立即付款后预计获赠
                   <span>{{couponValueStr}} UET</span></p>
                 <p class="payment-tips">
@@ -221,20 +206,6 @@
               @closeChatroom="iscloseChatroom"
       ></chat>
     </div>
-    <confirm-dialog v-model="payTypeConfirm" :is-pc="true">
-      <div slot="title">请确认是否选择<span class="cl-red">{{selectTayItem.name}}</span>付款？</div>
-      <div slot="content">选择后不可更改</div>
-      <div slot="leftBtn" @click="hidePayType">返回</div>
-      <div slot="rightBtn" class="bg-blue" @click="getRealPayAmount">确认</div>
-    </confirm-dialog>
-    <common-popup v-if="showRealAmount">
-      <div class="real-main">
-        <div class="title cl-red">请用{{selectTayItem.name}}付款</div>
-        <div class="real-amount cl-red">&yen; {{realAmount}}</div>
-        <div class="tips cl-red">请保证转账的金额准确，否则订单会匹配失败，金额有少许差额敬请见谅！！</div>
-        <div class="real-btn" @click="hasGetRealAmount">我知道了</div>
-      </div>
-    </common-popup>
   </div>
 </template>
 
@@ -250,7 +221,6 @@
   import confirmDialog from 'components/confirm'
   import chatList from '../../../views/mobile/chatroom/chat-list'
   import chat from '../../../views/mobile/chatroom/chat'
-  import CommonPopup from 'components/common-popup'
 
   export default {
     data() {
@@ -297,23 +267,6 @@
         buyTypeBuyBank: '',
         couponValueStr: 0,
         showDiscountInfo: false,
-        payTypeList: [  //支付方式列表
-          {
-            icon: 'icon-pay-type-ali',
-            name: '支付宝',
-            type: 1
-          },
-          {
-            icon: 'icon-pay-type-wechat',
-            name: '微信',
-            type: 2
-          },
-          {
-            icon: 'icon-pay-type-bank',
-            name: '银行卡',
-            type: 3
-          }
-        ],
         selectTayItem:{},
         payType: 0,
         showPayType: false, //展示支付类型选择
@@ -348,10 +301,6 @@
             this.fetchDiscountNum()
             if (this.DetailList.credit == this.userId) {
               this.isCredit = true;
-              if(this.DetailList.debit === '0'){
-                this.payType = _.isNull(this.DetailList.creditAccountTypeTwin) ? 0 : this.DetailList.creditAccountTypeTwin
-                this.hideAmountBtn = this.payType === 0 ? true : false
-              }
             } else if (this.DetailList.debit == this.userId) {
               this.isDebit = true;
             }
@@ -578,40 +527,7 @@
       countDownEnd() {
         this.fetchData();
       },
-      chooseType(data){ //买家选择支付渠道
-        this.selectTayItem = data
-        // this.payType = data.type
-        this.payTypeConfirm = true
-      },
-      getRealPayAmount(){
-        const data = {
-          orderId: this.orderId,
-          accountCashVo:{
-            type: this.selectTayItem.type
-          }
-        }
-        const selectPay = this.bankCardInfo.find(item => {
-          return item.type === this.selectTayItem.type
-        })
-        if(selectPay){
-          Object.assign(data.accountCashVo,{
-            account: selectPay.account
-          })
-        }
-        transaction.recommendedAmount(data).then(res => {
-          console.log(res)
-          if(res.code === 10000){
-            this.realAmount = res.data.key
-            this.payType = this.selectTayItem.type
-            this.showRealAmount = true
-            this.payTypeConfirm = false
-          }else {
-            toast(res.message)
-          }
-        }).catch(err => {
-          toast(err)
-        })
-      },
+
       hasGetRealAmount(){
         this.showRealAmount = false
         this.hideAmountBtn = false
@@ -671,7 +587,6 @@
         'connectState',
         'unreadCount',
         'getNewOrder',
-        'bankCardInfo'
       ]),
       unreadCountUpdate() {
         if (this.unreadCount < 0) {
@@ -684,19 +599,7 @@
       }
     },
     components: {
-      DetailTitle,
-      DisplayInfor,
-      NoDataTip,
-      getBankcard,
-      uploadImg,
-      CountDown,
-      confirmDialog,
-      chatList,
-      chat,
-      CommonPopup
-    },
-    beforeDestroy(){
-      this.showDiscountInfo = false
+      DetailTitle, DisplayInfor, NoDataTip, getBankcard, uploadImg, CountDown, confirmDialog, chatList, chat
     },
     beforeRouteEnter(to, from, next) {
       if (from.name === 'orderDetailAppeal') {

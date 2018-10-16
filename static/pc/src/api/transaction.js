@@ -193,9 +193,4 @@ export const getAccountChain = jsonData =>service({
   data:jsonData
 })
 
-//C2C撮合匹配 推荐金额
-export const recommendedAmount = jsonData =>service({
-  url:numversion+`order/c2c/recommendedAmount`,
-  method:'post',
-  data:jsonData
-})
+
