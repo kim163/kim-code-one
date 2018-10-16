@@ -623,6 +623,8 @@
             .user-name {
               flex: 2;
               padding-left: r(10);
+              max-width: r(138);
+              overflow: hidden;
             }
             .change-account {
               flex: 1;
