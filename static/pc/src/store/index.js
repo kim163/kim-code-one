@@ -41,6 +41,7 @@ const stateInit = {
   userBalance:0,
   lockedAmount:0,
   openQuickSell:false,
+  rongDisconnect:false,
   withdrawInfo:{
     pass:false,
     bankNo:'',
@@ -128,6 +129,9 @@ export default new Vuex.Store({
     },
     bankCardInfo(state,getters){
       return state.bankCardInfo;
+    },
+    getRongDisconnect(state,getters){
+      return state.rongDisconnect
     },
     isShowFastSale(state, getters) {
       return state.isShowFastSale;

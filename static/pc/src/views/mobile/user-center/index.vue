@@ -132,11 +132,9 @@
               <img :src="list.iconUrl" alt="" v-if="list.iconUrl">
               <span class="iconfont icon-default-user user-symbol" v-else></span>
               <span class="user-name">{{list.name}}</span>
-
               <span class="change-account" @click="changeAccount(list.token,list.merchantId)">切换账户</span>
             </p>
           </div>
-
         </div>
         <div class="add-account" @click="addAccount">添加账户</div>
         <div class="account-content">
@@ -251,7 +249,6 @@
               this.accountList = res.data.filter((item) => {
                 return item.userId !== this.userId
               })
-              console.log(this.accountList,'撒娇看')
               this.currentUser = res.data.filter((item) => {
                 return item.userId == this.userId
               })
@@ -264,13 +261,11 @@
         })
       },
       changeAccount(val, cont) {
-        console.log(val,'手机卡了')
         const request = {
           type: 11,
           token: val,
           merchantId: cont
         }
-        console.log(request,'sakojd')
         show.login(request).then(res => {
           if (res.code == '10000') {
             $localStorage.set('tokenInfo', JSON.stringify(res.data.tokenVo));
@@ -284,7 +279,7 @@
             toast('切换用户成功')
             this.isAd = false
           } else {
-            toast(res.message)
+            toast("切换账户不能太过频繁!")
           }
         })
       }

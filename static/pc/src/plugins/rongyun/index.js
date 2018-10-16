@@ -6,6 +6,10 @@ export default {
   install(Vue) {
     if(store.getters.islogin){
           this.getToken()
+          if(store.getters.rongDisconnect){
+            debugger;
+            this.disconnect()
+          }
         }
     else{
       Vue.$global.bus.$on('initRongyun',()=>{
@@ -15,6 +19,7 @@ export default {
   },
    getToken() {
       const userData = JSON.parse(aesutil.decrypt($localStorage.get('userData'),true))
+      console.log(userData.userId,'双卡的撒低级')
       let params = {
         userId: userData.userId,
         nickName: userData.nickname
@@ -67,7 +72,6 @@ export default {
             setTimeout(()=>{
               store.dispatch('LOGIN_OUT')
             },1500)
-
             break
           case RongIMLib.ConnectionStatus.DOMAIN_INCORRECT:  //eslint-disable-line
             info = '域名不正确'
@@ -161,5 +165,8 @@ export default {
       }
     });
   },
+  disconnect(){
+     RongIMClient.getInstance().disconnect()
+  }
 }
 
