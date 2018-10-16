@@ -12,7 +12,7 @@
           <div class="type-list">
             <div class="type-item" v-for="(item,index) in payTypeList"
                  :class="{active: item.type === payType}"
-                 :key="index" @click="payType != 0 ? '' : chooseType(item.type)">
+                 :key="index" @click="payType != 0 ? '' : chooseType(item)">
               <div class="icon">
                 <i class="iconfont" :class="item.icon"></i>
               </div>
@@ -222,14 +222,14 @@
       ></chat>
     </div>
     <confirm-dialog v-model="payTypeConfirm" :is-pc="true">
-      <div slot="title">请确认是否选择<span class="cl-red">{{payType === 0 ? '' : payTypeList[payType - 1].name}}</span>付款？</div>
+      <div slot="title">请确认是否选择<span class="cl-red">{{selectTayItem.name}}</span>付款？</div>
       <div slot="content">选择后不可更改</div>
       <div slot="leftBtn" @click="hidePayType">返回</div>
       <div slot="rightBtn" class="bg-blue" @click="getRealPayAmount">确认</div>
     </confirm-dialog>
     <common-popup v-if="showRealAmount">
       <div class="real-main">
-        <div class="title">请用{{payType === 0 ? '' : payTypeList[payType - 1].name}}付款</div>
+        <div class="title cl-red">请用{{selectTayItem.name}}付款</div>
         <div class="real-amount cl-red">&yen; {{realAmount}}</div>
         <div class="tips cl-red">请保证转账的金额准确，否则订单会匹配失败，金额有少许差额敬请见谅！！</div>
         <div class="real-btn" @click="hasGetRealAmount">我知道了</div>
@@ -314,6 +314,7 @@
             type: 3
           }
         ],
+        selectTayItem:{},
         payType: 0,
         showPayType: false, //展示支付类型选择
         payTypeConfirm:false,//支付方式确认弹窗
@@ -385,7 +386,7 @@
           'traderType': this.DetailList.credit == this.userId ? 1 : 2
         }
         transaction.getCouponAmount(request).then((res) => {
-          console.log(res, '手机打开')
+          // console.log(res, '手机打开')
           if (res.code == '10000') {
             if (res.data.isAward) {
               this.showDiscountInfo = true;
@@ -578,18 +579,19 @@
         this.fetchData();
       },
       chooseType(data){ //买家选择支付渠道
-        this.payType = data
+        this.selectTayItem = data
+        // this.payType = data.type
         this.payTypeConfirm = true
       },
       getRealPayAmount(){
         const data = {
           orderId: this.orderId,
           accountCashVo:{
-            type: this.payType
+            type: this.selectTayItem.type
           }
         }
         const selectPay = this.bankCardInfo.find(item => {
-          return item.type === this.payType
+          return item.type === this.selectTayItem.type
         })
         if(selectPay){
           Object.assign(data.accountCashVo,{
@@ -600,6 +602,7 @@
           console.log(res)
           if(res.code === 10000){
             this.realAmount = res.data.key
+            this.payType = this.selectTayItem.type
             this.showRealAmount = true
             this.payTypeConfirm = false
           }else {
