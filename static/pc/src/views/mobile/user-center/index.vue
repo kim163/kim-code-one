@@ -273,10 +273,12 @@
             this.$store.dispatch('CHECK_ONLINE', true);
             this.$store.dispatch('UPDATE_TOKEN_INFO', res.data.tokenVo);
             this.$store.dispatch("GET_BANKCARD");
+            this.$store.commit('SET_RONGYUNDISCONNECT',true)
             this.searchHomeInfo()
             this.flushCenterToken()
             _.initRongyun()
             toast('切换用户成功')
+            RongIMClient.getInstance().disconnect()
             this.isAd = false
           } else {
             toast("切换账户不能太过频繁!")

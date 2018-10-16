@@ -6,10 +6,6 @@ export default {
   install(Vue) {
     if(store.getters.islogin){
           this.getToken()
-          if(store.getters.rongDisconnect){
-            debugger;
-            this.disconnect()
-          }
         }
     else{
       Vue.$global.bus.$on('initRongyun',()=>{
@@ -64,7 +60,6 @@ export default {
             break
           case RongIMLib.ConnectionStatus.DISCONNECTED:  //eslint-disable-line
             info = '断开连接'
-            toast(info)
             break
           case RongIMLib.ConnectionStatus.KICKED_OFFLINE_BY_OTHER_CLIENT:  //eslint-disable-line
             info = '其他设备登录'
@@ -165,8 +160,5 @@ export default {
       }
     });
   },
-  disconnect(){
-     RongIMClient.getInstance().disconnect()
-  }
 }
 
