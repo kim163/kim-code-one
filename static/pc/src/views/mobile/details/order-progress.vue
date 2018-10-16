@@ -30,6 +30,11 @@
           </div>
           <p class="pay_send" v-if="showDiscountInfo&&couponValueStr>0">立即付款后预计获赠 {{couponValueStr}} UET</p>
         </div>
+        <div class="mopayment-method-bar" v-if="isPlatformDebit">
+          <a href="javascript:void(0);"  class="payment-btn" @click="showPaymentPopup=true">
+            请选择您的付款方式
+          </a>
+        </div>
         <div>
           <ul class="details-ul">
             <li>
@@ -325,6 +330,7 @@
             @chatShow="chatStateUpdate"
       ></chat>
     </transition>
+
   </div>
 </template>
 
@@ -390,7 +396,9 @@
         typeState: 1,
         buyTypeBuyBank: '',
         showDiscountInfo: false,
-        couponValueStr: 0
+        couponValueStr: 0,
+        isPlatformDebit: false,
+        showPaymentPopup: false
       };
     },
     methods: {
@@ -415,6 +423,9 @@
             return;
           }
           this.DetailList = res.data;
+          if (this.DetailList.debit == 0){
+            this.isPlatformDebit = true;
+          }
           this.fetchDiscountNum()
           if (res.data.creditProofUrlTwin && res.data.creditProofUrlTwin.length > 1) {
             this.DetailList.creditProofUrlTwin = res.data.creditProofUrlTwin.split(',');
@@ -870,6 +881,21 @@
     .count_time {
       color: #ec3a4e;
       font-size: r(16);
+    }
+  }
+  .mopayment-method-bar{
+    background: #FFFFFF;
+    border-bottom: 1px solid #d8d8d8;
+    padding: r(13) r(20) r(15);
+    .payment-btn{
+      display: block;
+      height: r(50);
+      line-height: r(50);
+      background: #FF799E;
+      border-radius: r(3);
+      @include f(16px);
+      color: #FFFFFF;
+      padding: 0 r(20);
     }
   }
 
