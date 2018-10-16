@@ -9,6 +9,10 @@
       <div class="password">密码 <input type="password" class="password-input" v-model="userPassword"
                                       placeholder="请输入您的密码"></div>
       <div class="addAccount-btn" @click="loginAccount">登录</div>
+      <div class="find-register">
+        <router-link class="link cl-blue" :to="{name: 'mFindPassword'}">找回密码</router-link>
+        <router-link class="link cl-blue" :to="{name: 'mobileRegister'}">注册账户</router-link>
+      </div>
       <div class="content-remind">
         <p class="remind-title">温馨提示</p>
         <p class="remind-content">1.久安旧用户可以输入账号、手机或者邮箱进行登录。</p>
@@ -141,6 +145,12 @@
         color: #787876;
         margin-top: r(10);
       }
+    }
+    .find-register{
+      width: 80%;
+      margin: r(10) auto 0;
+      display: flex;
+      justify-content: space-between;
     }
   }
 

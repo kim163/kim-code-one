@@ -185,15 +185,15 @@
 
             show.sendEmailCode(this.requestdata).then((res) => {
               if (res.success) {
-                toast(res.message);
-                this.$router.push({name: 'transaction'});
+                toast('验证码发送成功');
+                // this.$router.push({name: 'transaction'});
               } else {
                 console.log(res.message)
                 toast(res.message);
               }
 
             }).catch(err => {
-
+              toast(err)
             });
 
           }
@@ -210,8 +210,8 @@
             show.sendCode(this.requestdata).then((res) => {
 
               if (res.success) {
-                toast('恭喜，您已注册成功');
-                this.$router.push({name: 'transaction'});
+                toast('验证码发送成功');
+                // this.$router.push({name: 'transaction'});
               } else {
                 console.log(res);
                 toast(res.message);

@@ -1,35 +1,48 @@
 <template>
-  <dialog-pop v-model="showDialog">
-    <div class="dialog-pop-main">
-      <div class="title">找回密码</div>
-      <div class="choose-type">
-        <select name="" class="sel-type" v-model="type">
-          <option value="1">手机</option>
-          <option value="2">邮箱</option>
-        </select>
-        <div class="phone" v-show="type === '1'">
-          <select name="" class="area-code" v-model="areaCode">
-            <option v-for="(item,index) in areaCodeList" :value="item" :key="index">{{item}}</option>
+  <div>
+    <!--pc模板-->
+    <dialog-pop v-model="showDialog" v-if="!isMobile">
+      <div class="dialog-pop-main">
+        <div class="title">找回密码</div>
+        <div class="choose-type">
+          <select name="" class="sel-type" v-model="type">
+            <!--<option value="1">手机</option>-->
+            <!--<option value="2">邮箱</option>-->
+            <option v-for="(item,index) in typeList" :value="item.value" :key="index">{{item.name}}</option>
           </select>
-          <input type="text" class="phone-input" ref="phone" v-number-only v-model="phoneNum" placeholder="请输入手机号码">
+          <div class="phone" v-show="type === '1'">
+            <select name="" class="area-code" v-model="areaCode">
+              <option v-for="(item,index) in areaCodeList" :value="item" :key="index">{{item}}</option>
+            </select>
+            <input type="text" class="phone-input" ref="phone" v-number-only v-model="phoneNum" placeholder="请输入手机号码">
+          </div>
+          <input class="mail-input" ref="mail" v-show="type === '2'" v-model="mailAddress" placeholder="请输入邮箱地址">
         </div>
-        <input class="mail-input" ref="mail" v-show="type === '2'" v-model="mailAddress" placeholder="请输入邮箱地址">
-      </div>
-      <div class="sub-title">验证码</div>
-      <div class="ver-code">
-        <input type="text" class="input-verCode" ref="code" v-number-only v-model="verCode" placeholder="请输入验证码" autocomplete="off">
-        <div class="send-verCode" :class="{disabled: countDown}"
-             @click="countDown ? '' : sendCode()">{{countDown ? countDownTime + 's后重新发送' : '发送验证码'}}
+        <div class="sub-title">验证码</div>
+        <div class="ver-code">
+          <input type="text" class="input-verCode" ref="code" v-number-only v-model="verCode" placeholder="请输入验证码" autocomplete="off">
+          <div class="send-verCode" :class="{disabled: countDown}"
+               @click="countDown ? '' : sendCode()">{{countDown ? countDownTime + 's后重新发送' : '发送验证码'}}
+          </div>
         </div>
+        <div class="sub-title">新密码</div>
+        <input type="password" class="input-def" ref="pwd" v-model="newPwd" placeholder="请输入密码" autocomplete="off">
+        <div class="sub-title">确认密码</div>
+        <input type="password" class="input-def" ref="cPwd" v-model="confirmPwd" placeholder="请再次输入密码" autocomplete="off">
+        <div class="dialog-btn" @click="setPassword">重置密码</div>
+        <p class="tips-detail">Tips：找回密码功能，暂时只支持绑定手机和邮箱的用户，其他问题请联系<get-live-service :show-icon="false"></get-live-service>！</p>
       </div>
-      <div class="sub-title">新密码</div>
-      <input type="password" class="input-def" ref="pwd" v-model="newPwd" placeholder="请输入密码" autocomplete="off">
-      <div class="sub-title">确认密码</div>
-      <input type="password" class="input-def" ref="cPwd" v-model="confirmPwd" placeholder="请再次输入密码" autocomplete="off">
-      <div class="dialog-btn" @click="setPassword">重置密码</div>
-      <p class="tips-detail">Tips：找回密码功能，暂时只支持绑定手机和邮箱的用户，其他问题请联系<get-live-service :show-icon="false"></get-live-service>！</p>
+    </dialog-pop>
+    <!--H5模板-->
+    <div v-if="isMobile" class="m-find-container">
+      <ul class="mobile-navtabs mregister-nav cfx">
+        <li v-for="item in typeList" @click="type = item.value" class="s" :class="{active:type == item.value}" :key="item.value">
+          {{item.name}}找回
+        </li>
+      </ul>
+
     </div>
-  </dialog-pop>
+  </div>
 </template>
 
 <script>
@@ -49,6 +62,16 @@
     data() {
       return {
         type: '1',
+        typeList:[
+          {
+            name:'手机',
+            value: '1'
+          },
+          {
+            name:'邮箱',
+            value: '2'
+          }
+        ],
         areaCodeList: [
           '+86',
           '+63'
@@ -70,6 +93,12 @@
       },
       type(){
         this.verCode = ''
+      }
+    },
+    props:{
+      isMobile:{
+        type:Boolean,
+        default:false
       }
     },
     components: {
@@ -225,6 +254,7 @@
 </script>
 
 <style lang="scss" scoped>
+  @import "~assets/scss/mobile";
   .choose-type {
     display: flex;
     margin-bottom: 20px;
@@ -288,5 +318,9 @@
 
   .tips-detail {
     margin-top: 10px;
+  }
+  /*手机端找回密码样式*/
+  .m-find-container{
+
   }
 </style>

@@ -32,6 +32,7 @@ const mSetPassword = () => import('views/mobile/user-center/set-account-password
 const mAccountDetail = () => import('views/mobile/user-center/account-detail')
 const mActivity = () => import('views/mobile/activity-center') //手机活动
 const mOrderMatch = () => import('views/mobile/order-match') //匹配页面
+const mFindPassword = () => import('views/mobile/find-password') //找回密码页面
 
 export default [
   {
@@ -298,6 +299,18 @@ export default [
       noCache:true,
       isMobilePage:'mobile-body'
     },
+  },
+  {
+    path:'/m/findPwd',
+    name:'mFindPassword',
+    component:mRegister,
+    meta:{
+      noCache:true,
+      isMobilePage:'mobile-body'
+    },
+    props:{
+      isFindPwd:true
+    }
   },
  /* {
     path:'/m/match',
