@@ -127,7 +127,7 @@
             this.userList = res.data
             const index = _(res.data).findIndex({userId: this.userId})
             const nowArr = res.data[index]
-            this.userList.splice(index,1)
+            this.userList.splice(index, 1)
             this.userList.unshift(nowArr)
             this.$store.commit('GET_CENTERID', res.data[0].centerId)
           } else {
@@ -189,6 +189,7 @@
             _.initRongyun()
             toast('切换用户成功')
             this.$router.push({name: 'walletCenter'})
+            RongIMClient.getInstance().disconnect()
           } else {
             toast(res.message)
           }
@@ -213,7 +214,7 @@
           }
         }
       },
-      checkUserName(data){
+      checkUserName(data) {
         return _.isNull(data.userName) ? (_.isNull(data.phone) ? data.email : data.phone) : data.userName
       }
     },
@@ -281,7 +282,7 @@
         margin-left: 20px;
         margin-bottom: 5px;
       }
-      .right-side{
+      .right-side {
         display: flex;
         flex-direction: column;
         justify-content: space-between;
