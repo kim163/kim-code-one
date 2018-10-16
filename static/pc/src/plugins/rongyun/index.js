@@ -19,7 +19,6 @@ export default {
   },
    getToken() {
       const userData = JSON.parse(aesutil.decrypt($localStorage.get('userData'),true))
-      console.log(userData.userId,'双卡的撒低级')
       let params = {
         userId: userData.userId,
         nickName: userData.nickname
