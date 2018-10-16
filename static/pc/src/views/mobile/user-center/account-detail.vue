@@ -515,8 +515,6 @@
                 color: #333;
                 padding-left: r(20);
                 text-align: left;
-                max-width: r(150);
-                overflow: hidden;
               }
               .de-accountValue {
                 @include f(16px);
