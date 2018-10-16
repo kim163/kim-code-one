@@ -264,13 +264,13 @@
         })
       },
       changeAccount(val, cont) {
-        console.log(val,'手机卡了')
+
         const request = {
           type: 11,
           token: val,
           merchantId: cont
         }
-        console.log(request,'sakojd')
+
         show.login(request).then(res => {
           if (res.code == '10000') {
             $localStorage.set('tokenInfo', JSON.stringify(res.data.tokenVo));

@@ -7,7 +7,6 @@ export default {
     if(store.getters.islogin){
           this.getToken()
           if(store.getters.rongDisconnect){
-            debugger;
             this.disconnect()
           }
         }
