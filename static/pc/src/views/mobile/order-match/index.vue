@@ -27,13 +27,13 @@
         <!--背景色固定为三种颜色-->
         <div class="content-list" v-for="(list,num) in newArr" :class="{'bgOne':num%3==0,'bgSecond':num%3==1,'bgThird':num%3==2}">
           <div class="content-left">
-            <p v-if="list.orderx.debitName">卖家: {{list.orderx.debitName}}</p>
-            <p v-else>买家:{{list.orderx.creditName}}</p>
-            <p>卖出数量: {{list.orderx.creditAmount}}</p>
-            <!--对方是卖家-->
-            <p v-if="list.orderx.debitName">订单状态: <span v-if="list.type==1||list.type==2">等待我付款</span></p>
+            <p v-if="list.credit==userId">卖家: {{list.debitAccountNameTwin}}</p>
+            <p v-else>买家: {{list.creditAccountNameTwin}}</p>
+            <p>卖出数量: {{list.creditAmount}}</p>
+           <!--对方是卖家-->
+            <p v-if="list.credit==userId">订单状态: <span v-if="list.creditType==1||list.creditType==2">等待我付款</span></p>
             <!--对方是买家-->
-            <p v-else>订单状态: <span v-if="list.type==1||list.type==2">等待对方付款</span></p>
+            <p v-else>订单状态: <span v-if="list.creditType==1||list.creditType==2">等待对方付款</span></p>
           </div>
           <div class="content-right">
             查看详情
@@ -48,7 +48,8 @@
 
 <script>
   import {
-    getOrderxPendingPage
+    getOrderxPendingPage,
+    getOrderxPage
   } from 'api/transaction'
   import {mapGetters} from 'vuex'
 
@@ -71,8 +72,8 @@
     watch: {
       'getNewOrder': {
         handler(newValue, oldValue) {
-          this.newArr.push(newValue)
-          console.log(this.newArr)
+          this.changeFormate(newValue)
+           console.log(newValue,'洒家扩大')
         },
         deep: true
       }
@@ -87,9 +88,39 @@
         default: true
       }
     },
+    created(){
+      this.getOrderIng()
+    },
     methods: {
+      changeFormate(value){
+         const TransferArr = []
+        /*交易数量*/
+         TransferArr.creditAmount = value.orderx.creditAmount
+        /*交易类型*/
+         TransferArr.creditType = value.type
+         /*交易名称*/
+         TransferArr.creditAccountNameTwin = value.orderx.creditName
+         TransferArr.debitAccountNameTwin = value.orderx.debitName
+         this.newArr.unshift(TransferArr)
+      },
       hide() {
         this.$emit('change', false)
+      },
+      getOrderIng(){
+        const request={
+          limit:1,
+          offset:0,
+          credit:this.userId,
+          debit:this.userId,
+          types:[11,12],
+          loading:false
+        }
+        getOrderxPage(request).then(res=>{
+          if(res.code === 10000){
+            this.newArr = res.data
+            console.log(this.newArr,'撒赖扩大就')
+          }
+        })
       },
       goBack() {
         this.$router.back();
@@ -144,7 +175,7 @@
       this.getUserList()
     },
     computed: {
-      ...mapGetters(['getNewOrder'])
+      ...mapGetters(['getNewOrder','userId'])
     }
     // beforeRouteEnter(to,from,next){
     //   next(vm => {
