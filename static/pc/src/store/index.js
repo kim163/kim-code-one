@@ -41,7 +41,6 @@ const stateInit = {
   userBalance:0,
   lockedAmount:0,
   openQuickSell:false,
-  rongDisconnect:false,
   withdrawInfo:{
     pass:false,
     bankNo:'',
@@ -129,9 +128,6 @@ export default new Vuex.Store({
     },
     bankCardInfo(state,getters){
       return state.bankCardInfo;
-    },
-    getRongDisconnect(state,getters){
-      return state.rongDisconnect
     },
     isShowFastSale(state, getters) {
       return state.isShowFastSale;
@@ -262,6 +258,7 @@ export default new Vuex.Store({
     [types.SHOW_FINDPASSWORD](state,val) {
       state.showFindPwd = val
     },
+
   }
   ,
   actions: {    // 可以给组件使用的函数，以此用来驱动事件处理器 mutations
