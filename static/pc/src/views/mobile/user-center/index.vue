@@ -277,6 +277,7 @@
             this.flushCenterToken()
             _.initRongyun()
             toast('切换用户成功')
+            RongIMClient.getInstance().disconnect()
             this.isAd = false
           } else {
             toast("切换账户不能太过频繁!")
@@ -486,7 +487,6 @@
       border-bottom: 1px solid #E4E4E4;
       padding-left: r(20);
       margin-bottom: r(10);
-
       .item-href {
         height: r(50);
         line-height: r(50);
@@ -622,6 +622,8 @@
             .user-name {
               flex: 2;
               padding-left: r(10);
+              max-width: r(138);
+              overflow: hidden;
             }
             .change-account {
               flex: 1;
