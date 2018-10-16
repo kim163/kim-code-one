@@ -31,11 +31,11 @@
             <p v-else>买家: {{list.creditAccountNameTwin}}</p>
             <p>卖出数量: {{list.creditAmount}}</p>
            <!--对方是卖家-->
-            <p v-if="list.credit==userId">订单状态: <span v-if="list.creditType==1||list.creditType==2">等待我付款</span></p>
+            <p v-if="list.credit==userId">订单状态: <span v-if="list.status==45">等待我付款</span> <span v-if="list.status==47">等待对方放币</span></p>
             <!--对方是买家-->
-            <p v-else>订单状态: <span v-if="list.creditType==1||list.creditType==2">等待对方付款</span></p>
+            <p v-else>订单状态: <span v-if="list.status==45">等待对方付款</span> <span v-if="list.status==47">对方已完成付款</span></p>
           </div>
-          <div class="content-right">
+          <div class="content-right" @click="goDetailPage(list.id)">
             查看详情
           </div>
         </div>
@@ -93,6 +93,7 @@
     },
     methods: {
       changeFormate(value){
+        console.log(value,'时间跨度')
          const TransferArr = []
         /*交易数量*/
          TransferArr.creditAmount = value.orderx.creditAmount
@@ -101,6 +102,8 @@
          /*交易名称*/
          TransferArr.creditAccountNameTwin = value.orderx.creditName
          TransferArr.debitAccountNameTwin = value.orderx.debitName
+         /*订单id*/
+         TransferArr.id = value.orderId
          this.newArr.unshift(TransferArr)
       },
       hide() {
@@ -127,6 +130,9 @@
       },
       goIndex(){
         this.$router.push({name:'mAindex'})
+      },
+      goDetailPage(id){
+        this.$router.push({name:'mOrder',params:{id:id}})
       },
       getUserList() {
         const data = {
@@ -378,6 +384,7 @@
       display: flex;
       flex-direction: row;
       margin: 0 auto;
+      margin-bottom: r(20);
       .content-left{
         flex: 1;
         padding: r(10) 0 r(15) r(15);
