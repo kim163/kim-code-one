@@ -135,7 +135,8 @@
             }*/ else {
               this.$store.commit('UPDATE_NEWORDER', {
                 type: msgData.type,
-                orderId: msgData.text
+                orderId: msgData.text,
+                orderx:JSON.parse(msgData.orderx)
               })
             }
         })
