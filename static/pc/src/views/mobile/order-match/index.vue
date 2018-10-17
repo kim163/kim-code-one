@@ -399,8 +399,6 @@
     }
   }
 
-<<<<<<< HEAD
-=======
   .match-success {
     position: fixed;
     top: 0;
@@ -492,5 +490,5 @@
     margin: -2px;
     background-color: rgba(3,3,3,0.9);
   }
->>>>>>> h5
+
 </style>
