@@ -69,11 +69,9 @@
           </div>
         </div>
       </div>
-
       <p v-if="isCredit && isTrading" class="tips-info">
         请按照卖家要求的付款方式付款
       </p>
-
       <p v-else-if="isDebit && isTrading" class="tips-info">
         如果收到款项不确定是否对方付的，请点右下角 在线聊天 跟对方会话
       </p>
