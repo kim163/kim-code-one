@@ -231,8 +231,13 @@
       },
       toCny(item){
         let amount = 0
-        // if(item.type === 41){
+        if(_.isNull(item.creditAmountTwin)){
           amount = _(item.creditAmount * 0.01).floor(2)
+        }else{
+          amount = item.creditAmountTwin
+        }
+        // if(item.type === 41){
+        //   amount = _(item.creditAmount * 0.01).floor(2)
         // }else{
         //   amount = item.creditAmountTwin
         // }

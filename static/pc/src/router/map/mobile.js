@@ -33,6 +33,7 @@ const mAccountDetail = () => import('views/mobile/user-center/account-detail')
 const mActivity = () => import('views/mobile/activity-center') //手机活动
 const mOrderMatch = () => import('views/mobile/order-match') //匹配页面
 const mFindPassword = () => import('views/mobile/find-password') //找回密码页面
+const mSafeCenter = () => import('views/mobile/user-center/safe-center')  //安全中心
 
 export default [
   {
@@ -310,6 +311,15 @@ export default [
     },
     props:{
       isFindPwd:true
+    }
+  },
+  {
+    path:'/m/safe',
+    name:'mSafeCenter',
+    component:mSafeCenter,
+    meta:{
+      noCache:true,
+      isMobilePage:'mobile-body'
     }
   },
  /* {

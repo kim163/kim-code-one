@@ -37,6 +37,12 @@
     computed: {
       ...mapGetters(['centerId', 'userId', 'userData'])
     },
+    props:{
+      isChange:{  //是否为修改密码
+        type:Boolean,
+        default:false
+      }
+    },
     methods: {
       confirmBind() {
         if (this.newPassoword !== this.confirmPassoword) {
@@ -106,17 +112,27 @@
         padding-left: r(20);
         display: flex;
         flex-direction: row;
+        border-top: 1px solid #E9E9E9;
+        border-bottom: 1px solid #E9E9E9;
         .copy-account {
           color: #ec3a4e;
           @include f(14px);
           padding-right: r(20);
+          position: relative;
+          &:before{
+            display: block;
+            content: '';
+            width: 1px;
+            height: r(22);
+            position: absolute;
+            background: #E9E9E9;
+            left: r(-20);
+            top: r(11)
+          }
         }
         .account-name {
           flex: 1;
           margin-left: r(20);
-        }
-        .copy-account {
-
         }
       }
       .login-password {
@@ -128,6 +144,8 @@
         width: 100%;
         line-height: r(44);
         padding-left: r(20);
+        border-top: 1px solid #E9E9E9;
+        border-bottom: 1px solid #E9E9E9;
         input:focus {
           outline: none;
         }
@@ -144,6 +162,8 @@
         width: 100%;
         line-height: r(44);
         padding-left: r(20);
+        border-top: 1px solid #E9E9E9;
+        border-bottom: 1px solid #E9E9E9;
         input:focus {
           outline: none;
         }
