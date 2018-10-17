@@ -1,6 +1,4 @@
 <template>
-  <div>
-    <!--pc模板-->
     <dialog-pop v-model="showDialog" v-if="!isMobile">
       <div class="dialog-pop-main">
         <div class="title">找回密码</div>
@@ -31,16 +29,6 @@
         <p class="tips-detail">Tips：找回密码功能，暂时只支持绑定手机和邮箱的用户，其他问题请联系<get-live-service :show-icon="false"></get-live-service>！</p>
       </div>
     </dialog-pop>
-    <!--H5模板-->
-    <div v-if="isMobile" class="m-find-container">
-      <ul class="mobile-navtabs mregister-nav cfx">
-        <li v-for="item in typeList" @click="type = item.value" class="s" :class="{active:type == item.value}" :key="item.value">
-          {{item.name}}找回
-        </li>
-      </ul>
-
-    </div>
-  </div>
 </template>
 
 <script>
@@ -91,12 +79,6 @@
       },
       type(){
         this.verCode = ''
-      }
-    },
-    props:{
-      isMobile:{
-        type:Boolean,
-        default:false
       }
     },
     components: {
