@@ -1,11 +1,11 @@
 <template>
   <div class="mobile-register">
-      <m-header>{{$t('register.title')}}</m-header>
+      <m-header>{{isFindPwd ? '找回密码' : $t('register.title')}}</m-header>
 
       <div class="register-content">
         <ul class="mobile-navtabs mregister-nav cfx">
           <li v-for="item in registerType" @click="registerItem=item.value" class="s" :class="{active:registerItem==item.value}" :key="item.value">
-            {{generateTitle(item.name)}}
+            {{item.name}}{{isFindPwd ? '找回' : '注册'}}
           </li>
         </ul>
         <div class="mobile-form-box form-box-phone">
@@ -56,7 +56,7 @@
             </div>
           </div>
 
-          <input type="submit" class="submit btn btn-block" @click="register" id="submit_user" :value="$t('register.register')">
+          <input type="submit" class="submit btn btn-block" @click="isFindPwd ? resetPwd() : register()" id="submit_user" :value="isFindPwd ? '重置密码' : $t('register.register')">
           <div class="link-group cfx">
             <router-link :to="{name:'mobileLogin'}" class="link-register fr">{{$t('register.loginNow')}}</router-link>
           </div>
@@ -74,16 +74,22 @@
   import {mapGetters,mapActions,mapMutations} from 'vuex'
   import {$localStorage, $sessionStorage} from '@/util/storage'
   import aesutil from '@/util/aesutil';
-
+  import {
+    findPwd
+  } from 'api/user-center'
   export default {
     props: {
-      value: Boolean
+      value: Boolean,
+      isFindPwd:{
+        type:Boolean,
+        default:false
+      }
     },
     data() {
       return {
         registerType:[
-          {name: "register.phoneReg", value: "phone"},
-          {name: "register.emailReg", value: "email"}
+          {name: "手机", value: "phone"},
+          {name: "邮箱", value: "email"}
         ],
         registerItem: 'email',
         areaCodeData: [
@@ -169,6 +175,36 @@
           toast(err.message);
         });
       },
+      resetPwd(){
+        if (!this.checked()) return;
+        const data = {
+          password: this.data.password,
+        }
+        if(this.registerItem === 'phone'){
+          Object.assign(data, {
+            validateType: 1,
+            areaCode: this.data.areaCode,
+            phone: this.data.phone,
+            phoneMgs: this.data.imageCode
+          })
+        }else{
+          Object.assign(data, {
+            validateType: 2,
+            email: this.data.email,
+            emailMgs:this.data.imageCode
+          })
+        }
+        findPwd(data).then(res => {
+          if(res.code === 10000){
+            toast('密码找回成功！请重新登录')
+            this.$router.replace({name: 'mobileLogin'})
+          }else{
+            toast(res.message)
+          }
+        }).catch(err => {
+          toast(err)
+        })
+      },
       getCaptcha(e) {
         // 发送验证码  判断是否输入手机号或者邮箱号
         //this.authImg = getAuthImg();
@@ -180,11 +216,11 @@
           }else{
             this.requestdata={
               email: this.data.email, //true string
-              type: "1", //true string
+              type: this.isFindPwd ? 2 : 1, //true string
             }
 
             show.sendEmailCode(this.requestdata).then((res) => {
-              if (res.success) {
+              if (res.code === 10000) {
                 toast('验证码发送成功');
                 // this.$router.push({name: 'transaction'});
               } else {
@@ -203,7 +239,7 @@
           }else{
             this.requestdata={
               phone: this.data.phone,
-              type: "1",
+              type: this.isFindPwd ? 2 : 1,
               areaCode:this.data.areaCode
             }
 

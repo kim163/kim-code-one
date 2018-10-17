@@ -6,8 +6,6 @@
         <div class="title">找回密码</div>
         <div class="choose-type">
           <select name="" class="sel-type" v-model="type">
-            <!--<option value="1">手机</option>-->
-            <!--<option value="2">邮箱</option>-->
             <option v-for="(item,index) in typeList" :value="item.value" :key="index">{{item.name}}</option>
           </select>
           <div class="phone" v-show="type === '1'">
