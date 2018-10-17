@@ -312,7 +312,7 @@ export default [
       isFindPwd:true
     }
   },
- /* {
+  {
     path:'/m/match',
     name:'mMatch',
     component:mOrderMatch,
@@ -320,5 +320,5 @@ export default [
       noCache:true,
       isMobilePage:'mobile-body'
     },
-  },*/
+  },
 ]
