@@ -4,6 +4,7 @@
       <div class="go-back-part page-content cfx">
         <router-link :to="{name:'orderRecord'}" class="fr">返回上一页</router-link>
       </div>
+
       <div class="page-content detail-box" v-if="DetailList">
         <detail-title :isCredit="isCredit" :isDebit="isDebit" :orderId="orderId"></detail-title>
         <div class="detail-in cfx">
@@ -36,7 +37,7 @@
               <p class="pay_send" v-if="showDiscountInfo&couponValueStr>0&DetailList.status =='45' && isDebit">立即付款后预计获赠
                 <span>{{couponValueStr}} UET</span></p>
               <div class="btn-group" v-if="DetailList.status =='45' && isCredit">
-                <input type="button" class="btn btn-block btn-normal" @click="showConfirm=true"  value="我已完成付款">
+                <input type="button" class="btn btn-block btn-normal" @click="showConfirm=true" value="我已完成付款">
                 <p class="pay_send" v-if="showDiscountInfo&couponValueStr>0">立即付款后预计获赠
                   <span>{{couponValueStr}} UET</span></p>
                 <p class="payment-tips">
@@ -206,6 +207,7 @@
               @closeChatroom="iscloseChatroom"
       ></chat>
     </div>
+
   </div>
 </template>
 
@@ -266,14 +268,7 @@
         chatOnline: true,
         buyTypeBuyBank: '',
         couponValueStr: 0,
-        showDiscountInfo: false,
-        selectTayItem:{},
-        payType: 0,
-        showPayType: false, //展示支付类型选择
-        payTypeConfirm:false,//支付方式确认弹窗
-        realAmount:0,
-        showRealAmount:false, //展示推荐金额弹窗
-        hideAmountBtn:false, //隐藏交易金额和我已完成付款按钮
+        showDiscountInfo: false
       };
     },
     methods: {
@@ -317,7 +312,7 @@
               }
               // toast('对方已确认付款，请查收是否到账');
             }
-          } else {
+          }else{
             toast(res.message)
             this.$router.replace({name: 'walletCenter'});
           }
@@ -335,7 +330,7 @@
           'traderType': this.DetailList.credit == this.userId ? 1 : 2
         }
         transaction.getCouponAmount(request).then((res) => {
-          // console.log(res, '手机打开')
+          console.log(res, '手机打开')
           if (res.code == '10000') {
             if (res.data.isAward) {
               this.showDiscountInfo = true;
@@ -363,7 +358,7 @@
           if (res.code == '10000') {
             toast('您已取消，请勿重复操作');
             Vue.$global.bus.$emit('update:tranList');
-            this.$store.commit('UPDATE_NEWORDER', {
+            this.$store.commit('UPDATE_NEWORDER',{
               type: 0,
               orderId: ''
             })
@@ -526,16 +521,8 @@
       },
       countDownEnd() {
         this.fetchData();
-      },
-
-      hasGetRealAmount(){
-        this.showRealAmount = false
-        this.hideAmountBtn = false
-      },
-      hidePayType(){
-        this.payTypeConfirm = false
-        this.payType = 0
       }
+
     },
     created() {
       if (this.$route.params.id) {
@@ -558,9 +545,9 @@
       "getNewOrder": {
         handler(newVal, oldVal) {
           if (newVal.orderId === this.orderId) {
-            if (newVal.type === 1 || newVal.type === 2) {
+            if(newVal.type === 1 || newVal.type === 2){
               this.fetchData();
-            } else {
+            }else{
               let routerName = ''
               if (newVal.type === 3 || newVal.type === 4) {
                 routerName = 'orderDetailOver'
@@ -573,12 +560,6 @@
         },
         deep: true
       },
-      // payTypeConfirm(val){
-      //   if(!val){
-      //     this.payType = 0
-      //   }
-      // }
-      
     },
     computed: {
       ...mapGetters([
@@ -755,10 +736,9 @@
     min-height: 300px;
     padding: 0 0 23px;
   }
-
-  .go-back-part {
+  .go-back-part{
     height: 40px;
-    a {
+    a{
       font-size: 16px;
       padding: 5px 12px;
       border-radius: 15px;
@@ -767,7 +747,7 @@
       display: block;
       line-height: 16px;
       margin-top: 7px;
-      &:hover {
+      &:hover{
         background: #9490F6;
       }
     }
@@ -781,11 +761,11 @@
     .time-stame {
       font-size: 20px;
       padding: 10px 0;
-      span {
+      span{
         display: block;
-        &:last-child {
+         &:last-child {
           color: red;
-        }
+         }
       }
     }
     .col-33 {
@@ -802,58 +782,6 @@
     }
     .red {
       color: red;
-    }
-    .pay-type {
-      padding: 30px 40px;
-      border-bottom: 1px solid #EBEBEB;
-      .tips {
-        font-size: 14px;
-      }
-      .type-list {
-        margin-top: 30px;
-        display: flex;
-        justify-content: space-between;
-      }
-      .type-item {
-        width: 346px;
-        height: 80px;
-        background: #F3F7FF;
-        border-radius: 5px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        cursor: pointer;
-        transition: all .5s;
-        &:hover{
-          box-shadow: 0 2px 5px 0 rgba(0,0,0,0.30);
-        }
-        &.active{
-          background-image: linear-gradient(0deg, #3A7FDB 0%, #58A0FF 100%);
-          box-shadow: 0 2px 5px 0 rgba(0,0,0,0.30);
-          color: #ffffff;
-        }
-      }
-      .icon {
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        background: #FFFFFF;
-        margin-right: 20px;
-        text-align: center;
-        font-size: 24px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        .icon-pay-type-ali {
-          color: #3988FF;
-        }
-        .icon-pay-type-wechat {
-          color: #24DB5A;
-        }
-        .icon-pay-type-bank {
-          color: #EC3A4E;
-        }
-      }
     }
   }
 
@@ -995,38 +923,6 @@
       margin-top: -1px;
       font-size: 14px;
       font-weight: bold;
-    }
-  }
-  .real-main{
-    width: 506px;
-    padding: 30px;
-    text-align: center;
-    background: #ffffff;
-    .title{
-      margin-top: 30px;
-      ont-size: 24px;
-      color: #333333;
-    }
-    .real-amount{
-      font-size: 40px;
-      margin-top: 60px;
-    }
-    .tips{
-      font-size: 16px;
-      text-align: left;
-      margin-top: 57px;
-    }
-    .real-btn{
-      width: 100%;
-      height: 50px;
-      text-align: center;
-      line-height: 50px;
-      font-size: 18px;
-      color: #FFFFFF;
-      background: #3573FA;
-      border-radius: 5px;
-      margin-top: 50px;
-      cursor: pointer;
     }
   }
 

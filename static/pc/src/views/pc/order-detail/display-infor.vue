@@ -7,8 +7,8 @@
       <ul class="details-data">
         <li class="cfx">
           <p>交易金额:</p>
-          <input type="text" class="red" readonly v-if="isHistory" :value="DetailList.amountTwin+'CNY'">
-          <input type="text" class="red" readonly v-else :value="DetailList.debitAmountTwin+'CNY'">
+          <input type="text" class="red" readonly  v-if="isHistory" :value="DetailList.amountTwin+' CNY'">
+          <input type="text" class="red" readonly v-else :value="DetailList.debitAmountTwin+' CNY'">
         </li>
         <li class="cfx">
           <p>交易数量:</p>
@@ -69,9 +69,11 @@
           </div>
         </div>
       </div>
+
       <p v-if="isCredit && isTrading" class="tips-info">
         请按照卖家要求的付款方式付款
       </p>
+
       <p v-else-if="isDebit && isTrading" class="tips-info">
         如果收到款项不确定是否对方付的，请点右下角 在线聊天 跟对方会话
       </p>
@@ -147,10 +149,6 @@
         default:false
       },
       isTrading:{
-        type:Boolean,
-        default:false
-      },
-      hideAmount:{
         type:Boolean,
         default:false
       }
