@@ -7,8 +7,13 @@
       <ul class="details-data">
         <li class="cfx">
           <p>交易金额:</p>
-          <input type="text" class="red" readonly  v-if="isHistory" :value="DetailList.amountTwin+' CNY'">
-          <input type="text" class="red" readonly v-else :value="DetailList.debitAmountTwin+' CNY'">
+          <template v-if="!hideAmount">
+            <input type="text" class="red" readonly  v-if="isHistory" :value="DetailList.amountTwin+' CNY'">
+            <input type="text" class="red" readonly v-else :value="DetailList.debitAmountTwin+' CNY'">
+          </template>
+          <template v-else>
+            <input type="text" class="red" readonly value="选择付款方式后会生成金额">
+          </template>
         </li>
         <li class="cfx">
           <p>交易数量:</p>
@@ -149,6 +154,10 @@
         default:false
       },
       isTrading:{
+        type:Boolean,
+        default:false
+      },
+      hideAmount:{
         type:Boolean,
         default:false
       }
