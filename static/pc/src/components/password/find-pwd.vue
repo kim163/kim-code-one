@@ -1,5 +1,5 @@
 <template>
-    <dialog-pop v-model="showDialog" v-if="!isMobile">
+    <dialog-pop v-model="showDialog">
       <div class="dialog-pop-main">
         <div class="title">找回密码</div>
         <div class="choose-type">
