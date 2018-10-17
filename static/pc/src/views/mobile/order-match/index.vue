@@ -25,20 +25,28 @@
       </p>
       <div class="list-container">
         <!--背景色固定为三种颜色-->
-        <div class="content-list" v-for="(list,num) in newArr" :class="{'bgOne':num%3==0,'bgSecond':num%3==1,'bgThird':num%3==2}">
-          <div class="content-left">
-            <p v-if="list.credit==userId">卖家: {{list.debitAccountNameTwin}}</p>
-            <p v-else>买家: {{list.creditAccountNameTwin}}</p>
-            <p>卖出数量: {{list.creditAmount}}</p>
-           <!--对方是卖家-->
-            <p v-if="list.credit==userId">订单状态: <span v-if="list.status==45">等待我付款</span> <span v-if="list.status==47">等待对方放币</span></p>
-            <!--对方是买家-->
-            <p v-else>订单状态: <span v-if="list.status==45">等待对方付款</span> <span v-if="list.status==47">对方已完成付款</span></p>
+        <transition-group  v-on:before-enter="beforeEnter">
+          <div class="content-list" v-for="(list,num) in newArr" v-bind:key="num"
+               :class="{'bgOne':num%3==0,'bgSecond':num%3==1,'bgThird':num%3==2}" :animate-delay="num*0.1+'s'">
+            <div class="content-left">
+              <p v-if="list.credit==userId||isBuyState">卖家: {{list.debitAccountNameTwin}}</p>
+              <p v-else>买家: {{list.creditAccountNameTwin}}</p>
+              <p>卖出数量: {{list.creditAmount}}</p>
+              <!--对方是卖家-->
+              <p v-if="list.credit==userId||isBuyState">订单状态: <span v-if="list.status==45">等待付款</span> <span
+                v-if="list.status==47">等待放币</span>
+                <span v-if="list.status==61">申诉中</span></p>
+              <!--对方是买家-->
+              <p v-else>订单状态: <span v-if="list.status==45">等待付款</span> <span v-if="list.status==47">完成付款</span>
+                <span v-if="list.status==61">申诉中</span>
+              </p>
+            </div>
+            <div class="content-right" @click="goDetailPage(list.id)">
+              查看详情
+            </div>
           </div>
-          <div class="content-right" @click="goDetailPage(list.id)">
-            查看详情
-          </div>
-        </div>
+        </transition-group>
+
       </div>
       <div class="backgroundProcess" @click="goIndex">后台运行</div>
     </div>
@@ -61,6 +69,7 @@
         userList: [],
         randomUser: [],
         newArr: [],
+        isBuyState: '',
         leftArr: _.shuffle(_.range(10, 30, 4).concat(_.range(60, 80, 4))),
         topArr: _.shuffle(_.range(10, 40, 6).concat(_.range(60, 90, 6)))
       }
@@ -73,7 +82,7 @@
       'getNewOrder': {
         handler(newValue, oldValue) {
           this.changeFormate(newValue)
-           console.log(newValue,'洒家扩大')
+
         },
         deep: true
       }
@@ -88,51 +97,79 @@
         default: true
       }
     },
-    created(){
+    created() {
       this.getOrderIng()
     },
     methods: {
-      changeFormate(value){
-        console.log(value,'时间跨度')
-         const TransferArr = []
+      beforeEnter(el) {
+        const delay = el.getAttribute('animate-delay')
+        console.log(delay)
+        const cssObj = {
+          "animation-delay": delay,
+          '-webkit-animation-delay': delay,
+          'visibility': "visible"
+        }
+        const getCssText = (obj)=> {
+          var text = [];
+          for (var o in obj) {
+            text.push(o + ":" + obj[o])
+          }
+          return text.join(';')
+        }
+        el.style.cssText = getCssText(cssObj);
+      },
+      changeFormate(value) {
+        const TransferArr = []
         /*交易数量*/
-         TransferArr.creditAmount = value.orderx.creditAmount
+        TransferArr.creditAmount = value.orderx.creditAmount
         /*交易类型*/
-         TransferArr.creditType = value.type
-         /*交易名称*/
-         TransferArr.creditAccountNameTwin = value.orderx.creditName
-         TransferArr.debitAccountNameTwin = value.orderx.debitName
-         /*订单id*/
-         TransferArr.id = value.orderId
-         this.newArr.unshift(TransferArr)
+        if (value.type == 1) {
+          TransferArr.status = 45
+        } else if (value.type == 2) {
+          TransferArr.status = 47
+        }
+        /*websocket type 11　为买入　　１２为卖出*/
+        if (value.orderx.type == 11) {
+          this.isBuyState = true
+        } else {
+          this.isBuyState = false
+        }
+        TransferArr.credit = value.orderx.creditName
+        TransferArr.debit = value.orderx.debitName
+        console.log(value.orderx.debitName,'as萨达')
+        /*交易名称*/
+        TransferArr.creditAccountNameTwin = value.orderx.creditName
+        TransferArr.debitAccountNameTwin = value.orderx.debitName
+        /*订单id*/
+        TransferArr.id = value.orderId
+        this.newArr.push(TransferArr)
       },
       hide() {
         this.$emit('change', false)
       },
-      getOrderIng(){
-        const request={
-          limit:1,
-          offset:0,
-          credit:this.userId,
-          debit:this.userId,
-          types:[11,12],
-          loading:false
+      getOrderIng() {
+        const request = {
+          limit: 10,
+          offset: 0,
+          credit: this.userId,
+          debit: this.userId,
+          types: [11, 12],
+          loading: false
         }
-        getOrderxPage(request).then(res=>{
-          if(res.code === 10000){
+        getOrderxPage(request).then(res => {
+          if (res.code === 10000) {
             this.newArr = res.data
-            console.log(this.newArr,'撒赖扩大就')
           }
         })
       },
       goBack() {
         this.$router.back();
       },
-      goIndex(){
-        this.$router.push({name:'mAindex'})
+      goIndex() {
+        this.$router.push({name: 'mAindex'})
       },
-      goDetailPage(id){
-        this.$router.push({name:'mOrder',params:{id:id}})
+      goDetailPage(id) {
+        this.$router.push({name: 'mOrder', params: {id: id}})
       },
       getUserList() {
         const data = {
@@ -181,7 +218,7 @@
       this.getUserList()
     },
     computed: {
-      ...mapGetters(['getNewOrder','userId'])
+      ...mapGetters(['getNewOrder', 'userId'])
     }
     // beforeRouteEnter(to,from,next){
     //   next(vm => {
@@ -364,6 +401,7 @@
     background-color: rgba(0, 0, 0, 0.9);
     height: 100%;
     width: 100%;
+
     .main-title {
       @include f(20px);
       padding-top: r(100);
@@ -385,15 +423,17 @@
       flex-direction: row;
       margin: 0 auto;
       margin-bottom: r(20);
-      .content-left{
+      transform: translateX(150%);
+      animation: fadeInRight 1s forwards;
+      .content-left {
         flex: 1;
         padding: r(10) 0 r(15) r(15);
         text-align: left;
-        p{
+        p {
           padding-bottom: r(5);
         }
       }
-      .content-right{
+      .content-right {
         width: r(90);
         height: r(30);
         border: 1px solid #fff;
@@ -403,32 +443,43 @@
         margin-top: r(25);
         margin-right: r(15);
       }
-      &.bgOne{
-          background-color: #3e6697;
+      &.bgOne {
+        background-color: #3e6697;
       }
-      &.bgSecond{
+      &.bgSecond {
         background-color: #4c3e97;
       }
-      &.bgThird{
+      &.bgThird {
         background-color: #3e9775;
       }
     }
-    .list-container{
-        margin-top: r(15);
-
+    .list-container {
+      margin-top: r(15);
+      height: r(400);
+      overflow-y: scroll;
     }
-    .backgroundProcess{
-       position: fixed;
-       bottom: r(40);
-       right: r(40);
-       width: r(100);
-       height: r(30);
-       background-color: #fff;
-       border-radius: r(4);
-       color: #333;
+    .backgroundProcess {
+      position: fixed;
+      bottom: r(40);
+      right: r(40);
+      width: r(100);
+      height: r(30);
+      background-color: #fff;
+      border-radius: r(4);
+      color: #333;
       text-align: center;
       line-height: r(30);
       @include f(14px)
     }
+  }
+  ::-webkit-scrollbar-thumb {
+    min-width: 150px;
+    min-height: 150px;
+    border-radius: 10px;
+    background: rgba(3,3,3,0.8);
+}
+  ::-webkit-scrollbar-track-piece{
+    margin: -2px;
+    background-color: rgba(3,3,3,0.9);
   }
 </style>
