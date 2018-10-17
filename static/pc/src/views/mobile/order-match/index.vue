@@ -24,7 +24,7 @@
       </p>
       <div class="list-container">
         <!--背景色固定为三种颜色-->
-        <transition-group  v-on:before-enter="beforeEnter">
+        <transition-group v-on:before-enter="beforeEnter">
           <div class="content-list" v-for="(list,num) in newArr" v-bind:key="num"
                :class="{'bgOne':num%3==0,'bgSecond':num%3==1,'bgThird':num%3==2}" :animate-delay="num*0.1+'s'">
             <div class="content-left">
@@ -56,7 +56,8 @@
 
 <script>
   import {
-    getOrderxPendingPage
+    getOrderxPendingPage,
+    getOrderxPage
   } from 'api/transaction'
   import {mapGetters} from 'vuex'
 
@@ -96,26 +97,20 @@
         default: true
       }
     },
-    methods: {
-      hide() {
-        this.$emit('change', false)
-      },
-      goBack() {
-        this.$router.back();
-      },
+
+
     created() {
       this.getOrderIng()
     },
     methods: {
       beforeEnter(el) {
         const delay = el.getAttribute('animate-delay')
-        console.log(delay)
         const cssObj = {
           "animation-delay": delay,
           '-webkit-animation-delay': delay,
           'visibility': "visible"
         }
-        const getCssText = (obj)=> {
+        const getCssText = (obj) => {
           var text = [];
           for (var o in obj) {
             text.push(o + ":" + obj[o])
@@ -142,7 +137,7 @@
         }
         TransferArr.credit = value.orderx.creditName
         TransferArr.debit = value.orderx.debitName
-        console.log(value.orderx.debitName,'as萨达')
+        console.log(value.orderx.debitName, 'as萨达')
         /*交易名称*/
         TransferArr.creditAccountNameTwin = value.orderx.creditName
         TransferArr.debitAccountNameTwin = value.orderx.debitName
@@ -224,7 +219,7 @@
       this.getUserList()
     },
     computed: {
-      ...mapGetters(['getNewOrder'])
+      ...mapGetters(['getNewOrder','userId'])
     },
     watch: {
       'getNewOrder': {
@@ -235,8 +230,6 @@
         deep: true
       },
     },
-      ...mapGetters(['getNewOrder', 'userId'])
-    }
   }
 </script>
 
@@ -480,15 +473,17 @@
       @include f(14px)
     }
   }
+
   ::-webkit-scrollbar-thumb {
     min-width: 150px;
     min-height: 150px;
     border-radius: 10px;
-    background: rgba(3,3,3,0.8);
-}
-  ::-webkit-scrollbar-track-piece{
+    background: rgba(3, 3, 3, 0.8);
+  }
+
+  ::-webkit-scrollbar-track-piece {
     margin: -2px;
-    background-color: rgba(3,3,3,0.9);
+    background-color: rgba(3, 3, 3, 0.9);
   }
 
 </style>
