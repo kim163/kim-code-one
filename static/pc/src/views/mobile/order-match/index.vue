@@ -15,7 +15,42 @@
            :style="{left: `${item.left}%`,top:`${item.top}%`}">{{item.name}}
       </div>
     </div>
-    <div class="" style=" color: #fff">{{getNewOrder.type}}</div>
+    <div class="match-success" v-if="newArr">
+      <p class="main-title">
+        为您匹配到订单...
+      </p>
+      <p class="title-description">
+        为了您的资金安全,您的订单可能被拆分成多单进行交易,造成您的不便敬请见谅。
+      </p>
+      <div class="list-container">
+        <!--背景色固定为三种颜色-->
+        <transition-group  v-on:before-enter="beforeEnter">
+          <div class="content-list" v-for="(list,num) in newArr" v-bind:key="num"
+               :class="{'bgOne':num%3==0,'bgSecond':num%3==1,'bgThird':num%3==2}" :animate-delay="num*0.1+'s'">
+            <div class="content-left">
+              <p v-if="list.credit==userId||isBuyState">卖家: {{list.debitAccountNameTwin}}</p>
+              <p v-else>买家: {{list.creditAccountNameTwin}}</p>
+              <p>卖出数量: {{list.creditAmount}}</p>
+              <!--对方是卖家-->
+              <p v-if="list.credit==userId||isBuyState">订单状态: <span v-if="list.status==45">等待付款</span> <span
+                v-if="list.status==47">等待放币</span>
+                <span v-if="list.status==61">申诉中</span></p>
+              <!--对方是买家-->
+              <p v-else>订单状态: <span v-if="list.status==45">等待付款</span> <span v-if="list.status==47">完成付款</span>
+                <span v-if="list.status==61">申诉中</span>
+              </p>
+            </div>
+            <div class="content-right" @click="goDetailPage(list.id)">
+              查看详情
+            </div>
+          </div>
+        </transition-group>
+
+      </div>
+      <div class="backgroundProcess" @click="goIndex">后台运行</div>
+    </div>
+
+
   </div>
 </template>
 
@@ -32,6 +67,8 @@
         title: '匹配中...',
         userList: [],
         randomUser: [],
+        newArr: [],
+        isBuyState: '',
         leftArr: _.shuffle(_.range(10, 30, 4).concat(_.range(60, 80, 4))),
         topArr: _.shuffle(_.range(10, 40, 6).concat(_.range(60, 90, 6)))
       }
@@ -41,8 +78,12 @@
       event: 'change'
     },
     watch: {
-      getNewOrder(val) {
-        console.log(val, '速度')
+      'getNewOrder': {
+        handler(newValue, oldValue) {
+          this.changeFormate(newValue)
+
+        },
+        deep: true
       }
     },
     props: {
@@ -61,6 +102,80 @@
       },
       goBack() {
         this.$router.back();
+      },
+    created() {
+      this.getOrderIng()
+    },
+    methods: {
+      beforeEnter(el) {
+        const delay = el.getAttribute('animate-delay')
+        console.log(delay)
+        const cssObj = {
+          "animation-delay": delay,
+          '-webkit-animation-delay': delay,
+          'visibility': "visible"
+        }
+        const getCssText = (obj)=> {
+          var text = [];
+          for (var o in obj) {
+            text.push(o + ":" + obj[o])
+          }
+          return text.join(';')
+        }
+        el.style.cssText = getCssText(cssObj);
+      },
+      changeFormate(value) {
+        const TransferArr = []
+        /*交易数量*/
+        TransferArr.creditAmount = value.orderx.creditAmount
+        /*交易类型*/
+        if (value.type == 1) {
+          TransferArr.status = 45
+        } else if (value.type == 2) {
+          TransferArr.status = 47
+        }
+        /*websocket type 11　为买入　　１２为卖出*/
+        if (value.orderx.type == 11) {
+          this.isBuyState = true
+        } else {
+          this.isBuyState = false
+        }
+        TransferArr.credit = value.orderx.creditName
+        TransferArr.debit = value.orderx.debitName
+        console.log(value.orderx.debitName,'as萨达')
+        /*交易名称*/
+        TransferArr.creditAccountNameTwin = value.orderx.creditName
+        TransferArr.debitAccountNameTwin = value.orderx.debitName
+        /*订单id*/
+        TransferArr.id = value.orderId
+        this.newArr.push(TransferArr)
+      },
+      hide() {
+        this.$emit('change', false)
+      },
+      getOrderIng() {
+        const request = {
+          limit: 10,
+          offset: 0,
+          credit: this.userId,
+          debit: this.userId,
+          types: [11, 12],
+          loading: false
+        }
+        getOrderxPage(request).then(res => {
+          if (res.code === 10000) {
+            this.newArr = res.data
+          }
+        })
+      },
+      goBack() {
+        this.$router.back();
+      },
+      goIndex() {
+        this.$router.push({name: 'mAindex'})
+      },
+      goDetailPage(id) {
+        this.$router.push({name: 'mOrder', params: {id: id}})
       },
       getUserList() {
         const data = {
@@ -119,18 +234,9 @@
         },
         deep: true
       },
-
     },
-
-    // beforeRouteEnter(to,from,next){
-    //   next(vm => {
-    //     if(from.name === 'mIndex' || from.name === 'mPendingBuy'){
-    //       next()
-    //     }else{
-    //       vm.$router.go(-2)
-    //     }
-    //   })
-    // }
+      ...mapGetters(['getNewOrder', 'userId'])
+    }
   }
 </script>
 
@@ -293,4 +399,98 @@
     }
   }
 
+<<<<<<< HEAD
+=======
+  .match-success {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    color: #fff;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.9);
+    height: 100%;
+    width: 100%;
+
+    .main-title {
+      @include f(20px);
+      padding-top: r(100);
+    }
+    .title-description {
+      @include f(14px);
+      margin-top: r(30);
+      padding: r(0) r(40);
+      text-align: left;
+      line-height: r(30);
+    }
+    .content-list {
+      width: r(300);
+      height: r(82);
+      color: #fff;
+      border-radius: r(5);
+      @include f(12px);
+      display: flex;
+      flex-direction: row;
+      margin: 0 auto;
+      margin-bottom: r(20);
+      transform: translateX(150%);
+      animation: fadeInRight 1s forwards;
+      .content-left {
+        flex: 1;
+        padding: r(10) 0 r(15) r(15);
+        text-align: left;
+        p {
+          padding-bottom: r(5);
+        }
+      }
+      .content-right {
+        width: r(90);
+        height: r(30);
+        border: 1px solid #fff;
+        border-radius: r(3);
+        @include f(12px);
+        line-height: r(30);
+        margin-top: r(25);
+        margin-right: r(15);
+      }
+      &.bgOne {
+        background-color: #3e6697;
+      }
+      &.bgSecond {
+        background-color: #4c3e97;
+      }
+      &.bgThird {
+        background-color: #3e9775;
+      }
+    }
+    .list-container {
+      margin-top: r(15);
+      height: r(400);
+      overflow-y: scroll;
+    }
+    .backgroundProcess {
+      position: fixed;
+      bottom: r(40);
+      right: r(40);
+      width: r(100);
+      height: r(30);
+      background-color: #fff;
+      border-radius: r(4);
+      color: #333;
+      text-align: center;
+      line-height: r(30);
+      @include f(14px)
+    }
+  }
+  ::-webkit-scrollbar-thumb {
+    min-width: 150px;
+    min-height: 150px;
+    border-radius: 10px;
+    background: rgba(3,3,3,0.8);
+}
+  ::-webkit-scrollbar-track-piece{
+    margin: -2px;
+    background-color: rgba(3,3,3,0.9);
+  }
+>>>>>>> h5
 </style>
