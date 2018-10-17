@@ -578,6 +578,7 @@
       //     this.payType = 0
       //   }
       // }
+      
     },
     computed: {
       ...mapGetters([
