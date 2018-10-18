@@ -290,7 +290,10 @@ export default [
     meta:{
       noCache:true,
       isMobilePage:'mobile-body'
-    }
+    },
+    props:(route) => ({
+      isChange: route.query.c && route.query.c === '1'
+    })
   },
   {
     path:'/m/accountDetail/:id/:address/:username/:node/:url',

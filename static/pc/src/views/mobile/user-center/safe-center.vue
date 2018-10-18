@@ -19,7 +19,7 @@
         </div>
         <i class="iconfont icon-right-arrow"></i>
       </router-link>
-      <router-link :to="{name:'mSetPassword'}" class="item-ink">
+      <router-link :to="{name:'mSetPassword',query:{c: '1'}}" class="item-ink">
         <div class="item-text">
           <svg class="icon" aria-hidden="true">
             <use xlink:href="#icon-change-password"></use>

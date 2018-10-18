@@ -1,6 +1,6 @@
 <template>
   <div class="set-init-container">
-    <MobileHeader :showLeftBtn="false">设置账户密码</MobileHeader>
+    <MobileHeader :showLeftBtn="isChange">{{isChange ? '修改' : '设置'}}账户密码</MobileHeader>
     <div class="password-container">
       <div class="login-Info">您的登录账户
         <span class="account-name">{{userData.nickname}}</span>
@@ -8,8 +8,8 @@
       <div class="login-password">密码 <input type="password" placeholder="请输入您的新密码" v-model="newPassoword"></div>
       <div class="login-passwordNext">确定密码 <input type="password" placeholder="请确定您的密码" v-model="confirmPassoword">
       </div>
-      <div class="add-btn" @click="confirmBind">设置</div>
-      <div class="add-next" @click="notBind">暂不设置</div>
+      <div class="add-btn" @click="confirmBind">{{isChange ? '修改' : '设置'}}</div>
+      <div class="add-next" @click="notBind" v-if="!isChange">暂不设置</div>
       <div class="content-remind">
         <p class="remind-title">温馨提示</p>
         <p class="remind-content">1.设置账户密码之后,退出后可以通过账户密码登录;</p>
@@ -31,7 +31,7 @@
     data() {
       return {
         newPassoword: '',
-        confirmPassoword: ''
+        confirmPassoword: '',
       }
     },
     computed: {
@@ -56,9 +56,12 @@
         }
         userCenter.updatePassword(request).then(res => {
           if (res.code == '10000') {
-            toast('设置密码成功')
+            toast(`${this.isChange ? '设置' : '修改'}密码成功`)
             this.$emit('closePage', false)
             this.$store.dispatch("UPDATE_USERDATA")
+            if(this.isChange){
+              this.$router.replace({name:'mSafeCenter'})
+            }
           } else {
             toast(res.message)
           }
