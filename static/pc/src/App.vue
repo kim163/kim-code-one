@@ -12,7 +12,6 @@
     <!--<v-login v-if="showLogin && !isMobile" v-model="showLogin"></v-login>-->
     <login-dialog v-if="showLogin && !isMobile"></login-dialog>
     <v-register v-if="showRegister && !isMobile" v-model="showRegister"></v-register>
-
     <setAccountPassword v-if="userData.initPwd == 'Y' && isMobile" @closePage="closesetPage"></setAccountPassword>
 
     <red-envelope v-if="islogin"></red-envelope>
@@ -112,8 +111,8 @@
             // C2C_ORDER_ONLINE(5, "C2C订单发起人在线检测"),
             msgData.text = this.userId;
             this.client.send('/exchange/walletCustomOnline/-0', {priority: 9}, aesutil.encrypt(JSON.stringify(msgData)))
-          } else {
-            if (_.isMobile()) {
+          }
+           /* if (_.isMobile()) {
               if (msgData.type == 1 || msgData.type == 2) {
                 // C2C_ORDER_PLACE(1, "C2C下单"),
                 //  C2C_ORDER_PAY(2, "C2C订单支付完成"),
@@ -132,12 +131,13 @@
                 toast(msgData.describe)
                 //console.log(msgData);
               }
-            } else {
-              this.$store.commit('UPDATE_NEWORDER', {
-                type: msgData.type,
-                orderId: msgData.text
-              })
-            }
+            }*/
+             else {
+            this.$store.commit('UPDATE_NEWORDER', {
+              type: msgData.type,
+              orderId: msgData.text,
+              orderx: JSON.parse(msgData.orderx)
+            })
           }
         })
       },
@@ -190,7 +190,6 @@
       SysBullentin,
       // vLogin,
       vRegister,
-      RedEnvelope,
       LoginDialog,
       setAccountPassword,
       RedEnvelope,

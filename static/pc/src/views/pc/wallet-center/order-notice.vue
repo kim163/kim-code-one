@@ -165,25 +165,27 @@
       getOrderDetail(){
         getOrderx({orderId: this.orderId}).then(res => {
           if(res.code === 10000){
-            this.show = this.checkRouter()
-            this.hasNew = true
-            if(res.data.status === 61){
-              this.orderStatus = 3
-            }else if(res.data.status === 45){
-              this.orderStatus = 1
-            }else if(res.data.status === 47){
-              this.orderStatus = 2
+            if(!_.isNull(res.data)){
+              this.show = this.checkRouter()
+              this.hasNew = true
+              if(res.data.status === 61){
+                this.orderStatus = 3
+              }else if(res.data.status === 45){
+                this.orderStatus = 1
+              }else if(res.data.status === 47){
+                this.orderStatus = 2
+              }
+              if (res.data.credit === this.userId) {
+                this.orderType = 1;
+              } else if (res.data.debit === this.userId) {
+                this.orderType = 2;
+              }
+              this.amount = res.data.debitAmount
+              if(!_.isNull(res.data.intervalTime)){
+                this.countDownTime = res.data.intervalTime - res.data.elapsedTime
+              }
+              this.getDiscountNum()
             }
-            if (res.data.credit === this.userId) {
-              this.orderType = 1;
-            } else if (res.data.debit === this.userId) {
-              this.orderType = 2;
-            }
-            this.amount = res.data.debitAmount
-            if(!_.isNull(res.data.intervalTime)){
-              this.countDownTime = res.data.intervalTime - res.data.elapsedTime
-            }
-            this.getDiscountNum()
           }else{
             toast(res.message)
           }

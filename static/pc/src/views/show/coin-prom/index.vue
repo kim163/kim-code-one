@@ -1,8 +1,17 @@
 <template>
   <div class="coin-activity-promot">
     <div class="activity-mobile-header"></div>
-    <div class="activity-banner">
-       <img src="~images/activity/coin/coin-mobile-banner.jpg" alt="久安免费赠币" />
+    <div class="carousel-map-list">
+      <swiper ref="mySwiper" :options="swiperOption">
+        <swiper-slide class="redenvel-banner carousel-item" >
+          <img src="~images/activity/coin/redenvel-mobile-banner.jpg" alt="红包来袭" />
+        </swiper-slide>
+        <swiper-slide class="activity-banner carousel-item">
+          <img src="~images/activity/coin/coin-mobile-banner.jpg" alt="久安免费赠币" />
+        </swiper-slide>
+
+        <div class="swiper-pagination activity-pagination" slot="pagination"></div>
+      </swiper>
     </div>
 
     <div class="participate-act">
@@ -200,7 +209,9 @@
 </template>
 <script>
   import {awardRankings} from 'api/activity';
-  import {mapGetters} from 'vuex';
+  import 'swiper/dist/css/swiper.css'
+  import {swiper, swiperSlide} from 'vue-awesome-swiper'
+
   export default {
     data() {
       return {
@@ -241,7 +252,20 @@
           offset:0
         },
         rankingList:[],
-        showVideoCover:true
+        showVideoCover:true,
+        swiperOption: {
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true
+          },
+          autoplay: {
+            delay: 3000,
+            disableOnInteraction: false
+          },
+          // loop: true,
+          simulateTouch : true,//禁止鼠标模拟
+          preventLinksPropagation : false
+        }
       };
     },
     props: {
@@ -294,7 +318,8 @@
       this.getAwardRankings();
     },
     components: {
-
+      swiper,
+      swiperSlide
     }
   };
 </script>
@@ -303,14 +328,31 @@
    .activity-mobile-header{
      display: none;
    }
+  .redenvel-banner{
+    background: url("~images/activity/coin/red-envelope-banner.jpg") no-repeat center center;
+    background-size: cover;
+  }
    .activity-banner{
-      min-height: 700px;
       background: url("~images/activity/coin/coin-banner.jpg") no-repeat center center;
       background-size: cover;
+   }
+   .carousel-item{
+     min-height: 700px;
      img{
        display: none;
      }
    }
+   .swiper-pagination-bullet{
+     background: #000000;
+     opacity: 0.4;
+   }
+  .swiper-pagination-bullet-active{
+    background: #FFFFFF;
+    opacity: 1;
+  }
+  .activity-pagination{
+    bottom: 20px !important;
+  }
    .participate-act{
      padding: 20px 0 32px;
      text-align: center;
@@ -654,11 +696,9 @@
   }
 }
 
-
-
 @media only screen and (max-width: 1199px) and (min-width: 800px) {
   .coin-activity-promot{
-    .activity-banner{
+    .carousel-item{
       min-height: 460px;
     }
   }
@@ -699,7 +739,7 @@
       height: 44px;
       background: #063369;
     }
-    .activity-banner {
+    .carousel-item {
       min-height: auto;
       background: none;
       img{

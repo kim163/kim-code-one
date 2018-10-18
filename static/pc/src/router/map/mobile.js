@@ -317,6 +317,7 @@ export default [
     }
   },
   {
+
     path:'/m/safe',
     name:'mSafeCenter',
     component:mSafeCenter,
@@ -325,7 +326,7 @@ export default [
       isMobilePage:'mobile-body'
     }
   },
- /* {
+ {
     path:'/m/match',
     name:'mMatch',
     component:mOrderMatch,
@@ -333,5 +334,5 @@ export default [
       noCache:true,
       isMobilePage:'mobile-body'
     },
-  },*/
+  },
 ]
