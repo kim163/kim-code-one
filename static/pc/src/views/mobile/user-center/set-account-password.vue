@@ -1,6 +1,6 @@
 <template>
   <div class="set-init-container">
-    <MobileHeader :showLeftBtn="false">设置账户密码</MobileHeader>
+    <MobileHeader :showLeftBtn="isChange">{{isChange ? '修改' : '设置'}}账户密码</MobileHeader>
     <div class="password-container">
       <div class="login-Info">您的登录账户
         <span class="account-name">{{userData.nickname}}</span>
@@ -8,8 +8,8 @@
       <div class="login-password">密码 <input type="password" placeholder="请输入您的新密码" v-model="newPassoword"></div>
       <div class="login-passwordNext">确定密码 <input type="password" placeholder="请确定您的密码" v-model="confirmPassoword">
       </div>
-      <div class="add-btn" @click="confirmBind">设置</div>
-      <div class="add-next" @click="notBind">暂不设置</div>
+      <div class="add-btn" @click="confirmBind">{{isChange ? '修改' : '设置'}}</div>
+      <div class="add-next" @click="notBind" v-if="!isChange">暂不设置</div>
       <div class="content-remind">
         <p class="remind-title">温馨提示</p>
         <p class="remind-content">1.设置账户密码之后,退出后可以通过账户密码登录;</p>
@@ -31,11 +31,17 @@
     data() {
       return {
         newPassoword: '',
-        confirmPassoword: ''
+        confirmPassoword: '',
       }
     },
     computed: {
       ...mapGetters(['centerId', 'userId', 'userData'])
+    },
+    props:{
+      isChange:{  //是否为修改密码
+        type:Boolean,
+        default:false
+      }
     },
     methods: {
       confirmBind() {
@@ -50,9 +56,12 @@
         }
         userCenter.updatePassword(request).then(res => {
           if (res.code == '10000') {
-            toast('设置密码成功')
+            toast(`${this.isChange ? '设置' : '修改'}密码成功`)
             this.$emit('closePage', false)
             this.$store.dispatch("UPDATE_USERDATA")
+            if(this.isChange){
+              this.$router.replace({name:'mSafeCenter'})
+            }
           } else {
             toast(res.message)
           }
@@ -106,17 +115,27 @@
         padding-left: r(20);
         display: flex;
         flex-direction: row;
+        border-top: 1px solid #E9E9E9;
+        border-bottom: 1px solid #E9E9E9;
         .copy-account {
           color: #ec3a4e;
           @include f(14px);
           padding-right: r(20);
+          position: relative;
+          &:before{
+            display: block;
+            content: '';
+            width: 1px;
+            height: r(22);
+            position: absolute;
+            background: #E9E9E9;
+            left: r(-20);
+            top: r(11)
+          }
         }
         .account-name {
           flex: 1;
           margin-left: r(20);
-        }
-        .copy-account {
-
         }
       }
       .login-password {
@@ -128,6 +147,8 @@
         width: 100%;
         line-height: r(44);
         padding-left: r(20);
+        border-top: 1px solid #E9E9E9;
+        border-bottom: 1px solid #E9E9E9;
         input:focus {
           outline: none;
         }
@@ -144,6 +165,8 @@
         width: 100%;
         line-height: r(44);
         padding-left: r(20);
+        border-top: 1px solid #E9E9E9;
+        border-bottom: 1px solid #E9E9E9;
         input:focus {
           outline: none;
         }
