@@ -21,7 +21,7 @@
           </div>
         </div>
         <div class="detail-in cfx">
-          <display-infor :DetailList="DetailList" :isCredit="isCredit" :hide-amount="hideAmountBtn" :isDebit="isDebit"
+          <display-infor :DetailList="DetailList" :isCredit="isCredit" :hide-amount="hideAmountBtn" :real-amount="realAmount" :isDebit="isDebit"
                          :isTrading="true"></display-infor>
           <div class="col-33">
             <div class="order-time">
@@ -318,7 +318,7 @@
         payType: 0,
         showPayType: false, //展示支付类型选择
         payTypeConfirm:false,//支付方式确认弹窗
-        realAmount:0,
+        realAmount:'',
         showRealAmount:false, //展示推荐金额弹窗
         hideAmountBtn:false, //隐藏交易金额和我已完成付款按钮
       };
