@@ -28,24 +28,26 @@
         </div>
         <i class="iconfont icon-right-arrow"></i>
       </router-link>
-      <router-link :to="{name:'mSetUserInfo'}" class="item-ink">
+      <div class="item-ink" @click="userData.phone === null ? '' : toLink(1)">
         <div class="item-text">
           <svg class="icon" aria-hidden="true">
             <use xlink:href="#icon-bind-phone"></use>
           </svg>
           绑定手机
         </div>
-        <i class="iconfont icon-right-arrow"></i>
-      </router-link>
-      <router-link :to="{name:'mSetUserInfo'}" class="item-ink">
+        <i class="iconfont icon-right-arrow" v-if="userData.phone === null"></i>
+        <span v-else>{{userData.phone}}</span>
+      </div>
+      <div class="item-ink" @click="userData.email === null ? '' : toLink(2)">
         <div class="item-text">
           <svg class="icon" aria-hidden="true">
             <use xlink:href="#icon-bind-email"></use>
           </svg>
           绑定邮箱
         </div>
-        <i class="iconfont icon-right-arrow"></i>
-      </router-link>
+        <i class="iconfont icon-right-arrow" v-if="userData.email === null"></i>
+        <span v-else>{{userData.email}}</span>
+      </div>
     </div>
   </div>
 </template>
@@ -63,7 +65,14 @@
         'userData'
       ])
     },
-    methods: {}
+    created(){
+      this.safeLevel = !_.isNull(this.userData.email) && !_.isNull(this.userData.phone) ? 1 : 0
+    },
+    methods: {
+      toLink(type){
+        this.$router.push({name:'', query:{t: type}})
+      }
+    }
   }
 </script>
 
@@ -114,6 +123,7 @@
         align-items: center;
         justify-content: space-between;
         border-bottom: 1px solid #E4E4E4;
+        box-sizing: border-box;
       }
       .item-text{
         display: flex;
