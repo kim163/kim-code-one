@@ -82,7 +82,6 @@
       'getNewOrder': {
         handler(newValue, oldValue) {
           this.changeFormate(newValue)
-
         },
         deep: true
       }
@@ -120,6 +119,7 @@
         el.style.cssText = getCssText(cssObj);
       },
       changeFormate(value) {
+        console.log(value,'asdjk')
         const TransferArr = []
         /*交易数量*/
         TransferArr.creditAmount = value.orderx.creditAmount
@@ -135,15 +135,20 @@
         } else {
           this.isBuyState = false
         }
-        TransferArr.credit = value.orderx.creditName
-        TransferArr.debit = value.orderx.debitName
-        console.log(value.orderx.debitName, 'as萨达')
+
         /*交易名称*/
         TransferArr.creditAccountNameTwin = value.orderx.creditName
         TransferArr.debitAccountNameTwin = value.orderx.debitName
         /*订单id*/
         TransferArr.id = value.orderId
-        this.newArr.push(TransferArr)
+       /*判断用户角色*/
+        TransferArr.credit = value.orderx.credit
+        TransferArr.debit = value.orderx.debit
+        if(value.orderId in this.newArr == false){
+            this.newArr.push(TransferArr)
+        }
+
+
       },
       hide() {
         this.$emit('change', false)
@@ -160,6 +165,7 @@
         getOrderxPage(request).then(res => {
           if (res.code === 10000) {
             this.newArr = res.data
+            console.log(this.newArr,'撒大口径')
           }
         })
       },
@@ -182,7 +188,6 @@
           status: 1
         }
         getOrderxPendingPage(data).then(res => {
-          console.log(res)
           if (res.code === 10000 && res.data.length > 0) {
             this.userList = res.data.map((item, index) => {
               return {
@@ -220,15 +225,6 @@
     },
     computed: {
       ...mapGetters(['getNewOrder','userId'])
-    },
-    watch: {
-      'getNewOrder': {
-        handler(newVal, oldVal) {
-          console.log(oldVal, '萨科技的')
-          console.log(newVal, '新推送过来的信息')
-        },
-        deep: true
-      },
     },
   }
 </script>
@@ -405,7 +401,7 @@
 
     .main-title {
       @include f(20px);
-      padding-top: r(100);
+      padding-top: r(60);
     }
     .title-description {
       @include f(14px);
@@ -456,7 +452,7 @@
     }
     .list-container {
       margin-top: r(15);
-      height: r(400);
+      height: r(350);
       overflow-y: scroll;
     }
     .backgroundProcess {
@@ -478,12 +474,14 @@
     min-width: 150px;
     min-height: 150px;
     border-radius: 10px;
-    background: rgba(3, 3, 3, 0.8);
+    background: transparent;
+    opacity: 0;
   }
 
   ::-webkit-scrollbar-track-piece {
     margin: -2px;
-    background-color: rgba(3, 3, 3, 0.9);
+    background-color: transparent;
+    opacity: 0;
   }
 
 </style>

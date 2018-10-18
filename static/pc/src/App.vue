@@ -12,7 +12,6 @@
     <!--<v-login v-if="showLogin && !isMobile" v-model="showLogin"></v-login>-->
     <login-dialog v-if="showLogin && !isMobile"></login-dialog>
     <v-register v-if="showRegister && !isMobile" v-model="showRegister"></v-register>
-
     <setAccountPassword v-if="userData.initPwd == 'Y' && isMobile" @closePage="closesetPage"></setAccountPassword>
 
     <red-envelope v-if="islogin"></red-envelope>
@@ -132,13 +131,14 @@
                 toast(msgData.describe)
                 //console.log(msgData);
               }
-            }*/ else {
-              this.$store.commit('UPDATE_NEWORDER', {
-                type: msgData.type,
-                orderId: msgData.text,
-                orderx:JSON.parse(msgData.orderx)
-              })
-            }
+            }*/
+             else {
+            this.$store.commit('UPDATE_NEWORDER', {
+              type: msgData.type,
+              orderId: msgData.text,
+              orderx: JSON.parse(msgData.orderx)
+            })
+          }
         })
       },
       stompFailureCallback(error) {
@@ -190,7 +190,6 @@
       SysBullentin,
       // vLogin,
       vRegister,
-      RedEnvelope,
       LoginDialog,
       setAccountPassword,
       RedEnvelope,
