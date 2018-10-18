@@ -28,8 +28,8 @@
           <div class="content-list" v-for="(list,num) in newArr" v-bind:key="num"
                :class="{'bgOne':num%3==0,'bgSecond':num%3==1,'bgThird':num%3==2}" :animate-delay="num*0.1+'s'">
             <div class="content-left">
-              <p v-if="list.credit==userId||isBuyState">卖家: {{list.debitAccountNameTwin}}</p>
-              <p v-else>买家: {{list.creditAccountNameTwin}}</p>
+              <p v-if="list.credit==userId||isBuyState">卖家: {{list.debitName}}</p>
+              <p v-else>买家: {{list.creditName}}</p>
               <p>卖出数量: {{list.creditAmount}}</p>
               <!--对方是卖家-->
               <p v-if="list.credit==userId||isBuyState">订单状态: <span v-if="list.status==45">等待付款</span> <span
@@ -137,8 +137,8 @@
         }
 
         /*交易名称*/
-        TransferArr.creditAccountNameTwin = value.orderx.creditName
-        TransferArr.debitAccountNameTwin = value.orderx.debitName
+        TransferArr.creditName = value.orderx.creditName
+        TransferArr.debitName = value.orderx.debitName
         /*订单id*/
         TransferArr.id = value.orderId
        /*判断用户角色*/
