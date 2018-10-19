@@ -1,12 +1,13 @@
 <template>
   <div class="prom-contactus">
      <div class="contactus-banner-part">
-       <div class="container max-width context">
-         <div class="row">
-           <h2>这里有久安持续进化的创作团队</h2>
-           <h3>未来我们继续专注数字钱包的服务，在金融行业深耕， 结合最新的技术为企业提供更优良的服务。</h3>
-         </div>
-       </div>
+       <!--<div class="container max-width context">-->
+         <!--<div class="row">-->
+           <!--<h2>这里有久安持续进化的创作团队</h2>-->
+           <!--<h3>未来我们继续专注数字钱包的服务，在金融行业深耕， 结合最新的技术为企业提供更优良的服务。</h3>-->
+         <!--</div>-->
+       <!--</div>-->
+       <img src="~images/prom/contactus-mobile-banner.jpg"/>
      </div>
 
      <div class="contact-content-part">
@@ -65,9 +66,12 @@
 </script>
 <style lang="scss">
  .contactus-banner-part{
-   min-height: 420px;
+   min-height: 700px;
    background: url(~images/prom/contactus-banner.jpg) no-repeat center center;
    background-size: cover;
+   img{
+     display: none;
+   }
    .context{
      display: none;
    }
@@ -144,23 +148,34 @@
 
  }
 
- @media only screen and (max-width: 1199px) and (min-width: 1000px) {
-   .contactus-banner-part{
-     min-height: 340px;
-   }
- }
+ /*@media only screen and (max-width: 1199px) and (min-width: 1000px) {*/
+   /*.contactus-banner-part{*/
+     /*min-height: 340px;*/
+   /*}*/
+ /*}*/
 
- @media only screen and (max-width: 999px) and (min-width: 800px) {
+ /*@media only screen and (max-width: 999px) and (min-width: 800px) {*/
+   /*.contactus-banner-part{*/
+     /*min-height: 270px;*/
+   /*}*/
+ /*}*/
+ @media only screen and (max-width: 1199px) and (min-width: 800px) {
    .contactus-banner-part{
-     min-height: 270px;
+     min-height: 460px;
    }
  }
 
  @media only screen and (max-width: 799px) {
    .contactus-banner-part{
-     min-height: 244px;
-     background: #4982FF url(~images/prom/base-map.jpg) no-repeat center bottom;
-     background-size: cover;
+     min-height: auto;
+     padding-top: 44px;
+     /*background: #4982FF url(~images/prom/base-map.jpg) no-repeat center bottom;*/
+     /*background-size: cover;*/
+     img{
+       display: block;
+       width: 100%;
+       height: auto;
+     }
      .context{
        display: block;
        padding-top: 68px;
