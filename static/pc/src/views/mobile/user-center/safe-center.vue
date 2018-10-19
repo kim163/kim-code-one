@@ -35,7 +35,7 @@
           </svg>
           绑定手机
         </div>
-        <i class="iconfont icon-right-arrow" v-if="userData.phone === null"></i>
+        <i class="iconfont icon-right-arrow" v-if="phone === null"></i>
         <span class="info" v-else>{{formatPhone}}</span>
       </div>
       <div class="item-ink" @click="userData.email === null ? toLink(2) : ''">
@@ -45,7 +45,7 @@
           </svg>
           绑定邮箱
         </div>
-        <i class="iconfont icon-right-arrow" v-if="userData.email === null"></i>
+        <i class="iconfont icon-right-arrow" v-if="email === null"></i>
         <span class="info" v-else>{{formatEmail}}</span>
       </div>
     </div>
@@ -83,10 +83,11 @@
       }
     },
     watch:{
-      "getNewOrder":{
+      "userData":{
         handler(newVal){
           this.phone = newVal.phone
           this.email = newVal.email
+          this.safeLevel = !_.isNull(newVal.email) && !_.isNull(newVal.phone) ? 1 : 0
         },
         deep: true
       },

@@ -151,7 +151,7 @@
             this.countDownTime = 60
           }
         },1000)
-      }
+      },
     }
   }
 </script>
