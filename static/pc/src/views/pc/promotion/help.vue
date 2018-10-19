@@ -1,12 +1,13 @@
 <template>
   <div class="prom-helpcent">
      <div class="helpcent-banner-part">
-       <div class="container max-width context">
-         <div class="row">
-             <h2>如有疑问 我们帮您解答</h2>
-             <h3>请点击每个问题获取答案。<br>如果你的问题不在这里，请不要犹豫与我们联系。</h3>
-         </div>
-       </div>
+       <!--<div class="container max-width context">-->
+         <!--<div class="row">-->
+             <!--<h2>如有疑问 我们帮您解答</h2>-->
+             <!--<h3>请点击每个问题获取答案。<br>如果你的问题不在这里，请不要犹豫与我们联系。</h3>-->
+         <!--</div>-->
+       <!--</div>-->
+       <img src="~images/prom/help-mobile-banner.jpg"/>
      </div>
 
      <div class="helpcent-content-part">
@@ -107,9 +108,12 @@
 </script>
 <style lang="scss">
  .helpcent-banner-part{
-   min-height: 420px;
+   min-height: 700px;
    background: url(~images/prom/help-banner.jpg) no-repeat center center;
    background-size: cover;
+   img{
+     display: none;
+   }
    .context{
      display: none;
    }
@@ -174,23 +178,33 @@
    }
  }
 
- @media only screen and (max-width: 1199px) and (min-width: 1000px) {
+ /*@media only screen and (max-width: 1199px) and (min-width: 1000px) {*/
+   /*.helpcent-banner-part{*/
+     /*min-height: 460px;*/
+   /*}*/
+ /*}*/
+
+ /*@media only screen and (max-width: 999px) and (min-width: 800px) {*/
+   /*.helpcent-banner-part{*/
+     /*min-height: 270px;*/
+   /*}*/
+ /*}*/
+ @media only screen and (max-width: 1199px) and (min-width: 800px) {
    .helpcent-banner-part{
-     min-height: 340px;
+     min-height: 460px;
    }
  }
-
- @media only screen and (max-width: 999px) and (min-width: 800px) {
-   .helpcent-banner-part{
-     min-height: 270px;
-   }
- }
-
  @media only screen and (max-width: 799px) {
    .helpcent-banner-part{
-     min-height: 244px;
-     background: #4982FF url(~images/prom/base-map.jpg) no-repeat center bottom;
-     background-size: cover;
+     min-height: auto;
+     padding-top: 44px;
+     /*background: url(~images/prom/help-mobile-banner.jpg) no-repeat center center;*/
+     /*background-size: cover;*/
+     img{
+       display: block;
+       width: 100%;
+       height: auto;
+     }
      .context{
        display: block;
        padding-top: 68px;
