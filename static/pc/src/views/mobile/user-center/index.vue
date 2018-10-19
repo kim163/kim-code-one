@@ -88,9 +88,17 @@
       </div>
 
       <div class="mcenter-linkitem">
-        <router-link :to="{name:'mSetUserInfo'}" class="item-href">
-          <i class="iconfont logo icon-complete-material"></i>
-          完善资料
+        <!--<router-link :to="{name:'mSetUserInfo'}" class="item-href">-->
+          <!--<i class="iconfont logo icon-complete-material"></i>-->
+          <!--完善资料-->
+          <!--<i class="iconfont icon-right-arrow"></i>-->
+        <!--</router-link>-->
+        <router-link :to="{name:'mSafeCenter'}" class="item-href">
+          <!--<i class="iconfont logo icon-safe-center"></i>-->
+          <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-safe-center"></use>
+          </svg>
+          安全中心
           <i class="iconfont icon-right-arrow"></i>
         </router-link>
       </div>
@@ -521,6 +529,9 @@
           &.icon-complete-material {
             color: #F4376D;
           }
+          &.icon-safe-center{
+            color: #F4376D;
+          }
           &.icon-juan-app {
             color: #C8151D;
           }
@@ -533,6 +544,12 @@
         }
         .icon-right-arrow {
           float: right;
+        }
+        .icon{
+          width: 25px;
+          height: 25px;
+          margin-right: r(5);
+          vertical-align: middle;
         }
       }
     }
