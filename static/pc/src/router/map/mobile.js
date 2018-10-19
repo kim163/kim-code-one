@@ -34,6 +34,7 @@ const mActivity = () => import('views/mobile/activity-center') //手机活动
 const mOrderMatch = () => import('views/mobile/order-match') //匹配页面
 const mFindPassword = () => import('views/mobile/find-password') //找回密码页面
 const mSafeCenter = () => import('views/mobile/user-center/safe-center')  //安全中心
+const mBindPhoneEmail = () => import('views/mobile/user-center/bind-phone-email') //绑定手机邮箱
 
 export default [
   {
@@ -317,7 +318,6 @@ export default [
     }
   },
   {
-
     path:'/m/safe',
     name:'mSafeCenter',
     component:mSafeCenter,
@@ -334,5 +334,17 @@ export default [
       noCache:true,
       isMobilePage:'mobile-body'
     },
+  },
+  {
+    path:'/m/bind',
+    name:'mBindPhoneEmail',
+    component:mBindPhoneEmail,
+    meta:{
+      noCache:true,
+      isMobilePage:'mobile-body'
+    },
+    props:(route) => ({
+      bindType: Number(route.query.t)
+    })
   },
 ]
