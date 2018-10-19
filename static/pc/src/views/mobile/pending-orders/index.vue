@@ -109,7 +109,6 @@
 
   export default {
     name: "transaction-record",
-
     components: {
       MobileNavBar,
       MobileHeader,
@@ -254,7 +253,7 @@
             setTimeout(() => {
               this.rangeReset = false
             },100)
-             toast('下单成功');
+             toast('正在进入全球配单...');
              this.$router.push({name:"mMatch"})
            // this.showBuySellRes = true
           } else {
