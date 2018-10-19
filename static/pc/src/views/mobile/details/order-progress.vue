@@ -30,25 +30,32 @@
           </div>
           <p class="pay_send" v-if="showDiscountInfo&&couponValueStr>0">立即付款后预计获赠 {{couponValueStr}} UET</p>
         </div>
-        <div class="mopayment-method-bar" v-if="isPlatformDebit">
+        <div class="mopayment-method-bar" v-if="DetailList.status =='45' && isPlatformDebit">
           <a href="javascript:void(0);"  class="payment-btn" @click="showPaymentPopup=true">
+            <i class="iconfont icon-selbtn-down"></i>
             请选择您的付款方式
+            <i class="iconfont icon-right-arrow fr"></i>
           </a>
         </div>
         <div>
           <ul class="details-ul">
             <li>
-              <p class="l-title">订单 :</p>
+              <p class="l-title">订单：</p>
               <p class="order-id-li extra_order"><span class="order_info">{{orderId}}</span>
                 <a href="javascript:void(0);" class="copy-btn copy-btn-next" :data-clipboard-text="orderId"
                    @click="copy">{{$t('transactionHome.copyBtn')}}</a>
               </p>
             </li>
             <li>
-              <span class="l-title">交易数量 :</span>
+              <span class="l-title">交易数量：</span>
               <span>
-                     <span class="l-title">{{DetailList.debitAmount}} UET</span> <span class="equal_money"> ≈ ¥ {{(DetailList.debitAmount*0.01).toFixed(2)}} </span>
-                 </span>
+                <span class="l-title">{{DetailList.debitAmount}} UET</span>
+                <span class="equal_money" v-if="!isPlatformDebit"> ≈ ¥ {{(DetailList.debitAmount*0.01).toFixed(2)}} </span>
+              </span>
+            </li>
+            <li v-if="DetailList.status =='45' && isPlatformDebit">
+              <span class="l-title">应付金额：</span>
+              <span class="generat-amount">先选择付款方式后会生成付款金额</span>
             </li>
           </ul>
           <ul class="details-ul pay-detail">
@@ -96,7 +103,7 @@
 
           </ul>
 
-          <ul class="morder-paymethod" v-if="DetailList.status =='45' ">
+          <ul class="morder-paymethod" v-if="DetailList.status =='45' && !isPlatformDebit ">
             <li class="cfx">
               <a href="alipay://">
                 <span>  <i class="iconfont icon-pay-alipay"></i> 打开支付宝 </span>
@@ -109,10 +116,13 @@
             </li>
           </ul>
           <div class="btn-group" v-if="DetailList.status =='45' ">
-            <p class="payment-tips">
+            <p class="payment-tips" v-if="isPlatformDebit">
+              请先选择您用的转账方式，然后根据生成的金额准确付款，为了能快速匹配订单，生成的金额会有小小的差额，敬请原谅！
+            </p>
+            <p class="payment-tips" v-else>
               请在倒计时内完成付款,并点击下方的按钮,为了能快速完成交易,请尽量真实付款,切勿造假,一经发现将被禁用
             </p>
-            <input type="button" class="btn btn-block btn-primary" @click="showConfirm=true" value="我已完成付款">
+            <input type="button" class="btn btn-block btn-primary" v-if="!isPlatformDebit" @click="showConfirm=true" value="我已完成付款">
             <input type="button" class="btn btn-block btn-cancel gray-black" @click="cancelOrder"
                    v-if="DetailList.status =='45'"
                    value="取消订单">
@@ -320,6 +330,16 @@
       <div slot="rightBtn" @click="payCompleted" class="bg-blue">确认释放UET</div>
     </confirm-dialog>
 
+    <order-payment v-if="isPlatformDebit && showPaymentPopup" @hideOrderPay="showPaymentPopup=false" @openPayinfoPopup="openPayinfoPopup" ></order-payment>
+    <order-payinfo v-if="isPlatformDebit"
+                   v-show="showPayinfoPopup"
+                   :DetailList="DetailList"
+                   :selPlatPaymentInfo="selPlatPaymentInfo"
+                   @hideOrderPayinfo="showPayinfoPopup=false"
+                   @confirmPayOrder="showConfirm=true"
+                   @copy="copy"
+    ></order-payinfo>
+
     <div class="Rongyunchatroom" @click="goChatroom()">
       <p>跟对方会话<span style="color: #ec3a4e" v-if="unreadCountUpdate>0">(未读{{unreadCountUpdate}})</span></p>
     </div>
@@ -341,10 +361,11 @@
   import uploadImg from 'components/upload-img'
   import {generateTitle} from '@/util/i18n'
   import {chatWith, transaction} from 'api'
-  import {mapGetters} from 'vuex'
   import Clipboard from 'clipboard';
   import chat from '../chatroom/chat';
   import confirmDialog from 'components/confirm';
+  import OrderPayment from './components/order-payment';
+  import OrderPayinfo from './components/order-payinfo';
 
   export default {
     data() {
@@ -397,8 +418,10 @@
         buyTypeBuyBank: '',
         showDiscountInfo: false,
         couponValueStr: 0,
-        isPlatformDebit: false,
-        showPaymentPopup: false
+        isPlatformDebit: false,     // 卖家是否为平台方
+        showPaymentPopup: false,     // 是否显示 选择支付方式 弹窗
+        showPayinfoPopup:false,       // 是否显示 支付方式 详情弹窗
+        selPlatPaymentInfo:{}          // 匹配到平台订单 支付方式
       };
     },
     methods: {
@@ -518,6 +541,7 @@
       },
       payOrder() {
         this.showConfirm = false;
+        this.showPayinfoPopup=false;
         if (this.DetailList.creditProofTypeTwin == 1 && this.DetailList.creditProofStatusTwin == 0) {
           if (this.payOrderStep == 1) {
             this.payOrderStep = 2;
@@ -662,6 +686,10 @@
           // 释放内存
           clipboard.destroy()
         })
+      },
+      openPayinfoPopup(info){
+        this.showPayinfoPopup=true;
+        this.selPlatPaymentInfo=info;
       }
     },
     created() {
@@ -704,7 +732,9 @@
       uploadImg,
       CountDown,
       chat,
-      confirmDialog
+      confirmDialog,
+      OrderPayment,
+      OrderPayinfo
     }
   };
 
@@ -896,6 +926,19 @@
       @include f(16px);
       color: #FFFFFF;
       padding: 0 r(20);
+      .icon-selbtn-down{
+        @include f(19px);
+        margin:0 r(5) r(4) 0;
+        display: inline-block;
+      }
+      .icon-right-arrow{
+        @include f(18px);
+        transform:rotate(90deg);
+        -ms-transform:rotate(90deg);
+        -moz-transform:rotate(90deg);
+        -webkit-transform:rotate(90deg);
+        -o-transform:rotate(90deg);
+      }
     }
   }
 
@@ -941,6 +984,10 @@
           height: r(30);
           vertical-align: - r(8);
         }
+      }
+      .generat-amount{
+         display: inline-block;
+         color: #EC3A4E;
       }
       .remind_info {
         font-size: r(12);
@@ -1008,7 +1055,8 @@
       color: #fff;
     }
     .btn-cancel {
-      color: #333333;
+      background: #84A4E9;
+      color: #FFFFFF;
     }
     .btn-block {
       display: block;
