@@ -25,14 +25,15 @@
       <div class="list-container">
         <!--背景色固定为三种颜色-->
         <transition-group v-on:before-enter="beforeEnter">
-          <div class="content-list" v-for="(list,num) in newArr" v-bind:key="num"
+          <div class="content-list" v-for="(list,num) in reverseArr" v-bind:key="num"
                :class="{'bgOne':num%3==0,'bgSecond':num%3==1,'bgThird':num%3==2}" :animate-delay="num*0.1+'s'">
             <div class="content-left">
-              <p v-if="list.credit==userId||isBuyState">卖家: {{list.debitName}}</p>
+              <p v-if="list.credit==userId">卖家: {{list.debitName}}</p>
               <p v-else>买家: {{list.creditName}}</p>
-              <p>卖出数量: {{list.creditAmount}}</p>
+              <p v-if="list.credit==userId">卖出数量: {{list.creditAmount}}</p>
+              <p v-else>买入数量: {{list.creditAmount}}</p>
               <!--对方是卖家-->
-              <p v-if="list.credit==userId||isBuyState">订单状态: <span v-if="list.status==45">等待付款</span> <span
+              <p v-if="list.credit==userId">订单状态: <span v-if="list.status==45">等待付款</span> <span
                 v-if="list.status==47">等待放币</span>
                 <span v-if="list.status==61">申诉中</span></p>
               <!--对方是买家-->
@@ -119,33 +120,40 @@
         el.style.cssText = getCssText(cssObj);
       },
       changeFormate(value) {
-        console.log(value,'asdjk')
         const TransferArr = []
         /*交易数量*/
-        TransferArr.creditAmount = value.orderx.creditAmount
-        /*交易类型*/
+        if (value.type == 4 || value.type == 3) {
+          TransferArr.creditAmount = 0
+        } else {
+          TransferArr.creditAmount = value.orderx.creditAmount
+        }
+
+        /*交易类型 3和4 */
         if (value.type == 1) {
           TransferArr.status = 45
         } else if (value.type == 2) {
           TransferArr.status = 47
+        } else if (value.type == 11) {
+          TransferArr.status = 61
+        } else if (value.type == 4) {
+          const FilterArr = this.newArr.filter((item) => {
+            return item.id !== value.orderId
+          })
+          this.newArr = FilterArr
+          return
         }
-        /*websocket type 11　为买入　　１２为卖出*/
-        if (value.orderx.type == 11) {
-          this.isBuyState = true
-        } else {
-          this.isBuyState = false
-        }
+
 
         /*交易名称*/
         TransferArr.creditName = value.orderx.creditName
         TransferArr.debitName = value.orderx.debitName
         /*订单id*/
         TransferArr.id = value.orderId
-       /*判断用户角色*/
+        /*判断用户角色*/
         TransferArr.credit = value.orderx.credit
         TransferArr.debit = value.orderx.debit
-        if(value.orderId in this.newArr == false){
-            this.newArr.push(TransferArr)
+        if (this.newArr.findIndex((item) => item.id === value.orderId) == -1) {
+          this.newArr.push(TransferArr)
         }
 
 
@@ -165,7 +173,6 @@
         getOrderxPage(request).then(res => {
           if (res.code === 10000) {
             this.newArr = res.data
-            console.log(this.newArr,'撒大口径')
           }
         })
       },
@@ -224,7 +231,10 @@
       this.getUserList()
     },
     computed: {
-      ...mapGetters(['getNewOrder','userId'])
+      ...mapGetters(['getNewOrder', 'userId']),
+      reverseArr(){
+        return this.newArr.reverse()
+      }
     },
   }
 </script>
