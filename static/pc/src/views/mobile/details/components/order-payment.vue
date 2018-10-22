@@ -11,6 +11,7 @@
 </template>
 <script>
   import Popup from 'components/common-popup';
+  import {transaction} from 'api'
 
   export default {
     data() {
@@ -40,19 +41,51 @@
         ]
       };
     },
-    props: {},
-    methods: {
-      setPaytype(type){
-        console.log('支付',type);
-        this.$emit('hideOrderPay');
-        let selPlatPaymentInfo = {
-          selPaymentType:type,
-          payAmount:100
-        };
-        this.$emit("openPayinfoPopup",selPlatPaymentInfo);
+    props:{
+      orderId:{
+        type:String,
+        default:""
       }
     },
-    computed: {},
+    methods: {
+      setPaytype(type){
+        const selPlatPaymentInfo = {
+          selPaymentType:type,
+          payAmount:0
+        };
+        const data = {
+          orderId: this.orderId,
+          accountCashVo:{
+            type: type
+          }
+        };
+        const selectPay = this.bankCardInfo.find(item => {
+          return item.type === type
+        });
+        if(selectPay){
+          Object.assign(data.accountCashVo,{
+            account: selectPay.account
+          })
+        }
+        transaction.recommendedAmount(data).then(res => {
+          console.log('实际支付金额',res);
+          if(res.code === 10000){
+            selPlatPaymentInfo.payAmount = res.data.key;
+            this.$emit('hideOrderPay');
+            this.$emit("openPayinfoPopup",selPlatPaymentInfo);
+          }else {
+            toast(res.message)
+          }
+        }).catch(err => {
+          toast(err)
+        });
+      }
+    },
+    computed: {
+      ...mapGetters([
+        'bankCardInfo'
+      ])
+    },
     created() {
     },
     components: {

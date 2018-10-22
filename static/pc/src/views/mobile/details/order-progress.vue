@@ -330,8 +330,12 @@
       <div slot="rightBtn" @click="payCompleted" class="bg-blue">确认释放UET</div>
     </confirm-dialog>
 
-    <order-payment v-if="isPlatformDebit && showPaymentPopup" @hideOrderPay="showPaymentPopup=false" @openPayinfoPopup="openPayinfoPopup" ></order-payment>
-    <order-payinfo v-if="isPlatformDebit"
+    <order-payment v-if="DetailList.credit == userId && isPlatformDebit && showPaymentPopup"
+                   :orderId="orderId"
+                   @hideOrderPay="showPaymentPopup=false"
+                   @openPayinfoPopup="openPayinfoPopup"
+    ></order-payment>
+    <order-payinfo v-if="DetailList.credit == userId && isPlatformDebit"
                    v-show="showPayinfoPopup"
                    :DetailList="DetailList"
                    :selPlatPaymentInfo="selPlatPaymentInfo"
@@ -446,7 +450,7 @@
             return;
           }
           this.DetailList = res.data;
-          if (this.DetailList.debit == 0){
+          if (this.DetailList.debit === '0'){
             this.isPlatformDebit = true;
           }
           this.fetchDiscountNum()

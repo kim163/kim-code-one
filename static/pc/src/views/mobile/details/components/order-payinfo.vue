@@ -21,7 +21,9 @@
            </div>
            <div class="money cfx">
              <label class="fl">应付金额</label>
-             <p class="fl">￥100.05</p>
+             <p class="fl">&yen;
+                <animated-integer :value="Number(selPlatPaymentInfo.payAmount)"></animated-integer>
+             </p>
            </div>
          </div>
         <div class="split-point">
@@ -74,8 +76,8 @@
                  <li>
                    <span class="l-title">金额：</span>
                    <div class="fr0">
-                     ￥100.00
-                     <a href="javascript:void(0);" class="copy-btn" :data-clipboard-text="DetailList.debitAccountMerchantTwin"
+                     &yen; {{selPlatPaymentInfo.payAmount}}
+                     <a href="javascript:void(0);" class="copy-btn" :data-clipboard-text="selPlatPaymentInfo.payAmount"
                         @click="$emit('copy')">{{$t('transactionHome.copyBtn')}}</a>
                    </div>
                  </li>
@@ -96,7 +98,8 @@
   </transition>
 </template>
 <script>
-  import CountDown from 'components/countdown'
+  import CountDown from 'components/countdown';
+  import AnimatedInteger from 'components/animated-integer';
 
   export default {
     data() {
@@ -121,7 +124,8 @@
     created() {
     },
     components: {
-      CountDown
+      CountDown,
+      AnimatedInteger
     }
   };
 </script>
