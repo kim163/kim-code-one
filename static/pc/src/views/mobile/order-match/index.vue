@@ -15,7 +15,8 @@
            :style="{left: `${item.left}%`,top:`${item.top}%`}">{{item.name}}
       </div>
     </div>
-    <div class="match-success" v-if="newArr">
+    <!--加了v-if对数组的判断导致transition delay 动画gg-->
+    <div class="match-success" v-if="newArr.length>0">
       <p class="main-title">
         为您匹配到订单...
       </p>
@@ -72,7 +73,8 @@
         newArr: [],
         isBuyState: '',
         leftArr: _.shuffle(_.range(10, 30, 4).concat(_.range(60, 80, 4))),
-        topArr: _.shuffle(_.range(10, 40, 6).concat(_.range(60, 90, 6)))
+        topArr: _.shuffle(_.range(10, 40, 6).concat(_.range(60, 90, 6))),
+
       }
     },
     model: {
@@ -142,11 +144,11 @@
           this.newArr = FilterArr
           return
         }
-
-
         /*交易名称*/
-        TransferArr.creditName = value.orderx.creditName
-        TransferArr.debitName = value.orderx.debitName
+        if (value.orderx) {
+          TransferArr.creditName = value.orderx.creditName
+          TransferArr.debitName = value.orderx.debitName
+        }
         /*订单id*/
         TransferArr.id = value.orderId
         /*判断用户角色*/
@@ -159,7 +161,7 @@
 
       },
       hide() {
-        this.$emit('change', false)
+         this.$router.back();
       },
       getOrderIng() {
         const request = {
@@ -172,7 +174,11 @@
         }
         getOrderxPage(request).then(res => {
           if (res.code === 10000) {
-            this.newArr = res.data
+            /*为了展现转圈的效果*/
+            setTimeout(() => {
+              this.newArr = res.data
+            }, 1500)
+
           }
         })
       },
@@ -180,7 +186,7 @@
         this.$router.back();
       },
       goIndex() {
-        this.$router.push({name: 'mAindex'})
+        this.$router.back();
       },
       goDetailPage(id) {
         this.$router.push({name: 'mOrder', params: {id: id}})
@@ -232,7 +238,7 @@
     },
     computed: {
       ...mapGetters(['getNewOrder', 'userId']),
-      reverseArr(){
+      reverseArr() {
         return this.newArr.reverse()
       }
     },
@@ -408,7 +414,6 @@
     background-color: rgba(0, 0, 0, 0.9);
     height: 100%;
     width: 100%;
-
     .main-title {
       @include f(20px);
       padding-top: r(60);
@@ -467,9 +472,9 @@
     }
     .backgroundProcess {
       position: fixed;
-      bottom: r(40);
-      right: r(40);
-      width: r(100);
+      width: r(90);
+      bottom: 5%;
+      left: 39%;
       height: r(30);
       background-color: #fff;
       border-radius: r(4);
