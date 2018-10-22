@@ -15,6 +15,7 @@
            :style="{left: `${item.left}%`,top:`${item.top}%`}">{{item.name}}
       </div>
     </div>
+    <!--加了v-if对数组的判断导致transition delay 动画gg-->
     <div class="match-success" v-if="newArr.length>0">
       <p class="main-title">
         为您匹配到订单...
@@ -72,7 +73,8 @@
         newArr: [],
         isBuyState: '',
         leftArr: _.shuffle(_.range(10, 30, 4).concat(_.range(60, 80, 4))),
-        topArr: _.shuffle(_.range(10, 40, 6).concat(_.range(60, 90, 6)))
+        topArr: _.shuffle(_.range(10, 40, 6).concat(_.range(60, 90, 6))),
+
       }
     },
     model: {
@@ -105,6 +107,7 @@
     methods: {
       beforeEnter(el) {
         const delay = el.getAttribute('animate-delay')
+        console.log(delay, '时间跨度')
         const cssObj = {
           "animation-delay": delay,
           '-webkit-animation-delay': delay,
@@ -142,11 +145,11 @@
           this.newArr = FilterArr
           return
         }
-
-
         /*交易名称*/
-        TransferArr.creditName = value.orderx.creditName
-        TransferArr.debitName = value.orderx.debitName
+        if (value.orderx.creditName) {
+          TransferArr.creditName = value.orderx.creditName
+          TransferArr.debitName = value.orderx.debitName
+        }
         /*订单id*/
         TransferArr.id = value.orderId
         /*判断用户角色*/
@@ -173,9 +176,10 @@
         getOrderxPage(request).then(res => {
           if (res.code === 10000) {
             /*为了展现转圈的效果*/
-            setTimeout(()=>{
-                this.newArr = res.data
-            },1500)
+            setTimeout(() => {
+              this.newArr = res.data
+            }, 1500)
+
           }
         })
       },
@@ -183,7 +187,7 @@
         this.$router.back();
       },
       goIndex() {
-        this.$router.push({name: 'mAindex'})
+        this.$router.back();
       },
       goDetailPage(id) {
         this.$router.push({name: 'mOrder', params: {id: id}})
@@ -235,7 +239,7 @@
     },
     computed: {
       ...mapGetters(['getNewOrder', 'userId']),
-      reverseArr(){
+      reverseArr() {
         return this.newArr.reverse()
       }
     },
