@@ -15,7 +15,7 @@
            :style="{left: `${item.left}%`,top:`${item.top}%`}">{{item.name}}
       </div>
     </div>
-    <div class="match-success" v-if="newArr">
+    <div class="match-success" v-if="newArr.length>0">
       <p class="main-title">
         为您匹配到订单...
       </p>
@@ -172,7 +172,10 @@
         }
         getOrderxPage(request).then(res => {
           if (res.code === 10000) {
-            this.newArr = res.data
+            /*为了展现转圈的效果*/
+            setTimeout(()=>{
+                this.newArr = res.data
+            },1500)
           }
         })
       },
@@ -408,7 +411,6 @@
     background-color: rgba(0, 0, 0, 0.9);
     height: 100%;
     width: 100%;
-
     .main-title {
       @include f(20px);
       padding-top: r(60);
