@@ -7,6 +7,19 @@
 
       <div class="page-content detail-box" v-if="DetailList">
         <detail-title :isCredit="isCredit" :isDebit="isDebit" :orderId="orderId"></detail-title>
+        <div class="pay-type" v-if="isCredit && DetailList.debit === '0'">
+          <div class="tips">请先选择以下的付款方式，根据生成的金额来付款，选择后不可更改，为了及时到账请确保付款的金额准确</div>
+          <div class="type-list">
+            <div class="type-item" v-for="(item,index) in payTypeList"
+                 :class="{active: item.type === payType}"
+                 :key="index" @click="payType != 0 ? '' : chooseType(item)">
+              <div class="icon">
+                <i class="iconfont" :class="item.icon"></i>
+              </div>
+              我用{{item.name}}转账
+            </div>
+          </div>
+        </div>
         <div class="detail-in cfx">
           <display-infor :DetailList="DetailList" :isCredit="isCredit" :hide-amount="hideAmountBtn" :real-amount="realAmount" :isDebit="isDebit"
                          :isTrading="true"></display-infor>
@@ -38,7 +51,7 @@
               <p class="pay_send" v-if="showDiscountInfo&couponValueStr>0&DetailList.status =='45' && isDebit">立即付款后预计获赠
                 <span>{{couponValueStr}} UET</span></p>
               <div class="btn-group" v-if="DetailList.status =='45' && isCredit">
-                <input type="button" class="btn btn-block btn-normal" @click="showConfirm=true" value="我已完成付款">
+                <input type="button" class="btn btn-block btn-normal" @click="showConfirm=true" v-if="!hideAmountBtn" value="我已完成付款">
                 <p class="pay_send" v-if="showDiscountInfo&couponValueStr>0">立即付款后预计获赠
                   <span>{{couponValueStr}} UET</span></p>
                 <p class="payment-tips">
@@ -237,6 +250,7 @@
   import confirmDialog from 'components/confirm'
   import chatList from '../../../views/mobile/chatroom/chat-list'
   import chat from '../../../views/mobile/chatroom/chat'
+  import CommonPopup from 'components/common-popup'
 
   export default {
     data() {
@@ -307,7 +321,6 @@
         realAmount:'',
         showRealAmount:false, //展示推荐金额弹窗
         hideAmountBtn:false, //隐藏交易金额和我已完成付款按钮
-        showDiscountInfo: false
       };
     },
     methods: {
@@ -335,6 +348,10 @@
             this.fetchDiscountNum()
             if (this.DetailList.credit == this.userId) {
               this.isCredit = true;
+              if(this.DetailList.debit === '0'){
+                this.payType = _.isNull(this.DetailList.creditAccountTypeTwin) ? 0 : this.DetailList.creditAccountTypeTwin
+                this.hideAmountBtn = this.payType === 0 ? true : false
+              }
             } else if (this.DetailList.debit == this.userId) {
               this.isDebit = true;
             }
@@ -351,7 +368,7 @@
               }
               // toast('对方已确认付款，请查收是否到账');
             }
-          }else{
+          } else {
             toast(res.message)
             this.$router.replace({name: 'walletCenter'});
           }
@@ -369,7 +386,7 @@
           'traderType': this.DetailList.credit == this.userId ? 1 : 2
         }
         transaction.getCouponAmount(request).then((res) => {
-          console.log(res, '手机打开')
+          // console.log(res, '手机打开')
           if (res.code == '10000') {
             if (res.data.isAward) {
               this.showDiscountInfo = true;
@@ -397,7 +414,7 @@
           if (res.code == '10000') {
             toast('您已取消，请勿重复操作');
             Vue.$global.bus.$emit('update:tranList');
-            this.$store.commit('UPDATE_NEWORDER',{
+            this.$store.commit('UPDATE_NEWORDER', {
               type: 0,
               orderId: ''
             })
@@ -560,8 +577,49 @@
       },
       countDownEnd() {
         this.fetchData();
+      },
+      chooseType(data){ //买家选择支付渠道
+        this.selectTayItem = data
+        // this.payType = data.type
+        this.payTypeConfirm = true
+      },
+      getRealPayAmount(){
+        const data = {
+          orderId: this.orderId,
+          accountCashVo:{
+            type: this.selectTayItem.type
+          }
+        }
+        const selectPay = this.bankCardInfo.find(item => {
+          return item.type === this.selectTayItem.type
+        })
+        if(selectPay){
+          Object.assign(data.accountCashVo,{
+            account: selectPay.account
+          })
+        }
+        transaction.recommendedAmount(data).then(res => {
+          console.log(res)
+          if(res.code === 10000){
+            this.realAmount = res.data.key
+            this.payType = this.selectTayItem.type
+            this.showRealAmount = true
+            this.payTypeConfirm = false
+          }else {
+            toast(res.message)
+          }
+        }).catch(err => {
+          toast(err)
+        })
+      },
+      hasGetRealAmount(){
+        this.showRealAmount = false
+        this.hideAmountBtn = false
+      },
+      hidePayType(){
+        this.payTypeConfirm = false
+        this.payType = 0
       }
-
     },
     created() {
       if (this.$route.params.id) {
@@ -584,9 +642,9 @@
       "getNewOrder": {
         handler(newVal, oldVal) {
           if (newVal.orderId === this.orderId) {
-            if(newVal.type === 1 || newVal.type === 2){
+            if (newVal.type === 1 || newVal.type === 2) {
               this.fetchData();
-            }else{
+            } else {
               let routerName = ''
               if (newVal.type === 3 || newVal.type === 4) {
                 routerName = 'orderDetailOver'
@@ -599,6 +657,11 @@
         },
         deep: true
       },
+      // payTypeConfirm(val){
+      //   if(!val){
+      //     this.payType = 0
+      //   }
+      // }
     },
     computed: {
       ...mapGetters([
@@ -608,6 +671,7 @@
         'connectState',
         'unreadCount',
         'getNewOrder',
+        'bankCardInfo'
       ]),
       unreadCountUpdate() {
         if (this.unreadCount < 0) {
@@ -620,7 +684,19 @@
       }
     },
     components: {
-      DetailTitle, DisplayInfor, NoDataTip, getBankcard, uploadImg, CountDown, confirmDialog, chatList, chat
+      DetailTitle,
+      DisplayInfor,
+      NoDataTip,
+      getBankcard,
+      uploadImg,
+      CountDown,
+      confirmDialog,
+      chatList,
+      chat,
+      CommonPopup
+    },
+    beforeDestroy(){
+      this.showDiscountInfo = false
     },
     beforeRouteEnter(to, from, next) {
       if (from.name === 'orderDetailAppeal') {
@@ -775,9 +851,10 @@
     min-height: 300px;
     padding: 0 0 23px;
   }
-  .go-back-part{
+
+  .go-back-part {
     height: 40px;
-    a{
+    a {
       font-size: 16px;
       padding: 5px 12px;
       border-radius: 15px;
@@ -786,7 +863,7 @@
       display: block;
       line-height: 16px;
       margin-top: 7px;
-      &:hover{
+      &:hover {
         background: #9490F6;
       }
     }
@@ -800,11 +877,11 @@
     .time-stame {
       font-size: 20px;
       padding: 10px 0;
-      span{
+      span {
         display: block;
-         &:last-child {
+        &:last-child {
           color: red;
-         }
+        }
       }
     }
     .col-33 {
@@ -821,6 +898,58 @@
     }
     .red {
       color: red;
+    }
+    .pay-type {
+      padding: 30px 40px;
+      border-bottom: 1px solid #EBEBEB;
+      .tips {
+        font-size: 14px;
+      }
+      .type-list {
+        margin-top: 30px;
+        display: flex;
+        justify-content: space-between;
+      }
+      .type-item {
+        width: 346px;
+        height: 80px;
+        background: #F3F7FF;
+        border-radius: 5px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        transition: all .5s;
+        &:hover{
+          box-shadow: 0 2px 5px 0 rgba(0,0,0,0.30);
+        }
+        &.active{
+          background-image: linear-gradient(0deg, #3A7FDB 0%, #58A0FF 100%);
+          box-shadow: 0 2px 5px 0 rgba(0,0,0,0.30);
+          color: #ffffff;
+        }
+      }
+      .icon {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: #FFFFFF;
+        margin-right: 20px;
+        text-align: center;
+        font-size: 24px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        .icon-pay-type-ali {
+          color: #3988FF;
+        }
+        .icon-pay-type-wechat {
+          color: #24DB5A;
+        }
+        .icon-pay-type-bank {
+          color: #EC3A4E;
+        }
+      }
     }
   }
 
