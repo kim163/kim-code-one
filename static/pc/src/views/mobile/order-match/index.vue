@@ -473,9 +473,9 @@
     }
     .backgroundProcess {
       position: fixed;
-      bottom: r(30);
-      right: r(130);
-      width: r(100);
+      width: r(90);
+      bottom: 5%;
+      left: 39%;
       height: r(30);
       background-color: #fff;
       border-radius: r(4);
