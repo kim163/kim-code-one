@@ -107,7 +107,6 @@
     methods: {
       beforeEnter(el) {
         const delay = el.getAttribute('animate-delay')
-        console.log(delay, '时间跨度')
         const cssObj = {
           "animation-delay": delay,
           '-webkit-animation-delay': delay,
@@ -146,7 +145,7 @@
           return
         }
         /*交易名称*/
-        if (value.orderx.creditName) {
+        if (value.orderx) {
           TransferArr.creditName = value.orderx.creditName
           TransferArr.debitName = value.orderx.debitName
         }
@@ -162,7 +161,7 @@
 
       },
       hide() {
-        this.$emit('change', false)
+         this.$router.back();
       },
       getOrderIng() {
         const request = {
