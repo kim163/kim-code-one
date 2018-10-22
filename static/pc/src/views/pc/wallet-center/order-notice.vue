@@ -99,6 +99,7 @@
         }
       },
       userId(){
+        this.orderId = ''
         this.getOrderIng()
       }
     },
