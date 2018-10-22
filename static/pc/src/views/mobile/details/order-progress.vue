@@ -31,10 +31,17 @@
           <p class="pay_send" v-if="showDiscountInfo&&couponValueStr>0">立即付款后预计获赠 {{couponValueStr}} UET</p>
         </div>
         <div class="mopayment-method-bar" v-if="DetailList.status =='45' && isPlatformDebit">
-          <a href="javascript:void(0);"  class="payment-btn" @click="showPaymentPopup=true">
+          <a href="javascript:void(0);"  class="payment-btn" @click="showPaymentPopup=true" v-if="hideAmountBtn">
             <i class="iconfont icon-selbtn-down"></i>
             请选择您的付款方式
             <i class="iconfont icon-right-arrow fr"></i>
+          </a>
+          <a href="javascript:void(0);"  class="payment-btn disabled-state" v-else>
+            <i class="iconfont icon-selbtn-down"></i>
+            您已选择了
+            <span v-if="selPlatPaymentInfo.selPaymentType==1"> 支付宝转账</span>
+            <span v-if="selPlatPaymentInfo.selPaymentType==2"> 微信转账</span>
+            <span v-if="selPlatPaymentInfo.selPaymentType==3"> 银行卡转账</span>
           </a>
         </div>
         <div>
@@ -53,9 +60,10 @@
                 <span class="equal_money" v-if="!isPlatformDebit"> ≈ ¥ {{(DetailList.debitAmount*0.01).toFixed(2)}} </span>
               </span>
             </li>
-            <li v-if="DetailList.status =='45' && isPlatformDebit">
+            <li v-if="isPlatformDebit">
               <span class="l-title">应付金额：</span>
-              <span class="generat-amount">先选择付款方式后会生成付款金额</span>
+              <span class="generat-amount" v-if="!hideAmountBtn && selPlatPaymentInfo.payAmount">{{selPlatPaymentInfo.payAmount}}</span>
+              <span class="generat-amount" v-else>先选择付款方式后会生成付款金额</span>
             </li>
           </ul>
           <ul class="details-ul pay-detail">
@@ -86,10 +94,13 @@
             </li>
             <li>
               <span class="l-title">卡号 : </span>
-              <div class="fr0">
+              <div class="fr0" v-if="!hideAmountBtn">
                 <span class="">{{DetailList.debitAccountTwin}}</span>
                 <a href="javascript:void(0);" class="copy-btn" :data-clipboard-text="DetailList.debitAccountTwin"
                    @click="copy">{{$t('transactionHome.copyBtn')}}</a>
+              </div>
+              <div class="fr0" v-else>
+                <span class="cl-red">请先选择付款方式</span>
               </div>
             </li>
             <li class="heightauto"
@@ -103,7 +114,19 @@
 
           </ul>
 
-          <ul class="morder-paymethod" v-if="DetailList.status =='45' && !isPlatformDebit ">
+          <ul class="morder-paymethod" v-if="DetailList.status =='45'  && isPlatformDebit && !hideAmountBtn">
+            <li class="cfx whole" v-if="selPlatPaymentInfo.selPaymentType==1">
+              <a href="alipay://">
+                <span>  <i class="iconfont icon-pay-alipay"></i> 打开支付宝 </span>
+              </a>
+            </li>
+            <li class="cfx whole" v-if="selPlatPaymentInfo.selPaymentType==2">
+              <a href="weixin://">
+                <span>  <i class="iconfont icon-pay-wechat"></i> 打开微信 </span>
+              </a>
+            </li>
+          </ul>
+          <ul class="morder-paymethod" v-if="DetailList.status =='45' && !isPlatformDebit">
             <li class="cfx">
               <a href="alipay://">
                 <span>  <i class="iconfont icon-pay-alipay"></i> 打开支付宝 </span>
@@ -115,6 +138,7 @@
               </a>
             </li>
           </ul>
+
           <div class="btn-group" v-if="DetailList.status =='45' ">
             <p class="payment-tips" v-if="isPlatformDebit">
               请先选择您用的转账方式，然后根据生成的金额准确付款，为了能快速匹配订单，生成的金额会有小小的差额，敬请原谅！
@@ -122,7 +146,7 @@
             <p class="payment-tips" v-else>
               请在倒计时内完成付款,并点击下方的按钮,为了能快速完成交易,请尽量真实付款,切勿造假,一经发现将被禁用
             </p>
-            <input type="button" class="btn btn-block btn-primary" v-if="!isPlatformDebit" @click="showConfirm=true" value="我已完成付款">
+            <input type="button" class="btn btn-block btn-primary" v-if="!hideAmountBtn" @click="showConfirm=true" value="我已完成付款">
             <input type="button" class="btn btn-block btn-cancel gray-black" @click="cancelOrder"
                    v-if="DetailList.status =='45'"
                    value="取消订单">
@@ -425,7 +449,11 @@
         isPlatformDebit: false,     // 卖家是否为平台方
         showPaymentPopup: false,     // 是否显示 选择支付方式 弹窗
         showPayinfoPopup:false,       // 是否显示 支付方式 详情弹窗
-        selPlatPaymentInfo:{}          // 匹配到平台订单 支付方式
+        selPlatPaymentInfo:{
+          selPaymentType:0,
+          payAmount:0
+        },          // 匹配到平台订单 支付方式
+        hideAmountBtn:false           //隐藏交易金额和我已完成付款按钮
       };
     },
     methods: {
@@ -450,8 +478,11 @@
             return;
           }
           this.DetailList = res.data;
-          if (this.DetailList.debit === '0'){
+          if (this.DetailList.credit == this.userId && this.DetailList.debit === '0'){
             this.isPlatformDebit = true;
+            this.selPlatPaymentInfo.selPaymentType = _.isNull(this.DetailList.creditAccountTypeTwin) ? 0 : this.DetailList.creditAccountTypeTwin;
+            this.hideAmountBtn = this.selPlatPaymentInfo.selPaymentType === 0 ? true : false;
+            this.selPlatPaymentInfo.payAmount = this.DetailList.debitAmountTwin;
           }
           this.fetchDiscountNum()
           if (res.data.creditProofUrlTwin && res.data.creditProofUrlTwin.length > 1) {
@@ -694,6 +725,9 @@
       openPayinfoPopup(info){
         this.showPayinfoPopup=true;
         this.selPlatPaymentInfo=info;
+        if(this.selPlatPaymentInfo.payAmount){
+          this.hideAmountBtn = false;
+        }
       }
     },
     created() {
@@ -930,6 +964,10 @@
       @include f(16px);
       color: #FFFFFF;
       padding: 0 r(20);
+      &.disabled-state{
+        background: #F5F5F5;
+        color: #333333;
+      }
       .icon-selbtn-down{
         @include f(19px);
         margin:0 r(5) r(4) 0;
@@ -1020,6 +1058,9 @@
       border-right: r(1) solid #F5F5F5;
       &:last-child {
         border-right: none;
+      }
+      &.whole{
+        width: 100%;
       }
 
       a {

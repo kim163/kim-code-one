@@ -14,9 +14,9 @@
            <div class="paymethod cfx">
              <label class="fl">您选择了</label>
              <p class="fl">
-               <span v-if="selPlatPaymentInfo.selPaymentType==1"><i class="iconfont icon-pay-type-ali"></i> 支付宝支付</span>
-               <span v-if="selPlatPaymentInfo.selPaymentType==2"><i class="iconfont icon-pay-type-wechat"></i> 微信支付</span>
-               <span v-if="selPlatPaymentInfo.selPaymentType==3"><i class="iconfont icon-pay-type-bank"></i> 银行卡支付</span>
+               <span v-if="selPlatPaymentInfo.selPaymentType==1"><i class="iconfont icon-pay-type-ali"></i> 支付宝转账</span>
+               <span v-if="selPlatPaymentInfo.selPaymentType==2"><i class="iconfont icon-pay-type-wechat"></i> 微信转账</span>
+               <span v-if="selPlatPaymentInfo.selPaymentType==3"><i class="iconfont icon-pay-type-bank"></i> 银行卡转账</span>
              </p>
            </div>
            <div class="money cfx">
