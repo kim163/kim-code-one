@@ -97,6 +97,9 @@
             this.show = true
           }
         }
+      },
+      userId(){
+        this.getOrderIng()
       }
     },
     components:{
@@ -229,7 +232,6 @@
   }
   .title{
     font-size: 24px;
-    margin-bottom: 15px;
     &.animation{
       animation: flash 1s;
     }
@@ -239,6 +241,7 @@
     background: repeating-linear-gradient(135deg, transparent, transparent 3px, #E75D53 3px, #E75D53 8px);
     animation: shine 1s infinite linear;
     overflow: hidden;
+    margin-top: 20px;
     .detail-content{
       height: 60px;
       margin: 1px;
