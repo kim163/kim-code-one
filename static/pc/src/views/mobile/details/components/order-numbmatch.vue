@@ -1,7 +1,7 @@
 <template>
   <div class="order-numbmatch-main">
     <router-link :to="{name:'mMatch'}" class="matching-orderbtn">
-      <span>{{homeInforma.tradingOrderCount}}</span>
+      <span v-if="homeInforma.tradingOrderCount>0">{{homeInforma.tradingOrderCount}}</span>
       匹配的订单数
     </router-link>
   </div>
@@ -60,10 +60,10 @@
        span{
          display: inline-block;
          background: #FF799E;
-         border-radius: r(35);
+         border-radius: r(40);
          @include f(16px);
          color: #FFFFFF;
-         padding: r(1) r(10);
+         padding: r(1) r(12);
          margin:0 r(8) 0 r(-1);
        }
     }
