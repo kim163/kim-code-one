@@ -47,7 +47,7 @@ Vue.prototype.$loadScript('https://cdn.ronghub.com/RongIMLib-2.3.0.js').then(()=
   RongIMLib.RongIMClient.init('x18ywvq85ahuc', null, {navi: 'http://dc-jiuan-im-nav-pro.com'})
   Vue.use(Rongyun)
 })
-Vue.prototype.$loadScript('//at.alicdn.com/t/font_571184_0t11wdszv2uf.js')
+Vue.prototype.$loadScript('//at.alicdn.com/t/font_571184_5f72x0aqpi7.js')
 let vm= new Vue({
   el:"#app",
   router,
