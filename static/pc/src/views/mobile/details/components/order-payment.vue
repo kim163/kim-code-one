@@ -1,6 +1,9 @@
 <template>
     <popup class="order-payment-main">
       <div class="container">
+        <p class="tips-info">
+          请您慎重选择付款方式，选择后不能更改！
+        </p>
         <a href="javascript:void(0);" v-for="(item,i) in transferMethod" :key="i" @click="setPaytype(item.type)" v-show="item.show" :class="item.style">
           <i :class="['iconfont', item.icon]"></i>
           {{item.name}}
@@ -101,6 +104,12 @@
         width: 67%;
         background: #FFFFFF;
         padding: r(20);
+        .tips-info{
+          @include f(14px);
+          color: #EC3A4E;
+          line-height: r(26);
+          margin-bottom: r(14);
+        }
         a{
           display: block;
           height: r(40);
