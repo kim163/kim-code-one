@@ -459,7 +459,7 @@
     }
     .list-container {
       margin-top: r(15);
-      height: 52%;
+      height: calc(100% - #{r(325)});
       overflow-y: scroll;
     }
     .backgroundProcess {
