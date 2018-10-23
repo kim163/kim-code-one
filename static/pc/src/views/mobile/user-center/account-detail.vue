@@ -515,15 +515,12 @@
                 color: #333;
                 padding-left: r(20);
                 text-align: left;
-                max-width: r(150);
-                overflow: hidden;
               }
               .de-accountValue {
                 @include f(16px);
                 color: #787876;
                 flex: 1;
                 text-align: right;
-                white-space: nowrap;
               }
               .down-arrow {
                 display: inline-block;
