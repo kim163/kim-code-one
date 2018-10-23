@@ -111,6 +111,12 @@
         </ul>
       </div>
     </div>
+    <div class="completion-prompt" v-if="DetailList.credit==userData.userId">
+      对方已经放币，请查看您的UET账户，感谢您的每一笔交易！现在您可以关闭该页面。
+    </div>
+    <div class="completion-prompt" v-else-if="DetailList.debit==userData.userId">
+      交易已经完成，感谢您在久安的每一笔交易，如果对交易存在疑问，请联系我们的在线客服。现在您可以关闭该页面。
+    </div>
     <div class="btn-group">
       <input type="button" class="btn btn-block btn-primary" value="关闭页面" @click="closePage">
     </div>
@@ -324,7 +330,12 @@
     color: #ec3a4e;
     text-align: center;
   }
-
+  .completion-prompt{
+     padding: r(15);
+     line-height: r(28);
+     color: #ec3a4e;
+     @include f(14px);
+  }
   .btn-group {
     padding: r(5) r(15) r(10);
     .btn {

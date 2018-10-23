@@ -3,6 +3,7 @@
     <div class="m-order-details" v-if="DetailList.credit == userId">
       <m-header :mheadSet="mheadSet" @returnBtnEvent="returnBtnEvent">我的买币订单</m-header>
       <div v-if="payOrderStep==1">
+        <order-numbmatch></order-numbmatch>
         <div class="payOrder_progress">
           <div class="progress_state">
             <img src="~images/startpay.png" alt="">
@@ -223,6 +224,7 @@
     <!--卖家-->
     <div class="cash-details0" v-if="DetailList.debit == userId">
       <m-header>我的卖币订单</m-header>
+      <order-numbmatch></order-numbmatch>
       <div class="payOrder_progress">
         <div class="progress_state">
           <img src="~images/startpay.png" alt="">
@@ -394,6 +396,7 @@
   import confirmDialog from 'components/confirm';
   import OrderPayment from './components/order-payment';
   import OrderPayinfo from './components/order-payinfo';
+  import OrderNumbmatch from './components/order-numbmatch';
 
   export default {
     data() {
@@ -772,7 +775,8 @@
       chat,
       confirmDialog,
       OrderPayment,
-      OrderPayinfo
+      OrderPayinfo,
+      OrderNumbmatch
     }
   };
 
