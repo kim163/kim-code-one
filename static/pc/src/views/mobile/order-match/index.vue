@@ -106,7 +106,6 @@
     },
     methods: {
       beforeEnter(el) {
-        console.log(el,'撒扩大')
         const delay = el.getAttribute('animate-delay')
         const cssObj = {
           "animation-delay": delay,
