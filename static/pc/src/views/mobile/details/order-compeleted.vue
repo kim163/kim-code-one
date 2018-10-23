@@ -50,7 +50,7 @@
         </div>
       </div>
 
-      <ul class="details-ul">
+      <ul class="compeleted-details-ul">
         <li>
           <p class="l-title">订单:</p>
           <p class="order-id-li extra_order"><span class="order_info">{{orderData.orderId}}</span>
@@ -67,14 +67,14 @@
       </ul>
       <div v-if="filterType">
         <!--卖币订单-->
-        <ul class="details-ul pay-detail my-paymethod" v-if="DetailList.debit==userData.userId">
+        <ul class="compeleted-details-ul pay-detail my-paymethod" v-if="DetailList.debit==userData.userId">
           <li>
               <span class="l-title">
                  <img src="~images/chatWith/buyer.png" alt="" class="character">
                 {{DetailList.creditName}}</span>
           </li>
         </ul>
-        <ul class="details-ul pay-detail">
+        <ul class="compeleted-details-ul pay-detail">
           <li v-if="DetailList.credit==userData.userId">
               <span class="l-title">
                  <img src="~images/chatWith/seller.png" alt="" class="character">
@@ -281,7 +281,7 @@
     height: auto;
   }
 
-  .details-ul {
+  .compeleted-details-ul {
     border-top: 1px solid #D8D8D8;
     border-bottom: transparent;
     li {

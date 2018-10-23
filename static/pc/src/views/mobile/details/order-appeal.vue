@@ -43,7 +43,7 @@
       </div>
       <div v-if="DetailList.credit == userId">
         <!--买-->
-        <ul class="details-ul">
+        <ul class="appeal-details-ul">
           <li>
             <span class="l-title">订单:</span>
             <p class="order-id-li extra_order"><span class="order_info">{{orderData.orderId}}</span>
@@ -59,7 +59,7 @@
                  </span>
           </li>
         </ul>
-        <ul class="details-ul pay-detail">
+        <ul class="appeal-details-ul pay-detail">
           <li>
             <span class="l-title">
               <img src="~images/chatWith/seller.png" alt="" class="character">
@@ -105,7 +105,7 @@
       </div>
       <div v-else-if="DetailList.debit == userId">
         <!--卖-->
-        <ul class="details-ul">
+        <ul class="appeal-details-ul">
           <li>
             <span class="l-title">订单:</span>
             <p class="order-id-li extra_order"><span class="order_info">{{orderData.orderId}}</span>
@@ -121,14 +121,14 @@
                  </span>
           </li>
         </ul>
-        <ul class="details-ul">
+        <ul class="appeal-details-ul">
           <li>
               <span class="l-title">
                  <img src="~images/chatWith/buyer.png" alt="" class="character">
                 {{DetailList.creditName}} </span>
           </li>
         </ul>
-        <ul class="details-ul pay-detail">
+        <ul class="appeal-details-ul pay-detail">
           <li>
             <span class="l-title">
               <img src="~images/chatWith/seller.png" alt="" class="character">
@@ -448,7 +448,7 @@
     padding: 0 0 70px 0;
   }
 
-  .details-ul {
+  .appeal-details-ul {
     border-top: 1px solid #d8d8d8;
     border-bottom: transparent;
     li {
