@@ -99,8 +99,6 @@
         default: true
       }
     },
-
-
     created() {
       this.getOrderIng()
     },
@@ -416,7 +414,7 @@
       @include f(14px);
       margin-top: r(30);
       padding: r(0) r(40);
-      text-align: left;
+      text-align: center;
       line-height: r(30);
     }
     .content-list {
@@ -461,7 +459,7 @@
     }
     .list-container {
       margin-top: r(15);
-      height: r(350);
+      height: 52%;
       overflow-y: scroll;
     }
     .backgroundProcess {
