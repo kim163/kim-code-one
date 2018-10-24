@@ -104,7 +104,7 @@
         padding-left: r(10);
         margin-left: r(10);
         @include f(14px);
-        width: r(260);
+        width: 75%;
       }
       input:focus {
         outline: none;
@@ -120,7 +120,7 @@
         height: r(30);
         padding-left: r(10);
         margin-left: r(10);
-        width: r(260);
+        width: 75%;
         @include f(14px)
       }
       input:focus {
