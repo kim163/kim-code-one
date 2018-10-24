@@ -120,7 +120,11 @@
             }else{
               this.noData = false
             }
-            this.tranList = [...this.tranList, ...res.data]
+            if(this.currentPage === 1){
+              this.tranList = [...res.data]
+            }else{
+              this.tranList = [...this.tranList, ...res.data]
+            }
             this.total = res.pageInfo.total
             if(this.currentPage >= this.totalPage){
               this.$refs.scroll.update(true)
@@ -210,6 +214,9 @@
       Vue.$global.bus.$on('update:tranList',() => {
         this.getTranList()
       })
+      if(this.currentPage === 1){
+        this.getTranList()
+      }
     },
     deactivated(){
       Vue.$global.bus.$off('update:tranList')

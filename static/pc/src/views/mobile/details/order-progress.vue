@@ -541,7 +541,9 @@
           this.loading = false;
           if (res.code == '10000') {
             toast('您已取消，请勿重复操作');
-            Vue.$global.bus.$emit('update:tranList');
+            setTimeout(() => {
+              Vue.$global.bus.$emit('update:tranList');
+            },500)
             this.$router.push({name: 'mTranRecord'});
           } else {
             toast(res.message);
