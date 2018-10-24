@@ -29,6 +29,7 @@
   import {mapGetters} from 'vuex'
   import {$localStorage} from '@/util/storage';
   import getLive800 from 'components/get-live800';
+
   export default {
     name: "add-account",
     data() {
@@ -72,7 +73,7 @@
             this.$store.dispatch('UPDATE_TOKEN_INFO', res.data.tokenVo);
             this.$store.dispatch('INIT_INFO');
             this.$store.commit('SET_USERDATA', res.data)
-            this.$store.commit('GET_CENTERID',res.data.centerId)
+            this.$store.commit('GET_CENTERID', res.data.centerId)
             _.initRongyun()
             this.$router.replace({name: 'mIndex'})
           } else {
@@ -82,7 +83,7 @@
       },
 
     },
-    components: {MobileHeader,getLive800}
+    components: {MobileHeader, getLive800}
   }
 </script>
 
@@ -102,6 +103,8 @@
         height: r(30);
         padding-left: r(10);
         margin-left: r(10);
+        @include f(14px);
+        width: 75%;
       }
       input:focus {
         outline: none;
@@ -117,6 +120,8 @@
         height: r(30);
         padding-left: r(10);
         margin-left: r(10);
+        width: 75%;
+        @include f(14px)
       }
       input:focus {
         outline: none;
@@ -146,7 +151,7 @@
         margin-top: r(10);
       }
     }
-    .find-register{
+    .find-register {
       width: 80%;
       margin: r(10) auto 0;
       display: flex;

@@ -16,7 +16,7 @@
       </div>
     </div>
     <!--加了v-if对数组的判断导致transition delay 动画gg-->
-    <div class="match-success" v-if="newArr.length>0">
+    <div class="match-success" v-show="newArr.length>0">
       <p class="main-title">
         为您匹配到订单...
       </p>
@@ -26,7 +26,7 @@
       <div class="list-container">
         <!--背景色固定为三种颜色-->
         <transition-group v-on:before-enter="beforeEnter">
-          <div class="content-list" v-for="(list,num) in reverseArr" v-bind:key="num"
+          <div class="content-list" v-for="(list,num) in newArr" v-bind:key="num"
                :class="{'bgOne':num%3==0,'bgSecond':num%3==1,'bgThird':num%3==2}" :animate-delay="num*0.1+'s'">
             <div class="content-left">
               <p v-if="list.credit==userId">卖家: {{list.debitName}}</p>
@@ -99,8 +99,6 @@
         default: true
       }
     },
-
-
     created() {
       this.getOrderIng()
     },
@@ -123,9 +121,14 @@
       },
       changeFormate(value) {
         const TransferArr = []
-        /*交易数量*/
+        /*交易数量 因为type==4和3的时候ordex 为null*/
         if (value.type == 4 || value.type == 3) {
           TransferArr.creditAmount = 0
+           const FilterArr = this.newArr.filter((item) => {
+            return item.id !== value.orderId
+          })
+          this.newArr = FilterArr
+          return
         } else {
           TransferArr.creditAmount = value.orderx.creditAmount
         }
@@ -137,12 +140,6 @@
           TransferArr.status = 47
         } else if (value.type == 11) {
           TransferArr.status = 61
-        } else if (value.type == 4) {
-          const FilterArr = this.newArr.filter((item) => {
-            return item.id !== value.orderId
-          })
-          this.newArr = FilterArr
-          return
         }
         /*交易名称*/
         if (value.orderx) {
@@ -155,10 +152,8 @@
         TransferArr.credit = value.orderx.credit
         TransferArr.debit = value.orderx.debit
         if (this.newArr.findIndex((item) => item.id === value.orderId) == -1) {
-          this.newArr.push(TransferArr)
+          this.newArr.unshift(TransferArr)
         }
-
-
       },
       hide() {
          this.$router.back();
@@ -238,9 +233,6 @@
     },
     computed: {
       ...mapGetters(['getNewOrder', 'userId']),
-      reverseArr() {
-        return this.newArr.reverse()
-      }
     },
   }
 </script>
@@ -422,7 +414,7 @@
       @include f(14px);
       margin-top: r(30);
       padding: r(0) r(40);
-      text-align: left;
+      text-align: center;
       line-height: r(30);
     }
     .content-list {
@@ -467,7 +459,7 @@
     }
     .list-container {
       margin-top: r(15);
-      height: r(350);
+      height: calc(100% - #{r(325)});
       overflow-y: scroll;
     }
     .backgroundProcess {
