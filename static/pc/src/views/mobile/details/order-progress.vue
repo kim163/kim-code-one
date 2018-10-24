@@ -753,9 +753,27 @@
           this.showPayBankName = false;
         }
       },
+      "getNewOrder": {
+        handler(newVal, oldVal) {
+          if (newVal.orderId === this.orderId) {
+            if (newVal.type === 1 || newVal.type === 2) {
+              this.fetchData();
+            } else {
+              let routerName = ''
+              if (newVal.type === 3 || newVal.type === 4) {
+                routerName = 'mOrderOver'
+              } else if (newVal.type === 11) {
+                routerName = 'mOrderAppeal'
+              }
+              this.$router.replace({name: routerName, params: {id: this.orderId}})
+            }
+          }
+        },
+        deep: true
+      },
     },
     computed: {
-      ...mapGetters(["userData", "islogin", "userId", 'unreadCount', 'connectState']),
+      ...mapGetters(["userData", "islogin", "userId", 'unreadCount', 'connectState','getNewOrder',]),
       unreadCountUpdate() {
         if (this.unreadCount < 0) {
           return 0
