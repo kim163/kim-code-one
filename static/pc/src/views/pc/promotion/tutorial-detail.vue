@@ -82,6 +82,19 @@
             prevEl: '.swiper-button-prev'
           },
           observer:true,
+          observeParents:true,
+          breakpoints: {
+            1200: {
+              slidesPerView: 2,
+              spaceBetween: 20,
+              slidesPerGroup:2
+            },
+            800: {
+              slidesPerView: 1,
+              spaceBetween: 10,
+              slidesPerGroup:1
+            },
+          }
         },
       }
     },
@@ -102,20 +115,6 @@
       swiperSlide,
     },
     mounted(){
-      window.onresize = () => {
-        const nowWidth = document.documentElement.clientWidth
-        if(nowWidth > 800 && nowWidth < 1199){
-          Object.assign(this.swiperOptionH5,{
-            slidesPerView:2,
-            slidesPerGroup:2
-          })
-        }else if(nowWidth <= 799){
-          Object.assign(this.swiperOptionH5,{
-            slidesPerView:1,
-            slidesPerGroup:1
-          })
-        }
-      }
     }
   }
 </script>
