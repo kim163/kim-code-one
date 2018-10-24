@@ -23,7 +23,9 @@ const stateInit = {
     amount: '',
     userId: '',
     accountChainVos: [],
-    nodeId:'0'
+    nodeId:'0',
+    phone:'',
+    email:''
   },
   language: $localStorage.get('language-sel') || 'zh',
   tokenInfo: null,
@@ -164,6 +166,12 @@ export default new Vuex.Store({
   },
     showFindPwd(state,getters){
       return state.showFindPwd
+    },
+    getPersonPhone(state,getters){
+      return state.userData.phone
+    },
+    getPersonEmail(state,getters){
+      return state.userData.email
     }
   },
   mutations: {         // 事件处理器用来驱动状态的变化
