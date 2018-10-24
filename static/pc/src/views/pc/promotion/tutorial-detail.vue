@@ -101,7 +101,7 @@
   }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
   @import "~assets/scss/mobile";
   .tutorial-detail{
     width: 100%;
@@ -128,9 +128,64 @@
     .detail-step{
       width: 100%;
       margin-top: 30px;
-      padding: 30px 90px;
+      padding: 30px 0px;
       background: #F3F7FF;
       border-radius: 5px;
+      position: relative;
+      .step-title{
+        width: 80%;
+        margin: 0 auto;
+        font-size: 14px;
+        color: #333333;
+      }
+      img{
+        width: 80%;
+        margin-left: 10%;
+        margin-top: 20px;
+      }
+      .swiper-button-prev{
+        background-image: url("~images/left-arrow.svg");
+        left: 30px;
+      }
+      .swiper-button-next{
+        background-image: url("~images/right-arrow.svg");
+        right: 30px;
+      }
+    }
+  }
+
+  @media only screen and (max-width: 1199px) and (min-width: 800px) {
+    .detail-step{
+      .step-title{
+        width: 90%;
+      }
+      img{
+        width: 90%;
+        margin-left: 5%;
+      }
+      .swiper-button-prev{
+        left: 15px;
+      }
+      .swiper-button-next{
+        right: 15px;
+      }
+    }
+  }
+  @media only screen and (max-width: 799px) {
+    .detail-step{
+      .step-title{
+        width: 95%;
+      }
+      img{
+        width: 95%;
+        margin-left: 2.5%;
+      }
+      .swiper-button-prev{
+        display: none;
+      }
+      .swiper-button-next{
+        display: none;
+      }
     }
   }
 </style>
