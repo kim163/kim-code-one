@@ -38,8 +38,8 @@
           <p class="bind-title">绑定手机</p>
           <p class="bind-des">绑定手机,可以通过手机登录,并拥有专属客服电话服务</p>
         </div>
-        <div class="item-info" v-if="userData.phone">
-          {{userData.phone.substr(0,3)+'******'+userData.phone.substr(7,11)}}
+        <div class="item-info" v-if="personPhone">
+          {{personPhone.substr(0,3)+'******'+personPhone.substr(7,11)}}
         </div>
         <div class="item-btn" @click="bindPhone" v-else>前去绑定</div>
 
@@ -53,6 +53,7 @@
           <p class="bind-des">绑定邮箱,可以通过邮箱地址登录,并随时找回密码</p>
         </div>
         <div class="item-btn" @click="bindMail" v-if="!userData.email">前去绑定</div>
+
         <div class="item-info" v-else>{{FormateEmail(userData.email)}}</div>
       </div>
       <div class="list-item"
@@ -360,6 +361,8 @@
         initValueNext: 0,
         emailNumber: '',
         emailMgs: "",
+        personPhone: '',
+        personEmail: '',
         options: [
           {text: '+86', value: '+86'},
           {text: '+63', value: '+63'}
@@ -378,8 +381,11 @@
         'userId',
         'userData',
         'bankCardInfo',
-        'setInitPwd'
+        'setInitPwd',
+        'getPersonPhone',
+        'getPersonEmail'
       ]),
+
     },
     watch: {
       bankCardInfo() {
@@ -388,11 +394,18 @@
       },
       personInfoPopup() {
         this.personUserName = this.userData.nickname
+      },
+       getPersonPhone(val){
+         this.personPhone = val
+       },
+      getPersonEmail(val){
+        console.log(val,'可是垃圾的撒角度来看')
+        this.personEmail = val
       }
+
     },
     created() {
       this.getBankList(0)
-
     },
 
     methods: {
@@ -417,17 +430,22 @@
               this.checkEmailPopup = false
             }, 500)
             this.$store.dispatch('UPDATE_USERDATA')
+
+            this.personEmail = this.userData.email
           } else {
             toast(res.message)
           }
         })
-      },
+      }
+      ,
       bindMail() {
         this.checkEmailPopup = true
-      },
+      }
+      ,
       closeEmail() {
         this.checkEmailPopup = false
-      },
+      }
+      ,
       sendEmailCode() {
         const regMatch = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/
         if (!regMatch.test(this.emailNumber)) {
@@ -455,7 +473,8 @@
             toast(res.message)
           }
         })
-      },
+      }
+      ,
       sendCode() {
         if (this.phoneNumber == '') {
           toast('手机号码不能为空')
@@ -484,13 +503,16 @@
             toast(res.message)
           }
         })
-      },
+      }
+      ,
       closecheckPhone() {
         this.checkPhonePopup = false
-      },
+      }
+      ,
       bindPhone() {
         this.checkPhonePopup = true
-      },
+      }
+      ,
       defineBindPhone() {
         if (this.phoneNumber == '') {
           toast("手机号码不能为空!")
@@ -517,34 +539,42 @@
             toast(res.message)
           }
         })
-      },
+      }
+      ,
       opencheckAlipay() {
         this.checkAlipayPopup = true
-      },
+      }
+      ,
       opencheckWchat() {
         this.checkWchatPopup = true
-      },
+      }
+      ,
       closecheckAlipay() {
         this.checkAlipayPopup = false
-      },
+      }
+      ,
       closecheckWchat() {
         this.checkWchatPopup = false
-      },
+      }
+      ,
       changeTab(type) {
         this.type = type
         if (type == 2) {
           this.$router.push({name: 'myGift'})
         }
-      },
+      }
+      ,
       addBindCard() {
         this.needAddCard = true
         this.isEmptyState = false
         this.isEmptyStateNext = false
-      },
+      }
+      ,
       defineOk() {
         this.bindPersonInfo = false
         this.personInfoPopup = true
-      },
+      }
+      ,
       mouseenter(num) {
         if (num == 1) {
           this.mouseOverFirst = true;
@@ -555,7 +585,8 @@
         } else if (num == 4) {
           this.mouseOverFourth = true
         }
-      },
+      }
+      ,
       unbindCard(num, key) {
         const requests = {
           userId: this.userId,
@@ -575,7 +606,8 @@
             toast(res.message)
           }
         })
-      },
+      }
+      ,
       mouseleave(num) {
         if (num == 1) {
           this.mouseOverFirst = false;
@@ -586,7 +618,8 @@
         } else if (num == 4) {
           this.mouseOverFourth = false
         }
-      },
+      }
+      ,
       blurNumber() {
 
         if (this.cardNumber.length == 0) {
@@ -602,7 +635,6 @@
           let requests = {
             bankNo: this.cardNumber
           }
-          console.log(this.cardNumber, '数控刀具')
           userCenter.autoRecognize(requests).then(res => {
             if (res.code == 10000) {
               if (res.data == null) {
@@ -619,14 +651,17 @@
 
           })
         }
-      },
+      }
+      ,
       closePersonInfo() {
         this.personInfoPopup = false
-      },
+      }
+      ,
       closeContent() {
         this.closeState = false
         this.needAddCard = false
-      },
+      }
+      ,
       bindCard() {
         if (!this.bindCardState) {
           return
@@ -651,23 +686,28 @@
             toast(res.message)
           }
         })
-      },
+      }
+      ,
       getPicArr(cont) {
         return getBankUrl(cont)
-      },
+      }
+      ,
       closezhifubao() {
         this.zhifubaoPopup = false
-      },
+      }
+      ,
       bindzhifubao() {
         if (this.userData.name == null) {
           this.bindPersonInfo = true
         } else {
           this.zhifubaoPopup = true
         }
-      },
+      }
+      ,
       getPicUrl(val) {
         this.picUrl = val.join()
-      },
+      }
+      ,
       bindzhifubaoBtn() {
         const requests = {
           userId: this.userId,
@@ -695,7 +735,8 @@
             toast(res.message)
           }
         })
-      },
+      }
+      ,
       getBankList(num) {
         if (num == 1) {
           if (this.userData.name == null) {
@@ -735,7 +776,8 @@
         }).catch(err => {
           toast(err)
         })
-      },
+      }
+      ,
       bindWx() {
         if (this.userData.name == null) {
           this.bindPersonInfo = true
@@ -743,15 +785,18 @@
           this.weixinPopup = true
         }
 
-      },
+      }
+      ,
       closeWeixin() {
         this.weixinPopup = false
-      },
+      }
+      ,
       writePersonInfo() {
         this.personInfoPopup = true
         this.personUserName = this.userData.nickname
         this.personRealName = this.userData.name
-      },
+      }
+      ,
       binkUserAccount() {
         if (this.personUserName.length > 32) {
           toast('用户昵称长度不能超过32位!')
@@ -777,7 +822,8 @@
           }
         })
 
-      },
+      }
+      ,
       binweixinBtn() {
         const requests = {
           userId: this.userId,
@@ -807,19 +853,26 @@
             toast(res.message)
           }
         })
-      },
+      }
+      ,
       processBank(val) {
         return val.substring(0, 4) + '********' + val.substring(val.length - 4, val.length)
-      },
-      FormateEmail(val){
-        return val.substr(0,3)+'********'+val.substr(val.length-8,val.length)
-      },
+      }
+      ,
+      FormateEmail(val) {
+        return val.substr(0, 3) + '********' + val.substr(val.length - 8, val.length)
+      }
+      ,
       checkName() {
         if (this.userData.isNeedSync === 1) {
           this.isNeedSyncName = true
           toast({message: '您是合作商户用户，根据合作商户要求，您需要在商户网站上设置完真实姓名重新登录久安，姓名便会自动同步', duration: 3000})
         }
       }
+    },
+    mounted(){
+      this.personEmail = this.getPersonEmail
+      this.personPhone = this.getPersonPhone
     }
   }
 </script>
