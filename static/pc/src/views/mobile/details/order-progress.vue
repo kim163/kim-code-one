@@ -228,12 +228,12 @@
       <div class="payOrder_progress">
         <div class="progress_state">
           <img src="~images/startpay.png" alt="">
-          <p class="defaultColor">等待对方付款</p>
+          <p class="defaultColor">对方正在付款</p>
           <span class="line" :class="{'lineColor':DetailList.status =='47'}"></span>
         </div>
         <div class="progress_state">
           <img src="~images/waitpay_pro.png" alt="">
-          <p>等待我放币</p>
+          <p>等待我查账并放币</p>
           <span class="line"></span>
         </div>
         <div class="progress_state">
@@ -316,13 +316,13 @@
           </li>
         </ul>
         <div class="payment-tips" v-if="DetailList.status=='47'">
-          对方已付款,请及时查看账户,确认收款后立即点击下方按钮,放币给买家
+          买家已经付款，请务必查验您的收款账号是否到账，确认收到付款后立即给对方放币，如未到账请点击申诉！
         </div>
         <div class="payment-tips" v-else>
-          请等待对方付款,等待时间在20分钟内,如果买家超时未付款,将为您匹配其他买家,请收到付款后立即给对方放币
+          对方正在付款，请务必查验您的收款账号是否到账如未到账请勿放币！如果买家超时未付款，久安将会为您匹配其他买家。
         </div>
         <div class="btn-group" v-if="DetailList.status =='47'">
-          <input type="button" class="btn btn-block btn-primary" @click="showConfirmPayment=true" value="释放UET">
+          <input type="button" class="btn btn-block btn-primary" @click="showConfirmPayment=true" value="我要放币">
           <input type="button" class="btn btn-block c-black" @click="createAppeal" value="没收到对方付款,点此申诉">
         </div>
         <div class="pic-box pic-box2" v-if="DetailList.creditProofUrlTwin">
@@ -541,7 +541,9 @@
           this.loading = false;
           if (res.code == '10000') {
             toast('您已取消，请勿重复操作');
-            Vue.$global.bus.$emit('update:tranList');
+            setTimeout(() => {
+              Vue.$global.bus.$emit('update:tranList');
+            },500)
             this.$router.push({name: 'mTranRecord'});
           } else {
             toast(res.message);
@@ -773,7 +775,7 @@
       },
     },
     computed: {
-      ...mapGetters(["userData", "islogin", "userId", 'unreadCount', 'connectState','getNewOrder',]),
+      ...mapGetters(["userData", "islogin", "userId", 'unreadCount', 'connectState','getNewOrder']),
       unreadCountUpdate() {
         if (this.unreadCount < 0) {
           return 0
@@ -902,7 +904,8 @@
         height: r(30);
       }
       p {
-        font-size: r(16);
+        margin-top: r(8);
+        font-size: r(15);
         color: #333;
       }
       .line {
