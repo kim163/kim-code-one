@@ -11,7 +11,7 @@
     </div>
     <div class="detail-step">
       <swiper :options="swiperOptionPc" v-show="tabIndex === 0">
-        <swiper-slide v-for="(item,index) in detail.pc" :key="index">
+        <swiper-slide v-for="(item,index) in detail.pc" :key="index" class="step-pc">
           <div class="step-title">{{item.title}}</div>
           <img :src="item.img"/>
         </swiper-slide>
@@ -20,16 +20,16 @@
       </swiper>
       <swiper :options="swiperOptionH5" v-show="tabIndex === 1">
         <swiper-slide v-for="(item,index) in detail.h5" :key="index">
-          <div class="step-title">{{item.title}}</div>
           <img :src="item.img"/>
+          <div class="step-title">{{item.title}}</div>
         </swiper-slide>
         <div class="swiper-button-prev" slot="button-prev"></div>
         <div class="swiper-button-next" slot="button-next"></div>
       </swiper>
       <swiper :options="swiperOptionH5" v-show="tabIndex === 2">
         <swiper-slide v-for="(item,index) in detail.app" :key="index">
-          <div class="step-title">{{item.title}}</div>
           <img :src="item.img"/>
+          <div class="step-title">{{item.title}}</div>
         </swiper-slide>
         <div class="swiper-button-prev" slot="button-prev"></div>
         <div class="swiper-button-next" slot="button-next"></div>
@@ -72,7 +72,7 @@
         },
         swiperOptionH5: {
           slidesPerView: 4,
-          spaceBetween: 30,
+          spaceBetween: 10,
           slidesPerGroup: 4,
           loopFillGroupWithBlank: true,
           navigation: {
@@ -132,16 +132,18 @@
       background: #F3F7FF;
       border-radius: 5px;
       position: relative;
-      .step-title{
-        width: 80%;
-        margin: 0 auto;
-        font-size: 14px;
-        color: #333333;
-      }
-      img{
-        width: 80%;
-        margin-left: 10%;
-        margin-top: 20px;
+      .step-pc{
+        .step-title{
+          width: 80%;
+          margin: 0 auto;
+          font-size: 14px;
+          color: #333333;
+        }
+        img{
+          width: 80%;
+          margin-left: 10%;
+          margin-top: 20px;
+        }
       }
       .swiper-button-prev{
         background-image: url("~images/left-arrow.svg");
@@ -155,36 +157,40 @@
   }
 
   @media only screen and (max-width: 1199px) and (min-width: 800px) {
-    .detail-step{
-      .step-title{
-        width: 90%;
-      }
-      img{
-        width: 90%;
-        margin-left: 5%;
-      }
-      .swiper-button-prev{
-        left: 15px;
-      }
-      .swiper-button-next{
-        right: 15px;
+    .tutorial-detail{
+      .detail-step{
+        .step-title{
+          width: 90%;
+        }
+        img{
+          width: 90%;
+          margin-left: 5%;
+        }
+        .swiper-button-prev{
+          left: 2px;
+        }
+        .swiper-button-next{
+          right: 2px;
+        }
       }
     }
   }
   @media only screen and (max-width: 799px) {
-    .detail-step{
-      .step-title{
-        width: 95%;
-      }
-      img{
-        width: 95%;
-        margin-left: 2.5%;
-      }
-      .swiper-button-prev{
-        display: none;
-      }
-      .swiper-button-next{
-        display: none;
+    .tutorial-detail{
+      .detail-step{
+        .step-title{
+          width: 95%;
+        }
+        img{
+          width: 95%;
+          margin-left: 2.5%;
+        }
+        .swiper-button-prev{
+          display: none;
+        }
+        .swiper-button-next{
+          display: none;
+        }
       }
     }
   }

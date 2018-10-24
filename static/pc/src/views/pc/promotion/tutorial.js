@@ -7,12 +7,7 @@ const tutorailCfg = [
     title:'1.使用久安在商户网站充值',
     detail:{
       pc: pcCfg.pc1,
-      h5:[
-        {
-          title:'',
-          img:''
-        }
-      ],
+      h5: h5Cfg.h51,
       app:[
         {
           title:'',
