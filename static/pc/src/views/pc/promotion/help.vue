@@ -38,8 +38,11 @@
                    v-for="(item,index) in tutorial"
                    :key="index"
                    >
-                <div class="title" @click="tutorialOpen === index + 1 ? tutorialOpen = 0 : tutorialOpen = index + 1">{{item.title}}</div>
-                <div class="detail" v-show="tutorialOpen === index + 1">
+                <div class="title" @click="tutorialOpen === index + 1 ? tutorialOpen = 0 : tutorialOpen = index + 1">
+                  {{item.title}}
+                  <i class="iconfont" :class="{'icon-up-arrow-circle': tutorialOpen === index + 1,'icon-down-arrow-circle': tutorialOpen != index + 1}"></i>
+                </div>
+                <div class="detail" v-if="tutorialOpen === index + 1">
                   <tutorial-detail :detail="item.detail"></tutorial-detail>
                 </div>
               </div>
@@ -166,6 +169,12 @@
    .title{
      font-size: 24px;
      cursor: pointer;
+     display: flex;
+     align-items: center;
+     .iconfont{
+       margin-left: 10px;
+       color: #c1c0c0;
+     }
    }
  }
  /*@media only screen and (max-width: 1199px) and (min-width: 1000px) {*/

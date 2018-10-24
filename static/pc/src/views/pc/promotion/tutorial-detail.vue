@@ -19,20 +19,22 @@
         <div class="swiper-button-next" slot="button-next"></div>
       </swiper>
       <swiper :options="swiperOptionH5" v-show="tabIndex === 1">
-        <swiper-slide v-for="(item,index) in detail.h5" :key="index">
+        <swiper-slide v-for="(item,index) in detail.h5" :key="index" class="step-app">
+          <div class="step-title" v-show="isMobile">{{item.title}}</div>
           <img :src="item.img"/>
-          <div class="step-title">{{item.title}}</div>
+          <div class="step-title pc-model" v-show="!isMobile">{{item.title}}</div>
         </swiper-slide>
-        <div class="swiper-button-prev" slot="button-prev"></div>
-        <div class="swiper-button-next" slot="button-next"></div>
+        <div class="swiper-button-prev button-prev-app" slot="button-prev"></div>
+        <div class="swiper-button-next button-next-app" slot="button-next"></div>
       </swiper>
       <swiper :options="swiperOptionH5" v-show="tabIndex === 2">
-        <swiper-slide v-for="(item,index) in detail.app" :key="index">
+        <swiper-slide v-for="(item,index) in detail.app" :key="index" class="step-app">
+          <div class="step-title" v-show="isMobile">{{item.title}}</div>
           <img :src="item.img"/>
-          <div class="step-title">{{item.title}}</div>
+          <div class="step-title pc-model" v-show="!isMobile">{{item.title}}</div>
         </swiper-slide>
-        <div class="swiper-button-prev" slot="button-prev"></div>
-        <div class="swiper-button-next" slot="button-next"></div>
+        <div class="swiper-button-prev button-prev-app" slot="button-prev"></div>
+        <div class="swiper-button-next button-next-app" slot="button-next"></div>
       </swiper>
     </div>
   </div>
@@ -45,7 +47,7 @@
     name: "tutorial-detail",
     data(){
       return{
-        tabIndex:0,
+        tabIndex: _.isMobile() ? 1 : 0,
         tabList:[
           {
             name:'电脑网站',
@@ -71,15 +73,16 @@
           }
         },
         swiperOptionH5: {
-          slidesPerView: 4,
+          slidesPerView: _.isMobile() ? 1 : 3,
           spaceBetween: 10,
-          slidesPerGroup: 4,
+          slidesPerGroup: _.isMobile() ? 1 : 3,
           loopFillGroupWithBlank: true,
           navigation: {
             nextEl: '.swiper-button-next',
             prevEl: '.swiper-button-prev'
-          }
-        }
+          },
+          observer:true,
+        },
       }
     },
     props:{
@@ -97,6 +100,22 @@
     components:{
       swiper,
       swiperSlide,
+    },
+    mounted(){
+      window.onresize = () => {
+        const nowWidth = document.documentElement.clientWidth
+        if(nowWidth > 800 && nowWidth < 1199){
+          Object.assign(this.swiperOptionH5,{
+            slidesPerView:2,
+            slidesPerGroup:2
+          })
+        }else if(nowWidth <= 799){
+          Object.assign(this.swiperOptionH5,{
+            slidesPerView:1,
+            slidesPerGroup:1
+          })
+        }
+      }
     }
   }
 </script>
@@ -132,26 +151,47 @@
       background: #F3F7FF;
       border-radius: 5px;
       position: relative;
-      .step-pc{
-        .step-title{
-          width: 80%;
-          margin: 0 auto;
-          font-size: 14px;
-          color: #333333;
+      .swiper-button-prev{
+        background-image: url("~images/left-arrow.svg");
+        left: 30px;
+        &.button-prev-app{
+          left: 10px;
         }
+      }
+      .swiper-button-next{
+        background-image: url("~images/right-arrow.svg");
+        right: 30px;
+        &.button-next-app{
+          right:10px;
+        }
+      }
+      .step-pc{
         img{
           width: 80%;
           margin-left: 10%;
           margin-top: 20px;
         }
+        .step-title{
+          width: 80%;
+          margin: 0 auto;
+        }
       }
-      .swiper-button-prev{
-        background-image: url("~images/left-arrow.svg");
-        left: 30px;
+      .step-app{
+        text-align: center;
+        img{
+          width: 80%;
+        }
+        .step-title{
+          width: 80%;
+          margin-left: 10%;
+        }
+        .pc-model{
+          margin-top: 10px;
+        }
       }
-      .swiper-button-next{
-        background-image: url("~images/right-arrow.svg");
-        right: 30px;
+      .step-title{
+        font-size: 16px;
+        color: #333333;
       }
     }
   }
@@ -168,9 +208,15 @@
         }
         .swiper-button-prev{
           left: 2px;
+          &.button-prev-app{
+            left: 0px;
+          }
         }
         .swiper-button-next{
           right: 2px;
+          &.button-next-app{
+            right: 0px;
+          }
         }
       }
     }
@@ -178,6 +224,8 @@
   @media only screen and (max-width: 799px) {
     .tutorial-detail{
       .detail-step{
+        margin-top: 10px;
+        padding: 10px 0px;
         .step-title{
           width: 95%;
         }
@@ -186,10 +234,29 @@
           margin-left: 2.5%;
         }
         .swiper-button-prev{
-          display: none;
+          left: 0px;
+          &.button-prev-app{
+            left: 0px;
+          }
         }
         .swiper-button-next{
-          display: none;
+          right: 0px;
+          &.button-next-app{
+            right: 0px;
+          }
+        }
+        .step-app{
+          img{
+            width: 90%;
+            margin-left: 5%;
+          }
+          .step-title{
+            width: 90%;
+            margin-left: 5%;
+            text-align: left;
+            @include f(16px);
+            margin-bottom: r(10);
+          }
         }
       }
     }
