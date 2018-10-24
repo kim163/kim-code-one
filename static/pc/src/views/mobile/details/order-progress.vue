@@ -42,7 +42,7 @@
             您已选择了
             <span v-if="selPlatPaymentInfo.selPaymentType==1"> 支付宝转账</span>
             <span v-if="selPlatPaymentInfo.selPaymentType==2"> 微信转账</span>
-            <span v-if="selPlatPaymentInfo.selPaymentType==3"> 银行卡转账</span>
+            <span v-if="selPlatPaymentInfo.selPaymentType==3"> 网银转账</span>
           </a>
         </div>
         <div>
