@@ -902,7 +902,8 @@
         height: r(30);
       }
       p {
-        font-size: r(16);
+        margin-top: r(8);
+        font-size: r(15);
         color: #333;
       }
       .line {
