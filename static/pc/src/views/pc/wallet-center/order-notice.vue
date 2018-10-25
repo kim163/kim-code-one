@@ -90,7 +90,7 @@
       '$route':{
         handler(val){
           if(val.name === 'orderDetail' || val.name === 'orderDetailAppeal'){
-            this.show = this.checkRouter()
+            this.getOrderIng()
           }else if(val.name === 'orderDetailOver'){
             this.getOrderIng()
           }else if(this.orderId != ''){
