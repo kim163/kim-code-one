@@ -83,9 +83,11 @@
         })
       },
       quickBuyOrSell(data){
-        let openSell = data.type === 'sellCoins' ? true : false
-        this.$store.commit('OPEN_QUICKSELL',openSell)
-        this.$router.push({name:'quickBuySell'})
+        if(data.type === 'sellCoins' || data.type === 'buyCoins'){
+          let openSell = data.type === 'sellCoins' ? true : false
+          this.$store.commit('OPEN_QUICKSELL',openSell)
+          this.$router.push({name:'quickBuySell'})
+        }
       }
     },
     mounted() {
