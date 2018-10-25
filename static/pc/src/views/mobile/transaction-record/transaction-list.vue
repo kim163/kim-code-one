@@ -113,10 +113,12 @@
         }
         console.log(request)
         api(request).then(res => {
+          console.log('getOrderxPage res:', res)
           if (res.code === 10000) {
-            console.log('getOrderxPage res:', res)
+            debugger
             if(res.data.length === 0 && this.currentPage === 1){
               this.noData = true
+              return
             }else{
               this.noData = false
             }
@@ -206,7 +208,7 @@
     activated() {
       if(this.$refs.scroll){
         setTimeout(()=>{
-          if(this.$refs){
+          if(this.$refs && !this.noData){
             this.$refs.scroll.scrollTo(0,this.scrollY,0)
           }
         },1000)
