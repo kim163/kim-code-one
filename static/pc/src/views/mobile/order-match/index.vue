@@ -468,9 +468,9 @@
       bottom: 5%;
       left: 39%;
       height: r(30);
-      background-color: #fff;
+      background: #3573FA;
       border-radius: r(4);
-      color: #333;
+      color: #fff;
       text-align: center;
       line-height: r(30);
       @include f(14px)

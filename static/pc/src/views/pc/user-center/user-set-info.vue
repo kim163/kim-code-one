@@ -483,7 +483,7 @@
         const request = {
           phone: this.phoneNumber,
           areaCode: this.selected,
-          type: 1
+          type: 3
         }
         show.sendCode(request).then(res => {
           if (res.code == '10000') {
@@ -503,16 +503,13 @@
             toast(res.message)
           }
         })
-      }
-      ,
+      },
       closecheckPhone() {
         this.checkPhonePopup = false
-      }
-      ,
+      },
       bindPhone() {
         this.checkPhonePopup = true
-      }
-      ,
+      },
       defineBindPhone() {
         if (this.phoneNumber == '') {
           toast("手机号码不能为空!")
@@ -539,20 +536,16 @@
             toast(res.message)
           }
         })
-      }
-      ,
+      },
       opencheckAlipay() {
         this.checkAlipayPopup = true
-      }
-      ,
+      },
       opencheckWchat() {
         this.checkWchatPopup = true
-      }
-      ,
+      },
       closecheckAlipay() {
         this.checkAlipayPopup = false
-      }
-      ,
+      },
       closecheckWchat() {
         this.checkWchatPopup = false
       }
@@ -562,19 +555,16 @@
         if (type == 2) {
           this.$router.push({name: 'myGift'})
         }
-      }
-      ,
+      },
       addBindCard() {
         this.needAddCard = true
         this.isEmptyState = false
         this.isEmptyStateNext = false
-      }
-      ,
+      },
       defineOk() {
         this.bindPersonInfo = false
         this.personInfoPopup = true
-      }
-      ,
+      },
       mouseenter(num) {
         if (num == 1) {
           this.mouseOverFirst = true;
@@ -606,8 +596,7 @@
             toast(res.message)
           }
         })
-      }
-      ,
+      },
       mouseleave(num) {
         if (num == 1) {
           this.mouseOverFirst = false;
@@ -618,8 +607,7 @@
         } else if (num == 4) {
           this.mouseOverFourth = false
         }
-      }
-      ,
+      },
       blurNumber() {
 
         if (this.cardNumber.length == 0) {
@@ -651,17 +639,14 @@
 
           })
         }
-      }
-      ,
+      },
       closePersonInfo() {
         this.personInfoPopup = false
-      }
-      ,
+      },
       closeContent() {
         this.closeState = false
         this.needAddCard = false
-      }
-      ,
+      },
       bindCard() {
         if (!this.bindCardState) {
           return
@@ -673,7 +658,6 @@
           name: this.userName == '' ? this.userData.name : this.userName,
           bank: this.bankName
         }
-
         userCenter.bindBankV2(requests).then(res => {
           if (res.code == 10000) {
             toast('绑卡成功!')
@@ -690,24 +674,20 @@
       ,
       getPicArr(cont) {
         return getBankUrl(cont)
-      }
-      ,
+      },
       closezhifubao() {
         this.zhifubaoPopup = false
-      }
-      ,
+      },
       bindzhifubao() {
         if (this.userData.name == null) {
           this.bindPersonInfo = true
         } else {
           this.zhifubaoPopup = true
         }
-      }
-      ,
+      },
       getPicUrl(val) {
         this.picUrl = val.join()
-      }
-      ,
+      },
       bindzhifubaoBtn() {
         const requests = {
           userId: this.userId,
@@ -735,8 +715,7 @@
             toast(res.message)
           }
         })
-      }
-      ,
+      },
       getBankList(num) {
         if (num == 1) {
           if (this.userData.name == null) {
@@ -776,8 +755,7 @@
         }).catch(err => {
           toast(err)
         })
-      }
-      ,
+      },
       bindWx() {
         if (this.userData.name == null) {
           this.bindPersonInfo = true
@@ -785,18 +763,15 @@
           this.weixinPopup = true
         }
 
-      }
-      ,
+      },
       closeWeixin() {
         this.weixinPopup = false
-      }
-      ,
+      },
       writePersonInfo() {
         this.personInfoPopup = true
         this.personUserName = this.userData.nickname
         this.personRealName = this.userData.name
-      }
-      ,
+      },
       binkUserAccount() {
         if (this.personUserName.length > 32) {
           toast('用户昵称长度不能超过32位!')
@@ -822,8 +797,7 @@
           }
         })
 
-      }
-      ,
+      },
       binweixinBtn() {
         const requests = {
           userId: this.userId,
@@ -853,16 +827,13 @@
             toast(res.message)
           }
         })
-      }
-      ,
+      },
       processBank(val) {
         return val.substring(0, 4) + '********' + val.substring(val.length - 4, val.length)
-      }
-      ,
+      },
       FormateEmail(val) {
         return val.substr(0, 3) + '********' + val.substr(val.length - 8, val.length)
-      }
-      ,
+      },
       checkName() {
         if (this.userData.isNeedSync === 1) {
           this.isNeedSyncName = true
