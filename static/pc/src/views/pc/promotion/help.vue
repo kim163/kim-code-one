@@ -165,7 +165,7 @@
    }
  }
  .tutorial-item{
-
+    margin-bottom: 20px;
    .title{
      font-size: 24px;
      cursor: pointer;

@@ -74,7 +74,7 @@
         },
         swiperOptionH5: {
           slidesPerView: _.isMobile() ? 1 : 3,
-          spaceBetween: 10,
+          spaceBetween: 0,
           slidesPerGroup: _.isMobile() ? 1 : 3,
           loopFillGroupWithBlank: true,
           navigation: {
@@ -86,12 +86,12 @@
           breakpoints: {
             1200: {
               slidesPerView: 2,
-              spaceBetween: 20,
+              spaceBetween: 0,
               slidesPerGroup:2
             },
             800: {
               slidesPerView: 1,
-              spaceBetween: 10,
+              spaceBetween: 0,
               slidesPerGroup:1
             },
           }
