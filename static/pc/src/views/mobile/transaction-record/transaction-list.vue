@@ -211,12 +211,12 @@
           }
         },1000)
       }
-      Vue.$global.bus.$on('update:tranList',() => {
+      // Vue.$global.bus.$on('update:tranList',() => {
+      //   this.getTranList()
+      // })
+      // if(this.currentPage === 1){
         this.getTranList()
-      })
-      if(this.currentPage === 1){
-        this.getTranList()
-      }
+      // }
     },
     deactivated(){
       Vue.$global.bus.$off('update:tranList')
