@@ -128,7 +128,10 @@
             }
             this.total = res.pageInfo.total
             if(this.currentPage >= this.totalPage){
-              this.$refs.scroll.update(true)
+              console.log(this.$refs)
+              if(this.$refs.scroll){
+                this.$refs.scroll.update(true)
+              }
             }
           } else {
             toast(res.message)
