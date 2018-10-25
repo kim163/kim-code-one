@@ -87,14 +87,14 @@
         this.userBalance = data
       },
       allIn(){
-        if(this.typeInfo === 1){
+        if(this.typeInfo === 2){
           if(Number(this.userBalance) > Number(this.itemInfo.balance)){
             this.amount = this.itemInfo.balance
           }else{
             this.amount = this.userBalance
           }
         }else{
-          this.amount = this.userBalance
+          this.amount = this.itemInfo.balance
         }
       },
       toBuySell(){

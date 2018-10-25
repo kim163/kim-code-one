@@ -31,6 +31,31 @@
         <div class="item-btn" @click="bindWx" v-if="filterWx.length==0&&!bindWechat">前去绑定</div>
         <div class="item-btn" v-else @click="opencheckWchat">查看</div>
       </div>
+
+      <div class="list-item" :class="{'active':mouseOverFourth,'bindok':userData.phone}">
+        <div class="item-symbol"><span class="iconfont icon-shouji"></span></div>
+        <div class="item-content">
+          <p class="bind-title">绑定手机</p>
+          <p class="bind-des">绑定手机,可以通过手机登录,并拥有专属客服电话服务</p>
+        </div>
+        <div class="item-info" v-if="personPhone">
+          {{personPhone.substr(0,3)+'******'+personPhone.substr(7,11)}}
+        </div>
+        <div class="item-btn" @click="bindPhone" v-else>前去绑定</div>
+
+      </div>
+      <div class="list-item" :class="{'active':mouseOverFourth,'bindok':userData.email}">
+        <div class="item-symbol">
+          <span class="iconfont icon-xinfeng"></span>
+        </div>
+        <div class="item-content">
+          <p class="bind-title">绑定邮箱</p>
+          <p class="bind-des">绑定邮箱,可以通过邮箱地址登录,并随时找回密码</p>
+        </div>
+        <div class="item-btn" @click="bindMail" v-if="!userData.email">前去绑定</div>
+
+        <div class="item-info" v-else>{{FormateEmail(userData.email)}}</div>
+      </div>
       <div class="list-item"
            :class="{'active':mouseOverFourth,'bindok':userData.nickname&&userData.name}">
         <div class="item-symbol"><span class="iconfont icon-book-star"></span></div>
@@ -177,7 +202,50 @@
         <div slot="rightBtn" class="dialog-btn-yes" @click="defineOk">确定</div>
       </confirm-dialog>
     </div>
-
+    <commonPopup v-if="checkPhonePopup">
+      <div class="bind-phone-info">
+        <div class="bind-title">
+          <span class="main-title">绑定手机</span>
+          <span class="iconfont icon-close close-btn" @click="closecheckPhone"></span>
+        </div>
+        <div class="bind-content">
+          <p class="phoneNumber"><span class="subTitle">手机号:</span>
+            <select class="numberChoose" v-model="selected">
+              <option v-for="option in options" v-bind:value="option.value">
+                {{option.text}}
+              </option>
+            </select>
+            <input type="text" placeholder="请输入你想绑定的手机号码" class="writeNumber" v-model="phoneNumber">
+          </p>
+          <p class="verifCode"><span class="codeInfo">验证码:</span>
+            <input type="text" placeholder="请输入验证码" class="verifCodeNumber" v-model="phoneMgs">
+            <span class="sendCode" @click="sendCode" v-if="!countDownState">发送验证码</span>
+            <span class="countTime" v-else>{{initValue}}s后重新发送</span>
+          </p>
+          <div class="btn" @click="defineBindPhone">确认</div>
+        </div>
+      </div>
+    </commonPopup>
+    <commonPopup v-if="checkEmailPopup">
+      <div class="bind-email-info">
+        <div class="bind-title">
+          <span class="main-title">绑定邮箱</span>
+          <span class="iconfont icon-close close-btn" @click="closeEmail"></span>
+        </div>
+        <div class="bind-content">
+          <p class="emailAddress"><span class="subTitle">邮箱:</span>
+            <input type="text" placeholder="请输入你要绑定的邮箱地址" class="write" v-model="emailNumber">
+          </p>
+          <p class="verifCode">
+            <span class="codeInfo">验证码:</span>
+            <input type="text" placeholder="请输入验证码" class="verifCodeNumber" v-model="emailMgs">
+            <span class="sendCode" @click="sendEmailCode" v-if="!countDownState">发送验证码</span>
+            <span class="countTime" v-else>{{initValueNext}}s后重新发送</span>
+          </p>
+          <div class="btn" @click="defineBindEmail">确认</div>
+        </div>
+      </div>
+    </commonPopup>
     <commonPopup v-if="checkAlipayPopup">
       <div class="bind-zhifubao-info">
         <div class="bind-title">
@@ -194,7 +262,8 @@
           </p>
         </div>
         <div class="bindzhifubao" @click="closecheckAlipay">确认</div>
-        <div class="bindTips">您已绑定支付宝账号,如需更换请联系<span class="hot-line"><getLive800 :show-icon="false"></getLive800></span></div>
+        <div class="bindTips">您已绑定支付宝账号,如需更换请联系<span class="hot-line"><getLive800
+          :show-icon="false"></getLive800></span></div>
       </div>
     </commonPopup>
 
@@ -212,7 +281,8 @@
           </p>
         </div>
         <div class="bindweixin" @click="closecheckWchat">确认</div>
-        <div class="bindTips">您已绑定微信账号,如需更换请联系<span class="hot-line"><getLive800 :show-icon="false"></getLive800></span></div>
+        <div class="bindTips">您已绑定微信账号,如需更换请联系<span class="hot-line"><getLive800 :show-icon="false"></getLive800></span>
+        </div>
       </div>
     </commonPopup>
     <set-update-pwd v-if="showSetInitPwd" :is-first="setInitPwd" v-model="showSetInitPwd"></set-update-pwd>
@@ -220,7 +290,7 @@
 </template>
 
 <script>
-  import {userCenter} from 'api'
+  import {userCenter, show, cashier} from 'api'
   import {mapGetters} from 'vuex'
   import getBankUrl from '../../../util/bankurl'
   import commonPopup from 'components/common-popup/index'
@@ -279,8 +349,24 @@
         filterWchat: [],
         checkAlipayPopup: false,
         checkWchatPopup: false,
-        showSetInitPwd:false,
-        isNeedSyncName:false
+        showSetInitPwd: false,
+        isNeedSyncName: false,
+        checkPhonePopup: false,
+        phoneNumber: '',
+        selected: '+86',
+        initValue: '',
+        countDownState: false,
+        phoneMgs: '',
+        checkEmailPopup: '',
+        initValueNext: 0,
+        emailNumber: '',
+        emailMgs: "",
+        personPhone: '',
+        personEmail: '',
+        options: [
+          {text: '+86', value: '+86'},
+          {text: '+63', value: '+63'}
+        ]
       }
     },
     components: {
@@ -295,8 +381,11 @@
         'userId',
         'userData',
         'bankCardInfo',
-        'setInitPwd'
+        'setInitPwd',
+        'getPersonPhone',
+        'getPersonEmail'
       ]),
+
     },
     watch: {
       bankCardInfo() {
@@ -305,14 +394,149 @@
       },
       personInfoPopup() {
         this.personUserName = this.userData.nickname
+      },
+       getPersonPhone(val){
+         this.personPhone = val
+       },
+      getPersonEmail(val){
+        console.log(val,'可是垃圾的撒角度来看')
+        this.personEmail = val
       }
+
     },
     created() {
       this.getBankList(0)
-
     },
 
     methods: {
+      defineBindEmail() {
+        if (this.emailNumber == '') {
+          toast('邮箱地址不能为空!')
+          return
+        }
+        if (this.emailMgs == '') {
+          toast('验证码不能为空!')
+          return
+        }
+        const request = {
+          'userId': this.userId,
+          'email': this.emailNumber,
+          'emailMgs': this.emailMgs
+        }
+        cashier.bindEmail(request).then(res => {
+          if (res.code == '10000') {
+            toast('绑定邮箱成功!')
+            setTimeout(() => {
+              this.checkEmailPopup = false
+            }, 500)
+            this.$store.dispatch('UPDATE_USERDATA')
+
+            this.personEmail = this.userData.email
+          } else {
+            toast(res.message)
+          }
+        })
+      }
+      ,
+      bindMail() {
+        this.checkEmailPopup = true
+      }
+      ,
+      closeEmail() {
+        this.checkEmailPopup = false
+      }
+      ,
+      sendEmailCode() {
+        const regMatch = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/
+        if (!regMatch.test(this.emailNumber)) {
+          toast('您输入的邮箱格式有误!')
+          return
+        }
+        const request = {
+          userId: this.userId,
+          type: 3,
+          email: this.emailNumber
+        }
+        show.sendEmailCode(request).then(res => {
+          if (res.code == '10000') {
+            toast('邮件发送成功,请注意查收')
+            this.countDownState = true
+            this.initValueNext = 60;
+            const timeStop = setInterval(() => {
+              this.initValueNext--;
+              if (this.initValueNext < 0) {
+                this.countDownState = false
+                clearInterval(timeStop)
+              }
+            }, 1000)
+          } else {
+            toast(res.message)
+          }
+        })
+      }
+      ,
+      sendCode() {
+        if (this.phoneNumber == '') {
+          toast('手机号码不能为空')
+          return
+        }
+        const request = {
+          phone: this.phoneNumber,
+          areaCode: this.selected,
+          type: 3
+        }
+        show.sendCode(request).then(res => {
+          if (res.code == '10000') {
+            toast('信息发送成功,请注意查收')
+            this.countDownState = true
+            this.initValue = 60;
+            const timeStop = setInterval(() => {
+              this.initValue--;
+              if (this.initValue < 0) {
+                this.countDownState = false
+                clearInterval(timeStop)
+              }
+            }, 1000)
+
+
+          } else {
+            toast(res.message)
+          }
+        })
+      },
+      closecheckPhone() {
+        this.checkPhonePopup = false
+      },
+      bindPhone() {
+        this.checkPhonePopup = true
+      },
+      defineBindPhone() {
+        if (this.phoneNumber == '') {
+          toast("手机号码不能为空!")
+          return
+        }
+        if (this.phoneMgs == '') {
+          toast('电话验证码不能为空!')
+          return
+        }
+        const request = {
+          userId: this.userId,
+          areaCode: this.selected,
+          phone: this.phoneNumber,
+          phoneMgs: this.phoneMgs
+        };
+        cashier.bindPhone(request).then(res => {
+          if (res.code == '10000') {
+            toast('绑定手机号成功!')
+            this.$store.dispatch('UPDATE_USERDATA')
+            setTimeout(() => {
+              this.checkPhonePopup = false
+            }, 500)
+          } else {
+            toast(res.message)
+          }
+        })
+      },
       opencheckAlipay() {
         this.checkAlipayPopup = true
       },
@@ -324,7 +548,8 @@
       },
       closecheckWchat() {
         this.checkWchatPopup = false
-      },
+      }
+      ,
       changeTab(type) {
         this.type = type
         if (type == 2) {
@@ -350,7 +575,8 @@
         } else if (num == 4) {
           this.mouseOverFourth = true
         }
-      },
+      }
+      ,
       unbindCard(num, key) {
         const requests = {
           userId: this.userId,
@@ -397,7 +623,6 @@
           let requests = {
             bankNo: this.cardNumber
           }
-          console.log(this.cardNumber, '数控刀具')
           userCenter.autoRecognize(requests).then(res => {
             if (res.code == 10000) {
               if (res.data == null) {
@@ -430,10 +655,9 @@
           userId: this.userId,
           account: this.cardNumber,
           type: 3,
-          name: this.userName==''?this.userData.name:this.userName,
+          name: this.userName == '' ? this.userData.name : this.userName,
           bank: this.bankName
         }
-
         userCenter.bindBankV2(requests).then(res => {
           if (res.code == 10000) {
             toast('绑卡成功!')
@@ -446,7 +670,8 @@
             toast(res.message)
           }
         })
-      },
+      }
+      ,
       getPicArr(cont) {
         return getBankUrl(cont)
       },
@@ -503,7 +728,7 @@
           userId: this.userId
         }
         userCenter.getBankList(requests).then(res => {
-          if(res.code === 10000){
+          if (res.code === 10000) {
             /*银行卡*/
             this.filterArr = res.data.filter(item => item.type === 3)
             /*支付宝*/
@@ -524,7 +749,7 @@
                 this.isAddCard = false
               }
             }
-          }else{
+          } else {
             toast(res.message)
           }
         }).catch(err => {
@@ -548,10 +773,10 @@
         this.personRealName = this.userData.name
       },
       binkUserAccount() {
-        if(this.personUserName.length > 32){
+        if (this.personUserName.length > 32) {
           toast('用户昵称长度不能超过32位!')
           return
-        }else if(this.personUserName.length==0){
+        } else if (this.personUserName.length == 0) {
           toast('昵称不能为空')
           return
         }
@@ -603,15 +828,22 @@
           }
         })
       },
-      processBank(val){
-        return val.substring(0,4) + '********' + val.substring(val.length - 4,val.length)
+      processBank(val) {
+        return val.substring(0, 4) + '********' + val.substring(val.length - 4, val.length)
       },
-      checkName(){
-        if(this.userData.isNeedSync === 1){
+      FormateEmail(val) {
+        return val.substr(0, 3) + '********' + val.substr(val.length - 8, val.length)
+      },
+      checkName() {
+        if (this.userData.isNeedSync === 1) {
           this.isNeedSyncName = true
-          toast({message:'您是合作商户用户，根据合作商户要求，您需要在商户网站上设置完真实姓名重新登录久安，姓名便会自动同步',duration:3000})
+          toast({message: '您是合作商户用户，根据合作商户要求，您需要在商户网站上设置完真实姓名重新登录久安，姓名便会自动同步', duration: 3000})
         }
       }
+    },
+    mounted(){
+      this.personEmail = this.getPersonEmail
+      this.personPhone = this.getPersonPhone
     }
   }
 </script>
@@ -667,12 +899,20 @@
         margin-right: 20px;
         transition: all .5s;
       }
+      .item-info {
+        height: 40px;
+        line-height: 40px;
+        margin-top: 30px;
+        margin-right: 20px;
+        transition: all .5s;
+      }
       &:hover {
         border: 1px solid #3573FA !important;
         .item-btn {
           background-color: #3573FA !important;
           color: #fff;
         }
+
         .item-symbol {
           background-color: #3573FA !important;
         }
@@ -691,6 +931,7 @@
     }
 
   }
+
   .bind-card-info {
     background-color: #fff;
     padding: 20px;
@@ -736,6 +977,97 @@
       line-height: 50px;
       margin-top: 85px;
       cursor: pointer;
+    }
+  }
+
+  .bind-email-info {
+    width: 506px;
+    background-color: #fff;
+    padding: 20px;
+    .bind-title {
+      overflow: hidden;
+      .main-title {
+        font-size: 24px;
+        color: #333;
+        float: left;
+      }
+      .close-btn {
+        font-size: 20px;
+        color: #c8c8c8;
+        float: right;
+        cursor: pointer;
+      }
+    }
+    .bind-content {
+      padding-top: 20px;
+      .emailAddress {
+        margin-left: 20px;
+        .subTitle {
+          margin-top: 10px;
+          display: inline-block;
+          vertical-align: bottom;
+        }
+        .numberChoose {
+          width: 65px;
+          padding: 0 10px 0 10px;
+          height: 23px;
+          background-size: 25px
+        }
+        .write {
+          width: 62%;
+          height: 29px;
+        }
+        input {
+          border-bottom: 1px solid #3573FA;
+        }
+        input:focus {
+          outline: none;
+        }
+      }
+      .verifCode {
+        margin-top: 25px;
+        display: flex;
+        flex-direction: row;
+        .verifCodeNumber {
+          border-bottom: 1px solid #3573FA;
+          width: 60%;
+
+        }
+        .codeInfo {
+          padding-top: 10px;
+          padding-right: 10px;
+        }
+        .sendCode {
+          color: #fff;
+          background-color: #3573FA;
+          padding: 6px;
+          font-size: 15px;
+          cursor: pointer;
+        }
+        .countTime {
+          background-color: rgba(3, 3, 3, 0.4);
+          padding: 3px;
+          color: #fff;
+        }
+        input:focus {
+          outline: none;
+        }
+      }
+      .btn {
+        margin: 0 auto;
+        background-color: #3573FA;
+        border-radius: 5px;
+        width: 446px;
+        height: 50px;
+        font-size: 18px;
+        color: #fff;
+        text-align: center;
+        line-height: 50px;
+        margin-top: 30px;
+        margin-bottom: 30px;
+        cursor: pointer;
+
+      }
     }
   }
 
@@ -896,6 +1228,93 @@
       margin-top: 20px;
       cursor: pointer;
       border-radius: 5px;
+    }
+  }
+
+  /*绑定手机*/
+  .bind-phone-info {
+    width: 506px;
+    background-color: #fff;
+    padding: 20px;
+    .bind-title {
+      overflow: hidden;
+      .main-title {
+        font-size: 24px;
+        color: #333;
+        float: left;
+      }
+      .close-btn {
+        font-size: 20px;
+        color: #c8c8c8;
+        float: right;
+        cursor: pointer;
+      }
+    }
+    .bind-content {
+      padding-top: 20px;
+      .phoneNumber {
+
+        .numberChoose {
+          width: 65px;
+          padding: 0 10px 0 10px;
+          height: 19px;
+          background-size: 25px
+        }
+        .writeNumber {
+          width: 60%;
+          height: 27px;
+        }
+        input {
+          border-bottom: 1px solid #3573FA;
+        }
+        input:focus {
+          outline: none;
+        }
+      }
+      .verifCode {
+        margin-top: 25px;
+        display: flex;
+        flex-direction: row;
+        .verifCodeNumber {
+          border-bottom: 1px solid #3573FA;
+          width: 60%;
+
+        }
+        .codeInfo {
+          padding-top: 10px;
+          padding-right: 10px;
+        }
+        .sendCode {
+          color: #fff;
+          background-color: #3573FA;
+          padding: 6px;
+          font-size: 15px;
+          cursor: pointer;
+        }
+        .countTime {
+          background-color: rgba(3, 3, 3, 0.4);
+          padding: 3px;
+          color: #fff;
+        }
+        input:focus {
+          outline: none;
+        }
+      }
+      .btn {
+        margin: 0 auto;
+        background-color: #3573FA;
+        border-radius: 5px;
+        width: 446px;
+        height: 50px;
+        font-size: 18px;
+        color: #fff;
+        text-align: center;
+        line-height: 50px;
+        margin-top: 30px;
+        margin-bottom: 30px;
+        cursor: pointer;
+
+      }
     }
   }
 
@@ -1127,7 +1546,7 @@
         color: #333;
         display: flex;
         align-items: center;
-        .name-readonly{
+        .name-readonly {
           border: 1px solid #e4e4e4;
           width: 325px;
           height: 40px;

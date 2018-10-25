@@ -212,11 +212,9 @@
         if (this.$route.query.name == 2) {
           userCenter.getAppealDetailHistoryPage(this.request).then(res => {
             if (res.code == '10000') {
-              console.log(res, '萨达');
               this.isHistory = true;
               this.DetailList = res.data.appealHistory;
               this.AppealList = res.data;
-
               let transactList = this.AppealList.transaction;
               this.DetailList.debitAccountNameTwin = transactList.debitAccountNameTwin;
               this.DetailList.debitAccountMerchantTwin = transactList.debitAccountMerchantTwin;

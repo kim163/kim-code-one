@@ -113,17 +113,25 @@
         }
         console.log(request)
         api(request).then(res => {
+          console.log('getOrderxPage res:', res)
           if (res.code === 10000) {
-            console.log('getOrderxPage res:', res)
             if(res.data.length === 0 && this.currentPage === 1){
               this.noData = true
+              return
             }else{
               this.noData = false
             }
-            this.tranList = [...this.tranList, ...res.data]
+            if(this.currentPage === 1){
+              this.tranList = [...res.data]
+            }else{
+              this.tranList = [...this.tranList, ...res.data]
+            }
             this.total = res.pageInfo.total
             if(this.currentPage >= this.totalPage){
-              this.$refs.scroll.update(true)
+              console.log(this.$refs)
+              if(this.$refs.scroll){
+                this.$refs.scroll.update(true)
+              }
             }
           } else {
             toast(res.message)
@@ -202,14 +210,17 @@
     activated() {
       if(this.$refs.scroll){
         setTimeout(()=>{
-          if(this.$refs){
+          if(this.$refs && !this.noData){
             this.$refs.scroll.scrollTo(0,this.scrollY,0)
           }
         },1000)
       }
-      Vue.$global.bus.$on('update:tranList',() => {
+      // Vue.$global.bus.$on('update:tranList',() => {
+      //   this.getTranList()
+      // })
+      // if(this.currentPage === 1){
         this.getTranList()
-      })
+      // }
     },
     deactivated(){
       Vue.$global.bus.$off('update:tranList')

@@ -32,6 +32,9 @@ const mSetPassword = () => import('views/mobile/user-center/set-account-password
 const mAccountDetail = () => import('views/mobile/user-center/account-detail')
 const mActivity = () => import('views/mobile/activity-center') //手机活动
 const mOrderMatch = () => import('views/mobile/order-match') //匹配页面
+const mFindPassword = () => import('views/mobile/find-password') //找回密码页面
+const mSafeCenter = () => import('views/mobile/user-center/safe-center')  //安全中心
+const mBindPhoneEmail = () => import('views/mobile/user-center/bind-phone-email') //绑定手机邮箱
 
 export default [
   {
@@ -288,7 +291,10 @@ export default [
     meta:{
       noCache:true,
       isMobilePage:'mobile-body'
-    }
+    },
+    props:(route) => ({
+      isChange: route.query.c && route.query.c === '1'
+    })
   },
   {
     path:'/m/accountDetail/:id/:address/:username/:node/:url',
@@ -299,7 +305,28 @@ export default [
       isMobilePage:'mobile-body'
     },
   },
- /* {
+  {
+    path:'/m/findPwd',
+    name:'mFindPassword',
+    component:mRegister,
+    meta:{
+      noCache:true,
+      isMobilePage:'mobile-body'
+    },
+    props:{
+      isFindPwd:true
+    }
+  },
+  {
+    path:'/m/safe',
+    name:'mSafeCenter',
+    component:mSafeCenter,
+    meta:{
+      noCache:true,
+      isMobilePage:'mobile-body'
+    }
+  },
+ {
     path:'/m/match',
     name:'mMatch',
     component:mOrderMatch,
@@ -307,5 +334,17 @@ export default [
       noCache:true,
       isMobilePage:'mobile-body'
     },
-  },*/
+  },
+  {
+    path:'/m/bind',
+    name:'mBindPhoneEmail',
+    component:mBindPhoneEmail,
+    meta:{
+      noCache:true,
+      isMobilePage:'mobile-body'
+    },
+    props:(route) => ({
+      bindType: Number(route.query.t)
+    })
+  },
 ]

@@ -50,7 +50,7 @@
         </div>
       </div>
 
-      <ul class="details-ul">
+      <ul class="compeleted-details-ul">
         <li>
           <p class="l-title">订单:</p>
           <p class="order-id-li extra_order"><span class="order_info">{{orderData.orderId}}</span>
@@ -67,14 +67,14 @@
       </ul>
       <div v-if="filterType">
         <!--卖币订单-->
-        <ul class="details-ul pay-detail my-paymethod" v-if="DetailList.debit==userData.userId">
+        <ul class="compeleted-details-ul pay-detail my-paymethod" v-if="DetailList.debit==userData.userId">
           <li>
               <span class="l-title">
                  <img src="~images/chatWith/buyer.png" alt="" class="character">
                 {{DetailList.creditName}}</span>
           </li>
         </ul>
-        <ul class="details-ul pay-detail">
+        <ul class="compeleted-details-ul pay-detail">
           <li v-if="DetailList.credit==userData.userId">
               <span class="l-title">
                  <img src="~images/chatWith/seller.png" alt="" class="character">
@@ -110,6 +110,12 @@
           </li>
         </ul>
       </div>
+    </div>
+    <div class="completion-prompt" v-if="DetailList.credit==userData.userId">
+      对方已经放币，请查看您的UET账户，感谢您的每一笔交易！现在您可以关闭该页面。
+    </div>
+    <div class="completion-prompt" v-else-if="DetailList.debit==userData.userId">
+      交易已经完成，感谢您在久安的每一笔交易，如果对交易存在疑问，请联系我们的在线客服。现在您可以关闭该页面。
     </div>
     <div class="btn-group">
       <input type="button" class="btn btn-block btn-primary" value="关闭页面" @click="closePage">
@@ -275,7 +281,7 @@
     height: auto;
   }
 
-  .details-ul {
+  .compeleted-details-ul {
     border-top: 1px solid #D8D8D8;
     border-bottom: transparent;
     li {
@@ -324,7 +330,12 @@
     color: #ec3a4e;
     text-align: center;
   }
-
+  .completion-prompt{
+     padding: r(15);
+     line-height: r(28);
+     color: #ec3a4e;
+     @include f(14px);
+  }
   .btn-group {
     padding: r(5) r(15) r(10);
     .btn {

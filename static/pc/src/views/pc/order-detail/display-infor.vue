@@ -7,8 +7,16 @@
       <ul class="details-data">
         <li class="cfx">
           <p>交易金额:</p>
-          <input type="text" class="red" readonly  v-if="isHistory" :value="DetailList.amountTwin+' CNY'">
-          <input type="text" class="red" readonly v-else :value="DetailList.debitAmountTwin+' CNY'">
+          <template v-if="!hideAmount">
+            <div v-if="realAmount === ''">
+              <input type="text" class="red" readonly v-if="isHistory" :value="DetailList.amountTwin+' CNY'">
+              <input type="text" class="red" readonly v-else :value="DetailList.debitAmountTwin+' CNY'">
+            </div>
+            <input type="text" class="red" readonly v-else :value="realAmount+' CNY'">
+          </template>
+          <template v-else>
+            <input type="text" class="red" readonly value="选择付款方式后会生成金额">
+          </template>
         </li>
         <li class="cfx">
           <p>交易数量:</p>
@@ -55,8 +63,13 @@
         <div class="alipay-qrcode text-left bank-txt-box">
           <div class="bank-list-p posit-rel">
             <h3>银行卡号：</h3>
-            <p>{{DetailList.debitAccountTwin}}</p>
-            <button class="copyBtn btn-copy" @click="copystr(DetailList.debitAccountTwin)">复制卡号</button>
+            <template v-if="!hideAmount">
+              <p>{{DetailList.debitAccountTwin}}</p>
+              <button class="copyBtn btn-copy" @click="copystr(DetailList.debitAccountTwin)">复制卡号</button>
+            </template>
+            <template v-else>
+              <span class="cl-red">请先选择付款方式</span>
+            </template>
           </div>
           <div class="bank-list-p posit-rel">
             <h3>开户姓名：</h3>
@@ -78,7 +91,7 @@
         如果收到款项不确定是否对方付的，请点右下角 在线聊天 跟对方会话
       </p>
     </div>
-    <div  class="col-33 hidden">
+    <div class="col-33 hidden">
       <h4 class="h3">买家付款方式 : </h4>
       <div class="alipay-box"
            v-if="DetailList.creditAccountMerchantTwin == '支付宝' || DetailList.creditAccountMerchantTwin == '微信'">
@@ -132,25 +145,33 @@
       return {};
     },
     props: {
-      DetailList:{
+      DetailList: {
         type: Object,
-        default:{}
+        default: {}
       },
-      isCredit:{
-        type:Boolean,
-        default:false
+      isCredit: {
+        type: Boolean,
+        default: false
       },
-      isDebit:{
-        type:Boolean,
-        default:false
+      isDebit: {
+        type: Boolean,
+        default: false
       },
-      isHistory:{
-        type:Boolean,
-        default:false
+      isHistory: {
+        type: Boolean,
+        default: false
       },
-      isTrading:{
-        type:Boolean,
-        default:false
+      isTrading: {
+        type: Boolean,
+        default: false
+      },
+      hideAmount: {
+        type: Boolean,
+        default: false
+      },
+      realAmount: {
+        type: String,
+        default: ''
       }
     },
     methods: {
@@ -169,164 +190,164 @@
   };
 </script>
 <style lang="scss" scoped>
-.display-infor-content{
-  float: left;
-  width: 72%;
-  .details-data{
-    li{
-      height: 40px;
-      line-height: 40px;
-      margin-bottom: 21px;
-    }
-    p {
-      font-size: 16px;
-      padding: 0 10px;
-      width: 29%;
-      float: left;
-      text-align: right;
-    }
-    input {
-      height: 40px;
-      line-height: 40px;
-      border: 1px solid #E4E4E4;
-      width: 61.5%;
-      padding: 0 20px;
-      font-size: 16px;
-      color: #333333;
-      float: left;
-      display: block;
-      &.red{
-        color: #FF1100;
-      }
-    }
-    input:read-only {
-      background: #F8F8F8;
-    }
-  }
-  div.col-33 {
-    display: block;
+  .display-infor-content {
     float: left;
-    width: 52.3%;
-    border-right: 1px solid #d4d4d4;
-    margin: 0;
-    min-height: 435px;
-    &.trading-info{
-      width: 47.7%;
-    }
-  }
-  .tips-info{
-    padding: 10px 42px 0;
-    font-size: 14px;
-    color: #ec3a4e;
-    line-height: 26px;
-  }
-  .alipay-box {
-    width: 370px;
-    height: 240px;
-    margin: 0 auto;
-    background: url("~images/bank-cardbg.png") no-repeat center top;
-    background-size: contain;
-    padding-top: 42px;
-
-    .alipay-box-title {
-      padding: 0 30px;
-      font-size: 16px;
-      color: #FFFFFF;
-      &.bank-title{
-        padding: 10px 20px 0;
-        line-height: 36px;
+    width: 72%;
+    .details-data {
+      li {
+        height: 40px;
+        line-height: 40px;
+        margin-bottom: 21px;
+      }
+      p {
+        font-size: 16px;
+        padding: 0 10px;
+        width: 29%;
+        float: left;
+        text-align: right;
+      }
+      input {
+        height: 40px;
+        line-height: 40px;
+        border: 1px solid #E4E4E4;
+        width: 61.5%;
+        padding: 0 20px;
+        font-size: 16px;
+        color: #333333;
+        float: left;
+        display: block;
+        &.red {
+          color: #FF1100;
+        }
+      }
+      input:read-only {
+        background: #F8F8F8;
       }
     }
-    .alipay-logo{
+    div.col-33 {
+      display: block;
+      float: left;
+      width: 52.3%;
+      border-right: 1px solid #d4d4d4;
+      margin: 0;
+      min-height: 435px;
+      &.trading-info {
+        width: 47.7%;
+      }
+    }
+    .tips-info {
+      padding: 10px 42px 0;
+      font-size: 14px;
+      color: #ec3a4e;
+      line-height: 26px;
+    }
+    .alipay-box {
+      width: 370px;
+      height: 240px;
+      margin: 0 auto;
+      background: url("~images/bank-cardbg.png") no-repeat center top;
+      background-size: contain;
+      padding-top: 42px;
+
+      .alipay-box-title {
+        padding: 0 30px;
+        font-size: 16px;
+        color: #FFFFFF;
+        &.bank-title {
+          padding: 10px 20px 0;
+          line-height: 36px;
+        }
+      }
+      .alipay-logo {
+        display: inline-block;
+        width: 40px;
+        height: 40px;
+        line-height: 36px;
+        background: #FFFFFF;
+        border-radius: 35px;
+        text-align: center;
+        margin-right: 6px;
+        i {
+          font-size: 28px;
+          &.icon-bind-alipay {
+            color: #00AAEE;
+          }
+          &.icon-bind-wechat {
+            color: #3CB034;
+          }
+        }
+      }
+
+      .alipay-qrcode {
+        color: #FFFFFF;
+        text-align: center;
+        padding: 5px 30px 0;
+        &.text-left {
+          text-align: left;
+        }
+        &.bank-txt-box {
+          padding: 5px 20px 0;
+        }
+        .bank-list-p {
+          line-height: 38px;
+          display: -webkit-flex;
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: normal;
+        }
+        h3 {
+          font-weight: normal;
+          font-size: 14px;
+          color: #FFFFFF;
+        }
+        p {
+          font-size: 14px;
+          .name {
+            max-width: 90px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            float: left;
+          }
+        }
+        img {
+          width: 100px;
+          height: 100px;
+          padding: 12px;
+          display: inline-block;
+        }
+      }
+    }
+    .h3 {
+      font-weight: normal;
+      font-size: 20px;
+      color: #333333;
+      padding: 0 42px;
+      line-height: 102px;
+    }
+    .btn-copy {
+      position: absolute;
+      right: 0;
+      padding: 3px 7px;
+      font-size: 14px;
+      color: #FFFFFF;
+      border: 1px solid #FFFFFF;
+      border-radius: 2px;
+      cursor: pointer;
+      margin-top: 5px;
+    }
+    .bank-logo {
       display: inline-block;
+      height: 36px;
+      line-height: 34px;
       width: 40px;
-      height: 40px;
-      line-height: 36px;
       background: #FFFFFF;
       border-radius: 35px;
       text-align: center;
-      margin-right: 6px;
-      i{
-         font-size: 28px;
-        &.icon-bind-alipay{
-          color: #00AAEE;
-        }
-        &.icon-bind-wechat{
-          color: #3CB034;
-        }
-      }
-    }
-
-    .alipay-qrcode {
-      color: #FFFFFF;
-      text-align: center;
-      padding:5px 30px 0;
-      &.text-left {
-        text-align: left;
-      }
-      &.bank-txt-box {
-        padding:5px 20px 0;
-      }
-      .bank-list-p{
-         line-height: 38px;
-         display: -webkit-flex;
-         display: flex;
-         flex-wrap: wrap;
-         justify-content: normal;
-      }
-      h3 {
-        font-weight: normal;
-        font-size: 14px;
-        color: #FFFFFF;
-      }
-      p{
-        font-size: 14px;
-        .name{
-          max-width: 90px;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-          float: left;
-        }
-      }
       img {
-        width: 100px;
-        height: 100px;
-        padding: 12px;
-        display: inline-block;
+        width: 25px;
       }
     }
   }
-  .h3{
-    font-weight: normal;
-    font-size: 20px;
-    color: #333333;
-    padding: 0 42px;
-    line-height: 102px;
-  }
-  .btn-copy {
-    position: absolute;
-    right: 0;
-    padding: 3px 7px;
-    font-size: 14px;
-    color: #FFFFFF;
-    border: 1px solid #FFFFFF;
-    border-radius: 2px;
-    cursor: pointer;
-    margin-top: 5px;
-  }
-  .bank-logo{
-    display: inline-block;
-    height: 36px;
-    line-height: 34px;
-    width: 40px;
-    background: #FFFFFF;
-    border-radius: 35px;
-    text-align: center;
-    img{
-      width: 25px;
-    }
-  }
-}
 
 </style>

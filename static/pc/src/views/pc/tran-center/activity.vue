@@ -83,9 +83,11 @@
         })
       },
       quickBuyOrSell(data){
-        let openSell = data.type === 'sellCoins' ? true : false
-        this.$store.commit('OPEN_QUICKSELL',openSell)
-        this.$router.push({name:'quickBuySell'})
+        if(data.type === 'sellCoins' || data.type === 'buyCoins'){
+          let openSell = data.type === 'sellCoins' ? true : false
+          this.$store.commit('OPEN_QUICKSELL',openSell)
+          this.$router.push({name:'quickBuySell'})
+        }
       }
     },
     mounted() {
@@ -139,10 +141,10 @@
         background-image: linear-gradient(44deg, #FA709A 0%, #FCA96D 50%, #FCA96D 50%, #FEE140 100%);
       }
       &.item-2 {
-        background-image: linear-gradient(47deg, #EE69FF 0%, #955AF9 100%);
+        background-image: linear-gradient(-236deg, #FB9F75 0%, #FA709A 100%);
       }
       &.item-3 {
-        background-image: linear-gradient(-236deg, #FB9F75 0%, #FA709A 100%);
+        background-image: linear-gradient(47deg, #EE69FF 0%, #955AF9 100%);
       }
       .info-item {
         /*width: 25%;*/

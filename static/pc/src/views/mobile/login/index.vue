@@ -9,6 +9,10 @@
       <div class="password">密码 <input type="password" class="password-input" v-model="userPassword"
                                       placeholder="请输入您的密码"></div>
       <div class="addAccount-btn" @click="loginAccount">登录</div>
+      <div class="find-register">
+        <router-link class="link cl-blue" :to="{name: 'mFindPassword'}">找回密码</router-link>
+        <router-link class="link cl-blue" :to="{name: 'mobileRegister'}">注册账户</router-link>
+      </div>
       <div class="content-remind">
         <p class="remind-title">温馨提示</p>
         <p class="remind-content">1.久安旧用户可以输入账号、手机或者邮箱进行登录。</p>
@@ -25,6 +29,7 @@
   import {mapGetters} from 'vuex'
   import {$localStorage} from '@/util/storage';
   import getLive800 from 'components/get-live800';
+
   export default {
     name: "add-account",
     data() {
@@ -68,7 +73,7 @@
             this.$store.dispatch('UPDATE_TOKEN_INFO', res.data.tokenVo);
             this.$store.dispatch('INIT_INFO');
             this.$store.commit('SET_USERDATA', res.data)
-            this.$store.commit('GET_CENTERID',res.data.centerId)
+            this.$store.commit('GET_CENTERID', res.data.centerId)
             _.initRongyun()
             this.$router.replace({name: 'mIndex'})
           } else {
@@ -78,7 +83,7 @@
       },
 
     },
-    components: {MobileHeader,getLive800}
+    components: {MobileHeader, getLive800}
   }
 </script>
 
@@ -98,6 +103,8 @@
         height: r(30);
         padding-left: r(10);
         margin-left: r(10);
+        @include f(14px);
+        width: 75%;
       }
       input:focus {
         outline: none;
@@ -113,6 +120,8 @@
         height: r(30);
         padding-left: r(10);
         margin-left: r(10);
+        width: 75%;
+        @include f(14px)
       }
       input:focus {
         outline: none;
@@ -141,6 +150,12 @@
         color: #787876;
         margin-top: r(10);
       }
+    }
+    .find-register {
+      width: 80%;
+      margin: r(10) auto 0;
+      display: flex;
+      justify-content: space-between;
     }
   }
 
