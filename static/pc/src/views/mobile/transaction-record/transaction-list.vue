@@ -115,7 +115,6 @@
         api(request).then(res => {
           console.log('getOrderxPage res:', res)
           if (res.code === 10000) {
-            debugger
             if(res.data.length === 0 && this.currentPage === 1){
               this.noData = true
               return
