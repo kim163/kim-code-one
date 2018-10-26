@@ -42,20 +42,20 @@ import pc181 from '@/assets/images/tutorail/pc/pc-18-1.png'
 import pc182 from '@/assets/images/tutorail/pc/pc-18-2.png'
 import pc183 from '@/assets/images/tutorail/pc/pc-18-3.png'
 import pc184 from '@/assets/images/tutorail/pc/pc-18-4.png'
-import pc191 from '@/assets/images/tutorail/pc/pc-19-1.png'
 import pc201 from '@/assets/images/tutorail/pc/pc-20-1.png'
-import pc211 from '@/assets/images/tutorail/pc/pc-21-1.png'
-import pc212 from '@/assets/images/tutorail/pc/pc-21-2.png'
-import pc213 from '@/assets/images/tutorail/pc/pc-21-3.png'
 import pc221 from '@/assets/images/tutorail/pc/pc-22-1.png'
-import pc222 from '@/assets/images/tutorail/pc/pc-22-2.png'
-import pc223 from '@/assets/images/tutorail/pc/pc-22-3.png'
 import pc231 from '@/assets/images/tutorail/pc/pc-23-1.png'
 import pc232 from '@/assets/images/tutorail/pc/pc-23-2.png'
+import pc233 from '@/assets/images/tutorail/pc/pc-23-3.png'
 import pc241 from '@/assets/images/tutorail/pc/pc-24-1.png'
 import pc242 from '@/assets/images/tutorail/pc/pc-24-2.png'
 import pc243 from '@/assets/images/tutorail/pc/pc-24-3.png'
 import pc251 from '@/assets/images/tutorail/pc/pc-25-1.png'
+import pc252 from '@/assets/images/tutorail/pc/pc-25-2.png'
+import pc271 from '@/assets/images/tutorail/pc/pc-27-1.png'
+import pc272 from '@/assets/images/tutorail/pc/pc-27-2.png'
+import pc273 from '@/assets/images/tutorail/pc/pc-27-3.png'
+import pc291 from '@/assets/images/tutorail/pc/pc-29-1.png'
 const pc_1 = [
   {
     title:'1.打开合作商户网站，点击“存款”，执行存款',
@@ -78,37 +78,37 @@ const pc_2 = [
 ]
 const pc_3 = [
   {
-    title:'',
+    title:'1.点击“久安钱包中心”,在弹出的登录框中点击“注册账户”',
     img: pc31
   },
   {
-    title:'',
+    title:'2.可通过手机号或邮箱地址进行注册并接收验证码，按照步骤输入信息后点击“立即注册”按钮完成注册',
     img: pc32
   }
 ]
 const pc_4 = [
   {
-    title:'',
+    title:'1.点击“久安钱包中心”,在弹出的对话框中，输入对应的账号、密码进行登录',
     img: pc41
   }
 ]
 const pc_5 = [
   {
-    title:'',
+    title:'1.分别点击“久安钱包中心”>“个人中心”，找到“完善资料”栏位，点击“修改资料”',
     img: pc51
   },
   {
-    title:'',
+    title:'2.在进行绑定银行卡/支付宝/微信时，如未设置真实姓名，会要求设置真实姓名',
     img: pc52
   },
   {
-    title:'',
+    title:'3.在弹出的对话框中设置真实姓名和昵称（ps：真实姓名设置后不可修改）',
     img: pc53
   },
 ]
 const pc_6 = [
   {
-    title:'',
+    title:'1.分别点击“久安钱包中心”>“个人中心”，',
     img: pc61
   },
   {
@@ -268,44 +268,16 @@ const pc_18 = [
     img: pc184
   }
 ]
-const pc_19 = [
-  {
-    title:'',
-    img: pc191
-  }
-]
 const pc_20 = [
   {
     title:'',
     img: pc201
   }
 ]
-const pc_21 = [
-  {
-    title:'',
-    img: pc211
-  },
-  {
-    title:'',
-    img: pc212
-  },
-  {
-    title:'',
-    img: pc213
-  }
-]
 const pc_22 = [
   {
     title:'',
     img: pc221
-  },
-  {
-    title:'',
-    img: pc222
-  },
-  {
-    title:'',
-    img: pc223
   }
 ]
 const pc_23 = [
@@ -316,6 +288,10 @@ const pc_23 = [
   {
     title:'',
     img: pc232
+  },
+  {
+    title:'',
+    img: pc233
   }
 ]
 const pc_24 = [
@@ -336,6 +312,30 @@ const pc_25 = [
   {
     title:'',
     img: pc251
+  },
+  {
+    title:'',
+    img: pc252
+  }
+]
+const pc_27 = [
+  {
+    title:'',
+    img: pc271
+  },
+  {
+    title:'',
+    img: pc272
+  },
+  {
+    title:'',
+    img: pc273
+  }
+]
+const pc_29 = [
+  {
+    title:'',
+    img: pc291
   }
 ]
 export default {
@@ -357,11 +357,11 @@ export default {
   pc_16,
   pc_17,
   pc_18,
-  pc_19,
   pc_20,
-  pc_21,
   pc_22,
   pc_23,
   pc_24,
   pc_25,
+  pc_27,
+  pc_29,
 }

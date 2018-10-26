@@ -8,7 +8,7 @@ const tutorailCfg = [
     detail:{
       pc: pcCfg.pc_1,
       h5: h5Cfg.h51,
-      app:[]
+      app:appCfg.app_1
     }
   },
   {
@@ -158,7 +158,7 @@ const tutorailCfg = [
   {
     title:'20.查看交易中订单',
     detail:{
-      pc: pcCfg.pc_19,
+      pc: pcCfg.pc_20,
       h5: h5Cfg.h51,
       app:[]
     }
@@ -174,7 +174,7 @@ const tutorailCfg = [
   {
     title:'22.我的交易记录',
     detail:{
-      pc: pcCfg.pc_20,
+      pc: pcCfg.pc_22,
       h5: h5Cfg.h51,
       app:[]
     }
@@ -182,7 +182,7 @@ const tutorailCfg = [
   {
     title:'23.查看我的交易会话',
     detail:{
-      pc: pcCfg.pc_21,
+      pc: pcCfg.pc_23,
       h5: h5Cfg.h51,
       app:[]
     }
@@ -190,7 +190,7 @@ const tutorailCfg = [
   {
     title:'24.我的申诉',
     detail:{
-      pc: pcCfg.pc_22,
+      pc: pcCfg.pc_24,
       h5: h5Cfg.h51,
       app:[]
     }
@@ -198,7 +198,7 @@ const tutorailCfg = [
   {
     title:'25.限制交易',
     detail:{
-      pc: pcCfg.pc_23,
+      pc: pcCfg.pc_25,
       h5: h5Cfg.h51,
       app:[]
     }
@@ -207,14 +207,14 @@ const tutorailCfg = [
     title:'26.设置手势密码',
     detail:{
       pc: [],
-      h5: h5Cfg.h51,
+      h5: [],
       app:[]
     }
   },
   {
     title:'27.修改密码',
     detail:{
-      pc: pcCfg.pc_24,
+      pc: pcCfg.pc_27,
       h5: h5Cfg.h51,
       app:[]
     }
@@ -230,7 +230,7 @@ const tutorailCfg = [
   {
     title:'29.联系在线客服',
     detail:{
-      pc: pcCfg.pc_25,
+      pc: pcCfg.pc_29,
       h5: h5Cfg.h51,
       app:[]
     }
