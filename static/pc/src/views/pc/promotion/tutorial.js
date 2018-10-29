@@ -151,7 +151,7 @@ const tutorailCfg = [
     title:'19.我的收款码',
     detail:{
       pc: [],
-      h5: [],
+      h5: h5Cfg.h5_19,
       app:appCfg.app_19
     }
   },
@@ -167,7 +167,7 @@ const tutorailCfg = [
     title:'21.我的快速买卖订单',
     detail:{
       pc: [],
-      h5: [],
+      h5: h5Cfg.h5_21,
       app:appCfg.app_21
     }
   },
@@ -175,7 +175,7 @@ const tutorailCfg = [
     title:'22.我的交易记录',
     detail:{
       pc: pcCfg.pc_22,
-      h5: h5Cfg.h5_12,
+      h5: h5Cfg.h5_22,
       app:appCfg.app_22
     }
   },

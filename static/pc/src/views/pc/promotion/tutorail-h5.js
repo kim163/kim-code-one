@@ -22,8 +22,7 @@ import H5_64 from '@/assets/images/tutorail/app/app-6-4.png'
 import H5_71 from '@/assets/images/tutorail/h5/h5-7-1.png'
 import H5_72 from '@/assets/images/tutorail/h5/h5-7-2.png'
 import H5_73 from '@/assets/images/tutorail/app/app-7-3.png'
-import H5_74 from '@/assets/images/tutorail/app/app-7-4.png'
-import H5_75 from '@/assets/images/tutorail/app/app-7-5.png'
+import H5_74 from '@/assets/images/tutorail/app/app-7-5.png'
 import H5_81 from '@/assets/images/tutorail/h5/h5-8-1.png'
 import H5_82 from '@/assets/images/tutorail/h5/h5-8-2.png'
 import H5_83 from '@/assets/images/tutorail/app/app-8-3.png'
@@ -74,11 +73,8 @@ import H5_173 from '@/assets/images/tutorail/app/app-17-3.png'
 import H5_174 from '@/assets/images/tutorail/app/app-17-4.png'
 import H5_175 from '@/assets/images/tutorail/app/app-17-5.png'
 import H5_176 from '@/assets/images/tutorail/app/app-17-6.png'
-import H5_177 from '@/assets/images/tutorail/app/app-17-7.png'
-import H5_178 from '@/assets/images/tutorail/app/app-17-8.png'
 import H5_179 from '@/assets/images/tutorail/app/app-17-9.png'
 import H5_181 from '@/assets/images/tutorail/h5/h5-18-1.png'
-import H5_182 from '@/assets/images/tutorail/app/app-18-2.png'
 import H5_183 from '@/assets/images/tutorail/app/app-18-3.png'
 import H5_184 from '@/assets/images/tutorail/app/app-18-4.png'
 import H5_185 from '@/assets/images/tutorail/app/app-18-5.png'
@@ -225,10 +221,6 @@ const h5_7 = [
   {
     title:'4.打开合作商户网站，点击“存款”，执行存款',
     img: H5_74
-  },
-  {
-    title:'4.打开合作商户网站，点击“存款”，执行存款',
-    img: H5_75
   },
 ]
 const h5_8 = [
@@ -451,14 +443,6 @@ const h5_17 = [
     img: H5_176
   },
   {
-    title:'3.打开合作商户网站，点击“存款”，执行存款',
-    img: H5_177
-  },
-  {
-    title:'4.打开合作商户网站，点击“存款”，执行存款',
-    img: H5_178
-  },
-  {
     title:'4.打开合作商户网站，点击“存款”，执行存款',
     img: H5_179
   },
@@ -467,10 +451,6 @@ const h5_18 = [
   {
     title:'1.打开合作商户网站，点击“存款”，执行存款',
     img: H5_181
-  },
-  {
-    title:'2.打开合作商户网站，点击“存款”，执行存款',
-    img: H5_182
   },
   {
     title:'3.打开合作商户网站，点击“存款”，执行存款',
