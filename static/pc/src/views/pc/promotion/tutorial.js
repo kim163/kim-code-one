@@ -16,7 +16,7 @@ const tutorailCfg = [
     detail:{
       pc: pcCfg.pc_2,
       h5: h5Cfg.h51,
-      app:[]
+      app:appCfg.app_2
     }
   },
   {
@@ -24,7 +24,7 @@ const tutorailCfg = [
     detail:{
       pc: pcCfg.pc_3,
       h5: h5Cfg.h51,
-      app:[]
+      app:appCfg.app_3
     }
   },
   {
@@ -32,7 +32,7 @@ const tutorailCfg = [
     detail:{
       pc: pcCfg.pc_4,
       h5: h5Cfg.h51,
-      app:[]
+      app:appCfg.app_4
     }
   },
   {
@@ -40,7 +40,7 @@ const tutorailCfg = [
     detail:{
       pc: pcCfg.pc_5,
       h5: h5Cfg.h51,
-      app:[]
+      app:appCfg.app_5
     }
   },
   {
@@ -48,7 +48,7 @@ const tutorailCfg = [
     detail:{
       pc: pcCfg.pc_6,
       h5: h5Cfg.h51,
-      app:[]
+      app:appCfg.app_6
     }
   },
   {
@@ -56,7 +56,7 @@ const tutorailCfg = [
     detail:{
       pc: pcCfg.pc_7,
       h5: h5Cfg.h51,
-      app:[]
+      app:appCfg.app_7
     }
   },
   {
@@ -64,7 +64,7 @@ const tutorailCfg = [
     detail:{
       pc: pcCfg.pc_8,
       h5: h5Cfg.h51,
-      app:[]
+      app:appCfg.app_8
     }
   },
   {
@@ -72,7 +72,7 @@ const tutorailCfg = [
     detail:{
       pc: pcCfg.pc_9,
       h5: h5Cfg.h51,
-      app:[]
+      app:appCfg.app_9
     }
   },
   {
@@ -80,7 +80,7 @@ const tutorailCfg = [
     detail:{
       pc: pcCfg.pc_10,
       h5: h5Cfg.h51,
-      app:[]
+      app:appCfg.app_10
     }
   },
   {
@@ -88,7 +88,7 @@ const tutorailCfg = [
     detail:{
       pc: pcCfg.pc_11,
       h5: h5Cfg.h51,
-      app:[]
+      app:appCfg.app_11
     }
   },
   {
@@ -96,7 +96,7 @@ const tutorailCfg = [
     detail:{
       pc: pcCfg.pc_12,
       h5: h5Cfg.h51,
-      app:[]
+      app:appCfg.app_12
     }
   },
   {
@@ -104,7 +104,7 @@ const tutorailCfg = [
     detail:{
       pc: pcCfg.pc_13,
       h5: h5Cfg.h51,
-      app:[]
+      app:appCfg.app_13
     }
   },
   {
@@ -112,7 +112,7 @@ const tutorailCfg = [
     detail:{
       pc: pcCfg.pc_14,
       h5: h5Cfg.h51,
-      app:[]
+      app:appCfg.app_14
     }
   },
   {
@@ -120,7 +120,7 @@ const tutorailCfg = [
     detail:{
       pc: pcCfg.pc_15,
       h5: h5Cfg.h51,
-      app:[]
+      app:appCfg.app_15
     }
   },
   {
@@ -128,7 +128,7 @@ const tutorailCfg = [
     detail:{
       pc: pcCfg.pc_16,
       h5: h5Cfg.h51,
-      app:[]
+      app:appCfg.app_16
     }
   },
   {
@@ -136,7 +136,7 @@ const tutorailCfg = [
     detail:{
       pc: pcCfg.pc_17,
       h5: h5Cfg.h51,
-      app:[]
+      app:appCfg.app_17
     }
   },
   {
@@ -144,7 +144,7 @@ const tutorailCfg = [
     detail:{
       pc: pcCfg.pc_18,
       h5: h5Cfg.h51,
-      app:[]
+      app:appCfg.app_18
     }
   },
   {
@@ -152,7 +152,7 @@ const tutorailCfg = [
     detail:{
       pc: [],
       h5: [],
-      app:[]
+      app:appCfg.app_19
     }
   },
   {
@@ -160,15 +160,15 @@ const tutorailCfg = [
     detail:{
       pc: pcCfg.pc_20,
       h5: h5Cfg.h51,
-      app:[]
+      app:appCfg.app_20
     }
   },
   {
     title:'21.我的快速买卖订单',
     detail:{
-      pc: pcCfg.pc_19,
-      h5: h5Cfg.h51,
-      app:[]
+      pc: [],
+      h5: [],
+      app:appCfg.app_21
     }
   },
   {
@@ -176,7 +176,7 @@ const tutorailCfg = [
     detail:{
       pc: pcCfg.pc_22,
       h5: h5Cfg.h51,
-      app:[]
+      app:appCfg.app_22
     }
   },
   {
@@ -184,7 +184,7 @@ const tutorailCfg = [
     detail:{
       pc: pcCfg.pc_23,
       h5: h5Cfg.h51,
-      app:[]
+      app:appCfg.app_23
     }
   },
   {
@@ -192,7 +192,7 @@ const tutorailCfg = [
     detail:{
       pc: pcCfg.pc_24,
       h5: h5Cfg.h51,
-      app:[]
+      app:appCfg.app_24
     }
   },
   {
@@ -200,7 +200,7 @@ const tutorailCfg = [
     detail:{
       pc: pcCfg.pc_25,
       h5: h5Cfg.h51,
-      app:[]
+      app:appCfg.app_25
     }
   },
   {
@@ -208,7 +208,7 @@ const tutorailCfg = [
     detail:{
       pc: [],
       h5: [],
-      app:[]
+      app:appCfg.app_26
     }
   },
   {
@@ -216,7 +216,7 @@ const tutorailCfg = [
     detail:{
       pc: pcCfg.pc_27,
       h5: h5Cfg.h51,
-      app:[]
+      app:appCfg.app_27
     }
   },
   {
@@ -224,7 +224,7 @@ const tutorailCfg = [
     detail:{
       pc: [],
       h5: [],
-      app:[]
+      app:appCfg.app_28
     }
   },
   {
@@ -232,7 +232,7 @@ const tutorailCfg = [
     detail:{
       pc: pcCfg.pc_29,
       h5: h5Cfg.h51,
-      app:[]
+      app:appCfg.app_29
     }
   }
 ]

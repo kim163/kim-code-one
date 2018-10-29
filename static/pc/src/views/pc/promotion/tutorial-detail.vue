@@ -114,6 +114,9 @@
       swiper,
       swiperSlide,
     },
+    created(){
+      this.tabIndex = this.detail.pc.length > 0 ? 0 : (this.detail.h5.length > 0 ? 1 : 2)
+    },
     mounted(){
     }
   }
@@ -150,6 +153,9 @@
       background: #F3F7FF;
       border-radius: 5px;
       position: relative;
+      .swiper-container{
+        padding: 0 20px;
+      }
       .swiper-button-prev{
         background-image: url("~images/left-arrow.svg");
         left: 30px;
@@ -166,12 +172,12 @@
       }
       .step-pc{
         img{
-          width: 80%;
-          margin-left: 10%;
+          width: 90%;
+          margin-left: 5%;
           margin-top: 20px;
         }
         .step-title{
-          width: 80%;
+          width: 90%;
           margin: 0 auto;
         }
       }
@@ -205,6 +211,9 @@
           width: 90%;
           margin-left: 5%;
         }
+        .swiper-container{
+          padding: 0 10px;
+        }
         .swiper-button-prev{
           left: 2px;
           &.button-prev-app{
@@ -225,12 +234,14 @@
       .detail-step{
         margin-top: 10px;
         padding: 10px 0px;
+        .swiper-container{
+          padding: 0;
+        }
         .step-title{
           width: 95%;
         }
         img{
           width: 95%;
-          margin-left: 2.5%;
         }
         .swiper-button-prev{
           left: 0px;
@@ -246,12 +257,11 @@
         }
         .step-app{
           img{
-            width: 90%;
-            margin-left: 5%;
+            width: 95%;
           }
           .step-title{
-            width: 90%;
-            margin-left: 5%;
+            width: 95%;
+            margin-left: 2.5%;
             text-align: left;
             @include f(16px);
             margin-bottom: r(10);
