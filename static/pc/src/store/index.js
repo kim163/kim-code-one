@@ -206,11 +206,11 @@ export default new Vuex.Store({
     /*定制版的登陆*/
     [types.SHOW_LOGIN](state,val){
       if(_.isMobile() && val){
-        if(!_.customize()){
+        // if(!_.customize()){
           router.replace({name:'mobileLogin'});
-        }else{
-          router.replace({name:'mobileCusLogin'});
-        }
+        // }else{
+        //   router.replace({name:'mobileCusLogin'});
+        // }
       }
       state.showLogin=val;
     },
