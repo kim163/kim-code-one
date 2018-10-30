@@ -107,7 +107,6 @@
           },
           observer:true,
           observeParents:true,
-          centeredSlides: true,
           breakpoints: {
             1200: {
               slidesPerView: 2,
