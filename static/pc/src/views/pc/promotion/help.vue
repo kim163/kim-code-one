@@ -65,15 +65,15 @@
       return {
         helpcentNav: [
           {
+            name: "常见问题",
+            value: "commonProblem"
+          },
+          {
             name: "如何接入",
             value: "howAccess"
           },
-          {
-            name: "常见问题",
-            value: "commonProblem"
-          }
         ],
-        helpcentType: "howAccess",
+        helpcentType: "commonProblem",
         tutorialOpen: 0,
         tutorial: TutoriadCfg,
       };

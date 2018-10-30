@@ -38,7 +38,12 @@ const tutorailCfg = [
         slidesPerGroup:1,
         breakpoints: {
           1200: {
-            slidesPerView: 1,
+            slidesPerView:'auto',
+            spaceBetween: 0,
+            slidesPerGroup:1
+          },
+          800: {
+            slidesPerView:'auto',
             spaceBetween: 0,
             slidesPerGroup:1
           },

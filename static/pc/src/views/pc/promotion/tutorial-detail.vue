@@ -313,6 +313,14 @@
             margin-bottom: r(10);
           }
         }
+        .login-swiper{
+          .swiper-slide{
+            width: 100%;
+            &:nth-child(n+3){
+              width: 60%;
+            }
+          }
+        }
       }
     }
   }
