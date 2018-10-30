@@ -12,6 +12,10 @@ import App41 from '@/assets/images/tutorail/app/app-4-1.png'
 import App42 from '@/assets/images/tutorail/app/app-4-2.png'
 import App43 from '@/assets/images/tutorail/app/app-4-3.png'
 import App44 from '@/assets/images/tutorail/app/app-4-4.png'
+import App45 from '@/assets/images/tutorail/app/app-4-5.png'
+import App46 from '@/assets/images/tutorail/app/app-4-6.png'
+import App47 from '@/assets/images/tutorail/app/app-4-7.png'
+import App48 from '@/assets/images/tutorail/app/app-4-8.png'
 import App51 from '@/assets/images/tutorail/app/app-5-1.png'
 import App52 from '@/assets/images/tutorail/app/app-5-2.png'
 import App53 from '@/assets/images/tutorail/app/app-5-3.png'
@@ -185,6 +189,22 @@ const app_4 = [
   {
     title:'4.打开合作商户网站，点击“存款”，执行存款',
     img: App44
+  },
+  {
+    title:'1.打开合作商户网站，点击“存款”，执行存款',
+    img: App45
+  },
+  {
+    title:'2.打开合作商户网站，点击“存款”，执行存款',
+    img: App46
+  },
+  {
+    title:'3.打开合作商户网站，点击“存款”，执行存款',
+    img: App47
+  },
+  {
+    title:'4.打开合作商户网站，点击“存款”，执行存款',
+    img: App48
   },
 ]
 const app_5 = [

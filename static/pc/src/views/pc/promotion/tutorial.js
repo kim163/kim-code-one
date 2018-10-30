@@ -32,7 +32,19 @@ const tutorailCfg = [
     detail:{
       pc: pcCfg.pc_4,
       h5: h5Cfg.h5_4,
-      app:appCfg.app_4
+      app:appCfg.app_4,
+      swiperOptionApp:{
+        slidesPerView:'auto',
+        slidesPerGroup:1,
+        breakpoints: {
+          1200: {
+            slidesPerView: 1,
+            spaceBetween: 0,
+            slidesPerGroup:1
+          },
+        }
+      },
+      swiperClass:'login-swiper'
     }
   },
   {
