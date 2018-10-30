@@ -36,6 +36,7 @@ const tutorailCfg = [
       swiperOptionApp:{
         slidesPerView:'auto',
         slidesPerGroup:1,
+        centeredSlides: true,
         breakpoints: {
           1200: {
             slidesPerView:'auto',
