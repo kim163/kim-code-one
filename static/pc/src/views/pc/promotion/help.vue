@@ -169,8 +169,7 @@
   }
 
   .tutorial-item {
-    padding-top: 10px;
-    padding-bottom: 10px;
+    padding: 15px 0;
     border-bottom: 1px dashed #e0d6d6;
     .title {
       font-size: 24px;
