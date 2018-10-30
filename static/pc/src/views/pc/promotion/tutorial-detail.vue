@@ -27,7 +27,7 @@
         <div class="swiper-button-prev button-prev-app" slot="button-prev"></div>
         <div class="swiper-button-next button-next-app" slot="button-next"></div>
       </swiper>
-      <swiper :options="swiperOptionH5" v-show="tabIndex === 2">
+      <swiper :options="swiperOptionApp" v-show="tabIndex === 2" :class="detail.swiperClass">
         <swiper-slide v-for="(item,index) in detail.app" :key="index" class="step-app">
           <div class="step-title" v-show="isMobile">{{item.title}}</div>
           <img :src="item.img"/>
@@ -96,6 +96,31 @@
             },
           }
         },
+        swiperOptionApp: {
+          slidesPerView: _.isMobile() ? 1 : 3,
+          spaceBetween: 0,
+          slidesPerGroup: _.isMobile() ? 1 : 3,
+          loopFillGroupWithBlank: true,
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev'
+          },
+          observer:true,
+          observeParents:true,
+          centeredSlides: true,
+          breakpoints: {
+            1200: {
+              slidesPerView: 2,
+              spaceBetween: 0,
+              slidesPerGroup:2
+            },
+            800: {
+              slidesPerView: 1,
+              spaceBetween: 0,
+              slidesPerGroup:1
+            },
+          }
+        },
       }
     },
     props:{
@@ -105,7 +130,10 @@
           return {
             pc:[],
             h5:[],
-            app:[]
+            app:[],
+            slidesPerViewH5:null,
+            swiperOptionApp:null,
+            swiperClass:''
           }
         }
       }
@@ -115,7 +143,17 @@
       swiperSlide,
     },
     created(){
-      this.tabIndex = this.detail.pc.length > 0 ? 0 : (this.detail.h5.length > 0 ? 1 : 2)
+      if(this.isMobile){
+        this.tabIndex = this.detail.h5.length > 0 ? 1 : 2
+      }else{
+        this.tabIndex = this.detail.pc.length > 0 ? 0 : (this.detail.h5.length > 0 ? 1 : 2)
+      }
+      if(!_.isNull(this.detail.slidesPerViewH5)){
+        Object.assign(this.swiperOptionH5,this.detail.slidesPerViewH5)
+      }
+      if(!_.isNull(this.detail.swiperOptionApp)){
+        Object.assign(this.swiperOptionApp,this.detail.swiperOptionApp)
+      }
     },
     mounted(){
     }
@@ -197,6 +235,14 @@
       .step-title{
         font-size: 16px;
         color: #333333;
+      }
+      .login-swiper{
+        .swiper-slide{
+          width: 100%;
+          &:nth-child(n+3){
+            width: 33.3%;
+          }
+        }
       }
     }
   }
