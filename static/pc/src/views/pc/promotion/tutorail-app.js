@@ -191,19 +191,19 @@ const app_4 = [
     img: App44
   },
   {
-    title:'',
+    title:'1.打开商户app，在【快速存款】中选择【久安定制】',
     img: App45
   },
   {
-    title:'',
+    title:'2.点击【久安定制钱包APP】',
     img: App46
   },
   {
-    title:'',
+    title:'3.根据本机是否已经安装久安APP，点击【打开APP】或【下载安装】',
     img: App47
   },
   {
-    title:'',
+    title:'4.登录成功',
     img: App48
   },
 ]
