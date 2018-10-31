@@ -44,9 +44,11 @@
                 <i class="iconfont"
                    :class="{'icon-up-arrow-circle': tutorialOpen === index + 1,'icon-down-arrow-circle': tutorialOpen != index + 1}"></i>
               </div>
-              <div class="detail" v-if="tutorialOpen === index + 1">
-                <tutorial-detail :detail="item.detail"></tutorial-detail>
-              </div>
+              <transition name="fade">
+                <div class="detail" v-if="tutorialOpen === index + 1">
+                  <tutorial-detail :detail="item.detail"></tutorial-detail>
+                </div>
+              </transition>
             </div>
           </div>
 
