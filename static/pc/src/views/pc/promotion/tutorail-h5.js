@@ -111,7 +111,7 @@ import H5_293 from '@/assets/images/tutorail/app/app-29-3.png'
 import H5_294 from '@/assets/images/tutorail/app/app-29-4.png'
 const h5_1 = [
   {
-    title:'1.打开合作商户网址【www.XXXX.com】,登录账户点击【账户中心】',
+    title:'1.打开合作商户网址,登录账户点击【账户中心】',
     img: H5_11
   },
   {
@@ -129,7 +129,7 @@ const h5_1 = [
 ]
 const h5_2 = [
   {
-    title:'1.打开合作商户网址【www.XXXX.com】,登录账户点击【账户中心】',
+    title:'1.打开合作商户网址,登录账户点击【账户中心】',
     img: H5_21
   },
   {
@@ -143,7 +143,7 @@ const h5_2 = [
 ]
 const h5_3 = [
   {
-    title:'1.打开久安官网【www.xxx.com】，点击左上菜单栏【前往久安钱包】，登录框选择【注册账户】',
+    title:'1.打开久安官网，点击左上菜单栏【前往久安钱包】，登录框选择【注册账户】',
     img: H5_31
   },
   {
@@ -157,7 +157,7 @@ const h5_3 = [
 ]
 const h5_4 = [
   {
-    title:'1.打开久安官网【www.xxx.com】，点击左上菜单栏【前往久安钱包】，登录框输入账号、密码，点击【登录】提交',
+    title:'1.打开久安官网，点击左上菜单栏【前往久安钱包】，登录框输入账号、密码，点击【登录】提交',
     img: H5_41
   },
 ]
