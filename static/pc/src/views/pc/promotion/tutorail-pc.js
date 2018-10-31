@@ -58,7 +58,7 @@ import pc273 from '@/assets/images/tutorail/pc/pc-27-3.png'
 import pc291 from '@/assets/images/tutorail/pc/pc-29-1.png'
 const pc_1 = [
   {
-    title:'1.打开合作商户网址【www.XXXX.com】,登录账户点击【存款】',
+    title:'1.打开合作商户网址,登录账户点击【存款】',
     img: pc11
   },
   {
@@ -68,7 +68,7 @@ const pc_1 = [
 ]
 const pc_2 = [
   {
-    title:'1.打开合作商户网址【www.XXXX.com】,登录账户点击【提款】',
+    title:'1.打开合作商户网址,登录账户点击【提款】',
     img: pc21
   },
   {
@@ -78,7 +78,7 @@ const pc_2 = [
 ]
 const pc_3 = [
   {
-    title:'1打开久安官网【www.xxx.com】，点击【久安钱包中心】，登录框选择【注册账户】',
+    title:'1打开久安官网，点击【久安钱包中心】，登录框选择【注册账户】',
     img: pc31
   },
   {
@@ -88,13 +88,13 @@ const pc_3 = [
 ]
 const pc_4 = [
   {
-    title:'1打开久安官网【www.xxx.com】，点击【久安钱包中心】，登录框输入账号、密码，点击【登录钱包】提交',
+    title:'1打开久安官网，点击【久安钱包中心】，登录框输入账号、密码，点击【登录钱包】提交',
     img: pc41
   }
 ]
 const pc_5 = [
   {
-    title:'1打开久安官网【www.xxx.com】，点击【久安钱包中心】—【个人中心】—【完善资料】',
+    title:'1打开久安官网，点击【久安钱包中心】—【个人中心】—【完善资料】',
     img: pc51
   },
   {

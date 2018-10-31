@@ -129,7 +129,7 @@ import App293 from '@/assets/images/tutorail/app/app-29-3.png'
 import App294 from '@/assets/images/tutorail/app/app-29-4.png'
 const app_1 = [
   {
-    title:'1.打开合作商户网址【www.XXXX.com】,登录账户点击【账户中心】',
+    title:'1.打开合作商户网址,登录账户点击【账户中心】',
     img: App11
   },
   {
@@ -147,7 +147,7 @@ const app_1 = [
 ]
 const app_2 = [
   {
-    title:'1.打开合作商户网址【www.XXXX.com】,登录账户点击【账户中心】',
+    title:'1.打开合作商户网址,登录账户点击【账户中心】',
     img: App21
   },
   {
@@ -175,7 +175,7 @@ const app_3 = [
 ]
 const app_4 = [
   {
-    title:'1.1.打开久安官网【www.XXXX.com】,登录账户【久安钱包中心】',
+    title:'1.1.打开久安官网,登录账户【久安钱包中心】',
     img: App41
   },
   {
