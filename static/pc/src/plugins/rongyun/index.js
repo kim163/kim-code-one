@@ -86,7 +86,8 @@ export default {
           case RongIMClient.MessageType.TextMessage: //eslint-disable-line
            /*因为有可能APP和h5或者PC同时发*/
               Vue.$global.bus.$emit('textMessage', {msg: RongIMLib.RongIMEmoji.symbolToEmoji(message.content.content), user: 2,
-                sendName:message.content.user.name,userId:message.content.user.id,debit:JSON.parse(message.content.extra).debit})
+                sendName:message.content.user.name,userId:message.content.user.id,debit:JSON.parse(message.content.extra).debit,
+              credit:JSON.parse(message.content.extra).credit})
             this.getConversationList()
             break
           case RongIMClient.MessageType.VoiceMessage: //eslint-disable-line
@@ -95,7 +96,7 @@ export default {
             break
           case RongIMClient.MessageType.ImageMessage: //eslint-disable-line
               Vue.$global.bus.$emit('picMessage', {msg: message.content.imageUri, user: 4, img: [message.content.imageUri],sendName:message.content.user.name,
-                userId:message.content.user.id,debit:JSON.parse(message.content.extra).debit})
+                userId:message.content.user.id,debit:JSON.parse(message.content.extra).debit,credit:JSON.parse(message.content.extra).credit})
             this.getConversationList()
             break
           case RongIMClient.MessageType.DiscussionNotificationMessage: //eslint-disable-line

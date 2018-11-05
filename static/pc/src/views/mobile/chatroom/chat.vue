@@ -86,8 +86,8 @@
             <!--别人发的文本消息-->
             <div v-if="list.messageType=='TextMessage'&&list.senderUserId!==userId"
                  class="chat_container">
-              <div class="user_symbol_next" :class="{'isSeller':userId!==debit, 'iskefu':JSON.parse(list.content.extra).credit!==list.content.user.id
-            &&JSON.parse(list.content.extra).debit!==list.content.user.id}"></div>
+
+              <div class="user_symbol_next" :class="{'isSeller':list.content.user.id==debit,'isBuyer':list.content.user.id==credit,'iskefu':list.content.user.id!==credit&&list.content.user.id!==debit}"></div>
               <div>
                 <div class="sendname" style="text-align: left">{{list.content.user.name?list.content.user.name:'null'}}
                 </div>
@@ -109,8 +109,7 @@
             <!--别人发的图片消息-->
             <div class="chat_container"
                  v-if="list.messageType=='ImageMessage'&&list.senderUserId!==userId">
-              <div class="user_symbol_next" :class="{'isSeller':userId!==debit, 'iskefu':JSON.parse(list.content.extra).credit!==list.content.user.id
-            &&JSON.parse(list.content.extra).debit!==list.content.user.id}"></div>
+              <div class="user_symbol_next" :class="{'isSeller':list.userId==list.debit,'isBuyer':list.userId==list.credit,'iskefu':list.userId!==list.debit&&list.userId!==list.credit}"></div>
               <div>
                 <div class="sendname" style="text-align: left">{{userData.name?userData.name:'null'}}</div>
                 <div class="contents_img_next">
@@ -147,7 +146,7 @@
             </div>
             <!--接收文字消息-->
             <div v-if="list.user==2" class="chat_container">
-              <div class="user_symbol_next" :class="{'isSeller':userId!==list.debit,'isMy':userId==list.userId}"></div>
+              <div class="user_symbol_next" :class="{'isSeller':list.userId==list.debit,'isBuyer':list.userId==list.credit,'iskefu':list.userId!==list.debit&&list.userId!==list.credit}"></div>
               <div>
                 <div class="sendname" style="text-align: left">{{list.sendName?list.sendName:'null'}}</div>
                 <div class="contents_next">{{list.msg}}</div>
@@ -156,7 +155,7 @@
             </div>
             <!--接收图片消息-->
             <div v-if="list.user==4" class="chat_container">
-              <div class="user_symbol_next" :class="{'isSeller':userId!==list.debit}"></div>
+              <div class="user_symbol_next" :class="{'isSeller':list.userId==list.debit,'isBuyer':list.userId==list.credit,'iskefu':list.userId!==list.debit&&list.userId!==list.credit}"></div>
               <div>
                 <div class="sendname" style="text-align: left">{{list.sendName?list.sendName:'null'}}</div>
                 <div class="contents_img_next">
@@ -235,6 +234,7 @@
         startTime: '',
         endTime: '',
         debit: '',
+        credit:'',
         creditNickname: '',
         debitNickname: '',
         amount: '',
@@ -306,7 +306,6 @@
         this.scrollToBot()
       })
       Vue.$global.bus.$on('picMessage', (val) => {
-        console.log(val,'收到了就')
         this.chatArr.push(val)
         this.symolEmoji = RongIMLib.RongIMEmoji;
         this.clearUnreadCount()
@@ -508,6 +507,7 @@
               "founderRoleType": res.data.founderRoleType,  //发起角色类型
               "founderId": res.data.founderId  //会话发起人id
             }
+
           })
           this.$nextTick(() => {
             this.scroll = this.$refs.scroll;
@@ -897,8 +897,8 @@
 
     .user_symbol_next {
       width: r(45);
-      height: r(48);
-      background: url('~images/chatWith/buyer.png') no-repeat;
+      height: r(45);
+      background: url('~images/chatWith/my.png') no-repeat;
       background-size: 100%;
       margin-right: 1rem;
       &.isSeller {
@@ -914,10 +914,10 @@
         background: url('~images/chatWith/kefu.png') no-repeat;
         background-size: 100%;
       }
-      &.isMy {
+      &.isBuyer {
         width: r(45);
-        height: r(45);
-        background: url("~images/chatWith/my.png~") no-repeat;
+        height: r(48);
+        background: url("~images/chatWith/buyer.png") no-repeat;
         background-size: 100%;
       }
     }
