@@ -436,6 +436,7 @@
                   this.uploadState = true;
                   this.demoArr.push({img: [this.picUrl]});
                 } else {
+                  toast(res.message)
                   this.uploadState = false
                 }
               }).catch(res => {
